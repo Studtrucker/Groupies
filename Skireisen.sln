@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33423.256
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Skireisen", "Skireisen.vbproj", "{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB56D524-9855-4DC4-9481-005177EA94D6}
+	EndGlobalSection
+EndGlobal

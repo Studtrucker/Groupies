@@ -1,0 +1,52 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skireisen"
+        mc:Ignorable="d"
+        Icon="Images/ski-48.png"
+        Title="Skireisen" Height="450" Width="800">
+    <Grid>
+
+        <Menu Background="white" DockPanel.Dock="Top">
+            
+
+            <MenuItem  Header="_Datei" Background="white" Foreground="Black">
+        <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
+            <MenuItem.Icon>
+                        <Image Height="20" Source="Images/neueGruppe-48.png"/>
+            </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
+            <MenuItem.Icon>
+                <Image Height="20" Source="Images/GruppeOeffnen-48.png" />
+            </MenuItem.Icon>
+        </MenuItem>
+
+        <Separator/>
+        <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
+            <MenuItem.Icon>
+                        <Image Height="20" Source="Images/speichern-48.png"/>
+            </MenuItem.Icon>
+        </MenuItem>
+                <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+        <Separator/>
+        <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
+            <MenuItem.Icon>
+                        <Image Height="20" Source="Images/drucken-48.png"/>
+            </MenuItem.Icon>
+        </MenuItem>
+                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/importieren-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+        <Separator/>
+        <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
+        <Separator/>
+        <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
+    </MenuItem>
+        </Menu>
+    </Grid>
+</Window>

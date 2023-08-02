@@ -39,6 +39,9 @@ Class MainWindow
 #Region "EventHandler der CommandBindings"
     Private Sub HandleListNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
+        MessageBox.Show("Hallo")
+        Exit Sub
+
         If _teilnehmerList IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Liste noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then

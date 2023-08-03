@@ -68,7 +68,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg As OpenFileDialog = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
             OpenSkireiseList(dlg.FileName)
         End If
@@ -104,7 +104,7 @@ Class MainWindow
         End If
 
         ' Datei enzippen und deserialisieren
-        Dim serializer As XmlSerializer = New XmlSerializer(GetType(TeilnehmerCollection))
+        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Dim loadedFriendCollection As TeilnehmerCollection = Nothing
         Using fs = New FileStream(fileName, FileMode.Open)
             Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
@@ -132,7 +132,7 @@ Class MainWindow
             If i > max Then max = i
         Next
 
-        Dim keysToRemove As List(Of Integer) = New List(Of Integer)
+        Dim keysToRemove = New List(Of Integer)
         For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
             If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
         Next
@@ -163,15 +163,13 @@ Class MainWindow
 
     Private Sub RefreshMenuInApplication()
         For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi As MenuItem = New MenuItem()
-            mi.Header = _mRUSortedList.Values(i)
+            Dim mi = New MenuItem With {.Header = _mRUSortedList.Values(i)}
             AddHandler mi.Click, AddressOf HandleMostRecentClick
             mostrecentlyUsedMenuItem.Items.Add(mi)
         Next
 
         If mostrecentlyUsedMenuItem.Items.Count = 0 Then
-            Dim mi As MenuItem = New MenuItem()
-            mi.Header = "keine"
+            Dim mi = New MenuItem With {.Header = "keine"}
             mostrecentlyUsedMenuItem.Items.Add(mi)
         End If
     End Sub

@@ -10,7 +10,7 @@ Public Module DatenImport
     Private _xlSheet As Excel.Worksheet
     Private ReadOnly _xlCell As Excel.Range
 
-    Sub ImportMitarbeiterListe()
+    Sub ImportTeilnehmerListe()
         Dim xlApp As New Excel.Application
 
         _Dokument = Nothing
@@ -23,15 +23,15 @@ Public Module DatenImport
         If _ofdDokument.ShowDialog = DialogResult.OK Then
             _Dokument = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
             If CheckExcelFileFormat(_Dokument) Then
-                'todo: Upload auf den SQL hier nicht mehr notwendig
-                'UploadMitarbeiterListe(ReadMitarbeiterExcelliste(_Dokument.ActiveSheet))
+                'Todo: Upload auf den SQL hier nicht mehr notwendig
+                UploadMitarbeiterListe(ReadImportExcelliste(_Dokument.ActiveSheet))
             End If
             _Dokument.Close()
         End If
 
     End Sub
 
-    Private Function ReadMitarbeiterExcelliste(Excelsheet As Excel.Worksheet) As Collection(Of Teilnehmer)
+    Private Function ReadImportExcelliste(Excelsheet As Excel.Worksheet) As Collection(Of Teilnehmer)
         Dim CurrentRow = 2
         Dim Teilnehmerliste As New Collection(Of Teilnehmer)
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
@@ -70,4 +70,8 @@ Public Module DatenImport
 
     End Function
 
+    Private Sub UploadMitarbeiterListe(Teilnehmerliste As Collection(Of Teilnehmer))
+        Dim DSC As New TeilnehmerCollection
+        DSC.ToList.AddRange(Teilnehmerliste)
+    End Sub
 End Module

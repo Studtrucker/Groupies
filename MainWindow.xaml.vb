@@ -38,7 +38,7 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
-        CommandBindings.Add(New CommandBinding(ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkireisenBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
 
     End Sub
 
@@ -80,7 +80,7 @@ Class MainWindow
 
     Private Sub HandleImportTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        DatenImport.ImportMitarbeiterListe()
+        DatenImport.ImportTeilnehmerListe()
 
     End Sub
 

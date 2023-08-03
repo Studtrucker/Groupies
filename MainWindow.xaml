@@ -6,20 +6,37 @@
         xmlns:local="clr-namespace:Skireisen"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
-        Title="Skireisen" Height="450" Width="800">
+        Title="Skireisen" Height="450" Width="800"
+        Loaded="HandleMainWindowLoaded">
+    
+    <Window.Resources>
+    
+        <!-- Style für die MenuItems -->
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="Gray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
 
         <Menu Background="white" DockPanel.Dock="Top">
             
 
             <MenuItem  Header="_Datei" Background="white" Foreground="Black">
-        <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
-            <MenuItem.Icon>
+
+                <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
+                    <MenuItem.Icon>
                         <Image Height="20" Source="Images/neueGruppe-48.png"/>
-            </MenuItem.Icon>
-        </MenuItem>
-        <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
-            <MenuItem.Icon>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
+                    <MenuItem.Icon>
                 <Image Height="20" Source="Images/GruppeOeffnen-48.png" />
             </MenuItem.Icon>
         </MenuItem>

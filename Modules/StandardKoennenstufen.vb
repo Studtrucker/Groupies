@@ -12,20 +12,20 @@ Module StandardKoennenstufen
         Dim Anfaenger = New Koennenstufe With {
             .AngezeigteBenennung = "Gruppe Enzian",
             .Benennung = "Anfänger",
-            .Beschreibung = "1-wöchiger Skikurs und kann eigenständig Bremsen",
+            .Beschreibung = "1-wöchiger Skikurs und kann eigenständig Bremsen, blaue Pisten",
             .KoennenstufeID = New Guid}
 
         Dim Fortgeschritten = New Koennenstufe With {
             .AngezeigteBenennung = "Gruppe Alpenrose",
             .Benennung = "Anfänger",
-            .Beschreibung = "Blaue Pisten, Kurven, eigenständiges Liftfahren",
+            .Beschreibung = "Rote Pisten, Kurven, eigenständiges Liftfahren",
             .KoennenstufeID = New Guid}
 
 
         Dim Koenner = New Koennenstufe With {
             .AngezeigteBenennung = "Gruppe Alpenglöckchen",
             .Benennung = "Könner",
-            .Beschreibung = "Paralleles Skifahren, Stockeinsatz, kürzere Radien, rote und schwarze Pisten",
+            .Beschreibung = "Paralleles Skifahren, Stockeinsatz, kürzere Radien, schwarze Pisten",
             .KoennenstufeID = New Guid}
 
 

@@ -78,7 +78,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\SkireisenBefehle.vb" />
-    <Compile Include="DatenImport\DatenImport.vb" />
+    <Compile Include="Entities\KoennenstufenCollection.vb" />
+    <Compile Include="Modules\DatenImport.vb" />
     <Compile Include="Entities\Koennenstufe.vb" />
     <Compile Include="Entities\Skigruppe.vb" />
     <Compile Include="Entities\Skilehrer.vb" />
@@ -111,6 +112,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\StandardKoennenstufen.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

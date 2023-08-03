@@ -9,6 +9,7 @@ Namespace Entities
         Private _benennung As String
         Private _beschreibung As String
         Private _angezeigteBenennung As String
+
         Public Sub New()
             koennenstufeIDFeld = Guid.NewGuid()
         End Sub

@@ -24,7 +24,7 @@ Public Module DatenImport
             _Dokument = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
             If CheckExcelFileFormat(_Dokument) Then
                 'Todo: Upload auf den SQL hier nicht mehr notwendig
-                UploadMitarbeiterListe(ReadImportExcelliste(_Dokument.ActiveSheet))
+                ReadImportExcelliste(_Dokument.ActiveSheet)
             End If
             _Dokument.Close()
         End If
@@ -70,8 +70,4 @@ Public Module DatenImport
 
     End Function
 
-    Private Sub UploadMitarbeiterListe(Teilnehmerliste As Collection(Of Teilnehmer))
-        Dim DSC As New TeilnehmerCollection
-        DSC.ToList.AddRange(Teilnehmerliste)
-    End Sub
 End Module

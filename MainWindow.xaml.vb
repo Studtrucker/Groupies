@@ -168,31 +168,34 @@ Class MainWindow
     End Sub
 
     Private Sub QueueMostRecentFilename(fileName As String)
-        Dim max As Integer = 0
-        For Each i In _mRUSortedList.Keys
-            If i > max Then max = i
-        Next
 
-        Dim keysToRemove = New List(Of Integer)
-        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-        Next
+        'Todo: Sub QueueMostRecentFilename anpassen
 
-        For Each i As Integer In keysToRemove
-            _mRUSortedList.Remove(i)
-        Next
+        'Dim max As Integer = 0
+        'For Each i In _mRUSortedList.Keys
+        '    If i > max Then max = i
+        'Next
 
-        _mRUSortedList.Add(max + 1, fileName)
+        'Dim keysToRemove = New List(Of Integer)
+        'For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
+        '    If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
+        'Next
 
-        If _mRUSortedList.Count > 5 Then
-            Dim min As Integer = Integer.MaxValue
-            For Each i As Integer In _mRUSortedList.Keys
-                If i < min Then min = i
-            Next
-            _mRUSortedList.Remove(min)
-        End If
+        'For Each i As Integer In keysToRemove
+        '    _mRUSortedList.Remove(i)
+        'Next
 
-        RefreshMostRecentMenu()
+        '_mRUSortedList.Add(max + 1, fileName)
+
+        'If _mRUSortedList.Count > 5 Then
+        '    Dim min As Integer = Integer.MaxValue
+        '    For Each i As Integer In _mRUSortedList.Keys
+        '        If i < min Then min = i
+        '    Next
+        '    _mRUSortedList.Remove(min)
+        'End If
+
+        'RefreshMostRecentMenu()
 
     End Sub
 

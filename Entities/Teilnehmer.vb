@@ -68,9 +68,7 @@ Namespace Entities
 
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent
-            If handler IsNot Nothing Then
-                handler(Me, New PropertyChangedEventArgs(propertyName))
-            End If
+            handler?(Me, New PropertyChangedEventArgs(propertyName))
         End Sub
 
         Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged

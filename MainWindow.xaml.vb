@@ -32,8 +32,8 @@ Class MainWindow
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
         CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf HandleListNewExecuted))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleListOpenExecuted))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleListSaveExecuted, AddressOf HandleListSaveCanExecute))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleListSaveExecuted, AddressOf HandleListSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
@@ -45,6 +45,7 @@ Class MainWindow
 #End Region
 
 #Region "EventHandler der CommandBindings"
+
     Private Sub HandleListNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         If _teilnehmerList IsNot Nothing Then
@@ -80,7 +81,10 @@ Class MainWindow
 
     Private Sub HandleImportTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        DatenImport.ImportTeilnehmerListe()
+        Dim importTeilnehmer = DatenImport.ImportTeilnehmerListe()
+        If importTeilnehmer IsNot Nothing Then
+            DataContext = importTeilnehmer
+        End If
 
     End Sub
 
@@ -88,6 +92,29 @@ Class MainWindow
         e.CanExecute = _teilnehmerList IsNot Nothing
     End Sub
 
+    Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _teilnehmerList IsNot Nothing
+    End Sub
+
+    Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
+        If _skireiseListFile IsNot Nothing Then
+            dlg.FileName = _skireiseListFile.Name
+        End If
+
+        If dlg.ShowDialog = True Then
+            SaveSkireise(dlg.FileName)
+            _skireiseListFile = New FileInfo(dlg.FileName)
+        End If
+    End Sub
+
+    Private Sub HandleListSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        If _skireiseListFile Is Nothing Then
+            ApplicationCommands.SaveAs.Execute(Nothing, Me)
+        Else
+            SaveSkireise(_skireiseListFile.FullName)
+        End If
+    End Sub
 
 #End Region
 
@@ -124,6 +151,20 @@ Class MainWindow
         SetView(loadedFriendCollection)
         Title = "Skireisen - " & fileName
 
+    End Sub
+
+    Private Sub SaveSkireise(fileName As String)
+        ' 1. Freundeliste serialisieren und gezippt abspeichern
+        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
+        Using fs = New FileStream(fileName, FileMode.Create)
+            Using zipStream = New GZipStream(fs, CompressionMode.Compress)
+                serializer.Serialize(zipStream, _skireiseListFile)
+            End Using
+        End Using
+        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+        Title = "Skireise - " & fileName
+        QueueMostRecentFilename(fileName)
+        MessageBox.Show("Skireise gespeichert!")
     End Sub
 
     Private Sub QueueMostRecentFilename(fileName As String)
@@ -173,6 +214,7 @@ Class MainWindow
             mostrecentlyUsedMenuItem.Items.Add(mi)
         End If
     End Sub
+
     Private Sub RefreshJumpListInWinTaskbar()
 
         Dim jumplist = New JumpList With {
@@ -181,16 +223,16 @@ Class MainWindow
 
         Dim jumptask = New JumpTask With {
             .CustomCategory = "Release Notes",
-            .Title = "FriendStorageReleaseNotes",
-            .Description = "Zeigt die ReleaseNotes zu FriendStorage an",
+            .Title = "SkireiseReleaseNotes",
+            .Description = "Zeigt die ReleaseNotes zu Skireise an",
             .ApplicationPath = "C:\Windows\notepad.exe",
             .IconResourcePath = "C:\Windows\notepad.exe",
             .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            .Arguments = "ReleaseNotes.txt"}
+            .Arguments = "SkireiseReleaseNotes.txt"}
 
         jumplist.JumpItems.Add(jumptask)
 
-        ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".friends"-Dateiendung
+        ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
         ' unter Windows mit FriendStorage assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
@@ -203,6 +245,7 @@ Class MainWindow
         Next
 
         JumpList.SetJumpList(Application.Current, jumplist)
+
     End Sub
 
 #End Region

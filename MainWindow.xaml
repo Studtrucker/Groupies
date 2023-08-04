@@ -20,50 +20,85 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <!-- Style für das DataGrid -->
+        <Style x:Key="friendDataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="RowBackground" Value="Beige"/>
+            <Setter Property="AlternatingRowBackground" Value="LightGreen"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <!-- Style für eine DataGridRow -->
+        <Style x:Key="friendDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+            
+        </Style>
+
     </Window.Resources>
     
     <Grid>
+        <DockPanel>
+            <Menu Background="white" DockPanel.Dock="Top">
 
-        <Menu Background="white" DockPanel.Dock="Top">
-            
 
-            <MenuItem  Header="_Datei" Background="white" Foreground="Black">
+                <MenuItem  Header="_Datei" Background="white" Foreground="Black">
 
-                <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/neueGruppe-48.png"/>
-                    </MenuItem.Icon>
+                    <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/neueGruppe-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/GruppeOeffnen-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator/>
+                    <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/speichern-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                    <Separator/>
+                    <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/drucken-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/importieren-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
+                    <Separator/>
+                    <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
                 </MenuItem>
-                
-                <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
-                    <MenuItem.Icon>
-                <Image Height="20" Source="Images/GruppeOeffnen-48.png" />
-            </MenuItem.Icon>
-        </MenuItem>
+            </Menu>
+            <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionMode="Single" 
+                        AutoGenerateColumns="False" Margin="2" IsReadOnly="True" HeadersVisibility="Column"
+                        Style="{StaticResource friendDataGridStyle}"
+                        RowStyle="{StaticResource friendDataGridRowStyle}" >
 
-        <Separator/>
-        <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
-            <MenuItem.Icon>
-                        <Image Height="20" Source="Images/speichern-48.png"/>
-            </MenuItem.Icon>
-        </MenuItem>
-                <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
-        <Separator/>
-        <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
-            <MenuItem.Icon>
-                        <Image Height="20" Source="Images/drucken-48.png"/>
-            </MenuItem.Icon>
-        </MenuItem>
-                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/importieren-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-        <Separator/>
-        <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
-        <Separator/>
-        <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
-    </MenuItem>
-        </Menu>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}" Height="20" Width="20"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
+                    <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Level" Width="*" Binding="{Binding Koennenstufe.Benennung}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
     </Grid>
+    
 </Window>

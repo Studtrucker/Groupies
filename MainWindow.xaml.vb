@@ -6,6 +6,7 @@ Imports System.IO
 Imports System.IO.Compression
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
+Imports System.IO.IsolatedStorage
 
 Class MainWindow
 
@@ -34,7 +35,7 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleListOpenExecuted))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleListSaveExecuted, AddressOf HandleListSaveCanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
@@ -42,6 +43,76 @@ Class MainWindow
 
     End Sub
 
+    Private Sub HandleMainwindowClosed(sender As Object, e As RoutedEventArgs)
+
+        ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
+        If _skireiseListFile IsNot Nothing Then
+            Using iso = IsolatedStorageFile.GetMachineStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("LastSkireisenList", System.IO.FileMode.OpenOrCreate, iso)
+                    Using writer = New StreamWriter(stream)
+                        writer.WriteLine(_skireiseListFile.FullName)
+                    End Using
+                End Using
+            End Using
+        End If
+
+        ' 2. Die meist genutzen Listen ins Isolated Storage speichern
+        If _mRUSortedList.Count > 0 Then
+            Using iso = IsolatedStorageFile.GetMachineStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.OpenOrCreate, iso)
+                    Using writer = New StreamWriter(stream)
+                        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
+                            writer.WriteLine(kvp.Key & ";" & kvp.Value)
+                        Next
+                    End Using
+                End Using
+            End Using
+        End If
+
+        ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
+        _mRUSortedList = New SortedList(Of Integer, String)
+
+        ' 3. SortedList für meist genutzte Freundeslisten befüllen
+        LoadmRUSortedListMenu
+
+        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .friends-Datei doppelgeklickt wurde
+        If Environment.GetCommandLineArgs.Length = 2 Then
+            Dim args = Environment.GetCommandLineArgs
+            Dim filename = args(1)
+            OpenSkireiseList(filename)
+        End If
+
+        ' 5. JumpList in Windows 7 Taskbar aktualisieren
+        RefreshJumpListInWinTaskbar()
+
+    End Sub
+
+#End Region
+
+#Region "Methoden zum Laden der meist genutzten Listen und der letzten Freundesliste"
+
+    Private Sub LoadmRUSortedListMenu()
+        Try
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        Dim i = 0
+                        While reader.Peek <> -1
+                            Dim line = reader.ReadLine().Split(";")
+                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If File.Exists(line(1)) Then
+                                    i += 1
+                                    _mRUSortedList.Add(i, line(1))
+                                End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+
+        End Try
+    End Sub
 #End Region
 
 #Region "EventHandler der CommandBindings"
@@ -83,7 +154,8 @@ Class MainWindow
 
         Dim importTeilnehmer = DatenImport.ImportTeilnehmerListe()
         If importTeilnehmer IsNot Nothing Then
-            DataContext = importTeilnehmer
+            SetView(importTeilnehmer)
+            '            DataContext = importTeilnehmer
         End If
 
     End Sub
@@ -114,6 +186,9 @@ Class MainWindow
         Else
             SaveSkireise(_skireiseListFile.FullName)
         End If
+    End Sub
+    Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Close()
     End Sub
 
 #End Region
@@ -153,12 +228,13 @@ Class MainWindow
 
     End Sub
 
+
     Private Sub SaveSkireise(fileName As String)
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, _skireiseListFile)
+                serializer.Serialize(zipStream, _teilnehmerList)
             End Using
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
@@ -236,7 +312,7 @@ Class MainWindow
         jumplist.JumpItems.Add(jumptask)
 
         ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
-        ' unter Windows mit FriendStorage assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
+        ' unter Windows mit Skireise assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
         For i = _mRUSortedList.Values.Count - 1 To 0 Step -1

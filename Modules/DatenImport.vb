@@ -11,7 +11,6 @@ Public Module DatenImport
     Private ReadOnly _xlCell As Excel.Range
 
     Public Function ImportTeilnehmerListe() As TeilnehmerCollection
-        Dim xlApp As New Excel.Application
 
         _Dokument = Nothing
 
@@ -21,6 +20,7 @@ Public Module DatenImport
         _ofdDokument.RestoreDirectory = True
 
         If _ofdDokument.ShowDialog = DialogResult.OK Then
+            Dim xlApp = New Excel.Application
             _Dokument = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
             If CheckExcelFileFormat(_Dokument) Then
                 'Todo: Upload auf den SQL hier nicht mehr notwendig
@@ -66,6 +66,8 @@ Public Module DatenImport
             XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
 
         End If
+
+        If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Teilnehmerimport geeignet")
 
         Return XlValid
 

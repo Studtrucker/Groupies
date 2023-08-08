@@ -142,7 +142,7 @@ Class MainWindow
         SetView(New TeilnehmerCollection)
         If MessageBoxResult.Yes = MessageBox.Show("Neue Reise erstellt. Jetzt gleich die Bearbeitung beginnen?", "Achtung", MessageBoxButton.YesNo) Then
             ' Todo: wie soll die Bearbeitung der neuen Skireise beginnen?
-            'NewFriend.Execute(Nothing, Me)
+            initializeStandardKoennenstufen()
         End If
 
     End Sub
@@ -159,12 +159,8 @@ Class MainWindow
     End Sub
 
     Private Sub HandleTeilnehmerKoennenstufeVergabeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        'Todo: Das Handle Beurteilung erstellen
 
-        'Dim importTeilnehmer = DatenImport.ImportTeilnehmerListe()
-        'If importTeilnehmer IsNot Nothing Then
-        '    SetView(importTeilnehmer)
-        '    '            DataContext = importTeilnehmer
-        'End If
 
     End Sub
 
@@ -216,6 +212,7 @@ Class MainWindow
 #End Region
 
 #Region "Helper-Methoden"
+
     Private Sub OpenSkireiseList(fileName As String)
         If _skireiseListFile IsNot Nothing AndAlso fileName.Equals(_skireiseListFile.FullName) Then
             MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
@@ -344,6 +341,12 @@ Class MainWindow
         Next
 
         JumpList.SetJumpList(Application.Current, jumplist)
+
+    End Sub
+
+    Private Sub initializeStandardKoennenstufen()
+
+        StandardKoennenstufen.erstellen()
 
     End Sub
 

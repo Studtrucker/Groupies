@@ -1,8 +1,10 @@
 ﻿<Application x:Class="Application"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Skireisen"
-    StartupUri="MainWindow.xaml">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Skireisen"
+             StartupUri="MainWindow.xaml"
+             Startup="Skireise_Startup">
+    
     <Application.Resources>
         
     </Application.Resources>

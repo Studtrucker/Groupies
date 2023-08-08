@@ -7,6 +7,7 @@ Imports System.IO.Compression
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
+Imports Skireisen.BasicObjects
 
 Class MainWindow
 
@@ -40,7 +41,7 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkireisenBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkireisenBefehle.TeilnehmerKoennenstufeVergabe, AddressOf HandleTeilnehmerKoennenstufeVergabeExecuted, AddressOf HandleTeilnehmerKoennenstufeVergabeCanExecute))
+        CommandBindings.Add(New CommandBinding(SkireisenBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -158,13 +159,15 @@ Class MainWindow
         OpenSkireiseList(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
-    Private Sub HandleTeilnehmerKoennenstufeVergabeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         'Todo: Das Handle Beurteilung erstellen
-
+        'For Each item In BasicObjects.Koennenstufenliste
+        '    Debug.WriteLine(item.KoennenstufeID.ToString & "; " & item.Benennung & "; " & item.AngezeigteBenennung)
+        'Next
 
     End Sub
 
-    Private Sub HandleTeilnehmerKoennenstufeVergabeCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub HandleBeurteileTeilnehmerkoennenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
     End Sub
 
@@ -248,7 +251,7 @@ Class MainWindow
     End Sub
 
 
-    Private Sub SaveSkireise(fileName As String)
+    Private Sub SaveSkireise_alt(fileName As String)
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
@@ -261,6 +264,24 @@ Class MainWindow
         QueueMostRecentFilename(fileName)
         MessageBox.Show("Skireise gespeichert!")
     End Sub
+
+    Private Sub SaveSkireise(fileName As String)
+        ' 1. Freundeliste serialisieren und gezippt abspeichern
+        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
+        Using fs = New FileStream(fileName, FileMode.Create)
+            serializer.Serialize(fs, _teilnehmerList)
+        End Using
+
+        Dim serializerLevels = New XmlSerializer(GetType(KoennenstufenCollection))
+        Using fsLevels = New FileStream(fileName, FileMode.Append)
+            serializerLevels.Serialize(fsLevels, Koennenstufen)
+        End Using
+        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+        Title = "Skireise - " & fileName
+        QueueMostRecentFilename(fileName)
+        MessageBox.Show("Skireise gespeichert!")
+    End Sub
+
 
     Private Sub QueueMostRecentFilename(fileName As String)
 
@@ -346,7 +367,7 @@ Class MainWindow
 
     Private Sub initializeStandardKoennenstufen()
 
-        StandardKoennenstufen.erstellen()
+        BasicObjects.erstelleKoennenstufen()
 
     End Sub
 

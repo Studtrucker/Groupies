@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
         xmlns:local="clr-namespace:Skireisen"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
@@ -37,57 +38,71 @@
 
     </Window.Resources>
     
-    <Grid>
+  
+        
         <DockPanel>
             <Menu Background="white" DockPanel.Dock="Top">
 
-
-                <MenuItem  Header="_Datei" Background="white" Foreground="Black">
-
-                    <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
-                        <MenuItem.Icon>
-                            <Image Height="20" Source="Images/neueGruppe-48.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
-                        <MenuItem.Icon>
-                            <Image Height="20" Source="Images/GruppeOeffnen-48.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <Separator/>
-                    <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
-                        <MenuItem.Icon>
-                            <Image Height="20" Source="Images/speichern-48.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
-                    <Separator/>
-                    <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
-                        <MenuItem.Icon>
-                            <Image Height="20" Source="Images/drucken-48.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
-                        <MenuItem.Icon>
-                            <Image Height="20" Source="Images/importieren-48.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <Separator/>
-                    <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
-                    <Separator/>
-                    <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
+            <MenuItem  Header="_Datei" Background="white" Foreground="Black">
+                <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
+                    <MenuItem.Icon>
+                        <Image Source="Images/neueGruppe-48.png"/>
+                    </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
+                    <MenuItem.Icon>
+                        <Image Source="Images/GruppeOeffnen-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
+                    <MenuItem.Icon>
+                        <Image Source="Images/speichern-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <Separator/>
+                <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/drucken-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/importieren-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
+                <Separator/>
+                <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
+            </MenuItem>
+            <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Teilnehmer bearbeiten" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <Separator/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Gruppe bearbeiten" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+            </MenuItem>
+            
+                <MenuItem  Header="Extras" Background="white" Foreground="Black">
+                    <MenuItem Header="Eigene Level definieren" Command="ApplicationCommands.New">
+
+                    </MenuItem>
+                </MenuItem>
+
             </Menu>
+            
             <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
                        SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                        HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                       RowStyle="{StaticResource friendDataGridRowStyle}" >
+                       RowStyle="{StaticResource friendDataGridRowStyle}"  DockPanel.Dock="Right">
                 
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem  Command="{x:Static local:SkireisenBefehle.TeilnehmerKoennenstufeVergabe}" >
+                        <MenuItem  Command="{x:Static local:SkireisenBefehle.BeurteileTeilnehmerkoennen}" >
                             <MenuItem.Icon>
                                 <Image Source="/Images/icons8-group-by-48.png" />
                             </MenuItem.Icon>
@@ -95,20 +110,53 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
 
+
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding Image}" Height="20" Width="20"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                     <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Level" Width="*" Binding="{Binding Koennenstufe.Benennung}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </DockPanel>
-    </Grid>
+
+        <Border  Grid.Column="1" Grid.RowSpan="2"/>
+
+        <DataGrid x:Name="gruppenDataGrid" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Gruppenname" />
+                <DataGridTextColumn Header="Anzeige"  />
+                <DataGridTextColumn Header="Skilehrer" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
+ 
     
 </Window>
+
+    <!--
+    Für Ribbon Lösung:
+    Ribbon Workshop: https://www.rholtz-office.de/ribbonx/start
+    -->    
+<!--<ribbon:Ribbon Name="MainRibbon" DockPanel.Dock="Top" ShowQuickAccessToolBarOnTop="False">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu Name="AppMenue"  
+                                       SmallImageSource="/Images/icons8-menu-48.png">
+                    <RibbonApplicationMenu.FooterPaneContent>
+                        <DockPanel LastChildFill="False">
+                            <RibbonButton Label="Beenden" Command="ApplicationCommands.Close"
+                                DockPanel.Dock="Right"    ToolTip="Anwendung beenden (ALT+F4)"/>
+                        </DockPanel>
+                    </RibbonApplicationMenu.FooterPaneContent>
+                    <RibbonApplicationMenuItem Header="_Neue Skireise" Command="ApplicationCommands.New" ImageSource="Images/neueGruppe-48.png"/>
+                    <RibbonApplicationMenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open" ImageSource="Images/GruppeOeffnen-48.png"/>
+                    <Separator/>
+                    <RibbonApplicationMenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save" ImageSource="Images/speichern-48.png"/>
+                    <RibbonApplicationMenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                    <Separator/>
+                    <RibbonApplicationMenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print" ImageSource="Images/drucken-48.png"/>
+                    <Separator/>
+                    <RibbonApplicationMenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedRibbonMenuItem"/>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <ribbon:RibbonTab Header="Datei"/>
+        </ribbon:Ribbon>-->

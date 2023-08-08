@@ -4,7 +4,7 @@
 
     Sub New()
         _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkireisenBefehle))
-        _teilnehmerKoennenstufeVergabe = New RoutedUICommand("Levelbeurteilung Teilnehmer", "TeilnehmerKoennenstufeVergabe", GetType(SkireisenBefehle))
+        _teilnehmerKoennenstufeVergabe = New RoutedUICommand("Teilnehmer beurteilen", "TeilnehmerKoennenstufeVergabe", GetType(SkireisenBefehle))
     End Sub
 
     Public ReadOnly Property ImportTeilnehmerliste As RoutedUICommand

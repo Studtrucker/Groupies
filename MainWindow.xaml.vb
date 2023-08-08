@@ -40,6 +40,7 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkireisenBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkireisenBefehle.TeilnehmerKoennenstufeVergabe, AddressOf HandleTeilnehmerKoennenstufeVergabeExecuted, AddressOf HandleTeilnehmerKoennenstufeVergabeCanExecute))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -155,6 +156,20 @@ Class MainWindow
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
         OpenSkireiseList(TryCast(sender, MenuItem).Header.ToString())
+    End Sub
+
+    Private Sub HandleTeilnehmerKoennenstufeVergabeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        'Dim importTeilnehmer = DatenImport.ImportTeilnehmerListe()
+        'If importTeilnehmer IsNot Nothing Then
+        '    SetView(importTeilnehmer)
+        '    '            DataContext = importTeilnehmer
+        'End If
+
+    End Sub
+
+    Private Sub HandleTeilnehmerKoennenstufeVergabeCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleImportTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)

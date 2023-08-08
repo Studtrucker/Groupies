@@ -80,10 +80,20 @@
                     <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
                 </MenuItem>
             </Menu>
-            <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionMode="Single" 
-                        AutoGenerateColumns="False" Margin="2" IsReadOnly="True" HeadersVisibility="Column"
-                        Style="{StaticResource friendDataGridStyle}"
-                        RowStyle="{StaticResource friendDataGridRowStyle}" >
+            <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
+                       SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                       HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                       RowStyle="{StaticResource friendDataGridRowStyle}" >
+                
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem  Command="{x:Static local:SkireisenBefehle.TeilnehmerKoennenstufeVergabe}" >
+                            <MenuItem.Icon>
+                                <Image Source="/Images/icons8-group-by-48.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
 
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="">

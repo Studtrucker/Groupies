@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
         Title="Skireisen" Height="450" Width="800"
-        Loaded="HandleMainWindowLoaded">
+        Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">
     
     <Window.Resources>
     

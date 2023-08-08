@@ -41,13 +41,34 @@ Class MainWindow
 
         CommandBindings.Add(New CommandBinding(SkireisenBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
 
+        ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
+        _mRUSortedList = New SortedList(Of Integer, String)
+
+        ' 3. SortedList für meist genutzte Freundeslisten befüllen
+        LoadmRUSortedListMenu()
+
+        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .friends-Datei doppelgeklickt wurde
+        If (Environment.GetCommandLineArgs().Length = 2) Then
+            Dim args = Environment.GetCommandLineArgs
+            Dim filename = args(1)
+            OpenSkireiseList(filename)
+        Else
+            ' 5. JumpList in Windows Taskbar aktualisieren
+            RefreshJumpListInWinTaskbar()
+        End If
+
     End Sub
 
-    Private Sub HandleMainwindowClosed(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
+        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
+        e.Cancel = result = MessageBoxResult.No
+    End Sub
+
+    Private Sub HandleMainwindowClosed(sender As Object, e As EventArgs)
 
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
         If _skireiseListFile IsNot Nothing Then
-            Using iso = IsolatedStorageFile.GetMachineStoreForAssembly
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
                 Using stream = New IsolatedStorageFileStream("LastSkireisenList", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         writer.WriteLine(_skireiseListFile.FullName)
@@ -58,7 +79,7 @@ Class MainWindow
 
         ' 2. Die meist genutzen Listen ins Isolated Storage speichern
         If _mRUSortedList.Count > 0 Then
-            Using iso = IsolatedStorageFile.GetMachineStoreForAssembly
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
                 Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
@@ -69,27 +90,11 @@ Class MainWindow
             End Using
         End If
 
-        ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
-        _mRUSortedList = New SortedList(Of Integer, String)
-
-        ' 3. SortedList für meist genutzte Freundeslisten befüllen
-        LoadmRUSortedListMenu
-
-        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .friends-Datei doppelgeklickt wurde
-        If Environment.GetCommandLineArgs.Length = 2 Then
-            Dim args = Environment.GetCommandLineArgs
-            Dim filename = args(1)
-            OpenSkireiseList(filename)
-        End If
-
-        ' 5. JumpList in Windows 7 Taskbar aktualisieren
-        RefreshJumpListInWinTaskbar()
-
     End Sub
 
 #End Region
 
-#Region "Methoden zum Laden der meist genutzten Listen und der letzten Freundesliste"
+#Region "Methoden zum Laden der meist genutzten Listen und der letzten Skireisen"
 
     Private Sub LoadmRUSortedListMenu()
         Try
@@ -109,9 +114,11 @@ Class MainWindow
                     End Using
                 End Using
             End Using
-        Catch ex As Exception
-
+            RefreshMostRecentMenu()
+        Catch ex As FileNotFoundException
+            'Throw ex
         End Try
+
     End Sub
 #End Region
 
@@ -245,33 +252,31 @@ Class MainWindow
 
     Private Sub QueueMostRecentFilename(fileName As String)
 
-        'Todo: Sub QueueMostRecentFilename anpassen
+        Dim max As Integer = 0
+        For Each i In _mRUSortedList.Keys
+            If i > max Then max = i
+        Next
 
-        'Dim max As Integer = 0
-        'For Each i In _mRUSortedList.Keys
-        '    If i > max Then max = i
-        'Next
+        Dim keysToRemove = New List(Of Integer)
+        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
+            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
+        Next
 
-        'Dim keysToRemove = New List(Of Integer)
-        'For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-        '    If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-        'Next
+        For Each i As Integer In keysToRemove
+            _mRUSortedList.Remove(i)
+        Next
 
-        'For Each i As Integer In keysToRemove
-        '    _mRUSortedList.Remove(i)
-        'Next
+        _mRUSortedList.Add(max + 1, fileName)
 
-        '_mRUSortedList.Add(max + 1, fileName)
+        If _mRUSortedList.Count > 5 Then
+            Dim min As Integer = Integer.MaxValue
+            For Each i As Integer In _mRUSortedList.Keys
+                If i < min Then min = i
+            Next
+            _mRUSortedList.Remove(min)
+        End If
 
-        'If _mRUSortedList.Count > 5 Then
-        '    Dim min As Integer = Integer.MaxValue
-        '    For Each i As Integer In _mRUSortedList.Keys
-        '        If i < min Then min = i
-        '    Next
-        '    _mRUSortedList.Remove(min)
-        'End If
-
-        'RefreshMostRecentMenu()
+        RefreshMostRecentMenu()
 
     End Sub
 

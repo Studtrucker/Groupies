@@ -375,6 +375,14 @@ Class MainWindow
 
 #Region "weitere Eventhandler"
 
+    Private Sub HandleButtonExpMouseEnter(sender As Object, e As RoutedEventArgs)
+
+    End Sub
+
+    Private Sub HandleLayerTeilnehmerMouseEnter(sender As Object, e As RoutedEventArgs)
+
+    End Sub
+
     Sub _teilnehmerListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
         RefreshTaskBarItemOverlay()
     End Sub

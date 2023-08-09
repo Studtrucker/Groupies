@@ -38,9 +38,8 @@
 
     </Window.Resources>
     
-  
-        
         <DockPanel>
+            
             <Menu Background="white" DockPanel.Dock="Top">
 
             <MenuItem  Header="_Datei" Background="white" Foreground="Black">
@@ -95,41 +94,187 @@
 
             </Menu>
             
+            <!-- Dock="Right" - Button, um den "Teilnehmer Explorer" aufzuklappen -->
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Panel.ZIndex="1">
+                <Button Margin="10,0,0,0" x:Name="btnShowTeilnehmerExplorer" MouseEnter="HandleButtonExpMouseEnter">Teilnehmer</Button>
+                <Button Margin="10,0,0,0" x:Name="btnShowSkilehrerExplorer" MouseEnter="HandleButtonExpMouseEnter">Skilehrer</Button>
+                <Button Margin="10,0,0,0" x:Name="btnShowSkigruppenExplorer" MouseEnter="HandleButtonExpMouseEnter">Skigruppen</Button>
+            <StackPanel.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </StackPanel.LayoutTransform>
+            </StackPanel>
+            
+            
+            <!-- Layer 0 - Details -->
+            <!-- Grid mit selektiertem Teilnehmer -->
+            <Border BorderBrush="Black" BorderThickness="1" Visibility="Visible">
+                <Grid x:Name="layerTeilnehmer" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Teilnehmer"/>
+                    
+                    <!-- Detailangaben -->
+                    <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Vorname"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Name"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Könnenstufe"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Skigruppe"/>
+                    <TextBox Grid.Column="1" Grid.Row="0"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" />
+                    <TextBox Grid.Column="1" Grid.Row="2" />
+                    <TextBox Grid.Column="1" Grid.Row="3" />
+                </Grid>
+                    </Grid>
+            </Border>
+            
+            <!-- Grid mit selektiertem Skilehrer -->
+            <Border BorderBrush="Black" BorderThickness="1" Visibility="Visible">
+            <Grid x:Name="layerSkilehrer" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skilehrer"/>
+
+                <!-- Detailangaben -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Vorname"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Name"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Angezeigter Name"/>
+                    <TextBox Grid.Column="1" Grid.Row="0"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" />
+                    <TextBox Grid.Column="1" Grid.Row="2" />
+                </Grid>
+            </Grid>
+        </Border>
+            
+        <!-- Grid mit selektiertem Skigruppen -->
+        <Border BorderBrush="Black" BorderThickness="1" Visibility="Visible">
+            <Grid x:Name="layerSkigruppen" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skigruppen"/>
+
+                <!-- Detailangaben -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Gruppenname"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Skilehrer"/>
+                    <TextBox Grid.Column="1" Grid.Row="0"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" />
+                    <TextBox Grid.Column="1" Grid.Row="2" />
+                </Grid>
+            </Grid>
+        </Border>
+                       
+            
+        <!-- Layer 1 Listen -->
+            
+        <!-- Grid, das den Teilnehmer Explorer anzeigt-->
+        <Border BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+            <Grid x:Name="teilnehmerGrid" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray"/>
             <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
                        SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                        HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                       RowStyle="{StaticResource friendDataGridRowStyle}"  DockPanel.Dock="Right">
+                       RowStyle="{StaticResource friendDataGridRowStyle}"  DockPanel.Dock="Right"
+                       Grid.Row="1">
                 
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem  Command="{x:Static local:SkireisenBefehle.BeurteileTeilnehmerkoennen}" >
-                            <MenuItem.Icon>
-                                <Image Source="/Images/icons8-group-by-48.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-
-
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                     <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Level" Width="*" Binding="{Binding Koennenstufe.Benennung}"/>
+                    <DataGridTextColumn Header="Persönlicher Level" Binding="{Binding Koennenstufe.Benennung}"/>
+                    <DataGridTextColumn Header="Skigruppe" Width="*" Binding="{Binding Skigruppe.Gruppenname}"/>
                 </DataGrid.Columns>
+                
             </DataGrid>
+        </Grid>
+        </Border>
+    
+        <!-- Grid, das den Skilehrer Explorer anzeigt-->
+        <Border BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+            <Grid x:Name="skilehrerGrid" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-        <Border  Grid.Column="1" Grid.RowSpan="2"/>
+                <TextBlock Text="Skilehrer" Grid.Row="0" Foreground="DarkGray"/>
+                <DataGrid x:Name="skilehrerDataGrid" Grid.Row="1" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vorname" />
+                        <DataGridTextColumn Header="Name"/>
+                        <DataGridTextColumn Header="Angezeigter Name"  Width="*"  />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+            
+        <!-- Grid, das den Skigruppen Explorer anzeigt-->
+        <Border BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+            <Grid x:Name="skigruppenGrid" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-        <DataGrid x:Name="gruppenDataGrid" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Gruppenname" />
-                <DataGridTextColumn Header="Anzeige"  />
-                <DataGridTextColumn Header="Skilehrer" Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
-
+                <TextBlock Text="Skigruppen" Grid.Row="0" Foreground="DarkGray"/>
+                <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Gruppenname" />
+                        <DataGridTextColumn Header="Angezeigter Name"  />
+                        <DataGridTextColumn Header="Skilehrer" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </DockPanel>
- 
     
 </Window>
 

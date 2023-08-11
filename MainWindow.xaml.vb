@@ -8,6 +8,7 @@ Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
 Imports Skireisen.BasicObjects
+Imports System.Windows.Media.Animation
 
 Class MainWindow
 
@@ -375,8 +376,62 @@ Class MainWindow
 
 #Region "weitere Eventhandler"
 
-    Private Sub HandleButtonExpMouseEnter(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
+        ' layerDetails-Grid mit den Explorern einblenden
+        If (layerDetails.Visibility <> Visibility.Visible) Then
+
+            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+            ' Explorer"-Spalte nach rechts versetzen
+            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1-Grid sichtbar machen
+            layerDetails.Visibility = Visibility.Visible
+
+            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+            ' hin zum Wert 0 animieren, Dauer 500 Millisek
+            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+            layerDetailsTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
+
+
+    End Sub
+    Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As RoutedEventArgs)
+        ' layerDetails-Grid mit den Explorern einblenden
+        If (layerDetails.Visibility <> Visibility.Visible) Then
+
+            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+            ' Explorer"-Spalte nach rechts versetzen
+            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1-Grid sichtbar machen
+            layerDetails.Visibility = Visibility.Visible
+
+            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+            ' hin zum Wert 0 animieren, Dauer 500 Millisek
+            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+            layerDetailsTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
+    End Sub
+    Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As RoutedEventArgs)
+        ' layerDetails-Grid mit den Explorern einblenden
+        If (layerDetails.Visibility <> Visibility.Visible) Then
+
+            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+            ' Explorer"-Spalte nach rechts versetzen
+            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1-Grid sichtbar machen
+            layerDetails.Visibility = Visibility.Visible
+
+            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+            ' hin zum Wert 0 animieren, Dauer 500 Millisek
+            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+            layerDetailsTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
     End Sub
 
     Private Sub HandleLayerTeilnehmerMouseEnter(sender As Object, e As RoutedEventArgs)

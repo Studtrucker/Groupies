@@ -123,7 +123,7 @@
                     <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Teilnehmer"/>
                     
                     <!-- Detailangaben -->
-                <Grid Grid.Row="1" Margin="2">
+                    <Grid Grid.Row="1" Margin="2" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="250"/>
@@ -147,8 +147,8 @@
             </Border>
             
             <!-- Grid mit selektiertem Skilehrer -->
-        <Border BorderBrush="Black" BorderThickness="1" Visibility="Visible" Margin="2">
-            <Grid x:Name="gridSkilehrer" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+            <Border BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
+                <Grid x:Name="gridSkilehrer" MouseEnter="HandleLayerTeilnehmerMouseEnter" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
@@ -159,7 +159,7 @@
                 <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skilehrer"/>
 
                 <!-- Detailangaben -->
-                <Grid Grid.Row="1"  Margin="2" >
+                    <Grid Grid.Row="1"  Margin="2"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="250"/>
@@ -180,7 +180,7 @@
         </Border>
             
         <!-- Grid mit selektiertem Skigruppen -->
-        <Border BorderBrush="Black" BorderThickness="1" Visibility="Visible" Margin="2">
+            <Border BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
             <Grid x:Name="gridSkigruppen" MouseEnter="HandleLayerTeilnehmerMouseEnter">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -192,7 +192,7 @@
                 <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skigruppen"/>
 
                 <!-- Detailangaben -->
-                <Grid Grid.Row="1" Margin="2">
+                <Grid Grid.Row="1" Margin="2" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="250"/>
@@ -215,10 +215,17 @@
 
 
         <!-- Layer 1 Listen -->
-        <Grid x:Name="layerListen">
+        <Grid x:Name="layerListen" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="layerListenTrans"/>
+            </Grid.RenderTransform>
             
-        <!-- Grid, das den Teilnehmer Explorer anzeigt-->
-        <Border BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+            <!-- Grid, das den Teilnehmer Explorer anzeigt-->
+        <Border BorderThickness="1" BorderBrush="Black" >
             <Grid x:Name="teilnehmerGrid" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

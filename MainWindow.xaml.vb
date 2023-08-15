@@ -378,6 +378,9 @@ Class MainWindow
 
     Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
+
+
+
         ' layerDetails-Grid mit den Explorern einblenden
         If (layerListen.Visibility <> Visibility.Visible) Then
 

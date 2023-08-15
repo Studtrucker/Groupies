@@ -378,18 +378,15 @@ Class MainWindow
 
     Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
-
-
-
         ' layerDetails-Grid mit den Explorern einblenden
-        If (layerListen.Visibility <> Visibility.Visible) Then
+        If (borderTeilnehmerliste.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layerListen.Visibility = Visibility.Visible
+            layer1Listen.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek
@@ -401,14 +398,14 @@ Class MainWindow
 
     Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As MouseEventArgs)
         ' layerDetails-Grid mit den Explorern einblenden
-        If (layerListen.Visibility <> Visibility.Visible) Then
+        If (layer1Listen.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layerListen.Visibility = Visibility.Visible
+            layer1Listen.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek
@@ -419,14 +416,14 @@ Class MainWindow
     End Sub
     Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As MouseEventArgs)
         ' layerDetails-Grid mit den Explorern einblenden
-        If (layerListen.Visibility <> Visibility.Visible) Then
+        If (layer1Listen.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layerListen.ColumnDefinitions(1).Width.Value
+            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layerListen.Visibility = Visibility.Visible
+            layer1Listen.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek

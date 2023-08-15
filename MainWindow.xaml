@@ -103,14 +103,15 @@
                 <RotateTransform Angle="90"/>
             </StackPanel.LayoutTransform>
         </StackPanel>
-        <Grid Width="100">
+        
+        <Grid >
             <Grid x:Name="layer0Details" Margin="0,0,-240,0">
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="layerDetailsTrans"/>
                 </Grid.RenderTransform>
 
                 <!-- Grid mit selektiertem Teilnehmer -->
-                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1" Visibility="Visible" Margin="2">
+                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
                     <Grid x:Name="gridTeilnehmer" MouseEnter="HandleLayerTeilnehmerMouseEnter">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />

@@ -383,10 +383,10 @@ Class MainWindow
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
+            layerDetailsTrans.X = borderTeilnehmerliste.Width
 
             ' 2. layer1-Grid sichtbar machen
-            layer1Listen.Visibility = Visibility.Visible
+            borderTeilnehmerliste.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek

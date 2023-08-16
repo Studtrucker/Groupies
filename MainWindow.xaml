@@ -215,7 +215,7 @@
             </Grid>
 
 
-            <Grid x:Name="layer1Listen" Visibility="Visible" Margin="340,0,-680,0">
+            <Grid x:Name="layer1Listen" Visibility="Visible" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="pinSpalte" Width="340"/>

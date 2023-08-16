@@ -379,33 +379,57 @@ Class MainWindow
     Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layerDetails-Grid mit den Explorern einblenden
-        If (borderTeilnehmerliste.Visibility <> Visibility.Visible) Then
+        If (layer1Teilnehmerliste.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = borderTeilnehmerliste.Width
+            layer1TeilnehmerlisteTrans.X = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            borderTeilnehmerliste.Visibility = Visibility.Visible
+            layer1Teilnehmerliste.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek
             Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            layerDetailsTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
 
         End If
     End Sub
 
+    Private Sub HandleLayer0MouseEnter(sender As Object, e As RoutedEventArgs)
+
+        ' layer1-Grid ausblenden
+        'If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
+        If (layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
+
+            ' 1. Zielwert für die Animation setzen
+            Dim [to] = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1Trans.X zum ermittelten Zielwert animieren
+            ' und EventHandler für Completed-Event installieren
+            Dim ani = New DoubleAnimation([to], New Duration(TimeSpan.FromMilliseconds(500)))
+            AddHandler ani.Completed, New EventHandler(AddressOf ani_Completed)
+            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
+
+    End Sub
+
+    Sub ani_Completed(sender As Object, e As EventArgs)
+        ' 3. layer1-Grid ausblenden
+        layer1Teilnehmerliste.Visibility = Visibility.Collapsed
+    End Sub
+
     Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As MouseEventArgs)
         ' layerDetails-Grid mit den Explorern einblenden
-        If (layer1Listen.Visibility <> Visibility.Visible) Then
+        If (layer1Skilehrerliste.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
+            layer1SkilehrerlisteTrans.X = layer1Skilehrerliste.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layer1Listen.Visibility = Visibility.Visible
+            layer1Skilehrerliste.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek
@@ -416,14 +440,14 @@ Class MainWindow
     End Sub
     Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As MouseEventArgs)
         ' layerDetails-Grid mit den Explorern einblenden
-        If (layer1Listen.Visibility <> Visibility.Visible) Then
+        If (layer1Skigruppenliste.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerDetailsTrans.X = layer1Listen.ColumnDefinitions(1).Width.Value
+            layer1SkigruppenlisteTrans.X = layer1Skigruppenliste.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layer1Listen.Visibility = Visibility.Visible
+            layer1Skigruppenliste.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek

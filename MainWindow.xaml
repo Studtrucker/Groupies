@@ -105,7 +105,8 @@
         </StackPanel>
         
         <Grid >
-            <Grid x:Name="layer0Details" Margin="0,0,-240,0">
+
+            <Grid x:Name="layer0Teilnehmerdetails" MouseEnter="HandleLayer0MouseEnter">
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="layerDetailsTrans"/>
                 </Grid.RenderTransform>
@@ -146,8 +147,10 @@
                         </Grid>
                     </Grid>
                 </Border>
+            </Grid>
 
-                <!-- Grid mit selektiertem Skilehrer -->
+            <Grid x:Name="layer0Skilehrerdetails" MouseEnter="HandleLayer0MouseEnter">
+                    <!-- Grid mit selektiertem Skilehrer -->
                 <Border x:Name="borderSkilehrer" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
                     <Grid x:Name="gridSkilehrer" MouseEnter="HandleLayerTeilnehmerMouseEnter" >
                         <Grid.ColumnDefinitions>
@@ -179,7 +182,9 @@
                         </Grid>
                     </Grid>
                 </Border>
+            </Grid>
 
+            <Grid x:Name="layer0Skigruppendetail" MouseEnter="HandleLayer0MouseEnter">
                 <!-- Grid mit selektiertem Skigruppen -->
                 <Border x:Name="borderSkigruppen" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
                     <Grid x:Name="gridSkigruppen" MouseEnter="HandleLayerTeilnehmerMouseEnter">
@@ -215,17 +220,17 @@
             </Grid>
 
 
-            <Grid x:Name="layer1Listen" Visibility="Visible" >
+            <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="340"/>
+                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RenderTransform>
-                    <TranslateTransform x:Name="layerListenTrans"/>
+                    <TranslateTransform x:Name="layer1TeilnehmerlisteTrans"/>
                 </Grid.RenderTransform>
 
                 <!-- Grid, das den Teilnehmer Explorer anzeigt-->
-                <Border x:Name="borderTeilnehmerliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1" Visibility="Collapsed">
+                <Border x:Name="borderTeilnehmerliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                     <Grid x:Name="teilnehmerGrid" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -249,7 +254,17 @@
                         </DataGrid>
                     </Grid>
                 </Border>
+            </Grid>
 
+            <Grid x:Name="layer1Skilehrerliste" Visibility="Visible" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="layer1SkilehrerlisteTrans"/>
+                </Grid.RenderTransform>
+                
                 <!-- Grid, das den Skilehrer Explorer anzeigt-->
                 <Border x:Name="borderSkilehrerliste" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
                     <Grid x:Name="skilehrerGrid" >
@@ -268,7 +283,16 @@
                         </DataGrid>
                     </Grid>
                 </Border>
+            </Grid>
 
+            <Grid x:Name="layer1Skigruppenliste" Visibility="Visible" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="layer1SkigruppenlisteTrans"/>
+                </Grid.RenderTransform>
                 <!-- Grid, das den Skigruppen Explorer anzeigt-->
                 <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
                     <Grid x:Name="skigruppenGrid" >
@@ -288,6 +312,7 @@
                     </Grid>
                 </Border>
             </Grid>
+            
         </Grid>
 
         <!-- Layer - Details -->

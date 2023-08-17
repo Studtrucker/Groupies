@@ -97,23 +97,20 @@
         <!-- Dock="Right" - Button, um den "Teilnehmer Explorer" aufzuklappen -->
         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Panel.ZIndex="1">
             <Button Margin="10,0,0,0" x:Name="btnShowTeilnehmerExplorer" MouseEnter="HandleButtonTNExpMouseEnter">Teilnehmer</Button>
-            <Button Margin="10,0,0,0" x:Name="btnShowSkilehrerExplorer" MouseEnter="HandleButtonSLExpMouseEnter">Skilehrer</Button>
-            <Button Margin="10,0,0,0" x:Name="btnShowSkigruppenExplorer" MouseEnter="HandleButtonSGExpMouseEnter">Skigruppen</Button>
+            <!--<Button Margin="10,0,0,0" x:Name="btnShowSkilehrerExplorer" MouseEnter="HandleButtonSLExpMouseEnter">Skilehrer</Button>
+            <Button Margin="10,0,0,0" x:Name="btnShowSkigruppenExplorer" MouseEnter="HandleButtonSGExpMouseEnter">Skigruppen</Button>-->
             <StackPanel.LayoutTransform>
                 <RotateTransform Angle="90"/>
             </StackPanel.LayoutTransform>
         </StackPanel>
         
         <Grid >
-
-            <Grid x:Name="layer0Teilnehmerdetails" MouseEnter="HandleLayer0MouseEnter">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="layerDetailsTrans"/>
-                </Grid.RenderTransform>
-
-                <!-- Grid mit selektiertem Teilnehmer -->
-                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
-                    <Grid x:Name="gridTeilnehmer" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+            <!-- Layer 0 - Details -->
+            
+            <!-- Grid mit selektiertem Teilnehmer -->
+            <Grid x:Name="layer0Teilnehmerdetails" MouseEnter="HandleLayer0MouseEnter" >
+                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1"  Margin="2">
+                    <Grid x:Name="gridTeilnehmer" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
@@ -149,20 +146,22 @@
                 </Border>
             </Grid>
 
-            <Grid x:Name="layer0Skilehrerdetails" MouseEnter="HandleLayer0MouseEnter">
-                    <!-- Grid mit selektiertem Skilehrer -->
-                <Border x:Name="borderSkilehrer" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
-                    <Grid x:Name="gridSkilehrer" MouseEnter="HandleLayerTeilnehmerMouseEnter" >
+            <!-- Grid mit selektiertem Skilehrer -->
+            <!--<Grid x:Name="layer0Skilehrerdetails" MouseEnter="HandleLayer0MouseEnter" Visibility="Collapsed">
+                <Border x:Name="borderSkilehrer" BorderBrush="Black" BorderThickness="1" Margin="2">
+                    <Grid x:Name="gridSkilehrer"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+            
                         <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skilehrer"/>
 
-                        <!-- Detailangaben -->
+                        --><!-- Detailangaben --><!--
                         <Grid Grid.Row="1"  Margin="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -182,12 +181,12 @@
                         </Grid>
                     </Grid>
                 </Border>
-            </Grid>
+        </Grid>--> 
 
-            <Grid x:Name="layer0Skigruppendetail" MouseEnter="HandleLayer0MouseEnter">
-                <!-- Grid mit selektiertem Skigruppen -->
-                <Border x:Name="borderSkigruppen" BorderBrush="Black" BorderThickness="1" Visibility="Collapsed" Margin="2">
-                    <Grid x:Name="gridSkigruppen" MouseEnter="HandleLayerTeilnehmerMouseEnter">
+        <!-- Grid mit selektiertem Skigruppen -->
+            <!--<Grid x:Name="layer0Skigruppendetail" MouseEnter="HandleLayer0MouseEnter" Visibility="Collapsed">
+                <Border x:Name="borderSkigruppen" BorderBrush="Black" BorderThickness="1" Margin="2">
+                    <Grid x:Name="gridSkigruppen" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
@@ -195,9 +194,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        
+                        
                         <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Skigruppen"/>
 
-                        <!-- Detailangaben -->
+                        --><!-- Detailangaben --><!--
                         <Grid Grid.Row="1" Margin="2" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -217,9 +218,10 @@
                         </Grid>
                     </Grid>
                 </Border>
-            </Grid>
+            </Grid>-->
 
-
+            <!-- Layer 1 Listen -->
+                <!-- Grid, das den Teilnehmer Explorer anzeigt-->
             <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -229,7 +231,6 @@
                     <TranslateTransform x:Name="layer1TeilnehmerlisteTrans"/>
                 </Grid.RenderTransform>
 
-                <!-- Grid, das den Teilnehmer Explorer anzeigt-->
                 <Border x:Name="borderTeilnehmerliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                     <Grid x:Name="teilnehmerGrid" >
                         <Grid.RowDefinitions>
@@ -256,7 +257,8 @@
                 </Border>
             </Grid>
 
-            <Grid x:Name="layer1Skilehrerliste" Visibility="Visible" >
+            <!-- Grid, das den Skilehrer Explorer anzeigt-->     
+            <!--<Grid x:Name="layer1Skilehrerliste" Visibility="Collapsed" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
@@ -265,8 +267,8 @@
                     <TranslateTransform x:Name="layer1SkilehrerlisteTrans"/>
                 </Grid.RenderTransform>
                 
-                <!-- Grid, das den Skilehrer Explorer anzeigt-->
-                <Border x:Name="borderSkilehrerliste" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+
+                <Border x:Name="borderSkilehrerliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                     <Grid x:Name="skilehrerGrid" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -283,9 +285,10 @@
                         </DataGrid>
                     </Grid>
                 </Border>
-            </Grid>
+            </Grid>-->
 
-            <Grid x:Name="layer1Skigruppenliste" Visibility="Visible" >
+                 <!-- Grid, das den Skigruppen Explorer anzeigt-->
+           <!--<Grid x:Name="layer1Skigruppenliste" Visibility="Collapsed" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
@@ -293,8 +296,7 @@
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="layer1SkigruppenlisteTrans"/>
                 </Grid.RenderTransform>
-                <!-- Grid, das den Skigruppen Explorer anzeigt-->
-                <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed">
+                <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                     <Grid x:Name="skigruppenGrid" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -311,14 +313,10 @@
                         </DataGrid>
                     </Grid>
                 </Border>
-            </Grid>
+            </Grid>-->
             
         </Grid>
 
-        <!-- Layer - Details -->
-
-
-        <!-- Layer 1 Listen -->
     </DockPanel>
 
 </Window>

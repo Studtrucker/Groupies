@@ -13,7 +13,7 @@ Imports System.Windows.Media.Animation
 Class MainWindow
 
 #Region "Fields"
-
+    Private _dummySpalteFuerLayer0 As ColumnDefinition
     Private _teilnehmerList As TeilnehmerCollection
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skireiseListFile As FileInfo
@@ -22,6 +22,29 @@ Class MainWindow
 #End Region
 
 #Region "Events"
+
+    Public Sub New()
+
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        ' Spalte initialisieren und in dieselbe Gruppe setzen,
+        ' wie die Spalte mit dem Freunde Explorer im
+        ' layer1-Grid
+        _dummySpalteFuerLayer0 = New ColumnDefinition()
+        _dummySpalteFuerLayer0.SharedSizeGroup = "pinSpalte"
+
+        ' das Grid gleich zu Beginn pinnen
+        layer1Teilnehmerliste.Visibility = Visibility.Visible
+        btnPinIt.IsChecked = True
+
+        _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
+        AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _teilnehmerListCollectionView_CurrentChanged)
+
+    End Sub
+
+
     Private Sub HandleMainWindowLoaded(sender As Object, e As RoutedEventArgs)
 
         ' 0. Zur InputBindings ein MouseBinding hinzufügen. Nur als Beispiel,
@@ -376,6 +399,36 @@ Class MainWindow
 
 #Region "Methoden zum Pinnen und Ein-/Ausblenden des Freunde-Explorers"
 
+    Private Sub HandlePinning(sender As Object, e As RoutedEventArgs)
+
+        ' Pinnen
+
+        ' 1. ColumnDefinition zum layer0-Grid hinzufügen
+        layer0Teilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
+
+        ' 2. Button "Freunde Explorer" ausblenden
+        btnShowTeilnehmerExplorer.Visibility = Visibility.Collapsed
+
+        ' 3. pinImage in layer1-Grid auf pinned setzen
+        pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
+
+    End Sub
+
+    Private Sub HandleUnpinning(sender As Object, e As RoutedEventArgs)
+        ' Unpinnen
+
+        ' 1. ColumnDefinition von layer0-Grid entfernen
+        layer0Teilnehmerdetails.ColumnDefinitions.Remove(_dummySpalteFuerLayer0)
+
+        ' 2. Button "Freunde Explorer" einblenden
+        btnShowTeilnehmerExplorer.Visibility = Visibility.Visible
+
+        ' 3. pinImage in layer1-Grid auf unpinned setzen
+        pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
+
+    End Sub
+
+
     Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layerDetails-Grid mit den Explorern einblenden
@@ -399,8 +452,7 @@ Class MainWindow
     Private Sub HandleLayer0MouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layer1-Grid ausblenden
-        'If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
-        If (layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
+        If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
 
             ' 1. Zielwert für die Animation setzen
             Dim [to] = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value

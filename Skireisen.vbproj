@@ -204,5 +204,11 @@
   <ItemGroup>
     <Resource Include="Images\icons8-menu-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-unpin-2-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-pin-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

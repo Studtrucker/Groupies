@@ -108,8 +108,8 @@
             <!-- Layer 0 - Details -->
             
             <!-- Grid mit selektiertem Teilnehmer -->
-            <Grid x:Name="layer0Teilnehmerdetails" MouseEnter="HandleLayer0MouseEnter" >
-                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1"  Margin="2">
+            <Grid x:Name="layer0Teilnehmerdetails" MouseEnter="HandleLayer0MouseEnter" Background="White" Margin="2">
+                <Border x:Name="borderTeilnehmer" BorderBrush="Black" BorderThickness="1" >
                     <Grid x:Name="gridTeilnehmer" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -222,7 +222,7 @@
 
             <!-- Layer 1 Listen -->
                 <!-- Grid, das den Teilnehmer Explorer anzeigt-->
-            <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" >
+            <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
@@ -232,29 +232,38 @@
                 </Grid.RenderTransform>
 
                 <Border x:Name="borderTeilnehmerliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
-                    <Grid x:Name="teilnehmerGrid" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <DockPanel>                        
+                        <Grid x:Name="teilnehmerGrid" DockPanel.Dock="Top" >
+                        
 
-                        <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray"/>
-                        <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
-                            SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                            HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                            RowStyle="{StaticResource friendDataGridRowStyle}"  DockPanel.Dock="Right"
-                            Grid.Row="1">
+                                <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray"/>
 
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
-                                <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Persönlicher Level" Binding="{Binding Koennenstufe.Benennung}"/>
-                                <DataGridTextColumn Header="Skigruppe" Width="*" Binding="{Binding Skigruppe.Gruppenname}"/>
-                            </DataGrid.Columns>
+                                <ToggleButton x:Name="btnPinIt" Margin="0,0,5,0"
+                                HorizontalAlignment="Right" Width="25" 
+                                Height="25" Checked="HandlePinning"
+                                Unchecked="HandleUnpinning" IsChecked="False">
 
-                        </DataGrid>
-                    </Grid>
+                                    <Image x:Name="pinImage" Source="Images\icons8-unpin-2-48.png"/>
+                                </ToggleButton>
+                            </Grid>
+
+                            <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
+                                SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                                HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                                RowStyle="{StaticResource friendDataGridRowStyle}"  >
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
+                                    <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Persönlicher Level" Binding="{Binding Koennenstufe.Benennung}"/>
+                                    <DataGridTextColumn Header="Skigruppe" Width="*" Binding="{Binding Skigruppe.Gruppenname}"/>
+                                </DataGrid.Columns>
+
+                            </DataGrid>
+
+                    </DockPanel>
                 </Border>
+                <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
             </Grid>
 
             <!-- Grid, das den Skilehrer Explorer anzeigt-->     

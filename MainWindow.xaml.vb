@@ -21,7 +21,7 @@ Class MainWindow
 
 #End Region
 
-#Region "Events"
+#Region "Constructor"
 
     Public Sub New()
 
@@ -44,6 +44,9 @@ Class MainWindow
 
     End Sub
 
+#End Region
+
+#Region "Window-Events"
 
     Private Sub HandleMainWindowLoaded(sender As Object, e As RoutedEventArgs)
 
@@ -146,6 +149,139 @@ Class MainWindow
         End Try
 
     End Sub
+
+    Private Sub LoadLastFriendList()
+        ' Die letze Liste aus dem IsolatedStorage holen.
+        Try
+            Dim x = ""
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastFriendList", FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        x = reader.ReadLine
+                    End Using
+                End Using
+
+            End Using
+            If File.Exists(x) Then Me.OpenSkireiseList(x)
+        Catch ex As FileNotFoundException
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Methoden zum Pinnen und Ein-/Ausblenden des Freunde-Explorers"
+
+    Private Sub HandlePinning(sender As Object, e As RoutedEventArgs)
+
+        ' Pinnen
+
+        ' 1. ColumnDefinition zum layer0-Grid hinzufügen
+        layer0Teilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
+
+        ' 2. Button "Freunde Explorer" ausblenden
+        btnShowTeilnehmerExplorer.Visibility = Visibility.Collapsed
+
+        ' 3. pinImage in layer1-Grid auf pinned setzen
+        pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
+
+    End Sub
+
+    Private Sub HandleUnpinning(sender As Object, e As RoutedEventArgs)
+        ' Unpinnen
+
+        ' 1. ColumnDefinition von layer0-Grid entfernen
+        layer0Teilnehmerdetails.ColumnDefinitions.Remove(_dummySpalteFuerLayer0)
+
+        ' 2. Button "Freunde Explorer" einblenden
+        btnShowTeilnehmerExplorer.Visibility = Visibility.Visible
+
+        ' 3. pinImage in layer1-Grid auf unpinned setzen
+        pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
+
+    End Sub
+
+
+    Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
+
+        ' layerDetails-Grid mit den Explorern einblenden
+        If (layer1Teilnehmerliste.Visibility <> Visibility.Visible) Then
+
+            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+            ' Explorer"-Spalte nach rechts versetzen
+            layer1TeilnehmerlisteTrans.X = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1-Grid sichtbar machen
+            layer1Teilnehmerliste.Visibility = Visibility.Visible
+
+            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+            ' hin zum Wert 0 animieren, Dauer 500 Millisek
+            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
+    End Sub
+
+    Private Sub HandleLayer0MouseEnter(sender As Object, e As RoutedEventArgs)
+
+        ' layer1-Grid ausblenden
+        If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
+
+            ' 1. Zielwert für die Animation setzen
+            Dim [to] = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
+
+            ' 2. layer1Trans.X zum ermittelten Zielwert animieren
+            ' und EventHandler für Completed-Event installieren
+            Dim ani = New DoubleAnimation([to], New Duration(TimeSpan.FromMilliseconds(500)))
+            AddHandler ani.Completed, New EventHandler(AddressOf ani_Completed)
+            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+        End If
+
+    End Sub
+
+    Sub ani_Completed(sender As Object, e As EventArgs)
+        ' 3. layer1-Grid ausblenden
+        layer1Teilnehmerliste.Visibility = Visibility.Collapsed
+    End Sub
+
+    'Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As RoutedEventArgs)
+    '    ' layerDetails-Grid mit den Explorern einblenden
+    '    If (layer1Skilehrerliste.Visibility <> Visibility.Visible) Then
+
+    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+    '        ' Explorer"-Spalte nach rechts versetzen
+    '        layer1SkilehrerlisteTrans.X = layer1Skilehrerliste.ColumnDefinitions(1).Width.Value
+
+    '        ' 2. layer1-Grid sichtbar machen
+    '        layer1Skilehrerliste.Visibility = Visibility.Visible
+
+    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
+    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+    '        layer1SkilehrerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+    '    End If
+    'End Sub
+
+    'Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As MouseEventArgs)
+    '    ' layerDetails-Grid mit den Explorern einblenden
+    '    If (layer1Skigruppenliste.Visibility <> Visibility.Visible) Then
+
+    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
+    '        ' Explorer"-Spalte nach rechts versetzen
+    '        layer1SkigruppenlisteTrans.X = layer1Skigruppenliste.ColumnDefinitions(1).Width.Value
+
+    '        ' 2. layer1-Grid sichtbar machen
+    '        layer1Skigruppenliste.Visibility = Visibility.Visible
+
+    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
+    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
+    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
+    '        layer1SkigruppenlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+
+    '    End If
+    'End Sub
+
 #End Region
 
 #Region "EventHandler der CommandBindings"
@@ -234,6 +370,34 @@ Class MainWindow
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Close()
+    End Sub
+
+#End Region
+
+#Region "Sonstige Eventhandler"
+
+    Private Sub HandleLayerTeilnehmerMouseEnter(sender As Object, e As RoutedEventArgs)
+
+    End Sub
+
+    Sub _teilnehmerListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
+        RefreshTaskBarItemOverlay()
+    End Sub
+
+    Private Sub RefreshTaskBarItemOverlay()
+        Dim currentTeilnehmer = DirectCast(_teilnehmerListCollectionView.CurrentItem, Teilnehmer)
+
+        'Todo: Aufbereiten für die Skilehrer Bilder
+
+        'If currentTeilnehmer IsNot Nothing AndAlso currentTeilnehmer.Image IsNot Nothing Then
+        '    Dim bi As New BitmapImage
+        '    bi.BeginInit()
+        '    bi.StreamSource = New MemoryStream(currentFriend.Image)
+        '    bi.EndInit()
+        '    TaskbarItemInfo.Overlay = bi
+        'Else
+        '    TaskbarItemInfo.Overlay = Nothing
+        'End If
     End Sub
 
 #End Region
@@ -397,148 +561,7 @@ Class MainWindow
 
 #End Region
 
-#Region "Methoden zum Pinnen und Ein-/Ausblenden des Freunde-Explorers"
 
-    Private Sub HandlePinning(sender As Object, e As RoutedEventArgs)
-
-        ' Pinnen
-
-        ' 1. ColumnDefinition zum layer0-Grid hinzufügen
-        layer0Teilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
-
-        ' 2. Button "Freunde Explorer" ausblenden
-        btnShowTeilnehmerExplorer.Visibility = Visibility.Collapsed
-
-        ' 3. pinImage in layer1-Grid auf pinned setzen
-        pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
-
-    End Sub
-
-    Private Sub HandleUnpinning(sender As Object, e As RoutedEventArgs)
-        ' Unpinnen
-
-        ' 1. ColumnDefinition von layer0-Grid entfernen
-        layer0Teilnehmerdetails.ColumnDefinitions.Remove(_dummySpalteFuerLayer0)
-
-        ' 2. Button "Freunde Explorer" einblenden
-        btnShowTeilnehmerExplorer.Visibility = Visibility.Visible
-
-        ' 3. pinImage in layer1-Grid auf unpinned setzen
-        pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
-
-    End Sub
-
-
-    Private Sub HandleButtonTNExpMouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' layerDetails-Grid mit den Explorern einblenden
-        If (layer1Teilnehmerliste.Visibility <> Visibility.Visible) Then
-
-            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-            ' Explorer"-Spalte nach rechts versetzen
-            layer1TeilnehmerlisteTrans.X = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1-Grid sichtbar machen
-            layer1Teilnehmerliste.Visibility = Visibility.Visible
-
-            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-            ' hin zum Wert 0 animieren, Dauer 500 Millisek
-            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-    End Sub
-
-    Private Sub HandleLayer0MouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' layer1-Grid ausblenden
-        If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layer1Teilnehmerliste.Visibility = Visibility.Visible) Then
-
-            ' 1. Zielwert für die Animation setzen
-            Dim [to] = layer1Teilnehmerliste.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1Trans.X zum ermittelten Zielwert animieren
-            ' und EventHandler für Completed-Event installieren
-            Dim ani = New DoubleAnimation([to], New Duration(TimeSpan.FromMilliseconds(500)))
-            AddHandler ani.Completed, New EventHandler(AddressOf ani_Completed)
-            layer1TeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-
-    End Sub
-
-    Sub ani_Completed(sender As Object, e As EventArgs)
-        ' 3. layer1-Grid ausblenden
-        layer1Teilnehmerliste.Visibility = Visibility.Collapsed
-    End Sub
-
-    'Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As RoutedEventArgs)
-    '    ' layerDetails-Grid mit den Explorern einblenden
-    '    If (layer1Skilehrerliste.Visibility <> Visibility.Visible) Then
-
-    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-    '        ' Explorer"-Spalte nach rechts versetzen
-    '        layer1SkilehrerlisteTrans.X = layer1Skilehrerliste.ColumnDefinitions(1).Width.Value
-
-    '        ' 2. layer1-Grid sichtbar machen
-    '        layer1Skilehrerliste.Visibility = Visibility.Visible
-
-    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
-    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-    '        layer1SkilehrerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-    '    End If
-    'End Sub
-
-    'Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As MouseEventArgs)
-    '    ' layerDetails-Grid mit den Explorern einblenden
-    '    If (layer1Skigruppenliste.Visibility <> Visibility.Visible) Then
-
-    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-    '        ' Explorer"-Spalte nach rechts versetzen
-    '        layer1SkigruppenlisteTrans.X = layer1Skigruppenliste.ColumnDefinitions(1).Width.Value
-
-    '        ' 2. layer1-Grid sichtbar machen
-    '        layer1Skigruppenliste.Visibility = Visibility.Visible
-
-    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
-    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-    '        layer1SkigruppenlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-    '    End If
-    'End Sub
-
-#End Region
-
-#Region "weitere Eventhandler"
-
-    Private Sub HandleLayerTeilnehmerMouseEnter(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
-    Sub _teilnehmerListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
-        RefreshTaskBarItemOverlay()
-    End Sub
-
-    Private Sub RefreshTaskBarItemOverlay()
-        Dim currentTeilnehmer = DirectCast(_teilnehmerListCollectionView.CurrentItem, Teilnehmer)
-
-        'Todo: Aufbereiten für die Skilehrer Bilder
-
-        'If currentTeilnehmer IsNot Nothing AndAlso currentTeilnehmer.Image IsNot Nothing Then
-        '    Dim bi As New BitmapImage
-        '    bi.BeginInit()
-        '    bi.StreamSource = New MemoryStream(currentFriend.Image)
-        '    bi.EndInit()
-        '    TaskbarItemInfo.Overlay = bi
-        'Else
-        '    TaskbarItemInfo.Overlay = Nothing
-        'End If
-    End Sub
-
-#End Region
 
     Private Sub SetView(TeilnehmerListe As TeilnehmerCollection)
         _teilnehmerList = TeilnehmerListe

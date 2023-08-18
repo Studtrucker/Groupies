@@ -225,7 +225,7 @@
             <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
+                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="330"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="layer1TeilnehmerlisteTrans"/>

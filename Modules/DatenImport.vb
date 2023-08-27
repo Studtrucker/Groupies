@@ -37,15 +37,37 @@ Public Module DatenImport
         Dim Teilnehmerliste As New TeilnehmerCollection
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
         Do Until CurrentRow > RowCount
+            Dim Koennenstufe = FindKoennenstufe(Excelsheet.UsedRange(CurrentRow, 3).Value)
+            Dim Skigruppe = FindSkigruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
-            .Name = Excelsheet.UsedRange(CurrentRow, 2).Value}
+            .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
+            .Koennenstufe = Koennenstufe,
+            .Skigruppe = Skigruppe}
             Teilnehmerliste.Add(Teilnehmer)
             CurrentRow += 1
         Loop
         Return Teilnehmerliste
     End Function
 
+    Private Function FindKoennenstufe(Benennung As String) As Koennenstufe
+        Dim Koennenstufenliste As New KoennenstufenCollection
+        Dim Koennenstufe = Koennenstufenliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
+        If Koennenstufe Is Nothing Then
+            Koennenstufe = New Koennenstufe With {.Benennung = Benennung}
+        End If
+
+        Return Koennenstufe
+    End Function
+
+    Private Function FindSkigruppe(Gruppenname As String) As Skigruppe
+        Dim Skigruppenliste As New SkigruppenCollection
+        Dim Skigruppe = Skigruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
+        If Skigruppe Is Nothing Then
+            Skigruppe = New Skigruppe With {.Gruppenname = Gruppenname}
+        End If
+        Return Skigruppe
+    End Function
 
     Private Function CheckExcelFileFormat(Excelfile As Excel.Workbook) As Boolean
 
@@ -55,15 +77,18 @@ Public Module DatenImport
         _xlSheet = Excelfile.ActiveSheet
 
         If _xlSheet IsNot Nothing Then
-            XlValid = _xlSheet.UsedRange.Columns.Count = 2
+            XlValid = _xlSheet.UsedRange.Columns.Count = 4
 
             ' Check column caption
             XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
             XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
+            XlValid = XlValid And _xlSheet.Range("C1").Value = "Level"
+            XlValid = XlValid And _xlSheet.Range("D1").Value = "Skigruppe"
 
             ' Check first data row
             XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
-            XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
+            'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
+            'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("C2").Value)
 
         End If
 

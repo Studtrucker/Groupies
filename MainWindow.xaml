@@ -137,10 +137,10 @@
                             <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
                             <Label Grid.Column="0" Grid.Row="2" Content="Könnenstufe" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
                             <Label Grid.Column="0" Grid.Row="3" Content="Skigruppe" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
-                            <TextBox Grid.Column="2" Grid.Row="0" Margin="2,2,2,2"/>
-                            <TextBox Grid.Column="2" Grid.Row="1"  Margin="2,2,2,2"/>
-                            <TextBox Grid.Column="2" Grid.Row="2"  Margin="2,2,2,2"/>
-                            <TextBox Grid.Column="2" Grid.Row="3"  Margin="2,2,2,2"/>
+                            <TextBox Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" Margin="2,2,2,2"/>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1"  Margin="2,2,2,2"/>
+                            <TextBox Text="{Binding Koennenstufe.Benennung, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2"  Margin="2,2,2,2"/>
+                            <TextBox Text="{Binding Skigruppe.Gruppenname, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="3"  Margin="2,2,2,2"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -222,7 +222,7 @@
 
             <!-- Layer 1 Listen -->
                 <!-- Grid, das den Teilnehmer Explorer anzeigt-->
-            <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" Margin="2">
+            <Grid x:Name="layer1Teilnehmerliste" Visibility="Collapsed" Margin="2"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition SharedSizeGroup="pinSpalte" Width="330"/>
@@ -247,7 +247,7 @@
                                 </ToggleButton>
                             </Grid>
 
-                            <DataGrid  x:Name="teilnehmerDataGrid"  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" 
+                        <DataGrid  x:Name="teilnehmerDataGrid"  IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}"
                                 SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                 HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                 RowStyle="{StaticResource friendDataGridRowStyle}"  >

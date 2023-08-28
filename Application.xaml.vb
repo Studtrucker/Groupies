@@ -9,9 +9,7 @@ Class Application
 
         Dim wnd As New MainWindow
         BasicObjects.Skischule.initialisiereFixeListen()
-        Debug.Print(BasicObjects.Skischule.Teilnehmerliste.Count)
-        Debug.Print(BasicObjects.Skischule.Koennenstufenliste.Count)
-        Debug.Print(BasicObjects.Skischule.Skikursgruppenliste.Count)
+
 
         'BasicObjects.erstelleKoennenstufen()
     End Sub

@@ -14,7 +14,7 @@ Class MainWindow
 
 #Region "Fields"
     Private _dummySpalteFuerLayer0 As ColumnDefinition
-    Private _teilnehmerList As TeilnehmerCollection
+    'Private _teilnehmerList As TeilnehmerCollection
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
@@ -288,7 +288,7 @@ Class MainWindow
 
     Private Sub HandleListNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        If _teilnehmerList IsNot Nothing Then
+        If BasicObjects.Skischule.Teilnehmerliste IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Liste noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -297,7 +297,7 @@ Class MainWindow
             End If
         End If
 
-        _teilnehmerList = Nothing
+        Teilnehmerliste = Nothing
 
         Title = "Skikurs"
         SetView(New TeilnehmerCollection)
@@ -342,11 +342,11 @@ Class MainWindow
     End Sub
 
     Private Sub HandleImportTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _teilnehmerList IsNot Nothing
+        e.CanExecute = Teilnehmerliste IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _teilnehmerList IsNot Nothing
+        e.CanExecute = Teilnehmerliste IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -429,7 +429,7 @@ Class MainWindow
             End Using
         End Using
 
-        _teilnehmerList = Nothing
+        Teilnehmerliste = Nothing
 
         _skikursListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -444,7 +444,7 @@ Class MainWindow
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, _teilnehmerList)
+                serializer.Serialize(zipStream, Teilnehmerliste)
             End Using
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
@@ -457,7 +457,7 @@ Class MainWindow
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, _teilnehmerList)
+            serializer.Serialize(fs, Teilnehmerliste)
         End Using
 
         Dim serializerLevels = New XmlSerializer(GetType(KoennenstufenCollection))
@@ -563,9 +563,9 @@ Class MainWindow
 
 
 
-    Private Sub SetView(TeilnehmerListe As TeilnehmerCollection)
-        _teilnehmerList = TeilnehmerListe
-        _teilnehmerListCollectionView = New ListCollectionView(TeilnehmerListe)
+    Private Sub SetView(Teilnehmer_Liste As TeilnehmerCollection)
+        Teilnehmerliste = Teilnehmer_Liste
+        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmerliste)
         ' Hinweis AddHandler Seite 764
         AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _teilnehmerListCollectionView_CurrentChanged
         ' DataContext wird gesetzt Inhalt = CollectionView, diese kennt sein CurrentItem

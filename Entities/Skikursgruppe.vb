@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 
 Namespace Entities
-    Public Class Skigruppe
+    Public Class Skikursgruppe
         Implements INotifyPropertyChanged
 
         Private skigruppeIDFeld As Guid

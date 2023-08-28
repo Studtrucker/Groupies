@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.Win32
-Imports Skireisen.Entities
+Imports Skikurs.Entities
 Imports System.Reflection
 Imports System.ComponentModel
 Imports System.IO
@@ -7,7 +7,7 @@ Imports System.IO.Compression
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
-Imports Skireisen.BasicObjects
+Imports Skikurs.BasicObjects
 Imports System.Windows.Media.Animation
 
 Class MainWindow
@@ -16,7 +16,7 @@ Class MainWindow
     Private _dummySpalteFuerLayer0 As ColumnDefinition
     Private _teilnehmerList As TeilnehmerCollection
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _skireiseListFile As FileInfo
+    Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
 
 #End Region
@@ -67,8 +67,8 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
-        CommandBindings.Add(New CommandBinding(SkireisenBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkireisenBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkikursBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkikursBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -80,7 +80,7 @@ Class MainWindow
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
-            OpenSkireiseList(filename)
+            OpenSkikursList(filename)
         Else
             ' 5. JumpList in Windows Taskbar aktualisieren
             RefreshJumpListInWinTaskbar()
@@ -96,11 +96,11 @@ Class MainWindow
     Private Sub HandleMainwindowClosed(sender As Object, e As EventArgs)
 
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
-        If _skireiseListFile IsNot Nothing Then
+        If _skikursListFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("LastSkireisenList", System.IO.FileMode.OpenOrCreate, iso)
+                Using stream = New IsolatedStorageFileStream("LastSkikursList", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        writer.WriteLine(_skireiseListFile.FullName)
+                        writer.WriteLine(_skikursListFile.FullName)
                     End Using
                 End Using
             End Using
@@ -123,7 +123,7 @@ Class MainWindow
 
 #End Region
 
-#Region "Methoden zum Laden der meist genutzten Listen und der letzten Skireisen"
+#Region "Methoden zum Laden der meist genutzten Listen und der letzten Skikurse"
 
     Private Sub LoadmRUSortedListMenu()
         Try
@@ -162,7 +162,7 @@ Class MainWindow
                 End Using
 
             End Using
-            If File.Exists(x) Then Me.OpenSkireiseList(x)
+            If File.Exists(x) Then Me.OpenSkikursList(x)
         Catch ex As FileNotFoundException
         End Try
     End Sub
@@ -299,11 +299,11 @@ Class MainWindow
 
         _teilnehmerList = Nothing
 
-        Title = "Skireisen"
+        Title = "Skikurs"
         SetView(New TeilnehmerCollection)
-        If MessageBoxResult.Yes = MessageBox.Show("Neue Reise erstellt. Jetzt gleich die Bearbeitung beginnen?", "Achtung", MessageBoxButton.YesNo) Then
-            ' Todo: wie soll die Bearbeitung der neuen Skireise beginnen?
-            initializeStandardKoennenstufen()
+        If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Jetzt gleich einen Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
+
+            'initializeStandardKoennenstufen()
         End If
 
     End Sub
@@ -311,12 +311,12 @@ Class MainWindow
     Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
-            OpenSkireiseList(dlg.FileName)
+            OpenSkikursList(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenSkireiseList(TryCast(sender, MenuItem).Header.ToString())
+        OpenSkikursList(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
     Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -351,21 +351,21 @@ Class MainWindow
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If _skireiseListFile IsNot Nothing Then
-            dlg.FileName = _skireiseListFile.Name
+        If _skikursListFile IsNot Nothing Then
+            dlg.FileName = _skikursListFile.Name
         End If
 
         If dlg.ShowDialog = True Then
-            SaveSkireise(dlg.FileName)
-            _skireiseListFile = New FileInfo(dlg.FileName)
+            SaveSkikurs(dlg.FileName)
+            _skikursListFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleListSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If _skireiseListFile Is Nothing Then
+        If _skikursListFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkireise(_skireiseListFile.FullName)
+            SaveSkikurs(_skikursListFile.FullName)
         End If
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -404,8 +404,8 @@ Class MainWindow
 
 #Region "Helper-Methoden"
 
-    Private Sub OpenSkireiseList(fileName As String)
-        If _skireiseListFile IsNot Nothing AndAlso fileName.Equals(_skireiseListFile.FullName) Then
+    Private Sub OpenSkikursList(fileName As String)
+        If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
             MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
             Exit Sub
         End If
@@ -431,15 +431,15 @@ Class MainWindow
 
         _teilnehmerList = Nothing
 
-        _skireiseListFile = New FileInfo(fileName)
+        _skikursListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
         SetView(loadedFriendCollection)
-        Title = "Skireisen - " & fileName
+        Title = "Skikurse - " & fileName
 
     End Sub
 
 
-    Private Sub SaveSkireise_alt(fileName As String)
+    Private Sub SaveSkikurs_alt(fileName As String)
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
@@ -448,12 +448,12 @@ Class MainWindow
             End Using
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Skireise - " & fileName
+        Title = "Skikurse - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skireise gespeichert!")
+        MessageBox.Show("Skikurs gespeichert!")
     End Sub
 
-    Private Sub SaveSkireise(fileName As String)
+    Private Sub SaveSkikurs(fileName As String)
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
@@ -462,12 +462,12 @@ Class MainWindow
 
         Dim serializerLevels = New XmlSerializer(GetType(KoennenstufenCollection))
         Using fsLevels = New FileStream(fileName, FileMode.Append)
-            serializerLevels.Serialize(fsLevels, Koennenstufen)
+            serializerLevels.Serialize(fsLevels, Koennenstufenliste)
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Skireise - " & fileName
+        Title = "Skikurse - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skireise gespeichert!")
+        MessageBox.Show("Skikurs gespeichert!")
     End Sub
 
 
@@ -528,17 +528,17 @@ Class MainWindow
 
         Dim jumptask = New JumpTask With {
             .CustomCategory = "Release Notes",
-            .Title = "SkireiseReleaseNotes",
-            .Description = "Zeigt die ReleaseNotes zu Skireise an",
+            .Title = "SkikursReleaseNotes",
+            .Description = "Zeigt die ReleaseNotes zu Skikurse an",
             .ApplicationPath = "C:\Windows\notepad.exe",
             .IconResourcePath = "C:\Windows\notepad.exe",
             .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            .Arguments = "SkireiseReleaseNotes.txt"}
+            .Arguments = "SkikursReleaseNotes.txt"}
 
         jumplist.JumpItems.Add(jumptask)
 
         ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
-        ' unter Windows mit Skireise assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
+        ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
         For i = _mRUSortedList.Values.Count - 1 To 0 Step -1

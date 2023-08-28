@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
-        xmlns:local="clr-namespace:Skireisen"
+        xmlns:local="clr-namespace:Skikurs"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
-        Title="Skireisen" Height="450" Width="800"
+        Title="Skikurs" Height="450" Width="800"
         Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">
 
     <Window.Resources>
@@ -43,7 +43,7 @@
         <Menu Background="white" DockPanel.Dock="Top">
 
             <MenuItem  Header="_Datei" Background="white" Foreground="Black">
-                <MenuItem Header="_Neue Skireise" Command="ApplicationCommands.New">
+                <MenuItem Header="_Neuer Skikurs" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
@@ -66,7 +66,7 @@
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkireisenBefehle.ImportTeilnehmerliste}">
+                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkikursBefehle.ImportTeilnehmerliste}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/importieren-48.png"/>
                     </MenuItem.Icon>
@@ -77,13 +77,13 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Teilnehmer bearbeiten" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Teilnehmer bearbeiten" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
                 <Separator/>
-                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Gruppe bearbeiten" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkireisenBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Gruppe bearbeiten" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkikursBefehle.ErstelleGruppen}"/>
             </MenuItem>
 
             <MenuItem  Header="Extras" Background="white" Foreground="Black">

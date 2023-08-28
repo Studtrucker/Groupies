@@ -2,7 +2,7 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
-Imports Skireisen.Entities
+Imports Skikurs.Entities
 
 Public Module DatenImport
     Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
@@ -60,11 +60,11 @@ Public Module DatenImport
         Return Koennenstufe
     End Function
 
-    Private Function FindSkigruppe(Gruppenname As String) As Skigruppe
-        Dim Skigruppenliste As New SkigruppenCollection
+    Private Function FindSkigruppe(Gruppenname As String) As Skikursgruppe
+        Dim Skigruppenliste As New SkikursgruppenCollection
         Dim Skigruppe = Skigruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
         If Skigruppe Is Nothing Then
-            Skigruppe = New Skigruppe With {.Gruppenname = Gruppenname}
+            Skigruppe = New Skikursgruppe With {.Gruppenname = Gruppenname}
         End If
         Return Skigruppe
     End Function

@@ -1,8 +1,8 @@
-﻿Imports Skireisen.Entities
+﻿Imports Skikurs.Entities
 
 Namespace BasicObjects
 
-    Module Skischueler
+    Module Skischule
 
 
         Private _HatCustomKoennenstufen As Boolean
@@ -12,7 +12,41 @@ Namespace BasicObjects
             End Get
         End Property
 
-        Public Property Koennenstufen As KoennenstufenCollection
+        'Private _teilnehmerListe As TeilnehmerCollection
+        Public Property Teilnehmerliste() As TeilnehmerCollection
+        '    Get
+        '        Return _teilnehmerListe
+        '    End Get
+        '    Set(ByVal value As TeilnehmerCollection)
+        '        _teilnehmerListe = value
+        '    End Set
+        'End Property
+
+        'Private _skikursgruppenliste As SkikursgruppenCollection
+        Public Property Skikursgruppenliste() As SkikursgruppenCollection
+        '    Get
+        '        Return _skikursgruppenliste
+        '    End Get
+        '    Set(ByVal value As SkikursgruppenCollection)
+        '        _skikursgruppenliste = value
+        '    End Set
+        'End Property
+
+        'Private _Koennenstufenliste As KoennenstufenCollection
+        Public Property Koennenstufenliste() As KoennenstufenCollection
+        '    Get
+        '        Return _Koennenstufenliste
+        '    End Get
+        '    Set(ByVal value As KoennenstufenCollection)
+        '        _Koennenstufenliste = value
+        '    End Set
+        'End Property
+
+        Public Sub initialisiereFixeListen()
+            _skikursgruppenliste = New SkikursgruppenCollection
+            _teilnehmerListe = New TeilnehmerCollection
+            _Koennenstufenliste = New KoennenstufenCollection
+        End Sub
 
         Public Sub erstelleKoennenstufen()
 
@@ -41,7 +75,7 @@ Namespace BasicObjects
                 .Beschreibung = "Jede Piste, jedes Gelände sowie alle Arten Schnee werden sicher gemeistert",
                 .KoennenstufeID = Guid.NewGuid}
 
-            _Koennenstufen = New KoennenstufenCollection From {Neuling, Anfaenger, Fortgeschritten, Koenner, Topfahrer}
+            Koennenstufenliste = New KoennenstufenCollection From {Neuling, Anfaenger, Fortgeschritten, Koenner, Topfahrer}
 
         End Sub
 

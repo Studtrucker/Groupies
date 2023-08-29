@@ -14,7 +14,6 @@ Class MainWindow
 
 #Region "Fields"
     Private _dummySpalteFuerLayer0 As ColumnDefinition
-    'Private _teilnehmerList As TeilnehmerCollection
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
@@ -80,7 +79,7 @@ Class MainWindow
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
-            OpenSkikursList(filename)
+            OpenZIPSkikursList(filename)
         Else
             ' 5. JumpList in Windows Taskbar aktualisieren
             RefreshJumpListInWinTaskbar()
@@ -162,7 +161,7 @@ Class MainWindow
                 End Using
 
             End Using
-            If File.Exists(x) Then Me.OpenSkikursList(x)
+            If File.Exists(x) Then Me.OpenZIPSkikursList(x)
         Catch ex As FileNotFoundException
         End Try
     End Sub
@@ -311,12 +310,12 @@ Class MainWindow
     Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
-            OpenSkikursList(dlg.FileName)
+            OpenXMLSkikursList(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenSkikursList(TryCast(sender, MenuItem).Header.ToString())
+        OpenZIPSkikursList(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
     Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -356,7 +355,7 @@ Class MainWindow
         End If
 
         If dlg.ShowDialog = True Then
-            SaveSkikurs(dlg.FileName)
+            SaveXMLSkikurs(dlg.FileName)
             _skikursListFile = New FileInfo(dlg.FileName)
         End If
     End Sub
@@ -365,7 +364,7 @@ Class MainWindow
         If _skikursListFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkikurs(_skikursListFile.FullName)
+            SaveXMLSkikurs(_skikursListFile.FullName)
         End If
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -404,7 +403,7 @@ Class MainWindow
 
 #Region "Helper-Methoden"
 
-    Private Sub OpenSkikursList(fileName As String)
+    Private Sub OpenZIPSkikursList(fileName As String)
         If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
             MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
             Exit Sub
@@ -438,8 +437,7 @@ Class MainWindow
 
     End Sub
 
-
-    Private Sub SaveSkikurs_alt(fileName As String)
+    Private Sub SaveZIPSkikurs(fileName As String)
         ' 1. Freundeliste serialisieren und gezippt abspeichern
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
@@ -453,16 +451,81 @@ Class MainWindow
         MessageBox.Show("Skikurs gespeichert!")
     End Sub
 
-    Private Sub SaveSkikurs(fileName As String)
-        ' 1. Freundeliste serialisieren und gezippt abspeichern
-        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
-        Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, Teilnehmerliste)
+    Private Sub OpenXMLSkikursList(fileName As String)
+        If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
+            MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
+            Exit Sub
+        End If
+
+        If Not File.Exists(fileName) Then
+            MessageBox.Show("Die Datei existiert nicht")
+            Exit Sub
+        End If
+
+        ' Datei enzippen und deserialisieren
+        ' Teilnehmer
+        Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
+        Dim loadedTeilnehmerCollection As TeilnehmerCollection = Nothing
+        Using fsTL = New FileStream(fileName, FileMode.Open)
+            Try
+                'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
+                loadedTeilnehmerCollection = TryCast(serializerTL.Deserialize(fsTL), TeilnehmerCollection)
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Exit Sub
+            End Try
         End Using
 
-        Dim serializerLevels = New XmlSerializer(GetType(KoennenstufenCollection))
-        Using fsLevels = New FileStream(fileName, FileMode.Append)
-            serializerLevels.Serialize(fsLevels, Koennenstufenliste)
+        ' Koennenstufenliste
+        Dim serializerKSL = New XmlSerializer(GetType(KoennenstufenCollection))
+        Dim loadedKoennenstufenCollection As KoennenstufenCollection = Nothing
+        Using fsKSL = New FileStream(fileName, FileMode.Open)
+            Try
+                'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
+                loadedKoennenstufenCollection = TryCast(serializerKSL.Deserialize(fsKSL), KoennenstufenCollection)
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Exit Sub
+            End Try
+        End Using
+
+        ' Skikursgruppenliste
+        Dim serializerSGL = New XmlSerializer(GetType(SkikursgruppenCollection))
+        Dim loadedSkikursgruppenCollection As SkikursgruppenCollection = Nothing
+        Using fsSGL = New FileStream(fileName, FileMode.Open)
+            Try
+                'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
+                loadedSkikursgruppenCollection = TryCast(serializerSGL.Deserialize(fsSGL), SkikursgruppenCollection)
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Exit Sub
+            End Try
+        End Using
+
+        Teilnehmerliste = Nothing
+
+        _skikursListFile = New FileInfo(fileName)
+        QueueMostRecentFilename(fileName)
+        SetView(loadedTeilnehmerCollection)
+        Title = "Skikurse - " & fileName
+
+    End Sub
+
+    Private Sub SaveXMLSkikurs(fileName As String)
+        ' 1.1. Teilnehmerliste serialisieren abspeichern
+        Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
+        Using fsTL = New FileStream(fileName, FileMode.Create)
+            serializerTL.Serialize(fsTL, Teilnehmerliste)
+        End Using
+        ' 1.2. Koennenstufenliste serialisieren abspeichern
+        Dim serializerKSL = New XmlSerializer(GetType(KoennenstufenCollection))
+        Using fsKSL = New FileStream(fileName, FileMode.Append)
+            serializerKSL.Serialize(fsKSL, Koennenstufenliste)
+        End Using
+        ' 1.3. Skikursgruppenliste serialisieren abspeichern
+        Dim serializerSGL = New XmlSerializer(GetType(SkikursgruppenCollection))
+        Using fsSGL = New FileStream(fileName, FileMode.Append)
+            serializerSGL.Serialize(fsSGL, Skikursgruppenliste)
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
         Title = "Skikurse - " & fileName

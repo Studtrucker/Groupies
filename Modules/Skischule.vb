@@ -4,43 +4,21 @@ Namespace BasicObjects
 
     Module Skischule
 
+#Region "Fields"
 
         Private _HatCustomKoennenstufen As Boolean
+        Public Property Teilnehmerliste() As TeilnehmerCollection
+        Public Property Skikursgruppenliste() As SkikursgruppenCollection
+        Public Property Koennenstufenliste() As KoennenstufenCollection
+
+#End Region
+
+
         Public ReadOnly Property HatCustomKoennenstufen() As Boolean
             Get
                 Return _HatCustomKoennenstufen
             End Get
         End Property
-
-        'Private _teilnehmerListe As TeilnehmerCollection
-        Public Property Teilnehmerliste() As TeilnehmerCollection
-        '    Get
-        '        Return _teilnehmerListe
-        '    End Get
-        '    Set(ByVal value As TeilnehmerCollection)
-        '        _teilnehmerListe = value
-        '    End Set
-        'End Property
-
-        'Private _skikursgruppenliste As SkikursgruppenCollection
-        Public Property Skikursgruppenliste() As SkikursgruppenCollection
-        '    Get
-        '        Return _skikursgruppenliste
-        '    End Get
-        '    Set(ByVal value As SkikursgruppenCollection)
-        '        _skikursgruppenliste = value
-        '    End Set
-        'End Property
-
-        'Private _Koennenstufenliste As KoennenstufenCollection
-        Public Property Koennenstufenliste() As KoennenstufenCollection
-        '    Get
-        '        Return _Koennenstufenliste
-        '    End Get
-        '    Set(ByVal value As KoennenstufenCollection)
-        '        _Koennenstufenliste = value
-        '    End Set
-        'End Property
 
         Public Sub initialisiereFixeListen()
             _skikursgruppenliste = New SkikursgruppenCollection

@@ -51,22 +51,23 @@ Public Module DatenImport
     End Function
 
     Private Function FindKoennenstufe(Benennung As String) As Koennenstufe
-        Dim Koennenstufenliste As New KoennenstufenCollection
-        Dim Koennenstufe = Koennenstufenliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
+
+        Dim Koennenstufe = BasicObjects.Skischule.Koennenstufenliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
         If Koennenstufe Is Nothing Then
             Koennenstufe = New Koennenstufe With {.Benennung = Benennung}
+            BasicObjects.Skischule.Koennenstufenliste.Add(Koennenstufe)
         End If
 
         Return Koennenstufe
     End Function
 
     Private Function FindSkigruppe(Gruppenname As String) As Skikursgruppe
-        Dim Skigruppenliste As New SkikursgruppenCollection
-        Dim Skigruppe = Skigruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
-        If Skigruppe Is Nothing Then
-            Skigruppe = New Skikursgruppe With {.Gruppenname = Gruppenname}
+        Dim Skikursgruppe = BasicObjects.Skischule.Skikursgruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
+        If Skikursgruppe Is Nothing Then
+            Skikursgruppe = New Skikursgruppe With {.Gruppenname = Gruppenname}
+            BasicObjects.Skischule.Skikursgruppenliste.Add(Skikursgruppe)
         End If
-        Return Skigruppe
+        Return Skikursgruppe
     End Function
 
     Private Function CheckExcelFileFormat(Excelfile As Excel.Workbook) As Boolean

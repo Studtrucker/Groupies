@@ -48,18 +48,18 @@
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skireise ö_ffnen" Command="ApplicationCommands.Open">
+                <MenuItem Header="Skikurs ö_ffnen" Command="ApplicationCommands.Open">
                     <MenuItem.Icon>
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Skireise _speichern" Command="ApplicationCommands.Save">
+                <MenuItem Header="Skikurs _speichern" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skireise speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <MenuItem Header="Skikurs speichern _unter..." Command="ApplicationCommands.SaveAs"/>
                 <Separator/>
                 <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
                     <MenuItem.Icon>

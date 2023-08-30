@@ -12,9 +12,12 @@ Module TestStreamreader
             ' Read the stream as a string and write the string to the console.
 
             Using sr As New StreamReader("TestFile.txt")
+                ' Todo: Asynchrones Lesen
+                ' https://learn.microsoft.com/de-de/dotnet/standard/io/how-to-read-text-from-a-file
                 'ResultBlock.Text = Await sr.ReadToEndAsync()
 
-                ' Todo: https://learn.microsoft.com/de-de/dotnet/api/system.xml.serialization.xmlserializer?view=netframework-4.7.2&f1url=%3FappId%3DDev16IDEF1%26l%3DDE-DE%26k%3Dk(System.Xml.Serialization.XmlSerializer)%3Bk(TargetFrameworkMoniker-.NETFramework%2CVersion%253Dv4.7.2)%3Bk(DevLang-VB)%26rd%3Dtrue
+                ' Todo: XML Serializer verstehen
+                ' https://learn.microsoft.com/de-de/dotnet/api/system.xml.serialization.xmlserializer?view=netframework-4.7.2&f1url=%3FappId%3DDev16IDEF1%26l%3DDE-DE%26k%3Dk(System.Xml.Serialization.XmlSerializer)%3Bk(TargetFrameworkMoniker-.NETFramework%2CVersion%253Dv4.7.2)%3Bk(DevLang-VB)%26rd%3Dtrue
 
                 Dim loadedTeilnehmerCollection = TryCast(serializerTL.Deserialize(sr), TeilnehmerCollection)
                 Console.WriteLine(sr.ReadToEnd())

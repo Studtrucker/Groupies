@@ -43,7 +43,7 @@ Public Module DatenImport
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
             .PersoenlichesLevel = Koennenstufe,
-            .Skigruppe = Skigruppe}
+            .Skikursgruppe = Skigruppe}
             Teilnehmerliste.Add(Teilnehmer)
             CurrentRow += 1
         Loop

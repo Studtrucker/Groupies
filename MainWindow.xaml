@@ -118,13 +118,13 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        
                         <TextBlock Grid.Row="0" Margin="2" FontSize="12" Foreground="DarkGray" Text="Selektierter Teilnehmer"/>
 
                         <!-- Detailangaben -->
                         <Grid Grid.Row="1" Margin="2" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="45.327"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="250"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -133,14 +133,14 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Content="Vorname" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
-                            <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
-                            <Label Grid.Column="0" Grid.Row="2" Content="Könnenstufe" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
-                            <Label Grid.Column="0" Grid.Row="3" Content="Skigruppe" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
-                            <TextBox Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" Margin="2,2,2,2"/>
-                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1"  Margin="2,2,2,2"/>
-                            <TextBox Text="{Binding Koennenstufe.Benennung, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2"  Margin="2,2,2,2"/>
-                            <TextBox Text="{Binding Skigruppe.Gruppenname, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="3"  Margin="2,2,2,2"/>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Vorname" Margin="2" />
+                            <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2" />
+                            <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" Margin="2" />
+                            <Label Grid.Column="0" Grid.Row="3" Content="Skikursgruppe"  Margin="2" />
+                            <TextBox  Grid.Column="1" Grid.Row="0" Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" Margin="2,2,2,2"/>
+                            <TextBox  Grid.Column="1" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="2,2,2,2"/>
+                            <TextBox  Grid.Column="1" Grid.Row="2" Text="{Binding PersoenlichesLevel.Benennung, UpdateSourceTrigger=PropertyChanged}"   Margin="2,2,2,2"/>
+                            <TextBox  Grid.Column="1" Grid.Row="3" Text="{Binding Skikursgruppe.Gruppenname, UpdateSourceTrigger=PropertyChanged}"   Margin="2,2,2,2"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -255,8 +255,8 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                                     <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
-                                    <DataGridTextColumn Header="Persönlicher Level" Binding="{Binding Koennenstufe.Benennung}"/>
-                                    <DataGridTextColumn Header="Skigruppe" Width="*" Binding="{Binding Skigruppe.Gruppenname}"/>
+                                <DataGridTextColumn Header="Persönliches Level" Binding="{Binding PersoenlichesLevel.Benennung}"/>
+                                    <DataGridTextColumn Header="Skikursgruppe" Width="*" Binding="{Binding Skikursgruppe.Gruppenname}"/>
                                 </DataGrid.Columns>
 
                             </DataGrid>

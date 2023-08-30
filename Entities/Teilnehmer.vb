@@ -8,13 +8,13 @@ Namespace Entities
         Private _name As String
         Private _vorname As String
         Private _persoenlichesLevel As Entities.Level
-        Private _skigruppe As Entities.Skikursgruppe
+        Private _skikursgruppe As Entities.Skikursgruppe
         Private teilnehmerIDFeld As Guid
 
         Public Sub New()
             teilnehmerIDFeld = Guid.NewGuid()
             _persoenlichesLevel = New Entities.Level
-            _skigruppe = New Entities.Skikursgruppe
+            _skikursgruppe = New Entities.Skikursgruppe
         End Sub
 
         Public Property TeilnehmerID As Guid
@@ -56,13 +56,13 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Skigruppe As Entities.Skikursgruppe
+        Public Property Skikursgruppe As Entities.Skikursgruppe
             Get
-                Return _skigruppe
+                Return _skikursgruppe
             End Get
             Set(ByVal value As Entities.Skikursgruppe)
-                _skigruppe = value
-                Changed("Skigruppe")
+                _skikursgruppe = value
+                Changed("Skikursgruppe")
             End Set
         End Property
 

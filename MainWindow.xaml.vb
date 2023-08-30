@@ -481,12 +481,12 @@ Class MainWindow
         End Using
 
         ' Koennenstufenliste
-        Dim serializerKSL = New XmlSerializer(GetType(KoennenstufenCollection))
-        Dim loadedKoennenstufenCollection As KoennenstufenCollection = Nothing
+        Dim serializerKSL = New XmlSerializer(GetType(LevelsCollection))
+        Dim loadedKoennenstufenCollection As LevelsCollection = Nothing
         Using fsKSL = New FileStream(fileName, FileMode.Open)
             Try
                 'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
-                loadedKoennenstufenCollection = TryCast(serializerKSL.Deserialize(fsKSL), KoennenstufenCollection)
+                loadedKoennenstufenCollection = TryCast(serializerKSL.Deserialize(fsKSL), LevelsCollection)
             Catch ex As InvalidDataException
                 MessageBox.Show("Datei ungültig: " & ex.Message)
                 Exit Sub
@@ -524,7 +524,7 @@ Class MainWindow
             serializerTL.Serialize(fsTL, Teilnehmerliste)
         End Using
         ' 1.2. Koennenstufenliste serialisieren abspeichern
-        Dim serializerKSL = New XmlSerializer(GetType(KoennenstufenCollection))
+        Dim serializerKSL = New XmlSerializer(GetType(LevelsCollection))
         Using fsKSL = New FileStream(fileName, FileMode.Append)
             serializerKSL.Serialize(fsKSL, Koennenstufenliste)
         End Using

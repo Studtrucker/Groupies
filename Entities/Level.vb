@@ -2,24 +2,23 @@
 
 Namespace Entities
 
-    Public Class Koennenstufe
+    Public Class Level
         Implements INotifyPropertyChanged
 
-        Private koennenstufeIDFeld As Guid
+        Private levelIDFeld As Guid
         Private _benennung As String
         Private _beschreibung As String
-        'Private _angezeigteBenennung As String
 
         Public Sub New()
-            koennenstufeIDFeld = Guid.NewGuid()
+            levelIDFeld = Guid.NewGuid()
         End Sub
 
-        Public Property KoennenstufeID As Guid
+        Public Property LevelID As Guid
             Get
-                Return koennenstufeIDFeld
+                Return levelIDFeld
             End Get
             Set(value As Guid)
-                koennenstufeIDFeld = value
+                levelIDFeld = value
             End Set
         End Property
 
@@ -42,16 +41,6 @@ Namespace Entities
                 Changed("Beschreibung")
             End Set
         End Property
-
-        'Public Property AngezeigteBenennung As String
-        '    Get
-        '        Return _angezeigteBenennung
-        '    End Get
-        '    Set(value As String)
-        '        _angezeigteBenennung = value
-        '        Changed("AngezeigteBenennung")
-        '    End Set
-        'End Property
 
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent

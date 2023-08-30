@@ -4,24 +4,22 @@ Namespace Entities
     Public Class Skikursgruppe
         Implements INotifyPropertyChanged
 
-        Private skigruppeIDFeld As Guid
+        Private skikursgruppenIDFeld As Guid
         Private _gruppenname As String
         Private _angezeigterGruppenname As String
-        Private _koennenstufe As Entities.Koennenstufe
-        Private _skilehrer As Entities.Skilehrer
+        Private _gruppenlevel As Entities.Level
+        Private _skilehrer As Entities.Uebungsleiter
 
         Public Sub New()
-            skigruppeIDFeld = Guid.NewGuid()
-            _koennenstufe = New Entities.Koennenstufe
-            _skilehrer = New Entities.Skilehrer
+            skikursgruppenIDFeld = Guid.NewGuid()
         End Sub
 
-        Public Property SkigruppeID As Guid
+        Public Property SkikursgruppenID As Guid
             Get
-                Return skigruppeIDFeld
+                Return skikursgruppenIDFeld
             End Get
             Set(value As Guid)
-                skigruppeIDFeld = value
+                skikursgruppenIDFeld = value
             End Set
         End Property
         Public Property Gruppenname As String
@@ -44,21 +42,21 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Koennenstufe As Entities.Koennenstufe
+        Public Property Gruppenlevel As Entities.Level
             Get
-                Return _koennenstufe
+                Return _gruppenlevel
             End Get
-            Set(value As Entities.Koennenstufe)
-                _koennenstufe = value
-                Changed("Koennenstufe")
+            Set(value As Entities.Level)
+                _gruppenlevel = value
+                Changed("Gruppenlevel")
             End Set
         End Property
 
-        Public Property Skilehrer As Entities.Skilehrer
+        Public Property Skilehrer As Entities.Uebungsleiter
             Get
                 Return _skilehrer
             End Get
-            Set(value As Entities.Skilehrer)
+            Set(value As Entities.Uebungsleiter)
                 _skilehrer = value
                 Changed("Skilehrer")
             End Set

@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Entities\SkikursgruppenCollection.vb" />
+    <Compile Include="Entities\UebungsleiterCollection.vb" />
     <Compile Include="Modules\TestStreamreader.vb" />
     <Compile Include="Windows\ContextMenuTeilnehmerkoennen.xaml.vb">
       <DependentUpon>ContextMenuTeilnehmerkoennen.xaml</DependentUpon>
@@ -84,11 +85,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\SkikursBefehle.vb" />
-    <Compile Include="Entities\KoennenstufenCollection.vb" />
+    <Compile Include="Entities\LevelsCollection.vb" />
     <Compile Include="Modules\DatenImport.vb" />
-    <Compile Include="Entities\Koennenstufe.vb" />
+    <Compile Include="Entities\Level.vb" />
     <Compile Include="Entities\Skikursgruppe.vb" />
-    <Compile Include="Entities\Skilehrer.vb" />
+    <Compile Include="Entities\Uebungsleiter.vb" />
     <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\TeilnehmerBeziehungen.vb" />
     <Compile Include="Entities\TeilnehmerCollection.vb" />

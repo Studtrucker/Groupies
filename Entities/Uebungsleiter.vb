@@ -2,7 +2,7 @@
 
 Namespace Entities
 
-    Public Class Skilehrer
+    Public Class Uebungsleiter
         Implements INotifyPropertyChanged
 
         Private skilehrerIDFeld As Guid

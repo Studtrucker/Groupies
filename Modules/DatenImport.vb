@@ -42,7 +42,7 @@ Public Module DatenImport
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
-            .Koennenstufe = Koennenstufe,
+            .PersoenlichesLevel = Koennenstufe,
             .Skigruppe = Skigruppe}
             Teilnehmerliste.Add(Teilnehmer)
             CurrentRow += 1
@@ -50,11 +50,11 @@ Public Module DatenImport
         Return Teilnehmerliste
     End Function
 
-    Private Function FindKoennenstufe(Benennung As String) As Koennenstufe
+    Private Function FindKoennenstufe(Benennung As String) As Level
 
         Dim Koennenstufe = BasicObjects.Skischule.Koennenstufenliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
         If Koennenstufe Is Nothing Then
-            Koennenstufe = New Koennenstufe With {.Benennung = Benennung}
+            Koennenstufe = New Level With {.Benennung = Benennung}
             BasicObjects.Skischule.Koennenstufenliste.Add(Koennenstufe)
         End If
 

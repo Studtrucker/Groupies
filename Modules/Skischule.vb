@@ -9,7 +9,7 @@ Namespace BasicObjects
         Private _HatCustomKoennenstufen As Boolean
         Public Property Teilnehmerliste() As TeilnehmerCollection
         Public Property Skikursgruppenliste() As SkikursgruppenCollection
-        Public Property Koennenstufenliste() As KoennenstufenCollection
+        Public Property Koennenstufenliste() As LevelsCollection
 
 #End Region
 
@@ -23,37 +23,37 @@ Namespace BasicObjects
         Public Sub initialisiereFixeListen()
             _skikursgruppenliste = New SkikursgruppenCollection
             _teilnehmerListe = New TeilnehmerCollection
-            _Koennenstufenliste = New KoennenstufenCollection
+            _Koennenstufenliste = New LevelsCollection
         End Sub
 
         Public Sub erstelleKoennenstufen()
 
-            Dim Neuling = New Koennenstufe With {
+            Dim Neuling = New Level With {
                 .Benennung = "Neuling",
-                .KoennenstufeID = Guid.NewGuid,
+                .LevelID = Guid.NewGuid,
                 .Beschreibung = "Das erste Mal auf Skiern oder 1-2 Tage Skischule"}
 
-            Dim Anfaenger = New Koennenstufe With {
+            Dim Anfaenger = New Level With {
                 .Benennung = "Anfänger",
                 .Beschreibung = "1-wöchiger Skikurs und kann eigenständig Bremsen, blaue Pisten",
-                .KoennenstufeID = Guid.NewGuid}
+                .LevelID = Guid.NewGuid}
 
-            Dim Fortgeschritten = New Koennenstufe With {
+            Dim Fortgeschritten = New Level With {
                 .Benennung = "Fortgeschritten",
                 .Beschreibung = "Rote Pisten, Kurven, eigenständiges Liftfahren",
-                .KoennenstufeID = Guid.NewGuid}
+                .LevelID = Guid.NewGuid}
 
-            Dim Koenner = New Koennenstufe With {
+            Dim Koenner = New Level With {
                 .Benennung = "Könner",
                 .Beschreibung = "Paralleles Skifahren, Stockeinsatz, kürzere Radien, schwarze Pisten",
-                .KoennenstufeID = Guid.NewGuid}
+                .LevelID = Guid.NewGuid}
 
-            Dim Topfahrer = New Koennenstufe With {
+            Dim Topfahrer = New Level With {
                 .Benennung = "Topfahrer",
                 .Beschreibung = "Jede Piste, jedes Gelände sowie alle Arten Schnee werden sicher gemeistert",
-                .KoennenstufeID = Guid.NewGuid}
+                .LevelID = Guid.NewGuid}
 
-            Koennenstufenliste = New KoennenstufenCollection From {Neuling, Anfaenger, Fortgeschritten, Koenner, Topfahrer}
+            Koennenstufenliste = New LevelsCollection From {Neuling, Anfaenger, Fortgeschritten, Koenner, Topfahrer}
 
         End Sub
 

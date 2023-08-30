@@ -11,7 +11,7 @@ Module TestStreamreader
             ' Open the file using a stream reader.
             ' Read the stream as a string and write the string to the console.
 
-            Using sr As New StreamReader("TestFile.txt")
+            Using sr As New StreamReader(filename)
                 ' Todo: Asynchrones Lesen
                 ' https://learn.microsoft.com/de-de/dotnet/standard/io/how-to-read-text-from-a-file
                 'ResultBlock.Text = Await sr.ReadToEndAsync()

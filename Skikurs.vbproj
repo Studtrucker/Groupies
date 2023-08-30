@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Entities\SkikursgruppenCollection.vb" />
+    <Compile Include="Modules\TestStreamreader.vb" />
     <Compile Include="Windows\ContextMenuTeilnehmerkoennen.xaml.vb">
       <DependentUpon>ContextMenuTeilnehmerkoennen.xaml</DependentUpon>
     </Compile>

@@ -452,6 +452,10 @@ Class MainWindow
     End Sub
 
     Private Sub OpenXMLSkikursList(fileName As String)
+
+
+        TestStreamreader.Main(fileName)
+
         If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
             MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
             Exit Sub
@@ -512,6 +516,8 @@ Class MainWindow
     End Sub
 
     Private Sub SaveXMLSkikurs(fileName As String)
+
+
         ' 1.1. Teilnehmerliste serialisieren abspeichern
         Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fsTL = New FileStream(fileName, FileMode.Create)

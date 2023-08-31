@@ -2,11 +2,13 @@
     Private ReadOnly _importiereTeilnehmer As RoutedUICommand
     Private ReadOnly _beurteileTeilnehmerKoennen As RoutedUICommand
     Private ReadOnly _erstelleGruppen As RoutedUICommand
+    Private ReadOnly _neuerTeilnehmer As RoutedUICommand
 
     Sub New()
         _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkikursBefehle))
         _beurteileTeilnehmerKoennen = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerkoennen", GetType(SkikursBefehle))
         _erstelleGruppen = New RoutedUICommand("Gruppen erstellen", "ErstelleGruppen", GetType(SkikursBefehle))
+        _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkikursBefehle))
     End Sub
 
     Public ReadOnly Property ImportTeilnehmerliste As RoutedUICommand
@@ -24,6 +26,12 @@
     Public ReadOnly Property ErstelleGruppen As RoutedUICommand
         Get
             Return _erstelleGruppen
+        End Get
+    End Property
+
+    Public ReadOnly Property NeuerTeilnehmer As RoutedUICommand
+        Get
+            Return _neuerTeilnehmer
         End Get
     End Property
 

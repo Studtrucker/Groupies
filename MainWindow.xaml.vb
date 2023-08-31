@@ -68,6 +68,7 @@ Class MainWindow
 
         CommandBindings.Add(New CommandBinding(SkikursBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
         CommandBindings.Add(New CommandBinding(SkikursBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkikursBefehle.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -369,6 +370,24 @@ Class MainWindow
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Close()
+    End Sub
+
+    Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Teilnehmerliste IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dlg = New NeuerTeilnehmerDialog
+        dlg.Owner = Me
+        dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner
+
+        If dlg.ShowDialog = True Then
+            Skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
+            _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
+            teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
+        End If
+
     End Sub
 
 #End Region

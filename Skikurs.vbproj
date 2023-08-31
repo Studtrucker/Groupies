@@ -70,12 +70,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\NeuerTeilnehmerDialog.xaml.vb">
+      <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SkikursgruppenCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
     <Compile Include="Modules\TestStreamreader.vb" />
-    <Compile Include="Windows\ContextMenuTeilnehmerkoennen.xaml.vb">
-      <DependentUpon>ContextMenuTeilnehmerkoennen.xaml</DependentUpon>
+    <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
+      <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\VornameValidationRule.vb" />
+    <Page Include="Dialogs\NeuerTeilnehmerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,7 +106,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\ContextMenuTeilnehmerkoennen.xaml">
+    <Page Include="Dialogs\ContextMenuLevel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-pin-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-konferenz-vordergrund-ausgewaehlte-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

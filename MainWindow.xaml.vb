@@ -453,9 +453,6 @@ Class MainWindow
 
     Private Sub OpenXMLSkikursList(fileName As String)
 
-
-        TestStreamreader.Main(fileName)
-
         If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
             MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
             Exit Sub
@@ -466,8 +463,7 @@ Class MainWindow
             Exit Sub
         End If
 
-        ' Datei enzippen und deserialisieren
-        ' Teilnehmer
+        ' Datei entzippen und deserialisieren
         Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
         Dim loadedTeilnehmerCollection As TeilnehmerCollection = Nothing
         Using fsTL = New FileStream(fileName, FileMode.Open)
@@ -479,32 +475,6 @@ Class MainWindow
                 Exit Sub
             End Try
         End Using
-
-        '' Koennenstufenliste
-        'Dim serializerKSL = New XmlSerializer(GetType(LevelsCollection))
-        'Dim loadedKoennenstufenCollection As LevelsCollection = Nothing
-        'Using fsKSL = New FileStream(fileName, FileMode.Open)
-        '    Try
-        '        'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
-        '        loadedKoennenstufenCollection = TryCast(serializerKSL.Deserialize(fsKSL), LevelsCollection)
-        '    Catch ex As InvalidDataException
-        '        MessageBox.Show("Datei ungültig: " & ex.Message)
-        '        Exit Sub
-        '    End Try
-        'End Using
-
-        '' Skikursgruppenliste
-        'Dim serializerSGL = New XmlSerializer(GetType(SkikursgruppenCollection))
-        'Dim loadedSkikursgruppenCollection As SkikursgruppenCollection = Nothing
-        'Using fsSGL = New FileStream(fileName, FileMode.Open)
-        '    Try
-        '        'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
-        '        loadedSkikursgruppenCollection = TryCast(serializerSGL.Deserialize(fsSGL), SkikursgruppenCollection)
-        '    Catch ex As InvalidDataException
-        '        MessageBox.Show("Datei ungültig: " & ex.Message)
-        '        Exit Sub
-        '    End Try
-        'End Using
 
         Teilnehmerliste = Nothing
 
@@ -523,20 +493,11 @@ Class MainWindow
         Using fsTL = New FileStream(fileName, FileMode.Create)
             serializerTL.Serialize(fsTL, Teilnehmerliste)
         End Using
-        '' 1.2. Koennenstufenliste serialisieren abspeichern
-        'Dim serializerKSL = New XmlSerializer(GetType(LevelsCollection))
-        'Using fsKSL = New FileStream(fileName, FileMode.Append)
-        '    serializerKSL.Serialize(fsKSL, Koennenstufenliste)
-        'End Using
-        '' 1.3. Skikursgruppenliste serialisieren abspeichern
-        'Dim serializerSGL = New XmlSerializer(GetType(SkikursgruppenCollection))
-        'Using fsSGL = New FileStream(fileName, FileMode.Append)
-        '    serializerSGL.Serialize(fsSGL, Skikursgruppenliste)
-        'End Using
-        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+
         Title = "Skikurse - " & fileName
         QueueMostRecentFilename(fileName)
         MessageBox.Show("Skikurs gespeichert!")
+
     End Sub
 
 

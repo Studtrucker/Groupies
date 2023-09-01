@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Entities\SkikursgruppenCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
+    <Compile Include="Modules\Standardelemente.vb" />
     <Compile Include="Modules\TestStreamreader.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
@@ -131,7 +132,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modules\Skischule.vb" />
+    <Compile Include="Entities\Skischule.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

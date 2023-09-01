@@ -7,8 +7,8 @@ Imports System.IO.Compression
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
-Imports Skikurs.BasicObjects
 Imports System.Windows.Media.Animation
+Imports Microsoft.Office.Core
 
 Class MainWindow
 
@@ -17,6 +17,7 @@ Class MainWindow
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
+    Private _skischule As Skischule
 
 #End Region
 
@@ -51,9 +52,9 @@ Class MainWindow
 
         ' 0. Zur InputBindings ein MouseBinding hinzufügen. Nur als Beispiel,
         '    um mit Strg und Doppelklick eine neue Liste anlegen zu können
-        'Dim mg = New MouseGesture(MouseAction.LeftDoubleClick, ModifierKeys.Control)
-        'Dim m = New MouseBinding(ApplicationCommands.[New], mg)
-        'InputBindings.Add(m)
+        Dim mg = New MouseGesture(MouseAction.LeftDoubleClick, ModifierKeys.Control)
+        Dim m = New MouseBinding(ApplicationCommands.[New], mg)
+        InputBindings.Add(m)
 
 
         ' 1. CommandBindings zur CommandBindings-Property des Window
@@ -76,15 +77,16 @@ Class MainWindow
         ' 3. SortedList für meist genutzte Freundeslisten befüllen
         LoadmRUSortedListMenu()
 
-        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .friends-Datei doppelgeklickt wurde
+        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
             OpenZIPSkikursList(filename)
         Else
-            ' 5. JumpList in Windows Taskbar aktualisieren
-            RefreshJumpListInWinTaskbar()
+            LoadLastFriendList()
         End If
+        ' 5. JumpList in Windows Taskbar aktualisieren
+        RefreshJumpListInWinTaskbar()
 
     End Sub
 
@@ -288,8 +290,8 @@ Class MainWindow
 
     Private Sub HandleListNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        If BasicObjects.Skischule.Teilnehmerliste IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Liste noch speichern?", "", MessageBoxButton.YesNoCancel)
+        If _skischule IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
             ElseIf rs = MessageBoxResult.Cancel Then
@@ -297,13 +299,14 @@ Class MainWindow
             End If
         End If
 
-        Teilnehmerliste = Nothing
+        _skischule = Nothing
 
-        Title = "Skikurs"
+        Title = "Skischule"
         SetView(New TeilnehmerCollection)
+        _skischule.initialisiereListen()
+        '_skischule.erstelleLevels()
         If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Jetzt gleich einen Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
-
-            'initializeStandardKoennenstufen()
+            SkikursBefehle.NeuerTeilnehmer.Execute(Nothing, Me)
         End If
 
     End Sub
@@ -342,11 +345,11 @@ Class MainWindow
     End Sub
 
     Private Sub HandleImportTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Teilnehmerliste IsNot Nothing
+        e.CanExecute = _skischule IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Teilnehmerliste IsNot Nothing
+        e.CanExecute = _skischule IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -373,7 +376,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Teilnehmerliste IsNot Nothing
+        e.CanExecute = _skischule IsNot Nothing
     End Sub
 
     Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -383,7 +386,7 @@ Class MainWindow
         dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner
 
         If dlg.ShowDialog = True Then
-            Skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
+            _skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
             _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
             teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
         End If
@@ -447,7 +450,7 @@ Class MainWindow
             End Using
         End Using
 
-        Teilnehmerliste = Nothing
+        _skischule.Teilnehmerliste = Nothing
 
         _skikursListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -461,7 +464,7 @@ Class MainWindow
         Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, Teilnehmerliste)
+                serializer.Serialize(zipStream, _skischule.Teilnehmerliste)
             End Using
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
@@ -495,7 +498,7 @@ Class MainWindow
             End Try
         End Using
 
-        Teilnehmerliste = Nothing
+        _skischule.Teilnehmerliste = Nothing
 
         _skikursListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -510,7 +513,7 @@ Class MainWindow
         ' 1.1. Teilnehmerliste serialisieren abspeichern
         Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
         Using fsTL = New FileStream(fileName, FileMode.Create)
-            serializerTL.Serialize(fsTL, Teilnehmerliste)
+            serializerTL.Serialize(fsTL, _skischule.Teilnehmerliste)
         End Using
 
         Title = "Skikurse - " & fileName
@@ -602,19 +605,11 @@ Class MainWindow
 
     End Sub
 
-    Private Sub initializeStandardKoennenstufen()
-
-        BasicObjects.erstelleKoennenstufen()
-
-    End Sub
-
 #End Region
 
-
-
     Private Sub SetView(Teilnehmer_Liste As TeilnehmerCollection)
-        Teilnehmerliste = Teilnehmer_Liste
-        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmerliste)
+        _skischule.Teilnehmerliste = Teilnehmer_Liste
+        _teilnehmerListCollectionView = New ListCollectionView(_skischule.Teilnehmerliste)
         ' Hinweis AddHandler Seite 764
         AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _teilnehmerListCollectionView_CurrentChanged
         ' DataContext wird gesetzt Inhalt = CollectionView, diese kennt sein CurrentItem

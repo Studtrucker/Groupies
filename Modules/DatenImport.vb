@@ -9,6 +9,7 @@ Public Module DatenImport
     Private _Dokument As Excel.Workbook
     Private _xlSheet As Excel.Worksheet
     Private ReadOnly _xlCell As Excel.Range
+    Private _skischule As Skischule
 
     Public Function ImportTeilnehmerListe() As TeilnehmerCollection
 
@@ -37,35 +38,35 @@ Public Module DatenImport
         Dim Teilnehmerliste As New TeilnehmerCollection
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
         Do Until CurrentRow > RowCount
-            Dim Koennenstufe = FindKoennenstufe(Excelsheet.UsedRange(CurrentRow, 3).Value)
-            Dim Skigruppe = FindSkigruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
+            Dim Level = FindLevel(Excelsheet.UsedRange(CurrentRow, 3).Value)
+            Dim Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
-            .PersoenlichesLevel = Koennenstufe,
-            .Skikursgruppe = Skigruppe}
+            .PersoenlichesLevel = Level,
+            .Skikursgruppe = Skikursgruppe}
             Teilnehmerliste.Add(Teilnehmer)
             CurrentRow += 1
         Loop
         Return Teilnehmerliste
     End Function
 
-    Private Function FindKoennenstufe(Benennung As String) As Level
+    Private Function FindLevel(Benennung As String) As Level
 
-        Dim Koennenstufe = BasicObjects.Skischule.Koennenstufenliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
-        If Koennenstufe Is Nothing Then
-            Koennenstufe = New Level With {.Benennung = Benennung}
-            BasicObjects.Skischule.Koennenstufenliste.Add(Koennenstufe)
+        Dim Level = _skischule.Levelsliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
+        If Level Is Nothing Then
+            Level = New Level With {.Benennung = Benennung}
+            _skischule.Levelsliste.Add(Level)
         End If
 
-        Return Koennenstufe
+        Return Level
     End Function
 
-    Private Function FindSkigruppe(Gruppenname As String) As Skikursgruppe
-        Dim Skikursgruppe = BasicObjects.Skischule.Skikursgruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
+    Private Function FindSkikursgruppe(Gruppenname As String) As Skikursgruppe
+        Dim Skikursgruppe = _skischule.Skikursgruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
         If Skikursgruppe Is Nothing Then
             Skikursgruppe = New Skikursgruppe With {.Gruppenname = Gruppenname}
-            BasicObjects.Skischule.Skikursgruppenliste.Add(Skikursgruppe)
+            _skischule.Skikursgruppenliste.Add(Skikursgruppe)
         End If
         Return Skikursgruppe
     End Function

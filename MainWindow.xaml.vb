@@ -83,7 +83,7 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            LoadLastFriendList()
+            LoadLastSkischule()
         End If
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
@@ -100,7 +100,7 @@ Class MainWindow
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
         If _skikursListFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("LastSkischuleList", System.IO.FileMode.OpenOrCreate, iso)
+                Using stream = New IsolatedStorageFileStream("LastSkischule", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         writer.WriteLine(_skikursListFile.FullName)
                     End Using
@@ -152,12 +152,12 @@ Class MainWindow
 
     End Sub
 
-    Private Sub LoadLastFriendList()
+    Private Sub LoadLastSkischule()
         ' Die letze Skischule aus dem IsolatedStorage holen.
         Try
             Dim x = ""
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("LastSkischuleList", FileMode.Open, iso)
+                Using stream = New IsolatedStorageFileStream("LastSkischule", FileMode.Open, iso)
                     Using reader = New StreamReader(stream)
                         x = reader.ReadLine
                     End Using

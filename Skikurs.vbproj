@@ -225,5 +225,8 @@
   <ItemGroup>
     <Resource Include="Images\icons8-konferenz-vordergrund-ausgewaehlte-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-microsoft-excel-2019-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -100,7 +100,7 @@ Class MainWindow
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
         If _skikursListFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("LastSkikursList", System.IO.FileMode.OpenOrCreate, iso)
+                Using stream = New IsolatedStorageFileStream("LastSkischuleList", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         writer.WriteLine(_skikursListFile.FullName)
                     End Using
@@ -153,11 +153,11 @@ Class MainWindow
     End Sub
 
     Private Sub LoadLastFriendList()
-        ' Die letze Liste aus dem IsolatedStorage holen.
+        ' Die letze Skischule aus dem IsolatedStorage holen.
         Try
             Dim x = ""
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("LastFriendList", FileMode.Open, iso)
+                Using stream = New IsolatedStorageFileStream("LastSkischuleList", FileMode.Open, iso)
                     Using reader = New StreamReader(stream)
                         x = reader.ReadLine
                     End Using
@@ -356,8 +356,7 @@ Class MainWindow
         Dim importSkischule = DatenImport.ImportSkischule
         If importSkischule IsNot Nothing Then
             SetView(importSkischule)
-            ' Todo: Name der Importdatei?
-            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", DatenImport.Workbook.Name.ToString))
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", DatenImport.Workbook.Name))
         End If
 
     End Sub

@@ -55,7 +55,7 @@
                 </MenuItem>
                 <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkikursBefehle.ImportTeilnehmerliste}">
                     <MenuItem.Icon>
-                        <Image Height="20" Source="Images/importieren-48.png"/>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>

@@ -1,5 +1,5 @@
 ﻿Imports System.Text
-Imports Skikurs.Entities
+Imports Skischule.Entities
 
 Module Standardelemente
 

@@ -1,14 +1,14 @@
-﻿Public Module SkikursBefehle
+﻿Public Module SkischuleBefehle
     Private ReadOnly _importiereTeilnehmer As RoutedUICommand
     Private ReadOnly _beurteileTeilnehmerKoennen As RoutedUICommand
     Private ReadOnly _erstelleGruppen As RoutedUICommand
     Private ReadOnly _neuerTeilnehmer As RoutedUICommand
 
     Sub New()
-        _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkikursBefehle))
-        _beurteileTeilnehmerKoennen = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerkoennen", GetType(SkikursBefehle))
-        _erstelleGruppen = New RoutedUICommand("Gruppen erstellen", "ErstelleGruppen", GetType(SkikursBefehle))
-        _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkikursBefehle))
+        _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkischuleBefehle))
+        _beurteileTeilnehmerKoennen = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerkoennen", GetType(SkischuleBefehle))
+        _erstelleGruppen = New RoutedUICommand("Gruppen erstellen", "ErstelleGruppen", GetType(SkischuleBefehle))
+        _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkischuleBefehle))
     End Sub
 
     Public ReadOnly Property ImportTeilnehmerliste As RoutedUICommand

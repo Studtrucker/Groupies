@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.Win32
-Imports Skikurs.Entities
+Imports Skischule.Entities
 Imports System.Reflection
 Imports System.ComponentModel
 Imports System.IO
@@ -17,7 +17,7 @@ Class MainWindow
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
-    Private _skischule As Skischule
+    Private _skischule As Entities.Skischule
 
 #End Region
 
@@ -67,9 +67,9 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
-        CommandBindings.Add(New CommandBinding(SkikursBefehle.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
-        CommandBindings.Add(New CommandBinding(SkikursBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkikursBefehle.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -305,9 +305,9 @@ Class MainWindow
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
-        SetView(New Skischule)
+        SetView(New Entities.Skischule)
         If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Jetzt gleich einen Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
-            SkikursBefehle.NeuerTeilnehmer.Execute(Nothing, Me)
+            SkischuleBefehle.NeuerTeilnehmer.Execute(Nothing, Me)
         End If
 
     End Sub
@@ -451,12 +451,12 @@ Class MainWindow
         End If
 
         ' Datei enzippen und deserialisieren
-        Dim serializer = New XmlSerializer(GetType(Skischule))
-        Dim loadedSkischule As Skischule = Nothing
+        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Dim loadedSkischule As Entities.Skischule = Nothing
         Using fs = New FileStream(fileName, FileMode.Open)
             Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
                 Try
-                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Skischule)
+                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skischule)
                 Catch ex As InvalidDataException
                     MessageBox.Show("Datei ungültig: " & ex.Message)
                     Exit Sub
@@ -475,7 +475,7 @@ Class MainWindow
 
     Private Sub SaveSkischule(fileName As String)
         ' 1. Skischule serialisieren und gezippt abspeichern
-        Dim serializer = New XmlSerializer(GetType(Skischule))
+        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
                 serializer.Serialize(zipStream, _skischule)
@@ -569,7 +569,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub SetView(Skischule As Skischule)
+    Private Sub SetView(Skischule As Entities.Skischule)
         _skischule = Skischule
         SetView(_skischule.Teilnehmerliste)
     End Sub

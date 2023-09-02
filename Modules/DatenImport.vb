@@ -2,16 +2,16 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
-Imports Skikurs.Entities
+Imports Skischule.Entities
 
 Public Module DatenImport
     Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
     Public Workbook As Excel.Workbook
     Private _xlSheet As Excel.Worksheet
     Private ReadOnly _xlCell As Excel.Range
-    Private _skischule As Skischule = New Skischule
+    Private _skischule As Entities.Skischule = New Entities.Skischule
 
-    Public Function ImportSkischule() As Skischule
+    Public Function ImportSkischule() As Entities.Skischule
 
         Workbook = Nothing
 
@@ -32,7 +32,7 @@ Public Module DatenImport
 
     End Function
 
-    Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Skischule
+    Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skischule
         Dim CurrentRow = 4
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
         Do Until CurrentRow > RowCount

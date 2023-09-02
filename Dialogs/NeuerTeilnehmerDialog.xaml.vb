@@ -1,6 +1,6 @@
 ﻿Imports System.Text
 Imports System.Windows.Forms
-Imports Skikurs.Entities
+Imports Skischule.Entities
 
 Public Class NeuerTeilnehmerDialog
 

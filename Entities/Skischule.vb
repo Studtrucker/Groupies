@@ -1,4 +1,4 @@
-﻿Imports Skikurs.Entities
+﻿Imports Skischule.Entities
 
 Namespace Entities
 

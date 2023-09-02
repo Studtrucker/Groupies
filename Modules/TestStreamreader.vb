@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Windows
 Imports System.Xml.Serialization
-Imports Skikurs.Entities
+Imports Skischule.Entities
 
 Module TestStreamreader
 

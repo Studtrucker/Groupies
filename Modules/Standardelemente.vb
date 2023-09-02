@@ -160,6 +160,9 @@ Module Standardelemente
     End Function
 
     Private Function erstelle15Gruppen() As SkikursgruppenCollection
+
+
+
         Dim GA1 = New Skikursgruppe With {
             .Gruppenname = "Anfänger 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(0)}

@@ -6,14 +6,14 @@ Imports Skikurs.Entities
 
 Public Module DatenImport
     Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
-    Private _Dokument As Excel.Workbook
+    Public Workbook As Excel.Workbook
     Private _xlSheet As Excel.Worksheet
     Private ReadOnly _xlCell As Excel.Range
-    Private _skischule As Skischule
+    Private _skischule As Skischule = New Skischule
 
-    Public Function ImportTeilnehmerListe() As TeilnehmerCollection
+    Public Function ImportSkischule() As Skischule
 
-        _Dokument = Nothing
+        Workbook = Nothing
 
         _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
@@ -22,20 +22,18 @@ Public Module DatenImport
 
         If _ofdDokument.ShowDialog = DialogResult.OK Then
             Dim xlApp = New Excel.Application
-            _Dokument = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
-            If CheckExcelFileFormat(_Dokument) Then
-                'Todo: Upload auf den SQL hier nicht mehr notwendig
-                Return ReadImportExcelliste(_Dokument.ActiveSheet)
+            Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
+            If CheckExcelFileFormat(Workbook) Then
+                Return ReadImportedExcelliste(Workbook.ActiveSheet)
             End If
-            _Dokument.Close()
+            Workbook.Close()
         End If
         Return Nothing
 
     End Function
 
-    Private Function ReadImportExcelliste(Excelsheet As Excel.Worksheet) As TeilnehmerCollection
-        Dim CurrentRow = 2
-        Dim Teilnehmerliste As New TeilnehmerCollection
+    Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Skischule
+        Dim CurrentRow = 4
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
         Do Until CurrentRow > RowCount
             Dim Level = FindLevel(Excelsheet.UsedRange(CurrentRow, 3).Value)
@@ -45,10 +43,10 @@ Public Module DatenImport
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
             .PersoenlichesLevel = Level,
             .Skikursgruppe = Skikursgruppe}
-            Teilnehmerliste.Add(Teilnehmer)
+            _skischule.Teilnehmerliste.Add(Teilnehmer)
             CurrentRow += 1
         Loop
-        Return Teilnehmerliste
+        Return _skischule
     End Function
 
     Private Function FindLevel(Benennung As String) As Level

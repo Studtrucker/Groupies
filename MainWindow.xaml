@@ -53,6 +53,11 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkikursBefehle.ImportTeilnehmerliste}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/importieren-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="Skikurs _speichern" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
@@ -64,11 +69,6 @@
                 <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkikursBefehle.ImportTeilnehmerliste}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/importieren-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>

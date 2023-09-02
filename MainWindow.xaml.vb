@@ -67,7 +67,7 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
-        CommandBindings.Add(New CommandBinding(SkikursBefehle.ImportTeilnehmerliste, AddressOf HandleImportTeilnehmerExecuted, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkikursBefehle.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
         CommandBindings.Add(New CommandBinding(SkikursBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkikursBefehle.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
 
@@ -81,7 +81,7 @@ Class MainWindow
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
-            OpenZIPSkikursList(filename)
+            OpenSkischule(filename)
         Else
             LoadLastFriendList()
         End If
@@ -164,7 +164,7 @@ Class MainWindow
                 End Using
 
             End Using
-            If File.Exists(x) Then Me.OpenZIPSkikursList(x)
+            If File.Exists(x) Then Me.OpenSkischule(x)
         Catch ex As FileNotFoundException
         End Try
     End Sub
@@ -290,6 +290,7 @@ Class MainWindow
 
     Private Sub HandleListNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
+        ' Ist aktuell eine Skischuldatei geöffnet?
         If _skischule IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
@@ -299,12 +300,12 @@ Class MainWindow
             End If
         End If
 
+        ' Skischulobjekt löschen
         _skischule = Nothing
 
+        ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
-        SetView(New TeilnehmerCollection)
-        _skischule.initialisiereListen()
-        '_skischule.erstelleLevels()
+        SetView(New Skischule)
         If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Jetzt gleich einen Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
             SkikursBefehle.NeuerTeilnehmer.Execute(Nothing, Me)
         End If
@@ -314,12 +315,12 @@ Class MainWindow
     Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
-            OpenXMLSkikursList(dlg.FileName)
+            OpenSkischule(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenZIPSkikursList(TryCast(sender, MenuItem).Header.ToString())
+        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
     Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -334,18 +335,31 @@ Class MainWindow
         e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
     End Sub
 
-    Private Sub HandleImportTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleImportExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        Dim importTeilnehmer = DatenImport.ImportTeilnehmerListe()
-        If importTeilnehmer IsNot Nothing Then
-            SetView(importTeilnehmer)
-            '            DataContext = importTeilnehmer
+        ' Ist aktuell eine Skischuldatei geöffnet?
+        If _skischule IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
+            If rs = MessageBoxResult.Yes Then
+                ApplicationCommands.Save.Execute(Nothing, Me)
+            ElseIf rs = MessageBoxResult.Cancel Then
+                Exit Sub
+            End If
         End If
 
-    End Sub
+        ' Skischulobjekt löschen
+        _skischule = Nothing
 
-    Private Sub HandleImportTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule IsNot Nothing
+        ' Neues Skischulobjekt initialisieren
+        Title = "Skischule"
+
+        Dim importSkischule = DatenImport.ImportSkischule
+        If importSkischule IsNot Nothing Then
+            SetView(importSkischule)
+            ' Todo: Name der Importdatei?
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", DatenImport.Workbook.Name.ToString))
+        End If
+
     End Sub
 
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -359,7 +373,7 @@ Class MainWindow
         End If
 
         If dlg.ShowDialog = True Then
-            SaveXMLSkikurs(dlg.FileName)
+            SaveSkischule(dlg.FileName)
             _skikursListFile = New FileInfo(dlg.FileName)
         End If
     End Sub
@@ -368,7 +382,7 @@ Class MainWindow
         If _skikursListFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveXMLSkikurs(_skikursListFile.FullName)
+            SaveSkischule(_skikursListFile.FullName)
         End If
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -425,9 +439,10 @@ Class MainWindow
 
 #Region "Helper-Methoden"
 
-    Private Sub OpenZIPSkikursList(fileName As String)
+    Private Sub OpenSkischule(fileName As String)
+
         If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
-            MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
+            MessageBox.Show("Die Skischule " & fileName & " ist bereits geöffnet")
             Exit Sub
         End If
 
@@ -437,12 +452,12 @@ Class MainWindow
         End If
 
         ' Datei enzippen und deserialisieren
-        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
-        Dim loadedFriendCollection As TeilnehmerCollection = Nothing
+        Dim serializer = New XmlSerializer(GetType(Skischule))
+        Dim loadedSkischule As Skischule = Nothing
         Using fs = New FileStream(fileName, FileMode.Open)
             Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
                 Try
-                    loadedFriendCollection = TryCast(serializer.Deserialize(zipStream), TeilnehmerCollection)
+                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Skischule)
                 Catch ex As InvalidDataException
                     MessageBox.Show("Datei ungültig: " & ex.Message)
                     Exit Sub
@@ -450,78 +465,28 @@ Class MainWindow
             End Using
         End Using
 
-        _skischule.Teilnehmerliste = Nothing
+        _skischule = Nothing
 
         _skikursListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
-        SetView(loadedFriendCollection)
-        Title = "Skikurse - " & fileName
+        SetView(loadedSkischule)
+        Title = "Skischule - " & fileName
 
     End Sub
 
-    Private Sub SaveZIPSkikurs(fileName As String)
-        ' 1. Freundeliste serialisieren und gezippt abspeichern
-        Dim serializer = New XmlSerializer(GetType(TeilnehmerCollection))
+    Private Sub SaveSkischule(fileName As String)
+        ' 1. Skischule serialisieren und gezippt abspeichern
+        Dim serializer = New XmlSerializer(GetType(Skischule))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, _skischule.Teilnehmerliste)
+                serializer.Serialize(zipStream, _skischule)
             End Using
         End Using
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Skikurse - " & fileName
+        Title = "Skischule - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skikurs gespeichert!")
+        MessageBox.Show("Skischule gespeichert!")
     End Sub
-
-    Private Sub OpenXMLSkikursList(fileName As String)
-
-        If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
-            MessageBox.Show("Die Liste " & fileName & " ist bereits geöffnet")
-            Exit Sub
-        End If
-
-        If Not File.Exists(fileName) Then
-            MessageBox.Show("Die Datei existiert nicht")
-            Exit Sub
-        End If
-
-        ' Datei entzippen und deserialisieren
-        Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
-        Dim loadedTeilnehmerCollection As TeilnehmerCollection = Nothing
-        Using fsTL = New FileStream(fileName, FileMode.Open)
-            Try
-                'TODO: Zu öffnende Datei in die einzelnen Abschnitte unterteilen 
-                loadedTeilnehmerCollection = TryCast(serializerTL.Deserialize(fsTL), TeilnehmerCollection)
-            Catch ex As InvalidDataException
-                MessageBox.Show("Datei ungültig: " & ex.Message)
-                Exit Sub
-            End Try
-        End Using
-
-        _skischule.Teilnehmerliste = Nothing
-
-        _skikursListFile = New FileInfo(fileName)
-        QueueMostRecentFilename(fileName)
-        SetView(loadedTeilnehmerCollection)
-        Title = "Skikurse - " & fileName
-
-    End Sub
-
-    Private Sub SaveXMLSkikurs(fileName As String)
-
-
-        ' 1.1. Teilnehmerliste serialisieren abspeichern
-        Dim serializerTL = New XmlSerializer(GetType(TeilnehmerCollection))
-        Using fsTL = New FileStream(fileName, FileMode.Create)
-            serializerTL.Serialize(fsTL, _skischule.Teilnehmerliste)
-        End Using
-
-        Title = "Skikurse - " & fileName
-        QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skikurs gespeichert!")
-
-    End Sub
-
 
     Private Sub QueueMostRecentFilename(fileName As String)
 
@@ -605,15 +570,20 @@ Class MainWindow
 
     End Sub
 
-#End Region
+    Private Sub SetView(Skischule As Skischule)
+        _skischule = Skischule
+        SetView(_skischule.Teilnehmerliste)
+    End Sub
 
-    Private Sub SetView(Teilnehmer_Liste As TeilnehmerCollection)
-        _skischule.Teilnehmerliste = Teilnehmer_Liste
-        _teilnehmerListCollectionView = New ListCollectionView(_skischule.Teilnehmerliste)
+    Private Sub SetView(Teilnehmerliste As TeilnehmerCollection)
+        Teilnehmerliste = Teilnehmerliste
+        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmerliste)
         ' Hinweis AddHandler Seite 764
         AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _teilnehmerListCollectionView_CurrentChanged
         ' DataContext wird gesetzt Inhalt = CollectionView, diese kennt sein CurrentItem
         DataContext = _teilnehmerListCollectionView
     End Sub
+
+#End Region
 
 End Class

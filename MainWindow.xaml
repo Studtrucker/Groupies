@@ -274,23 +274,29 @@
                                 </Grid.RenderTransform>
                             
                                 <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
-                                    <Grid x:Name="skigruppenGrid" >
+                                <DockPanel>
+
+
+                                    <Grid x:Name="skikursgruppenGrid"  DockPanel.Dock="Top">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Text="Skigruppen" Grid.Row="0" Foreground="DarkGray"/>
-                                        <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >
+                                        <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray"/>
+
+                                    </Grid>
+                                         <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Gruppenname" />
                                                 <DataGridTextColumn Header="Angezeigter Name"  />
                                                 <DataGridTextColumn Header="Skilehrer" Width="*" />
                                             </DataGrid.Columns>
-                                        </DataGrid>
-                                    </Grid>
-                                </Border>
- 
+                                        </DataGrid>     
+                                </DockPanel>
+                            </Border>
+                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+
                         </Grid>
                     </Grid>
                     

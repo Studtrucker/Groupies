@@ -569,18 +569,20 @@ Class MainWindow
 
     End Sub
 
-    Private Sub SetView(Skischule As Entities.Skischule)
-        _skischule = Skischule
+    Private Sub SetView(Schule As Entities.Skischule)
+        _skischule = Schule
         SetView(_skischule.Teilnehmerliste)
+
     End Sub
 
-    Private Sub SetView(Teilnehmerliste As TeilnehmerCollection)
-        Teilnehmerliste = Teilnehmerliste
-        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmerliste)
+    Private Sub SetView(Teilnehmers As TeilnehmerCollection)
+        _skischule.Teilnehmerliste = Teilnehmers
+        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmers)
         ' Hinweis AddHandler Seite 764
         AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _teilnehmerListCollectionView_CurrentChanged
-        ' DataContext wird gesetzt Inhalt = CollectionView, diese kennt sein CurrentItem
-        DataContext = _teilnehmerListCollectionView
+        ' DataContext wird gesetzt
+        ' Inhalt = CollectionView, diese kennt sein CurrentItem
+        teilnehmerDataGrid.DataContext = _teilnehmerListCollectionView
     End Sub
 
 #End Region

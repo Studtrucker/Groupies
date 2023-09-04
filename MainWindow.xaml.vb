@@ -43,13 +43,13 @@ Class MainWindow
         ' wie die Spalte mit dem Freunde Explorer im
         ' layer1-Grid
         _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition()
-        '_dummySpalteFuerLayerTeilnehmerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
+        _dummySpalteFuerLayerTeilnehmerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
         _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition()
-        '_dummySpalteFuerLayerSkikursgruppenDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
+        _dummySpalteFuerLayerSkikursgruppenDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
 
         ' das Grid gleich zu Beginn pinnen
         layerTeilnehmerliste.Visibility = Visibility.Visible
-        tabitemSkikursgruppen_GotFocus(Me, New RoutedEventArgs())
+        tabitemTeilnehmer_GotFocus(Me, New RoutedEventArgs())
         btnTeilnehmerPinIt.IsChecked = True
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
@@ -205,7 +205,7 @@ Class MainWindow
 
         ' Unpinnen
         ' 1. ColumnDefinition von layer0-Grid entfernen
-        _layerDetails.ColumnDefinitions.Remove(_dummySpalteFuerLayerTeilnehmerDetails)
+        _layerDetails.ColumnDefinitions.Remove(_dummySpalteFuerLayerDetails)
 
         ' 2. Button "Freunde Explorer" einblenden
         _btnShowEplorer.Visibility = Visibility.Visible
@@ -567,7 +567,6 @@ Class MainWindow
         _layerListe = layerTeilnehmerliste
         _layerListeTransform = layerTeilnehmerlisteTrans
         _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
-        _dummySpalteFuerLayerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
     End Sub
 
     Private Sub tabitemSkikursgruppen_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -577,7 +576,6 @@ Class MainWindow
         _layerListe = layerSkikursgruppenliste
         _layerListeTransform = layerSkikursgruppenlisteTrans
         _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
-        _dummySpalteFuerLayerDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
     End Sub
 
 #End Region

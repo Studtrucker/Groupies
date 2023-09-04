@@ -169,7 +169,7 @@
 
                                         <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray"/>
 
-                                        <ToggleButton x:Name="btnPinIt" Margin="0,0,5,0"
+                                        <ToggleButton x:Name="btnTeilnehmerPinIt" Margin="0,0,5,0"
                                    HorizontalAlignment="Right" Width="25" 
                                    Height="25" Checked="HandleListePinning"
                                    Unchecked="HandleListeUnpinning" IsChecked="False">
@@ -286,6 +286,13 @@
                                         </Grid.RowDefinitions>
 
                                         <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray"/>
+                                        <ToggleButton x:Name="btnSkikursgruppenPinIt" Margin="0,0,5,0"
+                                            HorizontalAlignment="Right" Width="25" 
+                                            Height="25" Checked="HandleListePinning"
+                                            Unchecked="HandleListeUnpinning" IsChecked="False">
+
+                                            <Image x:Name="pinImage2" Source="Images\icons8-unpin-2-48.png"/>
+                                        </ToggleButton>
 
                                     </Grid>
                                          <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >

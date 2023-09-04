@@ -37,7 +37,7 @@ Class MainWindow
 
         ' das Grid gleich zu Beginn pinnen
         layerTeilnehmerliste.Visibility = Visibility.Visible
-        btnPinIt.IsChecked = True
+        btnTeilnehmerPinIt.IsChecked = True
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _teilnehmerListCollectionView_CurrentChanged)
@@ -176,7 +176,6 @@ Class MainWindow
     Private Sub HandleListePinning(sender As Object, e As RoutedEventArgs)
 
         ' Pinnen
-
         ' 1. ColumnDefinition zum layer0-Grid hinzufügen
         layerTeilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
 
@@ -189,8 +188,8 @@ Class MainWindow
     End Sub
 
     Private Sub HandleListeUnpinning(sender As Object, e As RoutedEventArgs)
-        ' Unpinnen
 
+        ' Unpinnen
         ' 1. ColumnDefinition von layer0-Grid entfernen
         layerTeilnehmerdetails.ColumnDefinitions.Remove(_dummySpalteFuerLayer0)
 
@@ -220,12 +219,13 @@ Class MainWindow
             layerTeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
 
         End If
+
     End Sub
 
     Private Sub HandleLayerdetailsMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layer1-Grid ausblenden
-        If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
+        If (Not btnTeilnehmerPinIt.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
 
             ' 1. Zielwert für die Animation setzen
             Dim [to] = layerTeilnehmerliste.ColumnDefinitions(1).Width.Value

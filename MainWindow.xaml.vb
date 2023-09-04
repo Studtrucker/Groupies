@@ -173,7 +173,7 @@ Class MainWindow
 
 #Region "Methoden zum Pinnen und Ein-/Ausblenden des Freunde-Explorers"
 
-    Private Sub HandleTeilnehmerlistePinning(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleListePinning(sender As Object, e As RoutedEventArgs)
 
         ' Pinnen
 
@@ -188,7 +188,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub HandleTeilnehmerlisteUnpinning(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleListeUnpinning(sender As Object, e As RoutedEventArgs)
         ' Unpinnen
 
         ' 1. ColumnDefinition von layer0-Grid entfernen
@@ -202,7 +202,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub HandleButtonTeilnehmerExpMouseEnter(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' TeilnehmerDetails-Grid mit den Explorern einblenden
         If (layerTeilnehmerliste.Visibility <> Visibility.Visible) Then
@@ -222,27 +222,7 @@ Class MainWindow
         End If
     End Sub
 
-    Private Sub HandleButtonSkikursgruppenExpMouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' TeilnehmerDetails-Grid mit den Explorern einblenden
-        If (layerSkikursgruppenliste.Visibility <> Visibility.Visible) Then
-
-            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-            ' Explorer"-Spalte nach rechts versetzen
-            layerSkikursgruppenlisteTrans.X = layerTeilnehmerliste.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1-Grid sichtbar machen
-            layerSkikursgruppenliste.Visibility = Visibility.Visible
-
-            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-            ' hin zum Wert 0 animieren, Dauer 500 Millisek
-            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            layerSkikursgruppenliste.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-    End Sub
-
-    Private Sub HandleTeilnehmerdetailsMouseEnter(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleLayerdetailsMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layer1-Grid ausblenden
         If (Not btnPinIt.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
@@ -260,67 +240,10 @@ Class MainWindow
 
     End Sub
 
-    Private Sub HandleLayerSkischulgruppendetailsMouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' layerDetails-Grid mit den Explorern einblenden
-        If (layerTeilnehmerliste.Visibility <> Visibility.Visible) Then
-
-            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-            ' Explorer"-Spalte nach rechts versetzen
-            layerTeilnehmerlisteTrans.X = layerTeilnehmerliste.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1-Grid sichtbar machen
-            layerTeilnehmerliste.Visibility = Visibility.Visible
-
-            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-            ' hin zum Wert 0 animieren, Dauer 500 Millisek
-            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            layerTeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-    End Sub
     Sub ani_Completed(sender As Object, e As EventArgs)
         ' 3. layer1-Grid ausblenden
         layerTeilnehmerliste.Visibility = Visibility.Collapsed
     End Sub
-
-    'Private Sub HandleButtonSLExpMouseEnter(sender As Object, e As RoutedEventArgs)
-    '    ' layerDetails-Grid mit den Explorern einblenden
-    '    If (layer1Skilehrerliste.Visibility <> Visibility.Visible) Then
-
-    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-    '        ' Explorer"-Spalte nach rechts versetzen
-    '        layer1SkilehrerlisteTrans.X = layer1Skilehrerliste.ColumnDefinitions(1).Width.Value
-
-    '        ' 2. layer1-Grid sichtbar machen
-    '        layer1Skilehrerliste.Visibility = Visibility.Visible
-
-    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
-    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-    '        layer1SkilehrerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-    '    End If
-    'End Sub
-
-    'Private Sub HandleButtonSGExpMouseEnter(sender As Object, e As MouseEventArgs)
-    '    ' layerDetails-Grid mit den Explorern einblenden
-    '    If (layer1Skigruppenliste.Visibility <> Visibility.Visible) Then
-
-    '        ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-    '        ' Explorer"-Spalte nach rechts versetzen
-    '        layer1SkigruppenlisteTrans.X = layer1Skigruppenliste.ColumnDefinitions(1).Width.Value
-
-    '        ' 2. layer1-Grid sichtbar machen
-    '        layer1Skigruppenliste.Visibility = Visibility.Visible
-
-    '        ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-    '        ' hin zum Wert 0 animieren, Dauer 500 Millisek
-    '        Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-    '        layer1SkigruppenlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
-
-    '    End If
-    'End Sub
 
 #End Region
 

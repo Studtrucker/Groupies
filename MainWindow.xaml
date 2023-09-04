@@ -92,9 +92,12 @@
 
         </Menu>
 
-        <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black">
+        <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <TabItem x:Name="tabitemTeilnehmer" Header="Teilnehmer">
+            <TabItem x:Name="tabitemTeilnehmer" Header="Teilnehmer"  GotFocus="tabitemTeilnehmer_GotFocus">
+                
+
+
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
@@ -156,7 +159,7 @@
                         <Grid x:Name="layerTeilnehmerliste" Visibility="Collapsed" Margin="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="pinSpalte" Width="330"/>
+                                <ColumnDefinition SharedSizeGroup="pinTeilnehmerSpalte" Width="330"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="layerTeilnehmerlisteTrans"/>
@@ -174,7 +177,7 @@
                                    Height="25" Checked="HandleListePinning"
                                    Unchecked="HandleListeUnpinning" IsChecked="False">
 
-                                            <Image x:Name="pinImage" Source="Images\icons8-unpin-2-48.png"/>
+                                            <Image x:Name="pinTeilnehmerImage" Source="Images\icons8-unpin-2-48.png"/>
                                         </ToggleButton>
                                     </Grid>
 
@@ -205,7 +208,7 @@
 
             
             
-            <TabItem Header="Skikursgruppen" x:Name="tabitemSkikursgruppen">
+            <TabItem Header="Skikursgruppen" x:Name="tabitemSkikursgruppen" GotFocus="tabitemSkikursgruppen_GotFocus">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
@@ -269,7 +272,7 @@
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                                <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition SharedSizeGroup="pinSpalte" Width="280"/>
+                                    <ColumnDefinition SharedSizeGroup="pinSkikursgruppeSpalte" Width="280"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RenderTransform>
                                     <TranslateTransform x:Name="layerSkikursgruppenlisteTrans"/>
@@ -291,7 +294,7 @@
                                             Height="25" Checked="HandleListePinning"
                                             Unchecked="HandleListeUnpinning" IsChecked="False">
 
-                                            <Image x:Name="pinImage2" Source="Images\icons8-unpin-2-48.png"/>
+                                            <Image x:Name="pinSkikursgruppenImage" Source="Images\icons8-unpin-2-48.png"/>
                                         </ToggleButton>
 
                                     </Grid>

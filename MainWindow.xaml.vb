@@ -13,11 +13,21 @@ Imports Microsoft.Office.Core
 Class MainWindow
 
 #Region "Fields"
-    Private _dummySpalteFuerLayer0 As ColumnDefinition
+    Private _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
+    Private _dummySpalteFuerLayerSkikursgruppenDetails As ColumnDefinition
+
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
     Private _skischule As Entities.Skischule
+
+
+    Private _layerDetails As Grid
+    Private _btnShowEplorer As Button
+    Private _pinImage As Image
+    Private _layerListe As Grid
+    Private _layerListeTransform As Transform
+    Private _dummySpalteFuerLayerDetails As ColumnDefinition
 
 #End Region
 
@@ -32,11 +42,14 @@ Class MainWindow
         ' Spalte initialisieren und in dieselbe Gruppe setzen,
         ' wie die Spalte mit dem Freunde Explorer im
         ' layer1-Grid
-        _dummySpalteFuerLayer0 = New ColumnDefinition()
-        _dummySpalteFuerLayer0.SharedSizeGroup = "pinSpalte"
+        _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition()
+        '_dummySpalteFuerLayerTeilnehmerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
+        _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition()
+        '_dummySpalteFuerLayerSkikursgruppenDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
 
         ' das Grid gleich zu Beginn pinnen
         layerTeilnehmerliste.Visibility = Visibility.Visible
+        tabitemSkikursgruppen_GotFocus(Me, New RoutedEventArgs())
         btnTeilnehmerPinIt.IsChecked = True
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
@@ -177,13 +190,14 @@ Class MainWindow
 
         ' Pinnen
         ' 1. ColumnDefinition zum layer0-Grid hinzufügen
-        layerTeilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
+        _layerDetails.ColumnDefinitions.Add(_dummySpalteFuerLayerDetails)
+        '        layerTeilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
 
         ' 2. Button "Freunde Explorer" ausblenden
-        btnShowTeilnehmerExplorer.Visibility = Visibility.Collapsed
+        _btnShowEplorer.Visibility = Visibility.Collapsed
 
         ' 3. pinImage in layer1-Grid auf pinned setzen
-        pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
+        _pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
 
     End Sub
 
@@ -191,13 +205,13 @@ Class MainWindow
 
         ' Unpinnen
         ' 1. ColumnDefinition von layer0-Grid entfernen
-        layerTeilnehmerdetails.ColumnDefinitions.Remove(_dummySpalteFuerLayer0)
+        _layerDetails.ColumnDefinitions.Remove(_dummySpalteFuerLayerTeilnehmerDetails)
 
         ' 2. Button "Freunde Explorer" einblenden
-        btnShowTeilnehmerExplorer.Visibility = Visibility.Visible
+        _btnShowEplorer.Visibility = Visibility.Visible
 
         ' 3. pinImage in layer1-Grid auf unpinned setzen
-        pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
+        _pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
 
     End Sub
 
@@ -544,6 +558,26 @@ Class MainWindow
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
+    End Sub
+
+    Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
+        _layerDetails = layerTeilnehmerdetails
+        _btnShowEplorer = btnShowTeilnehmerExplorer
+        _pinImage = pinTeilnehmerImage
+        _layerListe = layerTeilnehmerliste
+        _layerListeTransform = layerTeilnehmerlisteTrans
+        _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
+        _dummySpalteFuerLayerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
+    End Sub
+
+    Private Sub tabitemSkikursgruppen_GotFocus(sender As Object, e As RoutedEventArgs)
+        _layerDetails = layerSkikursgruppendetails
+        _btnShowEplorer = btnShowSkikursgruppenExplorer
+        _pinImage = pinSkikursgruppenImage
+        _layerListe = layerSkikursgruppenliste
+        _layerListeTransform = layerSkikursgruppenlisteTrans
+        _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
+        _dummySpalteFuerLayerDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
     End Sub
 
 #End Region

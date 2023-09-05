@@ -22,12 +22,12 @@ Class MainWindow
     Private _skischule As Entities.Skischule
 
 
-    Private _layerDetails As Grid
-    Private _btnShowEplorer As Button
-    Private _pinImage As Image
-    Private _layerListe As Grid
-    Private _layerListeTransform As Transform
-    Private _dummySpalteFuerLayerDetails As ColumnDefinition
+    Private _schalterLayerDetails As Grid
+    Private _schalterBtnShowEplorer As Button
+    Private _schalterPinImage As Image
+    Private _schalterLayerListe As Grid
+    Private _schalterLayerListeTransform As Transform
+    Private _schalterDummySpalteFuerLayerDetails As ColumnDefinition
 
 #End Region
 
@@ -190,14 +190,14 @@ Class MainWindow
 
         ' Pinnen
         ' 1. ColumnDefinition zum layer0-Grid hinzufügen
-        _layerDetails.ColumnDefinitions.Add(_dummySpalteFuerLayerDetails)
+        _schalterLayerDetails.ColumnDefinitions.Add(_schalterDummySpalteFuerLayerDetails)
         '        layerTeilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
 
         ' 2. Button "Freunde Explorer" ausblenden
-        _btnShowEplorer.Visibility = Visibility.Collapsed
+        _schalterBtnShowEplorer.Visibility = Visibility.Collapsed
 
         ' 3. pinImage in layer1-Grid auf pinned setzen
-        _pinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
+        _schalterPinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
 
     End Sub
 
@@ -205,13 +205,13 @@ Class MainWindow
 
         ' Unpinnen
         ' 1. ColumnDefinition von layer0-Grid entfernen
-        _layerDetails.ColumnDefinitions.Remove(_dummySpalteFuerLayerDetails)
+        _schalterLayerDetails.ColumnDefinitions.Remove(_schalterDummySpalteFuerLayerDetails)
 
         ' 2. Button "Freunde Explorer" einblenden
-        _btnShowEplorer.Visibility = Visibility.Visible
+        _schalterBtnShowEplorer.Visibility = Visibility.Visible
 
         ' 3. pinImage in layer1-Grid auf unpinned setzen
-        _pinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
+        _schalterPinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
 
     End Sub
 
@@ -561,21 +561,21 @@ Class MainWindow
     End Sub
 
     Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
-        _layerDetails = layerTeilnehmerdetails
-        _btnShowEplorer = btnShowTeilnehmerExplorer
-        _pinImage = pinTeilnehmerImage
-        _layerListe = layerTeilnehmerliste
-        _layerListeTransform = layerTeilnehmerlisteTrans
-        _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
+        _schalterLayerDetails = layerTeilnehmerdetails
+        _schalterBtnShowEplorer = btnShowTeilnehmerExplorer
+        _schalterPinImage = pinTeilnehmerImage
+        _schalterLayerListe = layerTeilnehmerliste
+        _schalterLayerListeTransform = layerTeilnehmerlisteTrans
+        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
     End Sub
 
     Private Sub tabitemSkikursgruppen_GotFocus(sender As Object, e As RoutedEventArgs)
-        _layerDetails = layerSkikursgruppendetails
-        _btnShowEplorer = btnShowSkikursgruppenExplorer
-        _pinImage = pinSkikursgruppenImage
-        _layerListe = layerSkikursgruppenliste
-        _layerListeTransform = layerSkikursgruppenlisteTrans
-        _dummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
+        _schalterLayerDetails = layerSkikursgruppendetails
+        _schalterBtnShowEplorer = btnShowSkikursgruppenExplorer
+        _schalterPinImage = pinSkikursgruppenImage
+        _schalterLayerListe = layerSkikursgruppenliste
+        _schalterLayerListeTransform = layerSkikursgruppenlisteTrans
+        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
     End Sub
 
 #End Region

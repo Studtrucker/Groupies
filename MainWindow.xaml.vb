@@ -9,6 +9,7 @@ Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
 Imports System.Windows.Media.Animation
 Imports Microsoft.Office.Core
+Imports System.Windows.Controls.Primitives
 
 Class MainWindow
 
@@ -17,6 +18,7 @@ Class MainWindow
     Private _dummySpalteFuerLayerSkikursgruppenDetails As ColumnDefinition
 
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
+    Private _skikursgruppenListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
     Private _skischule As Entities.Skischule
@@ -26,8 +28,9 @@ Class MainWindow
     Private _schalterBtnShowEplorer As Button
     Private _schalterPinImage As Image
     Private _schalterLayerListe As Grid
-    Private _schalterLayerListeTransform As Transform
+    Private _schalterLayerListeTransform As TranslateTransform
     Private _schalterDummySpalteFuerLayerDetails As ColumnDefinition
+    Private _schalterBtnPinit As ToggleButton
 
 #End Region
 
@@ -54,6 +57,8 @@ Class MainWindow
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _teilnehmerListCollectionView_CurrentChanged)
+        _skikursgruppenListCollectionView = New ListCollectionView(New SkikursgruppenCollection())
+        AddHandler _skikursgruppenListCollectionView.CurrentChanged, New EventHandler(AddressOf _skikursgruppenListCollectionView_CurrentChanged)
 
     End Sub
 
@@ -218,19 +223,19 @@ Class MainWindow
     Private Sub HandleButtonExpMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' TeilnehmerDetails-Grid mit den Explorern einblenden
-        If (layerTeilnehmerliste.Visibility <> Visibility.Visible) Then
+        If (_schalterLayerListe.Visibility <> Visibility.Visible) Then
 
             ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
             ' Explorer"-Spalte nach rechts versetzen
-            layerTeilnehmerlisteTrans.X = layerTeilnehmerliste.ColumnDefinitions(1).Width.Value
+            _schalterLayerListeTransform.X = _schalterLayerListe.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1-Grid sichtbar machen
-            layerTeilnehmerliste.Visibility = Visibility.Visible
+            _schalterLayerListe.Visibility = Visibility.Visible
 
             ' 3. Die X-Property der layer1Trans vom aktuellen Wert
             ' hin zum Wert 0 animieren, Dauer 500 Millisek
             Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            layerTeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+            _schalterLayerListeTransform.BeginAnimation(TranslateTransform.XProperty, ani)
 
         End If
 
@@ -239,16 +244,16 @@ Class MainWindow
     Private Sub HandleLayerdetailsMouseEnter(sender As Object, e As RoutedEventArgs)
 
         ' layer1-Grid ausblenden
-        If (Not btnTeilnehmerPinIt.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
+        If (Not _schalterBtnPinit.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
 
             ' 1. Zielwert für die Animation setzen
-            Dim [to] = layerTeilnehmerliste.ColumnDefinitions(1).Width.Value
+            Dim [to] = _schalterLayerListe.ColumnDefinitions(1).Width.Value
 
             ' 2. layer1Trans.X zum ermittelten Zielwert animieren
             ' und EventHandler für Completed-Event installieren
             Dim ani = New DoubleAnimation([to], New Duration(TimeSpan.FromMilliseconds(500)))
             AddHandler ani.Completed, New EventHandler(AddressOf ani_Completed)
-            layerTeilnehmerlisteTrans.BeginAnimation(TranslateTransform.XProperty, ani)
+            _schalterLayerListeTransform.BeginAnimation(TranslateTransform.XProperty, ani)
 
         End If
 
@@ -256,7 +261,7 @@ Class MainWindow
 
     Sub ani_Completed(sender As Object, e As EventArgs)
         ' 3. layer1-Grid ausblenden
-        layerTeilnehmerliste.Visibility = Visibility.Collapsed
+        _schalterLayerListe.Visibility = Visibility.Collapsed
     End Sub
 
 #End Region
@@ -385,10 +390,9 @@ Class MainWindow
 
 #Region "Sonstige Eventhandler"
 
-    Private Sub HandleLayerTeilnehmerMouseEnter(sender As Object, e As RoutedEventArgs)
-
+    Sub _skikursgruppenListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
+        RefreshTaskBarItemOverlay()
     End Sub
-
     Sub _teilnehmerListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
         RefreshTaskBarItemOverlay()
     End Sub
@@ -547,7 +551,7 @@ Class MainWindow
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
         SetView(_skischule.Teilnehmerliste)
-
+        SetView(_skischule.Skikursgruppenliste)
     End Sub
 
     Private Sub SetView(Teilnehmers As TeilnehmerCollection)
@@ -559,6 +563,15 @@ Class MainWindow
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
     End Sub
+    Private Sub SetView(Skikursgruppen As SkikursgruppenCollection)
+        _skischule.Skikursgruppenliste = Skikursgruppen
+        _skikursgruppenListCollectionView = New ListCollectionView(Skikursgruppen)
+        ' Hinweis AddHandler Seite 764
+        AddHandler _skikursgruppenListCollectionView.CurrentChanged, AddressOf _skikursgruppenListCollectionView_CurrentChanged
+        ' DataContext wird gesetzt
+        ' Inhalt = CollectionView, diese kennt sein CurrentItem
+        tabitemSkikursgruppen.DataContext = _skikursgruppenListCollectionView
+    End Sub
 
     Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
         _schalterLayerDetails = layerTeilnehmerdetails
@@ -567,6 +580,7 @@ Class MainWindow
         _schalterLayerListe = layerTeilnehmerliste
         _schalterLayerListeTransform = layerTeilnehmerlisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
+        _schalterBtnPinit = btnTeilnehmerPinIt
     End Sub
 
     Private Sub tabitemSkikursgruppen_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -576,6 +590,7 @@ Class MainWindow
         _schalterLayerListe = layerSkikursgruppenliste
         _schalterLayerListeTransform = layerSkikursgruppenlisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
+        _schalterBtnPinit = btnSkikursgruppenPinIt
     End Sub
 
 #End Region

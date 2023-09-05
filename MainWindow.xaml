@@ -300,9 +300,9 @@
                                     </Grid>
                                          <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Gruppenname" />
-                                                <DataGridTextColumn Header="Angezeigter Name"  />
-                                                <DataGridTextColumn Header="Skilehrer" Width="*" />
+                                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding GruppenName}"/>
+                                            <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
+                                            <DataGridTextColumn Header="Skilehrer" Width="*" Binding="{Binding Skilehrer.AngezeigterName}" />
                                             </DataGrid.Columns>
                                         </DataGrid>     
                                 </DockPanel>

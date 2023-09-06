@@ -95,8 +95,6 @@
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
             <TabItem x:Name="tabitemTeilnehmer" Header="Teilnehmer"  GotFocus="tabitemTeilnehmer_GotFocus">
-                
-
 
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
@@ -298,9 +296,12 @@
                                         </ToggleButton>
 
                                     </Grid>
-                                         <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1"  >
+                                    <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
+                                   SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                                   HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                                   RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                             <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding GruppenName}"/>
+                                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
                                             <DataGridTextColumn Header="Skilehrer" Width="*" Binding="{Binding Skilehrer.AngezeigterName}" />
                                             </DataGrid.Columns>

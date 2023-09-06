@@ -398,7 +398,7 @@ Class MainWindow
     End Sub
 
     Private Sub RefreshTaskBarItemOverlay()
-        Dim currentTeilnehmer = DirectCast(_teilnehmerListCollectionView.CurrentItem, Teilnehmer)
+        ' Dim currentTeilnehmer = DirectCast(_teilnehmerListCollectionView.CurrentItem, Teilnehmer)
 
         'Todo: Aufbereiten für die Skilehrer Bilder
 
@@ -429,19 +429,9 @@ Class MainWindow
             Exit Sub
         End If
 
-        ' Datei enzippen und deserialisieren
-        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
-        Dim loadedSkischule As Entities.Skischule = Nothing
-        Using fs = New FileStream(fileName, FileMode.Open)
-            Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
-                Try
-                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skischule)
-                Catch ex As InvalidDataException
-                    MessageBox.Show("Datei ungültig: " & ex.Message)
-                    Exit Sub
-                End Try
-            End Using
-        End Using
+        Dim loadedSkischule = OpenXML(fileName)
+        'Dim loadedSkischule = OpenZIP(fileName)
+        If loadedSkischule Is Nothing Then Exit Sub
 
         _skischule = Nothing
 
@@ -452,18 +442,65 @@ Class MainWindow
 
     End Sub
 
+    Private Function OpenXML(fileName As String) As Entities.Skischule
+        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Dim loadedSkischule As Entities.Skischule = Nothing
+
+        ' Datei deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Try
+                loadedSkischule = TryCast(serializer.Deserialize(fs), Entities.Skischule)
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Return Nothing
+            End Try
+        End Using
+        Return loadedSkischule
+    End Function
+
+    Private Function OpenZIP(fileName As String) As Entities.Skischule
+        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Dim loadedSkischule As Entities.Skischule = Nothing
+
+        ' Datei entzippen und deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
+                Try
+                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skischule)
+                Catch ex As InvalidDataException
+                    MessageBox.Show("Datei ungültig: " & ex.Message)
+                    Return Nothing
+                End Try
+            End Using
+        End Using
+        Return loadedSkischule
+    End Function
+
+
     Private Sub SaveSkischule(fileName As String)
         ' 1. Skischule serialisieren und gezippt abspeichern
+        SaveXML(fileName)
+        'SaveZIP(fileName)
+        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+        Title = "Skischule - " & fileName
+        QueueMostRecentFilename(fileName)
+        MessageBox.Show("Skischule gespeichert!")
+    End Sub
+
+    Private Sub SaveZIP(fileName As String)
         Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
                 serializer.Serialize(zipStream, _skischule)
             End Using
         End Using
-        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Skischule - " & fileName
-        QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skischule gespeichert!")
+    End Sub
+
+    Private Sub SaveXML(fileName As String)
+        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Using fs = New FileStream(fileName, FileMode.Create)
+            serializer.Serialize(fs, _skischule)
+        End Using
     End Sub
 
     Private Sub QueueMostRecentFilename(fileName As String)

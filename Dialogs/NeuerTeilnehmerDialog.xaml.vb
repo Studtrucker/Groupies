@@ -46,7 +46,6 @@ Public Class NeuerTeilnehmerDialog
 
     Private Sub HandleButtonCancelClick(sender As Object, e As RoutedEventArgs)
         DialogResult = False
-
     End Sub
 
 

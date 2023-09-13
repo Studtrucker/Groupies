@@ -250,5 +250,8 @@
   <ItemGroup>
     <Resource Include="Images\icons8-ski-goggles-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-ski-resort-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

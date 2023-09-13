@@ -51,10 +51,10 @@ Public Module DatenImport
 
     Private Function FindLevel(Benennung As String) As Level
 
-        Dim Level = _skischule.Levelsliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
+        Dim Level = _skischule.Levelliste.FirstOrDefault(Function(k) k.Benennung = Benennung)
         If Level Is Nothing Then
             Level = New Level With {.Benennung = Benennung}
-            _skischule.Levelsliste.Add(Level)
+            _skischule.Levelliste.Add(Level)
         End If
 
         Return Level

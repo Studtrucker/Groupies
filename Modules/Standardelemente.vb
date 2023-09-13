@@ -3,7 +3,7 @@ Imports Skischule.Entities
 
 Module Standardelemente
 
-    Public Function erstelleLevels() As LevelsCollection
+    Public Function erstelleLevels() As LevelCollection
 
         Dim Anfaenger = New Level With {
             .Benennung = "Anfänger",
@@ -30,7 +30,7 @@ Module Standardelemente
             .Beschreibung = BeschreibungExperte(),
             .LevelID = Guid.NewGuid}
 
-        Return New LevelsCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+        Return New LevelCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
 
     End Function
 
@@ -82,7 +82,7 @@ Module Standardelemente
         Return sb.ToString
     End Function
 
-    Public Function erstelleGruppen(Anzahl As Integer) As SkikursgruppenCollection
+    Public Function erstelleGruppen(Anzahl As Integer) As SkikursgruppeCollection
         'Todo: Gruppenlevel einbauen
 
         If Anzahl = 15 Then
@@ -94,7 +94,7 @@ Module Standardelemente
 
     End Function
 
-    Private Function erstelle5Gruppen() As SkikursgruppenCollection
+    Private Function erstelle5Gruppen() As SkikursgruppeCollection
 
 
         Dim GA1 = New Skikursgruppe With {
@@ -115,11 +115,11 @@ Module Standardelemente
             .Gruppenname = "Experten",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(4)}
 
-        Return New SkikursgruppenCollection From {GA1, GF1, GG1, GK1, GE1}
+        Return New SkikursgruppeCollection From {GA1, GF1, GG1, GK1, GE1}
 
     End Function
 
-    Private Function erstelle10Gruppen() As SkikursgruppenCollection
+    Private Function erstelle10Gruppen() As SkikursgruppeCollection
 
         Dim GA1 = New Skikursgruppe With {
             .Gruppenname = "Anfänger",
@@ -156,10 +156,10 @@ Module Standardelemente
             .Gruppenname = "Experten",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(9)}
 
-        Return New SkikursgruppenCollection From {GA1, GF1, GF2, GG1, GG2, GG3, GG4, GK1, GK2, GE1}
+        Return New SkikursgruppeCollection From {GA1, GF1, GF2, GG1, GG2, GG3, GG4, GK1, GK2, GE1}
     End Function
 
-    Private Function erstelle15Gruppen() As SkikursgruppenCollection
+    Private Function erstelle15Gruppen() As SkikursgruppeCollection
 
 
 
@@ -213,7 +213,7 @@ Module Standardelemente
             .Gruppenname = "Experten 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(14)}
 
-        Return New SkikursgruppenCollection From {GA1, GA2, GF1, GF2, GF3, GG1, GG2, GG3, GG4, GG5, GK1, GK2, GK3, GE1, GE2}
+        Return New SkikursgruppeCollection From {GA1, GA2, GF1, GF2, GF3, GG1, GG2, GG3, GG4, GG5, GK1, GK2, GK3, GE1, GE2}
 
     End Function
 

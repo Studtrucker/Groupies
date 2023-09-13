@@ -8,31 +8,31 @@ Namespace Entities
 #Region "Fields"
 
         Public Property Teilnehmerliste() As TeilnehmerCollection
-        Public Property Skikursgruppenliste() As SkikursgruppenCollection
-        Public Property Levelsliste() As LevelsCollection
+        Public Property Skikursgruppenliste() As SkikursgruppeCollection
+        Public Property Levelliste() As LevelCollection
         Public Property Skilehrerliste() As UebungsleiterCollection
 
 #End Region
 
 #Region "Constructor"
         Public Sub New()
-            _Skikursgruppenliste = New SkikursgruppenCollection
+            _Skikursgruppenliste = New SkikursgruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
-            _Levelsliste = New LevelsCollection
+            _Levelliste = New LevelCollection
             _Skilehrerliste = New UebungsleiterCollection
         End Sub
 
         Public Sub New(Teilnehmerliste As TeilnehmerCollection)
-            _Skikursgruppenliste = New SkikursgruppenCollection
+            _Skikursgruppenliste = New SkikursgruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
-            _Levelsliste = New LevelsCollection
+            _Levelliste = New LevelCollection
             readTeilnehmerliste(Teilnehmerliste)
         End Sub
 
 #End Region
 
         Private Sub erstelleBasisobjekte()
-            Levelsliste = Standardelemente.erstelleLevels
+            Levelliste = Standardelemente.erstelleLevels
             Skikursgruppenliste = Standardelemente.erstelleGruppen(10)
         End Sub
 

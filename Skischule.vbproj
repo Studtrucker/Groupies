@@ -72,6 +72,9 @@
     </ApplicationDefinition>
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
+    <Compile Include="Dialogs\NeuesLevel.xaml.vb">
+      <DependentUpon>NeuesLevel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NeueGruppeDialog.xaml.vb">
       <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
     </Compile>
@@ -81,7 +84,7 @@
     <Compile Include="Dialogs\NeuerTeilnehmerDialog.xaml.vb">
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SkikursgruppenCollection.vb" />
+    <Compile Include="Entities\SkikursgruppeCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
     <Compile Include="Modules\Standardelemente.vb" />
     <Compile Include="Modules\TestStreamreader.vb" />
@@ -89,6 +92,10 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
+    <Page Include="Dialogs\NeuesLevel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\NeueGruppeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,7 +117,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\SkischuleBefehle.vb" />
-    <Compile Include="Entities\LevelsCollection.vb" />
+    <Compile Include="Entities\LevelCollection.vb" />
     <Compile Include="Modules\DatenImport.vb" />
     <Compile Include="Entities\Level.vb" />
     <Compile Include="Entities\Skikursgruppe.vb" />
@@ -252,6 +259,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-ski-resort-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-treppe-rauf-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

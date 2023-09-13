@@ -10,20 +10,24 @@ Imports System.IO.IsolatedStorage
 Imports System.Windows.Media.Animation
 Imports Microsoft.Office.Core
 Imports System.Windows.Controls.Primitives
+Imports System.Text
 
 Class MainWindow
 
 #Region "Fields"
     Private _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
     Private _dummySpalteFuerLayerSkikursgruppenDetails As ColumnDefinition
+    Private _dummySpalteFuerLayerUebungsleiterDetails As ColumnDefinition
+    Private _dummySpalteFuerLayerLevelDetails As ColumnDefinition
 
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursgruppenListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _skilehrerListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _skikursListFile As FileInfo
+    Private _uebungsleiterListCollectionView As ICollectionView '... DataContext für das MainWindow
+    Private _levelListCollectionView As ICollectionView '... DataContext für das MainWindow
+
+    Private _skischuleListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
     Private _skischule As Entities.Skischule
-
 
     Private _schalterLayerDetails As Grid
     Private _schalterBtnShowEplorer As Button
@@ -48,6 +52,8 @@ Class MainWindow
         ' layer1-Grid
         _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinTeilnehmerSpalte"}
         _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinSkikursgruppenSpalte"}
+        _dummySpalteFuerLayerUebungsleiterDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinUebungsleiterSpalte"}
+        _dummySpalteFuerLayerLevelDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinLevelSpalte"}
 
         ' das Grid gleich zu Beginn pinnen
         layerTeilnehmerliste.Visibility = Visibility.Visible
@@ -55,9 +61,13 @@ Class MainWindow
         btnTeilnehmerPinIt.IsChecked = True
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
-        AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _teilnehmerListCollectionView_CurrentChanged)
-        _skikursgruppenListCollectionView = New ListCollectionView(New SkikursgruppenCollection())
-        AddHandler _skikursgruppenListCollectionView.CurrentChanged, New EventHandler(AddressOf _skikursgruppenListCollectionView_CurrentChanged)
+        AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
+        _skikursgruppenListCollectionView = New ListCollectionView(New SkikursgruppeCollection())
+        AddHandler _skikursgruppenListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
+        _uebungsleiterListCollectionView = New ListCollectionView(New UebungsleiterCollection())
+        AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
+        _levelListCollectionView = New ListCollectionView(New LevelCollection())
+        AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
 
     End Sub
 
@@ -92,14 +102,16 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeueGruppe, AddressOf HandleNeueGruppeExecuted, AddressOf HandleNeueGruppeCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.GruppeLoeschen, AddressOf HandleGruppeLoeschenExecuted, AddressOf HandleGruppeLoeschenCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuesLevel, AddressOf HandleNeuesLevelExecuted, AddressOf HandleNeuesLevelCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.LevelLoeschen, AddressOf HandleLevelLoeschenExecuted, AddressOf HandleLevelLoeschenCanExecuted))
 
-        ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
+        ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
 
-        ' 3. SortedList für meist genutzte Freundeslisten befüllen
+        ' 3. SortedList für meist genutzte Skischulen befüllen
         LoadmRUSortedListMenu()
 
-        ' 4. Die zuletzt verwendete Freundesliste laden, falls nicht eine .ski-Datei doppelgeklickt wurde
+        ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
@@ -120,11 +132,11 @@ Class MainWindow
     Private Sub HandleMainwindowClosed(sender As Object, e As EventArgs)
 
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
-        If _skikursListFile IsNot Nothing Then
+        If _skischuleListFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
                 Using stream = New IsolatedStorageFileStream("LastSkischule", System.IO.FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        writer.WriteLine(_skikursListFile.FullName)
+                        writer.WriteLine(_skischuleListFile.FullName)
                     End Using
                 End Using
             End Using
@@ -351,21 +363,21 @@ Class MainWindow
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If _skikursListFile IsNot Nothing Then
-            dlg.FileName = _skikursListFile.Name
+        If _skischuleListFile IsNot Nothing Then
+            dlg.FileName = _skischuleListFile.Name
         End If
 
         If dlg.ShowDialog = True Then
             SaveSkischule(dlg.FileName)
-            _skikursListFile = New FileInfo(dlg.FileName)
+            _skischuleListFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleListSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If _skikursListFile Is Nothing Then
+        If _skischuleListFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(_skikursListFile.FullName)
+            SaveSkischule(_skischuleListFile.FullName)
         End If
     End Sub
     Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -408,6 +420,28 @@ Class MainWindow
         e.CanExecute = True
     End Sub
 
+    Private Sub HandleLevelLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("Level löschen")
+    End Sub
+
+    Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuesLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        If dlg.ShowDialog = True Then
+            _skischule.Levelliste.Add(dlg.Level)
+            _levelListCollectionView.MoveCurrentTo(dlg.Level)
+            levelDataGrid.ScrollIntoView(dlg.Level)
+        End If
+    End Sub
+
+
     Private Sub HandleNeueGruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
@@ -427,8 +461,8 @@ Class MainWindow
 
         If dlg.ShowDialog = True Then
             _skischule.Skilehrerliste.Add(dlg.Skilehrer)
-            _skilehrerListCollectionView.MoveCurrentTo(dlg.Skilehrer)
-            'skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
+            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Skilehrer)
+            skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
         End If
     End Sub
 
@@ -440,15 +474,65 @@ Class MainWindow
         MessageBox.Show("TN löschen")
     End Sub
 
+    Private Sub HandleDrop(sender As Object, e As DragEventArgs)
+
+        Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
+        Dim validPictureFile = False
+
+        If filepath.Length > 0 Then
+            Dim extension As String = Path.GetExtension(filepath(0)).ToLower()
+
+            If ImageTypes.AllImageTypes.Contains(extension) Then
+                Using filestream = New FileStream(filepath(0), FileMode.Open)
+                    Dim buffer = New Byte(filestream.Length - 1) {}
+                    filestream.Read(buffer, 0, filestream.Length)
+                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Uebungsleiter).Foto = buffer
+                    RefreshTaskBarItemOverlay()
+                    CommandManager.InvalidateRequerySuggested()
+                    validPictureFile = True
+                End Using
+            Else
+                Dim sb As StringBuilder = New StringBuilder()
+                sb.AppendLine("Es werden nur die folgenden Dateiformate")
+                sb.Append("unterstützt: ")
+
+                For Each fileformat As String In ImageTypes.AllImageTypes
+                    sb.Append(fileformat)
+                    sb.Append(", ")
+                Next
+                ' Das letzte ", " entfernen und Zeilenumbruch einfügen
+                sb.Remove(sb.Length - 2, 1)
+                MessageBox.Show(sb.ToString)
+            End If
+        End If
+
+        If filepath.Length > 1 AndAlso validPictureFile Then
+            MessageBox.Show("Sie haben mehr als eine Datei gedroppt, es wird nur die erste verwendet.")
+        End If
+
+    End Sub
+
+    Private Sub HandleDragOver(sender As Object, e As DragEventArgs)
+
+        e.Effects = DragDropEffects.None
+        Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
+
+        If filepath.Length > 0 Then
+            Dim extension As String = Path.GetExtension(filepath(0)).ToLower()
+
+            If ImageTypes.AllImageTypes.Contains(extension) Then
+                e.Effects = DragDropEffects.Copy
+            End If
+        End If
+
+        e.Handled = True
+    End Sub
 
 #End Region
 
 #Region "Sonstige Eventhandler"
 
-    Sub _skikursgruppenListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
-        RefreshTaskBarItemOverlay()
-    End Sub
-    Sub _teilnehmerListCollectionView_CurrentChanged(sender As Object, e As EventArgs)
+    Sub _listCollectionView_CurrentChanged(sender As Object, e As EventArgs)
         RefreshTaskBarItemOverlay()
     End Sub
 
@@ -474,7 +558,7 @@ Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        If _skikursListFile IsNot Nothing AndAlso fileName.Equals(_skikursListFile.FullName) Then
+        If _skischuleListFile IsNot Nothing AndAlso fileName.Equals(_skischuleListFile.FullName) Then
             MessageBox.Show("Die Skischule " & fileName & " ist bereits geöffnet")
             Exit Sub
         End If
@@ -490,7 +574,7 @@ Class MainWindow
 
         _skischule = Nothing
 
-        _skikursListFile = New FileInfo(fileName)
+        _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
         SetView(loadedSkischule)
         Title = "Skischule - " & fileName
@@ -644,25 +728,47 @@ Class MainWindow
         _skischule = Schule
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursgruppenliste)
+        SetView(_skischule.Skilehrerliste)
+        SetView(_skischule.Levelliste)
     End Sub
 
     Private Sub SetView(Teilnehmers As TeilnehmerCollection)
         _skischule.Teilnehmerliste = Teilnehmers
         _teilnehmerListCollectionView = New ListCollectionView(Teilnehmers)
         ' Hinweis AddHandler Seite 764
-        AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _teilnehmerListCollectionView_CurrentChanged
+        AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
     End Sub
-    Private Sub SetView(Skikursgruppen As SkikursgruppenCollection)
+    Private Sub SetView(Skikursgruppen As SkikursgruppeCollection)
         _skischule.Skikursgruppenliste = Skikursgruppen
         _skikursgruppenListCollectionView = New ListCollectionView(Skikursgruppen)
         ' Hinweis AddHandler Seite 764
-        AddHandler _skikursgruppenListCollectionView.CurrentChanged, AddressOf _skikursgruppenListCollectionView_CurrentChanged
+        AddHandler _skikursgruppenListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemSkikursgruppen.DataContext = _skikursgruppenListCollectionView
+    End Sub
+
+    Private Sub SetView(Skilehrer As UebungsleiterCollection)
+        _skischule.Skilehrerliste = Skilehrer
+        _uebungsleiterListCollectionView = New ListCollectionView(Skilehrer)
+        ' Hinweis AddHandler Seite 764
+        AddHandler _uebungsleiterListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
+        ' DataContext wird gesetzt
+        ' Inhalt = CollectionView, diese kennt sein CurrentItem
+        tabitemUebungsleiter.DataContext = _uebungsleiterListCollectionView
+    End Sub
+
+    Private Sub SetView(Level As LevelCollection)
+        _skischule.Levelliste = Level
+        _levelListCollectionView = New ListCollectionView(Level)
+        ' Hinweis AddHandler Seite 764
+        AddHandler _levelListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
+        ' DataContext wird gesetzt
+        ' Inhalt = CollectionView, diese kennt sein CurrentItem
+        tabitemLevels.DataContext = _levelListCollectionView
     End Sub
 
     Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -685,6 +791,25 @@ Class MainWindow
         _schalterBtnPinit = btnSkikursgruppenPinIt
     End Sub
 
+    Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)
+        _schalterLayerDetails = layerSkilehrerdetails
+        _schalterBtnShowEplorer = btnShowSkilehrerExplorer
+        _schalterPinImage = pinSkilehrerImage
+        _schalterLayerListe = layerSkilehrerliste
+        _schalterLayerListeTransform = layerSkilehrerlisteTrans
+        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerUebungsleiterDetails
+        _schalterBtnPinit = btnSkilehrerPinIt
+    End Sub
+
+    Private Sub tabitemLevel_GotFocus(sender As Object, e As RoutedEventArgs)
+        _schalterLayerDetails = layerLeveldetails
+        _schalterBtnShowEplorer = btnShowLevelExplorer
+        _schalterPinImage = pinLevelImage
+        _schalterLayerListe = layerLevelliste
+        _schalterLayerListeTransform = layerLevellisteTrans
+        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerLevelDetails
+        _schalterBtnPinit = btnLevelPinIt
+    End Sub
 #End Region
 
 End Class

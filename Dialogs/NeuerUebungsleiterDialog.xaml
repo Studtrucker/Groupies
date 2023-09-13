@@ -11,7 +11,7 @@
         Title="Neuer Übungsleiter" Height="300" Width="550">
     
     <Window.Resources>
-        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibiltityInverted"/>
+        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
     </Window.Resources>
     
     <DockPanel>
@@ -54,9 +54,9 @@
                 <Grid>
                     <Rectangle Fill="{StaticResource DefaultImageBrush}"/>
                     <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
-                           Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibiltityInverted}}"/>
+                           Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                     <TextBlock TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"  
-                               Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibiltityInverted}}">Bild per
+                               Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop setzen
                     </TextBlock>
                     <Image Width="120" Height="160" Source="{Binding Foto}" Stretch="Fill"/>

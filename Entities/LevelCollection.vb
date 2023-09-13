@@ -2,7 +2,7 @@
 
 Namespace Entities
 
-    Public Class LevelsCollection
+    Public Class LevelCollection
         Inherits ObservableCollection(Of Level)
 
     End Class

@@ -7,6 +7,8 @@
     Private ReadOnly _teilnehmerLoeschen As RoutedUICommand
     Private ReadOnly _neuerUebungsleiter As RoutedUICommand
     Private ReadOnly _uebungsleiterLoeschen As RoutedUICommand
+    Private ReadOnly _neuesLevel As RoutedUICommand
+    Private ReadOnly _levelLoeschen As RoutedUICommand
 
     Sub New()
         _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkischuleBefehle))
@@ -17,6 +19,8 @@
         _teilnehmerLoeschen = New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkischuleBefehle))
         _neuerUebungsleiter = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkischuleBefehle))
         _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkischuleBefehle))
+        _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkischuleBefehle))
+        _levelLoeschen = New RoutedUICommand("Level löschen", "LevelLoeschen", GetType(SkischuleBefehle))
     End Sub
 
     Public ReadOnly Property ImportTeilnehmerliste As RoutedUICommand
@@ -64,6 +68,18 @@
     Public ReadOnly Property UebungsleiterLoeschen As RoutedUICommand
         Get
             Return _uebungsleiterLoeschen
+        End Get
+    End Property
+
+    Public ReadOnly Property NeuesLevel As RoutedUICommand
+        Get
+            Return _neuesLevel
+        End Get
+    End Property
+
+    Public ReadOnly Property LevelLoeschen As RoutedUICommand
+        Get
+            Return _levelLoeschen
         End Get
     End Property
 End Module

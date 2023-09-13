@@ -297,7 +297,7 @@
                                         </ToggleButton>
 
                                     </Grid>
-                                    <DataGrid x:Name="skigruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
+                                    <DataGrid x:Name="skikursgruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                    SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                    HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                    RowStyle="{StaticResource friendDataGridRowStyle}"   >

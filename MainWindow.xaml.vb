@@ -46,10 +46,8 @@ Class MainWindow
         ' Spalte initialisieren und in dieselbe Gruppe setzen,
         ' wie die Spalte mit dem Freunde Explorer im
         ' layer1-Grid
-        _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition()
-        _dummySpalteFuerLayerTeilnehmerDetails.SharedSizeGroup = "pinTeilnehmerSpalte"
-        _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition()
-        _dummySpalteFuerLayerSkikursgruppenDetails.SharedSizeGroup = "pinSkikursgruppenSpalte"
+        _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinTeilnehmerSpalte"}
+        _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinSkikursgruppenSpalte"}
 
         ' das Grid gleich zu Beginn pinnen
         layerTeilnehmerliste.Visibility = Visibility.Visible
@@ -380,9 +378,7 @@ Class MainWindow
 
     Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        Dim dlg = New NeuerTeilnehmerDialog
-        dlg.Owner = Me
-        dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner
+        Dim dlg = New NeuerTeilnehmerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             _skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
@@ -413,7 +409,12 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeueGruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("Neue Gruppe")
+        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        If dlg.ShowDialog = True Then
+            _skischule.Skikursgruppenliste.Add(dlg.Skikursgruppe)
+            _skikursgruppenListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
+            skikursgruppenDataGrid.ScrollIntoView(dlg.Skikursgruppe)
+        End If
     End Sub
 
 
@@ -422,14 +423,12 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerUebungsleiterDialog
-        dlg.Owner = Me
-        dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner
+        Dim dlg = New NeuerUebungsleiterDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             _skischule.Skilehrerliste.Add(dlg.Skilehrer)
             _skilehrerListCollectionView.MoveCurrentTo(dlg.Skilehrer)
-            skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
+            'skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
         End If
     End Sub
 

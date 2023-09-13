@@ -72,6 +72,9 @@
     </ApplicationDefinition>
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
+    <Compile Include="Dialogs\NeueGruppeDialog.xaml.vb">
+      <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NeuerUebungsleiterDialog.xaml.vb">
       <DependentUpon>NeuerUebungsleiterDialog.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,10 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
+    <Page Include="Dialogs\NeueGruppeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\NeuerUebungsleiterDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

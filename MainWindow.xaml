@@ -78,12 +78,13 @@
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
                 <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkischuleBefehle.NeuerTeilnehmer}"/>
-                <MenuItem Header="Teilnehmer bearbeiten" Command="{x:Static local:SkischuleBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkischuleBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkischuleBefehle.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkischuleBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Gruppe bearbeiten" Command="{x:Static local:SkischuleBefehle.ErstelleGruppen}"/>
-                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkischuleBefehle.ErstelleGruppen}"/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static local:SkischuleBefehle.NeuerUebungsleiter}"/>
+                <MenuItem Header="Skilehrer löschen" Command="{x:Static local:SkischuleBefehle.UebungsleiterLoeschen}"/>
+                <Separator/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkischuleBefehle.NeueGruppe}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkischuleBefehle.GruppeLoeschen}"/>
             </MenuItem>
 
             <MenuItem  Header="Extras" Background="white" Foreground="Black">

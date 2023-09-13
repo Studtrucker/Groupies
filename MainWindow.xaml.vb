@@ -19,6 +19,7 @@ Class MainWindow
 
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursgruppenListCollectionView As ICollectionView '... DataContext für das MainWindow
+    Private _skilehrerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
     Private _skischule As Entities.Skischule
@@ -86,8 +87,13 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
-        CommandBindings.Add(New CommandBinding(SkischuleBefehle.BeurteileTeilnehmerkoennen, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuerUebungsleiter, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeueGruppe, AddressOf HandleNeueGruppeExecuted, AddressOf HandleNeueGruppeCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.GruppeLoeschen, AddressOf HandleGruppeLoeschenExecuted, AddressOf HandleGruppeLoeschenCanExecuted))
 
         ' 2. SortedList für meist genutzte Freundeslisten (Most Recently Used) initialisieren
         _mRUSortedList = New SortedList(Of Integer, String)
@@ -385,6 +391,56 @@ Class MainWindow
         End If
 
     End Sub
+
+    Private Sub HandleUebungsleiterLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleUebungsleiterLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("SL löschen")
+    End Sub
+
+    Private Sub HandleGruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleGruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("Gruppe löschen")
+    End Sub
+
+    Private Sub HandleNeueGruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleNeueGruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("Neue Gruppe")
+    End Sub
+
+
+    Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuerUebungsleiterDialog
+        dlg.Owner = Me
+        dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner
+
+        If dlg.ShowDialog = True Then
+            _skischule.Skilehrerliste.Add(dlg.Skilehrer)
+            _skilehrerListCollectionView.MoveCurrentTo(dlg.Skilehrer)
+            skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
+        End If
+    End Sub
+
+    Private Sub HandleTeilnehmerLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("TN löschen")
+    End Sub
+
 
 #End Region
 

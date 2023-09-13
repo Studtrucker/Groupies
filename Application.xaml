@@ -7,5 +7,26 @@
     
     <Application.Resources>
         
+        <SolidColorBrush x:Key="darkRedBrush" Color="DarkRed"/>
+        
+        <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
+            <GradientStop Offset="0" Color="White"/>
+            <GradientStop Offset="0.6" Color="LightGray"/>
+            <GradientStop Offset="1.5" Color="DarkGray"/>
+        </LinearGradientBrush>
+
+        <!--<DrawingImage x:Key="DefaultDrawingImage">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{StaticResource darkRedBrush}" Geometry="M 0,50 L 50,0 L 100,0 L 150,50 Z" />
+                    <GeometryDrawing Brush="{StaticResource darkRedBrush}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="75,-60" RadiusX="40" RadiusY="40"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>-->
+        
     </Application.Resources>
 </Application>

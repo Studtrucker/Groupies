@@ -70,6 +70,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants\ImageTypes.vb" />
+    <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
+    <Compile Include="Dialogs\NeuerUebungsleiterDialog.xaml.vb">
+      <DependentUpon>NeuerUebungsleiterDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NeuerTeilnehmerDialog.xaml.vb">
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
@@ -80,7 +85,11 @@
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidationRules\VornameValidationRule.vb" />
+    <Compile Include="ValidationRules\NameValidationRule.vb" />
+    <Page Include="Dialogs\NeuerUebungsleiterDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\NeuerTeilnehmerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,6 +236,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-microsoft-excel-2019-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-ski-goggles-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-ski-goggles-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

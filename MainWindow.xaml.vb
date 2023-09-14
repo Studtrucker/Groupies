@@ -411,7 +411,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleUebungsleiterLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleUebungsleiterLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -419,7 +419,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleGruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = tabitemSkikursgruppen.IsSelected And skikursgruppenDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleGruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -427,19 +427,19 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeueGruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = _skischule IsNot Nothing
     End Sub
 
     Private Sub HandleLevelLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = tabitemLevels.IsSelected And levelDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("Level löschen")
+
     End Sub
 
     Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = _skischule IsNot Nothing
     End Sub
 
     Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -451,7 +451,6 @@ Class MainWindow
         End If
     End Sub
 
-
     Private Sub HandleNeueGruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
@@ -460,7 +459,6 @@ Class MainWindow
             skikursgruppenDataGrid.ScrollIntoView(dlg.Skikursgruppe)
         End If
     End Sub
-
 
     Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = _skischule IsNot Nothing
@@ -472,12 +470,12 @@ Class MainWindow
         If dlg.ShowDialog = True Then
             _skischule.Skilehrerliste.Add(dlg.Skilehrer)
             _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Skilehrer)
-            skilehrerDataGrid.ScrollIntoView(dlg.Skilehrer)
+            uebungsleiterDataGrid.ScrollIntoView(dlg.Skilehrer)
         End If
     End Sub
 
     Private Sub HandleTeilnehmerLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        e.CanExecute = tabitemTeilnehmer.IsSelected And teilnehmerDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)

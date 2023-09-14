@@ -211,117 +211,7 @@
                
                 </DockPanel>
             </TabItem>
-
-            <TabItem Header="Skikursgruppen" x:Name="tabitemSkikursgruppen" GotFocus="tabitemSkikursgruppen_GotFocus" Margin="-2,-2,0,-2">
-                <TabItem.LayoutTransform>
-                    <RotateTransform Angle="270"/>
-                </TabItem.LayoutTransform>
-                
-                <DockPanel>
-                    <!-- Dock="Right" - Button, um den "Skikursgruppen Explorer" aufzuklappen -->
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Panel.ZIndex="1">
-                        <Button Margin="10,0,0,0" x:Name="btnShowSkikursgruppenExplorer" MouseEnter="HandleButtonExpMouseEnter">Liste</Button>
-                        <DockPanel LastChildFill="False" Width="100"/>
-                        <StackPanel.LayoutTransform>
-                            <RotateTransform Angle="90"/>
-                        </StackPanel.LayoutTransform>
-                    </StackPanel>
-                    
-                    <Grid  IsSharedSizeScope="True" >
-                        <Grid x:Name="layerSkikursgruppendetails" MouseEnter="HandleLayerdetailsMouseEnter" Background="White" Margin="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Grid x:Name="gridSkikursgruppendetails" >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <!-- Detailangaben -->
-                                <Grid Grid.Row="1" Margin="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="250"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Gruppenname" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="3" Content="Skilehrer" Margin="2"/>
-                                    <TextBox Text="{Binding Path=Gruppenname, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Column="1" Grid.Row="0" Margin="2"/>
-                                    <TextBox Text="{Binding Path=AngezeigterGruppenname, UpdateSourceTrigger=PropertyChanged}"
-                                             Grid.Column="1" Grid.Row="1"  Margin="2"/>
-                                    <TextBox Text="{Binding Path=Gruppenlevel.Benennung, UpdateSourceTrigger=PropertyChanged}"
-                                             Grid.Column="1" Grid.Row="2"  Margin="2"/> 
-                                    <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
-                                             Grid.Column="1" Grid.Row="3"  Margin="2"/>
-
-                                </Grid>
-                            </Grid>
-
-                        </Grid>
-                        
-                        <Grid x:Name="layerSkikursgruppenliste" Visibility="Visible" Margin="2" >
-                            <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
-                               <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition SharedSizeGroup="pinSkikursgruppeSpalte" Width="280"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RenderTransform>
-                                    <TranslateTransform x:Name="layerSkikursgruppenlisteTrans"/>
-                                </Grid.RenderTransform>
-                            
-                                <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
-                                <DockPanel>
-
-
-                                    <Grid x:Name="skikursgruppenGrid"  DockPanel.Dock="Top">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray"/>
-                                        <ToggleButton x:Name="btnSkikursgruppenPinIt" Margin="0,0,5,0"
-                                            HorizontalAlignment="Right" Width="25" 
-                                            Height="25" Checked="HandleListePinning"
-                                            Unchecked="HandleListeUnpinning" IsChecked="False">
-
-                                            <Image x:Name="pinSkikursgruppenImage" Source="Images\icons8-unpin-2-48.png"/>
-                                        </ToggleButton>
-
-                                    </Grid>
-                                    <DataGrid x:Name="skikursgruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
-                                   SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                   HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                                   RowStyle="{StaticResource friendDataGridRowStyle}"   >
-                                            <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
-                                            <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
-                                            <DataGridTextColumn Header="Skilehrer" Width="*" Binding="{Binding Skilehrer.AngezeigterName}" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>     
-                                </DockPanel>
-                            </Border>
-                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
-
-                        </Grid>
-                    </Grid>
-                    
-                </DockPanel>
-            </TabItem>
-            
+ 
             <TabItem Header="Skilehrer" x:Name="tabitemUebungsleiter" GotFocus="tabitemSkilehrer_GotFocus" Margin="-2,-2,0,-2" VerticalAlignment="Top">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
@@ -442,6 +332,117 @@
 
                 </DockPanel>
             </TabItem>
+
+            <TabItem Header="Skikursgruppen" x:Name="tabitemSkikursgruppen" GotFocus="tabitemSkikursgruppen_GotFocus" Margin="-2,-2,0,-2">
+                <TabItem.LayoutTransform>
+                    <RotateTransform Angle="270"/>
+                </TabItem.LayoutTransform>
+                
+                <DockPanel>
+                    <!-- Dock="Right" - Button, um den "Skikursgruppen Explorer" aufzuklappen -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Panel.ZIndex="1">
+                        <Button Margin="10,0,0,0" x:Name="btnShowSkikursgruppenExplorer" MouseEnter="HandleButtonExpMouseEnter">Liste</Button>
+                        <DockPanel LastChildFill="False" Width="100"/>
+                        <StackPanel.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </StackPanel.LayoutTransform>
+                    </StackPanel>
+                    
+                    <Grid  IsSharedSizeScope="True" >
+                        <Grid x:Name="layerSkikursgruppendetails" MouseEnter="HandleLayerdetailsMouseEnter" Background="White" Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Grid x:Name="gridSkikursgruppendetails" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Detailangaben -->
+                                <Grid Grid.Row="1" Margin="2" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="250"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Gruppenname" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="3" Content="Skilehrer" Margin="2"/>
+                                    <TextBox Text="{Binding Path=Gruppenname, UpdateSourceTrigger=PropertyChanged}" 
+                                        Grid.Column="1" Grid.Row="0" Margin="2"/>
+                                    <TextBox Text="{Binding Path=AngezeigterGruppenname, UpdateSourceTrigger=PropertyChanged}"
+                                             Grid.Column="1" Grid.Row="1"  Margin="2"/>
+                                    <TextBox Text="{Binding Path=Gruppenlevel.Benennung, UpdateSourceTrigger=PropertyChanged}"
+                                             Grid.Column="1" Grid.Row="2"  Margin="2"/> 
+                                    <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
+                                             Grid.Column="1" Grid.Row="3"  Margin="2"/>
+
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                        
+                        <Grid x:Name="layerSkikursgruppenliste" Visibility="Visible" Margin="2" >
+                            <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
+                               <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition SharedSizeGroup="pinSkikursgruppeSpalte" Width="280"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="layerSkikursgruppenlisteTrans"/>
+                                </Grid.RenderTransform>
+                            
+                                <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
+                                <DockPanel>
+
+
+                                    <Grid x:Name="skikursgruppenGrid"  DockPanel.Dock="Top">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray"/>
+                                        <ToggleButton x:Name="btnSkikursgruppenPinIt" Margin="0,0,5,0"
+                                            HorizontalAlignment="Right" Width="25" 
+                                            Height="25" Checked="HandleListePinning"
+                                            Unchecked="HandleListeUnpinning" IsChecked="False">
+
+                                            <Image x:Name="pinSkikursgruppenImage" Source="Images\icons8-unpin-2-48.png"/>
+                                        </ToggleButton>
+
+                                    </Grid>
+                                    <DataGrid x:Name="skikursgruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
+                                   SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                                   HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                                   RowStyle="{StaticResource friendDataGridRowStyle}"   >
+                                            <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
+                                            <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
+                                            <DataGridTextColumn Header="Skilehrer" Width="*" Binding="{Binding Skilehrer.AngezeigterName}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>     
+                                </DockPanel>
+                            </Border>
+                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+
+                        </Grid>
+                    </Grid>
+                    
+                </DockPanel>
+            </TabItem>
+          
             <TabItem Header="Levels" x:Name="tabitemLevels" GotFocus="tabitemLevel_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
@@ -487,7 +488,7 @@
                                     <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}"
-                                        Grid.Column="1" Grid.Row="1"  Margin="2"/>
+                                        Grid.Column="1" Grid.Row="1"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
                                 </Grid>
                             </Grid>
 

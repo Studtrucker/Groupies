@@ -301,7 +301,16 @@ Class MainWindow
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
-        SetView(New Entities.Skischule)
+        Dim NeueSkischule = New Entities.Skischule
+        If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Sollen Standardelemente angelegt werden?", "Achtung", MessageBoxButton.YesNo) Then
+            NeueSkischule.Levelliste = Standardelemente.erstelleLevels()
+            Dim dlg = New AnzahlGruppenDialog
+            If dlg.ShowDialog Then
+                NeueSkischule.Skikursgruppenliste = Standardelemente.erstelleGruppen(dlg.Anzahl, NeueSkischule.Levelliste)
+            End If
+        End If
+        SetView(NeueSkischule)
+
         If MessageBoxResult.Yes = MessageBox.Show("Neuen Skikurs erstellt. Jetzt gleich einen Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
             SkischuleBefehle.NeuerTeilnehmer.Execute(Nothing, Me)
         End If

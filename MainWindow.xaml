@@ -47,7 +47,7 @@
         <Menu Background="white" DockPanel.Dock="Top">
 
             <MenuItem  Header="_Datei" Background="white" Foreground="Black">
-                <MenuItem Header="_Neuer Skischule" Command="ApplicationCommands.New">
+                <MenuItem Header="_Neue Skischule" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
@@ -57,7 +57,7 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Teilnehmer importieren..." Command="{x:Static local:SkischuleBefehle.ImportTeilnehmerliste}">
+                <MenuItem Header="Skischule importieren..." Command="{x:Static local:SkischuleBefehle.ImportTeilnehmerliste}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
@@ -262,7 +262,7 @@
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding Path=AngezeigterGruppenname, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="1"  Margin="2"/>
-                                    <TextBox Text="{Binding Path=Gruppenlevel, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding Path=Gruppenlevel.Benennung, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="2"  Margin="2"/> 
                                     <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>

@@ -31,11 +31,6 @@ Namespace Entities
 
 #End Region
 
-        Private Sub erstelleBasisobjekte()
-            Levelliste = Standardelemente.erstelleLevels
-            Skikursgruppenliste = Standardelemente.erstelleGruppen(10)
-        End Sub
-
         Private Sub readTeilnehmerliste(Teilnehmer As TeilnehmerCollection)
             Teilnehmerliste = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()

@@ -72,6 +72,9 @@
     </ApplicationDefinition>
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
+    <Compile Include="Dialogs\AnzahlGruppenDialog.xaml.vb">
+      <DependentUpon>AnzahlGruppenDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NeuesLevel.xaml.vb">
       <DependentUpon>NeuesLevel.xaml</DependentUpon>
     </Compile>
@@ -92,6 +95,10 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
+    <Page Include="Dialogs\AnzahlGruppenDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\NeuesLevel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -262,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-treppe-rauf-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-3-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

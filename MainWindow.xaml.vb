@@ -630,6 +630,11 @@ Class MainWindow
         Teilnehmerliste.ToList.ForEach(Sub(x) x.Skikursgruppe = Skikursgruppe)
     End Sub
 
+    Private Sub RemoveLevelFromTeilnehmer(level As Level)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.PersoenlichesLevel.LevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Nothing)
+    End Sub
+
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
         Dim liste = _skischule.Skikursgruppenliste.TakeWhile(Function(x) x.Gruppenlevel.LevelID = level.LevelID)
         liste.ToList.ForEach(Sub(x) x.Gruppenlevel = Nothing)

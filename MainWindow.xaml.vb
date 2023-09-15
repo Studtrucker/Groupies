@@ -614,10 +614,20 @@ Class MainWindow
 #End Region
 
 #Region "Helper-Methoden"
+    Private Sub AddLevelToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Level As Level)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Level)
+    End Sub
 
-    Private Sub RemoveLevelFromTeilnehmer(level As Level)
-        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.PersoenlichesLevel.LevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Nothing)
+    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursgruppeCollection, Level As Level)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Gruppenlevel = Level)
+    End Sub
+
+    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikursgruppe, Uebungsleiter As Uebungsleiter)
+        Skikursgruppe.Skilehrer = Uebungsleiter
+    End Sub
+
+    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As Skikursgruppe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.Skikursgruppe = Skikursgruppe)
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)

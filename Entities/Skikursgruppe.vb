@@ -12,6 +12,7 @@ Namespace Entities
 
         Public Sub New()
             skikursgruppenIDFeld = Guid.NewGuid()
+            Mitgliederliste = New TeilnehmerCollection
         End Sub
 
         Public Property SkikursgruppenID As Guid
@@ -61,6 +62,24 @@ Namespace Entities
                 Changed("Skilehrer")
             End Set
         End Property
+
+        Public ReadOnly Property AnzahlMitglieder As Integer
+            Get
+                Return Mitgliederliste.Count
+            End Get
+        End Property
+
+        Public Property Mitgliederliste As TeilnehmerCollection
+
+        Public Sub AddMitglied(Teilnehmer As Teilnehmer)
+            Mitgliederliste.Add(Teilnehmer)
+            Changed("Mitgliederliste")
+        End Sub
+        Public Sub RemoveMitglieder(Teilnehmerliste As TeilnehmerCollection)
+            'Todo: Skikursgruppe.Mitglieder entfernen            Mitgliederliste.Remove(Teilnehmerliste)
+            Changed("Mitgliederliste")
+        End Sub
+
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent
             If handler IsNot Nothing Then

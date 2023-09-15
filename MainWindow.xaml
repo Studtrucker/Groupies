@@ -374,11 +374,13 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Column="0" Grid.Row="0" Content="Gruppenname" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="3" Content="Skilehrer" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="4" Content="Anzahl Miglieder" Margin="2"/>
                                     <TextBox Text="{Binding Path=Gruppenname, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding Path=AngezeigterGruppenname, UpdateSourceTrigger=PropertyChanged}"
@@ -387,6 +389,8 @@
                                              Grid.Column="1" Grid.Row="2"  Margin="2"/> 
                                     <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>
+                                    <TextBox Text="{Binding Path=AnzahlMitglieder, UpdateSourceTrigger=PropertyChanged}"
+                                             Grid.Column="1" Grid.Row="4"  Margin="2"/>
 
                                 </Grid>
                             </Grid>
@@ -424,13 +428,14 @@
 
                                     </Grid>
                                     <DataGrid x:Name="skikursgruppenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
-                                   SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                   HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                                   RowStyle="{StaticResource friendDataGridRowStyle}"   >
+                                              SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                                              HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                                              RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                             <DataGrid.Columns>
                                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
-                                            <DataGridTextColumn Header="Skilehrer" Width="*" Binding="{Binding Skilehrer.AngezeigterName}" />
+                                            <DataGridTextColumn Header="Skilehrer" Binding="{Binding Skilehrer.AngezeigterName}" />
+                                            <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder}" />
                                             </DataGrid.Columns>
                                         </DataGrid>     
                                 </DockPanel>

@@ -11,6 +11,8 @@ Imports System.Windows.Media.Animation
 Imports Microsoft.Office.Core
 Imports System.Windows.Controls.Primitives
 Imports System.Text
+Imports System.Linq
+Imports System.Collections.Generic
 
 Class MainWindow
 
@@ -100,8 +102,8 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuerUebungsleiter, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeueGruppe, AddressOf HandleNeueGruppeExecuted, AddressOf HandleNeueGruppeCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkischuleBefehle.GruppeLoeschen, AddressOf HandleGruppeLoeschenExecuted, AddressOf HandleGruppeLoeschenCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeueGruppe, AddressOf HandleNeueSkikursgruppeExecuted, AddressOf HandleNeueSkikursgruppeCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkischuleBefehle.GruppeLoeschen, AddressOf HandleSkikursgruppeLoeschenExecuted, AddressOf HandleSkikursgruppeLoeschenCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.NeuesLevel, AddressOf HandleNeuesLevelExecuted, AddressOf HandleNeuesLevelCanExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.LevelLoeschen, AddressOf HandleLevelLoeschenExecuted, AddressOf HandleLevelLoeschenCanExecuted))
 
@@ -329,44 +331,6 @@ Class MainWindow
         OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
-    Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        'Todo: Das Handle Beurteilung erstellen
-        'For Each item In BasicObjects.Koennenstufenliste
-        '    Debug.WriteLine(item.KoennenstufeID.ToString & "; " & item.Benennung & "; " & item.AngezeigteBenennung)
-        'Next
-
-    End Sub
-
-    Private Sub HandleBeurteileTeilnehmerkoennenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleImportExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        ' Ist aktuell eine Skischuldatei geöffnet?
-        If _skischule IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
-            If rs = MessageBoxResult.Yes Then
-                ApplicationCommands.Save.Execute(Nothing, Me)
-            ElseIf rs = MessageBoxResult.Cancel Then
-                Exit Sub
-            End If
-        End If
-
-        ' Skischulobjekt löschen
-        _skischule = Nothing
-
-        ' Neues Skischulobjekt initialisieren
-        Title = "Skischule"
-
-        Dim importSkischule = DatenImport.ImportSkischule
-        If importSkischule IsNot Nothing Then
-            SetView(importSkischule)
-            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", DatenImport.Workbook.Name))
-        End If
-
-    End Sub
-
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = _skischule IsNot Nothing
     End Sub
@@ -394,92 +358,30 @@ Class MainWindow
         Close()
     End Sub
 
-    Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule IsNot Nothing
-    End Sub
+    Private Sub HandleImportExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-    Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim dlg = New NeuerTeilnehmerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        If dlg.ShowDialog = True Then
-            _skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
-            _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
-            teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
+        ' Ist aktuell eine Skischuldatei geöffnet?
+        If _skischule IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
+            If rs = MessageBoxResult.Yes Then
+                ApplicationCommands.Save.Execute(Nothing, Me)
+            ElseIf rs = MessageBoxResult.Cancel Then
+                Exit Sub
+            End If
         End If
 
-    End Sub
+        ' Skischulobjekt löschen
+        _skischule = Nothing
 
-    Private Sub HandleUebungsleiterLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
-    End Sub
+        ' Neues Skischulobjekt initialisieren
+        Title = "Skischule"
 
-    Private Sub HandleUebungsleiterLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("SL löschen")
-    End Sub
-
-    Private Sub HandleGruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemSkikursgruppen.IsSelected And skikursgruppenDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleGruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("Gruppe löschen")
-    End Sub
-
-    Private Sub HandleNeueGruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule IsNot Nothing
-    End Sub
-
-    Private Sub HandleLevelLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemLevels.IsSelected And levelDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-    End Sub
-
-    Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule IsNot Nothing
-    End Sub
-
-    Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuesLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        If dlg.ShowDialog = True Then
-            _skischule.Levelliste.Add(dlg.Level)
-            _levelListCollectionView.MoveCurrentTo(dlg.Level)
-            levelDataGrid.ScrollIntoView(dlg.Level)
+        Dim importSkischule = DatenImport.ImportSkischule
+        If importSkischule IsNot Nothing Then
+            SetView(importSkischule)
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", DatenImport.Workbook.Name))
         End If
-    End Sub
 
-    Private Sub HandleNeueGruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        If dlg.ShowDialog = True Then
-            _skischule.Skikursgruppenliste.Add(dlg.Skikursgruppe)
-            _skikursgruppenListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
-            skikursgruppenDataGrid.ScrollIntoView(dlg.Skikursgruppe)
-        End If
-    End Sub
-
-    Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule IsNot Nothing
-    End Sub
-
-    Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerUebungsleiterDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        If dlg.ShowDialog = True Then
-            _skischule.Skilehrerliste.Add(dlg.Skilehrer)
-            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Skilehrer)
-            uebungsleiterDataGrid.ScrollIntoView(dlg.Skilehrer)
-        End If
-    End Sub
-
-    Private Sub HandleTeilnehmerLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemTeilnehmer.IsSelected And teilnehmerDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("TN löschen")
     End Sub
 
     Private Sub HandleDrop(sender As Object, e As DragEventArgs)
@@ -536,6 +438,155 @@ Class MainWindow
         e.Handled = True
     End Sub
 
+#Region "Level"
+
+    Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuesLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        If dlg.ShowDialog = True Then
+            _skischule.Levelliste.Add(dlg.Level)
+            _levelListCollectionView.MoveCurrentTo(dlg.Level)
+            levelDataGrid.ScrollIntoView(dlg.Level)
+        End If
+    End Sub
+
+    Private Sub HandleLevelLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = tabitemLevels.IsSelected And levelDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim i As Integer
+        Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Level In levelDataGrid.SelectedItems
+            RemoveLevelFromSkikursgruppe(item)
+            RemoveLevelFromTeilnehmer(item)
+            index(i) = _skischule.Levelliste.IndexOf(item)
+            i += 1
+        Next
+
+        RemoveItemsAt(_skischule.Levelliste, index)
+    End Sub
+
+#End Region
+
+#Region "Skikursgruppe"
+
+    Private Sub HandleNeueSkikursgruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        If dlg.ShowDialog = True Then
+            _skischule.Skikursgruppenliste.Add(dlg.Skikursgruppe)
+            _skikursgruppenListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
+            skikursgruppenDataGrid.ScrollIntoView(dlg.Skikursgruppe)
+        End If
+    End Sub
+
+    Private Sub HandleSkikursgruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = tabitemSkikursgruppen.IsSelected And skikursgruppenDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub HandleSkikursgruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim i As Integer
+        Dim index(skikursgruppenDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Skikursgruppe In skikursgruppenDataGrid.SelectedItems
+            RemoveSkikursgruppeFromTeilnehmer(item)
+            index(i) = _skischule.Skikursgruppenliste.IndexOf(item)
+            i += 1
+        Next
+
+        RemoveItemsAt(_skischule.Skikursgruppenliste, index)
+    End Sub
+
+#End Region
+
+#Region "Teilnehmer"
+
+    Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dlg = New NeuerTeilnehmerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            _skischule.Teilnehmerliste.Add(dlg.Teilnehmer)
+            _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
+            teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
+        End If
+
+    End Sub
+
+    Private Sub HandleTeilnehmerLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = tabitemTeilnehmer.IsSelected And teilnehmerDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim i As Integer
+        Dim index(teilnehmerDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Teilnehmer In teilnehmerDataGrid.SelectedItems
+            index(i) = _skischule.Teilnehmerliste.IndexOf(item)
+            i += 1
+        Next
+
+        RemoveItemsAt(_skischule.Teilnehmerliste, index)
+    End Sub
+
+    Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        'Todo: Das Handle Beurteilung erstellen
+        'For Each item In BasicObjects.Koennenstufenliste
+        '    Debug.WriteLine(item.KoennenstufeID.ToString & "; " & item.Benennung & "; " & item.AngezeigteBenennung)
+        'Next
+    End Sub
+
+    Private Sub HandleBeurteileTeilnehmerkoennenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
+    End Sub
+
+#End Region
+
+#Region "Uebungsleiter"
+
+    Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule IsNot Nothing
+    End Sub
+
+    Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuerUebungsleiterDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            _skischule.Skilehrerliste.Add(dlg.Skilehrer)
+            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Skilehrer)
+            uebungsleiterDataGrid.ScrollIntoView(dlg.Skilehrer)
+        End If
+    End Sub
+
+    Private Sub HandleUebungsleiterLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub HandleUebungsleiterLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim i As Integer
+        Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Uebungsleiter In uebungsleiterDataGrid.SelectedItems
+            RemoveUebungsleiterFromSkikursgruppe(item)
+            index(i) = _skischule.Skilehrerliste.IndexOf(item)
+            i += 1
+        Next
+
+        RemoveItemsAt(_skischule.Skilehrerliste, index)
+
+    End Sub
+
+#End Region
+
 #End Region
 
 #Region "Sonstige Eventhandler"
@@ -563,6 +614,34 @@ Class MainWindow
 #End Region
 
 #Region "Helper-Methoden"
+
+    Private Sub RemoveLevelFromTeilnehmer(level As Level)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.PersoenlichesLevel.LevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Nothing)
+    End Sub
+
+    Private Sub RemoveLevelFromSkikursgruppe(level As Level)
+        Dim liste = _skischule.Skikursgruppenliste.TakeWhile(Function(x) x.Gruppenlevel.LevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.Gruppenlevel = Nothing)
+    End Sub
+
+    Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
+        Dim liste = _skischule.Skikursgruppenliste.TakeWhile(Function(x) x.Skilehrer.SkilehrerID = Uebungsleiter.SkilehrerID)
+        liste.ToList.ForEach(Sub(x) x.Skilehrer = Nothing)
+    End Sub
+
+    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Skikursgruppe)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.Skikursgruppe.SkikursgruppenID = Skikursgruppe.SkikursgruppenID)
+        liste.ToList.ForEach(Sub(x) x.Skikursgruppe = Nothing)
+    End Sub
+
+    Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())
+        If source Is Nothing Then Throw New ArgumentNullException("Source")
+        If itemIndices Is Nothing Then Throw New ArgumentNullException("itemIndices")
+        For Each itemIndex In itemIndices.OrderByDescending(Function(x) x)
+            source.RemoveAt(itemIndex)
+        Next
+    End Sub
 
     Private Sub OpenSkischule(fileName As String)
 

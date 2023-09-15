@@ -389,7 +389,7 @@
                                              Grid.Column="1" Grid.Row="2"  Margin="2"/> 
                                     <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>
-                                    <TextBox Text="{Binding Path=AnzahlMitglieder, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="4"  Margin="2"/>
 
                                 </Grid>
@@ -435,7 +435,7 @@
                                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
                                             <DataGridTextColumn Header="Skilehrer" Binding="{Binding Skilehrer.AngezeigterName}" />
-                                            <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder}" />
+                                            <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder,Mode=OneWay}" />
                                             </DataGrid.Columns>
                                         </DataGrid>     
                                 </DockPanel>

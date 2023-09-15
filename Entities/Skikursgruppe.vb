@@ -63,22 +63,23 @@ Namespace Entities
             End Set
         End Property
 
-        Public ReadOnly Property AnzahlMitglieder As Integer
-            Get
-                Return Mitgliederliste.Count
-            End Get
-        End Property
 
         Public Property Mitgliederliste As TeilnehmerCollection
 
-        Public Sub AddMitglied(Teilnehmer As Teilnehmer)
-            Mitgliederliste.Add(Teilnehmer)
+        Public Sub AddMitglieder(Teilnehmerliste As TeilnehmerCollection)
+            Teilnehmerliste.ToList.ForEach(Sub(x) Mitgliederliste.Add(x))
             Changed("Mitgliederliste")
         End Sub
         Public Sub RemoveMitglieder(Teilnehmerliste As TeilnehmerCollection)
             'Todo: Skikursgruppe.Mitglieder entfernen            Mitgliederliste.Remove(Teilnehmerliste)
             Changed("Mitgliederliste")
         End Sub
+
+        Public ReadOnly Property AnzahlMitglieder As Integer
+            Get
+                Return Mitgliederliste.Count
+            End Get
+        End Property
 
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent

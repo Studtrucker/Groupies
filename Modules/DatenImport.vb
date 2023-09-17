@@ -35,16 +35,23 @@ Public Module DatenImport
     Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skischule
         Dim CurrentRow = 4
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
+        Dim Skikursgruppe As Skikursgruppe
         Do Until CurrentRow > RowCount
-            Dim Level = FindLevel(Excelsheet.UsedRange(CurrentRow, 3).Value)
-            Dim Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
+
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
-            .PersoenlichesLevel = Level}
+            .PersoenlichesLevel = FindLevel(Excelsheet.UsedRange(CurrentRow, 3).Value),
+            .Skikursgruppe = Excelsheet.UsedRange(CurrentRow, 4).Value}
             _skischule.Teilnehmerliste.Add(Teilnehmer)
-            If Skikursgruppe IsNot Nothing Then
-                Skikursgruppe.AddMitglied(Teilnehmer)
+
+            'Gibt es die Skikursgruppe aus der Excelliste schon?
+            If Teilnehmer.Skikursgruppe IsNot Nothing Then
+                Skikursgruppe = FindSkikursgruppe(Teilnehmer.Skikursgruppe)
+                ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
+                If Skikursgruppe IsNot Nothing Then
+                    Skikursgruppe.AddMitglied(Teilnehmer)
+                End If
             End If
             CurrentRow += 1
         Loop

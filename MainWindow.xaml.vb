@@ -934,6 +934,9 @@ Class MainWindow
 
     Private Function GetListAsFixedDocument(pageSize As Size, pageMargin As Thickness) As FixedDocument
 
+
+        'file:///C:/Users/andre/OneDrive%20-%20Konecranes%20Plc/B%C3%BCcher/WPF4.5/Windows%20Presentation%20Foundation%204_5%20-%20Das%20umfassende%20Handbuch%20__%20Copy%20qnz9-m3et-46x8-7dfs.pdf
+
         ' ein paar Variablen setzen
         Dim printFriendHeight As Double = 1040 ' Breite einer Gruppe
         Dim printFriendWidth As Double = 760 '  Höhe einer Gruppe

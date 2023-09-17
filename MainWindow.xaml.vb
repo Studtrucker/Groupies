@@ -495,7 +495,7 @@ Class MainWindow
         Dim i As Integer
         Dim index(skikursgruppenDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Skikursgruppe In skikursgruppenDataGrid.SelectedItems
-            RemoveSkikursgruppeFromTeilnehmer(item)
+            RemoveSkikursgruppeFromTeilnehmer(item.Gruppenname)
             index(i) = _skischule.Skikursgruppenliste.IndexOf(item)
             i += 1
         Next
@@ -626,7 +626,7 @@ Class MainWindow
         Skikursgruppe.Skilehrer = Uebungsleiter
     End Sub
 
-    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As Skikursgruppe)
+    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
         Teilnehmerliste.ToList.ForEach(Sub(x) x.Skikursgruppe = Skikursgruppe)
     End Sub
 
@@ -645,8 +645,8 @@ Class MainWindow
         liste.ToList.ForEach(Sub(x) x.Skilehrer = Nothing)
     End Sub
 
-    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Skikursgruppe)
-        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.Skikursgruppe.SkikursgruppenID = Skikursgruppe.SkikursgruppenID)
+    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.Skikursgruppe = Skikursgruppe)
         liste.ToList.ForEach(Sub(x) x.Skikursgruppe = Nothing)
     End Sub
 

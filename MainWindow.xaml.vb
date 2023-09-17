@@ -13,6 +13,7 @@ Imports System.Windows.Controls.Primitives
 Imports System.Text
 Imports System.Linq
 Imports System.Collections.Generic
+Imports System.Windows.Markup
 
 Class MainWindow
 
@@ -94,7 +95,7 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
         CommandBindings.Add(New CommandBinding(SkischuleBefehle.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
@@ -437,6 +438,24 @@ Class MainWindow
 
         e.Handled = True
     End Sub
+
+    Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dlg As PrintDialog = New PrintDialog()
+        If dlg.ShowDialog = True Then
+            Dim printArea As Size = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+            Dim pageMargin As Thickness = New Thickness(15, 20, 15, 60)
+            Dim doc As FixedDocument = GetListAsFixedDocument(printArea, pageMargin)
+            dlg.PrintDocument(doc.DocumentPaginator, "Skischule")
+        End If
+
+    End Sub
+
+    Private Sub HandleListPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = _skischule.Skikursgruppenliste IsNot Nothing AndAlso _skischule.Skikursgruppenliste.Count > 0
+    End Sub
+
+
 
 #Region "Level"
 
@@ -912,6 +931,96 @@ Class MainWindow
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerLevelDetails
         _schalterBtnPinit = btnLevelPinIt
     End Sub
+
+    Private Function GetListAsFixedDocument(pageSize As Size, pageMargin As Thickness) As FixedDocument
+
+        ' ein paar Variablen setzen
+        Dim printFriendHeight As Double = 180 ' Breite eines Freundes
+        Dim printFriendWidth As Double = 350 '  Höhe eines Freundes
+
+        ' ermitteln der tatsächlich verfügbaren Seitengrösse
+        Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
+        Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
+
+        ' ermitteln der Anzahl Spalten und Zeilen
+        Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
+        Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
+
+        ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
+        If rowsPerPage = 0 Then
+            rowsPerPage = 1
+        End If
+        If columnsPerPage = 0 Then
+            columnsPerPage = 1
+        End If
+
+        Dim friendsPerPage As Integer = rowsPerPage * columnsPerPage
+
+
+        ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
+        Dim vMarginBetweenFriends As Double = 0
+        If rowsPerPage > 1 Then
+            Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
+            vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
+        End If
+
+        Dim hMarginBetweenFriends As Double = 0
+        If columnsPerPage > 1 Then
+            Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
+            hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
+        End If
+
+        ' das eigentliche Erstellen des FixDocuments starten
+        Dim doc = New FixedDocument()
+        doc.DocumentPaginator.PageSize = pageSize
+
+        ' nach Nachnamen sortierte Liste verwenden
+        Dim sortedView As ListCollectionView = New ListCollectionView(_skischule.Skikursgruppenliste)
+        sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
+
+        Dim skikursgruppe As Skikursgruppe = Nothing
+        Dim page As FixedPage = Nothing
+
+        ' durch die Gruppen loopen und Seiten generieren
+        For i As Integer = 0 To sortedView.Count
+            sortedView.MoveCurrentToPosition(i)
+            skikursgruppe = sortedView.CurrentItem
+
+            If friendsPerPage = 0 Then
+                If page IsNot Nothing Then
+                    Dim content As PageContent = New PageContent()
+                    TryCast(content, IAddChild).AddChild(page)
+                    doc.Pages.Add(content)
+                End If
+                page = New FixedPage
+            End If
+            i += 1
+        Next
+
+        ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
+        Dim pSkikursgruppe As PrintableSkikursgruppe = New PrintableSkikursgruppe
+        pSkikursgruppe.Height = printFriendHeight
+        pSkikursgruppe.Width = printFriendWidth
+
+        pSkikursgruppe.InitPropsFromFriend(skikursgruppe)
+        Dim currentRow As Integer = friendsPerPage / columnsPerPage
+        Dim currentColumn As Integer = columnsPerPage
+
+        FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
+        FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
+        page.Children.Add(pSkikursgruppe)
+
+        ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
+        If page.Children.Count > 0 Then
+            Dim Content As PageContent = New PageContent()
+            TryCast(Content, IAddChild).AddChild(page)
+            doc.Pages.Add(Content)
+        End If
+
+        Return doc
+
+    End Function
+
 #End Region
 
 End Class

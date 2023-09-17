@@ -95,6 +95,9 @@
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PrintableSkikursgruppe.xaml.vb">
+      <DependentUpon>PrintableSkikursgruppe.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
     <Page Include="Dialogs\AnzahlGruppenDialog.xaml">
       <SubType>Designer</SubType>
@@ -139,6 +142,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Dialogs\ContextMenuLevel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PrintableSkikursgruppe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

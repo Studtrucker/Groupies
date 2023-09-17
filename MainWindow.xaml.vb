@@ -935,8 +935,8 @@ Class MainWindow
     Private Function GetListAsFixedDocument(pageSize As Size, pageMargin As Thickness) As FixedDocument
 
         ' ein paar Variablen setzen
-        Dim printFriendHeight As Double = 180 ' Breite eines Freundes
-        Dim printFriendWidth As Double = 350 '  Höhe eines Freundes
+        Dim printFriendHeight As Double = 1040 ' Breite einer Gruppe
+        Dim printFriendWidth As Double = 760 '  Höhe einer Gruppe
 
         ' ermitteln der tatsächlich verfügbaren Seitengrösse
         Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
@@ -992,8 +992,8 @@ Class MainWindow
                     TryCast(content, IAddChild).AddChild(page)
                     doc.Pages.Add(content)
                 End If
-                page = New FixedPage
             End If
+            page = New FixedPage
             i += 1
         Next
 

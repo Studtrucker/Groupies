@@ -9,10 +9,11 @@ Namespace Entities
         Private _angezeigterGruppenname As String
         Private _gruppenlevel As Entities.Level
         Private _skilehrer As Entities.Uebungsleiter
+        Private _mitgliederliste As Entities.TeilnehmerCollection
 
         Public Sub New()
             skikursgruppenIDFeld = Guid.NewGuid()
-            Mitgliederliste = New TeilnehmerCollection
+            _mitgliederliste = New TeilnehmerCollection
         End Sub
 
         Public Property SkikursgruppenID As Guid
@@ -63,13 +64,26 @@ Namespace Entities
             End Set
         End Property
 
-
         Public Property Mitgliederliste As TeilnehmerCollection
+            Get
+                Return _mitgliederliste
+            End Get
+            Set(value As Entities.TeilnehmerCollection)
+                _mitgliederliste = value
+                Changed("Mitgliederliste")
+            End Set
+        End Property
 
-        Public Sub AddMitglieder(Teilnehmerliste As TeilnehmerCollection)
-            Teilnehmerliste.ToList.ForEach(Sub(x) Mitgliederliste.Add(x))
+        Public Sub AddMitglied(Teilnehmer As Teilnehmer)
+            _mitgliederliste.Add(Teilnehmer)
             Changed("Mitgliederliste")
         End Sub
+
+        Public Sub AddMitglieder(Teilnehmerliste As TeilnehmerCollection)
+            Teilnehmerliste.ToList.ForEach(Sub(x) _mitgliederliste.Add(x))
+            Changed("Mitgliederliste")
+        End Sub
+
         Public Sub RemoveMitglieder(Teilnehmerliste As TeilnehmerCollection)
             'Todo: Skikursgruppe.Mitglieder entfernen            Mitgliederliste.Remove(Teilnehmerliste)
             Changed("Mitgliederliste")

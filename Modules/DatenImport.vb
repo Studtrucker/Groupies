@@ -41,9 +41,11 @@ Public Module DatenImport
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
             .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
-            .PersoenlichesLevel = Level,
-            .Skikursgruppe = Skikursgruppe}
+            .PersoenlichesLevel = Level}
             _skischule.Teilnehmerliste.Add(Teilnehmer)
+            If Skikursgruppe IsNot Nothing Then
+                Skikursgruppe.AddMitglied(Teilnehmer)
+            End If
             CurrentRow += 1
         Loop
         Return _skischule

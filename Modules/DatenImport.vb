@@ -39,10 +39,10 @@ Public Module DatenImport
         Do Until CurrentRow > RowCount
 
             Dim Teilnehmer As New Teilnehmer With {
-            .Vorname = Excelsheet.UsedRange(CurrentRow, 1).Value,
-            .Name = Excelsheet.UsedRange(CurrentRow, 2).Value,
-            .PersoenlichesLevel = FindLevel(Excelsheet.UsedRange(CurrentRow, 3).Value),
-            .Skikursgruppe = Excelsheet.UsedRange(CurrentRow, 4).Value}
+            .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+            .Name = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+            .PersoenlichesLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
+            .Skikursgruppe = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
             _skischule.Teilnehmerliste.Add(Teilnehmer)
 
             'Gibt es die Skikursgruppe aus der Excelliste schon?

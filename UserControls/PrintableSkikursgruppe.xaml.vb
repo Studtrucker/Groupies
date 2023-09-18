@@ -18,18 +18,21 @@ Namespace UserControls
 
         Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikursgruppe)
             Skigruppenname = Skikursgruppe.AngezeigterGruppenname
-            Skilehrer = Skikursgruppe.Skilehrer.AngezeigterName
-            If Skikursgruppe.Skilehrer.HatFoto Then
-                Dim bi = New BitmapImage
-                bi.BeginInit()
-                bi.StreamSource = New MemoryStream(Skikursgruppe.Skilehrer.Foto)
-                bi.EndInit()
-                Skilehrerfoto = bi
-            Else
-                ' Todo: Ersatzfoto festlegen
-                Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
-            End If
             Mitglieder = Skikursgruppe.Mitgliederliste
+
+            If Skikursgruppe.Skilehrer IsNot Nothing Then
+                Skilehrer = Skikursgruppe.Skilehrer.AngezeigterName
+                If Skikursgruppe.Skilehrer.HatFoto Then
+                    Dim bi = New BitmapImage
+                    bi.BeginInit()
+                    bi.StreamSource = New MemoryStream(Skikursgruppe.Skilehrer.Foto)
+                    bi.EndInit()
+                    Skilehrerfoto = bi
+                Else
+                    ' Todo: Ersatzfoto festlegen
+                    Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
+                End If
+            End If
 
         End Sub
 

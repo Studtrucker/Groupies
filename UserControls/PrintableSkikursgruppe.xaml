@@ -5,34 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Skischule"
              mc:Ignorable="d" 
-             d:DesignHeight="1090" d:DesignWidth="790">
+             d:DesignHeight="1000" d:DesignWidth="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="txtSkigruppenname" Grid.Column="0"
-                   Grid.ColumnSpan="2" Margin="5" 
-                   FontSize="48" FontWeight="Bold" />
-        <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Grid.Row="1" Margin="5"  />
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <Label Content="Skilehrer" FontSize="24" Margin="5" />
-            <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5" />
+
+        <StackPanel Grid.Row="0" Margin="5" >
+            <TextBlock Text="Gruppe" FontSize="24" Foreground="LightGray" />
+            <TextBlock x:Name="txtSkigruppenname" FontSize="48" FontWeight="Bold" />
         </StackPanel>
-        <Label Grid.Column="1" Grid.Row="2" Content="Teilnehmer" FontSize="24" Margin="5" />
-        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None"  
-                  FontSize="36" Margin="5" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible"
-                  ItemsSource="{Binding Mitglieder}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Mitglieder.Vorname}"/>
-                <DataGridTextColumn Header="Name"   Binding="{Binding Mitglieder.Name}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Skilehrer" FontSize="24" Margin="5" Foreground="LightGray"/>
+                <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5" />
+            </StackPanel>
+            <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Margin="5" Grid.Column="1"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray"/>
+            <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" HeadersVisibility="None"  
+                  FontSize="36" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Binding="{Binding VollerName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </UserControl>

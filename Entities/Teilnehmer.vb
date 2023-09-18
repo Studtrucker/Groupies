@@ -46,6 +46,18 @@ Namespace Entities
             End Set
         End Property
 
+        Public ReadOnly Property VollerName As String
+            Get
+                If _vorname Is Nothing Then
+                    Return _name
+                ElseIf _name Is Nothing Then
+                    Return _vorname
+                Else
+                    Return String.Format("{0} {1}", _vorname, _name)
+                End If
+            End Get
+        End Property
+
         Public Property PersoenlichesLevel As Entities.Level
             Get
                 Return _persoenlichesLevel

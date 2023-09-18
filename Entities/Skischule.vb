@@ -37,6 +37,22 @@ Namespace Entities
             ' Levelsliste = Teilnehmer.ToList.ForEach()
         End Sub
 
+        Public Function GetAktualisierungen() As Skischule
+            Skikursgruppenliste.ToList.ForEach(AddressOf GetAktualisierungen)
+            Return Me
+        End Function
+
+        Private Sub GetAktualisierungen(Skikurs As Skikursgruppe)
+            Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
+            For i = 0 To Skikurs.Mitgliederliste.Count - 1
+                Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))
+            Next
+        End Sub
+
+        Private Function GetAktualisierungen(Mitglied As Teilnehmer) As Teilnehmer
+            Return Teilnehmerliste.Where(Function(x) x.TeilnehmerID = Mitglied.TeilnehmerID).First
+        End Function
+
 
     End Class
 

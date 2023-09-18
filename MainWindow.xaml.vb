@@ -126,8 +126,6 @@ Class MainWindow
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
-        PrintableSkikursgruppe.InitPropsFromSkikursgruppe(_skischule.Skikursgruppenliste.Item(0))
-
     End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
@@ -444,10 +442,10 @@ Class MainWindow
 
     Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-        Dim dlg As PrintDialog = New PrintDialog()
+        Dim dlg = New PrintDialog()
         If dlg.ShowDialog = True Then
-            Dim printArea As Size = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-            Dim pageMargin As Thickness = New Thickness(15, 20, 15, 60)
+            Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+            Dim pageMargin = New Thickness(30, 30, 30, 60)
             Dim doc As FixedDocument = GetListAsFixedDocument(printArea, pageMargin)
             dlg.PrintDocument(doc.DocumentPaginator, "Skischule")
         End If
@@ -942,8 +940,8 @@ Class MainWindow
         'file:///C:/Users/andre/OneDrive%20-%20Konecranes%20Plc/B%C3%BCcher/WPF4.5/Windows%20Presentation%20Foundation%204_5%20-%20Das%20umfassende%20Handbuch%20__%20Copy%20qnz9-m3et-46x8-7dfs.pdf
 
         ' ein paar Variablen setzen
-        Dim printFriendHeight As Double = 1040 ' Breite einer Gruppe
-        Dim printFriendWidth As Double = 760 '  Höhe einer Gruppe
+        Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
+        Dim printFriendWidth As Double = 700 '  Höhe einer Gruppe
 
         ' ermitteln der tatsächlich verfügbaren Seitengrösse
         Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
@@ -954,12 +952,8 @@ Class MainWindow
         Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
 
         ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
-        If rowsPerPage = 0 Then
-            rowsPerPage = 1
-        End If
-        If columnsPerPage = 0 Then
-            columnsPerPage = 1
-        End If
+        If rowsPerPage = 0 Then rowsPerPage = 1
+        If columnsPerPage = 0 Then columnsPerPage = 1
 
         Dim friendsPerPage As Integer = rowsPerPage * columnsPerPage
 
@@ -981,7 +975,10 @@ Class MainWindow
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
 
-        ' nach Nachnamen sortierte Liste verwenden
+        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
+        _skischule = _skischule.GetAktualisierungen()
+
+        ' nach AngezeigterName sortierte Liste verwenden
         Dim sortedView As ListCollectionView = New ListCollectionView(_skischule.Skikursgruppenliste)
         sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
 
@@ -991,17 +988,16 @@ Class MainWindow
         ' durch die Gruppen loopen und Seiten generieren
         For i As Integer = 0 To sortedView.Count - 1
             sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = sortedView.CurrentItem
+            skikursgruppe = CType(sortedView.CurrentItem, Skikursgruppe)
 
-            If friendsPerPage = 0 Then
+            If i Mod friendsPerPage = 0 Then
                 If page IsNot Nothing Then
                     Dim content As PageContent = New PageContent()
                     TryCast(content, IAddChild).AddChild(page)
                     doc.Pages.Add(content)
                 End If
+                page = New FixedPage
             End If
-            page = New FixedPage
-            'i += 1
 
             ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
             Dim pSkikursgruppe As PrintableSkikursgruppe = New PrintableSkikursgruppe
@@ -1009,20 +1005,20 @@ Class MainWindow
             pSkikursgruppe.Width = printFriendWidth
 
             pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe)
-            Dim currentRow As Integer = friendsPerPage / columnsPerPage
-            Dim currentColumn As Integer = columnsPerPage
+            Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
+            Dim currentColumn As Integer = i Mod columnsPerPage
 
             FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
             FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
             page.Children.Add(pSkikursgruppe)
-
-            ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
-            If page.Children.Count > 0 Then
-                Dim Content As PageContent = New PageContent()
-                TryCast(Content, IAddChild).AddChild(page)
-                doc.Pages.Add(Content)
-            End If
         Next
+
+        ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
+        If page.Children.Count > 0 Then
+            Dim Content As PageContent = New PageContent()
+            TryCast(Content, IAddChild).AddChild(page)
+            doc.Pages.Add(Content)
+        End If
 
         Return doc
 

@@ -4,14 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+        xmlns:uc="clr-namespace:Skischule.UserControls"
         xmlns:local="clr-namespace:Skischule"
         xmlns:convert="clr-namespace:Skischule.Converters"
+        xmlns:en="clr-namespace:Skischule.Entities"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
         Title="Skischule" Height="450" Width="800"
         Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">
 
     <Window.Resources>
+
+        <x:Array x:Key="Mitglieder" Type="{x:Type en:Teilnehmer}">
+            <en:Teilnehmer Vorname="Andreas" Name="Studtrucker"/>
+            <en:Teilnehmer Vorname="Manuela" Name="Ramm"/>
+            <en:Teilnehmer Vorname="Ralf" Name="Granderath"/>
+            <en:Teilnehmer Vorname="Sandra" Name="S04 Oehlschläger"/>
+        </x:Array> 
 
         <convert:InvertableBoolToVisibleConverter Inverted="False" x:Key="BooleanToVisibility"/>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
@@ -102,6 +111,15 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
+            <TabItem Header="TestUC"  Margin="-2,-2,0,-2">
+                <TabItem.LayoutTransform>
+                    <RotateTransform Angle="270"/>
+                </TabItem.LayoutTransform>
+                <uc:PrintableSkikursgruppe Skigruppenname="Experten" Skilehrer="Der große Rene" 
+                                           Skilehrerfoto="\Images\icons8-ski-goggles-96.png"
+                                           />
+            </TabItem>
+            
             <TabItem Header="Teilnehmer" x:Name="tabitemTeilnehmer"  GotFocus="tabitemTeilnehmer_GotFocus" Margin="-2,-2,0,-2">
 
                 <TabItem.LayoutTransform>

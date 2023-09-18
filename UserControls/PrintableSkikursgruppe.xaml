@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrintableSkikursgruppe"
+﻿<UserControl x:Class="UserControls.PrintableSkikursgruppe"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -17,17 +17,17 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="Skigruppenname" Grid.Column="0" Text="Gruppe Besondere Experten" 
+        <TextBlock x:Name="txtSkigruppenname" Grid.Column="0"
                    Grid.ColumnSpan="2" Margin="5" 
                    FontSize="48" FontWeight="Bold" />
-        <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Grid.Row="1" Margin="5" Source="/Images/icons8-ski-goggles-96.png" />
+        <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Grid.Row="1" Margin="5"  />
 
-        <TextBlock x:Name="txtSkilehrername" Grid.Column="1" Grid.Row="1" Text="Studti" FontSize="36" Margin="5" />
-        <TextBlock x:Name="lstGruppenmitglieder" Grid.Column="1" Grid.Row="2" Text="Teilnehmer" FontSize="36" Margin="5" />
-        <DataGrid Grid.Row="3" Grid.Column="1" HeadersVisibility="None">
+        <TextBlock x:Name="txtSkilehrername" Grid.Column="1" Grid.Row="1" FontSize="36" Margin="5" />
+        <Label Grid.Column="1" Grid.Row="2" Content="Teilnehmer" FontSize="36" Margin="5" />
+        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Vorname" />
+                <DataGridTextColumn Header="Name" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

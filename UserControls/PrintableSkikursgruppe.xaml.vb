@@ -1,47 +1,61 @@
 ﻿Imports Skischule.Entities
 Imports System.Windows.Markup
 
-<ContentProperty("AngezeigterGruppenname")>
-Partial Public Class PrintableSkikursgruppe
+Namespace UserControls
 
-    Public Sub New()
+    <ContentProperty("AngezeigterGruppenname")>
+    Partial Public Class PrintableSkikursgruppe
 
-        ' Dieser Aufruf ist für den Designer erforderlich.
-        InitializeComponent()
+        Public Sub New()
 
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+            ' Dieser Aufruf ist für den Designer erforderlich.
+            InitializeComponent()
 
-    End Sub
+            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-    Public Sub InitPropsFromFriend(Skikursgruppe As Skikursgruppe)
+        End Sub
 
-    End Sub
+        Public Sub InitPropsFromFriend(Skikursgruppe As Skikursgruppe)
 
-    Public Property Skilehrer As String
-        Get
-            Return txtSkilehrername.Text
-        End Get
-        Set(value As String)
-            txtSkilehrername.Text = value
-        End Set
-    End Property
+        End Sub
 
-    Public Property Skilehrerfoto As ImageSource
-        Get
-            Return imgSkilehrerfoto.Source
-        End Get
-        Set(value As ImageSource)
-            imgSkilehrerfoto.Source = value
-        End Set
-    End Property
+        Public Property Skilehrer As String
+            Get
+                Return txtSkilehrername.Text
+            End Get
+            Set(value As String)
+                txtSkilehrername.Text = value
+            End Set
+        End Property
 
-    Public Property Skigruppen As String
-        Get
-            Return Skigruppenname.Text
-        End Get
-        Set(value As String)
-            Skigruppenname.Text = value
-        End Set
-    End Property
+        Public Property Skilehrerfoto As ImageSource
+            Get
+                Return imgSkilehrerfoto.Source
+            End Get
+            Set(value As ImageSource)
+                imgSkilehrerfoto.Source = value
+            End Set
+        End Property
 
-End Class
+
+        Public Property Skigruppenname As String
+            Get
+                Return txtSkigruppenname.Text
+            End Get
+            Set(value As String)
+                txtSkigruppenname.Text = value
+            End Set
+        End Property
+
+        Public Property Mitglieder As DataGrid
+            Get
+                Return lstMitglieder
+            End Get
+            Set(value As DataGrid)
+                lstMitglieder = value
+            End Set
+        End Property
+
+    End Class
+
+End Namespace

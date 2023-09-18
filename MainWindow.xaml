@@ -157,13 +157,13 @@
                                     <Label Grid.Column="0" Grid.Row="0" Content="Vorname" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" Margin="2" />
-                                    <Label Grid.Column="0" Grid.Row="3" Content="Skikursgruppe"  Margin="2" />
+                                    <Label Grid.Column="0" Grid.Row="3" Content="Skikurs"  Margin="2" />
 
                                     <!-- Binding an den Datacontext des Windows -->
                                     <TextBox  Grid.Column="1" Grid.Row="0" Text="{Binding Path=Vorname, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <TextBox  Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <TextBox  Grid.Column="1" Grid.Row="2" Text="{Binding Path=PersoenlichesLevel.Benennung, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
-                                    <TextBox  Grid.Column="1" Grid.Row="3" Text="{Binding Path=Skikursgruppe.Gruppenname, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                    <TextBox  Grid.Column="1" Grid.Row="3" Text="{Binding Path=Skikursgruppe, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
 
                                 </Grid>
                             </Grid>
@@ -203,7 +203,7 @@
                                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                                             <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
                                             <DataGridTextColumn Header="Persönliches Level" Binding="{Binding PersoenlichesLevel.Benennung}"/>
-                                            <DataGridTextColumn Header="Skikursgruppe" Width="*" Binding="{Binding Skikursgruppe.Gruppenname}"/>
+                                            <DataGridTextColumn Header="Skikurs" Width="*" Binding="{Binding Skikursgruppe}"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>

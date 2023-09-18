@@ -26,10 +26,12 @@
             <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5" />
         </StackPanel>
         <Label Grid.Column="1" Grid.Row="2" Content="Teilnehmer" FontSize="24" Margin="5" />
-        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None"  FontSize="36" Margin="5">
+        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None"  
+                  FontSize="36" Margin="5" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible"
+                  ItemsSource="{Binding Mitglieder}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Vorname" />
-                <DataGridTextColumn Header="Name" />
+                <DataGridTextColumn Header="Vorname" Binding="{Binding Mitglieder.Vorname}"/>
+                <DataGridTextColumn Header="Name"   Binding="{Binding Mitglieder.Name}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

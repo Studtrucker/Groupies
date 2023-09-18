@@ -126,6 +126,8 @@ Class MainWindow
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
+        PrintableSkikursgruppe.InitPropsFromSkikursgruppe(_skischule.Skikursgruppenliste.Item(0))
+
     End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)

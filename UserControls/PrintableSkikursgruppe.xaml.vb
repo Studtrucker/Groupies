@@ -4,7 +4,7 @@ Imports System.Windows.Markup
 
 Namespace UserControls
 
-    <ContentProperty("Skigruppenname")>
+    <ContentProperty("Skikursgruppe")>
     Partial Public Class PrintableSkikursgruppe
 
         Public Sub New()
@@ -17,7 +17,7 @@ Namespace UserControls
         End Sub
 
         Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikursgruppe)
-            Skigruppenname = Skikursgruppe.Gruppenname
+            Skigruppenname = Skikursgruppe.AngezeigterGruppenname
             Skilehrer = Skikursgruppe.Skilehrer.AngezeigterName
             If Skikursgruppe.Skilehrer.HatFoto Then
                 Dim bi = New BitmapImage
@@ -59,8 +59,6 @@ Namespace UserControls
                 imgSkilehrerfoto.Source = value
             End Set
         End Property
-
-
 
         Public Property Mitglieder As TeilnehmerCollection
             Get

@@ -88,7 +88,9 @@
     <Compile Include="Dialogs\NeuerTeilnehmerDialog.xaml.vb">
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SkikursgruppeCollection.vb" />
+    <Compile Include="Entities\Skill.vb" />
+    <Compile Include="Entities\SkikursCollection.vb" />
+    <Compile Include="Entities\SkillCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
     <Compile Include="Modules\Standardelemente.vb" />
     <Compile Include="Modules\TestStreamreader.vb" />
@@ -131,7 +133,7 @@
     <Compile Include="Entities\LevelCollection.vb" />
     <Compile Include="Modules\DatenImport.vb" />
     <Compile Include="Entities\Level.vb" />
-    <Compile Include="Entities\Skikursgruppe.vb" />
+    <Compile Include="Entities\Skikurs.vb" />
     <Compile Include="Entities\Uebungsleiter.vb" />
     <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\TeilnehmerBeziehungen.vb" />

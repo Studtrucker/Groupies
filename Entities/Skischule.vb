@@ -8,7 +8,7 @@ Namespace Entities
 #Region "Fields"
 
         Public Property Teilnehmerliste() As TeilnehmerCollection
-        Public Property Skikursgruppenliste() As SkikursgruppeCollection
+        Public Property Skikursliste() As SkikursCollection
         Public Property Levelliste() As LevelCollection
         Public Property Skilehrerliste() As UebungsleiterCollection
 
@@ -16,14 +16,14 @@ Namespace Entities
 
 #Region "Constructor"
         Public Sub New()
-            _Skikursgruppenliste = New SkikursgruppeCollection
+            _Skikursliste = New SkikursCollection
             _Teilnehmerliste = New TeilnehmerCollection
             _Levelliste = New LevelCollection
             _Skilehrerliste = New UebungsleiterCollection
         End Sub
 
         Public Sub New(Teilnehmerliste As TeilnehmerCollection)
-            _Skikursgruppenliste = New SkikursgruppeCollection
+            _Skikursliste = New SkikursCollection
             _Teilnehmerliste = New TeilnehmerCollection
             _Levelliste = New LevelCollection
             readTeilnehmerliste(Teilnehmerliste)
@@ -38,11 +38,11 @@ Namespace Entities
         End Sub
 
         Public Function GetAktualisierungen() As Skischule
-            Skikursgruppenliste.ToList.ForEach(AddressOf GetAktualisierungen)
+            Skikursliste.ToList.ForEach(AddressOf GetAktualisierungen)
             Return Me
         End Function
 
-        Private Sub GetAktualisierungen(Skikurs As Skikursgruppe)
+        Private Sub GetAktualisierungen(Skikurs As Skikurs)
             Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
             For i = 0 To Skikurs.Mitgliederliste.Count - 1
                 Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))

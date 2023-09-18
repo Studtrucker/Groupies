@@ -82,7 +82,7 @@ Module Standardelemente
         Return sb.ToString
     End Function
 
-    Public Function erstelleGruppen(Anzahl As Integer, Levelliste As LevelCollection) As SkikursgruppeCollection
+    Public Function erstelleGruppen(Anzahl As Integer, Levelliste As LevelCollection) As SkikursCollection
         'Todo: Gruppenlevel einbauen
 
         If Anzahl = 15 Then
@@ -96,153 +96,153 @@ Module Standardelemente
 
     End Function
 
-    Private Function erstelle5Gruppen(Levelliste As LevelCollection) As SkikursgruppeCollection
+    Private Function erstelle5Gruppen(Levelliste As LevelCollection) As SkikursCollection
 
-        Dim GA1 = New Skikursgruppe With {
+        Dim GA1 = New Skikurs With {
             .Gruppenname = "Anfänger",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(0),
             .Gruppenlevel = Levelliste.Item(0)}
-        Dim GF1 = New Skikursgruppe With {
+        Dim GF1 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(1),
             .Gruppenlevel = Levelliste.Item(1)}
-        Dim GG1 = New Skikursgruppe With {
+        Dim GG1 = New Skikurs With {
             .Gruppenname = "Genießer",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(2),
             .Gruppenlevel = Levelliste.Item(2)}
 
-        Dim GK1 = New Skikursgruppe With {
+        Dim GK1 = New Skikurs With {
             .Gruppenname = "Könner",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(3),
             .Gruppenlevel = Levelliste.Item(3)}
 
-        Dim GE1 = New Skikursgruppe With {
+        Dim GE1 = New Skikurs With {
             .Gruppenname = "Experten",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(4),
             .Gruppenlevel = Levelliste.Item(4)}
 
-        Return New SkikursgruppeCollection From {GA1, GF1, GG1, GK1, GE1}
+        Return New SkikursCollection From {GA1, GF1, GG1, GK1, GE1}
 
     End Function
 
-    Private Function erstelle10Gruppen(Levelliste As LevelCollection) As SkikursgruppeCollection
+    Private Function erstelle10Gruppen(Levelliste As LevelCollection) As SkikursCollection
 
-        Dim GA1 = New Skikursgruppe With {
+        Dim GA1 = New Skikurs With {
             .Gruppenname = "Anfänger",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(0),
             .Gruppenlevel = Levelliste.Item(0)}
 
-        Dim GF1 = New Skikursgruppe With {
+        Dim GF1 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(1),
             .Gruppenlevel = Levelliste.Item(1)}
-        Dim GF2 = New Skikursgruppe With {
+        Dim GF2 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(2),
             .Gruppenlevel = Levelliste.Item(1)}
 
-        Dim GG1 = New Skikursgruppe With {
+        Dim GG1 = New Skikurs With {
             .Gruppenname = "Genießer 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(3),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG2 = New Skikursgruppe With {
+        Dim GG2 = New Skikurs With {
             .Gruppenname = "Genießer 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(4),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG3 = New Skikursgruppe With {
+        Dim GG3 = New Skikurs With {
             .Gruppenname = "Genießer 3",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(5),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG4 = New Skikursgruppe With {
+        Dim GG4 = New Skikurs With {
             .Gruppenname = "Genießer 4",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(6),
             .Gruppenlevel = Levelliste.Item(2)}
 
-        Dim GK1 = New Skikursgruppe With {
+        Dim GK1 = New Skikurs With {
             .Gruppenname = "Könner 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(7),
             .Gruppenlevel = Levelliste.Item(3)}
-        Dim GK2 = New Skikursgruppe With {
+        Dim GK2 = New Skikurs With {
             .Gruppenname = "Könner 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(8),
             .Gruppenlevel = Levelliste.Item(3)}
 
-        Dim GE1 = New Skikursgruppe With {
+        Dim GE1 = New Skikurs With {
             .Gruppenname = "Experten",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(9),
             .Gruppenlevel = Levelliste.Item(4)}
 
-        Return New SkikursgruppeCollection From {GA1, GF1, GF2, GG1, GG2, GG3, GG4, GK1, GK2, GE1}
+        Return New SkikursCollection From {GA1, GF1, GF2, GG1, GG2, GG3, GG4, GK1, GK2, GE1}
     End Function
 
-    Private Function erstelle15Gruppen(Levelliste As LevelCollection) As SkikursgruppeCollection
+    Private Function erstelle15Gruppen(Levelliste As LevelCollection) As SkikursCollection
 
-        Dim GA1 = New Skikursgruppe With {
+        Dim GA1 = New Skikurs With {
             .Gruppenname = "Anfänger 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(0),
             .Gruppenlevel = Levelliste.Item(0)}
-        Dim GA2 = New Skikursgruppe With {
+        Dim GA2 = New Skikurs With {
             .Gruppenname = "Anfänger2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(1),
             .Gruppenlevel = Levelliste.Item(0)}
 
-        Dim GF1 = New Skikursgruppe With {
+        Dim GF1 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(2),
             .Gruppenlevel = Levelliste.Item(1)}
-        Dim GF2 = New Skikursgruppe With {
+        Dim GF2 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(3),
             .Gruppenlevel = Levelliste.Item(1)}
-        Dim GF3 = New Skikursgruppe With {
+        Dim GF3 = New Skikurs With {
             .Gruppenname = "Fortgeschrittene 3",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(4),
             .Gruppenlevel = Levelliste.Item(1)}
 
-        Dim GG1 = New Skikursgruppe With {
+        Dim GG1 = New Skikurs With {
             .Gruppenname = "Genießer 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(5),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG2 = New Skikursgruppe With {
+        Dim GG2 = New Skikurs With {
             .Gruppenname = "Genießer 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(6),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG3 = New Skikursgruppe With {
+        Dim GG3 = New Skikurs With {
             .Gruppenname = "Genießer 3",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(7),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG4 = New Skikursgruppe With {
+        Dim GG4 = New Skikurs With {
             .Gruppenname = "Genießer 4",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(8),
             .Gruppenlevel = Levelliste.Item(2)}
-        Dim GG5 = New Skikursgruppe With {
+        Dim GG5 = New Skikurs With {
             .Gruppenname = "Genießer 5",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(9),
             .Gruppenlevel = Levelliste.Item(2)}
 
-        Dim GK1 = New Skikursgruppe With {
+        Dim GK1 = New Skikurs With {
             .Gruppenname = "Könner 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(10),
             .Gruppenlevel = Levelliste.Item(3)}
-        Dim GK2 = New Skikursgruppe With {
+        Dim GK2 = New Skikurs With {
             .Gruppenname = "Könner 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(11),
             .Gruppenlevel = Levelliste.Item(3)}
-        Dim GK3 = New Skikursgruppe With {
+        Dim GK3 = New Skikurs With {
             .Gruppenname = "Könner 3",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(12),
             .Gruppenlevel = Levelliste.Item(3)}
 
-        Dim GE1 = New Skikursgruppe With {
+        Dim GE1 = New Skikurs With {
             .Gruppenname = "Experten 1",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(13),
             .Gruppenlevel = Levelliste.Item(4)}
-        Dim GE2 = New Skikursgruppe With {
+        Dim GE2 = New Skikurs With {
             .Gruppenname = "Experten 2",
             .AngezeigterGruppenname = AngezeigterGruppenname.Item(14),
             .Gruppenlevel = Levelliste.Item(4)}
 
-        Return New SkikursgruppeCollection From {GA1, GA2, GF1, GF2, GF3, GG1, GG2, GG3, GG4, GG5, GK1, GK2, GK3, GE1, GE2}
+        Return New SkikursCollection From {GA1, GA2, GF1, GF2, GF3, GG1, GG2, GG3, GG4, GG5, GK1, GK2, GK3, GE1, GE2}
 
     End Function
 

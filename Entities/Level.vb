@@ -8,6 +8,7 @@ Namespace Entities
         Private levelIDFeld As Guid
         Private _benennung As String
         Private _beschreibung As String
+        Private _skills As SkillCollection
 
         Public Sub New()
             levelIDFeld = Guid.NewGuid()
@@ -41,6 +42,23 @@ Namespace Entities
                 Changed("Beschreibung")
             End Set
         End Property
+
+        Public Property Skills As SkillCollection
+            Get
+                Return _skills
+            End Get
+            Set(value As SkillCollection)
+                _skills = value
+            End Set
+        End Property
+
+        Public Sub AddSkill(skill As Skill)
+            _skills.Add(skill)
+        End Sub
+
+        Public Sub RemoveSkill(skill As Skill)
+            _skills.Remove(skill)
+        End Sub
 
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent

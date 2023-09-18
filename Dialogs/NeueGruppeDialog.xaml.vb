@@ -2,7 +2,7 @@
 Imports Skischule.Entities
 
 Public Class NeueGruppeDialog
-    Public ReadOnly Property Skikursgruppe() As Skikursgruppe
+    Public ReadOnly Property Skikursgruppe() As Skikurs
 
     Public Sub New()
 
@@ -10,7 +10,7 @@ Public Class NeueGruppeDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skikursgruppe = New Skikursgruppe
+        _Skikursgruppe = New Skikurs
         DataContext = _Skikursgruppe
 
     End Sub

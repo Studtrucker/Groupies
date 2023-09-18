@@ -20,12 +20,12 @@ Class MainWindow
 
 #Region "Fields"
     Private _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
-    Private _dummySpalteFuerLayerSkikursgruppenDetails As ColumnDefinition
+    Private _dummySpalteFuerLayerSkikurslisteDetails As ColumnDefinition
     Private _dummySpalteFuerLayerUebungsleiterDetails As ColumnDefinition
     Private _dummySpalteFuerLayerLevelDetails As ColumnDefinition
 
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _skikursgruppenListCollectionView As ICollectionView '... DataContext für das MainWindow
+    Private _skikursListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _uebungsleiterListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _levelListCollectionView As ICollectionView '... DataContext für das MainWindow
 
@@ -55,7 +55,7 @@ Class MainWindow
         ' wie die Spalte mit dem Freunde Explorer im
         ' layer1-Grid
         _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinTeilnehmerSpalte"}
-        _dummySpalteFuerLayerSkikursgruppenDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinSkikursgruppenSpalte"}
+        _dummySpalteFuerLayerSkikurslisteDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinSkikursgruppenSpalte"}
         _dummySpalteFuerLayerUebungsleiterDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinUebungsleiterSpalte"}
         _dummySpalteFuerLayerLevelDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinLevelSpalte"}
 
@@ -66,8 +66,8 @@ Class MainWindow
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _skikursgruppenListCollectionView = New ListCollectionView(New SkikursgruppeCollection())
-        AddHandler _skikursgruppenListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
+        _skikursListCollectionView = New ListCollectionView(New SkikursCollection())
+        AddHandler _skikursListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _uebungsleiterListCollectionView = New ListCollectionView(New UebungsleiterCollection())
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _levelListCollectionView = New ListCollectionView(New LevelCollection())
@@ -310,7 +310,7 @@ Class MainWindow
             NeueSkischule.Levelliste = Standardelemente.erstelleLevels()
             Dim dlg = New AnzahlGruppenDialog
             If dlg.ShowDialog Then
-                NeueSkischule.Skikursgruppenliste = Standardelemente.erstelleGruppen(dlg.Anzahl, NeueSkischule.Levelliste)
+                NeueSkischule.Skikursliste = Standardelemente.erstelleGruppen(dlg.Anzahl, NeueSkischule.Levelliste)
             End If
         End If
         SetView(NeueSkischule)
@@ -502,26 +502,26 @@ Class MainWindow
     Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            _skischule.Skikursgruppenliste.Add(dlg.Skikursgruppe)
-            _skikursgruppenListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
-            skikursgruppenDataGrid.ScrollIntoView(dlg.Skikursgruppe)
+            _skischule.Skikursliste.Add(dlg.Skikursgruppe)
+            _skikursListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
+            skikurseDataGrid.ScrollIntoView(dlg.Skikursgruppe)
         End If
     End Sub
 
     Private Sub HandleSkikursgruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemSkikursgruppen.IsSelected And skikursgruppenDataGrid.SelectedItems.Count > 0
+        e.CanExecute = tabitemSkikurse.IsSelected And skikurseDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub HandleSkikursgruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim i As Integer
-        Dim index(skikursgruppenDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Skikursgruppe In skikursgruppenDataGrid.SelectedItems
+        Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Skikurs In skikurseDataGrid.SelectedItems
             RemoveSkikursgruppeFromTeilnehmer(item.Gruppenname)
-            index(i) = _skischule.Skikursgruppenliste.IndexOf(item)
+            index(i) = _skischule.Skikursliste.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(_skischule.Skikursgruppenliste, index)
+        RemoveItemsAt(_skischule.Skikursliste, index)
     End Sub
 
 #End Region
@@ -639,16 +639,16 @@ Class MainWindow
         Teilnehmerliste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Level)
     End Sub
 
-    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursgruppeCollection, Level As Level)
+    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursCollection, Level As Level)
         Skikursgruppenliste.ToList.ForEach(Sub(x) x.Gruppenlevel = Level)
     End Sub
 
-    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikursgruppe, Uebungsleiter As Uebungsleiter)
+    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikurs, Uebungsleiter As Uebungsleiter)
         Skikursgruppe.Skilehrer = Uebungsleiter
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.Skikursgruppe = Skikursgruppe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.Skikurs = Skikursgruppe)
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
@@ -657,18 +657,18 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = _skischule.Skikursgruppenliste.TakeWhile(Function(x) x.Gruppenlevel.LevelID = level.LevelID)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Gruppenlevel.LevelID = level.LevelID)
         liste.ToList.ForEach(Sub(x) x.Gruppenlevel = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
-        Dim liste = _skischule.Skikursgruppenliste.TakeWhile(Function(x) x.Skilehrer.SkilehrerID = Uebungsleiter.SkilehrerID)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Skilehrer.SkilehrerID = Uebungsleiter.SkilehrerID)
         liste.ToList.ForEach(Sub(x) x.Skilehrer = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
-        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.Skikursgruppe = Skikursgruppe)
-        liste.ToList.ForEach(Sub(x) x.Skikursgruppe = Nothing)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.Skikurs = Skikursgruppe)
+        liste.ToList.ForEach(Sub(x) x.Skikurs = Nothing)
     End Sub
 
     Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())
@@ -850,7 +850,7 @@ Class MainWindow
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
         SetView(_skischule.Teilnehmerliste)
-        SetView(_skischule.Skikursgruppenliste)
+        SetView(_skischule.Skikursliste)
         SetView(_skischule.Skilehrerliste)
         SetView(_skischule.Levelliste)
     End Sub
@@ -864,14 +864,14 @@ Class MainWindow
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
     End Sub
-    Private Sub SetView(Skikursgruppen As SkikursgruppeCollection)
-        _skischule.Skikursgruppenliste = Skikursgruppen
-        _skikursgruppenListCollectionView = New ListCollectionView(Skikursgruppen)
+    Private Sub SetView(Skikursliste As SkikursCollection)
+        _skischule.Skikursliste = Skikursliste
+        _skikursListCollectionView = New ListCollectionView(Skikursliste)
         ' Hinweis AddHandler Seite 764
-        AddHandler _skikursgruppenListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
+        AddHandler _skikursListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemSkikursgruppen.DataContext = _skikursgruppenListCollectionView
+        tabitemSkikurse.DataContext = _skikursListCollectionView
     End Sub
 
     Private Sub SetView(Skilehrer As UebungsleiterCollection)
@@ -904,14 +904,14 @@ Class MainWindow
         _schalterBtnPinit = btnTeilnehmerPinIt
     End Sub
 
-    Private Sub tabitemSkikursgruppen_GotFocus(sender As Object, e As RoutedEventArgs)
-        _schalterLayerDetails = layerSkikursgruppendetails
-        _schalterBtnShowEplorer = btnShowSkikursgruppenExplorer
-        _schalterPinImage = pinSkikursgruppenImage
-        _schalterLayerListe = layerSkikursgruppenliste
-        _schalterLayerListeTransform = layerSkikursgruppenlisteTrans
-        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikursgruppenDetails
-        _schalterBtnPinit = btnSkikursgruppenPinIt
+    Private Sub tabitemSkikurs_GotFocus(sender As Object, e As RoutedEventArgs)
+        _schalterLayerDetails = layerSkikursdetails
+        _schalterBtnShowEplorer = btnShowSkikursExplorer
+        _schalterPinImage = pinSkikursImage
+        _schalterLayerListe = layerSkikursliste
+        _schalterLayerListeTransform = layerSkikurslisteTrans
+        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikurslisteDetails
+        _schalterBtnPinit = btnSkikursPinIt
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -935,9 +935,6 @@ Class MainWindow
     End Sub
 
     Private Function GetListAsFixedDocument(pageSize As Size, pageMargin As Thickness) As FixedDocument
-
-
-        'file:///C:/Users/andre/OneDrive%20-%20Konecranes%20Plc/B%C3%BCcher/WPF4.5/Windows%20Presentation%20Foundation%204_5%20-%20Das%20umfassende%20Handbuch%20__%20Copy%20qnz9-m3et-46x8-7dfs.pdf
 
         ' ein paar Variablen setzen
         Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
@@ -979,16 +976,16 @@ Class MainWindow
         _skischule = _skischule.GetAktualisierungen()
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView As ListCollectionView = New ListCollectionView(_skischule.Skikursgruppenliste)
+        Dim sortedView As ListCollectionView = New ListCollectionView(_skischule.Skikursliste)
         sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Skikursgruppe = Nothing
+        Dim skikursgruppe As Skikurs = Nothing
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
         For i As Integer = 0 To sortedView.Count - 1
             sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedView.CurrentItem, Skikursgruppe)
+            skikursgruppe = CType(sortedView.CurrentItem, Skikurs)
 
             If i Mod friendsPerPage = 0 Then
                 If page IsNot Nothing Then
@@ -1025,8 +1022,8 @@ Class MainWindow
     End Function
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        For i = 0 To _skischule.Skikursgruppenliste.Count - 1
-            _skischule.Skikursgruppenliste(i).Skilehrer = _skischule.Skilehrerliste.Item(i)
+        For i = 0 To _skischule.Skikursliste.Count - 1
+            _skischule.Skikursliste(i).Skilehrer = _skischule.Skilehrerliste.Item(i)
         Next
 
     End Sub

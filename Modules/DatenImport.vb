@@ -35,19 +35,19 @@ Public Module DatenImport
     Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skischule
         Dim CurrentRow = 4
         Dim RowCount = Excelsheet.UsedRange.Rows.Count
-        Dim Skikursgruppe As Skikursgruppe
+        Dim Skikursgruppe As Skikurs
         Do Until CurrentRow > RowCount
 
             Dim Teilnehmer As New Teilnehmer With {
             .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
             .Name = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
             .PersoenlichesLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-            .Skikursgruppe = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
+            .Skikurs = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
             _skischule.Teilnehmerliste.Add(Teilnehmer)
 
             'Gibt es die Skikursgruppe aus der Excelliste schon?
-            If Teilnehmer.Skikursgruppe IsNot Nothing Then
-                Skikursgruppe = FindSkikursgruppe(Teilnehmer.Skikursgruppe)
+            If Teilnehmer.Skikurs IsNot Nothing Then
+                Skikursgruppe = FindSkikursgruppe(Teilnehmer.Skikurs)
                 ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                 If Skikursgruppe IsNot Nothing Then
                     Skikursgruppe.AddMitglied(Teilnehmer)
@@ -70,11 +70,11 @@ Public Module DatenImport
         Return Level
     End Function
 
-    Private Function FindSkikursgruppe(Gruppenname As String) As Skikursgruppe
-        Dim Skikursgruppe = _skischule.Skikursgruppenliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
+    Private Function FindSkikursgruppe(Gruppenname As String) As Skikurs
+        Dim Skikursgruppe = _skischule.Skikursliste.FirstOrDefault(Function(s) s.Gruppenname = Gruppenname)
         If Skikursgruppe Is Nothing Then
-            Skikursgruppe = New Skikursgruppe With {.Gruppenname = Gruppenname}
-            _skischule.Skikursgruppenliste.Add(Skikursgruppe)
+            Skikursgruppe = New Skikurs With {.Gruppenname = Gruppenname}
+            _skischule.Skikursliste.Add(Skikursgruppe)
         End If
         Return Skikursgruppe
     End Function

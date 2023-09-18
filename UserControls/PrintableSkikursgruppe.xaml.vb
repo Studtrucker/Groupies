@@ -16,7 +16,7 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikursgruppe)
+        Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikurs)
             Skigruppenname = Skikursgruppe.AngezeigterGruppenname
             Mitglieder = Skikursgruppe.Mitgliederliste
 

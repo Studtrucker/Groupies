@@ -987,7 +987,7 @@ Class MainWindow
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
-        For i As Integer = 0 To sortedView.Count
+        For i As Integer = 0 To sortedView.Count - 1
             sortedView.MoveCurrentToPosition(i)
             skikursgruppe = sortedView.CurrentItem
 
@@ -999,38 +999,38 @@ Class MainWindow
                 End If
             End If
             page = New FixedPage
-            i += 1
+            'i += 1
+
+            ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
+            Dim pSkikursgruppe As PrintableSkikursgruppe = New PrintableSkikursgruppe
+            pSkikursgruppe.Height = printFriendHeight
+            pSkikursgruppe.Width = printFriendWidth
+
+            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe)
+            Dim currentRow As Integer = friendsPerPage / columnsPerPage
+            Dim currentColumn As Integer = columnsPerPage
+
+            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
+            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
+            page.Children.Add(pSkikursgruppe)
+
+            ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
+            If page.Children.Count > 0 Then
+                Dim Content As PageContent = New PageContent()
+                TryCast(Content, IAddChild).AddChild(page)
+                doc.Pages.Add(Content)
+            End If
         Next
-
-        ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
-        Dim pSkikursgruppe As PrintableSkikursgruppe = New PrintableSkikursgruppe
-        pSkikursgruppe.Height = printFriendHeight
-        pSkikursgruppe.Width = printFriendWidth
-
-        pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe)
-        Dim currentRow As Integer = friendsPerPage / columnsPerPage
-        Dim currentColumn As Integer = columnsPerPage
-
-        FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
-        FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
-        page.Children.Add(pSkikursgruppe)
-
-        ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
-        If page.Children.Count > 0 Then
-            Dim Content As PageContent = New PageContent()
-            TryCast(Content, IAddChild).AddChild(page)
-            doc.Pages.Add(Content)
-        End If
 
         Return doc
 
     End Function
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        For i = 0 To _skischule.Skilehrerliste.Count - 1
-            _skischule.Skikursgruppenliste.ToList.ForEach(Sub(x) x.Skilehrer = _skischule.Skilehrerliste.Item(i))
-            i += 1
+        For i = 0 To _skischule.Skikursgruppenliste.Count - 1
+            _skischule.Skikursgruppenliste(i).Skilehrer = _skischule.Skilehrerliste.Item(i)
         Next
+
     End Sub
 
 #End Region

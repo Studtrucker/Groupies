@@ -27,7 +27,7 @@ Namespace UserControls
                 Skilehrerfoto = bi
             Else
                 ' Todo: Ersatzfoto festlegen
-                'Skilehrerfoto = New BitmapImage(New Uri("\Images\icons8-ski-goggles-96.png"))
+                Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
             End If
             Mitglieder = Skikursgruppe.Mitgliederliste
 

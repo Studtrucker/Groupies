@@ -1,9 +1,10 @@
 ﻿Imports Skischule.Entities
+Imports System.IO
 Imports System.Windows.Markup
 
 Namespace UserControls
 
-    <ContentProperty("AngezeigterGruppenname")>
+    <ContentProperty("Skigruppenname")>
     Partial Public Class PrintableSkikursgruppe
 
         Public Sub New()
@@ -15,9 +16,31 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromFriend(Skikursgruppe As Skikursgruppe)
+        Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikursgruppe)
+            Skigruppenname = Skikursgruppe.Gruppenname
+            Skilehrer = Skikursgruppe.Skilehrer.AngezeigterName
+            If Skikursgruppe.Skilehrer.HatFoto Then
+                Dim bi = New BitmapImage
+                bi.BeginInit()
+                bi.StreamSource = New MemoryStream(Skikursgruppe.Skilehrer.Foto)
+                bi.EndInit()
+                Skilehrerfoto = bi
+            Else
+                ' Todo: Ersatzfoto festlegen
+                'Skilehrerfoto = New BitmapImage(New Uri("\Images\icons8-ski-goggles-96.png"))
+            End If
+            Mitglieder = Skikursgruppe.Mitgliederliste
 
         End Sub
+
+        Public Property Skigruppenname As String
+            Get
+                Return txtSkigruppenname.Text
+            End Get
+            Set(value As String)
+                txtSkigruppenname.Text = value
+            End Set
+        End Property
 
         Public Property Skilehrer As String
             Get
@@ -38,21 +61,13 @@ Namespace UserControls
         End Property
 
 
-        Public Property Skigruppenname As String
-            Get
-                Return txtSkigruppenname.Text
-            End Get
-            Set(value As String)
-                txtSkigruppenname.Text = value
-            End Set
-        End Property
 
-        Public Property Mitglieder As DataGrid
+        Public Property Mitglieder As TeilnehmerCollection
             Get
-                Return lstMitglieder
+                Return lstMitglieder.ItemsSource
             End Get
-            Set(value As DataGrid)
-                lstMitglieder = value
+            Set(value As TeilnehmerCollection)
+                lstMitglieder.ItemsSource = value
             End Set
         End Property
 

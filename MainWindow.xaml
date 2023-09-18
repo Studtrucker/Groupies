@@ -14,14 +14,6 @@
         Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">
 
     <Window.Resources>
-
-        <x:Array x:Key="Mitglieder" Type="{x:Type en:Teilnehmer}">
-            <en:Teilnehmer Vorname="Andreas" Name="Studtrucker"/>
-            <en:Teilnehmer Vorname="Manuela" Name="Ramm"/>
-            <en:Teilnehmer Vorname="Ralf" Name="Granderath"/>
-            <en:Teilnehmer Vorname="Sandra" Name="S04 Oehlschläger"/>
-        </x:Array> 
-
         <convert:InvertableBoolToVisibleConverter Inverted="False" x:Key="BooleanToVisibility"/>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
 
@@ -105,20 +97,13 @@
 
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
                 <MenuItem Header="Eigene Level definieren" Command="ApplicationCommands.New"/>
+                <MenuItem Header="Skilehrer zuordnen" Click="MenuItem_Click"/>
             </MenuItem>
 
         </Menu>
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <TabItem Header="TestUC"  Margin="-2,-2,0,-2">
-                <TabItem.LayoutTransform>
-                    <RotateTransform Angle="270"/>
-                </TabItem.LayoutTransform>
-                <uc:PrintableSkikursgruppe Skigruppenname="Experten" Skilehrer="Der große Rene" 
-                                           Skilehrerfoto="\Images\icons8-ski-goggles-96.png"
-                                           />
-            </TabItem>
             
             <TabItem Header="Teilnehmer" x:Name="tabitemTeilnehmer"  GotFocus="tabitemTeilnehmer_GotFocus" Margin="-2,-2,0,-2">
 

@@ -21,10 +21,12 @@
                    Grid.ColumnSpan="2" Margin="5" 
                    FontSize="48" FontWeight="Bold" />
         <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Grid.Row="1" Margin="5"  />
-
-        <TextBlock x:Name="txtSkilehrername" Grid.Column="1" Grid.Row="1" FontSize="36" Margin="5" />
-        <Label Grid.Column="1" Grid.Row="2" Content="Teilnehmer" FontSize="36" Margin="5" />
-        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None">
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Label Content="Skilehrer" FontSize="24" Margin="5" />
+            <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5" />
+        </StackPanel>
+        <Label Grid.Column="1" Grid.Row="2" Content="Teilnehmer" FontSize="24" Margin="5" />
+        <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="1" HeadersVisibility="None"  FontSize="36" Margin="5">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" />
                 <DataGridTextColumn Header="Name" />

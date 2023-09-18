@@ -453,7 +453,8 @@ Class MainWindow
     End Sub
 
     Private Sub HandleListPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _skischule.Skikursgruppenliste IsNot Nothing AndAlso _skischule.Skikursgruppenliste.Count > 0
+        ' Todo: Can execute festlegen
+        e.CanExecute = True '_skischule IsNot Nothing OrElse _skischule.Skikursgruppenliste IsNot Nothing OrElse _skischule.Skikursgruppenliste.Count > 0
     End Sub
 
 
@@ -1006,7 +1007,7 @@ Class MainWindow
         pSkikursgruppe.Height = printFriendHeight
         pSkikursgruppe.Width = printFriendWidth
 
-        pSkikursgruppe.InitPropsFromFriend(skikursgruppe)
+        pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe)
         Dim currentRow As Integer = friendsPerPage / columnsPerPage
         Dim currentColumn As Integer = columnsPerPage
 
@@ -1024,6 +1025,13 @@ Class MainWindow
         Return doc
 
     End Function
+
+    Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
+        For i = 0 To _skischule.Skilehrerliste.Count - 1
+            _skischule.Skikursgruppenliste.ToList.ForEach(Sub(x) x.Skilehrer = _skischule.Skilehrerliste.Item(i))
+            i += 1
+        Next
+    End Sub
 
 #End Region
 

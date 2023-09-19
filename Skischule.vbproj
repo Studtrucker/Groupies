@@ -97,6 +97,7 @@
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Templates\SkikursGroesseTemplateSelector.vb" />
     <Compile Include="UserControls\PrintableSkikursgruppe.xaml.vb">
       <DependentUpon>PrintableSkikursgruppe.xaml</DependentUpon>
     </Compile>

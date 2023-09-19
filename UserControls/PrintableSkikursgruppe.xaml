@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Skischule"
+             xmlns:en="clr-namespace:Skischule.Entities"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
+    
     <Grid>
+        <Grid.Resources>
+            <local:SkikursGroesseTemplateSelector x:Key="GruppengroesseSelector"/>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -34,7 +39,7 @@
         <StackPanel Grid.Row="2">
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray"/>
             <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" HeadersVisibility="None"  
-                  FontSize="36" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0">
+                  ItemTemplateSelector="{StaticResource GruppengroesseSelector}" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Binding="{Binding VollerName}"/>
                 </DataGrid.Columns>

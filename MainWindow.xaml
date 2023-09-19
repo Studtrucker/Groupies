@@ -162,7 +162,7 @@
                                     <TextBox  Grid.Column="1" Grid.Row="0" Text="{Binding Path=Vorname, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <TextBox  Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <TextBox  Grid.Column="1" Grid.Row="2" Text="{Binding Path=PersoenlichesLevel.Benennung, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
-                                    <TextBox  Grid.Column="1" Grid.Row="3" Text="{Binding Path=Skikursgruppe, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                    <TextBox  Grid.Column="1" Grid.Row="3" Text="{Binding Path=Skikurs, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
 
                                 </Grid>
                             </Grid>
@@ -202,7 +202,7 @@
                                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                                             <DataGridTextColumn Header="Nachname"  Binding="{Binding Name}"/>
                                             <DataGridTextColumn Header="Persönliches Level" Binding="{Binding PersoenlichesLevel.Benennung}"/>
-                                            <DataGridTextColumn Header="Skikurs" Width="*" Binding="{Binding Skikursgruppe}"/>
+                                            <DataGridTextColumn Header="Skikurs" Width="*" Binding="{Binding Skikurs}"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>

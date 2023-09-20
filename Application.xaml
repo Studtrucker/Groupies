@@ -8,23 +8,29 @@
     
     <Application.Resources>
         
-        <SolidColorBrush x:Key="darkRedBrush" Color="DarkRed"/>
+        <!--<SolidColorBrush x:Key="darkRedBrush" Color="DarkRed"/>-->
         
         <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
             <GradientStop Offset="0" Color="White"/>
             <GradientStop Offset="0.6" Color="LightGray"/>
             <GradientStop Offset="1.5" Color="DarkGray"/>
         </LinearGradientBrush>
-
-            <DataTemplate x:Key="KleineGruppe" DataType="{x:Type en:Skikurs}">
-                <DataGrid FontSize="48"/>
-            </DataTemplate>
-            <DataTemplate x:Key="NormaleGruppe" DataType="{x:Type en:Skikurs}">
-                <DataGrid FontSize="36"/>
-            </DataTemplate>
-            <DataTemplate x:Key="GrosseGruppe" DataType="{x:Type en:Skikurs}">
-                <DataGrid FontSize="24"/>
-            </DataTemplate>
+        
+        <DataTemplate x:Key="KleineGruppe" DataType="{x:Type en:TeilnehmerCollection}">
+            <DataGrid>
+                <TextBlock FontSize="48"/>
+            </DataGrid>
+        </DataTemplate>
+        <DataTemplate x:Key="NormaleGruppe" DataType="{x:Type en:TeilnehmerCollection}">
+            <DataGrid>
+                <TextBlock FontSize="36"/>
+            </DataGrid>
+        </DataTemplate>
+        <DataTemplate x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">
+            <DataGrid>
+                <TextBlock FontSize="24"/>
+            </DataGrid>
+        </DataTemplate>
         
         <!--<DrawingImage x:Key="DefaultDrawingImage">
             <DrawingImage.Drawing>

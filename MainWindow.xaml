@@ -104,6 +104,19 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
+            <TabItem Header="UC1">
+                <TabItem.LayoutTransform>
+                    <RotateTransform Angle="270"/>
+                </TabItem.LayoutTransform>
+                <uc:PrintableSkikursgruppe x:Name="UC1"/>
+            </TabItem>
+            <TabItem Header="UC2">
+                <TabItem.LayoutTransform>
+                    <RotateTransform Angle="270"/>
+                </TabItem.LayoutTransform>
+                <uc:PrintableSkikursgruppe x:Name="UC2"/>
+            </TabItem>
+
             <TabItem Header="Teilnehmer" x:Name="tabitemTeilnehmer"  GotFocus="tabitemTeilnehmer_GotFocus" Margin="-2,-2,0,-2">
 
                 <TabItem.LayoutTransform>

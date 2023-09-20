@@ -64,6 +64,18 @@ Class MainWindow
         tabitemTeilnehmer_GotFocus(Me, New RoutedEventArgs())
         btnTeilnehmerPinIt.IsChecked = True
 
+        layerLevelliste.Visibility = Visibility.Visible
+        tabitemLevel_GotFocus(Me, New RoutedEventArgs())
+        btnLevelPinIt.IsChecked = True
+
+        layerSkikursdetails.Visibility = Visibility.Visible
+        tabitemSkikurs_GotFocus(Me, New RoutedEventArgs())
+        btnSkikursPinIt.IsChecked = True
+
+        layerSkilehrerdetails.Visibility = Visibility.Visible
+        tabitemSkilehrer_GotFocus(Me, New RoutedEventArgs())
+        btnSkilehrerPinIt.IsChecked = True
+
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _skikursListCollectionView = New ListCollectionView(New SkikursCollection())
@@ -126,6 +138,8 @@ Class MainWindow
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
+        UC1.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(0))
+        UC2.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(1))
     End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)

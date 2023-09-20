@@ -12,38 +12,32 @@
         <Grid.Resources>
             <local:SkikursGroesseTemplateSelector x:Key="GruppengroesseSelector"/>
         </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="5" >
-            <TextBlock Text="Gruppe" FontSize="24" Foreground="LightGray" />
+        <DockPanel Grid.Row="0" Margin="5">
+            <TextBlock Text="Gruppe" FontSize="24" Foreground="LightGray" DockPanel.Dock="Top"/>
             <TextBlock x:Name="txtSkigruppenname" FontSize="48" FontWeight="Bold" />
-        </StackPanel>
+        </DockPanel>
 
-        
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel>
-                <TextBlock Text="Skilehrer" FontSize="24" Margin="5" Foreground="LightGray"/>
-                <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5" />
-            </StackPanel>
-            <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Margin="5" Grid.Column="1"/>
-        </Grid>
+        <DockPanel Grid.Row="1" Margin="5">
+            <Image x:Name="imgSkilehrerfoto" Width="160" Height="200" Margin="5" Grid.Column="1" DockPanel.Dock="Right"/>
+            <TextBlock Text="Skilehrer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
+            <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5"/>
+        </DockPanel>
 
-        <StackPanel Grid.Row="2">
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray"/>
-            <DataGrid x:Name="lstMitglieder" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" HeadersVisibility="None"  
-                  ItemTemplateSelector="{StaticResource GruppengroesseSelector}" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0">
+        <DockPanel Grid.Row="2" Margin="5">
+            <TextBlock Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
+            <DataGrid x:Name="lstMitglieder" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0"
+                      HeadersVisibility="None"  DockPanel.Dock="Top" ItemTemplateSelector="{StaticResource GruppengroesseSelector}">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Binding="{Binding VollerName}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </UserControl>

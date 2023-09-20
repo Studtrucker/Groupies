@@ -21,7 +21,7 @@ Namespace UserControls
             Mitglieder = Skikursgruppe.Mitgliederliste
 
             If Skikursgruppe.Skilehrer IsNot Nothing Then
-                Skilehrer = Skikursgruppe.Skilehrer.AngezeigterName
+                Skilehrername = Skikursgruppe.Skilehrer.AngezeigterName
                 If Skikursgruppe.Skilehrer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
@@ -33,6 +33,9 @@ Namespace UserControls
                     Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
                 End If
             End If
+            'Dim TS = New SkikursGroesseTemplateSelector
+            'TS.SelectTemplate(Mitglieder, lstMitglieder)
+            'lstMitglieder.ItemTemplateSelector = TS
 
         End Sub
 
@@ -45,7 +48,7 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Skilehrer As String
+        Public Property Skilehrername As String
             Get
                 Return txtSkilehrername.Text
             End Get

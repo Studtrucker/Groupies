@@ -1,4 +1,6 @@
-﻿Public Class SkikursGroesseTemplateSelector
+﻿Imports Skischule.Entities
+
+Public Class SkikursGroesseTemplateSelector
     Inherits DataTemplateSelector
     Public KleineGruppe As DataTemplate
     Public NormaleGruppe As DataTemplate
@@ -14,12 +16,12 @@
         If KleineGruppe Is Nothing Then
             KleineGruppe = TryCast(Application.Current.FindResource("KleineGruppe"), DataTemplate)
         End If
-        Dim SK = TryCast(item, Skischule.Entities.Skikurs)
+        Dim SK = TryCast(item, TeilnehmerCollection)
         If SK IsNot Nothing Then
-            If SK.AnzahlMitglieder < 7 Then
+            If SK.Count < 7 Then
                 Return KleineGruppe
             End If
-            If SK.AnzahlMitglieder >= 7 And SK.AnzahlMitglieder < 14 Then
+            If SK.Count >= 7 And SK.Count < 14 Then
                 Return NormaleGruppe
             End If
             Return GrosseGruppe

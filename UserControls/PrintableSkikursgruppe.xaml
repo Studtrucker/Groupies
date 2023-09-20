@@ -10,7 +10,7 @@
     
     <Grid>
         <Grid.Resources>
-            <local:SkikursGroesseTemplateSelector x:Key="GruppengroesseSelector"/>
+            <local:SkikursGroesseStyleSelector x:Key="GruppengroesseSelector"/>
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -33,9 +33,9 @@
         <DockPanel Grid.Row="2" Margin="5">
             <TextBlock Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
             <DataGrid x:Name="lstMitglieder" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0"
-                      HeadersVisibility="None"  DockPanel.Dock="Top" ItemTemplateSelector="{StaticResource GruppengroesseSelector}">
+                      HeadersVisibility="None"  DockPanel.Dock="Top" ItemContainerStyleSelector="{StaticResource GruppengroesseSelector}" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn  Binding="{Binding VollerName}"/>
+                    <DataGridTextColumn Binding="{Binding VollerName}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

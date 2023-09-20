@@ -23,6 +23,16 @@
         <DataTemplate x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">
             <DataGrid FontSize="24"/>
         </DataTemplate>
+
+        <Style TargetType="DataGrid" x:Key="KleineGruppeStyle" >
+            <Setter Property="FontSize" Value="48"/>
+        </Style>
+        <Style TargetType="DataGrid" x:Key="NormaleGruppeStyle" >
+            <Setter Property="FontSize" Value="36"/>
+        </Style>
+        <Style  TargetType="DataGrid"  x:Key="GrosseGruppeStyle" >
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
         
     </Application.Resources>
 </Application>

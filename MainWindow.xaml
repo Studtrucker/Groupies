@@ -294,7 +294,7 @@
                                                 Neues Bild hierhin ziehen
                                             </TextBlock>
                                             <Image Source="{Binding Foto, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="2" Width="200" Height="260" Stretch="Fill"/>
+                                                   Margin="2" Width="200" Height="260"/>
                                         </Grid>
                                     </Border>
                                 </Grid>

@@ -17,25 +17,13 @@
         </LinearGradientBrush>
         
         <DataTemplate x:Key="KleineGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn FontSize="48"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <TextBlock FontSize="48"/>
         </DataTemplate>
         <DataTemplate x:Key="NormaleGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn FontSize="36"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <TextBlock FontSize="36"/>
         </DataTemplate>
         <DataTemplate x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn FontSize="24"/>
-                </DataGrid.Columns> 
-            </DataGrid>
+            <TextBlock FontSize="24"/>
         </DataTemplate>
         
         <!--<DrawingImage x:Key="DefaultDrawingImage">

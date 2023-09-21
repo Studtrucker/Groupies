@@ -13,26 +13,19 @@
             <GradientStop Offset="0.6" Color="LightGray"/>
             <GradientStop Offset="1.5" Color="DarkGray"/>
         </LinearGradientBrush>
-        
-        <DataTemplate x:Key="KleineGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid FontSize="48"/>
-        </DataTemplate>
-        <DataTemplate x:Key="NormaleGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid FontSize="36"/>
-        </DataTemplate>
-        <DataTemplate x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">
-            <DataGrid FontSize="24"/>
-        </DataTemplate>
 
-        <Style TargetType="DataGrid" x:Key="KleineGruppeStyle" >
-            <Setter Property="FontSize" Value="48"/>
-        </Style>
-        <Style TargetType="DataGrid" x:Key="NormaleGruppeStyle" >
-            <Setter Property="FontSize" Value="36"/>
-        </Style>
-        <Style  TargetType="DataGrid"  x:Key="GrosseGruppeStyle" >
-            <Setter Property="FontSize" Value="24"/>
-        </Style>
+        <StyleSelector x:Key="KleineGruppe">
+            <!--<StyleSelector x:Key="KleineGruppe" DataType="{x:Type en:TeilnehmerCollection}" >-->
+                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="48"/>-->
+        </StyleSelector>
+        <StyleSelector x:Key="NormaleGruppe" >
+            <!--<StyleSelector x:Key="NormaleGruppe" DataType="{x:Type en:TeilnehmerCollection}">-->
+                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="36"/>-->
+        </StyleSelector>
+        <StyleSelector x:Key="GrosseGruppe" >
+            <!--<StyleSelector x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">-->
+                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>-->
+        </StyleSelector>
         
     </Application.Resources>
 </Application>

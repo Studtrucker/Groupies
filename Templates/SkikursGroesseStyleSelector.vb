@@ -2,20 +2,19 @@
 
 Public Class SkikursGroesseStyleSelector
     Inherits StyleSelector
-
     Public KleineGruppe As Style
     Public NormaleGruppe As Style
     Public GrosseGruppe As Style
 
     Public Overrides Function SelectStyle(item As Object, container As DependencyObject) As Style
         If GrosseGruppe Is Nothing Then
-            GrosseGruppe = TryCast(Application.Current.FindResource("GrosseGruppeStyle"), Style)
+            GrosseGruppe = TryCast(Application.Current.FindResource("GrosseGruppe"), Style)
         End If
         If NormaleGruppe Is Nothing Then
-            NormaleGruppe = TryCast(Application.Current.FindResource("NormaleGruppeStyle"), Style)
+            NormaleGruppe = TryCast(Application.Current.FindResource("NormaleGruppe"), Style)
         End If
         If KleineGruppe Is Nothing Then
-            KleineGruppe = TryCast(Application.Current.FindResource("KleineGruppeStyle"), Style)
+            KleineGruppe = TryCast(Application.Current.FindResource("KleineGruppe"), Style)
         End If
         Dim SK = TryCast(item, TeilnehmerCollection)
         If SK IsNot Nothing Then

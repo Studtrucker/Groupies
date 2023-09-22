@@ -8,11 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
     
+    <UserControl.Resources>
+        <Style x:Key="DatagridFontsize" TargetType="{x:Type DataGrid}">
+
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <Grid.Resources>
-            <local:SkikursGroesseStyleSelector x:Key="GruppengroesseSelector"/>
-        </Grid.Resources>
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -33,8 +35,8 @@
 
         <DockPanel Grid.Row="2" Margin="5">
             <TextBlock Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="lstMitglieder" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0"
-                      HeadersVisibility="None"  DockPanel.Dock="Top" ItemContainerStyleSelector="{StaticResource GruppengroesseSelector}" >
+            <DataGrid x:Name="lstMitglieder" Margin="5" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
+                      GridLinesVisibility="None" DockPanel.Dock="Top"  Style="{StaticResource DatagridFontsize}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding VollerName}" />
                 </DataGrid.Columns>

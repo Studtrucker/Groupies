@@ -16,16 +16,16 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikursgruppe As Skikurs)
-            Skigruppenname = Skikursgruppe.AngezeigterGruppenname
-            Mitglieder = Skikursgruppe.Mitgliederliste
+        Public Sub InitPropsFromSkikursgruppe(Skikurs As Skikurs)
+            Skigruppenname = Skikurs.AngezeigterGruppenname
+            Mitglieder = Skikurs.Mitgliederliste
 
-            If Skikursgruppe.Skilehrer IsNot Nothing Then
-                Skilehrername = Skikursgruppe.Skilehrer.AngezeigterName
-                If Skikursgruppe.Skilehrer.HatFoto Then
+            If Skikurs.Skilehrer IsNot Nothing Then
+                Skilehrername = Skikurs.Skilehrer.AngezeigterName
+                If Skikurs.Skilehrer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(Skikursgruppe.Skilehrer.Foto)
+                    bi.StreamSource = New MemoryStream(Skikurs.Skilehrer.Foto)
                     bi.EndInit()
                     Skilehrerfoto = bi
                 Else
@@ -36,6 +36,8 @@ Namespace UserControls
             'Dim TS = New SkikursGroesseTemplateSelector
             'TS.SelectTemplate(Mitglieder, lstMitglieder)
             'lstMitglieder.ItemTemplateSelector = TS
+
+            DataContext = Skikurs.Mitgliederliste
 
         End Sub
 

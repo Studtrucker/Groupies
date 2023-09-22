@@ -85,6 +85,7 @@ Class MainWindow
         _levelListCollectionView = New ListCollectionView(New LevelCollection())
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
 
+
     End Sub
 
 #End Region
@@ -138,8 +139,8 @@ Class MainWindow
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
-        'UC1.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(0))
-        'UC2.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(1))
+        UC1.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(0))
+        UC2.InitPropsFromSkikursgruppe(_skischule.Skikursliste.Item(1))
     End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)

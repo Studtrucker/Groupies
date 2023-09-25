@@ -33,11 +33,8 @@ Namespace UserControls
                     Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
                 End If
             End If
-            'Dim TS = New SkikursGroesseTemplateSelector
-            'TS.SelectTemplate(Mitglieder, lstMitglieder)
-            'lstMitglieder.ItemTemplateSelector = TS
 
-            DataContext = Skikurs.Mitgliederliste
+            DataContext = Skikurs
 
         End Sub
 

@@ -9,14 +9,26 @@
              d:DesignHeight="1000" d:DesignWidth="700">
     
     <UserControl.Resources>
-        <Style TargetType="DataGrid">
+        
+        <Style TargetType="DataGrid" x:Key="Gruppenschrift">
+            <!--Standard-->
             <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="black"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Count}" Value="5">
-                    <Setter Property="FontSize" Value="36"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Count}" Value="20">
+                <!--Zu groß-->
+                <DataTrigger Binding="{Binding Mitgliederliste.Count}" Value="5">
                     <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </DataTrigger>
+                <!--Zu klein-->
+                <DataTrigger Binding="{Binding Mitgliederliste.Count}" Value="20">
+                    <Setter Property="FontSize" Value="36"/>
+                    <Setter Property="Foreground" Value="green"/>
+                </DataTrigger>
+                <!--Viel zu klein-->
+                <DataTrigger Binding="{Binding Mitgliederliste.Count}" Value="20">
+                    <Setter Property="FontSize" Value="36"/>
+                    <Setter Property="Foreground" Value="blue"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>

@@ -25,4 +25,5 @@ Namespace Converters
             Return value = Visibility.Visible
         End Function
     End Class
+
 End Namespace

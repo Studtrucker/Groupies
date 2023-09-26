@@ -72,7 +72,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants\ImageTypes.vb" />
-    <Compile Include="Converters\AnzahlConverter.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
     <Compile Include="Dialogs\AnzahlGruppenDialog.xaml.vb">
       <DependentUpon>AnzahlGruppenDialog.xaml</DependentUpon>

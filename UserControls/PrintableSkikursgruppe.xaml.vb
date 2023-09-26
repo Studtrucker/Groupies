@@ -34,7 +34,14 @@ Namespace UserControls
                 End If
             End If
 
-            DataContext = Skikurs
+            If Skikurs.Mitgliederliste.Count <= 3 Then
+                DataContext = "VielZuKlein"
+            ElseIf Skikurs.Mitgliederliste.Count <= 6 Then
+                DataContext = "ZuKlein"
+            ElseIf Skikurs.Mitgliederliste.Count < 12 Then
+                DataContext = "ZuGross"
+            End If
+
 
         End Sub
 

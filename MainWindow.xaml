@@ -404,8 +404,9 @@
                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>
-                                    <ComboBox ItemsSource="{Binding Skilehrerliste}" IsEditable="True"
-                                             Grid.Column="1" Grid.Row="5"  Margin="2"/>
+                                    <ComboBox x:Name="cbo" IsEditable="True"  DisplayMemberPath="AngezeigterName" 
+                                              SelectedItem="{Binding Skilehrer}" SelectedValue="AngezeigterName"
+                                              Grid.Column="1" Grid.Row="5"  Margin="2"/>
                                     <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="6" Grid.Column="1" 
                                               ItemsSource="{Binding Path=Mitgliederliste}" AutoGenerateColumns="False"
                                               IsReadOnly="True">
@@ -456,7 +457,7 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
-                                            <DataGridTextColumn Header="Skilehrer" Binding="{Binding Skilehrer.AngezeigterName}" />
+                                            <DataGridTextColumn Header="Skilehrer" Binding="{Binding Skilehrer.VollerName, Mode=OneWay}" />
                                             <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

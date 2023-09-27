@@ -862,7 +862,7 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
-        DataContext = _skischule
+        cbo.ItemsSource = _skischule.Skilehrerliste
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)
         SetView(_skischule.Skilehrerliste)

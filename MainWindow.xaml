@@ -404,13 +404,14 @@
                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>
-                                    <ComboBox x:Name="cbo" IsEditable="True"  IsReadOnly="True"
-                                              DisplayMemberPath="AngezeigterName"
-                                              SelectedItem="{Binding Skilehrer}" SelectedValue="AngezeigterName"
-                                              Grid.Column="1" Grid.Row="5"  Margin="2"/>
+
+                                    <ComboBox x:Name="cbo" DisplayMemberPath="AngezeigterName"
+                                              SelectedValue="{Binding Path=Skilehrer}"  
+                                              Grid.Column="1" Grid.Row="5"  Margin="2" IsSynchronizedWithCurrentItem="True"/>
+                                    
                                     <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="6" Grid.Column="1" 
                                               ItemsSource="{Binding Path=Mitgliederliste}" AutoGenerateColumns="False"
-                                              IsReadOnly="True">
+                                              IsReadOnly="True" Margin="2">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                                             <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
@@ -455,6 +456,7 @@
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                               RowStyle="{StaticResource friendDataGridRowStyle}"   >
+                                        
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>

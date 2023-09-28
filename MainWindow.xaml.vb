@@ -658,7 +658,7 @@ Class MainWindow
     End Sub
 
     Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikurs, Uebungsleiter As Uebungsleiter)
-        Skikursgruppe.Skilehrer = Uebungsleiter
+        Skikursgruppe.SkilehrerID = Uebungsleiter.UebungsleiterID
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
@@ -676,8 +676,8 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Skilehrer.SkilehrerID = Uebungsleiter.SkilehrerID)
-        liste.ToList.ForEach(Sub(x) x.Skilehrer = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.SkilehrerID = Uebungsleiter.UebungsleiterID)
+        liste.ToList.ForEach(Sub(x) x.SkilehrerID = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
@@ -1039,7 +1039,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To _skischule.Skikursliste.Count - 1
-            _skischule.Skikursliste(i).Skilehrer = _skischule.Skilehrerliste.Item(i)
+            _skischule.Skikursliste(i).SkilehrerID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
         Next
 
     End Sub

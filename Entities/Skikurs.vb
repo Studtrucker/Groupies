@@ -8,7 +8,7 @@ Namespace Entities
         Private _gruppenname As String
         Private _angezeigterGruppenname As String
         Private _gruppenlevel As Entities.Level
-        Private _skilehrer As Entities.Uebungsleiter
+        Private _skilehrerID As Guid
         Private _mitgliederliste As Entities.TeilnehmerCollection
 
         Public Sub New()
@@ -54,13 +54,13 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Skilehrer As Entities.Uebungsleiter
+        Public Property SkilehrerID As Guid
             Get
-                Return _skilehrer
+                Return _skilehrerID
             End Get
-            Set(value As Entities.Uebungsleiter)
-                _skilehrer = value
-                Changed("Skilehrer")
+            Set(value As Guid)
+                _skilehrerID = value
+                Changed("SkilehrerID")
             End Set
         End Property
 

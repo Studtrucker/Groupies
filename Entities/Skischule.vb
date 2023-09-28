@@ -43,10 +43,10 @@ Namespace Entities
         End Function
 
         Private Sub GetAktualisierungen(Skikurs As Skikurs)
-            Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
-            For i = 0 To Skikurs.Mitgliederliste.Count - 1
-                Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))
-            Next
+            'Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
+            'For i = 0 To Skikurs.Mitgliederliste.Count - 1
+            '    Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))
+            'Next
         End Sub
 
         Private Function GetAktualisierungen(Mitglied As Teilnehmer) As Teilnehmer

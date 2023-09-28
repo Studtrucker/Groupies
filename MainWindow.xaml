@@ -149,32 +149,28 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Column="0" Grid.Row="0" Content="Gruppenname" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="3" Content="Skilehrer" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="4" Content="Anzahl Miglieder" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="5" Content="Auswahl SL" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="6" Content="Migliederliste" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="3" Content="Anzahl Miglieder" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="4" Content="Auswahl SL" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="5" Content="Migliederliste" Margin="2"/>
                                     <TextBox Text="{Binding Path=Gruppenname, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding Path=AngezeigterGruppenname, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="1"  Margin="2"/>
                                     <TextBox Text="{Binding Path=Gruppenlevel.Benennung, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="2"  Margin="2"/>
-                                    <TextBox Text="{Binding Path=Skilehrer.AngezeigterName, UpdateSourceTrigger=PropertyChanged}"
-                                             Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                             IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>
+                                             IsReadOnly="True" Grid.Column="1" Grid.Row="3"  Margin="2"/>
 
                                     <ComboBox x:Name="cbo" DisplayMemberPath="AngezeigterName"
                                               SelectedValuePath="SkilehrerID"
-                                              SelectedValue="{Binding Path=Skilehrer.SkilehrerID}"  
-                                              Grid.Column="1" Grid.Row="5"  Margin="2" IsSynchronizedWithCurrentItem="True"/>
+                                              SelectedValue="{Binding Path=SkilehrerID}"  
+                                              Grid.Column="1" Grid.Row="4"  Margin="2" IsSynchronizedWithCurrentItem="True"/>
                                     
-                                    <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="6" Grid.Column="1" 
+                                    <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="5" Grid.Column="1" 
                                               ItemsSource="{Binding Path=Mitgliederliste}" AutoGenerateColumns="False"
                                               IsReadOnly="True" Margin="2">
                                         <DataGrid.Columns>
@@ -225,7 +221,6 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding Gruppenname}"/>
                                             <DataGridTextColumn Header="Angezeigter Name"  Binding="{Binding AngezeigterGruppenname}"/>
-                                            <DataGridTextColumn Header="Skilehrer" Binding="{Binding Skilehrer.VollerName, Mode=OneWay}" />
                                             <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

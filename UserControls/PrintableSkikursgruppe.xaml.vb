@@ -20,12 +20,13 @@ Namespace UserControls
             Skigruppenname = Skikurs.AngezeigterGruppenname
             Mitglieder = Skikurs.Mitgliederliste
 
-            If Skikurs.Skilehrer IsNot Nothing Then
-                Skilehrername = Skikurs.Skilehrer.AngezeigterName
-                If Skikurs.Skilehrer.HatFoto Then
+            Dim UebungsleiterListe As New UebungsleiterCollection
+            If Not Skikurs.SkilehrerID = Nothing Then
+                Skilehrername = UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.SkilehrerID).AngezeigterName
+                If UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.SkilehrerID).HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(Skikurs.Skilehrer.Foto)
+                    bi.StreamSource = New MemoryStream(UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.SkilehrerID).Foto)
                     bi.EndInit()
                     Skilehrerfoto = bi
                 Else

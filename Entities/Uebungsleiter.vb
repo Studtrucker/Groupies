@@ -5,22 +5,22 @@ Namespace Entities
     Public Class Uebungsleiter
         Implements INotifyPropertyChanged
 
-        Private skilehrerIDFeld As Guid
+        Private UebungsleiterIDFeld As Guid
         Private _vorname As String
         Private _name As String
         Private _angezeigterName As String
         Private _foto As Byte()
 
         Public Sub New()
-            skilehrerIDFeld = Guid.NewGuid()
+            UebungsleiterIDFeld = Guid.NewGuid()
         End Sub
 
-        Public Property SkilehrerID As Guid
+        Public Property UebungsleiterID As Guid
             Get
-                Return skilehrerIDFeld
+                Return UebungsleiterIDFeld
             End Get
             Set(value As Guid)
-                skilehrerIDFeld = value
+                UebungsleiterIDFeld = value
             End Set
         End Property
 

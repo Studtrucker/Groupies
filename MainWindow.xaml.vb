@@ -863,7 +863,7 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
-        cbo.ItemsSource = _skischule.Skilehrerliste.OrderBy(Function(x) x.AngezeigterName)
+        cbo.ItemsSource = _skischule.Skilehrerliste
 
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)

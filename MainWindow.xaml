@@ -154,7 +154,7 @@
                                     <Label Grid.Column="0" Grid.Row="1" Content="Angezeigter Name" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="3" Content="Anzahl Miglieder" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="4" Content="Auswahl SL" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="4" Content="Skilehrer" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="5" Content="Migliederliste" Margin="2"/>
                                     <TextBox Text="{Binding Path=Gruppenname, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>

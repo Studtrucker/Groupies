@@ -15,6 +15,7 @@ Imports System.Linq
 Imports System.Collections.Generic
 Imports System.Windows.Markup
 Imports Skischule.UserControls
+Imports System.Collections.ObjectModel
 
 Class MainWindow
 
@@ -862,16 +863,7 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
-        Dim SLListe As New UebungsleiterCollection
-        For Each Item As Skikurs In _skischule.Skikursliste
-            SLListe.Add(Item.Skilehrer)
-            'MessageBox.Show(_skischule.Skilehrerliste.ToList.Contains(Item.Skilehrer).ToString)
-            'MessageBox.Show(_skischule.Skilehrerliste.ToList.FindIndex(Function(x) x.SkilehrerID = Item.Skilehrer.SkilehrerID).ToString)
-        Next
-        cbo.ItemsSource = SLListe
-        'cbo.ItemsSource = _skischule.Skilehrerliste
-
-
+        cbo.ItemsSource = _skischule.Skilehrerliste.OrderBy(Function(x) x.AngezeigterName)
 
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)

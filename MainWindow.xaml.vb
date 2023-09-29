@@ -867,15 +867,15 @@ Class MainWindow
         For Each item In _skischule.Skikursliste
             SLL.Add(item.UebungsleiterID)
         Next
-        'cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
-        cboUebungsleiter.ItemsSource = SLL
+        cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
+        'cboUebungsleiter.ItemsSource = SLL
 
         Dim LL As New ObservableCollection(Of Guid)
         For Each item In _skischule.Skikursliste
             LL.Add(item.LevelID)
         Next
-        'cboLevel.ItemsSource = _skischule.Levelliste
-        cboLevel.ItemsSource = LL
+        cboLevel.ItemsSource = _skischule.Levelliste
+        'cboLevel.ItemsSource = LL
 
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)

@@ -863,20 +863,20 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
-        Dim SLL As New UebungsleiterCollection
-        For Each item In _skischule.Skikursliste
-            Dim Sl As Uebungsleiter = _skischule.Skilehrerliste.Where(Function(X) X.UebungsleiterID = item.UebungsleiterID).Single
-            SLL.Add(Sl)
-        Next
+        'Dim SLL As New UebungsleiterCollection
+        'For Each item In _skischule.Skikursliste
+        '    Dim Sl As Uebungsleiter = _skischule.Skilehrerliste.Where(Function(X) X.UebungsleiterID = item.UebungsleiterID).Single
+        '    SLL.Add(Sl)
+        'Next
         cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
         'cboUebungsleiter.ItemsSource = SLL
 
-        Dim LL As New LevelCollection
-        For Each item In _skischule.Skikursliste
-            Dim L As Level = _skischule.Levelliste.Where(Function(X) X.LevelID = item.LevelID).Single
-            LL.Add(L)
-        Next
-        'cboLevel.ItemsSource = _skischule.Levelliste
+        'Dim LL As New LevelCollection
+        'For Each item In _skischule.Skikursliste
+        '    Dim L As Level = _skischule.Levelliste.Where(Function(X) X.LevelID = item.LevelID).Single
+        '    LL.Add(L)
+        'Next
+        cboLevel.ItemsSource = _skischule.Levelliste
         'cboLevel.ItemsSource = LL
 
         SetView(_skischule.Teilnehmerliste)

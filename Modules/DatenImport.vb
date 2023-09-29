@@ -51,7 +51,7 @@ Public Module DatenImport
                 ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                 If Skikursgruppe IsNot Nothing Then
                     Skikursgruppe.AddMitglied(Teilnehmer)
-                    Skikursgruppe.LevelID = Teilnehmer.PersoenlichesLevelID
+                    Skikursgruppe.KurslevelID = Teilnehmer.PersoenlichesLevelID
                 End If
             End If
             CurrentRow += 1

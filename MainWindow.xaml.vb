@@ -654,11 +654,11 @@ Class MainWindow
     End Sub
 
     Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursCollection, Level As Level)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.LevelID = Level.LevelID)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.KurslevelID = Level.LevelID)
     End Sub
 
     Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikurs, Uebungsleiter As Uebungsleiter)
-        Skikursgruppe.UebungsleiterID = Uebungsleiter.UebungsleiterID
+        Skikursgruppe.KursleiterID = Uebungsleiter.UebungsleiterID
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
@@ -671,13 +671,13 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.LevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.LevelID = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.KurslevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.KurslevelID = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.UebungsleiterID = Uebungsleiter.UebungsleiterID)
-        liste.ToList.ForEach(Sub(x) x.UebungsleiterID = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.KursleiterID = Uebungsleiter.UebungsleiterID)
+        liste.ToList.ForEach(Sub(x) x.KursleiterID = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
@@ -1033,7 +1033,7 @@ Class MainWindow
             pSkikursgruppe.Height = printFriendHeight
             pSkikursgruppe.Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe)
+            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe, _skischule.Skilehrerliste)
             Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 
@@ -1055,7 +1055,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To _skischule.Skikursliste.Count - 1
-            _skischule.Skikursliste(i).UebungsleiterID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
+            _skischule.Skikursliste(i).KursleiterID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
         Next
 
     End Sub

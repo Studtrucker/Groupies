@@ -6,9 +6,9 @@ Namespace Entities
 
         Private skikursIDFeld As Guid
         Private _kurs As String
-        Private _printName As String
-        Private _uebungsleiterID As Guid
-        Private _levelID As Guid
+        Private _kursprintName As String
+        Private _kursleiterID As Guid
+        Private _kurslevelID As Guid
         Private _mitgliederliste As Entities.TeilnehmerCollection
 
         Public Sub New()
@@ -35,33 +35,33 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property PrintName As String
+        Public Property KursPrintName As String
             Get
-                Return _printName
+                Return _kursprintName
             End Get
             Set(value As String)
-                _printName = value
-                Changed("PrintName")
+                _kursprintName = value
+                Changed("KursPrintName")
             End Set
         End Property
 
-        Public Property LevelID As Guid
+        Public Property KurslevelID As Guid
             Get
-                Return _levelID
+                Return _kurslevelID
             End Get
             Set(value As Guid)
-                _levelID = value
-                Changed("LevelID")
+                _kurslevelID = value
+                Changed("KurslevelID")
             End Set
         End Property
 
-        Public Property UebungsleiterID As Guid
+        Public Property KursleiterID As Guid
             Get
-                Return _uebungsleiterID
+                Return _kursleiterID
             End Get
             Set(value As Guid)
-                _uebungsleiterID = value
-                Changed("UebungsleiterID")
+                _kursleiterID = value
+                Changed("KursleiterID")
             End Set
         End Property
 

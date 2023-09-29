@@ -158,29 +158,19 @@
                                     <Label Grid.Column="0" Grid.Row="5" Content="Migliederliste" Margin="2"/>
                                     <TextBox Text="{Binding Path=Kurs, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
-                                    <TextBox Text="{Binding Path=PrintName, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding Path=KursPrintName, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="1"  Margin="2"/>
 
-                                    <StackPanel Grid.Column="1" Grid.Row="2" >
-                                        <TextBlock x:Name="txtLevel" Text="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <!--https://wpf-tutorial.com/de/73/listen-steuerelemente/die-combobox/-->
-                                        <ComboBox x:Name="cboLevel"
-                                                  SelectedValuePath="Level.LevelID" IsEditable="False" IsReadOnly="True"
-                                                  SelectedValue="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"
-                                                  DisplayMemberPath="Benennung"
-                                                  Grid.Column="1" Grid.Row="2"  Margin="2">
-                                        </ComboBox>
-                                        
-                                    </StackPanel>
-                                    
-                                    <StackPanel Grid.Row="3" Grid.Column="1">
-                                        <TextBlock x:Name="txtUL" Text="{Binding Path=UebungsleiterID, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <ComboBox x:Name="cboUebungsleiter"
-                                                  SelectedValuePath="Uebungsleiter.UebungsleiterID" IsEditable="False" IsReadOnly="True"
-                                                  SelectedValue="{Binding Path=UebungsleiterID, UpdateSourceTrigger=PropertyChanged}"
+                                    <ComboBox x:Name="cboLevel" 
+                                                  SelectedValue="{Binding Path=KurslevelID, UpdateSourceTrigger=PropertyChanged}" 
+                                                  SelectedValuePath="LevelID" DisplayMemberPath="Benennung"
+                                                  Grid.Column="1" Grid.Row="2"  Margin="2"/>
+
+                                    <ComboBox x:Name="cboUebungsleiter"
+                                                  SelectedValue="{Binding Path=KursleiterID, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="UebungsleiterID" 
                                                   DisplayMemberPath="PrintName" IsSynchronizedWithCurrentItem="False"
                                                   Grid.Column="1" Grid.Row="3"  Margin="2"/>
-                                    </StackPanel>
 
                                     <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>   
@@ -235,9 +225,7 @@
                                         
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Kurs" Binding="{Binding Kurs}"/>
-                                            <DataGridTextColumn Header="PrintName"  Binding="{Binding PrintName}"/>
-                                            <DataGridTextColumn Header="Skilehrer"  Binding="{Binding UebungsleiterID}"/>
-                                            <DataGridTextColumn Header="Level"  Binding="{Binding LevelID}"/>
+                                            <DataGridTextColumn Header="PrintName"  Binding="{Binding KursPrintName}"/>
                                             <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding AnzahlMitglieder,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

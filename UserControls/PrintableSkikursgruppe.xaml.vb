@@ -16,17 +16,16 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikurs As Skikurs)
-            Skigruppenname = Skikurs.PrintName
+        Public Sub InitPropsFromSkikursgruppe(Skikurs As Skikurs, Skilehrer As UebungsleiterCollection)
+            Skigruppenname = Skikurs.KursPrintName
             Mitglieder = Skikurs.Mitgliederliste
 
-            Dim UebungsleiterListe As New UebungsleiterCollection
-            If Not Skikurs.UebungsleiterID = Nothing Then
-                Skilehrername = UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.UebungsleiterID).PrintName
-                If UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.UebungsleiterID).HatFoto Then
+            If Not Skikurs.KursleiterID = Nothing Then
+                Skilehrername = Skilehrer.GetPrintName(Skikurs.KursleiterID)
+                If Skilehrer.GetHatFoto(Skikurs.KursleiterID) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(UebungsleiterListe.First(Function(x) x.UebungsleiterID = Skikurs.UebungsleiterID).Foto)
+                    bi.StreamSource = New MemoryStream(Skilehrer.GetFoto(Skikurs.KursleiterID))
                     bi.EndInit()
                     Skilehrerfoto = bi
                 Else

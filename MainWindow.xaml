@@ -163,21 +163,22 @@
 
                                     <StackPanel Grid.Column="1" Grid.Row="2" >
                                         <TextBlock x:Name="txtLevel" Text="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <!--https://wpf-tutorial.com/de/73/listen-steuerelemente/die-combobox/-->
                                         <ComboBox x:Name="cboLevel"
-                                                  SelectedValuePath="Level.LevelID"
-                                                  SelectedValue="{Binding ElementName=txtLevel, Path=Text}"
+                                                  SelectedValuePath="Level.LevelID" IsEditable="False" IsReadOnly="True"
+                                                  SelectedValue="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"
                                                   DisplayMemberPath="Benennung"
-                                                  Grid.Column="1" Grid.Row="2"  Margin="2" />
+                                                  Grid.Column="1" Grid.Row="2"  Margin="2">
+                                        </ComboBox>
+                                        
                                     </StackPanel>
-                                    <!--SelectedValue="{Binding ElementName=txtLevel,Path=Text, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedValuePath="Level.LevelID" DisplayMemberPath="Benennung"-->
                                     
                                     <StackPanel Grid.Row="3" Grid.Column="1">
                                         <TextBlock x:Name="txtUL" Text="{Binding Path=UebungsleiterID, UpdateSourceTrigger=PropertyChanged}"/>
                                         <ComboBox x:Name="cboUebungsleiter"
-                                                  SelectedValuePath="Uebungsleiter.UebungsleiterID"
-                                                  SelectedValue="{Binding ElementName=txtLevel, Path=Text}"
-                                                  DisplayMemberPath="PrintName"
+                                                  SelectedValuePath="Uebungsleiter.UebungsleiterID" IsEditable="False" IsReadOnly="True"
+                                                  SelectedValue="{Binding Path=UebungsleiterID, UpdateSourceTrigger=PropertyChanged}"
+                                                  DisplayMemberPath="PrintName" IsSynchronizedWithCurrentItem="False"
                                                   Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     </StackPanel>
 

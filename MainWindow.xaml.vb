@@ -868,6 +868,7 @@ Class MainWindow
         '    Dim Sl As Uebungsleiter = _skischule.Skilehrerliste.Where(Function(X) X.UebungsleiterID = item.UebungsleiterID).Single
         '    SLL.Add(Sl)
         'Next
+        '_skischule.Skilehrerliste.ToList.ForEach(Function(x) cboUebungsleiter.Items.Add(x))
         cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
         'cboUebungsleiter.ItemsSource = SLL
 
@@ -876,6 +877,7 @@ Class MainWindow
         '    Dim L As Level = _skischule.Levelliste.Where(Function(X) X.LevelID = item.LevelID).Single
         '    LL.Add(L)
         'Next
+        '_skischule.Levelliste.ToList.ForEach(Function(x) cboLevel.Items.Add(x))
         cboLevel.ItemsSource = _skischule.Levelliste
         'cboLevel.ItemsSource = LL
 

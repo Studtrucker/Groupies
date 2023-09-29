@@ -7,7 +7,6 @@ Namespace Entities
         Private skikursIDFeld As Guid
         Private _kurs As String
         Private _printName As String
-        'Private _level As Entities.Level
         Private _uebungsleiterID As Guid
         Private _levelID As Guid
         Private _mitgliederliste As Entities.TeilnehmerCollection
@@ -45,16 +44,6 @@ Namespace Entities
                 Changed("PrintName")
             End Set
         End Property
-
-        'Public Property Level As Entities.Level
-        '    Get
-        '        Return _level
-        '    End Get
-        '    Set(value As Entities.Level)
-        '        _level = value
-        '        Changed("Level")
-        '    End Set
-        'End Property
 
         Public Property LevelID As Guid
             Get
@@ -96,8 +85,13 @@ Namespace Entities
             Changed("Mitgliederliste")
         End Sub
 
+        Public Sub RemoveMitglieder(Teilnehmer As Teilnehmer)
+            _mitgliederliste.Remove(Teilnehmer)
+            Changed("Mitgliederliste")
+        End Sub
+
         Public Sub RemoveMitglieder(Teilnehmerliste As TeilnehmerCollection)
-            'Todo: Skikursgruppe.Mitglieder entfernen            Mitgliederliste.Remove(Teilnehmerliste)
+            Teilnehmerliste.ToList.ForEach(Sub(x) _mitgliederliste.Remove(x))
             Changed("Mitgliederliste")
         End Sub
 

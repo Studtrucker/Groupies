@@ -173,7 +173,7 @@
                                     <StackPanel Grid.Row="3" Grid.Column="1">
                                         <TextBlock Text="{Binding Path=UebungsleiterID}"/>
                                         <ComboBox x:Name="cboUebungsleiter"
-                                                  
+                                                  SelectedValue="{Binding UbungsleiterID,UpdateSourceTrigger=PropertyChanged}"
                                                   DisplayMemberPath="VollerName" SelectedValuePath="UebungsleiterID"
                                                   Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     </StackPanel>

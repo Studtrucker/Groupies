@@ -874,7 +874,7 @@ Class MainWindow
         For Each item In _skischule.Skikursliste
             LL.Add(item.LevelID)
         Next
-        cboLevel.ItemsSource = _skischule.Levelliste
+        'cboLevel.ItemsSource = _skischule.Levelliste
         'cboLevel.ItemsSource = LL
 
         SetView(_skischule.Teilnehmerliste)

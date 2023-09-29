@@ -162,19 +162,20 @@
                                              Grid.Column="1" Grid.Row="1"  Margin="2"/>
 
                                     <StackPanel Grid.Column="1" Grid.Row="2" >
-                                        <TextBlock Text="{Binding Path=LevelID}"/>
-                                        <ComboBox x:Name="cboLevel"
-                                              SelectedValuePath="Level.LevelID" DisplayMemberPath="Benennung"
-                                              SelectedValue="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"
-                                              Grid.Column="1" Grid.Row="2"  Margin="2" />
+                                        <TextBlock x:Name="txtLevel" Text="{Binding Path=LevelID}"/>
+                                        <ComboBox x:Name="cboLevel" 
+                                                  Text="{Binding Path=LevelID, UpdateSourceTrigger=PropertyChanged}"
+                                                  Grid.Column="1" Grid.Row="2"  Margin="2" />
                                     </StackPanel>
-
+                                    <!--SelectedValue="{Binding ElementName=txtLevel,Path=Text, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedValuePath="Level.LevelID" DisplayMemberPath="Benennung"-->
+                                    
                                     <StackPanel Grid.Row="3" Grid.Column="1">
                                         <TextBlock Text="{Binding Path=UebungsleiterID}"/>
                                         <ComboBox x:Name="cboUebungsleiter"
-                                              SelectedValuePath="Uebungsleiter.UebungsleiterID" DisplayMemberPath="PrintName"
-                                              SelectedValue="{Binding Path=UebungsleiterID, UpdateSourceTrigger=PropertyChanged}"
-                                              Grid.Column="1" Grid.Row="3"  Margin="2"/>
+                                                  
+                                                  DisplayMemberPath="VollerName" SelectedValuePath="UebungsleiterID"
+                                                  Grid.Column="1" Grid.Row="3"  Margin="2"/>
                                     </StackPanel>
 
                                     <TextBox Text="{Binding Path=AnzahlMitglieder,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

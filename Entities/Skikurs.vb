@@ -4,63 +4,75 @@ Namespace Entities
     Public Class Skikurs
         Implements INotifyPropertyChanged
 
-        Private skikursgruppenIDFeld As Guid
-        Private _gruppenname As String
-        Private _angezeigterGruppenname As String
-        Private _gruppenlevel As Entities.Level
-        Private _skilehrerID As Guid
+        Private skikursIDFeld As Guid
+        Private _kurs As String
+        Private _printName As String
+        'Private _level As Entities.Level
+        Private _uebungsleiterID As Guid
+        Private _levelID As Guid
         Private _mitgliederliste As Entities.TeilnehmerCollection
 
         Public Sub New()
-            skikursgruppenIDFeld = Guid.NewGuid()
+            skikursIDFeld = Guid.NewGuid()
             _mitgliederliste = New TeilnehmerCollection
         End Sub
 
-        Public Property SkikursgruppenID As Guid
+        Public Property SkikursID As Guid
             Get
-                Return skikursgruppenIDFeld
+                Return skikursIDFeld
             End Get
             Set(value As Guid)
-                skikursgruppenIDFeld = value
+                skikursIDFeld = value
             End Set
         End Property
-        Public Property Gruppenname As String
+
+        Public Property Kurs As String
             Get
-                Return _gruppenname
+                Return _kurs
             End Get
             Set(value As String)
-                _gruppenname = value
-                Changed("Gruppenname")
+                _kurs = value
+                Changed("Kurs")
             End Set
         End Property
 
-        Public Property AngezeigterGruppenname As String
+        Public Property PrintName As String
             Get
-                Return _angezeigterGruppenname
+                Return _printName
             End Get
             Set(value As String)
-                _angezeigterGruppenname = value
-                Changed("AngezeigterGruppenname")
+                _printName = value
+                Changed("PrintName")
             End Set
         End Property
 
-        Public Property Gruppenlevel As Entities.Level
-            Get
-                Return _gruppenlevel
-            End Get
-            Set(value As Entities.Level)
-                _gruppenlevel = value
-                Changed("Gruppenlevel")
-            End Set
-        End Property
+        'Public Property Level As Entities.Level
+        '    Get
+        '        Return _level
+        '    End Get
+        '    Set(value As Entities.Level)
+        '        _level = value
+        '        Changed("Level")
+        '    End Set
+        'End Property
 
-        Public Property SkilehrerID As Guid
+        Public Property LevelID As Guid
             Get
-                Return _skilehrerID
+                Return _levelID
             End Get
             Set(value As Guid)
-                _skilehrerID = value
-                Changed("SkilehrerID")
+                _levelID = value
+                Changed("LevelID")
+            End Set
+        End Property
+
+        Public Property UebungsleiterID As Guid
+            Get
+                Return _uebungsleiterID
+            End Get
+            Set(value As Guid)
+                _uebungsleiterID = value
+                Changed("UebungsleiterID")
             End Set
         End Property
 

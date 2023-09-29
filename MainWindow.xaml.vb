@@ -530,7 +530,7 @@ Class MainWindow
         Dim i As Integer
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Skikurs In skikurseDataGrid.SelectedItems
-            RemoveSkikursgruppeFromTeilnehmer(item.Gruppenname)
+            RemoveSkikursgruppeFromTeilnehmer(item.Kurs)
             index(i) = _skischule.Skikursliste.IndexOf(item)
             i += 1
         Next
@@ -650,15 +650,15 @@ Class MainWindow
 
 #Region "Helper-Methoden"
     Private Sub AddLevelToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Level As Level)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Level)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.PersoenlichesLevelID = Level.LevelID)
     End Sub
 
     Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursCollection, Level As Level)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Gruppenlevel = Level)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.LevelID = Level.LevelID)
     End Sub
 
     Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikurs, Uebungsleiter As Uebungsleiter)
-        Skikursgruppe.SkilehrerID = Uebungsleiter.UebungsleiterID
+        Skikursgruppe.UebungsleiterID = Uebungsleiter.UebungsleiterID
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
@@ -666,18 +666,18 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
-        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.PersoenlichesLevel.LevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.PersoenlichesLevel = Nothing)
+        Dim liste = _skischule.Teilnehmerliste.TakeWhile(Function(x) x.PersoenlichesLevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.PersoenlichesLevelID = Nothing)
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Gruppenlevel.LevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.Gruppenlevel = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.LevelID = level.LevelID)
+        liste.ToList.ForEach(Sub(x) x.LevelID = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.SkilehrerID = Uebungsleiter.UebungsleiterID)
-        liste.ToList.ForEach(Sub(x) x.SkilehrerID = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.UebungsleiterID = Uebungsleiter.UebungsleiterID)
+        liste.ToList.ForEach(Sub(x) x.UebungsleiterID = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
@@ -863,8 +863,19 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skischule)
         _skischule = Schule
-        cbo.ItemsSource = _skischule.Skilehrerliste
+        Dim SLL As New ObservableCollection(Of Guid)
+        For Each item In _skischule.Skikursliste
+            SLL.Add(item.UebungsleiterID)
+        Next
+        'cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
+        cboUebungsleiter.ItemsSource = SLL
 
+        Dim LL As New ObservableCollection(Of Guid)
+        For Each item In _skischule.Skikursliste
+            LL.Add(item.LevelID)
+        Next
+        'cboLevel.ItemsSource = _skischule.Levelliste
+        cboLevel.ItemsSource = LL
 
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)
@@ -1040,7 +1051,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To _skischule.Skikursliste.Count - 1
-            _skischule.Skikursliste(i).SkilehrerID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
+            _skischule.Skikursliste(i).UebungsleiterID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
         Next
 
     End Sub

@@ -8,7 +8,7 @@ Namespace Entities
         Private UebungsleiterIDFeld As Guid
         Private _vorname As String
         Private _name As String
-        Private _angezeigterName As String
+        Private _printName As String
         Private _foto As Byte()
 
         Public Sub New()
@@ -44,13 +44,13 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property AngezeigterName As String
+        Public Property PrintName As String
             Get
-                Return _angezeigterName
+                Return _printName
             End Get
             Set(value As String)
-                _angezeigterName = value
-                Changed("AngezeigterName")
+                _printName = value
+                Changed("PrintName")
             End Set
         End Property
 

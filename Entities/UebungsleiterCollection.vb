@@ -1,4 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
+Imports System.Data.SqlClient
 
 Namespace Entities
 

@@ -862,9 +862,13 @@ Class MainWindow
     End Sub
 
     Private Sub SetView(Schule As Entities.Skischule)
+
         _skischule = Schule
-        cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste.Sortiert
+        cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
         cboLevel.ItemsSource = _skischule.Levelliste
+
+        ' Uebersicht erstellen
+        _skischule.Skikursliste.ToList.ForEach(Sub(x) wrpSkikursübersicht.Children.Add(New VisibleSkikurs With {.DataContext = x}))
 
         SetView(_skischule.Teilnehmerliste)
         SetView(_skischule.Skikursliste)
@@ -929,6 +933,15 @@ Class MainWindow
         _schalterLayerListeTransform = layerSkikurslisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikurslisteDetails
         _schalterBtnPinit = btnSkikursPinIt
+    End Sub
+    Private Sub tabitemSkikursuebersicht_GotFocus(sender As Object, e As RoutedEventArgs)
+        '_schalterLayerDetails = layerSkikursdetails
+        '_schalterBtnShowEplorer = btnShowSkikursExplorer
+        '_schalterPinImage = pinSkikursImage
+        '_schalterLayerListe = layerSkikursliste
+        '_schalterLayerListeTransform = layerSkikurslisteTrans
+        '_schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikurslisteDetails
+        '_schalterBtnPinit = btnSkikursPinIt
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)

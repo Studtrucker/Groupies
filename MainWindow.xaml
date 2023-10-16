@@ -104,6 +104,23 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
+            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
+                <TabItem.LayoutTransform>
+                    <RotateTransform Angle="270"/>
+                </TabItem.LayoutTransform>
+                <DockPanel x:Name="dckSkikursübersicht">
+                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <WrapPanel x:Name="wrpSkikursübersicht" DockPanel.Dock="Left">
+                        
+                    </WrapPanel>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="Skikurse" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>

@@ -325,7 +325,7 @@ Class MainWindow
             NeueSkischule.Levelliste = CreateDefaultService.erstelleLevels()
             Dim dlg = New AnzahlGruppenDialog
             If dlg.ShowDialog Then
-                NeueSkischule.Skikursliste = CreateDefaultService.CreateGroups(dlg.Anzahl, NeueSkischule.Levelliste)
+                NeueSkischule.Skikursliste = CreateDefaultService.CreateGroups(dlg.Count.Text, NeueSkischule.Levelliste)
             End If
         End If
         SetView(NeueSkischule)

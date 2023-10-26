@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.ComponentModel.DataAnnotations
 
 
 Namespace Entities
@@ -25,6 +26,7 @@ Namespace Entities
             End Set
         End Property
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property LevelName As String
             Get
                 Return _LevelName
@@ -35,13 +37,14 @@ Namespace Entities
             End Set
         End Property
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Beschreibung ist eine Pflichtangabe")>
         Public Property LevelDescription As String
             Get
                 Return _LevelDescription
             End Get
             Set(value As String)
                 _LevelDescription = value
-                Changed("Beschreibung")
+                Changed("LevelDescription")
             End Set
         End Property
 

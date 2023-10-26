@@ -31,9 +31,12 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <RadioButton x:Name="radioButton5" Content="5 Gruppen" Grid.Column="1" Grid.Row="0" Margin="5" Checked="radioButton5_Checked"/>
-                <RadioButton x:Name="radioButton10" Content="10 Gruppen" Grid.Column="1" Grid.Row="1" Margin="5" Checked="radioButton10_Checked"/>
-                <RadioButton x:Name="radioButton15" Content="15 Gruppen" Grid.Column="1" Grid.Row="2" Margin="5" Checked="radioButton15_Checked"/>
+                <RadioButton x:Name="radioButton5" Content="5 Gruppen" Grid.Column="1"
+                             Grid.Row="0" Margin="5" Checked="radioButton5_Checked"/>
+                <RadioButton x:Name="radioButton10" Content="10 Gruppen" Grid.Column="1" 
+                             Grid.Row="1" Margin="5" Checked="radioButton10_Checked"/>
+                <RadioButton x:Name="radioButton15" Content="15 Gruppen" Grid.Column="1" 
+                             Grid.Row="2" Margin="5" Checked="radioButton15_Checked"/>
             </Grid>
         </DockPanel>
     </DockPanel>

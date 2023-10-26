@@ -1,14 +1,16 @@
 ﻿Imports System.ComponentModel
 
+
 Namespace Entities
 
+    <DefaultProperty("ValueName")>
     Public Class Level
         Implements INotifyPropertyChanged
 
         Private levelIDFeld As Guid
-        Private _benennung As String
-        Private _beschreibung As String
-        Private _skills As SkillCollection
+        Private _LevelName As String
+        Private _LevelDescription As String
+        Private _LevelSkills As SkillCollection
 
         Public Sub New()
             levelIDFeld = Guid.NewGuid()
@@ -23,41 +25,41 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Benennung As String
+        Public Property LevelName As String
             Get
-                Return _benennung
+                Return _LevelName
             End Get
             Set(value As String)
-                _benennung = value
-                Changed("Benennung")
+                _LevelName = value
+                Changed("Levelname")
             End Set
         End Property
 
-        Public Property Beschreibung As String
+        Public Property LevelDescription As String
             Get
-                Return _beschreibung
+                Return _LevelDescription
             End Get
             Set(value As String)
-                _beschreibung = value
+                _LevelDescription = value
                 Changed("Beschreibung")
             End Set
         End Property
 
-        Public Property Skills As SkillCollection
+        Public Property LevelSkills As SkillCollection
             Get
-                Return _skills
+                Return _LevelSkills
             End Get
             Set(value As SkillCollection)
-                _skills = value
+                _LevelSkills = value
             End Set
         End Property
 
         Public Sub AddSkill(skill As Skill)
-            _skills.Add(skill)
+            _LevelSkills.Add(skill)
         End Sub
 
         Public Sub RemoveSkill(skill As Skill)
-            _skills.Remove(skill)
+            _LevelSkills.Remove(skill)
         End Sub
 
         Private Sub Changed(propertyName As String)

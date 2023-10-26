@@ -92,8 +92,10 @@
     <Compile Include="Entities\SkikursCollection.vb" />
     <Compile Include="Entities\SkillCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
-    <Compile Include="Modules\Standardelemente.vb" />
-    <Compile Include="Modules\TestStreamreader.vb" />
+    <Compile Include="Services\CreateDefaultService.vb" />
+    <Compile Include="Services\CurrentDataService.vb" />
+    <Compile Include="Services\ExcelService.vb" />
+    <Compile Include="Services\TestStreamreader.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
@@ -135,7 +137,7 @@
     </Compile>
     <Compile Include="Commands\SkischuleBefehle.vb" />
     <Compile Include="Entities\LevelCollection.vb" />
-    <Compile Include="Modules\DatenImport.vb" />
+    <Compile Include="Services\DatenImport.vb" />
     <Compile Include="Entities\Level.vb" />
     <Compile Include="Entities\Skikurs.vb" />
     <Compile Include="Entities\Uebungsleiter.vb" />
@@ -203,6 +205,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
+    <None Include="Services\GroupLevelDistribution.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>

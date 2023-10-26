@@ -16,6 +16,7 @@ Imports System.Collections.Generic
 Imports System.Windows.Markup
 Imports Skischule.UserControls
 Imports System.Collections.ObjectModel
+Imports Skischule.ExcelService
 
 Class MainWindow
 
@@ -321,10 +322,10 @@ Class MainWindow
         Title = "Skischule"
         Dim NeueSkischule = New Entities.Skischule
         If MessageBoxResult.Yes = MessageBox.Show("Neue Skischule erstellt. Sollen Skikursgruppen angelegt werden?", "Achtung", MessageBoxButton.YesNo) Then
-            NeueSkischule.Levelliste = Standardelemente.erstelleLevels()
+            NeueSkischule.Levelliste = CreateDefaultService.erstelleLevels()
             Dim dlg = New AnzahlGruppenDialog
             If dlg.ShowDialog Then
-                NeueSkischule.Skikursliste = Standardelemente.erstelleGruppen(dlg.Anzahl, NeueSkischule.Levelliste)
+                NeueSkischule.Skikursliste = CreateDefaultService.CreateGroups(dlg.Anzahl, NeueSkischule.Levelliste)
             End If
         End If
         SetView(NeueSkischule)

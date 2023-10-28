@@ -16,16 +16,16 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikurs As Skikurs, Skilehrer As UebungsleiterCollection)
-            Skigruppenname = Skikurs.KursPrintName
-            Mitglieder = Skikurs.Mitgliederliste
+        Public Sub InitPropsFromSkikursgruppe(Skikurs As Group, Skilehrer As UebungsleiterCollection)
+            Skigruppenname = Skikurs.GroupPrintName
+            Mitglieder = Skikurs.Groupmembers
 
-            If Not Skikurs.KursleiterID = Nothing Then
-                Skilehrername = Skilehrer.GetPrintName(Skikurs.KursleiterID)
-                If Skilehrer.GetHatFoto(Skikurs.KursleiterID) Then
+            If Not Skikurs.Groupleader Is Nothing Then
+                Skilehrername = Skilehrer.GetPrintName(Skikurs.Groupleader)
+                If Skilehrer.GetHatFoto(Skikurs.Groupleader) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(Skilehrer.GetFoto(Skikurs.KursleiterID))
+                    bi.StreamSource = New MemoryStream(Skilehrer.GetFoto(Skikurs.Groupleader))
                     bi.EndInit()
                     Skilehrerfoto = bi
                 Else
@@ -34,11 +34,11 @@ Namespace UserControls
                 End If
             End If
 
-            If Skikurs.Mitgliederliste.Count <= 3 Then
+            If Skikurs.Groupmembers.Count <= 3 Then
                 DataContext = "VielZuKlein"
-            ElseIf Skikurs.Mitgliederliste.Count <= 6 Then
+            ElseIf Skikurs.Groupmembers.Count <= 6 Then
                 DataContext = "ZuKlein"
-            ElseIf Skikurs.Mitgliederliste.Count < 12 Then
+            ElseIf Skikurs.Groupmembers.Count < 12 Then
                 DataContext = "ZuGross"
             End If
 

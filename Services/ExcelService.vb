@@ -9,7 +9,7 @@ Namespace ExcelService
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
-        Private _skischule As Entities.Skischule = New Entities.Skischule
+        Private _skischule As Entities.Skiclub = New Entities.Skiclub
 
         Private Function OpenAndCheckExcelFile(FilePath As String) As Excel.Workbook
 

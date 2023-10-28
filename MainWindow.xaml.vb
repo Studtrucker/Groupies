@@ -33,7 +33,7 @@ Class MainWindow
 
     Private _skischuleListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
-    Private _skischule As Entities.Skischule
+    Private _skischule As Entities.Skiclub
 
     Private _schalterLayerDetails As Grid
     Private _schalterBtnShowEplorer As Button
@@ -80,7 +80,7 @@ Class MainWindow
 
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _skikursListCollectionView = New ListCollectionView(New SkikursCollection())
+        _skikursListCollectionView = New ListCollectionView(New GroupCollection())
         AddHandler _skikursListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _uebungsleiterListCollectionView = New ListCollectionView(New UebungsleiterCollection())
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
@@ -320,7 +320,7 @@ Class MainWindow
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
-        Dim NeueSkischule = New Entities.Skischule
+        Dim NeueSkischule = New Entities.Skiclub
         If MessageBoxResult.Yes = MessageBox.Show("Neue Skischule erstellt. Sollen Skikursgruppen angelegt werden?", "Achtung", MessageBoxButton.YesNo) Then
             NeueSkischule.Levelliste = CreateDefaultService.erstelleLevels()
             Dim dlg = New AnzahlGruppenDialog
@@ -530,8 +530,8 @@ Class MainWindow
     Private Sub HandleSkikursgruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim i As Integer
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Skikurs In skikurseDataGrid.SelectedItems
-            RemoveSkikursgruppeFromTeilnehmer(item.Kurs)
+        For Each item As Group In skikurseDataGrid.SelectedItems
+            RemoveSkikursgruppeFromTeilnehmer(item.GroupName)
             index(i) = _skischule.Skikursliste.IndexOf(item)
             i += 1
         Next
@@ -654,12 +654,12 @@ Class MainWindow
         Teilnehmerliste.ToList.ForEach(Sub(x) x.PersoenlichesLevelID = Level.LevelID)
     End Sub
 
-    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As SkikursCollection, Level As Level)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.KurslevelID = Level.LevelID)
+    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Level)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Grouplevel = Level)
     End Sub
 
-    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Skikurs, Uebungsleiter As Uebungsleiter)
-        Skikursgruppe.KursleiterID = Uebungsleiter.UebungsleiterID
+    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Group, Uebungsleiter As Uebungsleiter)
+        Skikursgruppe.Groupleader = Uebungsleiter
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As String)
@@ -672,13 +672,13 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.KurslevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.KurslevelID = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Grouplevel Is level)
+        liste.ToList.ForEach(Sub(x) x.Grouplevel = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Uebungsleiter)
-        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.KursleiterID = Uebungsleiter.UebungsleiterID)
-        liste.ToList.ForEach(Sub(x) x.KursleiterID = Nothing)
+        Dim liste = _skischule.Skikursliste.TakeWhile(Function(x) x.Groupleader Is Uebungsleiter)
+        liste.ToList.ForEach(Sub(x) x.Groupleader = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
@@ -719,31 +719,31 @@ Class MainWindow
 
     End Sub
 
-    Private Function OpenXML(fileName As String) As Entities.Skischule
-        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
-        Dim loadedSkischule As Entities.Skischule = Nothing
+    Private Function OpenXML(fileName As String) As Entities.Skiclub
+        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim loadedSkiclub As Entities.Skiclub = Nothing
 
         ' Datei deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Try
-                loadedSkischule = TryCast(serializer.Deserialize(fs), Entities.Skischule)
+                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Skiclub)
             Catch ex As InvalidDataException
                 MessageBox.Show("Datei ungültig: " & ex.Message)
                 Return Nothing
             End Try
         End Using
-        Return loadedSkischule
+        Return loadedSkiclub
     End Function
 
-    Private Function OpenZIP(fileName As String) As Entities.Skischule
-        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
-        Dim loadedSkischule As Entities.Skischule = Nothing
+    Private Function OpenZIP(fileName As String) As Entities.Skiclub
+        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim loadedSkischule As Entities.Skiclub = Nothing
 
         ' Datei entzippen und deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
                 Try
-                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skischule)
+                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skiclub)
                 Catch ex As InvalidDataException
                     MessageBox.Show("Datei ungültig: " & ex.Message)
                     Return Nothing
@@ -765,7 +765,7 @@ Class MainWindow
     End Sub
 
     Private Sub SaveZIP(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
                 serializer.Serialize(zipStream, _skischule)
@@ -774,7 +774,7 @@ Class MainWindow
     End Sub
 
     Private Sub SaveXML(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Skischule))
+        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Using fs = New FileStream(fileName, FileMode.Create)
             serializer.Serialize(fs, _skischule)
         End Using
@@ -862,7 +862,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub SetView(Schule As Entities.Skischule)
+    Private Sub SetView(Schule As Entities.Skiclub)
 
         _skischule = Schule
         cboUebungsleiter.ItemsSource = _skischule.Skilehrerliste
@@ -886,7 +886,7 @@ Class MainWindow
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
     End Sub
-    Private Sub SetView(Skikursliste As SkikursCollection)
+    Private Sub SetView(Skikursliste As GroupCollection)
         _skischule.Skikursliste = Skikursliste
         _skikursListCollectionView = New ListCollectionView(Skikursliste)
         ' Hinweis AddHandler Seite 764
@@ -1010,13 +1010,13 @@ Class MainWindow
         Dim sortedView As ListCollectionView = New ListCollectionView(_skischule.Skikursliste)
         sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Skikurs = Nothing
+        Dim skikursgruppe As Group = Nothing
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
         For i As Integer = 0 To sortedView.Count - 1
             sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedView.CurrentItem, Skikurs)
+            skikursgruppe = CType(sortedView.CurrentItem, Group)
 
             If i Mod friendsPerPage = 0 Then
                 If page IsNot Nothing Then
@@ -1054,7 +1054,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To _skischule.Skikursliste.Count - 1
-            _skischule.Skikursliste(i).KursleiterID = _skischule.Skilehrerliste.Item(i).UebungsleiterID
+            _skischule.Skikursliste(i).Groupleader = _skischule.Skilehrerliste.Item(i)
         Next
 
     End Sub

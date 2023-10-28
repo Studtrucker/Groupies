@@ -92,22 +92,22 @@ Module CreateDefaultService
         Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2", "Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata", "Monte Viso", "Ortler"}
     End Function
 
-    Public Function CreateGroups(Anzahl As Integer, Levelliste As LevelCollection) As SkikursCollection
+    Public Function CreateGroups(Anzahl As Integer, Levelliste As LevelCollection) As GroupCollection
         'Todo: Gruppenlevel einbauen
 
         Dim uri = New Uri("GroupLevelDistribution", UriKind.Relative)
 
         Dim dic = ExcelService.ReadLevelDistribution(Anzahl)
 
-        Dim groupCol = New SkikursCollection
+        Dim groupCol = New GroupCollection
 
         Dim IndexGruppenName As Integer
         For Each item In dic
             For i = 0 To item.Value - 1
-                groupCol.Add(New Skikurs With {
-                    .Kurs = String.Format("{0}({1})", item.Key.LevelName, i + 1),
-                    .KursPrintName = GroupPrintNames.Item(IndexGruppenName),
-                    .KurslevelID = item.Key.LevelID})
+                groupCol.Add(New Group With {
+                    .GroupName = String.Format("{0}({1})", item.Key.LevelName, i + 1),
+                    .GroupPrintName = GroupPrintNames.Item(IndexGruppenName),
+                    .Grouplevel = item.Key})
                 IndexGruppenName += 1
             Next
         Next

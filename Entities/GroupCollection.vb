@@ -2,8 +2,8 @@
 
 Namespace Entities
 
-    Public Class SkikursCollection
-        Inherits ObservableCollection(Of Skikurs)
+    Public Class GroupCollection
+        Inherits ObservableCollection(Of Group)
 
     End Class
 End Namespace

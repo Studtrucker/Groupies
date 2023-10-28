@@ -90,7 +90,7 @@
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\Skill.vb" />
-    <Compile Include="Entities\SkikursCollection.vb" />
+    <Compile Include="Entities\GroupCollection.vb" />
     <Compile Include="Entities\SkillCollection.vb" />
     <Compile Include="Entities\UebungsleiterCollection.vb" />
     <Compile Include="Services\CreateDefaultService.vb" />
@@ -140,7 +140,7 @@
     <Compile Include="Entities\LevelCollection.vb" />
     <Compile Include="Services\DatenImport.vb" />
     <Compile Include="Entities\Level.vb" />
-    <Compile Include="Entities\Skikurs.vb" />
+    <Compile Include="Entities\Group.vb" />
     <Compile Include="Entities\Uebungsleiter.vb" />
     <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\TeilnehmerBeziehungen.vb" />
@@ -183,7 +183,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Skischule.vb" />
+    <Compile Include="Entities\Skiclub.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

@@ -6,6 +6,4 @@
         DialogResult = True
     End Sub
 
-    ' Todo: Binding für Slider.Value mit Property Anzahl erstellen
-
 End Class

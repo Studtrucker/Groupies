@@ -74,8 +74,8 @@
     </ApplicationDefinition>
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
-    <Compile Include="Dialogs\AnzahlGruppenDialog.xaml.vb">
-      <DependentUpon>AnzahlGruppenDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\CountOfGroupsDialog.xaml.vb">
+      <DependentUpon>CountOfGroupsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NeuesLevel.xaml.vb">
       <DependentUpon>NeuesLevel.xaml</DependentUpon>
@@ -108,7 +108,7 @@
       <DependentUpon>VisibleSkikurs.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
-    <Page Include="Dialogs\AnzahlGruppenDialog.xaml">
+    <Page Include="Dialogs\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

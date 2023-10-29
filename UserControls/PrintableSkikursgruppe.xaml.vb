@@ -16,7 +16,7 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikurs As Group, Skilehrer As UebungsleiterCollection)
+        Public Sub InitPropsFromSkikursgruppe(Skikurs As Group, Skilehrer As InstructorCollection)
             Skigruppenname = Skikurs.GroupPrintName
             Mitglieder = Skikurs.Groupmembers
 
@@ -72,11 +72,11 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Mitglieder As TeilnehmerCollection
+        Public Property Mitglieder As ParticipantCollection
             Get
                 Return lstMitglieder.ItemsSource
             End Get
-            Set(value As TeilnehmerCollection)
+            Set(value As ParticipantCollection)
                 lstMitglieder.ItemsSource = value
             End Set
         End Property

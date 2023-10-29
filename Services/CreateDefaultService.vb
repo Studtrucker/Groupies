@@ -1,122 +1,131 @@
 ﻿Imports System.Text
 Imports Skischule.Entities
 
-Module CreateDefaultService
-    Private _levelCollection As LevelCollection
-    Private _CountOfGroups As Dictionary(Of Level, Integer)
+Namespace DataService
 
-    Public Function erstelleLevels() As LevelCollection
+    Module CreateDefaultService
 
-        Dim Anfaenger = New Level With {
-            .LevelName = "Anfänger",
-            .LevelID = Guid.NewGuid,
-            .LevelDescription = DescriptionAnfaenger()}
+#Region "Fields"
+        Private _levelCollection As LevelCollection
+        Private _CountOfGroups As Dictionary(Of Level, Integer)
+#End Region
 
-        Dim Fortgeschrittener = New Level With {
-            .LevelName = "Fortgeschrittene",
-            .LevelDescription = DescriptionFortgeschritten(),
-            .LevelID = Guid.NewGuid}
+#Region "Public"
 
-        Dim Geniesser = New Level With {
-            .LevelName = "Genießer",
-            .LevelDescription = DescriptionGeniesser(),
-            .LevelID = Guid.NewGuid}
+        Public Function CreateLevels() As LevelCollection
 
-        Dim Koenner = New Level With {
-            .LevelName = "Könner",
-            .LevelDescription = DescriptionKoenner(),
-            .LevelID = Guid.NewGuid}
+            Dim Anfaenger = New Level With {
+                .LevelName = "Anfänger",
+                .LevelID = Guid.NewGuid,
+                .LevelDescription = DescriptionAnfaenger()}
 
-        Dim Experte = New Level With {
-            .LevelName = "Experten",
-            .LevelDescription = DescriptionExperte(),
-            .LevelID = Guid.NewGuid}
+            Dim Fortgeschrittener = New Level With {
+                .LevelName = "Fortgeschrittene",
+                .LevelDescription = DescriptionFortgeschritten(),
+                .LevelID = Guid.NewGuid}
 
-        _levelCollection = New LevelCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            Dim Geniesser = New Level With {
+                .LevelName = "Genießer",
+                .LevelDescription = DescriptionGeniesser(),
+                .LevelID = Guid.NewGuid}
 
-        DataService.CurrentDataService.Skiclub.Levelliste = _levelCollection
+            Dim Koenner = New Level With {
+                .LevelName = "Könner",
+                .LevelDescription = DescriptionKoenner(),
+                .LevelID = Guid.NewGuid}
 
-        Return _levelCollection
+            Dim Experte = New Level With {
+                .LevelName = "Experten",
+                .LevelDescription = DescriptionExperte(),
+                .LevelID = Guid.NewGuid}
 
-    End Function
+            _levelCollection = New LevelCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            Return _levelCollection
 
-    Private Function DescriptionAnfaenger() As String
-        Dim sb = New StringBuilder
-        sb.AppendLine("Das erste Mal auf Skiern oder")
-        sb.AppendLine("1-2 Tage Skischule")
-        Return sb.ToString
-    End Function
+        End Function
 
-    Private Function DescriptionFortgeschritten() As String
-        Dim sb = New StringBuilder
-        sb.AppendLine("Blaue Piste:")
-        sb.AppendLine("Sicheres Befahren")
-        sb.AppendLine("Rote/schwarze Piste:")
-        sb.AppendLine("Weitgehend sicheres Befahren")
-        sb.AppendLine("Gelände:")
-        sb.AppendLine("Erste Erfahrungen")
-        Return sb.ToString
-    End Function
-    Private Function DescriptionGeniesser() As String
-        Dim sb = New StringBuilder
-        sb.AppendLine("Blaue Piste:")
-        sb.AppendLine("Zügiges und sicheres Befahren, stabile Grundposition")
-        sb.AppendLine("Rote/schwarze Piste:")
-        sb.AppendLine("Sicheres Befahren bei geringem Tempo")
-        sb.AppendLine("Gelände:")
-        sb.AppendLine("weitgehend sicheres Befahren in flachem Gelände")
-        Return sb.ToString
-    End Function
-    Private Function DescriptionKoenner() As String
-        Dim sb = New StringBuilder
-        sb.AppendLine("Blaue Piste:")
-        sb.AppendLine("Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert")
-        sb.AppendLine("Rote/schwarze Piste:")
-        sb.AppendLine("Sicheres Befahren bei zügigem Tempo")
-        sb.AppendLine("Gelände:")
-        sb.AppendLine("Sicheres Bewegen in flachem Gelände bei regulierender Grundposition")
-        Return sb.ToString
-    End Function
-    Private Function DescriptionExperte() As String
-        Dim sb = New StringBuilder
-        sb.AppendLine("Blaue Piste:")
-        sb.AppendLine("Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale")
-        sb.AppendLine("Rote/schwarze Piste:")
-        sb.AppendLine("Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch")
-        sb.AppendLine("Gelände:")
-        sb.AppendLine("Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition")
-        Return sb.ToString
-    End Function
+        Public Function CreateGroups(Anzahl As Integer) As GroupCollection
+            'Todo: Gruppenlevel einbauen
 
-    Private Function GroupPrintNames() As List(Of String)
-        Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2", "Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata", "Monte Viso", "Ortler"}
-    End Function
+            Dim uri = New Uri("GroupLevelDistribution", UriKind.Relative)
 
-    Public Function CreateGroups(Anzahl As Integer, Levelliste As LevelCollection) As GroupCollection
-        'Todo: Gruppenlevel einbauen
+            Dim dic = ExcelService.ReadLevelDistribution(Anzahl, _levelCollection)
 
-        Dim uri = New Uri("GroupLevelDistribution", UriKind.Relative)
+            Dim groupCol = New GroupCollection
 
-        Dim dic = ExcelService.ReadLevelDistribution(Anzahl)
-
-        Dim groupCol = New GroupCollection
-
-        Dim IndexGruppenName As Integer
-        For Each item In dic
-            For i = 0 To item.Value - 1
-                groupCol.Add(New Group With {
-                    .GroupName = String.Format("{0}({1})", item.Key.LevelName, i + 1),
-                    .GroupPrintName = GroupPrintNames.Item(IndexGruppenName),
-                    .Grouplevel = item.Key})
-                IndexGruppenName += 1
+            Dim IndexGruppenName As Integer
+            For Each item In dic
+                For i = 0 To item.Value - 1
+                    groupCol.Add(New Group With {
+                        .GroupName = String.Format("{0}({1})", item.Key.LevelName, i + 1),
+                        .GroupPrintName = GroupPrintNames.Item(IndexGruppenName),
+                        .Grouplevel = item.Key})
+                    IndexGruppenName += 1
+                Next
             Next
-        Next
 
-        DataService.CurrentDataService.Skiclub.Skikursliste = groupCol
+            Return groupCol
 
-        Return groupCol
+        End Function
 
 
-    End Function
+#End Region
 
-End Module
+#Region "Private"
+
+        Private Function DescriptionAnfaenger() As String
+            Dim sb = New StringBuilder
+            sb.AppendLine("Das erste Mal auf Skiern oder")
+            sb.AppendLine("1-2 Tage Skischule")
+            Return sb.ToString
+        End Function
+
+        Private Function DescriptionFortgeschritten() As String
+            Dim sb = New StringBuilder
+            sb.AppendLine("Blaue Piste:")
+            sb.AppendLine("Sicheres Befahren")
+            sb.AppendLine("Rote/schwarze Piste:")
+            sb.AppendLine("Weitgehend sicheres Befahren")
+            sb.AppendLine("Gelände:")
+            sb.AppendLine("Erste Erfahrungen")
+            Return sb.ToString
+        End Function
+        Private Function DescriptionGeniesser() As String
+            Dim sb = New StringBuilder
+            sb.AppendLine("Blaue Piste:")
+            sb.AppendLine("Zügiges und sicheres Befahren, stabile Grundposition")
+            sb.AppendLine("Rote/schwarze Piste:")
+            sb.AppendLine("Sicheres Befahren bei geringem Tempo")
+            sb.AppendLine("Gelände:")
+            sb.AppendLine("weitgehend sicheres Befahren in flachem Gelände")
+            Return sb.ToString
+        End Function
+        Private Function DescriptionKoenner() As String
+            Dim sb = New StringBuilder
+            sb.AppendLine("Blaue Piste:")
+            sb.AppendLine("Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert")
+            sb.AppendLine("Rote/schwarze Piste:")
+            sb.AppendLine("Sicheres Befahren bei zügigem Tempo")
+            sb.AppendLine("Gelände:")
+            sb.AppendLine("Sicheres Bewegen in flachem Gelände bei regulierender Grundposition")
+            Return sb.ToString
+        End Function
+        Private Function DescriptionExperte() As String
+            Dim sb = New StringBuilder
+            sb.AppendLine("Blaue Piste:")
+            sb.AppendLine("Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale")
+            sb.AppendLine("Rote/schwarze Piste:")
+            sb.AppendLine("Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch")
+            sb.AppendLine("Gelände:")
+            sb.AppendLine("Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition")
+            Return sb.ToString
+        End Function
+
+        Private Function GroupPrintNames() As List(Of String)
+            Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2", "Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata", "Monte Viso", "Ortler"}
+        End Function
+
+#End Region
+
+    End Module
+End Namespace

@@ -1,6 +1,9 @@
-﻿Namespace DataService
+﻿Imports Skischule.Entities
+
+Namespace DataService
     Module CurrentDataService
-        Property Skiclub As Skischule.Entities.Skiclub = New Entities.Skiclub
+
+        Public Property Skiclub As Skiclub
 
     End Module
 

@@ -4,14 +4,21 @@ Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Skischule.Entities
 
-Namespace ExcelService
+Namespace DataService
 
-    Public Module DatenImport
+    Public Module ImportService
+
+#Region "Fields"
+
         Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
         Private _skischule As Entities.Skiclub = New Entities.Skiclub
+
+#End Region
+
+#Region "Public Functions"
 
         Public Function ImportSkischule() As Entities.Skiclub
 
@@ -34,22 +41,25 @@ Namespace ExcelService
 
         End Function
 
+#End Region
+
+#Region "Private"
         Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skiclub
             Dim CurrentRow = 4
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
             Dim Skikursgruppe As Group
             Do Until CurrentRow > RowCount
 
-                Dim Teilnehmer As New Teilnehmer With {
-                .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .Name = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .PersoenlichesLevelID = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-                .Skikurs = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
-                _skischule.Teilnehmerliste.Add(Teilnehmer)
+                Dim Teilnehmer As New Participant With {
+                .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                .ParticipantLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
+                .MemberOfGroup = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
+                _skischule.Participantlist.Add(Teilnehmer)
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
-                If Teilnehmer.Skikurs IsNot Nothing Then
-                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.Skikurs)
+                If Teilnehmer.MemberOfGroup IsNot Nothing Then
+                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.MemberOfGroup)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.AddMember(Teilnehmer)
@@ -63,20 +73,20 @@ Namespace ExcelService
 
         Private Function FindLevel(Benennung As String) As Guid
 
-            Dim Level = _skischule.Levelliste.FirstOrDefault(Function(k) k.LevelName = Benennung)
+            Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelName = Benennung)
             If Level Is Nothing Then
                 Level = New Level With {.LevelName = Benennung}
-                _skischule.Levelliste.Add(Level)
+                _skischule.Levellist.Add(Level)
             End If
 
             Return Level.LevelID
         End Function
 
         Private Function FindSkikursgruppe(Gruppenname As String) As Group
-            Dim Skikursgruppe = _skischule.Skikursliste.FirstOrDefault(Function(s) s.GroupName = Gruppenname)
+            Dim Skikursgruppe = _skischule.Grouplist.FirstOrDefault(Function(s) s.GroupName = Gruppenname)
             If Skikursgruppe Is Nothing Then
                 Skikursgruppe = New Group With {.GroupName = Gruppenname}
-                _skischule.Skikursliste.Add(Skikursgruppe)
+                _skischule.Grouplist.Add(Skikursgruppe)
             End If
             Return Skikursgruppe
         End Function
@@ -109,6 +119,8 @@ Namespace ExcelService
             Return XlValid
 
         End Function
+
+#End Region
 
     End Module
 End Namespace

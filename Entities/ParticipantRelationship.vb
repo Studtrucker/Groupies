@@ -1,25 +1,25 @@
 ﻿Imports System.ComponentModel
 
 Namespace Entities
-    Public Class TeilnehmerBeziehungen
+    Public Class ParticipantRelationship
         Implements INotifyPropertyChanged
 
-        Private _teilnemer As Entities.Teilnehmer
-        Public Property Teilnehmer() As Entities.Teilnehmer
+        Private _teilnemer As Entities.Participant
+        Public Property Teilnehmer() As Entities.Participant
             Get
                 Return _teilnemer
             End Get
-            Set(ByVal value As Entities.Teilnehmer)
+            Set(ByVal value As Entities.Participant)
                 _teilnemer = value
             End Set
         End Property
 
-        Private _partner As Entities.Teilnehmer
-        Public Property Partner() As Entities.Teilnehmer
+        Private _partner As Entities.Participant
+        Public Property Partner() As Entities.Participant
             Get
                 Return _partner
             End Get
-            Set(ByVal value As Entities.Teilnehmer)
+            Set(ByVal value As Entities.Participant)
                 _partner = value
             End Set
         End Property

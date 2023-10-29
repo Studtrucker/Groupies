@@ -10,12 +10,12 @@ Public Class NeuerTeilnehmerDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Teilnehmer = New Teilnehmer
+        _Teilnehmer = New Participant
         DataContext = _Teilnehmer
 
     End Sub
 
-    Public ReadOnly Property Teilnehmer() As Teilnehmer
+    Public ReadOnly Property Teilnehmer() As Participant
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         txtVorname.Focus()

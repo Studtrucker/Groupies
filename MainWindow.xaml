@@ -58,7 +58,7 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skischule importieren..." Command="{x:Static local:SkischuleBefehle.ImportTeilnehmerliste}">
+                <MenuItem Header="Skischule importieren..." Command="{x:Static local:SkiclubCommands.ImportTeilnehmerliste}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
@@ -82,17 +82,17 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkischuleBefehle.NeuerTeilnehmer}"/>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkischuleBefehle.TeilnehmerLoeschen}"/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkischuleBefehle.NeueGruppe}"/>
-                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkischuleBefehle.GruppeLoeschen}"/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkiclubCommands.NeueGruppe}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static local:SkischuleBefehle.NeuerUebungsleiter}"/>
-                <MenuItem Header="Skilehrer löschen" Command="{x:Static local:SkischuleBefehle.UebungsleiterLoeschen}"/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static local:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Skilehrer löschen" Command="{x:Static local:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neues Level" Command="{x:Static local:SkischuleBefehle.NeuesLevel}"/>
-                <MenuItem Header="Level löschen" Command="{x:Static local:SkischuleBefehle.LevelLoeschen}"/>
+                <MenuItem Header="Neues Level" Command="{x:Static local:SkiclubCommands.NeuesLevel}"/>
+                <MenuItem Header="Level löschen" Command="{x:Static local:SkiclubCommands.LevelLoeschen}"/>
             </MenuItem>
 
             <MenuItem  Header="Extras" Background="white" Foreground="Black">

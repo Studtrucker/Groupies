@@ -5,7 +5,7 @@ Imports Microsoft.Win32
 
 Public Class NeuerUebungsleiterDialog
 
-    Public ReadOnly Property Skilehrer() As Uebungsleiter
+    Public ReadOnly Property Skilehrer() As Instructor
 
     Public Sub New()
 
@@ -13,7 +13,7 @@ Public Class NeuerUebungsleiterDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skilehrer = New Uebungsleiter
+        _Skilehrer = New Instructor
         DataContext = _Skilehrer
 
     End Sub

@@ -2,7 +2,7 @@
 
 Namespace Entities
 
-    Public Class Uebungsleiter
+    Public Class Instructor
         Implements INotifyPropertyChanged
 
         Private UebungsleiterIDFeld As Guid

@@ -10,7 +10,7 @@ Namespace ExcelService
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
         Private _skischule As Entities.Skiclub = New Entities.Skiclub
-
+        Private dic As Dictionary(Of Level, Integer)
         Private Function OpenAndCheckExcelFile(FilePath As String) As Excel.Workbook
 
             Workbook = Nothing
@@ -57,9 +57,11 @@ Namespace ExcelService
 
         End Function
 
-        Public Function ReadLevelDistribution(CountOfGroups As Integer) As Dictionary(Of Level, Integer)
+        Public Function ReadLevelDistribution(CountOfGroups As Integer, Levels As LevelCollection) As Dictionary(Of Level, Integer)
 
-            Dim wb As Excel.Workbook= OpenAndCheckExcelFile("Services/GroupLevelDistribution.xlsx")
+            InitDictionary(Levels)
+
+            Dim wb As Excel.Workbook = OpenAndCheckExcelFile("Services/GroupLevelDistribution.xlsx")
 
             If wb Is Nothing Then
                 MessageBox.Show("Gruppenverteilung steht nicht zur Verfügung, es wird eine Standardverteilung genutzt")
@@ -67,37 +69,32 @@ Namespace ExcelService
             End If
 
             Dim CurrentRow = 1 + CountOfGroups
-            Dim dic = InitDictionary()
 
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Anfänger").Single) = CInt(Trim(wb.ActiveSheet.Range("B" & CurrentRow).Value))
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Genießer").Single) = CInt(Trim(wb.ActiveSheet.Range("D" & CurrentRow).Value))
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Könner").Single) = CInt(Trim(wb.ActiveSheet.Range("E" & CurrentRow).Value))
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Experten").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelName = "Anfänger").Single) = CInt(Trim(wb.ActiveSheet.Range("B" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelName = "Genießer").Single) = CInt(Trim(wb.ActiveSheet.Range("D" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelName = "Könner").Single) = CInt(Trim(wb.ActiveSheet.Range("E" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelName = "Experten").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
 
             Return dic
 
         End Function
 
-        Private Function InitDictionary() As Dictionary(Of Level, Integer)
-            Dim dic = New Dictionary(Of Level, Integer)
-
-            For Each item In DataService.Skiclub.Levelliste
+        Private Sub InitDictionary(Levels As LevelCollection)
+            dic = New Dictionary(Of Level, Integer)
+            For Each item In Levels
                 dic.Add(item, 0)
             Next
-
-            Return dic
-        End Function
+        End Sub
 
 
         Private Function StandardDistribution() As Dictionary(Of Level, Integer)
-            Dim dic = InitDictionary()
 
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Anfänger").Single) = 2
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = 4
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Genießer").Single) = 5
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Könner").Single) = 3
-            dic.Item(DataService.Skiclub.Levelliste.Where(Function(x) x.LevelName = "Experten").Single) = 1
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Anfänger").Single) = 2
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = 4
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Genießer").Single) = 5
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Könner").Single) = 3
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Experten").Single) = 1
 
             Return dic
 

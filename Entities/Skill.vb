@@ -6,7 +6,7 @@ Namespace Entities
         Implements INotifyPropertyChanged
 
         Private skillIDFeld As Guid
-        Private _text As String
+        Private _SkillName As String
 
         Public Sub New()
             skillIDFeld = Guid.NewGuid()
@@ -21,13 +21,13 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Text As String
+        Public Property SkillName As String
             Get
-                Return _text
+                Return _SkillName
             End Get
             Set(value As String)
-                _text = value
-                Changed("Text")
+                _SkillName = value
+                Changed("SkillName")
             End Set
         End Property
 

@@ -7,38 +7,38 @@ Namespace Entities
 
 #Region "Fields"
 
-        Public Property Teilnehmerliste() As TeilnehmerCollection
-        Public Property Skikursliste() As GroupCollection
-        Public Property Levelliste() As LevelCollection
-        Public Property Skilehrerliste() As UebungsleiterCollection
+        Public Property Participantlist() As ParticipantCollection
+        Public Property Grouplist() As GroupCollection
+        Public Property Levellist() As LevelCollection
+        Public Property Skilehrerliste() As InstructorCollection
 
 #End Region
 
 #Region "Constructor"
         Public Sub New()
-            _Skikursliste = New GroupCollection
-            _Teilnehmerliste = New TeilnehmerCollection
-            _Levelliste = New LevelCollection
-            _Skilehrerliste = New UebungsleiterCollection
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
+            _Skilehrerliste = New InstructorCollection
         End Sub
 
-        Public Sub New(Teilnehmerliste As TeilnehmerCollection)
-            _Skikursliste = New GroupCollection
-            _Teilnehmerliste = New TeilnehmerCollection
-            _Levelliste = New LevelCollection
+        Public Sub New(Teilnehmerliste As ParticipantCollection)
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
             readTeilnehmerliste(Teilnehmerliste)
         End Sub
 
 #End Region
 
-        Private Sub readTeilnehmerliste(Teilnehmer As TeilnehmerCollection)
-            Teilnehmerliste = Teilnehmer
+        Private Sub readTeilnehmerliste(Teilnehmer As ParticipantCollection)
+            Participantlist = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
             ' Levelsliste = Teilnehmer.ToList.ForEach()
         End Sub
 
         Public Function GetAktualisierungen() As Skiclub
-            Skikursliste.ToList.ForEach(AddressOf GetAktualisierungen)
+            Grouplist.ToList.ForEach(AddressOf GetAktualisierungen)
             Return Me
         End Function
 
@@ -49,8 +49,8 @@ Namespace Entities
             'Next
         End Sub
 
-        Private Function GetAktualisierungen(Mitglied As Teilnehmer) As Teilnehmer
-            Return Teilnehmerliste.Where(Function(x) x.TeilnehmerID = Mitglied.TeilnehmerID).First
+        Private Function GetAktualisierungen(Mitglied As Participant) As Participant
+            Return Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
         End Function
 
 

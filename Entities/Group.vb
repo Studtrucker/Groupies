@@ -8,12 +8,12 @@ Namespace Entities
         Private _groupName As String
         Private _groupPrintName As String
         Private _grouplevelID As Level
-        Private _groupleaderID As Uebungsleiter
-        Private _groupmembers As Entities.TeilnehmerCollection
+        Private _groupleaderID As Instructor
+        Private _groupmembers As Entities.ParticipantCollection
 
         Public Sub New()
             _groupID = Guid.NewGuid()
-            _groupmembers = New TeilnehmerCollection
+            _groupmembers = New ParticipantCollection
         End Sub
 
         Public Property GroupID As Guid
@@ -55,42 +55,42 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Groupleader As Uebungsleiter
+        Public Property Groupleader As Instructor
             Get
                 Return _groupleaderID
             End Get
-            Set(value As Uebungsleiter)
+            Set(value As Instructor)
                 _groupleaderID = value
                 Changed("Groupleader")
             End Set
         End Property
 
-        Public Property Groupmembers As TeilnehmerCollection
+        Public Property Groupmembers As ParticipantCollection
             Get
                 Return _groupmembers
             End Get
-            Set(value As Entities.TeilnehmerCollection)
+            Set(value As Entities.ParticipantCollection)
                 _groupmembers = value
                 Changed("Groupmembers")
             End Set
         End Property
 
-        Public Sub AddMember(Teilnehmer As Teilnehmer)
+        Public Sub AddMember(Teilnehmer As Participant)
             _groupmembers.Add(Teilnehmer)
             Changed("Groupmembers")
         End Sub
 
-        Public Sub AddMembers(Teilnehmerliste As TeilnehmerCollection)
+        Public Sub AddMembers(Teilnehmerliste As ParticipantCollection)
             Teilnehmerliste.ToList.ForEach(Sub(x) _groupmembers.Add(x))
             Changed("Groupmembers")
         End Sub
 
-        Public Sub RemoveMember(Teilnehmer As Teilnehmer)
+        Public Sub RemoveMember(Teilnehmer As Participant)
             _groupmembers.Remove(Teilnehmer)
             Changed("Groupmembers")
         End Sub
 
-        Public Sub RemoveMembers(Teilnehmerliste As TeilnehmerCollection)
+        Public Sub RemoveMembers(Teilnehmerliste As ParticipantCollection)
             _groupmembers.ToList.ForEach(Sub(x) _groupmembers.Remove(x))
             Changed("Groupmembers")
         End Sub

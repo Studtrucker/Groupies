@@ -2,19 +2,19 @@
 
 Namespace Entities
 
-    Public Class TeilnehmerHistorie
+    Public Class ParticipantHistory
         Implements INotifyPropertyChanged
 
-        Private _teilnehmer As Entities.Teilnehmer
+        Private _teilnehmer As Entities.Participant
         Private _eintragVom As Date
         Private _eintrag As String
         Private _hashtag As String
 
-        Public Property Teilnehmer As Entities.Teilnehmer
+        Public Property Teilnehmer As Entities.Participant
             Get
                 Return _teilnehmer
             End Get
-            Set(value As Entities.Teilnehmer)
+            Set(value As Entities.Participant)
                 _teilnehmer = value
                 Changed("Teilnehmer")
             End Set

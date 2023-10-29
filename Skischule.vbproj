@@ -92,7 +92,7 @@
     <Compile Include="Entities\Skill.vb" />
     <Compile Include="Entities\GroupCollection.vb" />
     <Compile Include="Entities\SkillCollection.vb" />
-    <Compile Include="Entities\UebungsleiterCollection.vb" />
+    <Compile Include="Entities\InstructorCollection.vb" />
     <Compile Include="Services\CreateDefaultService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
@@ -136,16 +136,16 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\SkischuleBefehle.vb" />
+    <Compile Include="Commands\SkiclubCommands.vb" />
     <Compile Include="Entities\LevelCollection.vb" />
-    <Compile Include="Services\DatenImport.vb" />
+    <Compile Include="Services\ImportService.vb" />
     <Compile Include="Entities\Level.vb" />
     <Compile Include="Entities\Group.vb" />
-    <Compile Include="Entities\Uebungsleiter.vb" />
-    <Compile Include="Entities\Teilnehmer.vb" />
-    <Compile Include="Entities\TeilnehmerBeziehungen.vb" />
-    <Compile Include="Entities\TeilnehmerCollection.vb" />
-    <Compile Include="Entities\TeilnehmerHistorie.vb" />
+    <Compile Include="Entities\Instructor.vb" />
+    <Compile Include="Entities\Participant.vb" />
+    <Compile Include="Entities\ParticipantRelationship.vb" />
+    <Compile Include="Entities\ParticipantCollection.vb" />
+    <Compile Include="Entities\ParticipantHistory.vb" />
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,8 +1,10 @@
 ﻿Imports System.ComponentModel
+Imports System.ComponentModel.DataAnnotations
+
 
 Namespace Entities
 
-    Public Class Teilnehmer
+    Public Class Participant
         Implements INotifyPropertyChanged
 
         Private _name As String
@@ -15,7 +17,7 @@ Namespace Entities
             teilnehmerIDFeld = Guid.NewGuid()
         End Sub
 
-        Public Property TeilnehmerID As Guid
+        Public Property ParticipantID As Guid
             Get
                 Return teilnehmerIDFeld
             End Get
@@ -24,27 +26,28 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Name As String
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
+        Public Property ParticipantName As String
             Get
                 Return _name
             End Get
             Set(ByVal value As String)
                 _name = value
-                Changed("Name")
+                Changed("ParticipantName")
             End Set
         End Property
 
-        Public Property Vorname As String
+        Public Property ParticipantFirstname As String
             Get
                 Return _vorname
             End Get
             Set(ByVal value As String)
                 _vorname = value
-                Changed("Vorname")
+                Changed("ParticipantFirstname")
             End Set
         End Property
 
-        Public ReadOnly Property VollerName As String
+        Public ReadOnly Property ParticipantFullName As String
             Get
                 If _vorname Is Nothing Then
                     Return _name
@@ -56,23 +59,23 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property PersoenlichesLevelID As Guid
+        Public Property ParticipantLevel As Guid
             Get
                 Return _persoenlichesLevelID
             End Get
             Set(value As Guid)
                 _persoenlichesLevelID = value
-                Changed("PersoenlichesLevelID")
+                Changed("ParticipantLevel")
             End Set
         End Property
 
-        Public Property Skikurs As String
+        Public Property MemberOfGroup As String
             Get
                 Return _skikurs
             End Get
             Set(ByVal value As String)
                 _skikurs = value
-                Changed("Skikurs")
+                Changed("MemberOfGroup")
             End Set
         End Property
 

@@ -1,4 +1,4 @@
-﻿Public Module SkischuleBefehle
+﻿Public Module SkiclubCommands
     Private ReadOnly _importiereTeilnehmer As RoutedUICommand
     Private ReadOnly _beurteileTeilnehmerlevel As RoutedUICommand
     Private ReadOnly _neueGruppe As RoutedUICommand
@@ -11,16 +11,16 @@
     Private ReadOnly _levelLoeschen As RoutedUICommand
 
     Sub New()
-        _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkischuleBefehle))
-        _beurteileTeilnehmerlevel = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerlevel", GetType(SkischuleBefehle))
-        _neueGruppe = New RoutedUICommand("Gruppen erstellen", "NeueGruppe", GetType(SkischuleBefehle))
-        _GruppeLoeschen = New RoutedUICommand("Gruppen löschen", "GruppeLoeschen", GetType(SkischuleBefehle))
-        _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkischuleBefehle))
-        _teilnehmerLoeschen = New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkischuleBefehle))
-        _neuerUebungsleiter = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkischuleBefehle))
-        _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkischuleBefehle))
-        _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkischuleBefehle))
-        _levelLoeschen = New RoutedUICommand("Level löschen", "LevelLoeschen", GetType(SkischuleBefehle))
+        _importiereTeilnehmer = New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmerliste", GetType(SkiclubCommands))
+        _beurteileTeilnehmerlevel = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerlevel", GetType(SkiclubCommands))
+        _neueGruppe = New RoutedUICommand("Gruppen erstellen", "NeueGruppe", GetType(SkiclubCommands))
+        _GruppeLoeschen = New RoutedUICommand("Gruppen löschen", "GruppeLoeschen", GetType(SkiclubCommands))
+        _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkiclubCommands))
+        _teilnehmerLoeschen = New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkiclubCommands))
+        _neuerUebungsleiter = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkiclubCommands))
+        _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkiclubCommands))
+        _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkiclubCommands))
+        _levelLoeschen = New RoutedUICommand("Level löschen", "LevelLoeschen", GetType(SkiclubCommands))
     End Sub
 
     Public ReadOnly Property ImportTeilnehmerliste As RoutedUICommand
@@ -47,7 +47,7 @@
         End Get
     End Property
 
-    Public ReadOnly Property NeuerTeilnehmer As RoutedUICommand
+    Public ReadOnly Property NewParticipant As RoutedUICommand
         Get
             Return _neuerTeilnehmer
         End Get

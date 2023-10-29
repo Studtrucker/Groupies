@@ -16,7 +16,7 @@ Public Class SkikursGroesseStyleSelector
         If KleineGruppe Is Nothing Then
             KleineGruppe = TryCast(Application.Current.FindResource("KleineGruppe"), Style)
         End If
-        Dim SK = TryCast(item, TeilnehmerCollection)
+        Dim SK = TryCast(item, ParticipantCollection)
         If SK IsNot Nothing Then
             If SK.Count < 7 Then
                 Return KleineGruppe

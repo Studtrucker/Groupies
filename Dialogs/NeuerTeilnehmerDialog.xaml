@@ -7,13 +7,13 @@
         xmlns:rules="clr-namespace:Skischule.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
-        Title="Neuer Teilnehmer" Height="300" Width="500">
+        Title="Neuer Teilnehmer" SizeToContent="Height" Width="500">
     
     <DockPanel>
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
-            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Height="32" Width="48" />
-            <TextBlock Height="Auto"  Margin="10">
+            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Height="32" Width="48" Style="{StaticResource WindowImageCaption}" />
+            <TextBlock Height="Auto"  Margin="10" Style="{StaticResource WindowCaption}">
                 <TextBlock.Text>Neuer Teilnehmer</TextBlock.Text>
             </TextBlock>
         </DockPanel>
@@ -36,9 +36,10 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Label Canvas.Left="150" Canvas.Top="29" Grid.Column="1" Grid.Row="1">

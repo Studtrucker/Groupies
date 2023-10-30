@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 Imports Skischule.Entities
 
-Public Class NeueGruppeDialog
+Public Class NewGroupDialog
     Public ReadOnly Property Skikursgruppe() As Group
 
     Public Sub New()

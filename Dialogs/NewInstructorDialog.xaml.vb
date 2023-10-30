@@ -3,7 +3,7 @@ Imports System.Text
 Imports Skischule.Entities
 Imports Microsoft.Win32
 
-Public Class NeuerUebungsleiterDialog
+Public Class NewInstructorDialog
 
     Public ReadOnly Property Skilehrer() As Instructor
 

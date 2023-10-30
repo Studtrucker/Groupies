@@ -44,6 +44,7 @@ Namespace DataService
 #End Region
 
 #Region "Private"
+
         Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skiclub
             Dim CurrentRow = 4
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
@@ -71,7 +72,7 @@ Namespace DataService
             Return _skischule
         End Function
 
-        Private Function FindLevel(Benennung As String) As Guid
+        Private Function FindLevel(Benennung As String) As Level
 
             Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelName = Benennung)
             If Level Is Nothing Then
@@ -79,7 +80,7 @@ Namespace DataService
                 _skischule.Levellist.Add(Level)
             End If
 
-            Return Level.LevelID
+            Return Level
         End Function
 
         Private Function FindSkikursgruppe(Gruppenname As String) As Group

@@ -85,14 +85,14 @@
     <Compile Include="Dialogs\CountOfGroupsDialog.xaml.vb">
       <DependentUpon>CountOfGroupsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NeuesLevel.xaml.vb">
-      <DependentUpon>NeuesLevel.xaml</DependentUpon>
+    <Compile Include="Dialogs\NewLevelDialog.xaml.vb">
+      <DependentUpon>NewLevelDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NeueGruppeDialog.xaml.vb">
-      <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NewGroupDialog.xaml.vb">
+      <DependentUpon>NewGroupDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NeuerUebungsleiterDialog.xaml.vb">
-      <DependentUpon>NeuerUebungsleiterDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NewInstructorDialog.xaml.vb">
+      <DependentUpon>NewInstructorDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NewParticipantDialog.xaml.vb">
       <DependentUpon>NewParticipantDialog.xaml</DependentUpon>
@@ -120,15 +120,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NeuesLevel.xaml">
+    <Page Include="Dialogs\NewLevelDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\NeueGruppeDialog.xaml">
+    <Page Include="Dialogs\NewGroupDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NeuerUebungsleiterDialog.xaml">
+    <Page Include="Dialogs\NewInstructorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -172,14 +172,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-  	<Reference Include="mscorlib" />
-	<Reference Include="Microsoft.VisualBasic" />
-
+    <Reference Include="mscorlib" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Import Include="System.Threading.Tasks" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
     <Import Include="Microsoft.VisualBasic" />
-	<Import Include="System.Object"/>
+    <Import Include="System.Object" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />

@@ -481,7 +481,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuesLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NewLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
             CDS.Skiclub.Levellist.Add(dlg.Level)
             _levelListCollectionView.MoveCurrentTo(dlg.Level)
@@ -515,7 +515,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
             CDS.Skiclub.Grouplist.Add(dlg.Skikursgruppe)
             _skikursListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
@@ -594,7 +594,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerUebungsleiterDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             CDS.Skiclub.Skilehrerliste.Add(dlg.Skilehrer)
@@ -651,7 +651,7 @@ Class MainWindow
 
 #Region "Helper-Methoden"
     Private Sub AddLevelToTeilnehmer(Teilnehmerliste As ParticipantCollection, Level As Level)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantLevel = Level.LevelID)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantLevel = Level)
     End Sub
 
     Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Level)
@@ -667,7 +667,7 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
-        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantLevel = level.LevelID)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantLevel.LevelID = level.LevelID)
         liste.ToList.ForEach(Sub(x) x.ParticipantLevel = Nothing)
     End Sub
 
@@ -878,7 +878,6 @@ Class MainWindow
     End Sub
 
     Private Sub SetView(Teilnehmers As ParticipantCollection)
-        CDS.Skiclub.Participantlist = Teilnehmers
         _teilnehmerListCollectionView = New ListCollectionView(Teilnehmers)
         ' Hinweis AddHandler Seite 764
         AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
@@ -887,7 +886,6 @@ Class MainWindow
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
     End Sub
     Private Sub SetView(Skikursliste As GroupCollection)
-        CDS.Skiclub.Grouplist = Skikursliste
         _skikursListCollectionView = New ListCollectionView(Skikursliste)
         ' Hinweis AddHandler Seite 764
         AddHandler _skikursListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
@@ -897,7 +895,6 @@ Class MainWindow
     End Sub
 
     Private Sub SetView(Skilehrer As InstructorCollection)
-        CDS.Skiclub.Skilehrerliste = Skilehrer
         _uebungsleiterListCollectionView = New ListCollectionView(Skilehrer)
         ' Hinweis AddHandler Seite 764
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
@@ -907,7 +904,6 @@ Class MainWindow
     End Sub
 
     Private Sub SetView(Level As LevelCollection)
-        CDS.Skiclub.Levellist = Level
         _levelListCollectionView = New ListCollectionView(Level)
         ' Hinweis AddHandler Seite 764
         AddHandler _levelListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged

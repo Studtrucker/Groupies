@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 Imports Skischule.Entities
 
-Public Class NeuesLevelDialog
+Public Class NewLevelDialog
     Public ReadOnly Property Level() As Level
 
     Public Sub New()

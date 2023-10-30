@@ -4,67 +4,26 @@ Imports System.ComponentModel
 Namespace Entities
 
     Public Class Instructor
-        Implements INotifyPropertyChanged
-
-        Private UebungsleiterIDFeld As Guid
-        Private _vorname As String
-        Private _name As String
-        Private _printName As String
-        Private _foto As Byte()
+        Inherits BaseModel
 
         Public Sub New()
-            UebungsleiterIDFeld = Guid.NewGuid()
+            _UebungsleiterID = Guid.NewGuid()
         End Sub
 
         Public Property UebungsleiterID As Guid
-            Get
-                Return UebungsleiterIDFeld
-            End Get
-            Set(value As Guid)
-                UebungsleiterIDFeld = value
-            End Set
-        End Property
+
 
         Public Property Vorname As String
-            Get
-                Return _vorname
-            End Get
-            Set(value As String)
-                _vorname = value
-                Changed("Vorname")
-            End Set
-        End Property
+
 
         Public Property Name As String
-            Get
-                Return _name
-            End Get
-            Set(value As String)
-                _name = value
-                Changed("Name")
-            End Set
-        End Property
+
 
         Public Property PrintName As String
-            Get
-                Return _printName
-            End Get
-            Set(value As String)
-                _printName = value
-                Changed("PrintName")
-            End Set
-        End Property
+
 
         Public Property Foto As Byte()
-            Get
-                Return _foto
-            End Get
-            Set(value As Byte())
-                _foto = value
-                Changed("Foto")
-                Changed("HatFoto")
-            End Set
-        End Property
+
 
         Public ReadOnly Property VollerName As String
             Get
@@ -84,12 +43,6 @@ Namespace Entities
             End Get
         End Property
 
-        Private Sub Changed(propertyName As String)
-            Dim handler = PropertyChangedEvent
-            handler?(Me, New PropertyChangedEventArgs(propertyName))
-        End Sub
-
-        Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     End Class
 
 End Namespace

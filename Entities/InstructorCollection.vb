@@ -1,4 +1,5 @@
-﻿Imports System.Collections.ObjectModel
+﻿Imports System.ComponentModel.DataAnnotations
+Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Data.SqlClient
 

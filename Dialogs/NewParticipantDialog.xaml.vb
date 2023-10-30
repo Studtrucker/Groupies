@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 Imports Skischule.Entities
 
-Public Class NeuerTeilnehmerDialog
+Public Class NewParticipantDialog
 
     Public Sub New()
 

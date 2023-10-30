@@ -1,4 +1,6 @@
-﻿Imports System.ComponentModel
+﻿Imports System.ComponentModel.DataAnnotations
+Imports System.ComponentModel
+Imports PropertyChanged
 
 Namespace Entities
     Public Class Group

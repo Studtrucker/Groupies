@@ -1,4 +1,5 @@
-﻿Imports Skischule.Entities
+﻿Imports System.ComponentModel.DataAnnotations
+Imports Skischule.Entities
 
 Namespace Entities
 

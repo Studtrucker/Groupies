@@ -4,7 +4,7 @@ Imports System.ComponentModel.DataAnnotations
 
 Namespace Entities
 
-    <DefaultProperty("ValueName")>
+    '<DefaultProperty("ValueName")>
     Public Class Level
         Inherits BaseModel
 
@@ -17,13 +17,9 @@ Namespace Entities
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property LevelName As String
 
-
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Beschreibung ist eine Pflichtangabe")>
         Public Property LevelDescription As String
 
-
         Public Property LevelSkills As SkillCollection
-
 
         Public Sub AddSkill(skill As Skill)
             _LevelSkills.Add(skill)

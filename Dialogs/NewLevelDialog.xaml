@@ -20,8 +20,8 @@
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK"  Click="HandleButtonOKClick"/>
-                <Button Width="100" Content="Abbruch" Click="HandleButtonCancelClick"/>
+                <Button Width="100" Content="OK" Command="{x:Static local:SkiclubCommands.DialogOk}"/>
+                <Button Width="100" Content="Abbruch" Command="{x:Static local:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
         </Border>
 
@@ -39,21 +39,18 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Label Canvas.Left="150" Canvas.Top="29" Grid.Column="1" Grid.Row="1">
-                <TextBlock Height="16" Margin="0">Benennung
+            
+            <Label Grid.Column="1" Grid.Row="1">
+                <TextBlock Style="{StaticResource RequiredField}">Benennung
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox x:Name="txtBenennung" Grid.Column="2" Grid.Row="1">
-                <!-- Binding kann im Code im Loaded-Event des Windows gemacht werden -->
-                <Binding Path="Benennung" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                    <rules:NameValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
+            <TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField"
+                     Text="{Binding LevelName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
             <Label Content="Beschreibung" Grid.Column="1" Grid.Row="2"/>
-            <TextBox  Text="{Binding Beschreibung}" Grid.Column="2" Grid.Row="2"/>
+            <TextBox Grid.Column="2" Grid.Row="2"
+                     Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
         </Grid>
     </DockPanel>

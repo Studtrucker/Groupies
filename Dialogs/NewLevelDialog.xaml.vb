@@ -2,6 +2,7 @@
 Imports Skischule.Entities
 
 Public Class NewLevelDialog
+
     Public ReadOnly Property Level() As Level
 
     Public Sub New()
@@ -16,33 +17,22 @@ Public Class NewLevelDialog
     End Sub
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        txtBenennung.Focus()
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+
+        NamingField.Focus()
+
     End Sub
 
-    Private Sub HandleButtonOKClick(sender As Object, e As RoutedEventArgs)
-        If ValidateInput() Then
-            DialogResult = True
-        Else
-            MessageBox.Show(GetErrors)
-        End If
+    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Level.IsOk
     End Sub
 
-    Private Function ValidateInput() As Boolean
-        Return Not Validation.GetHasError(txtBenennung)
-    End Function
+    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        DialogResult = True
+    End Sub
 
-    Private Function GetErrors() As String
-        Dim sb = New StringBuilder
-
-        For Each [Error] In Validation.GetErrors(txtBenennung)
-            sb.AppendLine([Error].ErrorContent.ToString)
-        Next
-
-        Return sb.ToString
-
-    End Function
-
-    Private Sub HandleButtonCancelClick(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
     End Sub
 

@@ -15,10 +15,8 @@ Namespace Entities
 
         Public Property ParticipantName As String
 
-
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property ParticipantFirstname As String
-
 
         Public ReadOnly Property ParticipantFullName As String
             Get

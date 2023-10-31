@@ -18,10 +18,19 @@ Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Participant
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+
         txtVorname.Focus()
+
     End Sub
 
-    Private Sub HandleButtonOKClick(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Teilnehmer.IsOk
+    End Sub
+
+    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         If ValidateInput() Then
             DialogResult = True
         Else
@@ -44,7 +53,7 @@ Public Class NewParticipantDialog
 
     End Function
 
-    Private Sub HandleButtonCancelClick(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
     End Sub
 

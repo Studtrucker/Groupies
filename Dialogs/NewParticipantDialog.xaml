@@ -21,8 +21,8 @@
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Margin="10" Click="HandleButtonOKClick"/>
-                <Button Width="100" Content="Abbruch" Margin="10" Click="HandleButtonCancelClick"/>
+                <Button Width="100" Content="OK" Margin="10" Command="{x:Static local:SkiclubCommands.DialogOk}"/>
+                <Button Width="100" Content="Abbruch" Margin="10" Command="{x:Static local:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
         </Border>
         

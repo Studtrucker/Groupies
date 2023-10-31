@@ -17,21 +17,21 @@
     <DockPanel>
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
-            <Image Source="/Images/icons8-ski-goggles-48.png" Height="32" Width="48" 
+            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
                    Style="{StaticResource WindowImageCaption}" />
-            <TextBlock Height="Auto"  Margin="10" Text="Neuer Übungsleiter" 
-                       Style="{StaticResource WindowCaption}"/>
+            <TextBlock Height="Auto" Text="Neuer Übungsleiter"
+                       Style="{StaticResource WindowCaption}" />
         </DockPanel>
 
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Margin="10" Click="HandleButtonOKClick"/>
-                <Button Width="100" Content="Abbruch" Margin="10" Click="HandleButtonCancelClick"/>
+                <Button Width="100" Content="OK" Command="{x:Static local:SkiclubCommands.DialogOk}"/>
+                <Button Width="100" Content="Abbruch" Command="{x:Static local:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
         </Border>
 
-        <!--Eingabefelder-->
+        <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -59,28 +59,24 @@
                                Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop setzen
                     </TextBlock>
-                    <Image Width="80" Height="120" Source="{Binding Foto}" />
+                    <Image Width="80" Height="120" Source="{Binding Picture}" />
                 </Grid>
             </Border>
 
-            <Label Canvas.Left="150" Canvas.Top="29" Grid.Column="2" Grid.Row="1">
-                <TextBlock Height="16" Margin="0">Angezeigter Name 
-					<Run Foreground="Red">*</Run>
+
+            <Label Grid.Column="2" Grid.Row="1">
+                <TextBlock Style="{StaticResource RequiredField}">Print Name
+				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox x:Name="txtAngezeigterName" Grid.Column="3" Grid.Row="1">
-                <!-- Binding kann im Code im Loaded-Event des Windows gemacht werden -->
-                <Binding Path="AngezeigterName" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <rules:NameValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
+            <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1"
+                Text="{Binding PrintName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Content="Vorname" Grid.Column="2" Grid.Row="2"/>
-            <TextBox Text="{Binding Vorname}" Grid.Column="3" Grid.Row="2"/>
+            <TextBox Grid.Column="3" Grid.Row="2"
+                Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
-            <TextBox Text="{Binding Name}"  Grid.Column="3" Grid.Row="3"/>
-            <TextBlock Grid.Column="3" Grid.Row="4" Foreground="red" Name="txtErrorsAndWarnings" VerticalAlignment="Top"/>
+            <TextBox Grid.Column="3" Grid.Row="3"
+                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         </Grid>
 
     </DockPanel>

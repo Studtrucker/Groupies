@@ -3,6 +3,7 @@ Imports System.Windows.Forms
 Imports Skischule.Entities
 
 Public Class NewParticipantDialog
+    Public ReadOnly Property Teilnehmer() As Participant
 
     Public Sub New()
 
@@ -15,7 +16,6 @@ Public Class NewParticipantDialog
 
     End Sub
 
-    Public ReadOnly Property Teilnehmer() As Participant
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 

@@ -5,7 +5,7 @@ Imports Microsoft.Win32
 
 Public Class NewInstructorDialog
 
-    Public ReadOnly Property Skilehrer() As Instructor
+    Public ReadOnly Property Instructor() As Instructor
 
     Public Sub New()
 
@@ -13,46 +13,33 @@ Public Class NewInstructorDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skilehrer = New Instructor
-        DataContext = _Skilehrer
+        _Instructor = New Instructor
+        DataContext = _Instructor
 
     End Sub
-
-
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        txtAngezeigterName.Focus()
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+
+        PrintNameField.Focus()
     End Sub
 
-    Private Sub HandleButtonOKClick(sender As Object, e As RoutedEventArgs)
-        If ValidateInput() Then
-            DialogResult = True
-        Else
-            MessageBox.Show(GetErrors)
-        End If
+    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Instructor.IsOk
     End Sub
 
-    Private Function ValidateInput() As Boolean
-        Return Not Validation.GetHasError(txtAngezeigterName)
-    End Function
+    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        DialogResult = True
+    End Sub
 
-    Private Function GetErrors() As String
-        Dim sb = New StringBuilder
-
-        For Each [Error] In Validation.GetErrors(txtAngezeigterName)
-            sb.AppendLine([Error].ErrorContent.ToString)
-        Next
-
-        Return sb.ToString
-
-    End Function
-
-    Private Sub HandleButtonCancelClick(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
-
     End Sub
 
     Private Sub HandleDrop(sender As Object, e As DragEventArgs)
+
         Dim sb As StringBuilder = New StringBuilder()
+
         Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
         Dim validPictureFile = False
 
@@ -63,7 +50,7 @@ Public Class NewInstructorDialog
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    _Skilehrer.Foto = buffer
+                    _Instructor.Picture = buffer
                     validPictureFile = True
                 End Using
             Else
@@ -85,11 +72,7 @@ Public Class NewInstructorDialog
             sb.AppendLine("  es wird nur die erste verwendet")
         End If
 
-        If sb.ToString().Length > 0 Then
-            txtErrorsAndWarnings.Text = sb.ToString()
-        Else
-            txtErrorsAndWarnings.Text = String.Empty
-        End If
+
     End Sub
 
     Private Sub HandleDragOver(sender As Object, e As DragEventArgs)

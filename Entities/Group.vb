@@ -16,6 +16,7 @@ Namespace Entities
         Public Property GroupName As String
 
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Gruppenname ist ein Pflichtfeld")>
         Public Property GroupPrintName As String
 
 

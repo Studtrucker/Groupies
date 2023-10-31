@@ -413,7 +413,7 @@ Class MainWindow
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Instructor).Foto = buffer
+                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Instructor).Picture = buffer
                     RefreshTaskBarItemOverlay()
                     CommandManager.InvalidateRequerySuggested()
                     validPictureFile = True
@@ -517,9 +517,9 @@ Class MainWindow
     Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            CDS.Skiclub.Grouplist.Add(dlg.Skikursgruppe)
-            _skikursListCollectionView.MoveCurrentTo(dlg.Skikursgruppe)
-            skikurseDataGrid.ScrollIntoView(dlg.Skikursgruppe)
+            CDS.Skiclub.Grouplist.Add(dlg.Group)
+            _skikursListCollectionView.MoveCurrentTo(dlg.Group)
+            skikurseDataGrid.ScrollIntoView(dlg.Group)
         End If
     End Sub
 
@@ -597,9 +597,9 @@ Class MainWindow
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CDS.Skiclub.Skilehrerliste.Add(dlg.Skilehrer)
-            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Skilehrer)
-            uebungsleiterDataGrid.ScrollIntoView(dlg.Skilehrer)
+            CDS.Skiclub.Skilehrerliste.Add(dlg.Instructor)
+            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
+            uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
     End Sub
 

@@ -2,7 +2,7 @@
 Imports Skischule.Entities
 
 Public Class NewGroupDialog
-    Public ReadOnly Property Skikursgruppe() As Group
+    Public ReadOnly Property Group() As Group
 
     Public Sub New()
 
@@ -10,39 +10,29 @@ Public Class NewGroupDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skikursgruppe = New Group
-        DataContext = _Skikursgruppe
+        _Group = New Group
+        DataContext = _Group
 
     End Sub
+
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        txtAngezeigterGruppenname.Focus()
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+
+        GroupPrintNameField.Focus()
+
     End Sub
 
-    Private Sub HandleButtonOKClick(sender As Object, e As RoutedEventArgs)
-        If ValidateInput() Then
-            DialogResult = True
-        Else
-            MessageBox.Show(GetErrors)
-        End If
+    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Group.IsOk
     End Sub
 
-    Private Function ValidateInput() As Boolean
-        Return Not Validation.GetHasError(txtAngezeigterGruppenname)
-    End Function
+    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        DialogResult = True
+    End Sub
 
-    Private Function GetErrors() As String
-        Dim sb = New StringBuilder
-
-        For Each [Error] In Validation.GetErrors(txtAngezeigterGruppenname)
-            sb.AppendLine([Error].ErrorContent.ToString)
-        Next
-
-        Return sb.ToString
-
-    End Function
-
-    Private Sub HandleButtonCancelClick(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
     End Sub
 

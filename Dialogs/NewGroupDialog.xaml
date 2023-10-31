@@ -8,23 +8,24 @@
         mc:Ignorable="d"
         Title="NeueGruppeDialog"  Width="600" SizeToContent="Height">
     <DockPanel>
+        
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
-            <Image Source="/Images/icons8-ski-resort-48.png" Height="32" Width="48" Style="{StaticResource WindowImageCaption}"/>
-            <TextBlock Height="Auto"  Margin="10" Style="{StaticResource WindowCaption}">
-                <TextBlock.Text>Neue Skikursgruppe</TextBlock.Text>
-            </TextBlock>
+            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
+                   Style="{StaticResource WindowImageCaption}" />
+            <TextBlock Height="Auto" Text="Neuer Skikursgruppe"
+                       Style="{StaticResource WindowCaption}" />
         </DockPanel>
-        
+
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Click="HandleButtonOKClick"/>
-                <Button Width="100" Content="Abbruch" Click="HandleButtonCancelClick"/>
+                <Button Width="100" Content="OK" Command="{x:Static local:SkiclubCommands.DialogOk}"/>
+                <Button Width="100" Content="Abbruch" Command="{x:Static local:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
         </Border>
 
-        <!--Eingabefelder-->
+        <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -40,31 +41,28 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Label Canvas.Left="150" Canvas.Top="29" Grid.Column="1" Grid.Row="1">
-                <TextBlock Height="16" Margin="0">Angezeigter Gruppenname
+
+            <Label Grid.Column="1" Grid.Row="1">
+                <TextBlock Style="{StaticResource RequiredField}">Print Gruppenname
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox x:Name="txtAngezeigterGruppenname" Grid.Column="2" Grid.Row="1">
-                <!-- Binding kann im Code im Loaded-Event des Windows gemacht werden -->
-                <Binding Path="AngezeigterGruppenname" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                    <rules:NameValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
+            <TextBox Text="{Binding GroupPrintName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                x:Name="GroupPrintNameField" Grid.Column="2" Grid.Row="1"/>
             <Label Content="Gruppenname" 
                    Grid.Column="1" Grid.Row="2"/>
-            <TextBox Text="{Binding Gruppenname}" 
-                     Grid.Column="2" Grid.Row="2"/>
+            <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     Grid.Column="2" Grid.Row="2" />
             <Label Content="Gruppenlevel" 
                    Grid.Column="1" Grid.Row="3"/>
-            <TextBox Text="{Binding Gruppenlevel}" 
-                     Grid.Column="2" Grid.Row="3"/>
+            <!--<TextBox Text="{Binding Grouplevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     Grid.Column="2" Grid.Row="3"/>-->
+            <ComboBox Grid.Column="2" Grid.Row="3" />
             <Label Content="Skilehrer" 
                    Grid.Column="1" Grid.Row="4"/>
-            <TextBox Text="{Binding Skilehrer}" 
-                     Grid.Column="2" Grid.Row="4"/>
+            <!--<TextBox Text="{Binding Groupleader, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     Grid.Column="2" Grid.Row="4"/>-->
+            <ComboBox Grid.Column="2" Grid.Row="4" />
 
         </Grid>
     </DockPanel>

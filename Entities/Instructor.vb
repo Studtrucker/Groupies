@@ -7,39 +7,41 @@ Namespace Entities
         Inherits BaseModel
 
         Public Sub New()
-            _UebungsleiterID = Guid.NewGuid()
+            _InstructorID = Guid.NewGuid()
         End Sub
 
-        Public Property UebungsleiterID As Guid
+        Public Property InstructorID As Guid
 
 
-        Public Property Vorname As String
+        Public Property Firstname As String
 
 
         Public Property Name As String
 
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Print Name ist eine Pflichtangabe")>
         Public Property PrintName As String
 
+        <DataAnnotations.FileExtensions(ErrorMessage:="Nur Dateien mit den Endungen erlaubt", ErrorMessageResourceName:="Error", ErrorMessageResourceType:=GetType(String), Extensions:="jpg,png")>
+        Public Property Picture As Byte()
 
-        Public Property Foto As Byte()
 
-
-        Public ReadOnly Property VollerName As String
+        Public ReadOnly Property Fullname As String
             Get
-                If _vorname Is Nothing Then
-                    Return _name
-                ElseIf _name Is Nothing Then
-                    Return _vorname
+                If _Firstname Is Nothing Then
+                    Return _Name
+                ElseIf _Name Is Nothing Then
+                    Return _Firstname
                 Else
-                    Return String.Format("{0} {1}", _vorname, _name)
+                    Return String.Format("{0} {1}", _Firstname, _Name)
                 End If
             End Get
         End Property
 
-        Public ReadOnly Property HatFoto As Boolean
+
+        Public ReadOnly Property HasPicture As Boolean
             Get
-                Return _foto IsNot Nothing AndAlso Foto.Length > 0
+                Return _Picture IsNot Nothing AndAlso Picture.Length > 0
             End Get
         End Property
 

@@ -51,6 +51,12 @@
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
+            <!--Style for Comboboxes-->
+            <Style TargetType="ComboBox" >
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+
             <!--Style for Sliders-->
             <Style TargetType="Slider" >
                 <Setter Property="Margin" Value="4"/>
@@ -68,6 +74,7 @@
             <!--Style for TextBoxes-->
             <Style TargetType="TextBox">
                 <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
@@ -80,6 +87,7 @@
             <!--Style for Labels-->
             <Style TargetType="Label">
                 <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
             </Style>
 
             <!--Style for Buttons-->

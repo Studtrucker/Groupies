@@ -421,7 +421,7 @@ Text="{Binding Path=MemberOfGroup, UpdateSourceTrigger=PropertyChanged}" IsReadO
                                     <Label Grid.Column="0" Grid.Row="2" Content="Name" Margin="2"/>
                                     <TextBox Text="{Binding PrintName, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
-                                    <TextBox Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="1"  Margin="2"/>
                                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="2"  Margin="2"/>
@@ -431,12 +431,12 @@ Text="{Binding Path=MemberOfGroup, UpdateSourceTrigger=PropertyChanged}" IsReadO
                                         <Grid>
                                             <Rectangle Fill="{StaticResource DefaultImageBrush}"/>
                                             <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
-                                                   Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}"/>
+                                                   Visibility="{Binding HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                                             <TextBlock TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"  
-                                                       Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">
+                                                       Visibility="{Binding HasPicture, Converter={StaticResource BooleanToVisibilityInverted}}">
                                                 Neues Bild hierhin ziehen
                                             </TextBlock>
-                                            <Image Source="{Binding Foto, UpdateSourceTrigger=PropertyChanged}"
+                                            <Image Source="{Binding Picture, UpdateSourceTrigger=PropertyChanged}"
                                                    Margin="2" Width="200" Height="260"/>
                                         </Grid>
                                     </Border>
@@ -481,7 +481,7 @@ Text="{Binding Path=MemberOfGroup, UpdateSourceTrigger=PropertyChanged}" IsReadO
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Angezeigter Name" Binding="{Binding PrintName}"/>
-                                            <DataGridTextColumn Header="Vorname"  Binding="{Binding Vorname}"/>
+                                            <DataGridTextColumn Header="Vorname"  Binding="{Binding Firstname}"/>
                                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

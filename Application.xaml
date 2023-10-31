@@ -27,22 +27,26 @@
                 <!--<StyleSelector x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">-->
                 <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>-->
             </StyleSelector>
-            
+
+            <!--Explicit Style for Image Caption-->
             <Style TargetType="Image" x:Key="WindowImageCaption">
                 <Setter Property="Height" Value="32"/>
                 <Setter Property="Width" Value="48"/>
                 <Setter Property="Margin" Value="10,4"/>
             </Style>
 
+            <!--Explicit Style for TextBlocks Caption-->
             <Style TargetType="TextBlock" x:Key="WindowCaption">
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
+            <!--Style for TextBlocks-->
             <Style TargetType="TextBlock" >
                 <Setter Property="Margin" Value="4"/>
             </Style>
-            
+
+            <!--Style for Sliders-->
             <Style TargetType="Slider" >
                 <Setter Property="Margin" Value="4"/>
             </Style>
@@ -56,6 +60,7 @@
                 </DockPanel>
             </ControlTemplate>
 
+            <!--Style for TextBoxes-->
             <Style TargetType="TextBox">
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
@@ -67,10 +72,12 @@
                 </Style.Triggers>
             </Style>
             
+            <!--Style for Labels-->
             <Style TargetType="Label">
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
+            <!--Style for Buttons-->
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="10"/>
             </Style>

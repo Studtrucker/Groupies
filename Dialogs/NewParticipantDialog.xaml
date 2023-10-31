@@ -12,7 +12,8 @@
     <DockPanel>
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
-            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Height="32" Width="48" Style="{StaticResource WindowImageCaption}" />
+            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Height="32" Width="48" 
+                   Style="{StaticResource WindowImageCaption}" />
             <TextBlock Height="Auto"  Margin="10" Style="{StaticResource WindowCaption}">
                 <TextBlock.Text>Neuer Teilnehmer</TextBlock.Text>
             </TextBlock>
@@ -26,7 +27,7 @@
             </StackPanel>
         </Border>
         
-        <!--Eingabefelder-->
+        <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -42,6 +43,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
+
+            
             <Label Grid.Column="1" Grid.Row="1">
                 <TextBlock Height="Auto" Margin="0">
                     Vorname <Run Foreground="Red">*</Run>
@@ -49,13 +52,18 @@
             </Label>
             <TextBox x:Name="txtVorname" Grid.Column="2" Grid.Row="1" 
                      Text="{Binding ParticipantFirstname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+
             <Label Content="Name" Grid.Column="1" Grid.Row="2"/>
             <TextBox Grid.Column="2" Grid.Row="2"
                 Text="{Binding ParticipantName, UpdateSourceTrigger=PropertyChanged}"/>
+
+
             <Label Content="Level" Grid.Column="1" Grid.Row="3"/>
-            
             <TextBox Grid.Column="2" Grid.Row="3"
                 Text="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}" />
+
+
             <Label Content="Skikursgruppe" Grid.Column="1" Grid.Row="4"/>
             <TextBox  Grid.Column="2" Grid.Row="4"
                 Text="{Binding MemberOfGroup, UpdateSourceTrigger=PropertyChanged}" />

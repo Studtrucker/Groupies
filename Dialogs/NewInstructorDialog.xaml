@@ -8,7 +8,7 @@
         xmlns:rules="clr-namespace:Skischule.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
-        Title="Neuer Übungsleiter" SizeToContent="Height" Width="550">
+        Title="Neuer Übungsleiter" SizeToContent="Height" Width="600">
     
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
@@ -35,7 +35,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="50"/>

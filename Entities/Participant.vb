@@ -32,7 +32,7 @@ Namespace Entities
 
         Public Property ParticipantLevel As Level
 
-        Public Property MemberOfGroup As String
+        Public Property ParticipantMemberOfGroup As String
 
     End Class
 End Namespace

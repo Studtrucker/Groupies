@@ -1,9 +1,12 @@
 ﻿Imports System.Text
 Imports System.Windows.Forms
 Imports Skischule.Entities
+Imports System.ComponentModel
+
 
 Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Participant
+    Private _instructorListCollectionView As ICollectionView
 
     Public Sub New()
 
@@ -13,6 +16,7 @@ Public Class NewParticipantDialog
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         _Teilnehmer = New Participant
         DataContext = _Teilnehmer
+        MemberOfGroupComboBox.DataContext = DataService.Skiclub.Grouplist
 
     End Sub
 
@@ -31,6 +35,8 @@ Public Class NewParticipantDialog
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Trace.TraceInformation(MemberOfGroupComboBox.SelectedValuePath)
+        Trace.TraceInformation(MemberOfGroupComboBox.SelectedValue.ToString)
         DialogResult = True
     End Sub
 

@@ -663,7 +663,7 @@ Class MainWindow
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As String)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Skikursgruppe)
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
@@ -682,8 +682,8 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
-        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup = Skikursgruppe)
-        liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantMemberOfGroup = Skikursgruppe)
+        liste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Nothing)
     End Sub
 
     Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())

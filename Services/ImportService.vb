@@ -55,12 +55,12 @@ Namespace DataService
                 .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
                 .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
                 .ParticipantLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-                .MemberOfGroup = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
+                .ParticipantMemberOfGroup = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
                 _skischule.Participantlist.Add(Teilnehmer)
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
-                If Teilnehmer.MemberOfGroup IsNot Nothing Then
-                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.MemberOfGroup)
+                If Teilnehmer.ParticipantMemberOfGroup IsNot Nothing Then
+                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.ParticipantMemberOfGroup)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.AddMember(Teilnehmer)

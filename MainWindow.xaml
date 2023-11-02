@@ -59,18 +59,18 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skischule importieren..." Command="{x:Static local:SkiclubCommands.ImportTeilnehmerliste}">
+                <MenuItem Header="Skiclub importieren..." Command="{x:Static local:SkiclubCommands.ImportSkiclub}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Skischule _speichern" Command="ApplicationCommands.Save">
+                <MenuItem Header="Skiclub _speichern" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skischule speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <MenuItem Header="Skiclub speichern _unter..." Command="ApplicationCommands.SaveAs"/>
                 <Separator/>
                 <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
                     <MenuItem.Icon>
@@ -84,6 +84,11 @@
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
                 <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static local:SkiclubCommands.ImportParticipants}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkiclubCommands.NeueGruppe}"/>

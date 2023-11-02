@@ -15,6 +15,7 @@ Namespace Entities
 
         Public Property ParticipantName As String
 
+
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property ParticipantFirstname As String
 
@@ -30,9 +31,10 @@ Namespace Entities
             End Get
         End Property
 
+
         Public Property ParticipantLevel As Level
 
-        Public Property ParticipantMemberOfGroup As String
+        Public Property ParticipantMemberOfGroup As Group
 
     End Class
 End Namespace

@@ -70,7 +70,7 @@ Namespace Annotations
     ''' </summary>
     ''' <example>
     ''' <code>
-    ''' <StringFormatMethod("message")></StringFormatMethod>
+    ''' <StringFormatMethod>"message"</StringFormatMethod>
     ''' Public Sub ShowError(ByVal message As String, ParamArray args As Object())
     ''' End Sub
     ''' Public Sub Foo()

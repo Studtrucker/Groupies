@@ -115,7 +115,8 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmerliste, AddressOf HandleImportExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NewParticipant, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
@@ -144,6 +145,8 @@ Class MainWindow
         RefreshJumpListInWinTaskbar()
 
     End Sub
+
+
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
         Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
@@ -375,7 +378,23 @@ Class MainWindow
         Close()
     End Sub
 
-    Private Sub HandleImportExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = DataService.Skiclub.Participantlist IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportParticipants = ImportService.ImportParticipants
+        If ImportParticipants IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportParticipants.ToList.ForEach(Sub(x) DataService.Skiclub.Participantlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
+        End If
+
+    End Sub
+
+
+    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
         If CDS.Skiclub IsNot Nothing Then
@@ -393,9 +412,9 @@ Class MainWindow
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
 
-        Dim importSkischule = ImportService.ImportSkischule
-        If importSkischule IsNot Nothing Then
-            SetView(importSkischule)
+        Dim importSkiclub = ImportService.ImportSkiclub
+        If importSkiclub IsNot Nothing Then
+            SetView(importSkiclub)
             MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
         End If
 
@@ -531,7 +550,7 @@ Class MainWindow
         Dim i As Integer
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Group In skikurseDataGrid.SelectedItems
-            RemoveSkikursgruppeFromTeilnehmer(item.GroupName)
+            RemoveSkikursgruppeFromTeilnehmer(item)
             index(i) = CDS.Skiclub.Grouplist.IndexOf(item)
             i += 1
         Next
@@ -662,7 +681,7 @@ Class MainWindow
         Skikursgruppe.Groupleader = Uebungsleiter
     End Sub
 
-    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As String)
+    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As Group)
         Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Skikursgruppe)
     End Sub
 
@@ -681,8 +700,8 @@ Class MainWindow
         liste.ToList.ForEach(Sub(x) x.Groupleader = Nothing)
     End Sub
 
-    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As String)
-        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantMemberOfGroup = Skikursgruppe)
+    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Group)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantMemberOfGroup Is Skikursgruppe)
         liste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Nothing)
     End Sub
 

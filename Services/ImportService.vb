@@ -20,7 +20,7 @@ Namespace DataService
 
 #Region "Public Functions"
 
-        Public Function ImportSkischule() As Entities.Skiclub
+        Public Function ImportSkiclub() As Entities.Skiclub
 
             Workbook = Nothing
 
@@ -32,8 +32,28 @@ Namespace DataService
             If _ofdDokument.ShowDialog = DialogResult.OK Then
                 Dim xlApp = New Excel.Application
                 Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
-                If CheckExcelFileFormat(Workbook) Then
-                    Return ReadImportedExcelliste(Workbook.ActiveSheet)
+                If CheckExcelFileFormatSkiclub(Workbook) Then
+                    Return ReadImportExcelfileSkiclub(Workbook.ActiveSheet)
+                End If
+                Workbook.Close()
+            End If
+            Return Nothing
+
+        End Function
+
+        Public Function ImportParticipants() As Entities.ParticipantCollection
+            Workbook = Nothing
+
+            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
+            _ofdDokument.FilterIndex = 1
+            _ofdDokument.RestoreDirectory = True
+
+            If _ofdDokument.ShowDialog = DialogResult.OK Then
+                Dim xlApp = New Excel.Application
+                Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
+                If CheckExcelFileFormatParticipants(Workbook) Then
+                    Return ReadImportExcelfileParticipants(Workbook.ActiveSheet)
                 End If
                 Workbook.Close()
             End If
@@ -45,7 +65,7 @@ Namespace DataService
 
 #Region "Private"
 
-        Private Function ReadImportedExcelliste(Excelsheet As Excel.Worksheet) As Entities.Skiclub
+        Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Entities.Skiclub
             Dim CurrentRow = 4
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
             Dim Skikursgruppe As Group
@@ -55,7 +75,7 @@ Namespace DataService
                 .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
                 .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
                 .ParticipantLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-                .ParticipantMemberOfGroup = Trim(Excelsheet.UsedRange(CurrentRow, 4).Value)}
+                .ParticipantMemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
                 _skischule.Participantlist.Add(Teilnehmer)
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
@@ -72,6 +92,26 @@ Namespace DataService
             Return _skischule
         End Function
 
+        Private Function ReadImportExcelfileParticipants(Excelsheet As Excel.Worksheet) As Entities.ParticipantCollection
+            Dim CurrentRow = 2
+            Dim RowCount = Excelsheet.UsedRange.Rows.Count
+
+
+            Dim _Participantlist = New ParticipantCollection
+
+            Do Until CurrentRow > RowCount
+
+                Dim Teilnehmer As New Participant With {
+                .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value)}
+                _Participantlist.Add(Teilnehmer)
+
+                CurrentRow += 1
+            Loop
+            Return _Participantlist
+
+        End Function
+
         Private Function FindLevel(Benennung As String) As Level
 
             Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelName = Benennung)
@@ -83,16 +123,16 @@ Namespace DataService
             Return Level
         End Function
 
-        Private Function FindSkikursgruppe(Gruppenname As String) As Group
-            Dim Skikursgruppe = _skischule.Grouplist.FirstOrDefault(Function(s) s.GroupName = Gruppenname)
+        Private Function FindSkikursgruppe(Gruppe As Group) As Group
+            Dim Skikursgruppe = _skischule.Grouplist.FirstOrDefault(Function(s) s Is Gruppe)
             If Skikursgruppe Is Nothing Then
-                Skikursgruppe = New Group With {.GroupName = Gruppenname}
+                Skikursgruppe = New Group With {.GroupName = Gruppe.GroupName}
                 _skischule.Grouplist.Add(Skikursgruppe)
             End If
             Return Skikursgruppe
         End Function
 
-        Private Function CheckExcelFileFormat(Excelfile As Excel.Workbook) As Boolean
+        Private Function CheckExcelFileFormatSkiclub(Excelfile As Excel.Workbook) As Boolean
 
             Dim XlValid As Boolean
 
@@ -112,6 +152,31 @@ Namespace DataService
                 XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
                 'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
                 'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("C2").Value)
+
+            End If
+
+            If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Skiclubimport geeignet")
+
+            Return XlValid
+
+        End Function
+
+        Private Function CheckExcelFileFormatParticipants(Excelfile As Excel.Workbook) As Boolean
+
+            Dim XlValid As Boolean
+
+            ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
+            _xlSheet = Excelfile.ActiveSheet
+
+            If _xlSheet IsNot Nothing Then
+                XlValid = _xlSheet.UsedRange.Columns.Count = 2
+
+                ' Check column caption
+                XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
+                XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
+
+                ' Check first data row
+                XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
 
             End If
 

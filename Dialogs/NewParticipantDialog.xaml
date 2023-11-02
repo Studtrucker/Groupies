@@ -58,18 +58,30 @@
 
 
             <Label Content="Persönliches Level" Grid.Column="1" Grid.Row="3"/>
-            <TextBox Grid.Column="2" Grid.Row="3"
-                Text="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <StackPanel Grid.Column="2" Grid.Row="3">
 
+                <!--<Label Grid.Column="2" Grid.Row="3"
+                         x:Name="ParticipantLevelLabel" 
+                         Content="{Binding ParticipantLevel}"/>-->
+                <!--Text="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />-->
+            <ComboBox Grid.Column="2" Grid.Row="3"
+                      x:Name="ParticipantLevelComboBox" 
+                      DisplayMemberPath="LevelName"
+                      SelectedItem="{Binding ParticipantLevel}"/>
+            </StackPanel>
 
             <Label Content="Skikursgruppe" Grid.Column="1" Grid.Row="4"/>
-            <!--<TextBox  Grid.Column="2" Grid.Row="4"
-                Text="{Binding MemberOfGroup, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />-->
+            <StackPanel Grid.Column="2" Grid.Row="4">
+
+                <TextBox  Grid.Column="2" Grid.Row="4"/>
+                <!--Text="{Binding ParticipantMemberOfGroup, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />-->
             <ComboBox Grid.Column="2" Grid.Row="4"
-                      x:Name="MemberOfGroupComboBox" DisplayMemberPath="GroupName"
-                      ItemsSource="{Binding}"
-                      SelectedValue="{Binding ParticipantMemberOfGroup, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedValuePath="GroupName"/>
+                      x:Name="MemberOfGroupComboBox" 
+                      DisplayMemberPath="GroupName"
+                      IsSynchronizedWithCurrentItem="True"
+                      SelectedValuePath="GroupName"                     
+                      SelectedValue="{Binding ParticipantMemberOfGroup, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
         </Grid>
         
     </DockPanel>

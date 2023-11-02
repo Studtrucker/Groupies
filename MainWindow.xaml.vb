@@ -597,7 +597,7 @@ Class MainWindow
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CDS.Skiclub.Skilehrerliste.Add(dlg.Instructor)
+            CDS.Skiclub.Instructorlist.Add(dlg.Instructor)
             _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
             uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
@@ -613,11 +613,11 @@ Class MainWindow
         Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Instructor In uebungsleiterDataGrid.SelectedItems
             RemoveUebungsleiterFromSkikursgruppe(item)
-            index(i) = CDS.Skiclub.Skilehrerliste.IndexOf(item)
+            index(i) = CDS.Skiclub.Instructorlist.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(CDS.Skiclub.Skilehrerliste, index)
+        RemoveItemsAt(CDS.Skiclub.Instructorlist, index)
 
     End Sub
 
@@ -865,15 +865,15 @@ Class MainWindow
     Private Sub SetView(Schule As Entities.Skiclub)
 
         CDS.Skiclub = Schule
-        cboUebungsleiter.ItemsSource = CDS.Skiclub.Skilehrerliste
-        cboLevel.ItemsSource = CDS.Skiclub.Levellist
+        cboUebungsleiter.ItemsSource = CDS.Skiclub.Instructorlist
+        LevelCombobox.ItemsSource = CDS.Skiclub.Levellist
 
         ' Uebersicht erstellen
-        CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) wrpSkikursübersicht.Children.Add(New VisibleSkikurs With {.DataContext = x}))
+        'CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) wrpSkikursübersicht.Children.Add(New VisibleSkikurs With {.DataContext = x}))
 
         SetView(CDS.Skiclub.Participantlist)
         SetView(CDS.Skiclub.Grouplist)
-        SetView(CDS.Skiclub.Skilehrerliste)
+        SetView(CDS.Skiclub.Instructorlist)
         SetView(CDS.Skiclub.Levellist)
     End Sub
 
@@ -892,6 +892,7 @@ Class MainWindow
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemSkikurse.DataContext = _skikursListCollectionView
+
     End Sub
 
     Private Sub SetView(Skilehrer As InstructorCollection)
@@ -1028,7 +1029,7 @@ Class MainWindow
             pSkikursgruppe.Height = printFriendHeight
             pSkikursgruppe.Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe, CDS.Skiclub.Skilehrerliste)
+            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe, CDS.Skiclub.Instructorlist)
             Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 
@@ -1050,7 +1051,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To CDS.Skiclub.Grouplist.Count - 1
-            CDS.Skiclub.Grouplist(i).Groupleader = CDS.Skiclub.Skilehrerliste.Item(i)
+            CDS.Skiclub.Grouplist(i).Groupleader = CDS.Skiclub.Instructorlist.Item(i)
         Next
 
     End Sub

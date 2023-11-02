@@ -1,8 +1,11 @@
-﻿Imports System.Text
+﻿Imports System.ComponentModel
+Imports System.Text
 Imports Skischule.Entities
 
 Public Class NewGroupDialog
     Public ReadOnly Property Group() As Group
+    Private _levelListCollectionView As ICollectionView
+    Private _instructorListCollectionView As ICollectionView
 
     Public Sub New()
 
@@ -12,6 +15,12 @@ Public Class NewGroupDialog
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         _Group = New Group
         DataContext = _Group
+
+        _levelListCollectionView = New ListCollectionView(DataService.CurrentDataService.Skiclub.Levellist)
+        _instructorListCollectionView = New ListCollectionView(DataService.CurrentDataService.Skiclub.Instructorlist)
+
+        IntructorCombobox.DataContext = _instructorListCollectionView
+        GroupLevelCombobox.DataContext = _levelListCollectionView
 
     End Sub
 
@@ -35,5 +44,6 @@ Public Class NewGroupDialog
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
     End Sub
+
 
 End Class

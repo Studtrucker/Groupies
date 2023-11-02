@@ -7,6 +7,7 @@
         xmlns:uc="clr-namespace:Skischule.UserControls"
         xmlns:local="clr-namespace:Skischule"
         xmlns:convert="clr-namespace:Skischule.Converters"
+        xmlns:data="clr-namespace:Skischule"
         xmlns:en="clr-namespace:Skischule.Entities"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
@@ -104,7 +105,7 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
+            <!--<TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
@@ -119,7 +120,7 @@
                         
                     </WrapPanel>
                 </DockPanel>
-            </TabItem>
+            </TabItem>-->
 
             <TabItem Header="Skikurse" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
@@ -178,23 +179,26 @@
                                     <TextBox Text="{Binding Path=GroupPrintName, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="1"  Margin="2"/>
 
-                                    <ComboBox x:Name="cboLevel" 
-                                                  SelectedValue="{Binding Path=KurslevelID, UpdateSourceTrigger=PropertyChanged}" 
-                                                  SelectedValuePath="LevelID" DisplayMemberPath="Benennung"
-                                                  Grid.Column="1" Grid.Row="2"  Margin="2"/>
+                                    <ComboBox x:Name="LevelCombobox" 
+                                              DisplayMemberPath="GroupName" IsSynchronizedWithCurrentItem="False"
+                                              Grid.Column="1" Grid.Row="2"/>
+                                    <!--SelectedValue="{Binding Path=Grouplevel, UpdateSourceTrigger=PropertyChanged}"-->
+                                    <!--SelectedValuePath="Level"--> 
 
                                     <ComboBox x:Name="cboUebungsleiter"
-                                                  SelectedValue="{Binding Path=KursleiterID, UpdateSourceTrigger=PropertyChanged}"
-                                                  SelectedValuePath="UebungsleiterID" 
-                                                  DisplayMemberPath="PrintName" IsSynchronizedWithCurrentItem="False"
-                                                  Grid.Column="1" Grid.Row="3"  Margin="2"/>
-
+                                              SelectedValuePath="Groupleader"
+                                              SelectedValue="{Binding Path=Groupleader, UpdateSourceTrigger=PropertyChanged}"
+                                              DisplayMemberPath="PrintName" IsSynchronizedWithCurrentItem="False"
+                                              Grid.Column="1" Grid.Row="3"/>
+                                    
+                                    <!--SelectedValuePath="UebungsleiterID"-->
+                                    
                                     <TextBox Text="{Binding Path=CountOfMembers,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>   
                                     
                                     <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="5" Grid.Column="1" 
-                                              ItemsSource="{Binding Path=Mitgliederliste}" AutoGenerateColumns="False"
-                                              IsReadOnly="True" Margin="2">
+                                              ItemsSource="{Binding Path=Groupmembers}" AutoGenerateColumns="False"
+                                              IsReadOnly="True">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                                             <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
@@ -243,6 +247,8 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Kurs" Binding="{Binding GroupName}"/>
                                             <DataGridTextColumn Header="PrintName"  Binding="{Binding GroupPrintName}"/>
+                                            <DataGridTextColumn Header="Level"  Binding="{Binding Path=Grouplevel.Levelname}"/>
+                                            <DataGridTextColumn Header="Gruppenleiter"  Binding="{Binding Path=Groupleader.Name}"/>
                                             <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding CountOfMembers,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

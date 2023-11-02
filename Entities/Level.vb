@@ -4,7 +4,7 @@ Imports System.ComponentModel.DataAnnotations
 
 Namespace Entities
 
-    '<DefaultProperty("ValueName")>
+    <DefaultProperty("LevelName")>
     Public Class Level
         Inherits BaseModel
 

@@ -57,12 +57,21 @@
                    Grid.Column="1" Grid.Row="3"/>
             <!--<TextBox Text="{Binding Grouplevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      Grid.Column="2" Grid.Row="3"/>-->
-            <ComboBox Grid.Column="2" Grid.Row="3" />
+            <ComboBox x:Name="GroupLevelCombobox" Grid.Column="2" Grid.Row="3"
+                      ItemsSource="{Binding}"
+                      SelectedValue="{Binding Path=Grouplevel, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="Grouplevel" 
+                      DisplayMemberPath="GroupName" 
+                      IsSynchronizedWithCurrentItem="False"/>
             <Label Content="Skilehrer" 
                    Grid.Column="1" Grid.Row="4"/>
             <!--<TextBox Text="{Binding Groupleader, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      Grid.Column="2" Grid.Row="4"/>-->
-            <ComboBox Grid.Column="2" Grid.Row="4" />
+            <ComboBox x:Name="IntructorCombobox" Grid.Column="2" Grid.Row="4"
+                      ItemsSource="{Binding}"
+                      SelectedValue="{Binding Path=Groupleader, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="PrintName" 
+                      DisplayMemberPath="PrintName" />
 
         </Grid>
     </DockPanel>

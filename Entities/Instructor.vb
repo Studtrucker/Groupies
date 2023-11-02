@@ -16,13 +16,13 @@ Namespace Entities
         Public Property Firstname As String
 
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property Name As String
 
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Print Name ist eine Pflichtangabe")>
         Public Property PrintName As String
 
-        <DataAnnotations.FileExtensions(ErrorMessage:="Nur Dateien mit den Endungen erlaubt", ErrorMessageResourceName:="Error", ErrorMessageResourceType:=GetType(String), Extensions:="jpg,png")>
         Public Property Picture As Byte()
 
 

@@ -13,10 +13,11 @@ Namespace Entities
 
         Public Property GroupID As Guid
 
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Gruppenname ist ein Pflichtfeld")>
         Public Property GroupName As String
 
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Gruppenname ist ein Pflichtfeld")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Printname ist ein Pflichtfeld")>
         Public Property GroupPrintName As String
 
 

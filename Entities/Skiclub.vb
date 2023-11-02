@@ -11,7 +11,7 @@ Namespace Entities
         Public Property Participantlist() As ParticipantCollection
         Public Property Grouplist() As GroupCollection
         Public Property Levellist() As LevelCollection
-        Public Property Skilehrerliste() As InstructorCollection
+        Public Property Instructorlist() As InstructorCollection
 
 #End Region
 
@@ -20,7 +20,7 @@ Namespace Entities
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
             _Levellist = New LevelCollection
-            _Skilehrerliste = New InstructorCollection
+            _Instructorlist = New InstructorCollection
         End Sub
 
         Public Sub New(Teilnehmerliste As ParticipantCollection)

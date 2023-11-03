@@ -11,8 +11,8 @@
             
             <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>
-                <GradientStop Offset="0.6" Color="LightGray"/>
-                <GradientStop Offset="1.5" Color="DarkGray"/>
+                <GradientStop Offset="0.6" Color="White"/>
+                <GradientStop Offset="1.5" Color="White"/>
             </LinearGradientBrush>
             
             <StyleSelector x:Key="KleineGruppe">
@@ -41,10 +41,10 @@
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
-            <!--Explicit Style for TextBlocks Required Fields-->
+            <!--Explicit Style for TextBlocks Required Fields--><!--
             <Style TargetType="TextBlock" x:Key="RequiredField">
                 <Setter Property="Margin" Value="4"/>
-            </Style>
+            </Style>-->
 
             <!--Style for TextBlocks-->
             <Style TargetType="TextBlock" >
@@ -95,6 +95,17 @@
                 <Setter Property="Margin" Value="10"/>
             </Style>
             
+
+            <!-- Style für das DataGrid -->
+            <Style x:Key="friendDataGridStyle" TargetType="{x:Type DataGrid}">
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="RowBackground" Value="AliceBlue"/>
+                <Setter Property="AlternatingRowBackground" Value="LightSteelBlue"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -2,6 +2,7 @@
 Imports System.Windows.Forms
 Imports Skischule.Entities
 Imports System.ComponentModel
+Imports DS = Skischule.DataService
 
 
 Public Class NewParticipantDialog
@@ -18,8 +19,8 @@ Public Class NewParticipantDialog
         _Teilnehmer = New Participant
         DataContext = _Teilnehmer
 
-        _levelListCollectionView = New CollectionView(DataService.Skiclub.Levellist)
-        _instructorListCollectionView = New CollectionView(DataService.Skiclub.Grouplist)
+        _levelListCollectionView = New CollectionView(DS.Skiclub.Levellist)
+        _instructorListCollectionView = New CollectionView(DS.Skiclub.Grouplist)
 
         ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
         MemberOfGroupComboBox.ItemsSource = _instructorListCollectionView

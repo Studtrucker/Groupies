@@ -167,37 +167,30 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Print Gruppenname" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="1" Content="Gruppenname" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="2" Content="Gruppenlevel" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Print Benennung" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="2" Content="Level" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="3" Content="Skilehrer" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="4" Content="Anzahl Miglieder" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="5" Content="Migliederliste" Margin="2"/>
-                                    <TextBox Text="{Binding Path=GroupPrintName, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="0"  />   
-                                    <TextBox Text="{Binding Path=GroupName, UpdateSourceTrigger=PropertyChanged}" 
+                                    <TextBox Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="1" />
-
-
                                     <ComboBox Grid.Column="1" Grid.Row="2"
                                               x:Name="GroupLevelCombobox" 
-                                              DisplayMemberPath="LevelName"
-                                              SelectedItem="{Binding Path=Grouplevel, UpdateSourceTrigger=PropertyChanged}"/>
-
+                                              DisplayMemberPath="LevelNaming"
+                                              SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ComboBox x:Name="GroupLeaderCombobox" Grid.Column="1" Grid.Row="3"
-                                              DisplayMemberPath="Fullname"
-                                              SelectedItem="{Binding Path=Groupleader, UpdateSourceTrigger=PropertyChanged}"/>
-                                    
-                                  
+                                              DisplayMemberPath="InstructorFullName"
+                                              SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBox Text="{Binding Path=CountOfMembers,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                             IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>   
-                                    
+                                             IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>                                      
                                     <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="5" Grid.Column="1" 
-                                              ItemsSource="{Binding Path=Groupmembers}" AutoGenerateColumns="False"
+                                              ItemsSource="{Binding Path=GroupMembers}" AutoGenerateColumns="False"
                                               IsReadOnly="True">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
-                                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
@@ -217,8 +210,6 @@
 
                             <Border x:Name="borderSkigruppenliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                                 <DockPanel>
-
-
                                     <Grid x:Name="skikursgruppenGrid"  DockPanel.Dock="Top">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -241,10 +232,10 @@
                                               RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Print Name"  Binding="{Binding GroupPrintName}"/>
-                                            <DataGridTextColumn Header="Name" Binding="{Binding GroupName}"/>
-                                            <DataGridTextColumn Header="Level"  Binding="{Binding Grouplevel.LevelName}"/>
-                                            <DataGridTextColumn Header="Skilehrer"  Binding="{Binding Groupleader.Fullname}"/>
+                                            <DataGridTextColumn Header="Print Benennung"  Binding="{Binding GroupPrintNaming}"/>
+                                            <DataGridTextColumn Header="Benennung" Binding="{Binding GroupNaming}"/>
+                                            <DataGridTextColumn Header="Level"  Binding="{Binding GroupLevel.LevelNaming}"/>
+                                            <DataGridTextColumn Header="Skilehrer"  Binding="{Binding GroupLeader.InstructorFullName}"/>
                                             <DataGridTextColumn Header="Anzahl Mitglieder" Width="*" Binding="{Binding CountOfMembers,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -316,17 +307,17 @@
 
                                     <!-- Binding an den Datacontext des Windows -->
                                     <TextBox  Grid.Column="1" Grid.Row="0" 
-                                              Text="{Binding Path=ParticipantFirstname, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                              Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <TextBox  Grid.Column="1" Grid.Row="1" 
-                                              Text="{Binding Path=ParticipantName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                              Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <ComboBox Grid.Column="1" Grid.Row="2"
                                               x:Name="ParticipantLevelCombobox"
-                                              DisplayMemberPath="LevelName"
+                                              DisplayMemberPath="LevelNaming"
                                               SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ComboBox Grid.Column="1" Grid.Row="3" 
                                               x:Name="ParticipantMemberOfGroupCombobox" 
-                                              DisplayMemberPath="GroupName"
-                                              SelectedItem="{Binding ParticipantMemberOfGroup, UpdateSourceTrigger=PropertyChanged}"/>
+                                              DisplayMemberPath="GroupNaming"
+                                              SelectedItem="{Binding MemberOfGroup, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -362,10 +353,10 @@
                                    RowStyle="{StaticResource friendDataGridRowStyle}"  >
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstname}"/>
-                                            <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantName}"/>
-                                            <DataGridTextColumn Header="Persönliches Level" Binding="{Binding ParticipantLevel.LevelName}"/>
-                                            <DataGridTextColumn Header="Gruppe" Width="*" Binding="{Binding ParticipantMemberOfGroup.GroupName}"/>
+                                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                                            <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantLastName}"/>
+                                            <DataGridTextColumn Header="Persönliches Level" Binding="{Binding ParticipantLevel.LevelNaming}"/>
+                                            <DataGridTextColumn Header="Gruppe" Width="*" Binding="{Binding MemberOfGroup.GroupNaming}"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>
@@ -426,11 +417,11 @@
                                     <Label Grid.Column="0" Grid.Row="0" Content="Print Name" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Vorname" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Name" Margin="2"/>
-                                    <TextBox Text="{Binding PrintName, UpdateSourceTrigger=PropertyChanged}" 
+                                    <TextBox Text="{Binding InstructorPrintName, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
-                                    <TextBox Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding InstructorFirstName, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="1"  Margin="2"/>
-                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="2"  Margin="2"/>
 
                                     <Border Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1" Margin="2" 
@@ -443,7 +434,7 @@
                                                        Visibility="{Binding HasPicture, Converter={StaticResource BooleanToVisibilityInverted}}">
                                                 Neues Bild hierhin ziehen
                                             </TextBlock>
-                                            <Image Source="{Binding Picture, UpdateSourceTrigger=PropertyChanged}"
+                                            <Image Source="{Binding InstructorPicture, UpdateSourceTrigger=PropertyChanged}"
                                                    Margin="2" Width="200" Height="260"/>
                                         </Grid>
                                     </Border>
@@ -487,9 +478,9 @@
                                         HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Print Name" Binding="{Binding PrintName}"/>
-                                            <DataGridTextColumn Header="Vorname"  Binding="{Binding Firstname}"/>
-                                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
+                                            <DataGridTextColumn Header="Print Name" Binding="{Binding InstructorPrintName}"/>
+                                            <DataGridTextColumn Header="Vorname"  Binding="{Binding InstructorFirstName}"/>
+                                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding InstructorLastName}" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>
@@ -544,7 +535,7 @@
                                     </Grid.RowDefinitions>
                                     <Label Grid.Column="0" Grid.Row="0" Content="Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Beschreibung" Margin="2"/>
-                                    <TextBox Text="{Binding LevelName, UpdateSourceTrigger=PropertyChanged}" 
+                                    <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding LevelDescription, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="1"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
@@ -588,7 +579,7 @@
                                         HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Benennung" Binding="{Binding LevelName}"/>
+                                            <DataGridTextColumn Header="Benennung" Binding="{Binding LevelNaming}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>

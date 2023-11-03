@@ -41,10 +41,10 @@
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
-            <!--Explicit Style for TextBlocks Required Fields--><!--
+            <!--Explicit Style for TextBlocks Required Fields-->
             <Style TargetType="TextBlock" x:Key="RequiredField">
                 <Setter Property="Margin" Value="4"/>
-            </Style>-->
+            </Style>
 
             <!--Style for TextBlocks-->
             <Style TargetType="TextBlock" >

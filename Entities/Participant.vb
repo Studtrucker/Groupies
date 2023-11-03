@@ -15,20 +15,20 @@ Namespace Entities
 
         Public Property ParticipantID As Guid
 
-        Public Property ParticipantName As String
+        Public Property ParticipantLastName As String
 
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
-        Public Property ParticipantFirstname As String
+        Public Property ParticipantFirstName As String
 
         Public ReadOnly Property ParticipantFullName As String
             Get
-                If _ParticipantFirstname Is Nothing Then
-                    Return _ParticipantName
-                ElseIf _ParticipantName Is Nothing Then
-                    Return _ParticipantFirstname
+                If _ParticipantFirstName Is Nothing Then
+                    Return _ParticipantLastName
+                ElseIf _ParticipantLastName Is Nothing Then
+                    Return _ParticipantFirstName
                 Else
-                    Return String.Format("{0} {1}", _ParticipantFirstname, _ParticipantName)
+                    Return String.Format("{0} {1}", _ParticipantFirstName, _ParticipantLastName)
                 End If
             End Get
         End Property
@@ -36,7 +36,7 @@ Namespace Entities
 
         Public Property ParticipantLevel As Level
 
-        Public Property ParticipantMemberOfGroup As Group
+        Public Property MemberOfGroup As Group
 
     End Class
 End Namespace

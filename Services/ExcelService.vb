@@ -70,11 +70,11 @@ Namespace ExcelService
 
             Dim CurrentRow = 1 + CountOfGroups
 
-            dic.Item(Levels.Where(Function(x) x.LevelName = "Anfänger").Single) = CInt(Trim(wb.ActiveSheet.Range("B" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelName = "Genießer").Single) = CInt(Trim(wb.ActiveSheet.Range("D" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelName = "Könner").Single) = CInt(Trim(wb.ActiveSheet.Range("E" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelName = "Experten").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Anfänger").Single) = CInt(Trim(wb.ActiveSheet.Range("B" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Fortgeschrittene").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Genießer").Single) = CInt(Trim(wb.ActiveSheet.Range("D" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Könner").Single) = CInt(Trim(wb.ActiveSheet.Range("E" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Experten").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
 
             Return dic
 
@@ -90,11 +90,11 @@ Namespace ExcelService
 
         Private Function StandardDistribution() As Dictionary(Of Level, Integer)
 
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Anfänger").Single) = 2
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Fortgeschrittene").Single) = 4
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Genießer").Single) = 5
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Könner").Single) = 3
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelName = "Experten").Single) = 1
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Anfänger").Single) = 2
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Fortgeschrittene").Single) = 4
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Genießer").Single) = 5
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Könner").Single) = 3
+            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Experten").Single) = 1
 
             Return dic
 

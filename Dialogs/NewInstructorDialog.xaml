@@ -54,12 +54,12 @@
                 <Grid>
                     <Rectangle Fill="{StaticResource DefaultImageBrush}"/>
                     <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
-                           Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}"/>
+                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                     <TextBlock TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"  
-                               Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
+                               Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop setzen
                     </TextBlock>
-                    <Image Width="80" Height="120" Source="{Binding Picture}" />
+                    <Image Width="80" Height="120" Source="{Binding InstructorPicture}" />
                 </Grid>
             </Border>
 
@@ -70,13 +70,17 @@
                 </TextBlock>
             </Label>
             <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1"
-                Text="{Binding PrintName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            <Label Content="Vorname" Grid.Column="2" Grid.Row="2"/>
+                Text="{Binding InstructorPrintName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <Label Grid.Column="2" Grid.Row="2">
+                <TextBlock Style="{StaticResource RequiredField}">Vorname
+                    <Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
             <TextBox Grid.Column="3" Grid.Row="2"
-                Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                Text="{Binding InstructorFirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
             <TextBox Grid.Column="3" Grid.Row="3"
-                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         </Grid>
 
     </DockPanel>

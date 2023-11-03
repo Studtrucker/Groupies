@@ -9,7 +9,7 @@ Namespace Entities
         Inherits ObservableCollection(Of Instructor)
 
         Public Function GetPrintName(Instructor As Instructor) As String
-            Return First(Function(x) x.InstructorID = Instructor.InstructorID).PrintName
+            Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPrintName
         End Function
 
         Public Function GetHatFoto(Instructor As Instructor) As Boolean
@@ -17,7 +17,7 @@ Namespace Entities
         End Function
 
         Public Function GetFoto(Instructor As Instructor) As Byte()
-            Return First(Function(x) x.InstructorID = Instructor.InstructorID).Picture
+            Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPicture
         End Function
 
     End Class

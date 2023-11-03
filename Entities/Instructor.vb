@@ -13,25 +13,25 @@ Namespace Entities
         Public Property InstructorID As Guid
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
-        Public Property Firstname As String
+        Public Property InstructorFirstName As String
 
-        Public Property Name As String
+        Public Property InstructorLastName As String
 
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Print Name ist eine Pflichtangabe")>
-        Public Property PrintName As String
+        Public Property InstructorPrintName As String
 
-        Public Property Picture As Byte()
+        Public Property InstructorPicture As Byte()
 
 
-        Public ReadOnly Property Fullname As String
+        Public ReadOnly Property InstructorFullName As String
             Get
-                If _Firstname Is Nothing Then
-                    Return _Name
-                ElseIf _Name Is Nothing Then
-                    Return _Firstname
+                If _InstructorFirstName Is Nothing Then
+                    Return _InstructorLastName
+                ElseIf _InstructorLastName Is Nothing Then
+                    Return _InstructorFirstName
                 Else
-                    Return String.Format("{0} {1}", _Firstname, _Name)
+                    Return String.Format("{0} {1}", _InstructorFirstName, _InstructorLastName)
                 End If
             End Get
         End Property
@@ -39,7 +39,7 @@ Namespace Entities
 
         Public ReadOnly Property HasPicture As Boolean
             Get
-                Return _Picture IsNot Nothing AndAlso Picture.Length > 0
+                Return _InstructorPicture IsNot Nothing AndAlso InstructorPicture.Length > 0
             End Get
         End Property
 

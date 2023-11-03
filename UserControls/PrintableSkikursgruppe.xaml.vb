@@ -16,36 +16,36 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromSkikursgruppe(Skikurs As Group, Skilehrer As InstructorCollection)
-            Skigruppenname = Skikurs.GroupPrintName
-            Mitglieder = Skikurs.Groupmembers
+        Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection)
+            GroupPrintName = Group.GroupPrintNaming
+            Members = Group.GroupMembers
 
-            If Not Skikurs.Groupleader Is Nothing Then
-                Skilehrername = Skilehrer.GetPrintName(Skikurs.Groupleader)
-                If Skilehrer.GetHatFoto(Skikurs.Groupleader) Then
+            If Not Group.GroupLeader Is Nothing Then
+                GroupLeaderPrintName = InstructorList.GetPrintName(Group.GroupLeader)
+                If InstructorList.GetHatFoto(Group.GroupLeader) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(Skilehrer.GetFoto(Skikurs.Groupleader))
+                    bi.StreamSource = New MemoryStream(InstructorList.GetFoto(Group.GroupLeader))
                     bi.EndInit()
-                    Skilehrerfoto = bi
+                    GroupLeaderPicture = bi
                 Else
                     ' Todo: Ersatzfoto festlegen
-                    Skilehrerfoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
+                    GroupLeaderPicture = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
                 End If
             End If
 
-            If Skikurs.Groupmembers.Count <= 3 Then
+            If Group.GroupMembers.Count <= 3 Then
                 DataContext = "VielZuKlein"
-            ElseIf Skikurs.Groupmembers.Count <= 6 Then
+            ElseIf Group.GroupMembers.Count <= 6 Then
                 DataContext = "ZuKlein"
-            ElseIf Skikurs.Groupmembers.Count < 12 Then
+            ElseIf Group.GroupMembers.Count < 12 Then
                 DataContext = "ZuGross"
             End If
 
 
         End Sub
 
-        Public Property Skigruppenname As String
+        Public Property GroupPrintName As String
             Get
                 Return txtSkigruppenname.Text
             End Get
@@ -54,7 +54,7 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Skilehrername As String
+        Public Property GroupLeaderPrintName As String
             Get
                 Return txtSkilehrername.Text
             End Get
@@ -63,7 +63,7 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Skilehrerfoto As ImageSource
+        Public Property GroupLeaderPicture As ImageSource
             Get
                 Return imgSkilehrerfoto.Source
             End Get
@@ -72,7 +72,7 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Mitglieder As ParticipantCollection
+        Public Property Members As ParticipantCollection
             Get
                 Return lstMitglieder.ItemsSource
             End Get

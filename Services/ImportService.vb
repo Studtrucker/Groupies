@@ -72,15 +72,15 @@ Namespace DataService
             Do Until CurrentRow > RowCount
 
                 Dim Teilnehmer As New Participant With {
-                .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                .ParticipantFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .ParticipantLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
                 .ParticipantLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-                .ParticipantMemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
+                .MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
                 _skischule.Participantlist.Add(Teilnehmer)
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
-                If Teilnehmer.ParticipantMemberOfGroup IsNot Nothing Then
-                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.ParticipantMemberOfGroup)
+                If Teilnehmer.MemberOfGroup IsNot Nothing Then
+                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.MemberOfGroup)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.AddMember(Teilnehmer)
@@ -102,8 +102,8 @@ Namespace DataService
             Do Until CurrentRow > RowCount
 
                 Dim Teilnehmer As New Participant With {
-                .ParticipantFirstname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .ParticipantName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value)}
+                .ParticipantFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .ParticipantLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value)}
                 _Participantlist.Add(Teilnehmer)
 
                 CurrentRow += 1
@@ -114,9 +114,9 @@ Namespace DataService
 
         Private Function FindLevel(Benennung As String) As Level
 
-            Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelName = Benennung)
+            Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelNaming = Benennung)
             If Level Is Nothing Then
-                Level = New Level With {.LevelName = Benennung}
+                Level = New Level With {.LevelNaming = Benennung}
                 _skischule.Levellist.Add(Level)
             End If
 
@@ -126,7 +126,7 @@ Namespace DataService
         Private Function FindSkikursgruppe(Gruppe As Group) As Group
             Dim Skikursgruppe = _skischule.Grouplist.FirstOrDefault(Function(s) s Is Gruppe)
             If Skikursgruppe Is Nothing Then
-                Skikursgruppe = New Group With {.GroupName = Gruppe.GroupName}
+                Skikursgruppe = New Group With {.GroupNaming = Gruppe.GroupNaming}
                 _skischule.Grouplist.Add(Skikursgruppe)
             End If
             Return Skikursgruppe

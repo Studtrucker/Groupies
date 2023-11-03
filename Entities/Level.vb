@@ -15,7 +15,7 @@ Namespace Entities
         Public Property LevelID As Guid
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
-        Public Property LevelName As String
+        Public Property LevelNaming As String
 
         Public Property LevelDescription As String
 

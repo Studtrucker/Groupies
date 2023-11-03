@@ -439,7 +439,7 @@ Class MainWindow
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Instructor).Picture = buffer
+                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Instructor).InstructorPicture = buffer
                     RefreshTaskBarItemOverlay()
                     CommandManager.InvalidateRequerySuggested()
                     validPictureFile = True
@@ -681,15 +681,15 @@ Class MainWindow
     End Sub
 
     Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Level)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Grouplevel = Level)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.GroupLevel = Level)
     End Sub
 
     Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Group, Uebungsleiter As Instructor)
-        Skikursgruppe.Groupleader = Uebungsleiter
+        Skikursgruppe.GroupLeader = Uebungsleiter
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As Group)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Skikursgruppe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe)
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
@@ -698,18 +698,18 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.Grouplevel Is level)
-        liste.ToList.ForEach(Sub(x) x.Grouplevel = Nothing)
+        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLevel Is level)
+        liste.ToList.ForEach(Sub(x) x.GroupLevel = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Instructor)
-        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.Groupleader Is Uebungsleiter)
-        liste.ToList.ForEach(Sub(x) x.Groupleader = Nothing)
+        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLeader Is Uebungsleiter)
+        liste.ToList.ForEach(Sub(x) x.GroupLeader = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Group)
-        Dim liste = DS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantMemberOfGroup Is Skikursgruppe)
-        liste.ToList.ForEach(Sub(x) x.ParticipantMemberOfGroup = Nothing)
+        Dim liste = DS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup Is Skikursgruppe)
+        liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
     End Sub
 
     Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())
@@ -1066,7 +1066,7 @@ Class MainWindow
             pSkikursgruppe.Height = printFriendHeight
             pSkikursgruppe.Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromSkikursgruppe(skikursgruppe, DS.Skiclub.Instructorlist)
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, DS.Skiclub.Instructorlist)
             Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 
@@ -1088,7 +1088,7 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To DS.Skiclub.Grouplist.Count - 1
-            DS.Skiclub.Grouplist(i).Groupleader = DS.Skiclub.Instructorlist.Item(i)
+            DS.Skiclub.Grouplist(i).GroupLeader = DS.Skiclub.Instructorlist.Item(i)
         Next
 
     End Sub

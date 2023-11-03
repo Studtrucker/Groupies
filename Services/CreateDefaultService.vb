@@ -15,27 +15,27 @@ Namespace DataService
         Public Function CreateLevels() As LevelCollection
 
             Dim Anfaenger = New Level With {
-                .LevelName = "Anfänger",
+                .LevelNaming = "Anfänger",
                 .LevelID = Guid.NewGuid,
                 .LevelDescription = DescriptionAnfaenger()}
 
             Dim Fortgeschrittener = New Level With {
-                .LevelName = "Fortgeschrittene",
+                .LevelNaming = "Fortgeschrittene",
                 .LevelDescription = DescriptionFortgeschritten(),
                 .LevelID = Guid.NewGuid}
 
             Dim Geniesser = New Level With {
-                .LevelName = "Genießer",
+                .LevelNaming = "Genießer",
                 .LevelDescription = DescriptionGeniesser(),
                 .LevelID = Guid.NewGuid}
 
             Dim Koenner = New Level With {
-                .LevelName = "Könner",
+                .LevelNaming = "Könner",
                 .LevelDescription = DescriptionKoenner(),
                 .LevelID = Guid.NewGuid}
 
             Dim Experte = New Level With {
-                .LevelName = "Experten",
+                .LevelNaming = "Experten",
                 .LevelDescription = DescriptionExperte(),
                 .LevelID = Guid.NewGuid}
 
@@ -57,9 +57,9 @@ Namespace DataService
             For Each item In dic
                 For i = 0 To item.Value - 1
                     groupCol.Add(New Group With {
-                        .GroupName = String.Format("{0}{1}", item.Key.LevelName, i + 1),
-                        .GroupPrintName = GroupPrintNames.Item(IndexGruppenName),
-                        .Grouplevel = item.Key})
+                        .GroupNaming = String.Format("{0}{1}", item.Key.LevelNaming, i + 1),
+                        .GroupPrintNaming = GroupPrintNames.Item(IndexGruppenName),
+                        .GroupLevel = item.Key})
                     IndexGruppenName += 1
                 Next
             Next

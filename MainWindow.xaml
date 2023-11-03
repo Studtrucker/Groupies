@@ -252,8 +252,8 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Kurs" Binding="{Binding GroupName}"/>
                                             <DataGridTextColumn Header="PrintName"  Binding="{Binding GroupPrintName}"/>
-                                            <DataGridTextColumn Header="Level"  Binding="{Binding Path=Grouplevel.Levelname}"/>
-                                            <DataGridTextColumn Header="Gruppenleiter"  Binding="{Binding Path=Groupleader.Name}"/>
+                                            <DataGridTextColumn Header="Level"  Binding="{Binding Grouplevel.Levelname}"/>
+                                            <DataGridTextColumn Header="Gruppenleiter"  Binding="{Binding Groupleader.Fullname}"/>
                                             <DataGridTextColumn Header="Mitglieder" Width="*" Binding="{Binding CountOfMembers,Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>

@@ -379,7 +379,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DataService.Skiclub.Participantlist IsNot Nothing
+        e.CanExecute = DataService.Skiclub IsNot Nothing AndAlso DataService.Skiclub.Participantlist IsNot Nothing
     End Sub
 
     Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)

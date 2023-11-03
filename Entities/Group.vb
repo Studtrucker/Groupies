@@ -3,12 +3,14 @@ Imports System.ComponentModel
 Imports PropertyChanged
 
 Namespace Entities
+
+    <DefaultProperty("GroupName")>
     Public Class Group
         Inherits BaseModel
 
         Public Sub New()
-            _groupID = Guid.NewGuid()
-            _groupmembers = New ParticipantCollection
+            _GroupID = Guid.NewGuid()
+            _Groupmembers = New ParticipantCollection
         End Sub
 
         Public Property GroupID As Guid
@@ -30,19 +32,19 @@ Namespace Entities
         Public Property Groupmembers As ParticipantCollection
 
         Public Sub AddMember(Teilnehmer As Participant)
-            _groupmembers.Add(Teilnehmer)
+            _Groupmembers.Add(Teilnehmer)
         End Sub
 
         Public Sub AddMembers(Teilnehmerliste As ParticipantCollection)
-            Teilnehmerliste.ToList.ForEach(Sub(x) _groupmembers.Add(x))
+            Teilnehmerliste.ToList.ForEach(Sub(x) _Groupmembers.Add(x))
         End Sub
 
         Public Sub RemoveMember(Teilnehmer As Participant)
-            _groupmembers.Remove(Teilnehmer)
+            _Groupmembers.Remove(Teilnehmer)
         End Sub
 
         Public Sub RemoveMembers(Teilnehmerliste As ParticipantCollection)
-            _groupmembers.ToList.ForEach(Sub(x) _groupmembers.Remove(x))
+            _Groupmembers.ToList.ForEach(Sub(x) _Groupmembers.Remove(x))
         End Sub
 
         Public ReadOnly Property CountOfMembers As Integer

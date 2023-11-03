@@ -12,11 +12,9 @@ Namespace Entities
 
         Public Property InstructorID As Guid
 
-
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Firstname As String
 
-
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property Name As String
 
 

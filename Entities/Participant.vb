@@ -4,6 +4,8 @@ Imports System.ComponentModel
 
 Namespace Entities
 
+    <DefaultBindingProperty("ParticipantFirstname")>
+    <DefaultProperty("ParticipantFullName")>
     Public Class Participant
         Inherits BaseModel
 

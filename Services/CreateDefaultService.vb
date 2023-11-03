@@ -57,7 +57,7 @@ Namespace DataService
             For Each item In dic
                 For i = 0 To item.Value - 1
                     groupCol.Add(New Group With {
-                        .GroupName = String.Format("{0}({1})", item.Key.LevelName, i + 1),
+                        .GroupName = String.Format("{0}{1}", item.Key.LevelName, i + 1),
                         .GroupPrintName = GroupPrintNames.Item(IndexGruppenName),
                         .Grouplevel = item.Key})
                     IndexGruppenName += 1

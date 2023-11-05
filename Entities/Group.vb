@@ -31,13 +31,8 @@ Namespace Entities
 
         Public Property GroupMembers As ParticipantCollection
 
-        Public ReadOnly Property CountOfMembers As Integer
-            Get
-                Return GroupMembers.Count
-            End Get
-        End Property
-
         Public Sub AddMember(Teilnehmer As Participant)
+            Teilnehmer.MemberOfGroup = GroupID
             _GroupMembers.Add(Teilnehmer)
         End Sub
 
@@ -52,8 +47,6 @@ Namespace Entities
         Public Sub RemoveMembers(Teilnehmerliste As ParticipantCollection)
             _GroupMembers.ToList.ForEach(Sub(x) _GroupMembers.Remove(x))
         End Sub
-
-
 
     End Class
 

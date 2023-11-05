@@ -43,7 +43,7 @@ Namespace ExcelService
                 XlValid = XlValid And _xlSheet.Range("C1").Value = "Fortgeschritten"
                 XlValid = XlValid And _xlSheet.Range("D1").Value = "Genießer"
                 XlValid = XlValid And _xlSheet.Range("E1").Value = "Könner"
-                XlValid = XlValid And _xlSheet.Range("F1").Value = "Experten"
+                XlValid = XlValid And _xlSheet.Range("F1").Value = "Experte"
 
                 ' Check first data row
                 XlValid = XlValid And _xlSheet.Range("A16").Value = 15
@@ -71,10 +71,10 @@ Namespace ExcelService
             Dim CurrentRow = 1 + CountOfGroups
 
             dic.Item(Levels.Where(Function(x) x.LevelNaming = "Anfänger").Single) = CInt(Trim(wb.ActiveSheet.Range("B" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Fortgeschrittene").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Fortgeschritten").Single) = CInt(Trim(wb.ActiveSheet.Range("C" & CurrentRow).Value))
             dic.Item(Levels.Where(Function(x) x.LevelNaming = "Genießer").Single) = CInt(Trim(wb.ActiveSheet.Range("D" & CurrentRow).Value))
             dic.Item(Levels.Where(Function(x) x.LevelNaming = "Könner").Single) = CInt(Trim(wb.ActiveSheet.Range("E" & CurrentRow).Value))
-            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Experten").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
+            dic.Item(Levels.Where(Function(x) x.LevelNaming = "Experte").Single) = CInt(Trim(wb.ActiveSheet.Range("F" & CurrentRow).Value))
 
             Return dic
 

@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
+Imports CDS = Skischule.DataService.CurrentDataService
 
 
 Namespace Entities
@@ -8,6 +9,8 @@ Namespace Entities
     <DefaultProperty("ParticipantFullName")>
     Public Class Participant
         Inherits BaseModel
+
+        Public Event ChangeGroup(Participant As Participant)
 
         Public Sub New()
             _ParticipantID = Guid.NewGuid()
@@ -36,7 +39,13 @@ Namespace Entities
 
         Public Property ParticipantLevel As Level
 
-        Public Property MemberOfGroup As Group
+        Public Property MemberOfGroup As Guid
+
+        Public ReadOnly Property MemberOfGroup_Naming() As String
+            Get
+                Return CDS.Skiclub.Grouplist.Where(Function(x) x.GroupID.Equals(MemberOfGroup)).DefaultIfEmpty(New Group With {.GroupNaming = String.Empty}).Single.GroupNaming
+            End Get
+        End Property
 
     End Class
 End Namespace

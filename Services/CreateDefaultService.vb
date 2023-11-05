@@ -20,7 +20,7 @@ Namespace DataService
                 .LevelDescription = DescriptionAnfaenger()}
 
             Dim Fortgeschrittener = New Level With {
-                .LevelNaming = "Fortgeschrittene",
+                .LevelNaming = "Fortgeschritten",
                 .LevelDescription = DescriptionFortgeschritten(),
                 .LevelID = Guid.NewGuid}
 
@@ -35,7 +35,7 @@ Namespace DataService
                 .LevelID = Guid.NewGuid}
 
             Dim Experte = New Level With {
-                .LevelNaming = "Experten",
+                .LevelNaming = "Experte",
                 .LevelDescription = DescriptionExperte(),
                 .LevelID = Guid.NewGuid}
 

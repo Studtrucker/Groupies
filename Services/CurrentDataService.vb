@@ -5,13 +5,6 @@ Namespace DataService
 
         Public Property Skiclub As Skiclub
 
-        Public ReadOnly Property InstructorWithoutGroupList As InstructorCollection
-            Get
-
-                Return Skiclub.Instructorlist
-            End Get
-        End Property
-
     End Module
 
 

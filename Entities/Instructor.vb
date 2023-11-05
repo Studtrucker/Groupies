@@ -43,6 +43,8 @@ Namespace Entities
             End Get
         End Property
 
+        Public Property LeaderOfGroup As Guid
+
     End Class
 
 End Namespace

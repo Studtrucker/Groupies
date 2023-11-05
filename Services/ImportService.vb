@@ -79,12 +79,12 @@ Namespace DataService
                 _skischule.Participantlist.Add(Teilnehmer)
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
-                If Teilnehmer.MemberOfGroup IsNot Nothing Then
-                    Skikursgruppe = FindSkikursgruppe(Teilnehmer.MemberOfGroup)
+                If Not String.IsNullOrEmpty(Excelsheet.UsedRange(CurrentRow, 4).Value) Then
+                    Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.AddMember(Teilnehmer)
-                        'Skikursgruppe = Teilnehmer.PersoenlichesLevelID
+                        Teilnehmer.MemberOfGroup = Skikursgruppe.GroupID
                     End If
                 End If
                 CurrentRow += 1
@@ -123,13 +123,13 @@ Namespace DataService
             Return Level
         End Function
 
-        Private Function FindSkikursgruppe(Gruppe As Group) As Group
-            Dim Skikursgruppe = _skischule.Grouplist.FirstOrDefault(Function(s) s Is Gruppe)
-            If Skikursgruppe Is Nothing Then
-                Skikursgruppe = New Group With {.GroupNaming = Gruppe.GroupNaming}
-                _skischule.Grouplist.Add(Skikursgruppe)
+        Private Function FindSkikursgruppe(Naming As String) As Group
+            Dim Group = _skischule.Grouplist.FirstOrDefault(Function(s) s.GroupNaming = Naming)
+            If Group Is Nothing Then
+                Group = New Group With {.GroupNaming = Naming}
+                _skischule.Grouplist.Add(Group)
             End If
-            Return Skikursgruppe
+            Return Group
         End Function
 
         Private Function CheckExcelFileFormatSkiclub(Excelfile As Excel.Workbook) As Boolean

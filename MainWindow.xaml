@@ -172,6 +172,8 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Column="0" Grid.Row="0" Content="Print Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
@@ -190,8 +192,8 @@
                                     <ComboBox x:Name="GroupLeaderCombobox" Grid.Column="1" Grid.Row="3"
                                               DisplayMemberPath="InstructorFullName"
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBox Text="{Binding Path=CountOfMembers,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                             IsReadOnly="True" Grid.Column="1" Grid.Row="4"  Margin="2"/>                                      
+                                    <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
+                                             Grid.Column="1" Grid.Row="4"  Margin="2"/>                                      
                                     <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="5" Grid.Column="1" 
                                               ItemsSource="{Binding Path=GroupMembers}" AutoGenerateColumns="False"
                                               IsReadOnly="True">
@@ -199,6 +201,8 @@
                                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
+                                    <Button Content="+" Click="AddParticipant" Grid.Column="1" Grid.Row="6"/>
+                                    <Button Content="-" Click="RemoveParticipant" Grid.Column="1" Grid.Row="7"/>
                                 </Grid>
                             </Grid>
 
@@ -253,7 +257,7 @@
                                             <DataGridTextColumn Header="Benennung" Binding="{Binding GroupNaming}"/>
                                             <DataGridTextColumn Header="Level"  Binding="{Binding GroupLevel.LevelNaming}"/>
                                             <DataGridTextColumn Header="Skilehrer"  Binding="{Binding GroupLeader.InstructorFullName}"/>
-                                            <DataGridTextColumn Header="Anzahl Mitglieder" Width="*" Binding="{Binding CountOfMembers,Mode=OneWay}" />
+                                                <DataGridTextColumn Header="Anzahl Mitglieder" Width="*" Binding="{Binding GroupMembers.Count, Mode=OneWay}" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                         <DataGrid x:Name="ParticipantsToDistributeDataGrid" Grid.Row="1" ItemsSource="{Binding}"
@@ -262,8 +266,9 @@
                                               RowStyle="{StaticResource friendDataGridRowStyle}" >
                                             
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Teilnehmer"  Binding="{Binding ParticipantFullName}"/>
-                                                <DataGridTextColumn Header="Persönliches Level" Binding="{Binding ParticipantLevel}"/>
+                                                <DataGridTextColumn Header="Vorname"  Binding="{Binding ParticipantFirstName}"/>
+                                                <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantLastName}"/>
+                                                <DataGridTextColumn Header="Persönliches Level" Binding="{Binding ParticipantLevel.LevelNaming}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>
@@ -331,9 +336,7 @@
                                     <Label Grid.Column="0" Grid.Row="0" Content="Vorname" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" Margin="2" />
-                                    <Label Grid.Column="0" Grid.Row="3" Content="Gruppe"  Margin="2" />
-
-
+                                    
                                     <!-- Binding an den Datacontext des Windows -->
                                     <TextBox  Grid.Column="1" Grid.Row="0" 
                                               Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
@@ -343,10 +346,12 @@
                                               x:Name="ParticipantLevelCombobox"
                                               DisplayMemberPath="LevelNaming"
                                               SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="3" 
+                                    
+                                    <Label Grid.Column="0" Grid.Row="3" Content="Gruppe"  Margin="2" Visibility="Collapsed"/>
+                                    <ComboBox Grid.Column="1" Grid.Row="3" Visibility="Collapsed"
                                               x:Name="ParticipantMemberOfGroupCombobox" 
                                               DisplayMemberPath="GroupNaming"
-                                              SelectedItem="{Binding MemberOfGroup, UpdateSourceTrigger=PropertyChanged}"/>
+                                              SelectedItem="{Binding MemberOfGroup_Naming, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -385,7 +390,7 @@
                                             <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                                             <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantLastName}"/>
                                             <DataGridTextColumn Header="Persönliches Level" Binding="{Binding ParticipantLevel.LevelNaming}"/>
-                                            <DataGridTextColumn Header="Gruppe" Width="*" Binding="{Binding MemberOfGroup.GroupNaming}"/>
+                                            <DataGridTextColumn Header="Gruppe" Width="*" Binding="{Binding MemberOfGroup_Naming}"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>

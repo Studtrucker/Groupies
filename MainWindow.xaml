@@ -445,9 +445,10 @@
                                 <Grid Grid.Row="1" Margin="2" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="240"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
@@ -456,25 +457,29 @@
                                     <Label Grid.Column="0" Grid.Row="0" Content="Print Name" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Vorname" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Name" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="3" Content="e-Mail" Margin="2"/>
                                     <TextBox Text="{Binding InstructorPrintName, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="0" Margin="2"/>
                                     <TextBox Text="{Binding InstructorFirstName, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="1"  Margin="2"/>
                                     <TextBox Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="2"  Margin="2"/>
+                                 <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
+                                        Grid.Column="1" Grid.Row="3"  Margin="2"/>
 
-                                    <Border Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1" Margin="2" 
-                                            AllowDrop="True"   DragOver="HandleDragOver" Drop="HandleDrop">
+                                    <Border Grid.Column="1" Grid.Row="4" BorderBrush="Black" BorderThickness="1" Margin="2" 
+                                            AllowDrop="True"   DragOver="HandleDragOver" Drop="HandleDrop"
+                                            Height="360" Width="240">
                                         <Grid>
-                                            <Rectangle Fill="{StaticResource DefaultImageBrush}"/>
+                                            <Rectangle Fill="Transparent"/>
                                             <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
                                                    Visibility="{Binding HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
-                                            <TextBlock TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"  
+                                            <TextBlock TextAlignment="Center" Foreground="red" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"  
                                                        Visibility="{Binding HasPicture, Converter={StaticResource BooleanToVisibilityInverted}}">
                                                 Neues Bild hierhin ziehen
                                             </TextBlock>
                                             <Image Source="{Binding InstructorPicture, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="2" Width="200" Height="260"/>
+                                                   Margin="2" Width="240" Height="360"/>
                                         </Grid>
                                     </Border>
                                 </Grid>

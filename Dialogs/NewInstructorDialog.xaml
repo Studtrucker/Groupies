@@ -45,21 +45,23 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
-            <Border AllowDrop="True" Width="80" Height="120" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
+            <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                     VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" Drop="HandleDrop" 
                     BorderBrush="Black" BorderThickness="1">
                 <Grid>
-                    <Rectangle Fill="{StaticResource DefaultImageBrush}"/>
+                    <!--<Rectangle Fill="{StaticResource DefaultImageBrush}"/>-->
+                    <Rectangle Fill="Transparent"/>
                     <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
                            Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
-                    <TextBlock TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"  
+                    <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
                                Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop setzen
                     </TextBlock>
-                    <Image Width="80" Height="120" Source="{Binding InstructorPicture}" />
+                    <Image Width="120" Height="180" Source="{Binding InstructorPicture}" />
                 </Grid>
             </Border>
 
@@ -81,6 +83,10 @@
             <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
             <TextBox Grid.Column="3" Grid.Row="3"
                 Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
+            <TextBox Grid.Column="3" Grid.Row="4"
+                Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            
         </Grid>
 
     </DockPanel>

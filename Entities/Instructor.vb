@@ -23,6 +23,9 @@ Namespace Entities
 
         Public Property InstructorPicture As Byte()
 
+        <DataAnnotations.EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
+        Public Property eMail() As String
+
 
         Public ReadOnly Property InstructorFullName As String
             Get

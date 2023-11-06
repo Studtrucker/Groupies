@@ -35,19 +35,11 @@ Namespace Entities
 
         Public ReadOnly Property ParticipantsToDistribute As ParticipantCollection
             Get
-                Dim av = Participantlist.Where(Function(x) x.MemberOfGroup.Equals(Nothing))
                 Dim List = New ParticipantCollection
-                av.ToList.ForEach(Sub(item) List.Add(item))
+                Participantlist.Where(Function(x) x.MemberOfGroup.Equals(Nothing)).ToList.ForEach(Sub(item) List.Add(item))
                 Return List
             End Get
         End Property
-
-
-        Private Function GetParticipantsToDistribute() As ParticipantCollection
-            Dim List = Participantlist
-            List.Where(Function(x) x.MemberOfGroup.Equals(Nothing)).ToList.ForEach(Sub(y) List.Add(y))
-            Return List
-        End Function
 
         Public Function GetInstructorsWithoutGroup() As InstructorCollection
             Dim List = New InstructorCollection

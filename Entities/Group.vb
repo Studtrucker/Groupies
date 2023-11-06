@@ -32,7 +32,6 @@ Namespace Entities
         Public Property GroupMembers As ParticipantCollection
 
         Public Sub AddMember(Teilnehmer As Participant)
-            Teilnehmer.MemberOfGroup = GroupID
             _GroupMembers.Add(Teilnehmer)
         End Sub
 
@@ -41,7 +40,6 @@ Namespace Entities
         End Sub
 
         Public Sub RemoveMember(Teilnehmer As Participant)
-            Teilnehmer.MemberOfGroup = Nothing
             _GroupMembers.Remove(Teilnehmer)
         End Sub
 

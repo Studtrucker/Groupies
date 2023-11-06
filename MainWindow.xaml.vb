@@ -37,6 +37,7 @@ Class MainWindow
     Private _participantLevelListCollectionView As ICollectionView
     Private _participantMemberOfGroupListCollectionView As ICollectionView
     Private _participantsToDistributeListCollectionView As ICollectionView
+    Private _participantsInGroupMemberListCollectionView As ICollectionView
 
 
     Private _skischuleListFile As FileInfo
@@ -96,7 +97,10 @@ Class MainWindow
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
 
         _participantsToDistributeListCollectionView = New ListCollectionView(New ParticipantCollection())
+        _participantsInGroupMemberListCollectionView = New ListCollectionView(New ParticipantCollection())
 
+        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
+        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
 
     End Sub
 
@@ -935,9 +939,10 @@ Class MainWindow
 
     Private Sub SetView()
         _participantsToDistributeListCollectionView = New ListCollectionView(DS.Skiclub.ParticipantsToDistribute)
-        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
-        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
         ParticipantsToDistributeDataGrid.DataContext = _participantsToDistributeListCollectionView
+
+        _participantsInGroupMemberListCollectionView = New ListCollectionView(DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupMembers)
+        GroupMembersDataGrid.DataContext = _participantsInGroupMemberListCollectionView
     End Sub
 
     Private Sub SetView(Teilnehmers As ParticipantCollection)
@@ -1128,9 +1133,9 @@ Class MainWindow
         DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
         SetView()
     End Sub
+
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
-        Dim tn = DS.Skiclub.Participantlist.Where(Function(x) x.ParticipantFullName.Contains("Stefan Rath")).Single
-        DirectCast(skikurseDataGrid.CurrentItem, Group).RemoveMember(tn)
+        DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
         SetView()
     End Sub
 

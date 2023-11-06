@@ -199,7 +199,7 @@
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
                                              Grid.Column="1" Grid.Row="4"  Margin="2"/>                                      
-                                    <DataGrid x:Name="skikursgruppenmitgliederDataGrid" Grid.Row="5" Grid.Column="1" 
+                                    <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
                                               ItemsSource="{Binding Path=GroupMembers}" AutoGenerateColumns="False"
                                               IsReadOnly="True">
                                         <DataGrid.Columns>

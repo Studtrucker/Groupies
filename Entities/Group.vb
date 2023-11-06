@@ -41,6 +41,7 @@ Namespace Entities
         End Sub
 
         Public Sub RemoveMember(Teilnehmer As Participant)
+            Teilnehmer.MemberOfGroup = Nothing
             _GroupMembers.Remove(Teilnehmer)
         End Sub
 

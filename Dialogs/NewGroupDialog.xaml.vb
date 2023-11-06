@@ -4,8 +4,8 @@ Imports Skischule.Entities
 
 Public Class NewGroupDialog
     Public ReadOnly Property Group() As Group
-    Private _levelListCollectionView As ICollectionView
-    Private _instructorListCollectionView As ICollectionView
+    Private ReadOnly _levelListCollectionView As ICollectionView
+    Private ReadOnly _instructorListCollectionView As ICollectionView
 
     Public Sub New()
 

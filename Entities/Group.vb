@@ -45,7 +45,7 @@ Namespace Entities
         End Sub
 
         Public Sub RemoveMembers(Teilnehmerliste As ParticipantCollection)
-            _GroupMembers.ToList.ForEach(Sub(x) _GroupMembers.Remove(x))
+            Teilnehmerliste.ToList.ForEach(Sub(x) _GroupMembers.Remove(x))
         End Sub
 
     End Class

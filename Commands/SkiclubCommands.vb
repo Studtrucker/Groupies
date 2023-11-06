@@ -4,6 +4,7 @@
 Public Module SkiclubCommands
     Private ReadOnly _importSkiclub As RoutedUICommand
     Private ReadOnly _importParticipants As RoutedUICommand
+    Private ReadOnly _importInstructors As RoutedUICommand
     Private ReadOnly _beurteileTeilnehmerlevel As RoutedUICommand
     Private ReadOnly _neueGruppe As RoutedUICommand
     Private ReadOnly _GruppeLoeschen As RoutedUICommand
@@ -19,6 +20,7 @@ Public Module SkiclubCommands
     Sub New()
         _importSkiclub = New RoutedUICommand("Skiclub importieren", "ImportSkiclub", GetType(SkiclubCommands))
         _importParticipants = New RoutedUICommand("Teilnehmerliste importieren", "ImportParticipants", GetType(SkiclubCommands))
+        _importInstructors = New RoutedUICommand("Skilehrer importieren", "ImportInstructors", GetType(SkiclubCommands))
         _beurteileTeilnehmerlevel = New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerlevel", GetType(SkiclubCommands))
         _neueGruppe = New RoutedUICommand("Gruppen erstellen", "NeueGruppe", GetType(SkiclubCommands))
         _GruppeLoeschen = New RoutedUICommand("Gruppen löschen", "GruppeLoeschen", GetType(SkiclubCommands))
@@ -44,6 +46,11 @@ Public Module SkiclubCommands
         End Get
     End Property
 
+    Public ReadOnly Property ImportInstructors As RoutedUICommand
+        Get
+            Return _importInstructors
+        End Get
+    End Property
 
     Public ReadOnly Property BeurteileTeilnehmerlevel As RoutedUICommand
             Get

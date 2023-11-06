@@ -91,6 +91,11 @@
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neuer Skilehrer" Command="{x:Static local:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Skilehrer importieren" Command="{x:Static local:SkiclubCommands.ImportInstructors}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Skilehrer löschen" Command="{x:Static local:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neues Level" Command="{x:Static local:SkiclubCommands.NeuesLevel}"/>

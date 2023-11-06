@@ -23,10 +23,10 @@ Imports Skischule.DataService
 Class MainWindow
 
 #Region "Fields"
-    Private _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
-    Private _dummySpalteFuerLayerSkikurslisteDetails As ColumnDefinition
-    Private _dummySpalteFuerLayerUebungsleiterDetails As ColumnDefinition
-    Private _dummySpalteFuerLayerLevelDetails As ColumnDefinition
+    Private ReadOnly _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
+    Private ReadOnly _dummySpalteFuerLayerSkikurslisteDetails As ColumnDefinition
+    Private ReadOnly _dummySpalteFuerLayerUebungsleiterDetails As ColumnDefinition
+    Private ReadOnly _dummySpalteFuerLayerLevelDetails As ColumnDefinition
 
     Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
     Private _skikursListCollectionView As ICollectionView '... DataContext für das MainWindow
@@ -124,6 +124,7 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NewParticipant, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
@@ -333,8 +334,7 @@ Class MainWindow
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
-        Dim NeueSkischule = New Entities.Skiclub
-        NeueSkischule.Levellist = CreateDefaultService.CreateLevels()
+        Dim NeueSkischule = New Entities.Skiclub With {.Levellist = CreateDefaultService.CreateLevels()}
         Dim dlg = New CountOfGroupsDialog
         If dlg.ShowDialog Then
             NeueSkischule.Grouplist = CreateDefaultService.CreateGroups(dlg.Count.Text)
@@ -402,6 +402,21 @@ Class MainWindow
 
     End Sub
 
+    Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = DataService.Skiclub IsNot Nothing AndAlso DataService.Skiclub.Instructorlist IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportInstructors = ImportService.ImportInstructors
+        If ImportInstructors IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportInstructors.ToList.ForEach(Sub(x) DataService.Skiclub.Instructorlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
+            SetView()
+        End If
+
+    End Sub
 
     Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
@@ -447,7 +462,7 @@ Class MainWindow
                     validPictureFile = True
                 End Using
             Else
-                Dim sb As StringBuilder = New StringBuilder()
+                Dim sb = New StringBuilder()
                 sb.AppendLine("Es werden nur die folgenden Dateiformate")
                 sb.Append("unterstützt: ")
 
@@ -1057,10 +1072,10 @@ Class MainWindow
         DS.Skiclub = DS.Skiclub.GetAktualisierungen()
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView As ListCollectionView = New ListCollectionView(DS.Skiclub.Grouplist)
+        Dim sortedView = New ListCollectionView(DS.Skiclub.Grouplist)
         sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Group = Nothing
+        Dim skikursgruppe As Group
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
@@ -1070,7 +1085,7 @@ Class MainWindow
 
             If i Mod friendsPerPage = 0 Then
                 If page IsNot Nothing Then
-                    Dim content As PageContent = New PageContent()
+                    Dim content = New PageContent()
                     TryCast(content, IAddChild).AddChild(page)
                     doc.Pages.Add(content)
                 End If
@@ -1078,9 +1093,9 @@ Class MainWindow
             End If
 
             ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
-            Dim pSkikursgruppe As PrintableSkikursgruppe = New PrintableSkikursgruppe
-            pSkikursgruppe.Height = printFriendHeight
-            pSkikursgruppe.Width = printFriendWidth
+            Dim pSkikursgruppe = New PrintableSkikursgruppe With {
+                .Height = printFriendHeight,
+                .Width = printFriendWidth}
 
             pSkikursgruppe.InitPropsFromGroup(skikursgruppe, DS.Skiclub.Instructorlist)
             Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
@@ -1093,7 +1108,7 @@ Class MainWindow
 
         ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
         If page.Children.Count > 0 Then
-            Dim Content As PageContent = New PageContent()
+            Dim Content = New PageContent()
             TryCast(Content, IAddChild).AddChild(page)
             doc.Pages.Add(Content)
         End If

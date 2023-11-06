@@ -3,6 +3,7 @@ Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Skischule.Entities
+Imports System.Text
 
 Namespace DataService
 
@@ -14,7 +15,7 @@ Namespace DataService
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
-        Private _skischule As Entities.Skiclub = New Entities.Skiclub
+        Private ReadOnly _skischule = New Entities.Skiclub
 
 #End Region
 
@@ -54,6 +55,26 @@ Namespace DataService
                 Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
                 If CheckExcelFileFormatParticipants(Workbook) Then
                     Return ReadImportExcelfileParticipants(Workbook.ActiveSheet)
+                End If
+                Workbook.Close()
+            End If
+            Return Nothing
+
+        End Function
+
+        Public Function ImportInstructors() As Entities.InstructorCollection
+            Workbook = Nothing
+
+            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
+            _ofdDokument.FilterIndex = 1
+            _ofdDokument.RestoreDirectory = True
+
+            If _ofdDokument.ShowDialog = DialogResult.OK Then
+                Dim xlApp = New Excel.Application
+                Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
+                If CheckExcelFileFormatInstructors(Workbook) Then
+                    Return ReadImportExcelfileInstructors(Workbook.ActiveSheet)
                 End If
                 Workbook.Close()
             End If
@@ -103,7 +124,29 @@ Namespace DataService
 
                 Dim Teilnehmer As New Participant With {
                 .ParticipantFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .ParticipantLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value)}
+                .ParticipantLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                .ParticipantLevel = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
+                _Participantlist.Add(Teilnehmer)
+
+                CurrentRow += 1
+            Loop
+            Return _Participantlist
+
+        End Function
+
+        Private Function ReadImportExcelfileInstructors(Excelsheet As Excel.Worksheet) As Entities.InstructorCollection
+            Dim CurrentRow = 2
+            Dim RowCount = Excelsheet.UsedRange.Rows.Count
+
+
+            Dim _Participantlist = New InstructorCollection
+
+            Do Until CurrentRow > RowCount
+
+                Dim Teilnehmer As New Instructor With {
+                .InstructorFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .InstructorLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                .InstructorPrintName = Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)}
                 _Participantlist.Add(Teilnehmer)
 
                 CurrentRow += 1
@@ -156,6 +199,12 @@ Namespace DataService
             End If
 
             If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Skiclubimport geeignet")
+            Dim Text = New StringBuilder
+            Text.AppendLine("Die Datei ist nicht zum Skiclubimport geeignet")
+            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1, [Level] in C1 und [Skigruppe] in D1")
+            Text.AppendLine("Pflichtfelder sind Vorname und Nachname")
+
+            If Not XlValid Then MessageBox.Show(Text.ToString)
 
             Return XlValid
 
@@ -169,18 +218,55 @@ Namespace DataService
             _xlSheet = Excelfile.ActiveSheet
 
             If _xlSheet IsNot Nothing Then
-                XlValid = _xlSheet.UsedRange.Columns.Count = 2
+                XlValid = _xlSheet.UsedRange.Columns.Count = 3
 
                 ' Check column caption
                 XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
                 XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
+                XlValid = XlValid And _xlSheet.Range("C1").Value = "Level"
 
                 ' Check first data row
                 XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
 
             End If
 
-            If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Teilnehmerimport geeignet")
+            Dim Text = New StringBuilder
+            Text.AppendLine("Die Datei ist nicht zum Teilnehmerimport geeignet")
+            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1 und [Level] in C1")
+            Text.AppendLine("Pflichtfelder sind Vorname und Nachname")
+
+            If Not XlValid Then MessageBox.Show(Text.ToString)
+
+            Return XlValid
+
+        End Function
+
+        Private Function CheckExcelFileFormatInstructors(Excelfile As Excel.Workbook) As Boolean
+
+            Dim XlValid As Boolean
+
+            ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
+            _xlSheet = Excelfile.ActiveSheet
+
+            If _xlSheet IsNot Nothing Then
+                XlValid = _xlSheet.UsedRange.Columns.Count = 3
+
+                ' Check column caption
+                XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
+                XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
+                XlValid = XlValid And _xlSheet.Range("C1").Value = "Printname"
+
+                ' Check first data row
+                XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
+
+            End If
+
+            Dim Text = New StringBuilder
+            Text.AppendLine("Die Datei ist nicht zum Skilehrerimport geeignet")
+            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1 und [Printname] in C1")
+            Text.AppendLine("Pflichtfelder sind Vorname und Printname")
+
+            If Not XlValid Then MessageBox.Show(Text.ToString)
 
             Return XlValid
 

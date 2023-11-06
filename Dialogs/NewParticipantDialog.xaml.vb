@@ -7,8 +7,8 @@ Imports DS = Skischule.DataService
 
 Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Participant
-    Private _instructorListCollectionView As ICollectionView
-    Private _levelListCollectionView As ICollectionView
+    Private ReadOnly _instructorListCollectionView As ICollectionView
+    Private ReadOnly _levelListCollectionView As ICollectionView
 
     Public Sub New()
 

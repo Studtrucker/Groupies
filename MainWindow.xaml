@@ -81,7 +81,7 @@
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
                 <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkiclubCommands.GruppeLoeschen}"/>
-                <Separator/>     
+                <Separator/>
                 <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkiclubCommands.NewParticipant}"/>
                 <MenuItem Header="Teilnehmer importieren" Command="{x:Static local:SkiclubCommands.ImportParticipants}">
                     <MenuItem.Icon>
@@ -140,17 +140,17 @@
                         <!-- Dock="Right" - Button, um den "zu Verteilende Teilnehmer  Explorer" aufzuklappen -->
                         <!--<Button Margin="10,2,0,-2" x:Name="btnShowParticipantsToDistributeExplorer" 
                                 MouseEnter="HandleButtonExpMouseEnter">Liste Teilnehmer</Button>-->
-                        <DockPanel LastChildFill="False" Width="Auto"/>   
+                        <DockPanel LastChildFill="False" Width="Auto"/>
                         <StackPanel.LayoutTransform>
                             <RotateTransform Angle="90"/>
                         </StackPanel.LayoutTransform>
                     </StackPanel>
 
                     <Grid  IsSharedSizeScope="True" >
-                            
+
                         <Grid x:Name="layerSkikursdetails" MouseEnter="HandleLayerdetailsMouseEnter" 
                               Background="White" Margin="2">
-                            
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
@@ -187,7 +187,7 @@
                                     <Label Grid.Column="0" Grid.Row="4" Content="Anzahl Miglieder" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="5" Content="Migliederliste" Margin="2"/>
                                     <TextBox Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}"
-                                             Grid.Column="1" Grid.Row="0"  />   
+                                             Grid.Column="1" Grid.Row="0"  />
                                     <TextBox Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}" 
                                         Grid.Column="1" Grid.Row="1" />
                                     <ComboBox Grid.Column="1" Grid.Row="2"
@@ -198,7 +198,7 @@
                                               DisplayMemberPath="InstructorFullName"
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
-                                             Grid.Column="1" Grid.Row="4"  Margin="2"/>                                      
+                                             Grid.Column="1" Grid.Row="4"  Margin="2"/>
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
                                               ItemsSource="{Binding}" AutoGenerateColumns="False"
                                               IsReadOnly="True">
@@ -206,13 +206,18 @@
                                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <Button Content="+" Click="AddParticipant" Grid.Column="1" Grid.Row="6"/>
-                                    <Button Content="-" Click="RemoveParticipant" Grid.Column="1" Grid.Row="7"/>
+                                    <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Content="+" Click="AddParticipant" Width="100"/>
+                                        <Button Content="-" Click="RemoveParticipant" Width="100"/>
+                                    </StackPanel>
+                                    <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
+                                        
+                                    </Canvas>
                                 </Grid>
                             </Grid>
 
                         </Grid>
-                        
+
                         <Grid x:Name="layerSkikursliste" Visibility="Visible" Margin="2" >
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>
@@ -240,7 +245,7 @@
                                             <Image x:Name="pinSkikursImage" Source="Images\icons8-unpin-2-48.png"/>
                                         </ToggleButton>
                                     </Grid>
-                                    
+
                                     <Grid DockPanel.Dock="Bottom">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -256,20 +261,20 @@
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                               RowStyle="{StaticResource friendDataGridRowStyle}"   >
-                                        
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Print Benennung"  Binding="{Binding GroupPrintNaming}"/>
-                                            <DataGridTextColumn Header="Benennung" Binding="{Binding GroupNaming}"/>
-                                            <DataGridTextColumn Header="Level"  Binding="{Binding GroupLevel.LevelNaming}"/>
-                                            <DataGridTextColumn Header="Skilehrer"  Binding="{Binding GroupLeader.InstructorFullName}"/>
+
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Print Benennung"  Binding="{Binding GroupPrintNaming}"/>
+                                                <DataGridTextColumn Header="Benennung" Binding="{Binding GroupNaming}"/>
+                                                <DataGridTextColumn Header="Level"  Binding="{Binding GroupLevel.LevelNaming}"/>
+                                                <DataGridTextColumn Header="Skilehrer"  Binding="{Binding GroupLeader.InstructorFullName}"/>
                                                 <DataGridTextColumn Header="Anzahl Mitglieder" Width="*" Binding="{Binding GroupMembers.Count, Mode=OneWay}" />
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                         <DataGrid x:Name="ParticipantsToDistributeDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                               RowStyle="{StaticResource friendDataGridRowStyle}" >
-                                            
+                                           
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Vorname"  Binding="{Binding ParticipantFirstName}"/>
                                                 <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantLastName}"/>
@@ -279,7 +284,7 @@
                                     </Grid>
                                 </DockPanel>
                             </Border>
-                            
+
                             <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
 
                         </Grid>
@@ -341,7 +346,7 @@
                                     <Label Grid.Column="0" Grid.Row="0" Content="Vorname" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="1" Content="Name" Margin="2" />
                                     <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" Margin="2" />
-                                    
+
                                     <!-- Binding an den Datacontext des Windows -->
                                     <TextBox  Grid.Column="1" Grid.Row="0" 
                                               Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
@@ -351,7 +356,7 @@
                                               x:Name="ParticipantLevelCombobox"
                                               DisplayMemberPath="LevelNaming"
                                               SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
-                                    
+
                                     <Label Grid.Column="0" Grid.Row="3" Content="Gruppe"  Margin="2" Visibility="Collapsed"/>
                                     <ComboBox Grid.Column="1" Grid.Row="3" Visibility="Collapsed"
                                               x:Name="ParticipantMemberOfGroupCombobox" 
@@ -438,14 +443,15 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="39*"/>
+                                    <RowDefinition Height="334*"/>
                                 </Grid.RowDefinitions>
 
                                 <!-- Detailangaben -->
-                                <Grid Grid.Row="1" Margin="2" >
+                                <Grid Grid.Row="1" Margin="2" Grid.RowSpan="2" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="240"/>
+                                        <ColumnDefinition Width="244"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -464,7 +470,7 @@
                                         Grid.Column="1" Grid.Row="1"  Margin="2"/>
                                     <TextBox Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="2"  Margin="2"/>
-                                 <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="3"  Margin="2"/>
 
                                     <Border Grid.Column="1" Grid.Row="4" BorderBrush="Black" BorderThickness="1" Margin="2" 
@@ -479,7 +485,7 @@
                                                 Neues Bild hierhin ziehen
                                             </TextBlock>
                                             <Image Source="{Binding InstructorPicture, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="2" Width="240" Height="360"/>
+                                                    Width="240" Height="360"/>
                                         </Grid>
                                     </Border>
                                 </Grid>

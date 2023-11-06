@@ -1143,6 +1143,46 @@ Class MainWindow
         SetView()
     End Sub
 
+    Private Sub ParticipantsToDistributeDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles ParticipantsToDistributeDataGrid.MouseDown
+        Dim Tn = TryCast(ParticipantsToDistributeDataGrid.SelectedItem, Participant)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(Participant), Tn)
+            DragDrop.DoDragDrop(ParticipantsToDistributeDataGrid, Data, DragDropEffects.Copy)
+        End If
+
+    End Sub
+
+    Private Sub GroupMembersDataGrid_DragEnter(sender As Object, e As DragEventArgs) Handles Canvas.DragEnter
+        TryCast(e.Source, Canvas).Background = Brushes.Cyan
+    End Sub
+
+    Private Sub GroupMembersDataGrid_DragLeave(sender As Object, e As DragEventArgs) Handles Canvas.DragLeave
+        TryCast(e.Source, Canvas).Background = Brushes.LightBlue
+    End Sub
+    Private Sub GroupMembersDataGrid_DragOver(sender As Object, e As DragEventArgs) Handles Canvas.DragOver
+        If e.Data.GetDataPresent(GetType(Participant)) Then
+            e.Effects = DragDropEffects.Copy
+        Else
+            e.Effects = DragDropEffects.None
+        End If
+        e.Handled = True
+    End Sub
+    Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs) Handles Canvas.Drop
+        Dim tn As Participant = CType(e.Data.GetData(GetType(Participant)), Participant)
+        If tn IsNot Nothing Then
+            Dim canvas As Canvas = TryCast(e.Source, Canvas)
+            Dim p = e.GetPosition(canvas)
+
+            Dim c As ContentControl = New ContentControl()
+            c.Content = tn
+            Canvas.SetLeft(c, p.X)
+            Canvas.SetTop(c, p.Y)
+            canvas.Children.Add(c)
+        End If
+        TryCast(e.Source, Canvas).Background = Brushes.LightGray
+    End Sub
+
 #End Region
 
 End Class

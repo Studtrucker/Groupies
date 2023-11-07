@@ -5,7 +5,7 @@ Imports System.Windows.Markup
 Namespace UserControls
 
     <ContentProperty("Skikursgruppe")>
-    Partial Public Class PrintableSkikursgruppe
+    Public Class PrintableNoticeForInstructors
 
         Public Sub New()
 
@@ -18,6 +18,9 @@ Namespace UserControls
 
         Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection)
             GroupPrintName = Group.GroupPrintNaming
+            GroupNaming = Group.GroupNaming
+            GroupLevelNaming = Group.GroupLevel.LevelNaming
+
             Members = Group.GroupMembers
 
             If Not Group.GroupLeader Is Nothing Then
@@ -45,12 +48,30 @@ Namespace UserControls
 
         End Sub
 
-        Public Property GroupPrintName As String
+        Public Property GroupNaming As String
             Get
-                Return txtSkigruppenname.Text
+                Return GroupNamingTextBlock.Text
             End Get
             Set(value As String)
-                txtSkigruppenname.Text = value
+                GroupNamingTextBlock.Text = value
+            End Set
+        End Property
+
+        Public Property GroupLevelNaming As String
+            Get
+                Return GroupLevelNamingTextBlock.Text
+            End Get
+            Set(value As String)
+                GroupLevelNamingTextBlock.Text = value
+            End Set
+        End Property
+
+        Public Property GroupPrintName As String
+            Get
+                Return GroupPrintNameTextBlock.Text
+            End Get
+            Set(value As String)
+                GroupPrintNameTextBlock.Text = value
             End Set
         End Property
 
@@ -82,5 +103,4 @@ Namespace UserControls
         End Property
 
     End Class
-
 End Namespace

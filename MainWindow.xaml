@@ -68,10 +68,15 @@
                 </MenuItem>
                 <MenuItem Header="Skiclub speichern _unter..." Command="ApplicationCommands.SaveAs"/>
                 <Separator/>
-                <MenuItem Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
+                <MenuItem x:Name="ParticipantInfo" Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="InstructorInfo" Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print">
+                    <!--<MenuItem.Icon>
+                        <Image Height="20" Source="Images/drucken-48.png"/>
+                    </MenuItem.Icon>-->
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
@@ -208,6 +213,7 @@
                                     </DataGrid>
                                     <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button Content="+" Click="AddParticipant" Width="100"/>
+                                        <Button Content="~" Click="SetView" Width="80"/>
                                         <Button Content="-" Click="RemoveParticipant" Width="100"/>
                                     </StackPanel>
                                     <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
@@ -582,13 +588,17 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Benennung" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="1" Content="Beschreibung" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
+                                    <Label Grid.Column="0" Grid.Row="2" Content="Beschreibung" Margin="2"/>
+                                    <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
+                                        Grid.Column="1" Grid.Row="0" Margin="2" Width="50" HorizontalAlignment="Left"/>
                                     <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Column="1" Grid.Row="0" Margin="2"/>
+                                        Grid.Column="1" Grid.Row="1" Margin="2"/>
                                     <TextBox Text="{Binding LevelDescription, UpdateSourceTrigger=PropertyChanged}"
-                                        Grid.Column="1" Grid.Row="1"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
+                                        Grid.Column="1" Grid.Row="2"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
                                 </Grid>
                             </Grid>
 
@@ -629,6 +639,7 @@
                                         HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
                                             <DataGridTextColumn Header="Benennung" Binding="{Binding LevelNaming}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>

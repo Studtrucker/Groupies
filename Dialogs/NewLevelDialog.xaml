@@ -21,8 +21,8 @@
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Command="{x:Static local:SkiclubCommands.DialogOk}"/>
-                <Button Width="100" Content="Abbruch" Command="{x:Static local:SkiclubCommands.DialogCancel}"/>
+                <Button Width="100" Content="OK" Command="{x:Static local:SkiclubCommands.DialogOk}" IsDefault="True"/>
+                <Button Width="100" Content="Abbruch" Command="{x:Static local:SkiclubCommands.DialogCancel}" IsCancel="True"/>
             </StackPanel>
         </Border>
 
@@ -39,29 +39,37 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
-            <Label Grid.Column="1" Grid.Row="1">
+            
+            <Label Content="Sortierung" Grid.Column="1" Grid.Row="1"/>
+            <Label Grid.Column="1" Grid.Row="2">
                 <TextBlock Style="{StaticResource RequiredField}">Benennung
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            
-            <TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField"
-                     Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+            <Label Content="Beschreibung" Grid.Column="1" Grid.Row="3"/>
+            <Label Content="Skills" Grid.Column="1" Grid.Row="4" Visibility="Collapsed"/>
 
-            <Label Content="Beschreibung" Grid.Column="1" Grid.Row="2"/>
-            <Label Content="Skills" Grid.Column="1" Grid.Row="3"/>
-            <TextBox Grid.Column="2" Grid.Row="2"
+            <StackPanel Grid.Column="2" Grid.Row="1"  Orientation="Horizontal">
+                <TextBox x:Name="SortTextBox" Width="50" HorizontalAlignment="Left"
+                     Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                <TextBlock Text="Möglichkeit die Folge der Levels zu bestimmen" Padding="0,5" />
+            </StackPanel>
+            
+            <TextBox Grid.Column="2" Grid.Row="2" x:Name="NamingField"
+                     Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+            <TextBox Grid.Column="2" Grid.Row="3"
                      Text="{Binding LevelDescription, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-            <ListView x:Name="SkillsListView" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top"  Height="Auto"  Margin="2">
+            <ListView x:Name="SkillsListView" Grid.Column="2" Grid.Row="4" Visibility="Collapsed"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"  Height="Auto"  Margin="2">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="Beschreibung"/>
                         </GridView.Columns>
-                        
                     </GridView>
                 </ListView.View>
             </ListView>

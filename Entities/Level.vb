@@ -14,6 +14,9 @@ Namespace Entities
 
         Public Property LevelID As Guid
 
+        <StringLength(3)>
+        Public Property SortNumber As String
+
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property LevelNaming As String
 

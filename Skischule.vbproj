@@ -112,11 +112,11 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
-    <Compile Include="UserControls\PrintableSkikursgruppe.xaml.vb">
-      <DependentUpon>PrintableSkikursgruppe.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintableNoticeForInstructors.xaml.vb">
+      <DependentUpon>PrintableNoticeForInstructors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\VisibleSkikurs.xaml.vb">
-      <DependentUpon>VisibleSkikurs.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintableNoticeForParticipants.xaml.vb">
+      <DependentUpon>PrintableNoticeForParticipants.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
@@ -165,11 +165,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintableSkikursgruppe.xaml">
+    <Page Include="UserControls\PrintableNoticeForInstructors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\VisibleSkikurs.xaml">
+    <Page Include="UserControls\PrintableNoticeForParticipants.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

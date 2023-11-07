@@ -6,6 +6,7 @@ Namespace UserControls
 
     <ContentProperty("Skikursgruppe")>
     Partial Public Class PrintableNoticeForParticipants
+        Implements IPrintableNotice
 
         Public Sub New()
 
@@ -16,7 +17,7 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection)
+        Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection) Implements IPrintableNotice.InitPropsFromGroup
             GroupPrintName = Group.GroupPrintNaming
             Members = Group.GroupMembers
 

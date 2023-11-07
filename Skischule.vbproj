@@ -112,6 +112,7 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
+    <Compile Include="UserControls\IPrintableNotice.vb" />
     <Compile Include="UserControls\PrintableNoticeForInstructors.xaml.vb">
       <DependentUpon>PrintableNoticeForInstructors.xaml</DependentUpon>
     </Compile>

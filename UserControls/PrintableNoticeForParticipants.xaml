@@ -43,6 +43,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+            
         <DockPanel Grid.Row="0" Margin="5">
             <TextBlock Text="Gruppe" FontSize="24" Foreground="LightGray" DockPanel.Dock="Top"/>
             <TextBlock x:Name="txtSkigruppenname" FontSize="48" FontWeight="Bold" />
@@ -54,6 +55,7 @@
             <TextBlock Text="Skilehrer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
             <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5"/>
         </DockPanel>
+        
 
         <DockPanel Grid.Row="2" Margin="5">
                         

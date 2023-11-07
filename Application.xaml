@@ -8,6 +8,42 @@
     
     <Application.Resources>
         <ResourceDictionary>
+
+            <!--Styles for Printout-->
+            <Style TargetType="TextBlock" x:Key="BigCaption">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="Foreground" Value="LightGray"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="SmallCaption">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="LightGray"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="BigCaptionValue">
+                <Setter Property="FontSize" Value="48"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="SmallCaptionValue">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+
+            <Style TargetType="DataGrid" x:Key="PrintoutInfo">
+            
+            <!--Standard-->
+            
+            <Setter Property="FontSize" Value="36"/>
+            <Style.Triggers>
+                
+            <!--Group with more than 14 participants-->
+            
+                <DataTrigger Binding="{Binding}" Value="ZuGross">
+                    <Setter Property="FontSize" Value="24"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
             
             <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>

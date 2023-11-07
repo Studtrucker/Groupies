@@ -68,12 +68,12 @@
                 </MenuItem>
                 <MenuItem Header="Skiclub speichern _unter..." Command="ApplicationCommands.SaveAs"/>
                 <Separator/>
-                <MenuItem x:Name="ParticipantInfo" Header="Einteilungen _drucken..." Command="ApplicationCommands.Print">
+                <MenuItem  Header="Einteilungen _drucken..." Command="ApplicationCommands.Print" CommandParameter="ParticipantInfo">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="InstructorInfo" Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print">
+                <MenuItem Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo">
                     <!--<MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>-->

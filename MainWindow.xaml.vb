@@ -505,22 +505,16 @@ Class MainWindow
     Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New PrintDialog()
-        If e.OriginalSource.Name = "InstructorInfo" Then
-            If dlg.ShowDialog = True Then
-                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-                Dim pageMargin = New Thickness(30, 30, 30, 60)
-                Dim doc As FixedDocument = PrintoutInstructorInfo(printArea, pageMargin)
-                dlg.PrintDocument(doc.DocumentPaginator, "InstrucorInfo")
-            End If
+        Dim doc As FixedDocument
+        Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+        Dim pageMargin = New Thickness(30, 30, 30, 60)
+        If e.Parameter = "InstructorInfo" Then
+            doc = PrintoutInfo(Printversion.Instructor, printArea, pageMargin)
         Else
-            If dlg.ShowDialog = True Then
-                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-                Dim pageMargin = New Thickness(30, 30, 30, 60)
-                Dim doc As FixedDocument = PrintoutParticipantInfo(printArea, pageMargin)
-                dlg.PrintDocument(doc.DocumentPaginator, "Skiclub")
-            End If
+            doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
         End If
-        PrintoutInfo()
+        dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
+
     End Sub
 
     Private Sub HandleListPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -1049,7 +1043,6 @@ Class MainWindow
         Participant
     End Enum
 
-    'Todo: PrintoutParticipantInfo und PrintoutInstructorInfo in PrintoutInfo zusammenfassen
     Private Function PrintoutInfo(Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
 
         ' ein paar Variablen setzen
@@ -1092,9 +1085,9 @@ Class MainWindow
 
         ' nach AngezeigterName sortierte Liste verwenden
         Dim sortedView = New ListCollectionView(DS.Skiclub.Grouplist)
-        sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
+        sortedView.SortDescriptions.Add(New SortDescription("GroupPrintNaming", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Group
+        Dim skikursgruppe As Group = Nothing
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
@@ -1103,208 +1096,34 @@ Class MainWindow
             skikursgruppe = CType(sortedView.CurrentItem, Group)
 
             If i Mod participantsPerPage = 0 Then
+                page = New FixedPage
                 If page IsNot Nothing Then
                     Dim content = New PageContent()
                     TryCast(content, IAddChild).AddChild(page)
                     doc.Pages.Add(content)
                 End If
-                page = New FixedPage
             End If
 
 
             ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
             Dim pSkikursgruppe As IPrintableNotice
-            If Printversion = "Participant" Then
+            If Printversion = Printversion.Participant Then
                 pSkikursgruppe = New PrintableNoticeForParticipants
             Else
                 pSkikursgruppe = New PrintableNoticeForInstructors
             End If
 
-            pSkikursgruppe.Height = printFriendHeight
-            pSkikursgruppe.Width = printFriendWidth
+            DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
+            DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, DS.Skiclub.Instructorlist)
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe)
             Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 
-            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
-            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
+            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
+            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
             page.Children.Add(pSkikursgruppe)
         Next
-
-        Return doc
-
-    End Function
-
-    Private Function PrintoutParticipantInfo(pageSize As Size, pageMargin As Thickness) As FixedDocument
-
-        ' ein paar Variablen setzen
-        Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
-        Dim printFriendWidth As Double = 700 '  Höhe einer Gruppe
-
-        ' ermitteln der tatsächlich verfügbaren Seitengrösse
-        Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
-        Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
-
-        ' ermitteln der Anzahl Spalten und Zeilen
-        Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
-        Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
-
-        ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
-        If rowsPerPage = 0 Then rowsPerPage = 1
-        If columnsPerPage = 0 Then columnsPerPage = 1
-
-        Dim friendsPerPage As Integer = rowsPerPage * columnsPerPage
-
-
-        ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
-        Dim vMarginBetweenFriends As Double = 0
-        If rowsPerPage > 1 Then
-            Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
-            vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
-        End If
-
-        Dim hMarginBetweenFriends As Double = 0
-        If columnsPerPage > 1 Then
-            Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
-            hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
-        End If
-
-        ' das eigentliche Erstellen des FixDocuments starten
-        Dim doc = New FixedDocument()
-        doc.DocumentPaginator.PageSize = pageSize
-
-        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-        DS.Skiclub = DS.Skiclub.GetAktualisierungen()
-
-        ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView = New ListCollectionView(DS.Skiclub.Grouplist)
-        sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
-
-        Dim skikursgruppe As Group
-        Dim page As FixedPage = Nothing
-
-        ' durch die Gruppen loopen und Seiten generieren
-        For i As Integer = 0 To sortedView.Count - 1
-            sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedView.CurrentItem, Group)
-
-            If i Mod friendsPerPage = 0 Then
-                If page IsNot Nothing Then
-                    Dim content = New PageContent()
-                    TryCast(content, IAddChild).AddChild(page)
-                    doc.Pages.Add(content)
-                End If
-                page = New FixedPage
-            End If
-
-            ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
-            Dim pSkikursgruppe = New PrintableNoticeForParticipants With {
-                .Height = printFriendHeight,
-                .Width = printFriendWidth}
-
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, DS.Skiclub.Instructorlist)
-            Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
-            Dim currentColumn As Integer = i Mod columnsPerPage
-
-            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
-            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
-            page.Children.Add(pSkikursgruppe)
-        Next
-
-        ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
-        If page.Children.Count > 0 Then
-            Dim Content = New PageContent()
-            TryCast(Content, IAddChild).AddChild(page)
-            doc.Pages.Add(Content)
-        End If
-
-        Return doc
-
-    End Function
-
-    Private Function PrintoutInstructorInfo(pageSize As Size, pageMargin As Thickness) As FixedDocument
-
-        ' ein paar Variablen setzen
-        Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
-        Dim printFriendWidth As Double = 700 '  Höhe einer Gruppe
-
-        ' ermitteln der tatsächlich verfügbaren Seitengrösse
-        Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
-        Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
-
-        ' ermitteln der Anzahl Spalten und Zeilen
-        Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
-        Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
-
-        ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
-        If rowsPerPage = 0 Then rowsPerPage = 1
-        If columnsPerPage = 0 Then columnsPerPage = 1
-
-        Dim friendsPerPage As Integer = rowsPerPage * columnsPerPage
-
-
-        ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
-        Dim vMarginBetweenFriends As Double = 0
-        If rowsPerPage > 1 Then
-            Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
-            vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
-        End If
-
-        Dim hMarginBetweenFriends As Double = 0
-        If columnsPerPage > 1 Then
-            Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
-            hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
-        End If
-
-        ' das eigentliche Erstellen des FixDocuments starten
-        Dim doc = New FixedDocument()
-        doc.DocumentPaginator.PageSize = pageSize
-
-        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-        DS.Skiclub = DS.Skiclub.GetAktualisierungen()
-
-        ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView = New ListCollectionView(DS.Skiclub.Grouplist)
-        sortedView.SortDescriptions.Add(New SortDescription("AngezeigterName", ListSortDirection.Ascending))
-
-        Dim skikursgruppe As Group
-        Dim page As FixedPage = Nothing
-
-        ' durch die Gruppen loopen und Seiten generieren
-        For i As Integer = 0 To sortedView.Count - 1
-            sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedView.CurrentItem, Group)
-
-            If i Mod friendsPerPage = 0 Then
-                If page IsNot Nothing Then
-                    Dim content = New PageContent()
-                    TryCast(content, IAddChild).AddChild(page)
-                    doc.Pages.Add(content)
-                End If
-                page = New FixedPage
-            End If
-
-            ' PrintableFriend-Control mit Friend-Objekt initialisieren und zur Page hinzufügen
-            Dim pSkikursgruppe = New PrintableNoticeForInstructors With {
-                .Height = printFriendHeight,
-                .Width = printFriendWidth}
-
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, DS.Skiclub.Instructorlist)
-            Dim currentRow As Integer = (i Mod friendsPerPage) / columnsPerPage
-            Dim currentColumn As Integer = i Mod columnsPerPage
-
-            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((pSkikursgruppe.Height + vMarginBetweenFriends) * currentRow))
-            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((pSkikursgruppe.Width + hMarginBetweenFriends) * currentColumn))
-            page.Children.Add(pSkikursgruppe)
-        Next
-
-        ' letzte Page zum Dokument hinzufügen, falls diese Kinder hat
-        If page.Children.Count > 0 Then
-            Dim Content = New PageContent()
-            TryCast(Content, IAddChild).AddChild(page)
-            doc.Pages.Add(Content)
-        End If
 
         Return doc
 
@@ -1314,7 +1133,6 @@ Class MainWindow
         For i = 0 To DS.Skiclub.Grouplist.Count - 1
             DS.Skiclub.Grouplist(i).GroupLeader = DS.Skiclub.Instructorlist.Item(i)
         Next
-
     End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)

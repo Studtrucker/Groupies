@@ -6,32 +6,7 @@
              xmlns:local="clr-namespace:Skischule"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
-    
-    <UserControl.Resources>
 
-        <Style TargetType="DataGrid" >
-            <!--Standard-->
-            <Setter Property="FontSize" Value="36"/>
-            <Setter Property="Foreground" Value="black"/>
-            <Style.Triggers>
-                <!--Group with too many participants-->
-                <DataTrigger Binding="{Binding}" Value="ZuGross">
-                    <Setter Property="FontSize" Value="36"/>
-                    <Setter Property="Foreground" Value="black"/>
-                </DataTrigger>
-                <!--Group with too few participants-->
-                <DataTrigger Binding="{Binding}" Value="ZuKlein">
-                    <Setter Property="FontSize" Value="36"/>
-                    <Setter Property="Foreground" Value="black"/>
-                </DataTrigger>
-                <!--Group with far too few participants-->
-                <DataTrigger Binding="{Binding}" Value="VielZuKlein">
-                    <Setter Property="FontSize" Value="36"/>
-                    <Setter Property="Foreground" Value="black"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -40,49 +15,42 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!--Area Group Header-->
         <DockPanel Grid.Row="0" Margin="5">
-            <TextBlock Text="Gruppe (Printname)" FontSize="24" Foreground="LightGray" DockPanel.Dock="Top"/>
-            <TextBlock x:Name="GroupPrintNameTextBlock" FontSize="48" FontWeight="Bold" />
-            <StackPanel>
-                <Grid HorizontalAlignment="Right">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="150"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock  FontSize="20" Text="Gruppenname" Foreground="LightGray"
-                                Grid.Column="0"/>
-                    <TextBlock x:Name="GroupNamingTextBlock" FontSize="20" Foreground="Gray"
-                               Grid.Column="1"/>
-                </Grid>
-                <Grid HorizontalAlignment="Right">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="150"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock  FontSize="20" Text="Gruppenlevel" Foreground="LightGray"
-                                Grid.Column="0"/>
-                    <TextBlock x:Name="GroupLevelNamingTextBlock" FontSize="20" Foreground="Gray"
-                               Grid.Column="1"/>
-                </Grid>
-            </StackPanel>
-
+            <TextBlock Text="Gruppe (Printname)" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
+            <TextBlock x:Name="GroupPrintNameTextBlock" Style="{StaticResource BigCaptionValue}" />
+            <Grid HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Gruppenname" Grid.Column="0" Style="{StaticResource SmallCaption}"/>
+                <TextBlock x:Name="GroupNamingTextBlock" Grid.Column="1" Style="{StaticResource SmallCaptionValue}" />
+                <TextBlock  Text="Gruppenlevel" Grid.Column="0" Grid.Row="1" Style="{StaticResource SmallCaption}" />
+                <TextBlock x:Name="GroupLevelNamingTextBlock" Grid.Column="1" Grid.Row="1" Style="{StaticResource SmallCaptionValue}" />
+            </Grid>
         </DockPanel>
 
+        <!--Area Instructor Header-->
         <DockPanel Grid.Row="1" Margin="5">
-            <Image x:Name="imgSkilehrerfoto" Margin="5" Grid.Column="1" DockPanel.Dock="Right"
-                   Width="Auto" Height="Auto" MaxWidth="200" MaxHeight="200"/>
-            <TextBlock Text="Skilehrer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
-            <TextBlock x:Name="txtSkilehrername"  FontSize="36" Margin="5"/>
+            <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}" />
+            <TextBlock x:Name="GroupLeaderPrintNameTextBox"  Style="{StaticResource BigCaptionValue}"/>
         </DockPanel>
 
+        <!--Area Instructor Header-->
         <DockPanel Grid.Row="2" Margin="5">
 
-            <TextBlock Text="Teilnehmer" FontSize="24" Margin="5" Foreground="LightGray" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="lstMitglieder" Margin="5" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                      GridLinesVisibility="None" DockPanel.Dock="Top" >
+            <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
+            <DataGrid x:Name="MembersDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
+                      GridLinesVisibility="None" DockPanel.Dock="Top"  Style="{StaticResource PrintoutInfo}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ParticipantFullName}"/>
-                    <DataGridTextColumn Binding="{Binding ParticipantLevel.LevelNaming}" Foreground="Gray" />
+                    <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
+                    <DataGridTextColumn Width="10" />
+                    <DataGridTextColumn Binding="{Binding ParticipantLevel.LevelNaming}"  FontStyle="Italic" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

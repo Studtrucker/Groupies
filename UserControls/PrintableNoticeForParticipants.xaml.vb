@@ -1,6 +1,7 @@
 ﻿Imports Skischule.Entities
 Imports System.IO
 Imports System.Windows.Markup
+Imports CDS = Skischule.DataService.CurrentDataService
 
 Namespace UserControls
 
@@ -17,16 +18,17 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection) Implements IPrintableNotice.InitPropsFromGroup
+        Public Sub InitPropsFromGroup(Group As Group) Implements IPrintableNotice.InitPropsFromGroup
+
             GroupPrintName = Group.GroupPrintNaming
             Members = Group.GroupMembers
 
             If Not Group.GroupLeader Is Nothing Then
-                GroupLeaderPrintName = InstructorList.GetPrintName(Group.GroupLeader)
-                If InstructorList.GetHatFoto(Group.GroupLeader) Then
+                GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.GroupLeader)
+                If CDS.Skiclub.Instructorlist.GetHatFoto(Group.GroupLeader) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(InstructorList.GetFoto(Group.GroupLeader))
+                    bi.StreamSource = New MemoryStream(CDS.Skiclub.Instructorlist.GetFoto(Group.GroupLeader))
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else
@@ -35,11 +37,7 @@ Namespace UserControls
                 End If
             End If
 
-            If Group.GroupMembers.Count <= 3 Then
-                DataContext = "VielZuKlein"
-            ElseIf Group.GroupMembers.Count <= 6 Then
-                DataContext = "ZuKlein"
-            ElseIf Group.GroupMembers.Count < 12 Then
+            If Group.GroupMembers.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 

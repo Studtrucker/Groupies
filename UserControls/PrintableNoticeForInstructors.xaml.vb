@@ -1,10 +1,12 @@
 ﻿Imports Skischule.Entities
 Imports System.IO
 Imports System.Windows.Markup
+Imports CDS = Skischule.DataService.CurrentDataService
+
 
 Namespace UserControls
 
-    <ContentProperty("Skikursgruppe")>
+    <ContentProperty("Group")>
     Public Class PrintableNoticeForInstructors
         Implements IPrintableNotice
 
@@ -17,41 +19,25 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection) Implements IPrintableNotice.InitPropsFromGroup
+        Public Sub InitPropsFromGroup(Group As Group) Implements IPrintableNotice.InitPropsFromGroup
 
+            GroupPrintName = Group.GroupPrintNaming
             GroupNaming = Group.GroupNaming
-            GroupLevelNaming = Group.GroupLevel.LevelNaming
-
             Members = Group.GroupMembers
-
+            If Not Group.GroupLevel Is Nothing Then
+                GroupLevelNaming = Group.GroupLevel.LevelNaming
+            End If
             If Not Group.GroupLeader Is Nothing Then
-                GroupLeaderPrintName = InstructorList.GetPrintName(Group.GroupLeader)
-                If InstructorList.GetHatFoto(Group.GroupLeader) Then
-                    Dim bi = New BitmapImage
-                    bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(InstructorList.GetFoto(Group.GroupLeader))
-                    bi.EndInit()
-                    GroupLeaderPicture = bi
-                Else
-                    ' Todo: Ersatzfoto festlegen
-                    GroupLeaderPicture = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
-                End If
+                GroupLeaderPrintName = Group.GroupLeader.InstructorPrintName
             End If
 
-            If Group.GroupMembers.Count <= 3 Then
-                DataContext = "VielZuKlein"
-            ElseIf Group.GroupMembers.Count <= 6 Then
-                DataContext = "ZuKlein"
-            ElseIf Group.GroupMembers.Count < 12 Then
+            ' For Style setting
+            If Group.GroupMembers.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 
-
         End Sub
 
-        Private Sub IPrintableNotice_InitPropsFromGroup(Group As Group, InstructorList As InstructorCollection) Implements IPrintableNotice.InitPropsFromGroup
-            Throw New NotImplementedException()
-        End Sub
 
         Public Property GroupNaming As String
             Get
@@ -82,28 +68,19 @@ Namespace UserControls
 
         Public Property GroupLeaderPrintName As String
             Get
-                Return txtSkilehrername.Text
+                Return GroupLeaderPrintNameTextBox.Text
             End Get
             Set(value As String)
-                txtSkilehrername.Text = value
-            End Set
-        End Property
-
-        Public Property GroupLeaderPicture As ImageSource
-            Get
-                Return imgSkilehrerfoto.Source
-            End Get
-            Set(value As ImageSource)
-                imgSkilehrerfoto.Source = value
+                GroupLeaderPrintNameTextBox.Text = value
             End Set
         End Property
 
         Public Property Members As ParticipantCollection
             Get
-                Return lstMitglieder.ItemsSource
+                Return MembersDataGrid.ItemsSource
             End Get
             Set(value As ParticipantCollection)
-                lstMitglieder.ItemsSource = value
+                MembersDataGrid.ItemsSource = value
             End Set
         End Property
 

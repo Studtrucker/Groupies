@@ -204,12 +204,13 @@
                                     <TextBox Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}"
                                              Grid.Column="1" Grid.Row="0"  />
                                     <TextBox Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Column="1" Grid.Row="1" />
+                                             Grid.Column="1" Grid.Row="1" />
                                     <ComboBox Grid.Column="1" Grid.Row="2"
-                                              x:Name="GroupLevelCombobox" 
+                                              x:Name="GroupLevelComboBox" 
                                               DisplayMemberPath="LevelNaming"
                                               SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ComboBox x:Name="GroupLeaderCombobox" Grid.Column="1" Grid.Row="3"
+                                    <ComboBox Grid.Column="1" Grid.Row="3" 
+                                              x:Name="GroupLeaderComboBox" 
                                               DisplayMemberPath="InstructorFullName"
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
@@ -220,6 +221,7 @@
 
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
+                                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>
@@ -275,7 +277,7 @@
                                                        Height="5" Background="Black" />
 
 
-                                        <DataGrid x:Name="skikurseDataGrid" Grid.Row="0" ItemsSource="{Binding}"
+                                        <DataGrid x:Name="skikurseDataGrid" Grid.Row="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True"
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                               RowStyle="{StaticResource friendDataGridRowStyle}"   >
@@ -371,7 +373,7 @@
                                     <TextBox  Grid.Column="1" Grid.Row="1" 
                                               Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <ComboBox Grid.Column="1" Grid.Row="2"
-                                              x:Name="ParticipantLevelCombobox"
+                                              x:Name="ParticipantLevelComboBox"
                                               DisplayMemberPath="LevelNaming"
                                               SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
 

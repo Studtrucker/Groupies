@@ -924,8 +924,8 @@ Class MainWindow
             _participantLevelListCollectionView = New CollectionView(CDS.Skiclub.Levellist)
         End If
 
-        GroupLevelCombobox.ItemsSource = _groupLevelListCollectionView
-        GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
+        GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
+        GroupLeaderComboBox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelCombobox.ItemsSource = _participantLevelListCollectionView
 
         ' Uebersicht erstellen
@@ -937,9 +937,12 @@ Class MainWindow
         SetView(CDS.Skiclub.Levellist)
         SetView()
 
+        tabitemSkikurse.IsSelected = True
+
     End Sub
 
     Private Sub SetView()
+
         _participantsToDistributeListCollectionView = New ListCollectionView(CDS.Skiclub.ParticipantsToDistribute)
         ParticipantsToDistributeDataGrid.DataContext = _participantsToDistributeListCollectionView
         _participantsInGroupMemberListCollectionView = New ListCollectionView(DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupMembers)
@@ -968,7 +971,7 @@ Class MainWindow
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemSkikurse.DataContext = _skikursListCollectionView
 
-        ParticipantMemberOfGroupCombobox.ItemsSource = _participantMemberOfGroupListCollectionView
+        ParticipantMemberOfGroupCombobox.DataContext = _participantMemberOfGroupListCollectionView
 
     End Sub
 
@@ -1085,17 +1088,18 @@ Class MainWindow
         ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
         CDS.Skiclub = CDS.Skiclub.GetAktualisierungen()
 
+        'CDS.Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView = New ListCollectionView(CDS.Skiclub.Grouplist)
-        sortedView.SortDescriptions.Add(New SortDescription("GroupPrintNaming", ListSortDirection.Ascending))
+        Dim sortedGroupView = New ListCollectionView(CDS.Skiclub.Grouplist)
+        sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
 
         Dim skikursgruppe As Group
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
-        For i As Integer = 0 To sortedView.Count - 1
-            sortedView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedView.CurrentItem, Group)
+        For i As Integer = 0 To sortedGroupView.Count - 1
+            sortedGroupView.MoveCurrentToPosition(i)
+            skikursgruppe = CType(sortedGroupView.CurrentItem, Group)
 
             If i Mod participantsPerPage = 0 Then
                 page = New FixedPage

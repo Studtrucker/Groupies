@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel.DataAnnotations
-Imports Skiclub.Entities
 Imports System.Collections.ObjectModel
 
 Namespace Entities
@@ -67,7 +66,7 @@ Namespace Entities
         End Sub
 
         Private Sub GetAktualisierungen(Mitglied As Participant)
-            'Return Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
+            'Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
         End Sub
 
 

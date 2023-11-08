@@ -73,11 +73,7 @@
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo">
-                    <!--<MenuItem.Icon>
-                        <Image Height="20" Source="Images/drucken-48.png"/>
-                    </MenuItem.Icon>-->
-                </MenuItem>
+                <MenuItem Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
                 <Separator/>

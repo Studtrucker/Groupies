@@ -112,6 +112,9 @@
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
+    <Compile Include="UserControls\GroupView.xaml.vb">
+      <DependentUpon>GroupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\IPrintableNotice.vb" />
     <Compile Include="UserControls\PrintableNoticeForInstructors.xaml.vb">
       <DependentUpon>PrintableNoticeForInstructors.xaml</DependentUpon>
@@ -163,6 +166,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Dialogs\ContextMenuLevel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

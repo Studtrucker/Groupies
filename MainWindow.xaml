@@ -117,23 +117,29 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <!--<TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
+            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
-                <DockPanel x:Name="dckSkikursübersicht">
-                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False">
+
+                    
+                <DockPanel x:Name="GroupOverviewDockPanel">
+                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False" Visibility="Collapsed">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <WrapPanel x:Name="wrpSkikursübersicht" DockPanel.Dock="Left">
-                        
-                    </WrapPanel>
-                </DockPanel>
-            </TabItem>-->
+                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <WrapPanel x:Name="GroupOverviewWrapPanel" Width="{Binding ElementName=GroupOverviewDockPanel, Path=ActualWidth}" />
 
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
+            
+            
             <TabItem Header="Gruppen" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>

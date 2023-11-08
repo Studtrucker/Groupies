@@ -929,7 +929,7 @@ Class MainWindow
         ParticipantLevelCombobox.ItemsSource = _participantLevelListCollectionView
 
         ' Uebersicht erstellen
-        'CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) wrpSkikursübersicht.Children.Add(New VisibleSkikurs With {.DataContext = x}))
+        CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
         SetView(CDS.Skiclub.Participantlist)
         SetView(CDS.Skiclub.Grouplist)

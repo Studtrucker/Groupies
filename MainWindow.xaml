@@ -117,13 +117,14 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2">
+            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2"
+                     Visibility="Collapsed">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
 
                     
-                <DockPanel x:Name="GroupOverviewDockPanel">
+                <DockPanel x:Name="GroupOverviewDockPanel" Visibility="{Binding ElementName=tabitemSkikursuebersicht, Path=Visibility}">
                     <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False" Visibility="Collapsed">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstname}"/>

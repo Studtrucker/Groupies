@@ -944,6 +944,7 @@ Class MainWindow
         ParticipantsToDistributeDataGrid.DataContext = _participantsToDistributeListCollectionView
         _participantsInGroupMemberListCollectionView = New ListCollectionView(DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupMembers)
         GroupMembersDataGrid.DataContext = _participantsInGroupMemberListCollectionView
+
     End Sub
 
     Private Sub SetView(Teilnehmers As ParticipantCollection)

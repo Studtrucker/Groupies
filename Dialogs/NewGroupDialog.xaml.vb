@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Text
-Imports Skischule.Entities
+Imports Skiclub.Entities
+Imports Skiclub.Commands
 
 Public Class NewGroupDialog
     Public ReadOnly Property Group() As Group
@@ -16,8 +17,8 @@ Public Class NewGroupDialog
         _Group = New Group
         DataContext = _Group
 
-        _levelListCollectionView = New ListCollectionView(DataService.CurrentDataService.Skiclub.Levellist)
-        _instructorListCollectionView = New ListCollectionView(DataService.CurrentDataService.Skiclub.Instructorlist)
+        _levelListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Levellist)
+        _instructorListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Instructorlist)
 
         GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
         GroupLevelCombobox.ItemsSource = _levelListCollectionView

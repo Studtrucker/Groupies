@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
-        xmlns:uc="clr-namespace:Skischule.UserControls"
-        xmlns:local="clr-namespace:Skischule"
-        xmlns:convert="clr-namespace:Skischule.Converters"
-        xmlns:data="clr-namespace:Skischule"
-        xmlns:en="clr-namespace:Skischule.Entities"
+        xmlns:uc="clr-namespace:Skiclub.UserControls"
+        xmlns:local="clr-namespace:Skiclub"
+        xmlns:convert="clr-namespace:Skiclub.Converters"
+        xmlns:cmd="clr-namespace:Skiclub.Commands"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:data="clr-namespace:Skiclub"
+        xmlns:en="clr-namespace:Skiclub.Entities"
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
         Height="450" Width="900"
@@ -37,7 +39,12 @@
         <Style x:Key="friendDataGridRowStyle" TargetType="{x:Type DataGridRow}">
 
         </Style>
-
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        
     </Window.Resources>
 
     <DockPanel>
@@ -55,7 +62,7 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skiclub importieren..." Command="{x:Static local:SkiclubCommands.ImportSkiclub}">
+                <MenuItem Header="Skiclub importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
@@ -80,27 +87,27 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
-                <MenuItem Header="Neue Gruppe" Command="{x:Static local:SkiclubCommands.NeueGruppe}"/>
-                <MenuItem Header="Gruppe löschen" Command="{x:Static local:SkiclubCommands.GruppeLoeschen}"/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static local:SkiclubCommands.NewParticipant}"/>
-                <MenuItem Header="Teilnehmer importieren" Command="{x:Static local:SkiclubCommands.ImportParticipants}">
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static local:SkiclubCommands.TeilnehmerLoeschen}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static local:SkiclubCommands.NeuerUebungsleiter}"/>
-                <MenuItem Header="Skilehrer importieren" Command="{x:Static local:SkiclubCommands.ImportInstructors}">
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skilehrer löschen" Command="{x:Static local:SkiclubCommands.UebungsleiterLoeschen}"/>
+                <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neues Level" Command="{x:Static local:SkiclubCommands.NeuesLevel}"/>
-                <MenuItem Header="Level löschen" Command="{x:Static local:SkiclubCommands.LevelLoeschen}"/>
+                <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
+                <MenuItem Header="Level löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
             </MenuItem>
 
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
@@ -198,14 +205,16 @@
                                     <ComboBox x:Name="GroupLeaderCombobox" Grid.Column="1" Grid.Row="3"
                                               DisplayMemberPath="InstructorFullName"
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
-                                             Grid.Column="1" Grid.Row="4"  Margin="2"/>
+                                    <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
+                                               Grid.Column="1" Grid.Row="4" Margin="2" Padding="7" />
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
                                               ItemsSource="{Binding}" AutoGenerateColumns="False"
-                                              IsReadOnly="True">
+                                              IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
+
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
                                         </DataGrid.Columns>
+
                                     </DataGrid>
                                     <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button Content="+" Click="AddParticipant" Width="100"/>

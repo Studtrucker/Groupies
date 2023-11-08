@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports Excel = Microsoft.Office.Interop.Excel
-Imports Skischule.Entities
+Imports Skiclub.Entities
 
 Namespace ExcelService
 
@@ -91,11 +91,11 @@ Namespace ExcelService
 
         Private Function StandardDistribution() As Dictionary(Of Level, Integer)
 
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Anfänger").Single) = 2
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Fortgeschrittene").Single) = 4
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Genießer").Single) = 5
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Könner").Single) = 3
-            dic.Item(DataService.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Experten").Single) = 1
+            dic.Item(Services.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Anfänger").Single) = 2
+            dic.Item(Services.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Fortgeschrittene").Single) = 4
+            dic.Item(Services.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Genießer").Single) = 5
+            dic.Item(Services.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Könner").Single) = 3
+            dic.Item(Services.Skiclub.Levellist.Where(Function(x) x.LevelNaming = "Experten").Single) = 1
 
             Return dic
 

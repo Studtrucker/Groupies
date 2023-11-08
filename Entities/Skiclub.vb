@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel.DataAnnotations
-Imports Skischule.Entities
+Imports Skiclub.Entities
 Imports System.Collections.ObjectModel
 
 Namespace Entities
@@ -55,6 +55,7 @@ Namespace Entities
 
         Public Function GetAktualisierungen() As Skiclub
             Grouplist.ToList.ForEach(AddressOf GetAktualisierungen)
+            Participantlist.ToList.ForEach(AddressOf GetAktualisierungen)
             Return Me
         End Function
 
@@ -65,9 +66,9 @@ Namespace Entities
             'Next
         End Sub
 
-        Private Function GetAktualisierungen(Mitglied As Participant) As Participant
-            Return Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
-        End Function
+        Private Sub GetAktualisierungen(Mitglied As Participant)
+            'Return Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
+        End Sub
 
 
     End Class

@@ -1,5 +1,6 @@
 ﻿Imports System.Text
-Imports Skischule.Entities
+Imports Skiclub.Entities
+Imports Skiclub.Commands
 
 Public Class NewLevelDialog
 

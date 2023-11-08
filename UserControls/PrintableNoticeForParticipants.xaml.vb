@@ -1,7 +1,7 @@
-﻿Imports Skischule.Entities
+﻿Imports Skiclub.Entities
 Imports System.IO
 Imports System.Windows.Markup
-Imports CDS = Skischule.DataService.CurrentDataService
+Imports CDS = Skiclub.Services.CurrentDataService
 
 Namespace UserControls
 
@@ -23,7 +23,7 @@ Namespace UserControls
             GroupPrintName = Group.GroupPrintNaming
             Members = Group.GroupMembers
 
-            If Not Group.GroupLeader Is Nothing Then
+            If Group.GroupLeader IsNot Nothing Then
                 GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.GroupLeader)
                 If CDS.Skiclub.Instructorlist.GetHatFoto(Group.GroupLeader) Then
                     Dim bi = New BitmapImage

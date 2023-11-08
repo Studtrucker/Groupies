@@ -1,7 +1,7 @@
-﻿Imports Skischule.Entities
+﻿Imports Skiclub.Entities
 Imports System.IO
 Imports System.Windows.Markup
-Imports CDS = Skischule.DataService.CurrentDataService
+Imports CDS = Skiclub.Services.CurrentDataService
 
 
 Namespace UserControls
@@ -24,10 +24,10 @@ Namespace UserControls
             GroupPrintName = Group.GroupPrintNaming
             GroupNaming = Group.GroupNaming
             Members = Group.GroupMembers
-            If Not Group.GroupLevel Is Nothing Then
+            If Group.GroupLevel IsNot Nothing Then
                 GroupLevelNaming = Group.GroupLevel.LevelNaming
             End If
-            If Not Group.GroupLeader Is Nothing Then
+            If Group.GroupLeader IsNot Nothing Then
                 GroupLeaderPrintName = Group.GroupLeader.InstructorPrintName
             End If
 

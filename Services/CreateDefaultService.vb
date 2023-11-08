@@ -1,13 +1,13 @@
 ﻿Imports System.Text
-Imports Skischule.Entities
+Imports Skiclub.Entities
 
-Namespace DataService
+Namespace Services
 
     Module CreateDefaultService
 
 #Region "Fields"
         Private _levelCollection As LevelCollection
-        Private _CountOfGroups As Dictionary(Of Level, Integer)
+        Private ReadOnly _CountOfGroups As Dictionary(Of Level, Integer)
 #End Region
 
 #Region "Public"

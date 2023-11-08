@@ -16,12 +16,12 @@ Namespace Converters
         End Property
 
         Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-            If Not TypeOf (value) Is Boolean Then Return DependencyProperty.UnsetValue
+            If TypeOf (value) IsNot Boolean Then Return DependencyProperty.UnsetValue
             Return If(CBool(value) Xor Inverted, Visibility.Visible, Visibility.Collapsed)
         End Function
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-            If Not TypeOf value Is Visibility Then Return DependencyProperty.UnsetValue
+            If TypeOf value IsNot Visibility Then Return DependencyProperty.UnsetValue
             Return value = Visibility.Visible
         End Function
     End Class

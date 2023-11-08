@@ -1,9 +1,9 @@
 ﻿Imports System.Text
 Imports System.Windows.Forms
-Imports Skischule.Entities
+Imports Skiclub.Entities
 Imports System.ComponentModel
-Imports DS = Skischule.DataService
-
+Imports DS = Skiclub.Services
+Imports Skiclub.Commands
 
 Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Participant

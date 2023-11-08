@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Text
-Imports Skischule.Entities
+Imports Skiclub.Entities
+Imports Skiclub.Commands
 Imports Microsoft.Win32
 
 Public Class NewInstructorDialog
@@ -38,7 +39,7 @@ Public Class NewInstructorDialog
 
     Private Sub HandleDrop(sender As Object, e As DragEventArgs)
 
-        Dim sb As StringBuilder = New StringBuilder()
+        Dim sb = New StringBuilder()
 
         Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
         Dim validPictureFile = False

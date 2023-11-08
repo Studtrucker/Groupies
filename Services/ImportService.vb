@@ -2,10 +2,10 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
-Imports Skischule.Entities
+Imports Skiclub.Entities
 Imports System.Text
 
-Namespace DataService
+Namespace Services
 
     Public Module ImportService
 

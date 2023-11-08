@@ -1,6 +1,4 @@
-﻿Imports Microsoft.Win32
-Imports Skischule.Entities
-Imports System.Reflection
+﻿Imports System.Reflection
 Imports System.ComponentModel
 Imports System.IO
 Imports System.IO.Compression
@@ -8,17 +6,20 @@ Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports System.IO.IsolatedStorage
 Imports System.Windows.Media.Animation
-Imports Microsoft.Office.Core
 Imports System.Windows.Controls.Primitives
 Imports System.Text
+Imports System.Windows.Markup
 Imports System.Linq
 Imports System.Collections.Generic
-Imports System.Windows.Markup
-Imports Skischule.UserControls
 Imports System.Collections.ObjectModel
-Imports Skischule.ExcelService
-Imports DS = Skischule.DataService.CurrentDataService
-Imports Skischule.DataService
+Imports Microsoft.Win32
+Imports Microsoft.Office.Core
+Imports Skiclub.UserControls
+Imports Skiclub.ExcelService
+Imports Skiclub.Entities
+Imports CDS = Skiclub.Services.CurrentDataService
+Imports Skiclub.Services
+Imports Skiclub.Commands
 
 Class MainWindow
 
@@ -324,7 +325,7 @@ Class MainWindow
     Private Sub HandleNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If DS.Skiclub IsNot Nothing Then
+        If CDS.Skiclub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -334,7 +335,7 @@ Class MainWindow
         End If
 
         ' Skischulobjekt löschen
-        DS.Skiclub = Nothing
+        CDS.Skiclub = Nothing
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
@@ -364,7 +365,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DS.Skiclub IsNot Nothing
+        e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -391,7 +392,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DataService.Skiclub IsNot Nothing AndAlso DataService.Skiclub.Participantlist IsNot Nothing
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Participantlist IsNot Nothing
     End Sub
 
     Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -399,7 +400,7 @@ Class MainWindow
         Dim ImportParticipants = ImportService.ImportParticipants
         If ImportParticipants IsNot Nothing Then
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportParticipants.ToList.ForEach(Sub(x) DataService.Skiclub.Participantlist.Add(x))
+            ImportParticipants.ToList.ForEach(Sub(x) Services.Skiclub.Participantlist.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
             SetView()
         End If
@@ -407,7 +408,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DataService.Skiclub IsNot Nothing AndAlso DataService.Skiclub.Instructorlist IsNot Nothing
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Instructorlist IsNot Nothing
     End Sub
 
     Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -415,7 +416,7 @@ Class MainWindow
         Dim ImportInstructors = ImportService.ImportInstructors
         If ImportInstructors IsNot Nothing Then
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportInstructors.ToList.ForEach(Sub(x) DataService.Skiclub.Instructorlist.Add(x))
+            ImportInstructors.ToList.ForEach(Sub(x) Services.Skiclub.Instructorlist.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
             SetView()
         End If
@@ -425,7 +426,7 @@ Class MainWindow
     Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If DS.Skiclub IsNot Nothing Then
+        If CDS.Skiclub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -435,7 +436,7 @@ Class MainWindow
         End If
 
         ' Skischulobjekt löschen
-        DS.Skiclub = Nothing
+        CDS.Skiclub = Nothing
 
         ' Neues Skischulobjekt initialisieren
         Title = "Skischule"
@@ -527,13 +528,13 @@ Class MainWindow
 #Region "Level"
 
     Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DS.Skiclub IsNot Nothing
+        e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
     Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            DS.Skiclub.Levellist.Add(dlg.Level)
+            CDS.Skiclub.Levellist.Add(dlg.Level)
             _levelListCollectionView.MoveCurrentTo(dlg.Level)
             levelDataGrid.ScrollIntoView(dlg.Level)
         End If
@@ -549,11 +550,11 @@ Class MainWindow
         For Each item As Level In levelDataGrid.SelectedItems
             RemoveLevelFromSkikursgruppe(item)
             RemoveLevelFromTeilnehmer(item)
-            index(i) = DS.Skiclub.Levellist.IndexOf(item)
+            index(i) = CDS.Skiclub.Levellist.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(DS.Skiclub.Levellist, index)
+        RemoveItemsAt(CDS.Skiclub.Levellist, index)
     End Sub
 
 #End Region
@@ -561,13 +562,13 @@ Class MainWindow
 #Region "Skikursgruppe"
 
     Private Sub HandleNeueSkikursgruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DS.Skiclub IsNot Nothing
+        e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
     Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            DS.Skiclub.Grouplist.Add(dlg.Group)
+            CDS.Skiclub.Grouplist.Add(dlg.Group)
             _skikursListCollectionView.MoveCurrentTo(dlg.Group)
             skikurseDataGrid.ScrollIntoView(dlg.Group)
         End If
@@ -582,11 +583,11 @@ Class MainWindow
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Group In skikurseDataGrid.SelectedItems
             RemoveSkikursgruppeFromTeilnehmer(item)
-            index(i) = DS.Skiclub.Grouplist.IndexOf(item)
+            index(i) = CDS.Skiclub.Grouplist.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(DS.Skiclub.Grouplist, index)
+        RemoveItemsAt(CDS.Skiclub.Grouplist, index)
     End Sub
 
 #End Region
@@ -594,7 +595,7 @@ Class MainWindow
 #Region "Teilnehmer"
 
     Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DS.Skiclub IsNot Nothing
+        e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
     Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -602,7 +603,7 @@ Class MainWindow
         Dim dlg = New NewParticipantDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            DS.Skiclub.Participantlist.Add(dlg.Teilnehmer)
+            CDS.Skiclub.Participantlist.Add(dlg.Teilnehmer)
             _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
             teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
         End If
@@ -617,11 +618,11 @@ Class MainWindow
         Dim i As Integer
         Dim index(teilnehmerDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Participant In teilnehmerDataGrid.SelectedItems
-            index(i) = DS.Skiclub.Participantlist.IndexOf(item)
+            index(i) = CDS.Skiclub.Participantlist.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(DS.Skiclub.Participantlist, index)
+        RemoveItemsAt(CDS.Skiclub.Participantlist, index)
     End Sub
 
     Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -640,14 +641,14 @@ Class MainWindow
 #Region "Uebungsleiter"
 
     Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DS.Skiclub IsNot Nothing
+        e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
     Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            DS.Skiclub.Instructorlist.Add(dlg.Instructor)
+            CDS.Skiclub.Instructorlist.Add(dlg.Instructor)
             _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
             uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
@@ -663,11 +664,11 @@ Class MainWindow
         Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Instructor In uebungsleiterDataGrid.SelectedItems
             RemoveUebungsleiterFromSkikursgruppe(item)
-            index(i) = DS.Skiclub.Instructorlist.IndexOf(item)
+            index(i) = CDS.Skiclub.Instructorlist.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(DS.Skiclub.Instructorlist, index)
+        RemoveItemsAt(CDS.Skiclub.Instructorlist, index)
 
     End Sub
 
@@ -717,22 +718,22 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Level)
-        Dim liste = DS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantLevel.LevelID = level.LevelID)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantLevel.LevelID = level.LevelID)
         liste.ToList.ForEach(Sub(x) x.ParticipantLevel = Nothing)
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Level)
-        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLevel Is level)
+        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLevel Is level)
         liste.ToList.ForEach(Sub(x) x.GroupLevel = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Instructor)
-        Dim liste = DS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLeader Is Uebungsleiter)
+        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLeader Is Uebungsleiter)
         liste.ToList.ForEach(Sub(x) x.GroupLeader = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Group)
-        Dim liste = DS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GroupID))
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GroupID))
         liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
     End Sub
 
@@ -760,7 +761,7 @@ Class MainWindow
         'Dim loadedSkischule = OpenZIP(fileName)
         If loadedSkischule Is Nothing Then Exit Sub
 
-        DS.Skiclub = Nothing
+        CDS.Skiclub = Nothing
 
         _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -818,7 +819,7 @@ Class MainWindow
         Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, DS.Skiclub)
+                serializer.Serialize(zipStream, CDS.Skiclub)
             End Using
         End Using
     End Sub
@@ -826,7 +827,7 @@ Class MainWindow
     Private Sub SaveXML(fileName As String)
         Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, DS.Skiclub)
+            serializer.Serialize(fs, CDS.Skiclub)
         End Using
     End Sub
 
@@ -914,34 +915,32 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Skiclub)
 
-        DS.Skiclub = Schule
+        CDS.Skiclub = Schule
 
-        If DS.Skiclub IsNot Nothing Then
-            _groupLevelListCollectionView = New CollectionView(DS.Skiclub.Levellist)
-            _groupLeaderListCollectionView = New CollectionView(DS.Skiclub.Instructorlist)
-            _participantMemberOfGroupListCollectionView = New CollectionView(DS.Skiclub.Grouplist)
-            _participantLevelListCollectionView = New CollectionView(DS.Skiclub.Levellist)
+        If CDS.Skiclub IsNot Nothing Then
+            _groupLevelListCollectionView = New CollectionView(CDS.Skiclub.Levellist)
+            _groupLeaderListCollectionView = New CollectionView(CDS.Skiclub.Instructorlist)
+            _participantMemberOfGroupListCollectionView = New CollectionView(CDS.Skiclub.Grouplist)
+            _participantLevelListCollectionView = New CollectionView(CDS.Skiclub.Levellist)
         End If
 
         GroupLevelCombobox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelCombobox.ItemsSource = _participantLevelListCollectionView
-        ParticipantMemberOfGroupCombobox.ItemsSource = _participantMemberOfGroupListCollectionView
-
 
         ' Uebersicht erstellen
         'CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) wrpSkikursübersicht.Children.Add(New VisibleSkikurs With {.DataContext = x}))
 
-        SetView(DS.Skiclub.Participantlist)
-        SetView(DS.Skiclub.Grouplist)
-        SetView(DS.Skiclub.Instructorlist)
-        SetView(DS.Skiclub.Levellist)
+        SetView(CDS.Skiclub.Participantlist)
+        SetView(CDS.Skiclub.Grouplist)
+        SetView(CDS.Skiclub.Instructorlist)
+        SetView(CDS.Skiclub.Levellist)
         SetView()
 
     End Sub
 
     Private Sub SetView()
-        _participantsToDistributeListCollectionView = New ListCollectionView(DS.Skiclub.ParticipantsToDistribute)
+        _participantsToDistributeListCollectionView = New ListCollectionView(CDS.Skiclub.ParticipantsToDistribute)
         ParticipantsToDistributeDataGrid.DataContext = _participantsToDistributeListCollectionView
         _participantsInGroupMemberListCollectionView = New ListCollectionView(DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupMembers)
         GroupMembersDataGrid.DataContext = _participantsInGroupMemberListCollectionView
@@ -967,6 +966,8 @@ Class MainWindow
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemSkikurse.DataContext = _skikursListCollectionView
+
+        ParticipantMemberOfGroupCombobox.ItemsSource = _participantMemberOfGroupListCollectionView
 
     End Sub
 
@@ -1081,13 +1082,13 @@ Class MainWindow
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
         ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-        DS.Skiclub = DS.Skiclub.GetAktualisierungen()
+        CDS.Skiclub = CDS.Skiclub.GetAktualisierungen()
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedView = New ListCollectionView(DS.Skiclub.Grouplist)
+        Dim sortedView = New ListCollectionView(CDS.Skiclub.Grouplist)
         sortedView.SortDescriptions.Add(New SortDescription("GroupPrintNaming", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Group = Nothing
+        Dim skikursgruppe As Group
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
@@ -1130,8 +1131,8 @@ Class MainWindow
     End Function
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        For i = 0 To DS.Skiclub.Grouplist.Count - 1
-            DS.Skiclub.Grouplist(i).GroupLeader = DS.Skiclub.Instructorlist.Item(i)
+        For i = 0 To CDS.Skiclub.Grouplist.Count - 1
+            CDS.Skiclub.Grouplist(i).GroupLeader = CDS.Skiclub.Instructorlist.Item(i)
         Next
     End Sub
 
@@ -1143,7 +1144,7 @@ Class MainWindow
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
-            Dim tn = DS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Participant).ParticipantID).Single
+            Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Participant).ParticipantID).Single
             DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
             tn.MemberOfGroup = Nothing
         End If
@@ -1175,14 +1176,15 @@ Class MainWindow
         End If
         e.Handled = True
     End Sub
+
     Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs) Handles Canvas.Drop
         Dim tn As Participant = CType(e.Data.GetData(GetType(Participant)), Participant)
         If tn IsNot Nothing Then
             Dim canvas As Canvas = TryCast(e.Source, Canvas)
             Dim p = e.GetPosition(canvas)
 
-            Dim c As ContentControl = New ContentControl()
-            c.Content = tn
+            Dim c = New ContentControl() With {
+                .Content = tn}
             Canvas.SetLeft(c, p.X)
             Canvas.SetTop(c, p.Y)
             canvas.Children.Add(c)

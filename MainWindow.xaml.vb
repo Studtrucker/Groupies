@@ -924,8 +924,8 @@ Class MainWindow
             _participantLevelListCollectionView = New CollectionView(CDS.Skiclub.Levellist)
         End If
 
-        GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
-        GroupLeaderComboBox.ItemsSource = _groupLeaderListCollectionView
+        GroupLevelCombobox.ItemsSource = _groupLevelListCollectionView
+        GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelCombobox.ItemsSource = _participantLevelListCollectionView
 
         ' Uebersicht erstellen

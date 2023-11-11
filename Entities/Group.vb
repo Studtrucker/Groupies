@@ -23,7 +23,15 @@ Namespace Entities
         Public Property GroupPrintNaming As String
 
 
+        Private _groupLevel As Level
         Public Property GroupLevel As Level
+            Get
+                Return _groupLevel
+            End Get
+            Set(value As Level)
+                _groupLevel = value
+            End Set
+        End Property
 
         Private _groupLeader As Instructor
         Public Property GroupLeader As Instructor

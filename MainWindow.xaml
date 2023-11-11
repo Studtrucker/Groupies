@@ -205,8 +205,7 @@
                                              Grid.Column="1" Grid.Row="0"  />
                                     <TextBox Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}" 
                                              Grid.Column="1" Grid.Row="1" />
-                                    <ComboBox Grid.Column="1" Grid.Row="2"
-                                              x:Name="GroupLevelComboBox" 
+                                    <ComboBox Grid.Column="1" Grid.Row="2" x:Name="GroupLevelComboBox" 
                                               SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
                                               SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"/>
@@ -549,9 +548,9 @@
                                         HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Print Name" Binding="{Binding InstructorPrintName}"/>
                                             <DataGridTextColumn Header="Vorname"  Binding="{Binding InstructorFirstName}"/>
-                                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding InstructorLastName}" />
+                                            <DataGridTextColumn Header="Name"  Binding="{Binding InstructorLastName}" />
+                                            <DataGridTextColumn Header="Print Name" Width="*" Binding="{Binding InstructorPrintName}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>
@@ -655,7 +654,7 @@
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
-                                            <DataGridTextColumn Header="Benennung" Binding="{Binding LevelNaming}"/>
+                                            <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding LevelNaming}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>

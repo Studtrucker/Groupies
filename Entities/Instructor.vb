@@ -11,7 +11,7 @@ Namespace Entities
 
         Public Sub New(SaveMe As Boolean, IAmAvailable As Boolean)
             _InstructorID = Guid.NewGuid()
-            Save = SaveMe
+            SaveOrDisplay = SaveMe
             IsAvailable = IAmAvailable
         End Sub
 
@@ -80,7 +80,7 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property Save As Boolean
+        Public Property SaveOrDisplay As Boolean
 
     End Class
 

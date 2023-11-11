@@ -52,12 +52,6 @@ Namespace Entities
             End Get
         End Property
 
-        Public Function GetInstructorsWithoutGroup() As InstructorCollection
-            'Dim List = New InstructorCollection
-            'Instructorlist.Where(Function(x) x.LeaderOfGroup.Equals(Nothing)).ToList.ForEach(Sub(y) List.Add(y))
-            Return Me.Instructorlist.SortedListIsAvailable
-        End Function
-
         Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()

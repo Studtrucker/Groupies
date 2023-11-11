@@ -8,23 +8,21 @@ Namespace Entities
     Public Class InstructorCollection
         Inherits ObservableCollection(Of Instructor)
 
-        'Public Sub New()
-        '    Me.Add(New Instructor(False, True) With {
-        '           .InstructorFirstName = String.Empty,
-        '           .InstructorLastName = String.Empty,
-        '           .InstructorPrintName = String.Empty})
-        'End Sub
+        'Public ReadOnly Property SortedListDisplayables As InstructorCollection
+        '    Get
+        '        Dim sorted = New InstructorCollection
+        '        Me.Where(Function(y) y.SaveAndShow = True).OrderBy(Of String)(Function(x) x.InstructorFullName).ToList.ForEach(Sub(i) sorted.Add(i))
+        '        Return sorted
+        '    End Get
+        'End Property
 
-        Public ReadOnly Property SortedListIsAvailable As ObservableCollection(Of Instructor)
-            Get
-                Return New ObservableCollection(Of Instructor)(Me.Where(Function(y) y.IsAvailable).OrderBy(Of String)(Function(x) x.InstructorFullName))
-            End Get
-        End Property
-        Public ReadOnly Property SortedListDivided As ObservableCollection(Of Instructor)
-            Get
-                Return New ObservableCollection(Of Instructor)(Me.Where(Function(y) y.IsDivided).OrderBy(Of String)(Function(x) x.InstructorFullName))
-            End Get
-        End Property
+        'Public ReadOnly Property SortedListIsAvailable As InstructorCollection
+        '    Get
+        '        Dim sorted = New InstructorCollection
+        '        Me.Where(Function(y) y.IsAvailable).OrderBy(Of String)(Function(x) x.InstructorFullName).ToList.ForEach(Sub(i) sorted.Add(i))
+        '        Return sorted
+        '    End Get
+        'End Property
 
         Public Function GetPrintName(Instructor As Instructor) As String
             Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPrintName

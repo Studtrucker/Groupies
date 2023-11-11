@@ -13,7 +13,7 @@ Namespace Entities
 
         Public Sub New(SaveMe As Boolean)
             _LevelID = Guid.NewGuid()
-            Save = SaveMe
+            SaveOrDisplay = SaveMe
         End Sub
 
         Public Property LevelID As Guid
@@ -36,7 +36,7 @@ Namespace Entities
             _LevelSkills.Remove(skill)
         End Sub
 
-        Property Save As Boolean
+        Property SaveOrDisplay As Boolean
 
     End Class
 End Namespace

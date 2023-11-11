@@ -20,24 +20,11 @@ Public Class GroupView
     End Sub
 
     Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-
-        _group = DirectCast(DataContext, Group)
-        _levelListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist.SortedList)
-        GroupLevelCombobox.ItemsSource = _levelListCollectionView
-
-        _instructorListCollectionView = Nothing
-        _instructorListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist.SortedListIsAvailable)
-        GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
-
-        _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
-        If _groupmemberListCollectionView.CanSort Then
-            _groupmemberListCollectionView.SortDescriptions.Clear()
-            _groupmemberListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFullName", ListSortDirection.Ascending))
-        End If
-        _groupmemberListCollectionView.MoveCurrentToFirst()
-        GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
-
+        SetView()
     End Sub
+    'Private Sub GroupView_GotFocus(sender As Object, e As RoutedEventArgs) Handles Me.GotFocus
+    '    SetView()
+    'End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
         'DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
@@ -54,8 +41,23 @@ Public Class GroupView
         'SetView()
     End Sub
 
-    Private Sub SetView(sender As Object, e As RoutedEventArgs)
+    Private Sub SetView()
 
+        _group = DirectCast(DataContext, Group)
+        _levelListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.SortedLevels)
+        GroupLevelCombobox.ItemsSource = _levelListCollectionView
+
+        _instructorListCollectionView = Nothing
+        _instructorListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.SortedInstructorsAvailable)
+        GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
+
+        _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
+        If _groupmemberListCollectionView.CanSort Then
+            _groupmemberListCollectionView.SortDescriptions.Clear()
+            _groupmemberListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFullName", ListSortDirection.Ascending))
+        End If
+        _groupmemberListCollectionView.MoveCurrentToFirst()
+        GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
     End Sub
 
 

@@ -933,8 +933,8 @@ Class MainWindow
 
         SetView(CDS.Skiclub.Participantlist)
         SetView(CDS.Skiclub.Grouplist)
-        SetView(CDS.Skiclub.Instructorlist)
-        SetView(CDS.Skiclub.Levellist)
+        SetView(CDS.SortedInstructorsDisplayable)
+        SetView(CDS.SortedLevelsDisplayables)
         SetView()
 
     End Sub
@@ -984,7 +984,7 @@ Class MainWindow
 
     Private Sub SetView(Level As LevelCollection)
         _levelListCollectionView = New ListCollectionView(Level)
-        _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Descending))
+        '_levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Descending))
         ' Hinweis AddHandler Seite 764
         AddHandler _levelListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
         ' DataContext wird gesetzt

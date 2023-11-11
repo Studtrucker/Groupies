@@ -14,7 +14,7 @@ Public Class NewInstructorDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Instructor = New Instructor
+        _Instructor = New Instructor(True, True)
         DataContext = _Instructor
 
     End Sub

@@ -827,7 +827,7 @@ Class MainWindow
     Private Sub SaveXML(fileName As String)
         Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, CDS.Skiclub)
+            serializer.Serialize(fs, CDS.SaveSkiclubObjects)
         End Using
     End Sub
 
@@ -929,15 +929,13 @@ Class MainWindow
         ParticipantLevelCombobox.ItemsSource = _participantLevelListCollectionView
 
         ' Uebersicht erstellen
-        CDS.Skiclub.Grouplist.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CDS.Skiclub.Grouplist.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
         SetView(CDS.Skiclub.Participantlist)
         SetView(CDS.Skiclub.Grouplist)
         SetView(CDS.Skiclub.Instructorlist)
         SetView(CDS.Skiclub.Levellist)
         SetView()
-
-        tabitemSkikurse.IsSelected = True
 
     End Sub
 

@@ -20,14 +20,26 @@ Namespace Entities
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
             _Levellist = New LevelCollection
+            _Levellist.Add(New Level(False) With {.LevelNaming = String.Empty, .SortNumber = "000"})
             _Instructorlist = New InstructorCollection
+            _Instructorlist.Add(New Instructor(False, True) With {
+                                .InstructorFirstName = String.Empty,
+                                .InstructorLastName = String.Empty,
+                                .InstructorPrintName = String.Empty})
         End Sub
 
         Public Sub New(Teilnehmerliste As ParticipantCollection)
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
             _Levellist = New LevelCollection
-            readTeilnehmerliste(Teilnehmerliste)
+            readParticipantlist(Teilnehmerliste)
+        End Sub
+
+        Public Sub New(Instructorlist As InstructorCollection)
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
+            readInstructorlist(Instructorlist)
         End Sub
 
 #End Region
@@ -41,13 +53,18 @@ Namespace Entities
         End Property
 
         Public Function GetInstructorsWithoutGroup() As InstructorCollection
-            Dim List = New InstructorCollection
-            Instructorlist.Where(Function(x) x.LeaderOfGroup.Equals(Nothing)).ToList.ForEach(Sub(y) List.Add(y))
-            Return List
+            'Dim List = New InstructorCollection
+            'Instructorlist.Where(Function(x) x.LeaderOfGroup.Equals(Nothing)).ToList.ForEach(Sub(y) List.Add(y))
+            Return Me.Instructorlist.SortedListIsAvailable
         End Function
 
-        Private Sub readTeilnehmerliste(Teilnehmer As ParticipantCollection)
+        Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
+            'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
+            ' Levelsliste = Teilnehmer.ToList.ForEach()
+        End Sub
+        Private Sub readInstructorlist(Instructors As InstructorCollection)
+            Instructorlist = Instructors
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
             ' Levelsliste = Teilnehmer.ToList.ForEach()
         End Sub

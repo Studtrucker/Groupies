@@ -143,7 +143,7 @@ Namespace Services
 
             Do Until CurrentRow > RowCount
 
-                Dim Teilnehmer As New Instructor With {
+                Dim Teilnehmer As New Instructor(True, True) With {
                 .InstructorFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
                 .InstructorLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
                 .InstructorPrintName = Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)}
@@ -159,7 +159,7 @@ Namespace Services
 
             Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelNaming = Benennung)
             If Level Is Nothing Then
-                Level = New Level With {.LevelNaming = Benennung}
+                Level = New Level(True) With {.LevelNaming = Benennung}
                 _skischule.Levellist.Add(Level)
             End If
 

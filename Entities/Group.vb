@@ -25,8 +25,15 @@ Namespace Entities
 
         Public Property GroupLevel As Level
 
-
+        Private _groupLeader As Instructor
         Public Property GroupLeader As Instructor
+            Get
+                Return _groupLeader
+            End Get
+            Set(value As Instructor)
+                _groupLeader = value
+            End Set
+        End Property
 
 
         Public Property GroupMembers As ParticipantCollection

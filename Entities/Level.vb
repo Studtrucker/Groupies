@@ -9,7 +9,11 @@ Namespace Entities
         Inherits BaseModel
 
         Public Sub New()
-            _levelID = Guid.NewGuid()
+        End Sub
+
+        Public Sub New(SaveMe As Boolean)
+            _LevelID = Guid.NewGuid()
+            Save = SaveMe
         End Sub
 
         Public Property LevelID As Guid
@@ -31,6 +35,8 @@ Namespace Entities
         Public Sub RemoveSkill(skill As Skill)
             _LevelSkills.Remove(skill)
         End Sub
+
+        Property Save As Boolean
 
     End Class
 End Namespace

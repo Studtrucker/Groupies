@@ -12,7 +12,7 @@ Public Class NewLevelDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Level = New Level
+        _Level = New Level(True)
         DataContext = _Level
 
     End Sub

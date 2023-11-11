@@ -14,27 +14,27 @@ Namespace Services
 
         Public Function CreateLevels() As LevelCollection
 
-            Dim Anfaenger = New Level With {
+            Dim Anfaenger = New Level(True) With {
                 .LevelNaming = "Anfänger",
                 .LevelID = Guid.NewGuid,
                 .LevelDescription = DescriptionAnfaenger()}
 
-            Dim Fortgeschrittener = New Level With {
+            Dim Fortgeschrittener = New Level(True) With {
                 .LevelNaming = "Fortgeschritten",
                 .LevelDescription = DescriptionFortgeschritten(),
                 .LevelID = Guid.NewGuid}
 
-            Dim Geniesser = New Level With {
+            Dim Geniesser = New Level(True) With {
                 .LevelNaming = "Genießer",
                 .LevelDescription = DescriptionGeniesser(),
                 .LevelID = Guid.NewGuid}
 
-            Dim Koenner = New Level With {
+            Dim Koenner = New Level(True) With {
                 .LevelNaming = "Könner",
                 .LevelDescription = DescriptionKoenner(),
                 .LevelID = Guid.NewGuid}
 
-            Dim Experte = New Level With {
+            Dim Experte = New Level(True) With {
                 .LevelNaming = "Experte",
                 .LevelDescription = DescriptionExperte(),
                 .LevelID = Guid.NewGuid}

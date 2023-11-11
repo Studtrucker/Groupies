@@ -118,14 +118,14 @@
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
             <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2"
-                     Visibility="Collapsed">
+>
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
 
                     
                 <DockPanel x:Name="GroupOverviewDockPanel" Visibility="{Binding ElementName=tabitemSkikursuebersicht, Path=Visibility}">
-                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False" Visibility="Collapsed">
+                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantName}"/>
@@ -207,16 +207,17 @@
                                              Grid.Column="1" Grid.Row="1" />
                                     <ComboBox Grid.Column="1" Grid.Row="2"
                                               x:Name="GroupLevelComboBox" 
-                                              DisplayMemberPath="LevelNaming"
-                                              SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="3" 
-                                              x:Name="GroupLeaderComboBox" 
-                                              DisplayMemberPath="InstructorFullName"
-                                              SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
+                                              SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
+                                              SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ComboBox Grid.Column="1" Grid.Row="3" x:Name="GroupLeaderCombobox"
+                                              SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
+                                              SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
                                                Grid.Column="1" Grid.Row="4" Margin="2" Padding="7" />
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
-                                              ItemsSource="{Binding}" AutoGenerateColumns="False"
+                                              AutoGenerateColumns="False"
                                               IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
 
                                         <DataGrid.Columns>

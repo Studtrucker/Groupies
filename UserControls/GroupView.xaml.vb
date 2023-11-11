@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Skiclub.Entities
 
+
 Public Class GroupView
     Private _group As Group
     Private _levelListCollectionView As ICollectionView
@@ -48,7 +49,7 @@ Public Class GroupView
         GroupLevelCombobox.ItemsSource = _levelListCollectionView
 
         _instructorListCollectionView = Nothing
-        _instructorListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.SortedInstructorsAvailable)
+        _instructorListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
         GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
@@ -60,5 +61,29 @@ Public Class GroupView
         GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
     End Sub
 
+    Private Sub GroupLevelCombobox_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+    End Sub
 
+    Private Sub GroupLeaderCombobox_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        _group.GroupLeader = _instructorListCollectionView.CurrentItem
+        If _group.GroupLeader.SaveOrDisplay Then
+            _group.GroupLeader.IsAvailable = False
+        End If
+    End Sub
+
+    Private Sub xcv(sender As Object, e As DependencyPropertyChangedEventArgs)
+
+    End Sub
+
+    Private Sub GroupLeaderCombobox_Selected(sender As Object, e As RoutedEventArgs)
+
+    End Sub
+
+    Private Sub GroupLeaderCombobox_Unselected(sender As Object, e As RoutedEventArgs)
+
+    End Sub
+
+    Private Sub GroupLeaderCombobox_Selected_1(sender As Object, e As RoutedEventArgs)
+
+    End Sub
 End Class

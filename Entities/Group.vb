@@ -22,27 +22,9 @@ Namespace Entities
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Printbenennung ist ein Pflichtfeld")>
         Public Property GroupPrintNaming As String
 
-
-        Private _groupLevel As Level
         Public Property GroupLevel As Level
-            Get
-                Return _groupLevel
-            End Get
-            Set(value As Level)
-                _groupLevel = value
-            End Set
-        End Property
 
-        Private _groupLeader As Instructor
         Public Property GroupLeader As Instructor
-            Get
-                Return _groupLeader
-            End Get
-            Set(value As Instructor)
-                _groupLeader = value
-            End Set
-        End Property
-
 
         Public Property GroupMembers As ParticipantCollection
 

@@ -47,5 +47,35 @@ Namespace Entities
             End Get
         End Property
 
+        Public Sub SetAsGroupMember(GroupID As Guid)
+            MemberOfGroup = GroupID
+            _IsGroupMember = True
+        End Sub
+        Public Sub SetAsGroupMember()
+            _IsGroupMember = True
+        End Sub
+
+        Public Sub DeleteFromGroup()
+            MemberOfGroup = Nothing
+            _IsGroupMember = False
+        End Sub
+
+        Private _IsGroupMember As Boolean
+        Public Property IsGroupMember As Boolean
+            Get
+                Return _IsGroupMember
+            End Get
+            Set(value As Boolean)
+                _IsGroupMember = value
+            End Set
+        End Property
+
+        Public ReadOnly Property IsNotInGroup As Boolean
+            Get
+                Return Not _IsGroupMember
+            End Get
+        End Property
+
+
     End Class
 End Namespace

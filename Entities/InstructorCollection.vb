@@ -7,22 +7,7 @@ Namespace Entities
 
     Public Class InstructorCollection
         Inherits ObservableCollection(Of Instructor)
-
-        'Public ReadOnly Property SortedListDisplayables As InstructorCollection
-        '    Get
-        '        Dim sorted = New InstructorCollection
-        '        Me.Where(Function(y) y.SaveAndShow = True).OrderBy(Of String)(Function(x) x.InstructorFullName).ToList.ForEach(Sub(i) sorted.Add(i))
-        '        Return sorted
-        '    End Get
-        'End Property
-
-        'Public ReadOnly Property SortedListIsAvailable As InstructorCollection
-        '    Get
-        '        Dim sorted = New InstructorCollection
-        '        Me.Where(Function(y) y.IsAvailable).OrderBy(Of String)(Function(x) x.InstructorFullName).ToList.ForEach(Sub(i) sorted.Add(i))
-        '        Return sorted
-        '    End Get
-        'End Property
+        Implements IEnumerable(Of Instructor)
 
         Public Function GetPrintName(Instructor As Instructor) As String
             Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPrintName

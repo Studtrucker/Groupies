@@ -23,7 +23,7 @@ Public Class NewParticipantDialog
         _instructorListCollectionView = New CollectionView(DS.Skiclub.Grouplist)
 
         ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
-        MemberOfGroupComboBox.ItemsSource = _instructorListCollectionView
+        'MemberOfGroupComboBox.ItemsSource = _instructorListCollectionView
 
     End Sub
 

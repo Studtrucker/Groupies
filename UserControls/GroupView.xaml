@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Skiclub"
-             xmlns:Services="clr-namespace:Skiclub.Services.CurrentDataService"
              mc:Ignorable="d" 
              Width="Auto" Height="Auto">
 
@@ -47,38 +46,33 @@
             <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}"  />
             <!--Combobox Level-->
-            <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal">
-                <ComboBox Grid.Column="2" Grid.Row="3" 
+                 <ComboBox Grid.Column="2" Grid.Row="3" 
                           SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                          x:Name="GroupLevelCombobox" SelectionChanged="GroupLevelCombobox_SelectionChanged"/>
-               <TextBlock Text="{Binding GroupLevel.LevelNaming}"/>
-            </StackPanel>
+                          x:Name="GroupLevelCombobox" />
+
             <!--Combobox Skilehrer-->
-            <StackPanel Grid.Column="2" Grid.Row="4" Orientation="Horizontal">
                 <ComboBox Grid.Column="2" Grid.Row="4" 
-                          SelectedValuePath="InstructorLastName" DisplayMemberPath="InstructorLastName" IsSynchronizedWithCurrentItem="True"
+                          SelectedValuePath="InstructorLastName" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLeader.InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=GroupLeader.InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLeaderCombobox" />
-                <TextBlock Text="{Binding GroupLeader.InstructorLastName}" />
-            </StackPanel>
 
             <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
 
             <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False"
-                      IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" >
+                      IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" AllowDrop="True" DragDrop.Drop="GroupMembersDataGrid_Drop">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
-                    <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}"/>
+                    <DataGridTextColumn Header="Level" Width="*" Binding="{Binding ParticipantLevel.LevelNaming}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel  Grid.Column="2" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="+" Click="AddParticipant" Width="100"/>
-                <Button Content="~" Click="SetView" Width="80"/>
-                <Button Content="-" Click="RemoveParticipant" Width="100"/>
+                <Button Content="+" Width="100"/>
+                <Button Content="~"  Width="80"/>
+                <Button Content="-" Width="100"/>
             </StackPanel>
             <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
 

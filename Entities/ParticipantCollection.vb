@@ -5,6 +5,7 @@ Namespace Entities
 
     Public Class ParticipantCollection
         Inherits ObservableCollection(Of Participant)
+        Implements IEnumerable
 
     End Class
 End Namespace

@@ -39,12 +39,12 @@
         <Style x:Key="friendDataGridRowStyle" TargetType="{x:Type DataGridRow}">
 
         </Style>
-        
+
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="4"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
-        
+
     </Window.Resources>
 
     <DockPanel>
@@ -117,30 +117,47 @@
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" >
 
-            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="tabitemSkikursuebersicht_GotFocus" Margin="-2,-2,0,-2"
->
+            <TabItem Header="Übersicht" x:Name="tabitemSkikursuebersicht" GotFocus="OverviewTabItem_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
 
-                    
                 <DockPanel x:Name="GroupOverviewDockPanel" Visibility="{Binding ElementName=tabitemSkikursuebersicht, Path=Visibility}">
-                    <DataGrid x:Name="Teilnehmerliste" DockPanel.Dock="Right" AutoGenerateColumns="False" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstname}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantName}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                               ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <WrapPanel x:Name="GroupOverviewWrapPanel" Width="{Binding ElementName=GroupOverviewDockPanel, Path=ActualWidth}" />
 
-                    </ScrollViewer>
+                    <Grid  IsSharedSizeScope="True">
+                        
+                        <Grid x:Name="LayerGroupOverview">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition SharedSizeGroup="ParticipantColumn"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
+                                <WrapPanel x:Name="GroupOverviewWrapPanel" />
+                            </ScrollViewer>
+                        </Grid>
+
+                        <Grid x:Name="LayerParticipantToDistributeOverview">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid x:Name="participantlistOverviewDataGrid" Grid.Column="1" AutoGenerateColumns="False" Grid.RowSpan="2"
+                                      ItemsSource="{Binding}" MouseMove="participantlistOverviewDataGrid_MouseMove" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                                    <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+                        </Grid>
+                    </Grid>
                 </DockPanel>
             </TabItem>
 
-            
-            
+
+
             <TabItem Header="Gruppen" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
@@ -195,6 +212,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
+                                    
                                     <Label Grid.Column="0" Grid.Row="0" Content="Print Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Level" Margin="2"/>
@@ -216,7 +234,7 @@
                                     <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
                                                Grid.Column="1" Grid.Row="4" Margin="2" Padding="7" />
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
-                                              AutoGenerateColumns="False"
+                                              AutoGenerateColumns="False" ItemsSource="{Binding GroupMembers}"
                                               IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
 
                                         <DataGrid.Columns>
@@ -231,7 +249,7 @@
                                         <Button Content="-" Click="RemoveParticipant" Width="100"/>
                                     </StackPanel>
                                     <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
-                                        
+
                                     </Canvas>
                                 </Grid>
                             </Grid>
@@ -277,24 +295,26 @@
                                                        Height="5" Background="Black" />
 
 
-                                        <DataGrid x:Name="skikurseDataGrid" Grid.Row="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True"
-                                              SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                              HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                                              RowStyle="{StaticResource friendDataGridRowStyle}"   >
+                                        <DataGrid x:Name="skikurseDataGrid" Grid.Row="0" ItemsSource="{Binding}" 
+                                                  IsSynchronizedWithCurrentItem="True" SelectionMode="Extended"  
+                                                  AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
+                                                  HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
+                                                  RowStyle="{StaticResource friendDataGridRowStyle}"   >
 
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Print Benennung"  Binding="{Binding GroupPrintNaming}"/>
                                                 <DataGridTextColumn Header="Benennung" Binding="{Binding GroupNaming}"/>
+                                                <DataGridTextColumn Header="Print Benennung"  Binding="{Binding GroupPrintNaming}"/>
                                                 <DataGridTextColumn Header="Level"  Binding="{Binding GroupLevel.LevelNaming}"/>
                                                 <DataGridTextColumn Header="Skilehrer"  Binding="{Binding GroupLeader.InstructorFullName}"/>
                                                 <DataGridTextColumn Header="Anzahl Mitglieder" Width="*" Binding="{Binding GroupMembers.Count, Mode=OneWay}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
+
                                         <DataGrid x:Name="ParticipantsToDistributeDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
                                               RowStyle="{StaticResource friendDataGridRowStyle}" >
-                                           
+
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Vorname"  Binding="{Binding ParticipantFirstName}"/>
                                                 <DataGridTextColumn Header="Name"  Binding="{Binding ParticipantLastName}"/>
@@ -308,6 +328,7 @@
                             <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
 
                         </Grid>
+
                     </Grid>
 
                 </DockPanel>

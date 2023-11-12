@@ -20,12 +20,7 @@ Namespace Entities
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
             _Levellist = New LevelCollection
-            _Levellist.Add(New Level(False) With {.LevelNaming = String.Empty, .SortNumber = "000"})
             _Instructorlist = New InstructorCollection
-            _Instructorlist.Add(New Instructor(False, True) With {
-                                .InstructorFirstName = String.Empty,
-                                .InstructorLastName = String.Empty,
-                                .InstructorPrintName = String.Empty})
         End Sub
 
         Public Sub New(Teilnehmerliste As ParticipantCollection)
@@ -41,6 +36,17 @@ Namespace Entities
             _Levellist = New LevelCollection
             readInstructorlist(Instructorlist)
         End Sub
+
+#End Region
+
+#Region "Properties"
+        Public ReadOnly Property ParticipantsNotInGroup As ParticipantCollection
+            Get
+                Dim List = New ParticipantCollection
+                Participantlist.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
+                Return List
+            End Get
+        End Property
 
 #End Region
 

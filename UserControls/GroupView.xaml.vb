@@ -1,9 +1,10 @@
 ﻿Imports System.ComponentModel
+Imports System.Text
 Imports Skiclub.Entities
 
 
 Public Class GroupView
-    Private _group As Group
+    'Private _group As Group
     Private _levelListCollectionView As ICollectionView
     Private _instructorListCollectionView As ICollectionView
     Private _groupmemberListCollectionView As ICollectionView
@@ -20,20 +21,49 @@ Public Class GroupView
 
     End Sub
 
+    Public Property Group As Group
+
     Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         SetView()
+        Group = DirectCast(DataContext, Group)
     End Sub
     'Private Sub GroupView_GotFocus(sender As Object, e As RoutedEventArgs) Handles Me.GotFocus
     '    SetView()
     'End Sub
 
-    Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
-        'DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
-        'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Participant).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupID
-        'SetView()
+    Private Sub AddParticipant(Participant As Participant)
+
+        Participant.SetAsGroupMember(Group.GroupID)
+        Group.AddMember(Participant)
+
+        'Dim Layer = DirectCast(Me.Parent, WrapPanel).FindName("LayerParticipantToDistributeOverview")
+
+        'Dim Grid = DirectCast(Layer, Grid)
+        'Dim GridCollectionView = DirectCast(Grid.DataContext, CollectionView)
+        'If GridCollectionView.CurrentItem IsNot Nothing Then
+
+        '    Dim item = GridCollectionView.CurrentItem
+        '    DirectCast(item, Participant).SetAsGroupMember(_group.GroupID)
+        '    Group.AddMember(item)
+        '    Dim ie = LogicalTreeHelper.GetChildren(Grid)
+        '    Dim DataGrid As DataGrid
+        '    For Each item In ie
+        '        If item.name = "participantlistOverviewDataGrid" Then
+        '            DataGrid = item
+        '            DataGrid.Items.Remove(item)
+        '        End If
+        '    Next
+        'End If
+
     End Sub
 
-    Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
+    Private Sub RemoveParticipant()
+
+        For Each item In GroupMembersDataGrid.SelectedItems
+            DirectCast(item, Participant).DeleteFromGroup()
+        Next
+        Group.RemoveMembers(GroupMembersDataGrid.SelectedItems)
+
         'If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
         '    Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Participant).ParticipantID).Single
         '    DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
@@ -44,12 +74,18 @@ Public Class GroupView
 
     Private Sub SetView()
 
-        _group = DirectCast(DataContext, Group)
-        _levelListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.SortedLevels)
+        _levelListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
+        If _levelListCollectionView.CanSort Then
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+        End If
         GroupLevelCombobox.ItemsSource = _levelListCollectionView
 
-        _instructorListCollectionView = Nothing
-        _instructorListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
+        Dim il = Enumerable.AsEnumerable(Of Instructor)(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
+        _instructorListCollectionView = New CollectionView(il)
+        If _instructorListCollectionView.CanSort Then
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
+        End If
         GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
@@ -61,29 +97,16 @@ Public Class GroupView
         GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
     End Sub
 
-    Private Sub GroupLevelCombobox_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-    End Sub
+    Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs)
 
-    Private Sub GroupLeaderCombobox_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-        _group.GroupLeader = _instructorListCollectionView.CurrentItem
-        If _group.GroupLeader.SaveOrDisplay Then
-            _group.GroupLeader.IsAvailable = False
+        Dim CorrectDataFormat = e.Data.GetDataPresent("System.Windows.Controls.SelectedItemCollection")
+        If CorrectDataFormat Then
+            Dim ic = e.Data.GetData("System.Windows.Controls.SelectedItemCollection")
+            For Each item In ic
+                AddParticipant(DirectCast(item, Participant))
+            Next
         End If
-    End Sub
 
-    Private Sub xcv(sender As Object, e As DependencyPropertyChangedEventArgs)
-
-    End Sub
-
-    Private Sub GroupLeaderCombobox_Selected(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
-    Private Sub GroupLeaderCombobox_Unselected(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
-    Private Sub GroupLeaderCombobox_Selected_1(sender As Object, e As RoutedEventArgs)
 
     End Sub
 End Class

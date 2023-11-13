@@ -151,7 +151,7 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewParticipant, AddressOf HandleNeuerTeilnehmerExecuted, AddressOf HandleNeuerTeilnehmerCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewParticipant, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
@@ -613,11 +613,11 @@ Class MainWindow
 
 #Region "Teilnehmer"
 
-    Private Sub HandleNeuerTeilnehmerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub HandleNewParticipantCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = _Skiclub IsNot Nothing
     End Sub
 
-    Private Sub HandleNeuerTeilnehmerExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleNewParticipantExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New NewParticipantDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -970,22 +970,29 @@ Class MainWindow
     Private Sub setViewOverview(ParticipantListToDistribute As ParticipantCollection)
 
         If _Skiclub IsNot Nothing AndAlso GroupOverviewWrapPanel.Children.Count = 0 Then
-
-            participantlistOverviewDataGrid.ItemsSource = New CollectionView(ParticipantListToDistribute)
-            LayerParticipantToDistributeOverview.DataContext = _participantLevelListCollectionView
-
             ' Uebersicht erstellen
             _Skiclub.Grouplist.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+
+
             ' Teilnehmer ohne Gruppeneinteilung in die Teilnehmerliste füllen
+            'participantlistOverviewDataGrid.ItemsSource = New CollectionView(ParticipantListToDistribute)
+
+            ' Neue ListCollectionView laden
+            _participantListOverviewCollectionView = New ListCollectionView(_Skiclub.Participantlist)
+            ' ListCollectionView nach Teilnehmer in Gruppen filtern
             If _participantListOverviewCollectionView.CanFilter Then
                 _participantListOverviewCollectionView.Filter = Function(x As Participant) x.IsNotInGroup = True
             End If
+
+            ' ListCollectionView sortieren
             If _participantListOverviewCollectionView.CanSort Then
                 _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
                 _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
             End If
 
-            '            participantlistOverviewDataGrid.ItemsSource = _participantListOverviewCollectionView
+            _participantListOverviewCollectionView.Refresh()
+            'LayerParticipantToDistributeOverview.DataContext = _participantLevelListCollectionView
+            participantlistOverviewDataGrid.ItemsSource = _participantListOverviewCollectionView
         End If
 
     End Sub

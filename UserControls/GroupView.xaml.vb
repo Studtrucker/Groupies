@@ -115,7 +115,7 @@ Public Class GroupView
         End If
         CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
         If CorrectDataFormat Then
-            Dim ic = e.Data.GetData("Skiclub.Eintities.Participant")
+            Dim ic = e.Data.GetData("Skiclub.Eintities.Participant", True)
             AddParticipant(DirectCast(ic, Participant))
         End If
 

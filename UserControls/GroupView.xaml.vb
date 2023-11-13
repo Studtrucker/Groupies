@@ -74,18 +74,25 @@ Public Class GroupView
 
     Private Sub SetView()
 
-        _levelListCollectionView = New CollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
+        _levelListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
         If _levelListCollectionView.CanSort Then
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
         End If
         GroupLevelCombobox.ItemsSource = _levelListCollectionView
 
-        Dim il = Enumerable.AsEnumerable(Of Instructor)(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
-        _instructorListCollectionView = New CollectionView(il)
+        _instructorListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
         If _instructorListCollectionView.CanSort Then
-            _levelListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
-            _levelListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
+            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
+            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
         End If
+
+        '*****************************************************************************************************
+        '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
+        '* If _instructorListCollectionView.CanFilter Then                                                   *
+        '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
+        '* End If                                                                                            *
+        '*****************************************************************************************************
+
         GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
@@ -106,7 +113,22 @@ Public Class GroupView
                 AddParticipant(DirectCast(item, Participant))
             Next
         End If
+        CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
+        If CorrectDataFormat Then
+            Dim ic = e.Data.GetData("Skiclub.Eintities.Participant")
+            AddParticipant(DirectCast(ic, Participant))
+        End If
 
+    End Sub
+
+
+    Private Sub GroupMembersDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles GroupMembersDataGrid.MouseDown
+        Dim Tn = TryCast(GroupMembersDataGrid.SelectedItem, Participant)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(Participant), Tn)
+            DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Copy)
+        End If
 
     End Sub
 End Class

@@ -63,7 +63,8 @@
 
             <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False"
-                      IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" AllowDrop="True" DragDrop.Drop="GroupMembersDataGrid_Drop">
+                      IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" 
+                      AllowDrop="True" DragDrop.Drop="GroupMembersDataGrid_Drop" SelectionMode="Extended">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
                     <DataGridTextColumn Header="Level" Width="*" Binding="{Binding ParticipantLevel.LevelNaming}"/>

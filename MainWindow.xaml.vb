@@ -525,15 +525,17 @@ Class MainWindow
     Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New PrintDialog()
-        Dim doc As FixedDocument
-        Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-        Dim pageMargin = New Thickness(30, 30, 30, 60)
-        If e.Parameter = "InstructorInfo" Then
-            doc = PrintoutInfo(Printversion.Instructor, printArea, pageMargin)
-        Else
-            doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
+        If dlg.ShowDialog = True Then
+            Dim doc As FixedDocument
+            Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+            Dim pageMargin = New Thickness(30, 30, 30, 60)
+            If e.Parameter = "InstructorInfo" Then
+                doc = PrintoutInfo(Printversion.Instructor, printArea, pageMargin)
+            Else
+                doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
+            End If
+            dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
         End If
-        dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
 
     End Sub
 
@@ -1233,20 +1235,6 @@ Class MainWindow
         e.Handled = True
     End Sub
 
-    Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs) Handles Canvas.Drop
-        Dim tn As Participant = CType(e.Data.GetData(GetType(Participant)), Participant)
-        If tn IsNot Nothing Then
-            Dim canvas As Canvas = TryCast(e.Source, Canvas)
-            Dim p = e.GetPosition(canvas)
-
-            Dim c = New ContentControl() With {
-                .Content = tn}
-            Canvas.SetLeft(c, p.X)
-            Canvas.SetTop(c, p.Y)
-            canvas.Children.Add(c)
-        End If
-        TryCast(e.Source, Canvas).Background = Brushes.LightGray
-    End Sub
 
     Private Sub participantlistOverviewDataGrid_MouseMove(sender As Object, e As MouseEventArgs)
         Dim datagrid = TryCast(sender, DataGrid)
@@ -1259,7 +1247,23 @@ Class MainWindow
     End Sub
 
     Private Sub Dropped()
+        Dim P = _Skiclub.ParticipantsToDistribute
         participantlistOverviewDataGrid.ItemsSource = New ListCollectionView(_Skiclub.ParticipantsNotInGroup)
+    End Sub
+
+    Private Sub participantlistOverviewDataGrid_Drop(sender As Object, e As DragEventArgs)
+
+        Dim CorrectDataFormat = e.Data.GetDataPresent("System.Windows.Controls.SelectedItemCollection")
+        If CorrectDataFormat Then
+            Dim ic = e.Data.GetData("System.Windows.Controls.SelectedItemCollection")
+            For Each item As Participant In ic
+                item.DeleteFromGroup()
+                _Skiclub.Participantlist.Remove(_Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(item.ParticipantID)).First)
+                _Skiclub.Participantlist.Add(item)
+            Next
+            Dropped()
+        End If
+
     End Sub
 
 #End Region

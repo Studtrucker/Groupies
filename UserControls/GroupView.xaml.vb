@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Text
 Imports Skiclub.Entities
 
 
@@ -27,33 +26,11 @@ Public Class GroupView
         SetView()
         Group = DirectCast(DataContext, Group)
     End Sub
-    'Private Sub GroupView_GotFocus(sender As Object, e As RoutedEventArgs) Handles Me.GotFocus
-    '    SetView()
-    'End Sub
 
     Private Sub AddParticipant(Participant As Participant)
 
         Participant.SetAsGroupMember(Group.GroupID)
         Group.AddMember(Participant)
-
-        'Dim Layer = DirectCast(Me.Parent, WrapPanel).FindName("LayerParticipantToDistributeOverview")
-
-        'Dim Grid = DirectCast(Layer, Grid)
-        'Dim GridCollectionView = DirectCast(Grid.DataContext, CollectionView)
-        'If GridCollectionView.CurrentItem IsNot Nothing Then
-
-        '    Dim item = GridCollectionView.CurrentItem
-        '    DirectCast(item, Participant).SetAsGroupMember(_group.GroupID)
-        '    Group.AddMember(item)
-        '    Dim ie = LogicalTreeHelper.GetChildren(Grid)
-        '    Dim DataGrid As DataGrid
-        '    For Each item In ie
-        '        If item.name = "participantlistOverviewDataGrid" Then
-        '            DataGrid = item
-        '            DataGrid.Items.Remove(item)
-        '        End If
-        '    Next
-        'End If
 
     End Sub
 
@@ -104,31 +81,34 @@ Public Class GroupView
         GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
     End Sub
 
-    Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs)
-
+    Private Sub GroupMembersDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
+        ' Participants werden Groupmember
         Dim CorrectDataFormat = e.Data.GetDataPresent("System.Windows.Controls.SelectedItemCollection")
         If CorrectDataFormat Then
             Dim ic = e.Data.GetData("System.Windows.Controls.SelectedItemCollection")
-            For Each item In ic
-                AddParticipant(DirectCast(item, Participant))
+            For Each Participant As Participant In ic
+                Participant.SetAsGroupMember(Group.GroupID)
+                Group.AddMember(Participant)
             Next
         End If
-        CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
-        If CorrectDataFormat Then
-            Dim ic = e.Data.GetData("Skiclub.Eintities.Participant", True)
-            AddParticipant(DirectCast(ic, Participant))
-        End If
-
     End Sub
 
-
-    Private Sub GroupMembersDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles GroupMembersDataGrid.MouseDown
-        Dim Tn = TryCast(GroupMembersDataGrid.SelectedItem, Participant)
-
-        If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(Participant), Tn)
-            DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Copy)
+    Private Sub GroupMembersDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
+        ' Participants verlassen die Gruppe
+        Dim datagrid = TryCast(sender, DataGrid)
+        If datagrid IsNot Nothing AndAlso e.LeftButton = MouseButtonState.Pressed Then
+            Dim x = DragDrop.DoDragDrop(datagrid, datagrid.SelectedItems, DragDropEffects.Move)
+            If x = DragDropEffects.Move Then
+                HasDropped()
+            End If
         End If
-
     End Sub
+
+    Private Sub HasDropped()
+        Dim Pl = New ParticipantCollection
+        GroupMembersDataGrid.SelectedItems.Cast(Of Participant).ToList.ForEach(Sub(x) x.DeleteFromGroup())
+        GroupMembersDataGrid.SelectedItems.Cast(Of Participant).ToList.ForEach(Sub(x) Pl.Add(x))
+        Group.RemoveMembers(Pl)
+    End Sub
+
 End Class

@@ -142,9 +142,11 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
                             </Grid.ColumnDefinitions>
-                            <DataGrid x:Name="participantlistOverviewDataGrid" Grid.Column="1" AutoGenerateColumns="False" Grid.RowSpan="2"
+                            <DataGrid Grid.Column="1" Grid.Row="0" x:Name="participantlistOverviewDataGrid"
+                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                                       ItemsSource="{Binding}" MouseMove="participantlistOverviewDataGrid_MouseMove" 
-                                      SelectionMode="Extended" CanUserAddRows="False" >
+                                      DragDrop.Drop="participantlistOverviewDataGrid_Drop" AllowDrop="True" 
+                                      CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>

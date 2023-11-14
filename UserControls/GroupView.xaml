@@ -32,7 +32,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
@@ -62,19 +62,17 @@
             <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
 
             <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
-                      IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False"
-                      IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" 
-                      AllowDrop="True" DragDrop.Drop="GroupMembersDataGrid_Drop" SelectionMode="Extended">
+                      IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
+                      ItemsSource="{Binding}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
+                      DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
+                      CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
+                    <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
                     <DataGridTextColumn Header="Level" Width="*" Binding="{Binding ParticipantLevel.LevelNaming}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel  Grid.Column="2" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="+" Width="100"/>
-                <Button Content="~"  Width="80"/>
-                <Button Content="-" Width="100"/>
-            </StackPanel>
+
             <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
 
             </Canvas>

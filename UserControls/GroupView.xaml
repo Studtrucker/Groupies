@@ -4,80 +4,83 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Skiclub"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              Width="Auto" Height="Auto">
 
-    
-    <Grid x:Name="gridSkikursdetails" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
-        <!-- Detailangaben -->
-        <Grid Grid.Row="1" Margin="2" >
+    <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="10" Color="DarkGray"/>
+        </Border.Effect>
+
+        <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Grid.Column="1" Grid.Row="1" Content="Print Benennung" Margin="2"/>
-            <Label Grid.Column="1" Grid.Row="2" Content="Benennung" Margin="2"/>
-            <Label Grid.Column="1" Grid.Row="3" Content="Level" Margin="2"/>
-            <Label Grid.Column="1" Grid.Row="4" Content="Skilehrer" Margin="2"/>
-            <Label Grid.Column="1" Grid.Row="5" Content="Anzahl Miglieder" Margin="2"/>
-            <Label Grid.Column="1" Grid.Row="6" Content="Migliederliste" Margin="2"/>
-            
-            <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}"  />
-            <!--Combobox Level-->
-                 <ComboBox Grid.Column="2" Grid.Row="3" 
+
+            <!-- Detailangaben -->
+            <Grid Grid.Row="1" Margin="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="1" Grid.Row="1" Content="Print Benennung" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="2" Content="Benennung" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="Level" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="4" Content="Skilehrer" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="5" Content="Anzahl Miglieder" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="6" Content="Migliederliste" Margin="2"/>
+
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=GroupPrintNaming, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}"  />
+                <!--Combobox Level-->
+                <ComboBox Grid.Column="2" Grid.Row="3" 
                           SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLevelCombobox" />
 
-            <!--Combobox Skilehrer-->
+                <!--Combobox Skilehrer-->
                 <ComboBox Grid.Column="2" Grid.Row="4" 
                           SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLeaderCombobox" />
 
-            <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
+                <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
 
-            <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
+                <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                       ItemsSource="{Binding}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
                       DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
                       CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}"
                       SelectionMode="Extended">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
-                    <DataGridTextColumn Header="Level" Width="*" Binding="{Binding ParticipantLevel.LevelNaming}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                        <DataGridTextColumn Header="Level" Width="*" Binding="{Binding ParticipantLevel.LevelNaming}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-            <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
-
-            </Canvas>
-        </Grid>
+            </Grid>
     </Grid>
+        </Border>
 
 </UserControl>

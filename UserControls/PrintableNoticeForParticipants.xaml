@@ -9,9 +9,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
 
-    <DockPanel>
-        <Image x:Name="Logo" Margin="5" Grid.Column="1" DockPanel.Dock="Bottom"
-               Width="Auto" Height="50" Source="/Images/LogoKroen.png"/>
+    <DockPanel >
+        <Grid DockPanel.Dock="Bottom" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Image x:Name="QRWeb" Margin="5" HorizontalAlignment="Center"
+               Width="Auto" Height="65" Source="/Images/QRWebsiteSportKroen.png"/>
+                <TextBlock Text="Website" HorizontalAlignment="Center" FontSize="10"/>
+            </StackPanel>
+            <Image x:Name="Logo" Margin="5"  HorizontalAlignment="Center" Grid.Column="1"
+               Width="Auto" Height="60" Source="/Images/LogoKroen.png"/>
+
+            <StackPanel Grid.Column="2">
+                <Image x:Name="QRContact" Margin="5" HorizontalAlignment="Center"
+               Width="Auto" Height="65" Source="/Images/QRKontaktSportKroen.png" />
+                <TextBlock Text="Kontakt" HorizontalAlignment="Center" FontSize="10"/>
+            </StackPanel>
+        </Grid>
+
         <Grid DockPanel.Dock="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

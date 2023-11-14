@@ -23,7 +23,7 @@ Namespace UserControls
 
             GroupPrintName = Group.GroupPrintNaming
             GroupNaming = Group.GroupNaming
-            Members = Group.GroupMembers
+            Members = Group.GroupMembers.ParticipantCollectionOrdered
             If Group.GroupLevel IsNot Nothing Then
                 GroupLevelNaming = Group.GroupLevel.LevelNaming
             End If

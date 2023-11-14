@@ -21,7 +21,7 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Group As Group) Implements IPrintableNotice.InitPropsFromGroup
 
             GroupPrintName = Group.GroupPrintNaming
-            Members = Group.GroupMembers
+            Members = Group.GroupMembers.ParticipantCollectionOrdered
 
             If Group.GroupLeader IsNot Nothing Then
                 GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.GroupLeader)

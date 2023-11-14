@@ -326,6 +326,12 @@
   <ItemGroup>
     <Resource Include="Images\LogoKroen.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\QRKontaktSportKroen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\QRWebsiteSportKroen.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

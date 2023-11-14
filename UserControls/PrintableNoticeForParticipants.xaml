@@ -8,9 +8,11 @@
              xmlns:conv="clr-namespace:Skiclub.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
-    
-    
-    <Grid>
+
+    <DockPanel>
+        <Image x:Name="Logo" Margin="5" Grid.Column="1" DockPanel.Dock="Bottom"
+               Width="Auto" Height="50" Source="/Images/LogoKroen.png"/>
+        <Grid DockPanel.Dock="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -40,7 +42,10 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
                 </DataGrid.Columns>
+
             </DataGrid>
         </DockPanel>
     </Grid>
+
+    </DockPanel>
 </UserControl>

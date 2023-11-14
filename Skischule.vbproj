@@ -323,6 +323,9 @@
   <ItemGroup>
     <Resource Include="Images\ski-48.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LogoKroen.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

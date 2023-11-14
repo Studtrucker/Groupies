@@ -129,7 +129,7 @@
                         <Grid x:Name="LayerGroupOverview">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition SharedSizeGroup="ParticipantColumn"/>
+                                <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="600"/>
                             </Grid.ColumnDefinitions>
 
                             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
@@ -140,12 +140,12 @@
                         <Grid x:Name="LayerParticipantToDistributeOverview">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
+                                <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="600"/>
                             </Grid.ColumnDefinitions>
                             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="participantlistOverviewDataGrid"
                                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                                       ItemsSource="{Binding}" MouseMove="participantlistOverviewDataGrid_MouseMove" 
-                                      DragDrop.Drop="participantlistOverviewDataGrid_Drop" AllowDrop="True" 
+                                      DragDrop.Drop="participantlistOverviewDataGrid_Drop" AllowDrop="True" IsReadOnly="True"
                                       CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
@@ -161,7 +161,7 @@
 
 
 
-            <TabItem Header="Gruppen" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2">
+            <TabItem Header="Gruppen" x:Name="tabitemSkikurse" GotFocus="tabitemSkikurs_GotFocus" Margin="-2,-2,0,-2" Visibility="Visible">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>
@@ -174,8 +174,8 @@
                         <DockPanel LastChildFill="False" Width="Auto"/>
                         <!-- Dock="Right" - Button, um den "zu Verteilende Teilnehmer  Explorer" aufzuklappen -->
                         <!--<Button Margin="10,2,0,-2" x:Name="btnShowParticipantsToDistributeExplorer" 
-                                MouseEnter="HandleButtonExpMouseEnter">Liste Teilnehmer</Button>-->
-                        <DockPanel LastChildFill="False" Width="Auto"/>
+                                MouseEnter="HandleButtonExpMouseEnter">Liste Teilnehmer</Button>
+                        <DockPanel LastChildFill="False" Width="Auto"/>-->
                         <StackPanel.LayoutTransform>
                             <RotateTransform Angle="90"/>
                         </StackPanel.LayoutTransform>
@@ -233,7 +233,7 @@
                                     <ComboBox Grid.Column="1" Grid.Row="3" x:Name="GroupLeaderCombobox"
                                               SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
                                               SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedItem="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"/>
+                                              SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
                                                Grid.Column="1" Grid.Row="4" Margin="2" Padding="7" />
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
@@ -277,7 +277,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray"/>
+                                        <TextBlock Text="Skikursgruppen" Grid.Row="0" Foreground="DarkGray" Margin="0"/>
                                         <ToggleButton x:Name="btnSkikursPinIt" Margin="0,0,5,0"
                                             HorizontalAlignment="Right" Width="25" 
                                             Height="25" Checked="HandleListePinning"
@@ -316,7 +316,7 @@
                                         <DataGrid x:Name="ParticipantsToDistributeDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                               HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"
-                                              RowStyle="{StaticResource friendDataGridRowStyle}" >
+                                              RowStyle="{StaticResource friendDataGridRowStyle}" Visibility="Collapsed">
 
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Vorname"  Binding="{Binding ParticipantFirstName}"/>
@@ -410,7 +410,7 @@
                             </Grid>
                         </Grid>
 
-                        <Grid x:Name="layerTeilnehmerliste" Visibility="Collapsed" Margin="2"  >
+                        <Grid x:Name="layerTeilnehmerliste" Visibility="Visible" Margin="2"  >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition SharedSizeGroup="pinTeilnehmerSpalte" Width="600"/>
@@ -424,7 +424,7 @@
                                     <Grid x:Name="teilnehmerGrid" DockPanel.Dock="Top" >
 
 
-                                        <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray"/>
+                                        <TextBlock Text="Teilnehmer" Grid.Row="0" Foreground="DarkGray" Margin="0"/>
 
                                         <ToggleButton x:Name="btnTeilnehmerPinIt" Margin="0,0,5,0"
                                    HorizontalAlignment="Right" Width="25" 
@@ -541,7 +541,7 @@
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="pinUebungsleiterSpalte" Width="400"/>
+                                <ColumnDefinition SharedSizeGroup="pinUebungsleiterSpalte" Width="600"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="layerSkilehrerlisteTrans"/>
@@ -557,7 +557,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Text="Skilehrer" Grid.Row="0" Foreground="DarkGray"/>
+                                        <TextBlock Text="Skilehrer" Grid.Row="0" Foreground="DarkGray" Margin="0"/>
                                         <ToggleButton x:Name="btnSkilehrerPinIt" Margin="0,0,5,0"
                                             HorizontalAlignment="Right" Width="25" 
                                             Height="25" Checked="HandleListePinning"
@@ -646,7 +646,7 @@
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="pinLevelSpalte" Width="200"/>
+                                <ColumnDefinition SharedSizeGroup="pinLevelSpalte" Width="600"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="layerLevellisteTrans"/>
@@ -654,15 +654,13 @@
 
                             <Border x:Name="borderLevelliste" BorderThickness="1" BorderBrush="Black" Grid.Column="1">
                                 <DockPanel>
-
-
                                     <Grid x:Name="levelGrid"  DockPanel.Dock="Top">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Text="Levels" Grid.Row="0" Foreground="DarkGray"/>
+                                        <TextBlock Text="Levels" Grid.Row="0" Foreground="DarkGray" Margin="0"/>
                                         <ToggleButton x:Name="btnLevelPinIt" Margin="0,0,5,0"
                                             HorizontalAlignment="Right" Width="25" 
                                             Height="25" Checked="HandleListePinning"
@@ -670,8 +668,8 @@
 
                                             <Image x:Name="pinLevelImage" Source="/Images/icons8-unpin-2-48.png"/>
                                         </ToggleButton>
-
                                     </Grid>
+
                                     <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                         SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
                                         HeadersVisibility="Column"   Style="{StaticResource friendDataGridStyle}"

@@ -86,20 +86,20 @@ Class MainWindow
         'OverviewTabItem_GotFocus(Me, New RoutedEventArgs())
 
         layerTeilnehmerliste.Visibility = Visibility.Visible
-        'tabitemTeilnehmer_GotFocus(Me, New RoutedEventArgs())
-        'btnTeilnehmerPinIt.IsChecked = True
+        tabitemTeilnehmer_GotFocus(Me, New RoutedEventArgs())
+        btnTeilnehmerPinIt.IsChecked = True
 
         layerLevelliste.Visibility = Visibility.Visible
-        'tabitemLevel_GotFocus(Me, New RoutedEventArgs())
-        'btnLevelPinIt.IsChecked = True
+        tabitemLevel_GotFocus(Me, New RoutedEventArgs())
+        btnLevelPinIt.IsChecked = True
 
         layerSkikursdetails.Visibility = Visibility.Visible
-        'tabitemSkikurs_GotFocus(Me, New RoutedEventArgs())
-        'btnSkikursPinIt.IsChecked = True
+        tabitemSkikurs_GotFocus(Me, New RoutedEventArgs())
+        btnSkikursPinIt.IsChecked = True
 
         layerSkilehrerdetails.Visibility = Visibility.Visible
-        'tabitemSkilehrer_GotFocus(Me, New RoutedEventArgs())
-        'btnSkilehrerPinIt.IsChecked = True
+        tabitemSkilehrer_GotFocus(Me, New RoutedEventArgs())
+        btnSkilehrerPinIt.IsChecked = True
 
 
         _participantListOverviewCollectionView = New ListCollectionView(New ParticipantCollection)
@@ -940,10 +940,10 @@ Class MainWindow
         _Skiclub = Schule
 
         If _Skiclub IsNot Nothing Then
-            _groupLevelListCollectionView = New CollectionView(_Skiclub.Levellist)
-            _groupLeaderListCollectionView = New CollectionView(_Skiclub.Instructorlist)
-            _participantMemberOfGroupListCollectionView = New CollectionView(_Skiclub.Grouplist)
-            _participantLevelListCollectionView = New CollectionView(_Skiclub.Levellist)
+            _groupLevelListCollectionView = New ListCollectionView(_Skiclub.Levellist)
+            _groupLeaderListCollectionView = New ListCollectionView(_Skiclub.Instructorlist)
+            _participantMemberOfGroupListCollectionView = New ListCollectionView(_Skiclub.Grouplist)
+            _participantLevelListCollectionView = New ListCollectionView(_Skiclub.Levellist)
         End If
 
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
@@ -952,10 +952,10 @@ Class MainWindow
 
         setViewOverview(_Skiclub.ParticipantsNotInGroup)
 
-        'SetView(_Skiclub.Participantlist)
-        'SetView(_Skiclub.Grouplist)
-        'SetView(_InstructorsAvailable)
-        'SetView(_Skiclub.Levellist)
+        SetView(_Skiclub.Participantlist)
+        SetView(_Skiclub.Grouplist)
+        SetView(_Skiclub.Instructorlist)
+        SetView(_Skiclub.Levellist)
         'SetView()
 
     End Sub
@@ -1049,6 +1049,7 @@ Class MainWindow
     End Sub
 
     Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
+        GroupOverviewWrapPanel.Children.Clear()
         _schalterLayerDetails = layerTeilnehmerdetails
         _schalterBtnShowEplorer = btnShowTeilnehmerExplorer
         _schalterPinImage = pinTeilnehmerImage

@@ -32,7 +32,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="300"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
@@ -54,9 +54,9 @@
 
             <!--Combobox Skilehrer-->
                 <ComboBox Grid.Column="2" Grid.Row="4" 
-                          SelectedValuePath="InstructorLastName" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
-                          SelectedValue="{Binding Path=GroupLeader.InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=GroupLeader.InstructorLastName, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
+                          SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLeaderCombobox" />
 
             <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
@@ -65,7 +65,8 @@
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                       ItemsSource="{Binding}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
                       DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
-                      CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}" >
+                      CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}"
+                      SelectionMode="Extended">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>

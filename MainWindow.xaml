@@ -246,8 +246,8 @@
                                         </DataGrid.Columns>
 
                                     </DataGrid>
-                                    <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button Content="+" Click="AddParticipant" Width="100"/>
+                                    <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Collapsed">
+                                        <Button Content="+" Click="AddParticipant" Width="100" />
                                         <Button Content="~" Click="SetView" Width="80"/>
                                         <Button Content="-" Click="RemoveParticipant" Width="100"/>
                                     </StackPanel>

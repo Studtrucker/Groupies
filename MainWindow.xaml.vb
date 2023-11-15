@@ -1106,7 +1106,7 @@ Class MainWindow
 
         ' ein paar Variablen setzen
         Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
-        Dim printFriendWidth As Double = 700 '  Höhe einer Gruppe
+        Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
 
         ' ermitteln der tatsächlich verfügbaren Seitengrösse
         Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom

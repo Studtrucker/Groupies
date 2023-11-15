@@ -327,10 +327,10 @@
     <Resource Include="Images\LogoKroen.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\QRKontaktSportKroen.png" />
+    <Resource Include="Images\QRWebsiteSportKroen.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\QRWebsiteSportKroen.png" />
+    <Resource Include="Images\QRKontaktSportKroen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

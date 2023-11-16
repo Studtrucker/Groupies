@@ -977,7 +977,7 @@ Class MainWindow
 
 
             ' Teilnehmer ohne Gruppeneinteilung in die Teilnehmerliste füllen
-            'participantlistOverviewDataGrid.ItemsSource = New CollectionView(ParticipantListToDistribute)
+            participantlistOverviewDataGrid.ItemsSource = New CollectionView(ParticipantListToDistribute)
 
             ' Neue ListCollectionView laden
             _participantListOverviewCollectionView = New ListCollectionView(_Skiclub.Participantlist)
@@ -1210,61 +1210,31 @@ Class MainWindow
         SetView()
     End Sub
 
-    Private Sub ParticipantsToDistributeDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles ParticipantsToDistributeDataGrid.MouseDown
+
+    ' Für das Verschieben von Objekten 
+    Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
         Dim Tn = TryCast(ParticipantsToDistributeDataGrid.SelectedItem, Participant)
 
         If Tn IsNot Nothing Then
             Dim Data = New DataObject(GetType(Participant), Tn)
-            DragDrop.DoDragDrop(ParticipantsToDistributeDataGrid, Data, DragDropEffects.Copy)
+            DragDrop.DoDragDrop(ParticipantsToDistributeDataGrid, Data, DragDropEffects.Move)
         End If
 
     End Sub
 
-    Private Sub GroupMembersDataGrid_DragEnter(sender As Object, e As DragEventArgs) Handles Canvas.DragEnter
-        TryCast(e.Source, Canvas).Background = Brushes.Cyan
-    End Sub
-
-    Private Sub GroupMembersDataGrid_DragLeave(sender As Object, e As DragEventArgs) Handles Canvas.DragLeave
-        TryCast(e.Source, Canvas).Background = Brushes.LightBlue
-    End Sub
-    Private Sub GroupMembersDataGrid_DragOver(sender As Object, e As DragEventArgs) Handles Canvas.DragOver
-        If e.Data.GetDataPresent(GetType(Participant)) Then
-            e.Effects = DragDropEffects.Copy
-        Else
-            e.Effects = DragDropEffects.None
-        End If
-        e.Handled = True
-    End Sub
 
 
-    Private Sub participantlistOverviewDataGrid_MouseMove(sender As Object, e As MouseEventArgs)
-        Dim datagrid = TryCast(sender, DataGrid)
-        If datagrid IsNot Nothing AndAlso e.LeftButton = MouseButtonState.Pressed Then
-            Dim x = DragDrop.DoDragDrop(datagrid, datagrid.SelectedItems, DragDropEffects.Move)
-            If x = DragDropEffects.Move Then
-                Dropped()
-            End If
-        End If
-    End Sub
-
-    Private Sub Dropped()
-        Dim P = _Skiclub.ParticipantsToDistribute
-        participantlistOverviewDataGrid.ItemsSource = New ListCollectionView(_Skiclub.ParticipantsNotInGroup)
-    End Sub
-
-    Private Sub participantlistOverviewDataGrid_Drop(sender As Object, e As DragEventArgs)
-
-        Dim CorrectDataFormat = e.Data.GetDataPresent("System.Windows.Controls.SelectedItemCollection")
+    ' Für den Empfang von Objekten 
+    Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
+        Dim CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
         If CorrectDataFormat Then
-            Dim ic = e.Data.GetData("System.Windows.Controls.SelectedItemCollection")
-            For Each item As Participant In ic
-                item.DeleteFromGroup()
-                _Skiclub.Participantlist.Remove(_Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(item.ParticipantID)).First)
-                _Skiclub.Participantlist.Add(item)
-            Next
-            Dropped()
+            Dim TN As Participant = e.Data.GetData("Skiclub.Entities.Participant")
+            'For Each Participant As Participant In ic
+            TN.DeleteFromGroup()
+            _Skiclub.Participantlist.Remove(_Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(TN.ParticipantID)).First)
+            _Skiclub.Participantlist.Add(TN)
+            'Next
         End If
-
     End Sub
 
 #End Region

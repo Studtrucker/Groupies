@@ -81,34 +81,31 @@ Public Class GroupView
         GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
     End Sub
 
+    ' Für den Empfang von Objekten 
     Private Sub GroupMembersDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
         ' Participants werden Groupmember
-        Dim CorrectDataFormat = e.Data.GetDataPresent("System.Windows.Controls.SelectedItemCollection")
+        Dim CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
         If CorrectDataFormat Then
-            Dim ic = e.Data.GetData("System.Windows.Controls.SelectedItemCollection")
-            For Each Participant As Participant In ic
-                Participant.SetAsGroupMember(Group.GroupID)
-                Group.AddMember(Participant)
-            Next
+            Dim TN = e.Data.GetData("Skiclub.Entities.Participant")
+            'For Each Participant As Participant In ic
+            TN.SetAsGroupMember(Group.GroupID)
+            Group.AddMember(TN)
+            'Next
         End If
     End Sub
 
+    ' Für das Verschieben von Objekten 
     Private Sub GroupMembersDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-        ' Participants verlassen die Gruppe
-        Dim datagrid = TryCast(sender, DataGrid)
-        If datagrid IsNot Nothing AndAlso e.LeftButton = MouseButtonState.Pressed Then
-            Dim x = DragDrop.DoDragDrop(datagrid, datagrid.SelectedItems, DragDropEffects.Move)
-            If x = DragDropEffects.Move Then
-                HasDropped()
-            End If
+
+        Dim Tn = TryCast(GroupMembersDataGrid.SelectedItem, Participant)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(Participant), Tn)
+            DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Move)
+            Group.RemoveMember(Tn)
         End If
+
     End Sub
 
-    Private Sub HasDropped()
-        Dim Pl = New ParticipantCollection
-        GroupMembersDataGrid.SelectedItems.Cast(Of Participant).ToList.ForEach(Sub(x) x.DeleteFromGroup())
-        GroupMembersDataGrid.SelectedItems.Cast(Of Participant).ToList.ForEach(Sub(x) Pl.Add(x))
-        Group.RemoveMembers(Pl)
-    End Sub
 
 End Class

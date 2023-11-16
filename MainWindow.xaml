@@ -144,8 +144,8 @@
                             </Grid.ColumnDefinitions>
                             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="participantlistOverviewDataGrid"
                                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                                      ItemsSource="{Binding}" MouseMove="participantlistOverviewDataGrid_MouseMove" 
-                                      DragDrop.Drop="participantlistOverviewDataGrid_Drop" AllowDrop="True" IsReadOnly="True"
+                                      MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                                      DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
                                       CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>

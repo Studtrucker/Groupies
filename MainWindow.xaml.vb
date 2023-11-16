@@ -42,14 +42,10 @@ Class MainWindow
     Private _participantMemberOfGroupListCollectionView As ICollectionView
     Private _participantsToDistributeListCollectionView As ICollectionView
     Private _participantsInGroupMemberListCollectionView As ICollectionView
-
-    'Overview CollectionView Teilnehmer
     Private _participantListOverviewCollectionView As ICollectionView
-
 
     Private _skischuleListFile As FileInfo
     Private _mRUSortedList As SortedList(Of Integer, String)
-    '    Private _skischule As Entities.Skiclub
 
     Private _schalterLayerDetails As Grid
     Private _schalterBtnShowEplorer As Button
@@ -86,26 +82,12 @@ Class MainWindow
         'OverviewTabItem_GotFocus(Me, New RoutedEventArgs())
 
         layerTeilnehmerliste.Visibility = Visibility.Visible
-        tabitemTeilnehmer_GotFocus(Me, New RoutedEventArgs())
-        btnTeilnehmerPinIt.IsChecked = True
-
         layerLevelliste.Visibility = Visibility.Visible
-        tabitemLevel_GotFocus(Me, New RoutedEventArgs())
-        btnLevelPinIt.IsChecked = True
-
         layerSkikursdetails.Visibility = Visibility.Visible
-        tabitemSkikurs_GotFocus(Me, New RoutedEventArgs())
-        btnSkikursPinIt.IsChecked = True
-
         layerSkilehrerdetails.Visibility = Visibility.Visible
-        tabitemSkilehrer_GotFocus(Me, New RoutedEventArgs())
-        btnSkilehrerPinIt.IsChecked = True
-
 
         _participantListOverviewCollectionView = New ListCollectionView(New ParticipantCollection)
         AddHandler _participantListOverviewCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-
-
         _teilnehmerListCollectionView = New ListCollectionView(New ParticipantCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _skikursListCollectionView = New ListCollectionView(New GroupCollection())
@@ -115,12 +97,8 @@ Class MainWindow
         _levelListCollectionView = New ListCollectionView(New LevelCollection())
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
 
-
         _participantsToDistributeListCollectionView = New ListCollectionView(New ParticipantCollection())
         _participantsInGroupMemberListCollectionView = New ListCollectionView(New ParticipantCollection())
-
-        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
-        _participantsToDistributeListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
 
     End Sub
 
@@ -421,7 +399,7 @@ Class MainWindow
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
             ImportParticipants.ToList.ForEach(Sub(x) Services.Skiclub.Participantlist.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
-            SetView()
+            setView(_Skiclub.Grouplist)
         End If
 
     End Sub
@@ -437,7 +415,7 @@ Class MainWindow
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
             ImportInstructors.ToList.ForEach(Sub(x) Services.Skiclub.Instructorlist.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
-            SetView()
+            setView(_Skiclub.Grouplist)
         End If
 
     End Sub
@@ -949,53 +927,42 @@ Class MainWindow
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelComboBox.ItemsSource = _participantLevelListCollectionView
+        _Skiclub.Grouplist.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
-        setViewOverview(_Skiclub.ParticipantsNotInGroup)
-
+        setView(_Skiclub.Grouplist)
         SetView(_Skiclub.Participantlist)
-        SetView(_Skiclub.Grouplist)
         SetView(_Skiclub.Instructorlist)
         SetView(_Skiclub.Levellist)
-        'SetView()
 
     End Sub
 
-    Private Sub SetView()
+    Private Sub setView(Skikursliste As GroupCollection)
 
-        '_participantsToDistributeListCollectionView = New ListCollectionView(_Skiclub.ParticipantsToDistribute)
-        'ParticipantsToDistributeDataGrid.DataContext = _participantsToDistributeListCollectionView
-        '_participantsInGroupMemberListCollectionView = New ListCollectionView(DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupMembers)
-        'GroupMembersDataGrid.DataContext = _participantsInGroupMemberListCollectionView
-
-    End Sub
-
-    Private Sub setViewOverview(ParticipantListToDistribute As ParticipantCollection)
-
-        If _Skiclub IsNot Nothing AndAlso GroupOverviewWrapPanel.Children.Count = 0 Then
-            ' Uebersicht erstellen
-            _Skiclub.Grouplist.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
-
-
-            ' Teilnehmer ohne Gruppeneinteilung in die Teilnehmerliste füllen
-            participantlistOverviewDataGrid.ItemsSource = New CollectionView(ParticipantListToDistribute)
-
-            ' Neue ListCollectionView laden
-            _participantListOverviewCollectionView = New ListCollectionView(_Skiclub.Participantlist)
-            ' ListCollectionView nach Teilnehmer in Gruppen filtern
-            If _participantListOverviewCollectionView.CanFilter Then
-                _participantListOverviewCollectionView.Filter = Function(x As Participant) x.IsNotInGroup = True
-            End If
-
-            ' ListCollectionView sortieren
-            If _participantListOverviewCollectionView.CanSort Then
-                _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
-                _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
-            End If
-
-            _participantListOverviewCollectionView.Refresh()
-            'LayerParticipantToDistributeOverview.DataContext = _participantLevelListCollectionView
-            participantlistOverviewDataGrid.ItemsSource = _participantListOverviewCollectionView
+        ' Neue ListCollectionView laden
+        _participantListOverviewCollectionView = New ListCollectionView(_Skiclub.Participantlist)
+        ' ListCollectionView nach Teilnehmer in Gruppen filtern
+        If _participantListOverviewCollectionView.CanFilter Then
+            _participantListOverviewCollectionView.Filter = Function(x As Participant) x.IsNotInGroup = True
         End If
+
+        ' ListCollectionView sortieren
+        If _participantListOverviewCollectionView.CanSort Then
+            _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
+            _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
+        End If
+        participantlistOverviewDataGrid.ItemsSource = _participantListOverviewCollectionView
+        'End If
+
+        _skikursListCollectionView = New ListCollectionView(Skikursliste)
+        ' Hinweis AddHandler Seite 764
+        AddHandler _skikursListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
+        ' DataContext wird gesetzt
+        ' Inhalt = CollectionView, diese kennt sein CurrentItem
+        tabitemSkikurse.DataContext = _skikursListCollectionView
+        If _skikursListCollectionView.CanSort Then
+            _skikursListCollectionView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
+        End If
+        _skikursListCollectionView.MoveCurrentToFirst()
 
     End Sub
 
@@ -1009,23 +976,6 @@ Class MainWindow
         ' DataContext wird gesetzt
         ' Inhalt = CollectionView, diese kennt sein CurrentItem
         tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
-
-    End Sub
-
-    Private Sub SetView(Skikursliste As GroupCollection)
-        _skikursListCollectionView = New ListCollectionView(Skikursliste)
-        ' Hinweis AddHandler Seite 764
-        AddHandler _skikursListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
-        ' DataContext wird gesetzt
-        ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemSkikurse.DataContext = _skikursListCollectionView
-        If _skikursListCollectionView.CanSort Then
-            _skikursListCollectionView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
-        End If
-        _skikursListCollectionView.MoveCurrentToFirst()
-
-        'skikurseDataGrid.DataContext = _participantMemberOfGroupListCollectionView
-        'ParticipantMemberOfGroupCombobox.DataContext = _participantMemberOfGroupListCollectionView
 
     End Sub
 
@@ -1049,7 +999,7 @@ Class MainWindow
     End Sub
 
     Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
-        GroupOverviewWrapPanel.Children.Clear()
+
         _schalterLayerDetails = layerTeilnehmerdetails
         _schalterBtnShowEplorer = btnShowTeilnehmerExplorer
         _schalterPinImage = pinTeilnehmerImage
@@ -1057,11 +1007,12 @@ Class MainWindow
         _schalterLayerListeTransform = layerTeilnehmerlisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
         _schalterBtnPinit = btnTeilnehmerPinIt
+
+        btnTeilnehmerPinIt.IsChecked = True
+
     End Sub
 
     Private Sub tabitemSkikurs_GotFocus(sender As Object, e As RoutedEventArgs)
-
-        GroupOverviewWrapPanel.Children.Clear()
 
         _schalterLayerDetails = layerSkikursdetails
         _schalterBtnShowEplorer = btnShowSkikursExplorer
@@ -1070,13 +1021,17 @@ Class MainWindow
         _schalterLayerListeTransform = layerSkikurslisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikurslisteDetails
         _schalterBtnPinit = btnSkikursPinIt
+
+        btnSkikursPinIt.IsChecked = True
+
     End Sub
 
     Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
-        setViewOverview(_Skiclub.ParticipantsNotInGroup)
+
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)
+
         _schalterLayerDetails = layerSkilehrerdetails
         _schalterBtnShowEplorer = btnShowSkilehrerExplorer
         _schalterPinImage = pinSkilehrerImage
@@ -1084,6 +1039,9 @@ Class MainWindow
         _schalterLayerListeTransform = layerSkilehrerlisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerUebungsleiterDetails
         _schalterBtnPinit = btnSkilehrerPinIt
+
+        btnSkilehrerPinIt.IsChecked = True
+
     End Sub
 
     Private Sub tabitemLevel_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -1095,12 +1053,10 @@ Class MainWindow
         _schalterLayerListeTransform = layerLevellisteTrans
         _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerLevelDetails
         _schalterBtnPinit = btnLevelPinIt
-    End Sub
 
-    Enum Printversion
-        Instructor
-        Participant
-    End Enum
+        btnLevelPinIt.IsChecked = True
+
+    End Sub
 
     Private Function PrintoutInfo(Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
 
@@ -1198,7 +1154,7 @@ Class MainWindow
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
         DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
         DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Participant).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupID
-        SetView()
+        setView(_Skiclub.Grouplist)
     End Sub
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
@@ -1207,17 +1163,17 @@ Class MainWindow
             DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
             tn.MemberOfGroup = Nothing
         End If
-        SetView()
+        setView(_Skiclub.Grouplist)
     End Sub
 
 
     ' Für das Verschieben von Objekten 
     Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-        Dim Tn = TryCast(ParticipantsToDistributeDataGrid.SelectedItem, Participant)
+        Dim Tn = TryCast(participantlistOverviewDataGrid.SelectedItem, Participant)
 
         If Tn IsNot Nothing Then
             Dim Data = New DataObject(GetType(Participant), Tn)
-            DragDrop.DoDragDrop(ParticipantsToDistributeDataGrid, Data, DragDropEffects.Move)
+            DragDrop.DoDragDrop(participantlistOverviewDataGrid, Data, DragDropEffects.Move)
         End If
 
     End Sub
@@ -1238,5 +1194,10 @@ Class MainWindow
     End Sub
 
 #End Region
+
+    Enum Printversion
+        Instructor
+        Participant
+    End Enum
 
 End Class

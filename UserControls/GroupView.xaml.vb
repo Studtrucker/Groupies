@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Skiclub.Entities
-
+Imports CDS = Skiclub.Services.CurrentDataService
 
 Public Class GroupView
     'Private _group As Group
@@ -23,8 +23,28 @@ Public Class GroupView
     Public Property Group As Group
 
     Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        SetView()
         Group = DirectCast(DataContext, Group)
+        SetView()
+
+        _levelListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
+        If _levelListCollectionView.CanSort Then
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+        End If
+        GroupLevelCombobox.ItemsSource = _levelListCollectionView
+
+        '*****************************************************************************************************
+        '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
+        '* If _instructorListCollectionView.CanFilter Then                                                   *
+        '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
+        '* End If                                                                                            *
+        '*****************************************************************************************************
+        _instructorListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
+        If _instructorListCollectionView.CanSort Then
+            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
+            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
+        End If
+        GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
+
     End Sub
 
     Private Sub AddParticipant(Participant As Participant)
@@ -41,36 +61,10 @@ Public Class GroupView
         Next
         Group.RemoveMembers(GroupMembersDataGrid.SelectedItems)
 
-        'If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
-        '    Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Participant).ParticipantID).Single
-        '    DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
-        '    tn.MemberOfGroup = Nothing
-        'End If
-        'SetView()
+
     End Sub
 
     Private Sub SetView()
-
-        _levelListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
-        If _levelListCollectionView.CanSort Then
-            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-        End If
-        GroupLevelCombobox.ItemsSource = _levelListCollectionView
-
-        _instructorListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
-        If _instructorListCollectionView.CanSort Then
-            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
-            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
-        End If
-
-        '*****************************************************************************************************
-        '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
-        '* If _instructorListCollectionView.CanFilter Then                                                   *
-        '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
-        '* End If                                                                                            *
-        '*****************************************************************************************************
-
-        GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
         If _groupmemberListCollectionView.CanSort Then
@@ -90,7 +84,8 @@ Public Class GroupView
             'For Each Participant As Participant In ic
             TN.SetAsGroupMember(Group.GroupID)
             Group.AddMember(TN)
-            'Next
+            CDS.Skiclub.Participantlist.Remove(CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(TN.ParticipantID)).First)
+            CDS.Skiclub.Participantlist.Add(TN)
         End If
     End Sub
 

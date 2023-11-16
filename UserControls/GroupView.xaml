@@ -54,7 +54,7 @@
                 <ComboBox Grid.Column="2" Grid.Row="3" 
                           SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLevelCombobox" />
 
                 <!--Combobox Skilehrer-->

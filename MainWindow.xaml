@@ -226,16 +226,19 @@
                                              Grid.Column="1" Grid.Row="0"  />
                                     <TextBox Text="{Binding Path=GroupNaming, UpdateSourceTrigger=PropertyChanged}" 
                                              Grid.Column="1" Grid.Row="1" />
-                                    <ComboBox Grid.Column="1" Grid.Row="2" x:Name="GroupLevelComboBox" 
+                                    <ComboBox Grid.Column="1" Grid.Row="2" 
                                               SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
                                               SelectedValue="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="3" x:Name="GroupLeaderCombobox"
+                                              SelectedItem="{Binding Path=GroupLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                                              x:Name="GroupLevelComboBox" />
+                                    <ComboBox Grid.Column="1" Grid.Row="3"
                                               SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
                                               SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
-                                               Grid.Column="1" Grid.Row="4" Margin="2" Padding="7" />
+                                              SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"
+                                               x:Name="GroupLeaderCombobox"/>
+                                    
+                                    <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
+                                             Grid.Column="1" Grid.Row="4" IsReadOnly="True"/>
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
                                               AutoGenerateColumns="False" ItemsSource="{Binding GroupMembers}"
                                               IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
@@ -246,11 +249,6 @@
                                         </DataGrid.Columns>
 
                                     </DataGrid>
-                                    <StackPanel  Grid.Column="1" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Collapsed">
-                                        <Button Content="+" Click="AddParticipant" Width="100" />
-                                        <Button Content="~" Click="SetView" Width="80"/>
-                                        <Button Content="-" Click="RemoveParticipant" Width="100"/>
-                                    </StackPanel>
                                     <Canvas x:Name="Canvas"  Grid.Column="1" Grid.Row="7" Height="50" Background="LightBlue" Visibility="Hidden">
 
                                     </Canvas>
@@ -397,9 +395,10 @@
                                     <TextBox  Grid.Column="1" Grid.Row="1" 
                                               Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                     <ComboBox Grid.Column="1" Grid.Row="2"
-                                              x:Name="ParticipantLevelComboBox"
-                                              DisplayMemberPath="LevelNaming"
-                                              SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
+                                              SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
+                                              SelectedValue="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                                              x:Name="ParticipantLevelComboBox"/>
 
                                     <Label Grid.Column="0" Grid.Row="3" Content="Gruppe"  Margin="2" Visibility="Collapsed"/>
                                     <ComboBox Grid.Column="1" Grid.Row="3" Visibility="Collapsed"

@@ -915,7 +915,6 @@ Class MainWindow
     Private Sub SetView(Schule As Entities.Skiclub)
 
         CDS.Skiclub = Schule
-        CurrentDataService.Skiclub = Schule
 
         If CDS.Skiclub IsNot Nothing Then
             _groupLevelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
@@ -1031,7 +1030,8 @@ Class MainWindow
     End Sub
 
     Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
-
+        GroupOverviewWrapPanel.Children.Clear()
+        CDS.Skiclub.Grouplist.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)

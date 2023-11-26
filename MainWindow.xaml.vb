@@ -335,7 +335,7 @@ Class MainWindow
         CDS.Skiclub = Nothing
 
         ' Neues Skischulobjekt initialisieren
-        Title = "Skischule"
+        Title = "Groupies"
         Dim NeueSkischule = New Entities.Skiclub With {.Levellist = CreateDefaultService.CreateLevels()}
         Dim dlg = New CountOfGroupsDialog
         If dlg.ShowDialog Then
@@ -424,7 +424,7 @@ Class MainWindow
 
         ' Ist aktuell eine Skischuldatei geöffnet?
         If CDS.Skiclub IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuellen Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
             ElseIf rs = MessageBoxResult.Cancel Then
@@ -436,7 +436,7 @@ Class MainWindow
         CDS.Skiclub = Nothing
 
         ' Neues Skischulobjekt initialisieren
-        Title = "Skischule"
+        Title = "Groupies"
 
         Dim importSkiclub = ImportService.ImportSkiclub
         If importSkiclub IsNot Nothing Then
@@ -747,7 +747,7 @@ Class MainWindow
     Private Sub OpenSkischule(fileName As String)
 
         If _skischuleListFile IsNot Nothing AndAlso fileName.Equals(_skischuleListFile.FullName) Then
-            MessageBox.Show("Die Skischule " & fileName & " ist bereits geöffnet")
+            MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
             Exit Sub
         End If
 
@@ -765,7 +765,7 @@ Class MainWindow
         _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
         SetView(loadedSkischule)
-        Title = "Skischule - " & fileName
+        Title = "Groupies - " & fileName
 
     End Sub
 
@@ -809,9 +809,9 @@ Class MainWindow
         SaveXML(fileName)
         'SaveZIP(fileName)
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Skischule - " & fileName
+        Title = "Groupies - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show("Skischule gespeichert!")
+        MessageBox.Show("Groupies gespeichert!")
     End Sub
 
     Private Sub SaveZIP(fileName As String)

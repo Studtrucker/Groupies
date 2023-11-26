@@ -14,7 +14,7 @@
         mc:Ignorable="d"
         Icon="Images/ski-48.png"
         Height="450" Width="900"
-        Title="Skischule"
+        Title="Groupies"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">

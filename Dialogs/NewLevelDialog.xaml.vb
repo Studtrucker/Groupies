@@ -1,6 +1,6 @@
 ﻿Imports System.Text
-Imports Skiclub.Entities
-Imports Skiclub.Commands
+Imports Groupies.Entities
+Imports Groupies.Commands
 
 Public Class NewLevelDialog
 

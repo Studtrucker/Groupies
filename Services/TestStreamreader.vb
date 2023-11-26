@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Windows
 Imports System.Xml.Serialization
-Imports Skiclub.Entities
+Imports Groupies.Entities
 
 Module TestStreamreader
 

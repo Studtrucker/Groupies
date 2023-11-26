@@ -14,12 +14,12 @@ Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Microsoft.Office.Core
-Imports Skiclub.UserControls
-Imports Skiclub.ExcelService
-Imports Skiclub.Entities
-Imports CDS = Skiclub.Services.CurrentDataService
-Imports Skiclub.Services
-Imports Skiclub.Commands
+Imports Groupies.UserControls
+Imports Groupies.ExcelService
+Imports Groupies.Entities
+Imports CDS = Groupies.Services.CurrentDataService
+Imports Groupies.Services
+Imports Groupies.Commands
 
 Class MainWindow
 
@@ -916,6 +916,7 @@ Class MainWindow
     Private Sub SetView(Schule As Entities.Skiclub)
 
         _Skiclub = Schule
+        CurrentDataService.Skiclub = Schule
 
         If _Skiclub IsNot Nothing Then
             _groupLevelListCollectionView = New ListCollectionView(_Skiclub.Levellist)
@@ -923,6 +924,7 @@ Class MainWindow
             _participantMemberOfGroupListCollectionView = New ListCollectionView(_Skiclub.Grouplist)
             _participantLevelListCollectionView = New ListCollectionView(_Skiclub.Levellist)
         End If
+
         If _participantLevelListCollectionView.CanSort Then
             _participantLevelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
         End If
@@ -1185,9 +1187,9 @@ Class MainWindow
 
     ' Für den Empfang von Objekten 
     Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
-        Dim CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
+        Dim CorrectDataFormat = e.Data.GetDataPresent("Groupies.Entities.Participant")
         If CorrectDataFormat Then
-            Dim TN As Participant = e.Data.GetData("Skiclub.Entities.Participant")
+            Dim TN As Participant = e.Data.GetData("Groupies.Entities.Participant")
             'For Each Participant As Participant In ic
             TN.DeleteFromGroup()
             _Skiclub.Participantlist.Remove(_Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(TN.ParticipantID)).First)

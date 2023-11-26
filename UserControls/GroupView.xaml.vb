@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
-Imports Skiclub.Entities
-Imports CDS = Skiclub.Services.CurrentDataService
+Imports Groupies.Entities
+Imports CDS = Groupies.Services.CurrentDataService
 
 Public Class GroupView
     'Private _group As Group
@@ -26,7 +26,7 @@ Public Class GroupView
         Group = DirectCast(DataContext, Group)
         SetView()
 
-        _levelListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Levellist)
+        _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
         If _levelListCollectionView.CanSort Then
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
         End If
@@ -38,7 +38,7 @@ Public Class GroupView
         '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
         '* End If                                                                                            *
         '*****************************************************************************************************
-        _instructorListCollectionView = New ListCollectionView(Skiclub.Services.CurrentDataService.Skiclub.Instructorlist)
+        _instructorListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Instructorlist)
         If _instructorListCollectionView.CanSort Then
             _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
             _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
@@ -78,9 +78,9 @@ Public Class GroupView
     ' Für den Empfang von Objekten 
     Private Sub GroupMembersDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
         ' Participants werden Groupmember
-        Dim CorrectDataFormat = e.Data.GetDataPresent("Skiclub.Entities.Participant")
+        Dim CorrectDataFormat = e.Data.GetDataPresent("Groupies.Entities.Participant")
         If CorrectDataFormat Then
-            Dim TN = e.Data.GetData("Skiclub.Entities.Participant")
+            Dim TN = e.Data.GetData("Groupies.Entities.Participant")
             'For Each Participant As Participant In ic
             TN.SetAsGroupMember(Group.GroupID)
             Group.AddMember(TN)

@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Skiclub"
-        xmlns:cmd="clr-namespace:Skiclub.Commands"
-        xmlns:rules="clr-namespace:Skiclub.ValidationRules"
+        xmlns:local="clr-namespace:Groupies"
+        xmlns:cmd="clr-namespace:Groupies.Commands"
+        xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Title="NeueGruppeDialog"  Width="600" SizeToContent="Height">
     <DockPanel>

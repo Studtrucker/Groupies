@@ -2,7 +2,7 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
-Imports Skiclub.Entities
+Imports Groupies.Entities
 Imports System.Text
 
 Namespace Services

@@ -1,5 +1,5 @@
 ﻿Imports System.Text
-Imports Skiclub.Entities
+Imports Groupies.Entities
 
 Namespace Services
 

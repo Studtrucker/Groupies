@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Text
-Imports Skiclub.Entities
-Imports Skiclub.Commands
+Imports Groupies.Entities
+Imports Groupies.Commands
 
 Public Class NewGroupDialog
     Public ReadOnly Property Group() As Group

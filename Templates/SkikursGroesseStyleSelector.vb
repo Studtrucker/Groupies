@@ -1,4 +1,4 @@
-﻿Imports Skiclub.Entities
+﻿Imports Groupies.Entities
 
 Public Class SkikursGroesseStyleSelector
     Inherits StyleSelector

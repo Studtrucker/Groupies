@@ -1,9 +1,9 @@
 ﻿Imports System.Text
 Imports System.Windows.Forms
-Imports Skiclub.Entities
+Imports Groupies.Entities
 Imports System.ComponentModel
-Imports DS = Skiclub.Services
-Imports Skiclub.Commands
+Imports DS = Groupies.Services
+Imports Groupies.Commands
 
 Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Participant

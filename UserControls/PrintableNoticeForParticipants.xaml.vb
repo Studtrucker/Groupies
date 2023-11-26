@@ -1,7 +1,7 @@
-﻿Imports Skiclub.Entities
+﻿Imports Groupies.Entities
 Imports System.IO
 Imports System.Windows.Markup
-Imports CDS = Skiclub.Services.CurrentDataService
+Imports CDS = Groupies.Services.CurrentDataService
 
 Namespace UserControls
 

@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports CDS = Skiclub.Services.CurrentDataService
+Imports CDS = Groupies.Services.CurrentDataService
 
 
 Namespace Entities

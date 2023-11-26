@@ -1,11 +1,11 @@
 ﻿Imports System.Collections.ObjectModel
-Imports Skiclub.Entities
+Imports Groupies.Entities
 
 Namespace Services
 
     Module CurrentDataService
 
-        Public Property Skiclub As Skiclub.Entities.Skiclub
+        Public Property Skiclub As Groupies.Entities.Skiclub
 
 
         'Public Function InstructorsAvailable() As InstructorCollection

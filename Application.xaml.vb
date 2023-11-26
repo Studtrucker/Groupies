@@ -1,4 +1,4 @@
-﻿Imports Skiclub.Entities
+﻿Imports Groupies.Entities
 Class Application
 
     ' Ereignisse auf Anwendungsebene wie Startup, Exit und DispatcherUnhandledException

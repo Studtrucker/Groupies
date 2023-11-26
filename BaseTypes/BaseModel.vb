@@ -4,7 +4,7 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.Reflection
 Imports System.Linq
 Imports System.Runtime.CompilerServices
-Imports Skiclub.Annotations
+Imports Groupies.Annotations
 
 
 

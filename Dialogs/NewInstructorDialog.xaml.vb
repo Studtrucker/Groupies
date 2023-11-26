@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Text
-Imports Skiclub.Entities
-Imports Skiclub.Commands
+Imports Groupies.Entities
+Imports Groupies.Commands
 Imports Microsoft.Win32
 
 Public Class NewInstructorDialog

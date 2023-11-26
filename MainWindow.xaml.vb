@@ -923,6 +923,9 @@ Class MainWindow
             _participantMemberOfGroupListCollectionView = New ListCollectionView(_Skiclub.Grouplist)
             _participantLevelListCollectionView = New ListCollectionView(_Skiclub.Levellist)
         End If
+        If _participantLevelListCollectionView.CanSort Then
+            _participantLevelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+        End If
 
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView

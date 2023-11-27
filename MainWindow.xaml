@@ -626,6 +626,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
@@ -636,6 +637,18 @@
                                         Grid.Column="1" Grid.Row="1" Margin="2"/>
                                     <TextBox Text="{Binding LevelDescription, UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1" Grid.Row="2"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
+                                    <Label Content="Qualifikation"
+                                             Grid.Column="0" Grid.Row="3" Margin="4" />
+                                    <DataGrid Grid.Row="5" Grid.Column="1" 
+                                              AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
+                                              IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Sort" Binding="{Binding LevelSkills.Sorting}"/>
+                                            <DataGridTextColumn Header="Skill" Binding="{Binding LevelSkills.SkillNaming}"/>
+                                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding LevelSkills.SkillNaming}" Width="*"/>
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
                                 </Grid>
                             </Grid>
 

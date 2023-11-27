@@ -13,7 +13,13 @@ Namespace Entities
         Public Property SkillID As Guid
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
-        Public Property SkillName As String
+        Public Property SkillNaming As String
+
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe")>
+        Public Property SortingNumber As String
+        Public Property Description As String
+
+
 
     End Class
 End Namespace

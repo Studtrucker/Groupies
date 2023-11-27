@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Groupies"
              xmlns:en="clr-namespace:Groupies.Entities"
-             StartupUri="MainWindow.xaml"
+             StartupUri="Window1.xaml"
              Startup="Skikurs_Startup">
     
     <Application.Resources>
@@ -143,7 +143,7 @@
             
 
             <!-- Style für das DataGrid -->
-            <Style x:Key="friendDataGridStyle" TargetType="{x:Type DataGrid}">
+            <Style x:Key="groupiesDataGridStyle" TargetType="{x:Type DataGrid}">
                 <Setter Property="Foreground" Value="Black"/>
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="RowBackground" Value="AliceBlue"/>

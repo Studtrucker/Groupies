@@ -5,7 +5,7 @@ Namespace Services
 
     Module CurrentDataService
 
-        Public Property Skiclub As Groupies.Entities.Skiclub
+        Public Property Skiclub As Skiclub
 
 
         'Public Function InstructorsAvailable() As InstructorCollection

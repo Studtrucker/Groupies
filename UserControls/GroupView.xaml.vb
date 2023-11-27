@@ -26,7 +26,7 @@ Public Class GroupView
         Group = DirectCast(DataContext, Group)
         SetView()
 
-        _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
+        _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
         If _levelListCollectionView.CanSort Then
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
         End If
@@ -38,7 +38,7 @@ Public Class GroupView
         '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
         '* End If                                                                                            *
         '*****************************************************************************************************
-        _instructorListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Instructorlist)
+        _instructorListCollectionView = New ListCollectionView(CDS.Skiclub.Instructorlist)
         If _instructorListCollectionView.CanSort Then
             _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
             _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))

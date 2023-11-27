@@ -70,7 +70,7 @@
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                       ItemsSource="{Binding}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
                       DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
-                      CanUserAddRows="False" Style="{StaticResource friendDataGridStyle}"
+                      CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}"
                       SelectionMode="Extended">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>

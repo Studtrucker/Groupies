@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="UserControls.LevelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Groupies"
+             mc:Ignorable="d"
+             Height="Auto" Width="Auto">
+
+        
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" />
+            <Label Grid.Column="0" Grid.Row="1" Content="Benennung" />
+        
+            <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="0" Width="50" HorizontalAlignment="Left"/>
+            <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="1" />
+            <Label Content="Qualifikation"
+                   Grid.Column="0" Grid.Row="2" />
+            <DataGrid Grid.Row="3" Grid.Column="1" 
+                      AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
+                      IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Sort" Binding="{Binding SortingNumber}" Width="Auto"/>
+                    <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto"/>
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*"  >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <GridSplitter Panel.ZIndex="1" Width="10" Height="Auto" Grid.Column="1" Grid.RowSpan="4" 
+                          HorizontalAlignment="Right" Background="Transparent"    />
+        </Grid>
+</UserControl>

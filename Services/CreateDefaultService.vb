@@ -18,7 +18,7 @@ Namespace Services
                 .SortNumber = "010",
                 .LevelNaming = "Anfänger",
                 .LevelID = Guid.NewGuid,
-                .LevelSkills = SkillsFortgeschritten,
+                .LevelSkills = SkillsAnfaenger(),
                 .LevelDescription = DescriptionAnfaenger()}
 
             Dim Fortgeschrittener = New Level(True) With {
@@ -32,21 +32,21 @@ Namespace Services
                 .SortNumber = "030",
                 .LevelNaming = "Genießer",
                 .LevelDescription = DescriptionGeniesser(),
-                .LevelSkills = SkillsFortgeschritten,
+                .LevelSkills = SkillsGeniesser(),
                 .LevelID = Guid.NewGuid}
 
             Dim Koenner = New Level(True) With {
                 .SortNumber = "040",
                 .LevelNaming = "Könner",
                 .LevelDescription = DescriptionKoenner(),
-                .LevelSkills = SkillsFortgeschritten,
+                .LevelSkills = SkillsKoenner(),
                 .LevelID = Guid.NewGuid}
 
             Dim Experte = New Level(True) With {
                 .SortNumber = "050",
                 .LevelNaming = "Experte",
                 .LevelDescription = DescriptionExperte(),
-                .LevelSkills = SkillsFortgeschritten,
+                .LevelSkills = SkillsExperte(),
                 .LevelID = Guid.NewGuid}
 
             _levelCollection = New LevelCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
@@ -87,11 +87,11 @@ Namespace Services
             Dim sc = New SkillCollection
             sc.Add(New Skill With {
                    .SkillNaming = "Schneepflug",
-                   .SortingNumber = "010",
+                   .SortingNumber = "110",
                    .Description = "Stoppen auf flachem Gelände"})
             sc.Add(New Skill With {
                    .SkillNaming = "Schneepflug",
-                   .SortingNumber = "020",
+                   .SortingNumber = "120",
                    .Description = "Kurvern fahren auf flachem Gelände"})
 
             Return sc
@@ -101,27 +101,27 @@ Namespace Services
             Dim sc = New SkillCollection
             sc.Add(New Skill With {
                    .SkillNaming = "Skiführung",
-                   .SortingNumber = "110",
+                   .SortingNumber = "210",
                    .Description = "Erste Kurven mit parallelen Skiern"})
 
             sc.Add(New Skill With {
                    .SkillNaming = "Blaue Piste",
-                   .SortingNumber = "120",
+                   .SortingNumber = "220",
                    .Description = "Sicheres Befahren"})
 
             sc.Add(New Skill With {
                    .SkillNaming = "Rote Piste",
-                   .SortingNumber = "130",
+                   .SortingNumber = "230",
                    .Description = "Sicheres Befahren"})
 
             sc.Add(New Skill With {
                    .SkillNaming = "Schwarze Piste",
-                   .SortingNumber = "140",
+                   .SortingNumber = "240",
                    .Description = "Erste Erfahrungen"})
 
             sc.Add(New Skill With {
                    .SkillNaming = "Gelände",
-                   .SortingNumber = "150",
+                   .SortingNumber = "250",
                    .Description = "Erste Erfahrungen"})
 
             Return sc
@@ -131,18 +131,18 @@ Namespace Services
 
             sc.Add(New Skill With {
                    .SkillNaming = "Blaue Piste",
-                   .SortingNumber = "210",
+                   .SortingNumber = "310",
                    .Description = "Zügiges und sicheres Befahren, stabile Grundposition"})
 
             sc.Add(New Skill With {
                    .SkillNaming = "Rote/schwarze Piste",
-                   .SortingNumber = "220",
+                   .SortingNumber = "320",
                    .Description = "Sicheres Befahren bei geringem Tempo"})
 
 
             sc.Add(New Skill With {
                    .SkillNaming = "Gelände",
-                   .SortingNumber = "230",
+                   .SortingNumber = "330",
                    .Description = "Weitgehend sicheres Befahren in flachem Gelände"})
 
             Return sc
@@ -153,41 +153,42 @@ Namespace Services
 
             sc.Add(New Skill With {
                    .SkillNaming = "Blaue Piste",
-                   .SortingNumber = "310",
+                   .SortingNumber = "410",
                    .Description = "Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert"})
             sc.Add(New Skill With {
                    .SkillNaming = "Rote Piste",
-                   .SortingNumber = "320",
+                   .SortingNumber = "420",
                    .Description = "Sicheres Befahren bei zügigem Tempo"})
             sc.Add(New Skill With {
                    .SkillNaming = "Schwarze Piste",
-                   .SortingNumber = "330",
+                   .SortingNumber = "430",
                    .Description = "Sicheres Befahren bei zügigem Tempo"})
             sc.Add(New Skill With {
                    .SkillNaming = "Gelände",
-                   .SortingNumber = "340",
+                   .SortingNumber = "440",
                    .Description = "Sicheres Bewegen in flachem Gelände bei regulierender Grundposition"})
 
             Return sc
 
         End Function
+
         Private Function SkillsExperte() As SkillCollection
             Dim sc = New SkillCollection
             sc.Add(New Skill With {
                    .SkillNaming = "Blaue Piste",
-                   .SortingNumber = "410",
+                   .SortingNumber = "510",
                    .Description = "Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale"})
             sc.Add(New Skill With {
                    .SkillNaming = "Rote Piste",
-                   .SortingNumber = "420",
+                   .SortingNumber = "520",
                    .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"})
             sc.Add(New Skill With {
                    .SkillNaming = "Schwarze Piste",
-                   .SortingNumber = "430",
+                   .SortingNumber = "530",
                    .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"})
             sc.Add(New Skill With {
                    .SkillNaming = "Gelände",
-                   .SortingNumber = "440",
+                   .SortingNumber = "540",
                    .Description = "Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition"})
 
             Return sc

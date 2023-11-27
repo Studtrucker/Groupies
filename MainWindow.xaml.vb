@@ -333,7 +333,6 @@ Class MainWindow
 
         ' Skischulobjekt löschen
         CDS.Skiclub = Nothing
-
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
         Dim NeueSkischule = New Entities.Skiclub With {.Levellist = CreateDefaultService.CreateLevels()}
@@ -341,6 +340,7 @@ Class MainWindow
         If dlg.ShowDialog Then
             NeueSkischule.Grouplist = CreateDefaultService.CreateGroups(dlg.Count.Text)
         End If
+        GroupOverviewWrapPanel.Children.Clear()
         SetView(NeueSkischule)
 
         If MessageBoxResult.Yes = MessageBox.Show("Auch gleich neue Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then

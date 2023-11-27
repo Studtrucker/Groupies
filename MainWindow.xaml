@@ -643,9 +643,9 @@
                                               AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
                                               IsReadOnly="True" Style="{StaticResource friendDataGridStyle}" Margin="2">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Sort" Binding="{Binding LevelSkills.Sorting}"/>
-                                            <DataGridTextColumn Header="Skill" Binding="{Binding LevelSkills.SkillNaming}"/>
-                                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding LevelSkills.SkillNaming}" Width="*"/>
+                                            <DataGridTextColumn Header="Sort" Binding="{Binding SortingNumber}"/>
+                                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}"/>
+                                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>
@@ -658,7 +658,7 @@
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="pinLevelSpalte" Width="600"/>
+                                <ColumnDefinition SharedSizeGroup="pinLevelSpalte" Width="200"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="layerLevellisteTrans"/>

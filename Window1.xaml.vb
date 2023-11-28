@@ -8,7 +8,7 @@
         Groupies.Services.CurrentDataService.Skiclub = New Entities.Skiclub
         Groupies.Services.CurrentDataService.Skiclub.Levellist = Groupies.Services.CreateLevels()
 
-        'LevelView.DataContext = Groupies.Services.CurrentDataService.Skiclub.Levellist(4)
+        LevelView.DataContext = Groupies.Services.CurrentDataService.Skiclub.Levellist(4)
 
     End Sub
 

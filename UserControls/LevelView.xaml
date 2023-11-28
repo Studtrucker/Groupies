@@ -10,7 +10,6 @@
         
         <Grid >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -22,14 +21,14 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Label Grid.Column="1" Grid.Row="1" Content="Sortierung" />
-            <Label Grid.Column="1" Grid.Row="2" Content="Benennung" />
-            <Label Grid.Column="1" Grid.Row="3" Content="Fähigkeiten"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Sortierung" />
+            <Label Grid.Column="0" Grid.Row="2" Content="Benennung" />
+            <Label Grid.Column="0" Grid.Row="3" Content="Fähigkeiten"/>
             <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
-                     Grid.Column="2" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
+                     Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
             <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
-                     Grid.Column="2" Grid.Row="2" />
-            <DataGrid Grid.Column="2" Grid.Row="3" 
+                     Grid.Column="1" Grid.Row="2" />
+            <DataGrid Grid.Column="1" Grid.Row="3" 
                       AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
                       IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" >
                 <DataGrid.Columns>

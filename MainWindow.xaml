@@ -601,72 +601,20 @@
                         <DockPanel LastChildFill="False" Width="100"/>
                     </StackPanel>
 
-                    <Grid  Grid.IsSharedSizeScope="True" >
+                    <Grid>
                         <Grid x:Name="layerLeveldetails" MouseEnter="HandleLayerdetailsMouseEnter" Background="White" Margin="2">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="600"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
                             
-
-                            <Grid x:Name="gridLeveldetails" >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="LevelDetails" Width="1600"/>
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <!--<Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>-->
-
-                                <!-- Detailangaben -->
-                     
-                                    
-                                <!--<Grid Grid.Row="0" Margin="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="500"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
-                                    <Label Grid.Column="0" Grid.Row="2" Content="Beschreibung" Margin="2"/>
-                                    <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Column="1" Grid.Row="0" Margin="2" Width="50" HorizontalAlignment="Left"/>
-                                    <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
-                                        Grid.Column="1" Grid.Row="1" Margin="2"/>
-                                    <TextBox Text="{Binding LevelDescription, UpdateSourceTrigger=PropertyChanged}"
-                                        Grid.Column="1" Grid.Row="2"  Margin="2" Height="Auto" TextWrapping="WrapWithOverflow"/>
-                                    <Label Content="Qualifikation"
-                                             Grid.Column="0" Grid.Row="3" Margin="4" />
-                                    <DataGrid Grid.Row="5" Grid.Column="1" 
-                                              AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
-                                              IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" Margin="2">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Sort" Binding="{Binding SortingNumber}" Width="Auto"/>
-                                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto"/>
-                                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*"/>
-                                        </DataGrid.Columns>
-
-                                    </DataGrid>
-                                </Grid>-->
-
-                                <uc:LevelView Grid.Row="1"></uc:LevelView>
-                                <!--<GridSplitter Grid.Column="1"  HorizontalAlignment="Right" Width="10" Background="Transparent"/>-->
-
-                            </Grid>
-                            
-
+                            <uc:LevelView Grid.Column="0"/>
+                            <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Center" 
+                                          Panel.ZIndex="1" Background="Transparent"/>
+                        
                         </Grid>
-
+                        
                         <Grid x:Name="layerLevelliste" Visibility="Visible" Margin="2" >
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>

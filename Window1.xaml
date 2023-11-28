@@ -9,7 +9,47 @@
         Title="Window1" Height="450" Width="800">
 
     
-        <uc:LevelView x:Name="LevelView"/>
-    
+
+    <Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Margin="10" Width="400" TextElement.FontWeight="Bold">
+        <StackPanel>
+
+            <StackPanel Grid.IsSharedSizeScope="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" SharedSizeGroup="meineGruppe"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
+                    <Label Grid.Column="1" Content="Grid1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
+                    <GridSplitter Background="Red" Width="5"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition SharedSizeGroup="meineGruppe"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Grid2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
+                    <Label Grid.Column="1" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
+                    <Label Grid.Column="2" Content="Grid2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightCoral"/>
+                </Grid>
+                <Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="meineGruppe"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Grid 3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
+                        <Label Grid.Column="1" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
+                    </Grid>
+
+                </Border>
+            </StackPanel>
+
+        </StackPanel>
+    </Page>
 
 </Window>

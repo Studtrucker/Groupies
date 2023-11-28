@@ -606,21 +606,26 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            
 
                             <Grid x:Name="gridLeveldetails" >
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="LevelDetails"/>
+                                    <ColumnDefinition SharedSizeGroup="LevelDetails" Width="1600"/>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
+                                <!--<Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition/>
-                                </Grid.RowDefinitions>
+                                </Grid.RowDefinitions>-->
 
                                 <!-- Detailangaben -->
                      
                                     
-                                <Grid Grid.Row="0" Margin="2" >
+                                <!--<Grid Grid.Row="0" Margin="2" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="500"/>
@@ -652,12 +657,13 @@
                                         </DataGrid.Columns>
 
                                     </DataGrid>
-                                </Grid>
-                                    
-                     
-                                <GridSplitter Grid.Column="1"  HorizontalAlignment="Right" Width="10" Background="Transparent"/>
+                                </Grid>-->
+
+                                <uc:LevelView Grid.Row="1"></uc:LevelView>
+                                <!--<GridSplitter Grid.Column="1"  HorizontalAlignment="Right" Width="10" Background="Transparent"/>-->
 
                             </Grid>
+                            
 
                         </Grid>
 

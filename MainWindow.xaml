@@ -125,7 +125,7 @@
                 <DockPanel x:Name="GroupOverviewDockPanel" Visibility="{Binding ElementName=tabitemSkikursuebersicht, Path=Visibility}">
 
                     <Grid  IsSharedSizeScope="True">
-                        
+
                         <Grid x:Name="LayerGroupOverview">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -153,7 +153,7 @@
                                     <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
                         </Grid>
                     </Grid>
                 </DockPanel>
@@ -215,7 +215,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    
+
                                     <Label Grid.Column="0" Grid.Row="0" Content="Print Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="1" Content="Benennung" Margin="2"/>
                                     <Label Grid.Column="0" Grid.Row="2" Content="Level" Margin="2"/>
@@ -236,7 +236,7 @@
                                               SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"
                                                x:Name="GroupLeaderCombobox"/>
-                                    
+
                                     <TextBox Text="{Binding Path=GroupMembers.Count,Mode=OneWay}"
                                              Grid.Column="1" Grid.Row="4" IsReadOnly="True"/>
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
@@ -476,11 +476,17 @@
 
                     <Grid  Grid.IsSharedSizeScope="True" >
                         <Grid x:Name="layerSkilehrerdetails" MouseEnter="HandleLayerdetailsMouseEnter" Background="White" Margin="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
 
-                            <Grid x:Name="gridSkilehrerdetails" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="600"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <uc:InstructorView Margin="10,0,0,0"/>
+                            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" 
+                                          Panel.ZIndex="1" Background="Transparent" Grid.RowSpan="2"/>
+
+                            <!--<Grid x:Name="gridSkilehrerdetails" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
@@ -490,7 +496,9 @@
                                     <RowDefinition Height="334*"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Detailangaben -->
+                                -->
+                            <!-- Detailangaben -->
+                            <!--
                                 <Grid Grid.Row="1" Margin="2" Grid.RowSpan="2" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -532,7 +540,7 @@
                                         </Grid>
                                     </Border>
                                 </Grid>
-                            </Grid>
+                            </Grid>-->
 
                         </Grid>
 
@@ -540,7 +548,7 @@
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition SharedSizeGroup="pinUebungsleiterSpalte" Width="600"/>
+                                <ColumnDefinition SharedSizeGroup="pinUebungsleiterSpalte" Width="300"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="layerSkilehrerlisteTrans"/>
@@ -578,7 +586,7 @@
                                     </DataGrid>
                                 </DockPanel>
                             </Border>
-                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="5" Background="Transparent"/>
 
                         </Grid>
                     </Grid>
@@ -608,13 +616,13 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            
-                            <uc:LevelView Grid.Column="0"/>
+
+                            <uc:LevelView Grid.Column="0" Margin="10,0,0,0"/>
                             <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Center" 
                                           Panel.ZIndex="1" Background="Transparent"/>
-                        
+
                         </Grid>
-                        
+
                         <Grid x:Name="layerLevelliste" Visibility="Visible" Margin="2" >
                             <!-- Grid, das den Skikursgruppen Explorer anzeigt-->
                             <Grid.ColumnDefinitions>

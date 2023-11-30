@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Groupies"
              xmlns:en="clr-namespace:Groupies.Entities"
-             StartupUri="MainWindow.xaml"
+             StartupUri="Window1.xaml"
              Startup="Skikurs_Startup">
     <!--MainWindow-->
     <!--Window1-->
@@ -127,7 +127,7 @@
             
             <!--Style for Labels-->
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="4"/>
+                <Setter Property="Margin" Value="20,4,4,4"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 

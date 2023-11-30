@@ -11,14 +11,14 @@
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*" MinWidth="150"/>
+                <ColumnDefinition Width="350"/>
             </Grid.ColumnDefinitions>
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="350"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="1" Content="Sortierung" />

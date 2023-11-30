@@ -4,25 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
-        xmlns:uc="clr-namespace:Groupies.UserControls"
+        xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Title="Window1" Height="450" Width="800">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <uc:InstructorView Grid.Row="1" Grid.Column="1" x:Name="InstructorView" Grid.ColumnSpan="3"/>
-        <GridSplitter Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Center" Background="Transparent" Width="5"/>
+        <uc:ParticipantView x:Name="ParticipantView" Loaded="ParticipantView_Loaded" />
     </Grid>
     
 </Window>

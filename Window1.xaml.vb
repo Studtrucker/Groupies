@@ -1,22 +1,26 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.IO.IsolatedStorage
 Imports System.Xml.Serialization
 
 Public Class Window1
+
+    Private _levelListCollectionView As ICollectionView
     Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        Groupies.Services.CurrentDataService.Skiclub = New Entities.Skiclub
-        Groupies.Services.CurrentDataService.Skiclub.Levellist = Groupies.Services.CreateLevels()
+        'Groupies.Services.CurrentDataService.Skiclub = New Entities.Skiclub
+        'Groupies.Services.CurrentDataService.Skiclub.Levellist = Groupies.Services.CreateLevels()
 
         LoadLastSkischule()
+
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        InstructorView.DataContext = Groupies.Services.CurrentDataService.Skiclub.Instructorlist(0)
+
     End Sub
 
     Private Sub LoadLastSkischule()
@@ -75,4 +79,13 @@ Public Class Window1
         End Using
         Return loadedSkiclub
     End Function
+
+    Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs)
+        _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
+        If _levelListCollectionView.CanSort Then
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+        End If
+        ParticipantView.ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
+        DataContext = Groupies.Services.CurrentDataService.Skiclub.Participantlist(16)
+    End Sub
 End Class

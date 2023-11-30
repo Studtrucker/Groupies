@@ -122,6 +122,9 @@
     <Compile Include="UserControls\LevelView.xaml.vb">
       <DependentUpon>LevelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ParticipantView.xaml.vb">
+      <DependentUpon>ParticipantView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\PrintableNoticeForInstructors.xaml.vb">
       <DependentUpon>PrintableNoticeForInstructors.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\LevelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ParticipantView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -6,14 +6,40 @@
         xmlns:local="clr-namespace:Groupies"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
-        Loaded="Window_Loaded"
         Title="Window1" Height="450" Width="800">
-
-    <Grid>
-        <uc:ParticipantView x:Name="ParticipantView" Loaded="ParticipantView_Loaded" />
-    </Grid>
+    
+    <Grid x:Name="Grid">
+            <uc:InstructorView/>
+   </Grid>
     
 </Window>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <!--    <StackPanel>
 
             <StackPanel Grid.IsSharedSizeScope="True">

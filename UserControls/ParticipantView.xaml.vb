@@ -6,13 +6,23 @@ Namespace UserControls
 
 
     Public Class ParticipantView
+
+        Private _levelListCollectionView As ICollectionView
+
         Sub New()
 
             ' Dieser Aufruf ist für den Designer erforderlich.
             InitializeComponent()
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+            _levelListCollectionView = New ListCollectionView(New LevelCollection)
 
+        End Sub
+
+        Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+            _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+            ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
         End Sub
 
     End Class

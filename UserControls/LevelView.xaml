@@ -7,18 +7,20 @@
              mc:Ignorable="d"
              Height="Auto" Width="Auto">
 
+     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+       <Grid >
         
-        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition MinWidth="100"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="350"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="1" Content="Sortierung" />
@@ -33,7 +35,7 @@
                       IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Sort" Binding="{Binding SortingNumber}" Width="Auto" MinWidth="50"/>
-                <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto" MinWidth="50">
+                    <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto" MinWidth="50">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
@@ -41,7 +43,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*" MinWidth="50" >
+                    <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*" MinWidth="50" >
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
@@ -51,5 +53,9 @@
                 </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-    </Grid>
+           
+            <GridSplitter Grid.Column="1" Grid.RowSpan="5" Width="5"
+                      HorizontalAlignment="Right" Background="Transparent"/>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

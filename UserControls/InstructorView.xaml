@@ -7,13 +7,14 @@
              mc:Ignorable="d"
              Height="Auto" Width="Auto">
 
-  
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
         <Grid >
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="240"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -45,6 +46,9 @@
             <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="2" Grid.Row="4" />
 
-    </Grid>
+            <GridSplitter Grid.Column="2" Grid.RowSpan="6" Width="5"
+                      HorizontalAlignment="Right" Background="Transparent"/>
+        </Grid>
+    </ScrollViewer>
 
 </UserControl>

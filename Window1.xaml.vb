@@ -19,10 +19,6 @@ Public Class Window1
 
     End Sub
 
-    Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
     Private Sub LoadLastSkischule()
         ' Die letze Skischule aus dem IsolatedStorage holen.
         Try
@@ -80,12 +76,5 @@ Public Class Window1
         Return loadedSkiclub
     End Function
 
-    Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs)
-        _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
-        If _levelListCollectionView.CanSort Then
-            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-        End If
-        ParticipantView.ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
-        DataContext = Groupies.Services.CurrentDataService.Skiclub.Participantlist(16)
-    End Sub
+
 End Class

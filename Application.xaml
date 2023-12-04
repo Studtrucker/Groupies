@@ -127,7 +127,7 @@
             
             <!--Style for Labels-->
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="20,4,4,4"/>
+                <Setter Property="Margin" Value="4,4,4,4"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
@@ -153,7 +153,7 @@
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="Margin" Value="4"/>
             </Style>
-
+                      
         </ResourceDictionary>
     </Application.Resources>
 </Application>

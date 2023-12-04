@@ -36,9 +36,7 @@
 
 
         <!-- Style für eine DataGridRow -->
-        <Style x:Key="friendDataGridRowStyle" TargetType="{x:Type DataGridRow}">
-
-        </Style>
+        <Style x:Key="friendDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="4"/>
@@ -109,7 +107,12 @@
                 <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
                 <MenuItem Header="Level löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
             </MenuItem>
-
+            <MenuItem Header="Ansichten" Background="white" Foreground="Black">
+                <MenuItem Header="Teilnehmer"></MenuItem>
+                <MenuItem Header="Skilehrer"></MenuItem>
+                <MenuItem Header="Gruppen"></MenuItem>
+                <MenuItem Header="Levels"></MenuItem>
+            </MenuItem>
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
             </MenuItem>
 
@@ -459,7 +462,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Skilehrer" x:Name="tabitemUebungsleiter" GotFocus="tabitemSkilehrer_GotFocus" Margin="-2,-2,0,-2" VerticalAlignment="Top">
+            <TabItem Header="Skilehrer" x:Name="tabitemUebungsleiter" GotFocus="tabitemSkilehrer_GotFocus" VerticalAlignment="Top" Margin="-2,-2,0,-2">
                 <TabItem.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </TabItem.LayoutTransform>

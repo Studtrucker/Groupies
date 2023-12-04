@@ -7,11 +7,28 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
-    
-    <Grid x:Name="Grid">
-            <uc:InstructorView/>
-   </Grid>
-    
+
+    <Grid IsSharedSizeScope="True">
+        <Grid x:Name="Layer0Grid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition SharedSizeGroup="pinSpalte"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <uc:LevelView />
+            </ScrollViewer>
+        </Grid>
+        <Grid x:Name="Layer1Grid" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="250"/>
+                <ColumnDefinition Width="280" MinWidth="150" SharedSizeGroup="pinSpalte"/>
+            </Grid.ColumnDefinitions>
+            <uc:LevelExplorer Grid.Column="1" Margin="10,0,0,0"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+        </Grid>
+    </Grid>
+
+
 </Window>
     
     

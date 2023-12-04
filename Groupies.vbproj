@@ -119,6 +119,9 @@
     <Compile Include="UserControls\InstructorView.xaml.vb">
       <DependentUpon>InstructorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\LevelExplorer.xaml.vb">
+      <DependentUpon>LevelExplorer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\LevelView.xaml.vb">
       <DependentUpon>LevelView.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
     <Page Include="UserControls\InstructorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\LevelExplorer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\LevelView.xaml">
       <SubType>Designer</SubType>

@@ -16,10 +16,10 @@ Namespace UserControls
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
             _levelListCollectionView = New ListCollectionView(New LevelCollection)
-
+            AddHandler Loaded, AddressOf ParticipantView_Loaded
         End Sub
 
-        Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs)
             _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
             ParticipantLevelComboBox.ItemsSource = _levelListCollectionView

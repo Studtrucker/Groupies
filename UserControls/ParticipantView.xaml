@@ -5,40 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
              mc:Ignorable="d" >
-    
+
     <!-- Detailangaben -->
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        
+    <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="250" MinWidth="250"/>
+            <ColumnDefinition Width="*" MinWidth="200"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="1" Content="Vorname" />
-        <Label Grid.Column="0" Grid.Row="2" Content="Name" />
-        <Label Grid.Column="0" Grid.Row="3" Content="Persönliches Level" />
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Vorname" />
+        <Label Grid.Column="0" Grid.Row="1" Content="Name" />
+        <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" />
 
         <!-- Binding an den Datacontext des Windows -->
+        <TextBox  Grid.Column="1" Grid.Row="0" 
+                      Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
         <TextBox  Grid.Column="1" Grid.Row="1" 
-                  Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox  Grid.Column="1" Grid.Row="2" 
-                  Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" />
-        <ComboBox Grid.Column="1" Grid.Row="3"
-                  SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
-                  SelectedValue="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                  x:Name="ParticipantLevelComboBox"/>
+                      Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" />
+        <ComboBox Grid.Column="1" Grid.Row="2"
+                      SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
+                      SelectedValue="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
+                      x:Name="ParticipantLevelComboBox" Grid.ColumnSpan="2"/>
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="5" Width="5"
-                      HorizontalAlignment="Right" Background="Transparent"/>
+
+        <GridSplitter Grid.Column="2" Grid.RowSpan="3" Width="5"
+                          HorizontalAlignment="Right" Background="Transparent"/>
     </Grid>
-    </ScrollViewer>
+    <!--</ScrollViewer>-->
 </UserControl>

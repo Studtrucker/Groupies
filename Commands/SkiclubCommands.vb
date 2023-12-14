@@ -14,6 +14,8 @@ Namespace Commands
         Private ReadOnly _uebungsleiterLoeschen As RoutedUICommand
         Private ReadOnly _neuesLevel As RoutedUICommand
         Private ReadOnly _levelLoeschen As RoutedUICommand
+        Private ReadOnly _neuerSkill As RoutedUICommand
+        Private ReadOnly _skillLoeschen As RoutedUICommand
         Private ReadOnly _dialogOk As RoutedUICommand
         Private ReadOnly _dialogCancel As RoutedUICommand
 
@@ -30,6 +32,8 @@ Namespace Commands
             _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkiclubCommands))
             _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkiclubCommands))
             _levelLoeschen = New RoutedUICommand("Level löschen", "LevelLoeschen", GetType(SkiclubCommands))
+            _neuerSkill = New RoutedUICommand("Fähigkeit hinzufügen", "NeuerSkill", GetType(SkiclubCommands))
+            _skillLoeschen = New RoutedUICommand("Fähigkeit entfernen", "SkillLoeschen", GetType(SkiclubCommands))
             _dialogOk = New RoutedUICommand("Eingabe abschließen", NameOf(DialogOk), GetType(SkiclubCommands))
             _dialogCancel = New RoutedUICommand("Eingabe abbrechen", NameOf(DialogCancel), GetType(SkiclubCommands))
         End Sub
@@ -103,6 +107,18 @@ Namespace Commands
         Public ReadOnly Property LevelLoeschen As RoutedUICommand
             Get
                 Return _levelLoeschen
+            End Get
+        End Property
+
+        Public ReadOnly Property NewSkill As RoutedUICommand
+            Get
+                Return _neuerSkill
+            End Get
+        End Property
+
+        Public ReadOnly Property DeleteSkill As RoutedUICommand
+            Get
+                Return _skillLoeschen
             End Get
         End Property
 

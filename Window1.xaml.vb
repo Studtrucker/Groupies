@@ -17,6 +17,9 @@ Public Class Window1
 
         LoadLastSkischule()
 
+        _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
+        DataContext = _levelListCollectionView
+
     End Sub
 
     Private Sub LoadLastSkischule()

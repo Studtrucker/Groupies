@@ -16,7 +16,7 @@ Namespace Entities
         Public Property SkillNaming As String
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe")>
-        Public Property SortingNumber As String
+        Public Property SortNumber As String
         Public Property Description As String
 
 

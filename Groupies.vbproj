@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
+      <DependentUpon>NewSkillDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="My Project\Annotations.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\ImageTypes.vb" />
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\NewParticipantDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\NewSkillDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -375,6 +382,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\QRKontaktSkisportMeerbusch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-trophäe-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

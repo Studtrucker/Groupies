@@ -38,6 +38,7 @@ Public Class Window1
         Catch ex As FileNotFoundException
         End Try
     End Sub
+
     Private Sub OpenSkischule(fileName As String)
         Dim _skischuleListFile = New FileInfo(fileName)
 
@@ -63,6 +64,7 @@ Public Class Window1
         'Title = "Groupies - " & fileName
 
     End Sub
+
     Private Function OpenXML(fileName As String) As Entities.Skiclub
         Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
         Dim loadedSkiclub As Entities.Skiclub = Nothing
@@ -78,6 +80,5 @@ Public Class Window1
         End Using
         Return loadedSkiclub
     End Function
-
 
 End Class

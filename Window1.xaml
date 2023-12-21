@@ -8,14 +8,14 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
 
-    <Grid IsSharedSizeScope="True">
+    <Grid IsSharedSizeScope="True"  >
         <Grid x:Name="Layer0Grid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition SharedSizeGroup="pinSpalte"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <uc:LevelView />
+                <uc:LevelView x:Name="LevelViewUserControl" />
             </ScrollViewer>
         </Grid>
         <Grid x:Name="Layer1Grid" >

@@ -35,7 +35,7 @@
                   IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" 
                   CanUserAddRows="True" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sort" Binding="{Binding SortingNumber}" Width="Auto" />
+                <DataGridTextColumn Header="Sort" Binding="{Binding SortNumber}" Width="Auto" />
                 <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
@@ -44,7 +44,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*" >
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"   >
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>

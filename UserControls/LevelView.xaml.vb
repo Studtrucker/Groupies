@@ -1,10 +1,22 @@
-﻿Imports Groupies.Commands
+﻿Imports System.ComponentModel
+Imports Groupies.Commands
 Imports CDS = Groupies.Services.CurrentDataService
-
+Imports Groupies.Entities
 
 Namespace UserControls
     Public Class LevelView
         Public Property Level
+        Private _skillListCollectionView As ICollectionView
+
+        Sub New()
+
+            ' Dieser Aufruf ist für den Designer erforderlich.
+            InitializeComponent()
+
+            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+            _skillListCollectionView = New ListCollectionView(New SkillCollection())
+
+        End Sub
 
         ' Zur Ausführung des Handles HandleNewSkillExecuted erstellen, kann auf dem Mutter Window ein RoutedEvent registriert werden.
         ' Siehe auch EventTrigger (= Ereignisauslöser) Kapitel 11 »Styles, Trigger und Templates«
@@ -29,7 +41,7 @@ Namespace UserControls
             Dim dlg = New NewSkillDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
             If dlg.ShowDialog = True Then
                 CDS.Skiclub.Levellist(0).LevelSkills.Add(dlg.Skill)
-                '.MoveCurrentTo(dlg.Skill)
+                _skillListCollectionView.MoveCurrentTo(dlg.Skill)
                 SkillsDataGrid.ScrollIntoView(dlg.Skill)
             End If
         End Sub

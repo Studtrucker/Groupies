@@ -13,13 +13,15 @@
 
     <Border BorderThickness="1" BorderBrush="Black">
         <DockPanel>
-            <TextBlock Text="Levels" Grid.Row="0" Foreground="DarkGray" Margin="0" DockPanel.Dock="Top"/>
+            <TextBlock Text="Levels" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
 
             <Grid>
                 <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
-                            SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                            HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
-                            RowStyle="{StaticResource groupiesDataGridRowStyle}"   >
+                          SelectionMode="Extended"     AutoGenerateColumns="False"
+                          Margin="4" IsReadOnly="True" 
+                          HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                          RowStyle="{StaticResource groupiesDataGridRowStyle}"   
+                          ScrollViewer.CanContentScroll="True" ScrollBar.Scroll="">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
                         <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding LevelNaming}"/>

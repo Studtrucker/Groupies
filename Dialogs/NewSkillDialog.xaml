@@ -42,7 +42,7 @@
                      Grid.Column="1" Grid.Row="1" />
             <Label Content="Beschreibung" Grid.Column="0" Grid.Row="2"/>
             <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" 
-                     Grid.Column="1" Grid.Row="2" />
+                     Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"/>
         </Grid>
     </DockPanel>
 </Window>

@@ -6,54 +6,54 @@
              xmlns:local="clr-namespace:Groupies"
              mc:Ignorable="d"
              xmlns:cmd="clr-namespace:Groupies.Commands"
-             Height="Auto" Width="Auto" MinWidth="200">
-
-    <Grid >
+             Height="Auto" MinWidth="200">
+    
+    <Grid>
         <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="Auto"/>
-               <ColumnDefinition Width="*"/>
-           </Grid.ColumnDefinitions>
-           
-           <Grid.RowDefinitions>
-               <RowDefinition Height="Auto"/>
-               <RowDefinition Height="Auto"/>
-               <RowDefinition Height="Auto"/>
-               <RowDefinition Height="Auto"/>
-           </Grid.RowDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="3" Command="{x:Static cmd:SkiclubCommands.NewSkill}" Content="Neu"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
         <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" />
         <Label Grid.Column="0" Grid.Row="1" Content="Benennung" />
         <Label Grid.Column="0" Grid.Row="2" Content="Fähigkeiten"/>
-        
+
         <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
                  Grid.Column="1" Grid.Row="0" Width="50" HorizontalAlignment="Left"/>
         <TextBox Text="{Binding LevelNaming, UpdateSourceTrigger=PropertyChanged}" 
                  Grid.Column="1" Grid.Row="1" />
-        <DataGrid Grid.Column="1" Grid.Row="2" x:Name="SkillsDataGrid"
-                  AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
-                  IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" 
-                  CanUserAddRows="True" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Sort" Binding="{Binding SortNumber}" Width="Auto" />
-                <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" Width="Auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"   >
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-                        </Style>
-                       </DataGridTextColumn.ElementStyle>
-                   </DataGridTextColumn>
-               </DataGrid.Columns>
-           </DataGrid>
-       </Grid>
-
+        <DockPanel Grid.Column="1" Grid.Row="2">
+            <DataGrid  x:Name="SkillsDataGrid"
+                       DockPanel.Dock="Top"
+                       AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
+                       IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" 
+                       CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Sort" Binding="{Binding SortNumber}" />
+                    <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
 </UserControl>

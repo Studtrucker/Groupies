@@ -1204,4 +1204,9 @@ Class MainWindow
         Participant
     End Enum
 
+    Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
+        Dim Fenster = New Window1
+        Fenster.Show()
+
+    End Sub
 End Class

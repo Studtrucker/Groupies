@@ -34,6 +34,11 @@
                        AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
                        IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" 
                        CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Neu" Command="{x:Static cmd:SkiclubCommands.NewSkill}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Sort" Binding="{Binding SortNumber}" />
                     <DataGridTextColumn Header="Fähigkeit" Binding="{Binding SkillNaming}" >

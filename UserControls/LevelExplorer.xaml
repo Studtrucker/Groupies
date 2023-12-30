@@ -17,11 +17,12 @@
 
             <Grid>
                 <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
+                          IsSynchronizedWithCurrentItem="True"
                           SelectionMode="Extended"     AutoGenerateColumns="False"
                           Margin="4" IsReadOnly="True" 
                           HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
                           RowStyle="{StaticResource groupiesDataGridRowStyle}"   
-                          ScrollViewer.CanContentScroll="True" ScrollBar.Scroll="">
+                          ScrollViewer.CanContentScroll="True" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
                         <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding LevelNaming}"/>

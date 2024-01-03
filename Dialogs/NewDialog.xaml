@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
         xmlns:cmd="clr-namespace:Groupies.Commands"
-        mc:Ignorable="d"
+        mc:Ignorable="d" SizeToContent="Height"
         Title="NewDialog" Height="450" Width="800">
-    <DockPanel x:Name="DockPanel">
-        <UserControl x:Name="UC"/>
+
+    <DockPanel x:Name="DockPanel" >
+        <Border x:Name="UserControlBorder" DockPanel.Dock="Top"/>
+
+
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True"/>
-                <Button Width="100" Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True"/>
+                <Button Width="100"  Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True"/>
+                <Button Width="100"  Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True"/>
             </StackPanel>
         </Border>
     </DockPanel>
+
 </Window>

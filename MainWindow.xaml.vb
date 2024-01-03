@@ -1194,7 +1194,7 @@ Class MainWindow
     End Enum
 
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
-        Dim win = New NewDialog(EntityType.Skill)
-        win.Show()
+        Dim win = New NewSkillDialog
+        win.ShowDialog()
     End Sub
 End Class

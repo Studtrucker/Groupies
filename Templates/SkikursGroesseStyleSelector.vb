@@ -1,31 +1,34 @@
 ﻿Imports Groupies.Entities
 
-Public Class SkikursGroesseStyleSelector
-    Inherits StyleSelector
-    Public KleineGruppe As Style
-    Public NormaleGruppe As Style
-    Public GrosseGruppe As Style
+Namespace TemplateSelectors
 
-    Public Overrides Function SelectStyle(item As Object, container As DependencyObject) As Style
-        If GrosseGruppe Is Nothing Then
-            GrosseGruppe = TryCast(Application.Current.FindResource("GrosseGruppe"), Style)
-        End If
-        If NormaleGruppe Is Nothing Then
-            NormaleGruppe = TryCast(Application.Current.FindResource("NormaleGruppe"), Style)
-        End If
-        If KleineGruppe Is Nothing Then
-            KleineGruppe = TryCast(Application.Current.FindResource("KleineGruppe"), Style)
-        End If
-        Dim SK = TryCast(item, ParticipantCollection)
-        If SK IsNot Nothing Then
-            If SK.Count < 7 Then
-                Return KleineGruppe
+    Public Class SkikursGroesseStyleSelector
+        Inherits StyleSelector
+        Public KleineGruppeStyleSelector As Style
+        Public NormaleGruppeStyleSelector As Style
+        Public GrosseGruppeStyleSelector As Style
+
+        Public Overrides Function SelectStyle(item As Object, container As DependencyObject) As Style
+            If GrosseGruppeStyleSelector Is Nothing Then
+                GrosseGruppeStyleSelector = TryCast(Application.Current.FindResource("GrosseGruppeStyleSelector"), Style)
             End If
-            If SK.Count >= 7 And SK.Count < 14 Then
-                Return NormaleGruppe
+            If NormaleGruppeStyleSelector Is Nothing Then
+                NormaleGruppeStyleSelector = TryCast(Application.Current.FindResource("NormaleGruppeStyleSelector"), Style)
             End If
-            Return GrosseGruppe
-        End If
-        Return MyBase.SelectStyle(item, container)
-    End Function
-End Class
+            If KleineGruppeStyleSelector Is Nothing Then
+                KleineGruppeStyleSelector = TryCast(Application.Current.FindResource("KleineGruppeStyleSelector"), Style)
+            End If
+            Dim SK = TryCast(item, ParticipantCollection)
+            If SK IsNot Nothing Then
+                If SK.Count < 5 Then
+                    Return KleineGruppeStyleSelector
+                End If
+                If SK.Count >= 6 And SK.Count < 11 Then
+                    Return NormaleGruppeStyleSelector
+                End If
+                Return GrosseGruppeStyleSelector
+            End If
+            Return MyBase.SelectStyle(item, container)
+        End Function
+    End Class
+End Namespace

@@ -1,0 +1,49 @@
+﻿Imports System.ComponentModel
+Imports Groupies.Entities
+Imports Groupies.Commands
+Imports CDS = Groupies.Services.CurrentDataService
+Namespace UserControls
+    Public Class Levels
+        Private _levelListCollectionView As ICollectionView
+        Private _skillListCollectionView As ICollectionView
+
+        Sub New()
+
+            ' Dieser Aufruf ist für den Designer erforderlich.
+            InitializeComponent()
+
+            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+            _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
+            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+            DataContext = _levelListCollectionView
+
+            _skillListCollectionView = New ListCollectionView(New SkillCollection())
+
+        End Sub
+
+        ' Zur Ausführung des Handles HandleNewSkillExecuted erstellen, kann auf dem Mutter Window ein RoutedEvent registriert werden.
+        ' Siehe auch EventTrigger (= Ereignisauslöser) Kapitel 11 »Styles, Trigger und Templates«
+
+        Private Sub LevelView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+            CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerSkill, AddressOf HandleNewSkillExecuted, AddressOf HandleNewSkillCanExecute))
+        End Sub
+
+        Private Sub HandleNewSkillCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+            e.CanExecute = True
+        End Sub
+
+        Private Sub HandleNewSkillExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+            Dim dlg = New NewSkillDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            If dlg.ShowDialog = True Then
+                Dim s = dlg.Skill
+                Dim i = CDS.Skiclub.Levellist.IndexOf(_levelListCollectionView.CurrentItem)
+                CDS.Skiclub.Levellist(i).LevelSkills.Add(s)
+                _skillListCollectionView.MoveCurrentTo(s)
+                LevelViewUserControl.SkillsDataGrid.ScrollIntoView(s)
+            End If
+        End Sub
+
+    End Class
+
+End Namespace

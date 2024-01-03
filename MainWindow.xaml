@@ -111,7 +111,7 @@
                 <MenuItem Header="Teilnehmer"></MenuItem>
                 <MenuItem Header="Skilehrer"></MenuItem>
                 <MenuItem Header="Gruppen"></MenuItem>
-                <MenuItem Header="Levels"></MenuItem>
+                <MenuItem Header="Levels" Click="MenuItem_Click_1"></MenuItem>
             </MenuItem>
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
             </MenuItem>
@@ -119,16 +119,17 @@
         </Menu>
 
         <DockPanel DockPanel.Dock="Top" >
-            
+
             <Grid  IsSharedSizeScope="True">
 
                 <Grid x:Name="GroupOverviewGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="15*" />
+                        <ColumnDefinition Width="131*"/>
                         <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="600"/>
                     </Grid.ColumnDefinitions>
 
-                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
+                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
                         <WrapPanel x:Name="GroupOverviewWrapPanel"/>
                     </ScrollViewer>
                 </Grid>
@@ -138,7 +139,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <DataGrid Grid.Column="1" Grid.Row="0" x:Name="participantlistOverviewGrid"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"

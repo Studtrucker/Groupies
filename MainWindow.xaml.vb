@@ -142,7 +142,7 @@ Class MainWindow
         _mRUSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
-        LoadmRUSortedListMenu()
+        Services.Service.LoadmRUSortedListMenu()
 
         ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
@@ -150,7 +150,10 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            LoadLastSkischule()
+            Services.Service.LoadLastSkischule()
+            If CDS.Skiclub IsNot Nothing Then
+                SetView(CDS.Skiclub)
+            End If
         End If
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
@@ -196,47 +199,47 @@ Class MainWindow
 
 #Region "Methoden zum Laden der meist genutzten Listen und der letzten Skikurse"
 
-    Private Sub LoadmRUSortedListMenu()
-        Try
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        Dim i = 0
-                        While reader.Peek <> -1
-                            Dim line = reader.ReadLine().Split(";")
-                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
-                                If File.Exists(line(1)) Then
-                                    i += 1
-                                    _mRUSortedList.Add(i, line(1))
-                                End If
-                            End If
-                        End While
-                    End Using
-                End Using
-            End Using
-            RefreshMostRecentMenu()
-        Catch ex As FileNotFoundException
-            'Throw ex
-        End Try
+    'Private Sub LoadmRUSortedListMenu()
+    '    Try
+    '        Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+    '            Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+    '                Using reader = New StreamReader(stream)
+    '                    Dim i = 0
+    '                    While reader.Peek <> -1
+    '                        Dim line = reader.ReadLine().Split(";")
+    '                        If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
+    '                            If File.Exists(line(1)) Then
+    '                                i += 1
+    '                                _mRUSortedList.Add(i, line(1))
+    '                            End If
+    '                        End If
+    '                    End While
+    '                End Using
+    '            End Using
+    '        End Using
+    '        RefreshMostRecentMenu()
+    '    Catch ex As FileNotFoundException
+    '        'Throw ex
+    '    End Try
 
-    End Sub
+    'End Sub
 
-    Private Sub LoadLastSkischule()
-        ' Die letze Skischule aus dem IsolatedStorage holen.
-        Try
-            Dim x = ""
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("LastSkischule", FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        x = reader.ReadLine
-                    End Using
-                End Using
+    'Private Sub LoadLastSkischule()
+    '    ' Die letze Skischule aus dem IsolatedStorage holen.
+    '    Try
+    '        Dim x = ""
+    '        Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+    '            Using stream = New IsolatedStorageFileStream("LastSkischule", FileMode.Open, iso)
+    '                Using reader = New StreamReader(stream)
+    '                    x = reader.ReadLine
+    '                End Using
+    '            End Using
 
-            End Using
-            If File.Exists(x) Then Me.OpenSkischule(x)
-        Catch ex As FileNotFoundException
-        End Try
-    End Sub
+    '        End Using
+    '        If File.Exists(x) Then Me.OpenSkischule(x)
+    '    Catch ex As FileNotFoundException
+    '    End Try
+    'End Sub
 
 #End Region
 
@@ -746,25 +749,11 @@ Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        If _skischuleListFile IsNot Nothing AndAlso fileName.Equals(_skischuleListFile.FullName) Then
-            MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
-            Exit Sub
-        End If
-
-        If Not File.Exists(fileName) Then
-            MessageBox.Show("Die Datei existiert nicht")
-            Exit Sub
-        End If
-
-        Dim loadedSkischule = OpenXML(fileName)
-        'Dim loadedSkischule = OpenZIP(fileName)
-        If loadedSkischule Is Nothing Then Exit Sub
-
-        CDS.Skiclub = Nothing
+        Services.Service.OpenSkischule(fileName)
 
         _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
-        SetView(loadedSkischule)
+        SetView(Services.Skiclub)
         Title = "Groupies - " & fileName
 
     End Sub
@@ -900,7 +889,7 @@ Class MainWindow
         ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
+        For i = Services.Service.RuSortedList.Values.Count - 1 To 0 Step -1
             Dim jumpPath = New JumpPath With {
                 .CustomCategory = "Zuletzt geöffnet",
                 .Path = _mRUSortedList.Values(i)}
@@ -1205,8 +1194,7 @@ Class MainWindow
     End Enum
 
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
-        Dim Fenster = New Window1
-        Fenster.Show()
-
+        Dim win = New NewDialog(EntityType.Skill)
+        win.Show()
     End Sub
 End Class

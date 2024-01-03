@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Groupies"
              xmlns:en="clr-namespace:Groupies.Entities"
+             xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              StartupUri="MainWindow.xaml"
              Startup="Skikurs_Startup">
     <!--MainWindow-->
@@ -10,7 +11,7 @@
     <Application.Resources>
         <ResourceDictionary>
 
-            <!--Styles for Printout-->
+            <!--Styles Printout-->
             <Style TargetType="TextBlock" x:Key="BigCaption">
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="FontStyle" Value="Italic"/>
@@ -36,38 +37,47 @@
             </Style>
 
             <Style TargetType="DataGrid" x:Key="PrintoutInfo">
-            
-            <!--Standard-->
-            
-            <Setter Property="FontSize" Value="36"/>
-            <Style.Triggers>
-                
-            <!--Group with more than 14 participants-->
-            
-                <DataTrigger Binding="{Binding}" Value="ZuGross">
-                    <Setter Property="FontSize" Value="24"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+                <!--Standard-->
+                <Setter Property="FontSize" Value="36"/>
+                <Style.Triggers>
+                    
+                    <!--Group with more than 10 participants -->
+                    <DataTrigger Binding="{Binding}" Value="ZuGross">
+                        <Setter Property="FontSize" Value="24"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
             
             <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>
                 <GradientStop Offset="0.6" Color="White"/>
                 <GradientStop Offset="1.5" Color="White"/>
             </LinearGradientBrush>
+
+            <templ:SkikursGroesseStyleSelector x:Key="SkikursGroesseStyleSelector"/>
             
-            <StyleSelector x:Key="KleineGruppe">
-                <!--<StyleSelector x:Key="KleineGruppe" DataType="{x:Type en:TeilnehmerCollection}" >-->
-                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="48"/>-->
-            </StyleSelector>
-            <StyleSelector x:Key="NormaleGruppe" >
-                <!--<StyleSelector x:Key="NormaleGruppe" DataType="{x:Type en:TeilnehmerCollection}">-->
-                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="36"/>-->
-            </StyleSelector>
-            <StyleSelector x:Key="GrosseGruppe" >
-                <!--<StyleSelector x:Key="GrosseGruppe" DataType="{x:Type en:TeilnehmerCollection}">-->
-                <!--<TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>-->
-            </StyleSelector>
+           <Style x:Key="KleineGruppeStyleSelector" TargetType="DataGrid">
+                <Setter Property="FontSize" Value="48"/> 
+            </Style>
+            <Style x:Key="NormaleGruppeStyleSelector" TargetType="DataGrid">
+                  <Setter Property="FontSize" Value="36"/>
+            </Style>
+            <Style x:Key="GrosseGruppeStyleSelector" TargetType="DataGrid">
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
+
+            
+            <templ:GruppenGroesseDataTemplate x:Key="GruppenGroesseDataTemplate"/>
+            
+            <DataTemplate x:Key="KleineGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+                <TextBlock Text="{Binding Teilnehmer}" FontSize="48"/>
+            </DataTemplate>
+            <DataTemplate x:Key="NormaleGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+                <TextBlock Text="{Binding Teilnehmer}" FontSize="36"/>
+            </DataTemplate>
+            <DataTemplate x:Key="GrosseGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+                <TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>
+            </DataTemplate>
 
             <!--Explicit Style for Image Caption-->
             <Style TargetType="Image" x:Key="WindowImageCaption">
@@ -130,12 +140,6 @@
                 <Setter Property="Margin" Value="4,4,4,4"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
-
-            <!--Style for Textblocks--><!--
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>-->
 
             <!--Style for Buttons-->
             <Style TargetType="Button">

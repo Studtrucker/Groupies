@@ -3,9 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Groupies"
-             xmlns:en="clr-namespace:Groupies.Entities"
-             xmlns:conv="clr-namespace:Groupies.Converters"
+             xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
 
@@ -56,15 +54,13 @@
          <!--Area Participants-->
         <DockPanel Grid.Row="2" Margin="5">
             <TextBlock Text="Teilnehmer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
-            <DataGrid x:Name="lstMitglieder" Margin="5" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                      GridLinesVisibility="None" DockPanel.Dock="Top"  Style="{StaticResource PrintoutInfo}">
-                <DataGrid.Columns>
+                <DataGrid x:Name="lstMitglieder" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
+                      GridLinesVisibility="None" DockPanel.Dock="Top" >
+                    <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
                 </DataGrid.Columns>
-
             </DataGrid>
-        </DockPanel>
-    </Grid>
-
+        </DockPanel>  
+        </Grid>
     </DockPanel>
 </UserControl>

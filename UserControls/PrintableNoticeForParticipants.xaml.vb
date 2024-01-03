@@ -41,6 +41,8 @@ Namespace UserControls
                 DataContext = "ZuGross"
             End If
 
+            Dim x = New Groupies.TemplateSelectors.SkikursGroesseStyleSelector
+            lstMitglieder.Style = x.SelectStyle(Members, lstMitglieder)
 
         End Sub
 

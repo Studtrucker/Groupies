@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Content="Sortierung" />
@@ -36,7 +37,8 @@
                        CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Neu" Command="{x:Static cmd:SkiclubCommands.NewSkill}"/>
+                        <!--MenuItem implementiert das Interface 'ICommandSource'-->
+                        <MenuItem Command="{x:Static cmd:SkiclubCommands.NeuerSkill}"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
@@ -60,5 +62,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+        <Button Content="Neu" Command="{x:Static cmd:SkiclubCommands.NeuerSkill}"
+                Grid.Column="1" Grid.Row="3"/>
     </Grid>
 </UserControl>

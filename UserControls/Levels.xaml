@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="UserControls.Levels"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Groupies"
+             xmlns:uc="clr-namespace:Groupies.UserControls" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
+    </UserControl.Resources>
+
+    <Grid IsSharedSizeScope="True"   Margin="4">
+        
+        <Grid x:Name="LayerViewGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="250"/>
+                <ColumnDefinition SharedSizeGroup="ExplorerColumn"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <uc:LevelView x:Name="LevelViewUserControl" />
+            </ScrollViewer>
+        </Grid>
+        
+        <Grid x:Name="LayerExplorerGrid" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="250"/>
+                <ColumnDefinition Width="280" MinWidth="150" SharedSizeGroup="ExplorerColumn"/>
+            </Grid.ColumnDefinitions>
+                
+                <DockPanel Grid.Column="1">
+                    <TextBlock Text="Levels" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+
+                    <Grid>
+                        <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
+                              SelectionMode="Extended"     AutoGenerateColumns="False"
+                              Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
+                              HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                              RowStyle="{StaticResource groupiesDataGridRowStyle}"   
+                              ScrollViewer.CanContentScroll="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
+                                <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding LevelNaming}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </DockPanel>
+
+
+        </Grid>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="4" Background="Transparent"/>
+
+    </Grid>
+
+</UserControl>

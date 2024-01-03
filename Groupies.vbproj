@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\NewDialog.xaml.vb">
+      <DependentUpon>NewDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
       <DependentUpon>NewSkillDialog.xaml</DependentUpon>
     </Compile>
@@ -110,10 +113,12 @@
     <Compile Include="Services\CreateDefaultService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
+    <Compile Include="Services\Service.vb" />
     <Compile Include="Services\TestStreamreader.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
     <Compile Include="UserControls\GroupView.xaml.vb">
       <DependentUpon>GroupView.xaml</DependentUpon>
@@ -122,8 +127,8 @@
     <Compile Include="UserControls\InstructorView.xaml.vb">
       <DependentUpon>InstructorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LevelExplorer.xaml.vb">
-      <DependentUpon>LevelExplorer.xaml</DependentUpon>
+    <Compile Include="UserControls\Levels.xaml.vb">
+      <DependentUpon>Levels.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LevelView.xaml.vb">
       <DependentUpon>LevelView.xaml</DependentUpon>
@@ -137,11 +142,18 @@
     <Compile Include="UserControls\PrintableNoticeForParticipants.xaml.vb">
       <DependentUpon>PrintableNoticeForParticipants.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SkillView.xaml.vb">
+      <DependentUpon>SkillView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
     <Compile Include="Window1.xaml.vb">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\NewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,7 +211,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\LevelExplorer.xaml">
+    <Page Include="UserControls\Levels.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -216,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PrintableNoticeForParticipants.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SkillView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

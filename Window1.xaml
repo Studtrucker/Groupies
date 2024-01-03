@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
 
-    <Grid IsSharedSizeScope="True"   Margin="4">
+        <uc:Levels x:Name="Levels"/>
+    <!--<Grid IsSharedSizeScope="True"   Margin="4">
         <Grid x:Name="LayerViewGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="250"/>
@@ -26,7 +27,7 @@
             <uc:LevelExplorer Grid.Column="1" />
             <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="4" Background="Transparent"/>
         </Grid>
-    </Grid>
+    </Grid>-->
 
 
 </Window>

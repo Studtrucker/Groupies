@@ -102,5 +102,14 @@ Public Class GroupView
 
     End Sub
 
+    Private Sub TextBlock_MouseDown(sender As Object, e As MouseButtonEventArgs)
 
+        Dim Tn = TryCast(_instructorListCollectionView.CurrentItem, Instructor)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(Participant), Tn)
+            'DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Move)
+            Group.GroupLeader = Nothing
+        End If
+    End Sub
 End Class

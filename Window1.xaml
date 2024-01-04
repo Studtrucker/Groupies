@@ -8,26 +8,25 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
 
+
+    <DockPanel Grid.IsSharedSizeScope="True">
         
-    <Grid IsSharedSizeScope="True"   Margin="4">
-        <Grid x:Name="LayerViewGrid">
+        <Grid x:Name="Links" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="250"/>
-                <ColumnDefinition SharedSizeGroup="ExplorerColumn"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition SharedSizeGroup="ColumnGroup"/>
             </Grid.ColumnDefinitions>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <uc:LevelView x:Name="LevelViewUserControl" />
-            </ScrollViewer>
+            <Border Background="AliceBlue" Grid.Row="0" BorderBrush="Aqua" BorderThickness="2"/>
         </Grid>
-        <Grid x:Name="LayerExplorerGrid" >
+        
+        <Grid x:Name="Rechts" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="250"/>
-                <ColumnDefinition Width="280" MinWidth="150" SharedSizeGroup="ExplorerColumn"/>
+                <ColumnDefinition/>
+                <ColumnDefinition SharedSizeGroup="ColumnGroup"/>
             </Grid.ColumnDefinitions>
-            <!--<uc:LevelExplorer Grid.Column="1" />-->
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="4" Background="Transparent"/>
+            <Border Background="PaleGreen" Grid.Row="1"/>
         </Grid>
-    </Grid>
+    </DockPanel>
 
 
 </Window>

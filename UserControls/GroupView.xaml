@@ -58,11 +58,20 @@
                           x:Name="GroupLevelCombobox" />
 
                 <!--Combobox Skilehrer-->
-                <ComboBox Grid.Column="2" Grid.Row="4" 
+                <StackPanel  Grid.Column="2" Grid.Row="4" >
+                    <ComboBox
                           SelectedValuePath="InstructorID" DisplayMemberPath="InstructorFullName" IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding Path=GroupLeader.InstructorID, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLeaderCombobox" />
+                    <TextBlock 
+                        x:Name="GroupLeaderTextblock"
+                        Text="{Binding Path=GroupLeader.InstructorFullName}" Mouse.MouseDown="TextBlock_MouseDown"/>
+                    <TextBox 
+                        x:Name="GroupLeaderTextbox"
+                        Text="{Binding Path=GroupLeader.InstructorFullName}" Mouse.MouseDown="TextBlock_MouseDown"/>
+
+                </StackPanel>
 
                 <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Path=GroupMembers.Count,Mode=OneWay}" />
 

@@ -8,16 +8,30 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Border Background="AliceBlue" Margin="5"/>
-        <Border Background="AliceBlue" Margin="5" Grid.Row="2"/>
-        <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" Background="Black" Panel.ZIndex="1"/>
-    </Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Left" Width="200" >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="AliceBlue" Margin="5"/>
+            <Border Background="AliceBlue" Margin="5" Grid.Row="2"/>
+            <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" Background="Black" Panel.ZIndex="1"/>
+        </Grid>
+
+        <Grid DockPanel.Dock="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Background="AliceBlue" Margin="5"/>
+            <Border Background="AliceBlue" Margin="5" Grid.Column="2"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="Black" Panel.ZIndex="1"/>
+        </Grid>
+
+    </DockPanel>
 
 </Window>
     

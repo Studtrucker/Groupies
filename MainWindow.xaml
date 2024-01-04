@@ -111,7 +111,8 @@
                 <MenuItem Header="Teilnehmer"></MenuItem>
                 <MenuItem Header="Skilehrer"></MenuItem>
                 <MenuItem Header="Gruppen"></MenuItem>
-                <MenuItem Header="Levels" Click="MenuItem_Click_1"></MenuItem>
+                <MenuItem Header="Levels"></MenuItem>
+                <MenuItem Header="Testfenster" Click="MenuItem_Click_1"></MenuItem>
             </MenuItem>
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
             </MenuItem>

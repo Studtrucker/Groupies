@@ -113,8 +113,7 @@
     <Compile Include="Services\CreateDefaultService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
-    <Compile Include="Services\Service.vb" />
-    <Compile Include="Services\TestStreamreader.vb" />
+    <Compile Include="Services\StartService.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
@@ -123,7 +122,7 @@
     <Compile Include="UserControls\GroupView.xaml.vb">
       <DependentUpon>GroupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\IPrintableNotice.vb" />
+    <Compile Include="Interfaces\IPrintableNotice.vb" />
     <Compile Include="UserControls\InstructorView.xaml.vb">
       <DependentUpon>InstructorView.xaml</DependentUpon>
     </Compile>

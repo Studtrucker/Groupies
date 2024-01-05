@@ -2,7 +2,7 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports Groupies.Entities
 
-Namespace ExcelService
+Namespace Services
 
     Public Module ExcelService
         Private ReadOnly _ofdDokument As New Forms.OpenFileDialog

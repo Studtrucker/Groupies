@@ -6,7 +6,8 @@ Imports CDS = Groupies.Services.CurrentDataService
 
 
 Namespace Services
-    Module Service
+
+    Module StartService
 
         Public Property RuSortedList As SortedList(Of Integer, String)
         Private _skischuleListFile As FileInfo

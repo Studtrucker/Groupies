@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System.Windows.Markup
 Imports CDS = Groupies.Services.CurrentDataService
-
+Imports Groupies.Interfaces
 
 Namespace UserControls
 

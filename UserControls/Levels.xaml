@@ -12,22 +12,25 @@
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
     </UserControl.Resources>
 
-    <Grid IsSharedSizeScope="True"   Margin="4">
+    
+    <Grid IsSharedSizeScope="True"   
+          x:Name="SharedGrid"
+          Margin="4" >
         
         <Grid x:Name="LayerViewGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="250"/>
+                <ColumnDefinition />
                 <ColumnDefinition SharedSizeGroup="ExplorerColumn"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <uc:LevelView x:Name="LevelViewUserControl" />
+                <uc:LevelView x:Name="LevelViewUserControl" Margin="10" />
             </ScrollViewer>
         </Grid>
         
         <Grid x:Name="LayerExplorerGrid" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="250"/>
-                <ColumnDefinition Width="280" MinWidth="150" SharedSizeGroup="ExplorerColumn"/>
+                <ColumnDefinition MinWidth="250"/>
+                <ColumnDefinition Width="300" SharedSizeGroup="ExplorerColumn"/>
             </Grid.ColumnDefinitions>
                 
                 <DockPanel Grid.Column="1">
@@ -48,9 +51,9 @@
                     </Grid>
                 </DockPanel>
 
+            <GridSplitter Grid.Column="0" HorizontalAlignment="Right"  Width="5" Background="red"/>
 
         </Grid>
-                <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="4" Background="Transparent"/>
 
     </Grid>
 

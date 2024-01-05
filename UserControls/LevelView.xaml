@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:Groupies"
              mc:Ignorable="d"
              xmlns:cmd="clr-namespace:Groupies.Commands"
-             Height="Auto" MinWidth="200">
-    
+             Height="Auto" >
+
+    <Border BorderBrush="Black" BorderThickness="1">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -65,4 +66,5 @@
         <Button Content="Neu" Command="{x:Static cmd:SkiclubCommands.NeuerSkill}"
                 Grid.Column="1" Grid.Row="3"/>
     </Grid>
+    </Border>
 </UserControl>

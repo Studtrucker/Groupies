@@ -15,11 +15,11 @@ Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Microsoft.Office.Core
 Imports Groupies.UserControls
-Imports Groupies.ExcelService
+Imports Groupies.Services
 Imports Groupies.Entities
 Imports CDS = Groupies.Services.CurrentDataService
-Imports Groupies.Services
 Imports Groupies.Commands
+Imports Groupies.Interfaces
 
 Class MainWindow
 
@@ -142,7 +142,7 @@ Class MainWindow
         _mRUSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
-        Services.Service.LoadmRUSortedListMenu()
+        Services.StartService.LoadmRUSortedListMenu()
 
         ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
@@ -150,7 +150,7 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            Services.Service.LoadLastSkischule()
+            Services.StartService.LoadLastSkischule()
             If CDS.Skiclub IsNot Nothing Then
                 SetView(CDS.Skiclub)
             End If
@@ -749,7 +749,7 @@ Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        Services.Service.OpenSkischule(fileName)
+        Services.StartService.OpenSkischule(fileName)
 
         _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -889,7 +889,7 @@ Class MainWindow
         ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-        For i = Services.Service.RuSortedList.Values.Count - 1 To 0 Step -1
+        For i = Services.StartService.RuSortedList.Values.Count - 1 To 0 Step -1
             Dim jumpPath = New JumpPath With {
                 .CustomCategory = "Zuletzt geöffnet",
                 .Path = _mRUSortedList.Values(i)}

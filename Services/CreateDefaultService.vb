@@ -59,7 +59,7 @@ Namespace Services
 
             Dim uri = New Uri("GroupLevelDistribution", UriKind.Relative)
 
-            Dim dic = ExcelService.ReadLevelDistribution(Anzahl, _levelCollection)
+            Dim dic = Services.ReadLevelDistribution(Anzahl, _levelCollection)
 
             Dim groupCol = New GroupCollection
 
@@ -84,125 +84,128 @@ Namespace Services
 #Region "Private"
 
         Private Function SkillsAnfaenger() As SkillCollection
-            Dim sc = New SkillCollection
-            sc.Add(New Skill With {
+
+            Dim sc = New SkillCollection From {
+                New Skill With {
                    .SkillNaming = "Schneepflug",
                    .SortNumber = "110",
-                   .Description = "Stoppen auf flachem Gelände"})
-            sc.Add(New Skill With {
+                   .Description = "Stoppen auf flachem Gelände"},
+                   New Skill With {
                    .SkillNaming = "Schneepflug",
                    .SortNumber = "120",
-                   .Description = "Kurvern fahren auf flachem Gelände"})
+                   .Description = "Kurvern fahren auf flachem Gelände"}}
 
             Return sc
+
         End Function
 
         Private Function SkillsFortgeschritten() As SkillCollection
-            Dim sc = New SkillCollection
-            sc.Add(New Skill With {
+
+            Dim sc = New SkillCollection From {
+                New Skill With {
                    .SkillNaming = "Skiführung",
                    .SortNumber = "210",
-                   .Description = "Erste Kurven mit parallelen Skiern"})
-
-            sc.Add(New Skill With {
+                   .Description = "Erste Kurven mit parallelen Skiern"},
+                New Skill With {
                    .SkillNaming = "Blaue Piste",
                    .SortNumber = "220",
-                   .Description = "Sicheres Befahren"})
-
-            sc.Add(New Skill With {
+                   .Description = "Sicheres Befahren"},
+                New Skill With {
                    .SkillNaming = "Rote Piste",
                    .SortNumber = "230",
-                   .Description = "Sicheres Befahren"})
-
-            sc.Add(New Skill With {
+                   .Description = "Sicheres Befahren"},
+                New Skill With {
                    .SkillNaming = "Schwarze Piste",
                    .SortNumber = "240",
-                   .Description = "Erste Erfahrungen"})
-
-            sc.Add(New Skill With {
+                   .Description = "Erste Erfahrungen"},
+                New Skill With {
                    .SkillNaming = "Gelände",
                    .SortNumber = "250",
-                   .Description = "Erste Erfahrungen"})
+                   .Description = "Erste Erfahrungen"}}
 
             Return sc
-        End Function
-        Private Function SkillsGeniesser() As SkillCollection
-            Dim sc = New SkillCollection
 
-            sc.Add(New Skill With {
+        End Function
+
+        Private Function SkillsGeniesser() As SkillCollection
+
+            Dim sc = New SkillCollection From {
+                New Skill With {
                    .SkillNaming = "Blaue Piste",
                    .SortNumber = "310",
-                   .Description = "Zügiges und sicheres Befahren, stabile Grundposition"})
-
-            sc.Add(New Skill With {
+                   .Description = "Zügiges und sicheres Befahren, stabile Grundposition"},
+                New Skill With {
                    .SkillNaming = "Rote/schwarze Piste",
                    .SortNumber = "320",
-                   .Description = "Sicheres Befahren bei geringem Tempo"})
-
-
-            sc.Add(New Skill With {
+                   .Description = "Sicheres Befahren bei geringem Tempo"},
+                New Skill With {
                    .SkillNaming = "Gelände",
                    .SortNumber = "330",
-                   .Description = "Weitgehend sicheres Befahren in flachem Gelände"})
+                   .Description = "Weitgehend sicheres Befahren in flachem Gelände"}}
 
             Return sc
 
         End Function
-        Private Function SkillsKoenner() As SkillCollection
-            Dim sc = New SkillCollection
 
-            sc.Add(New Skill With {
+        Private Function SkillsKoenner() As SkillCollection
+
+            Dim sc = New SkillCollection From {
+                New Skill With {
                    .SkillNaming = "Blaue Piste",
                    .SortNumber = "410",
-                   .Description = "Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert"})
-            sc.Add(New Skill With {
+                   .Description = "Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert"},
+                New Skill With {
                    .SkillNaming = "Rote Piste",
                    .SortNumber = "420",
-                   .Description = "Sicheres Befahren bei zügigem Tempo"})
-            sc.Add(New Skill With {
+                   .Description = "Sicheres Befahren bei zügigem Tempo"},
+                New Skill With {
                    .SkillNaming = "Schwarze Piste",
                    .SortNumber = "430",
-                   .Description = "Sicheres Befahren bei zügigem Tempo"})
-            sc.Add(New Skill With {
+                   .Description = "Sicheres Befahren bei zügigem Tempo"},
+                New Skill With {
                    .SkillNaming = "Gelände",
                    .SortNumber = "440",
-                   .Description = "Sicheres Bewegen in flachem Gelände bei regulierender Grundposition"})
+                   .Description = "Sicheres Bewegen in flachem Gelände bei regulierender Grundposition"}}
 
             Return sc
 
         End Function
 
         Private Function SkillsExperte() As SkillCollection
-            Dim sc = New SkillCollection
-            sc.Add(New Skill With {
+
+            Dim sc = New SkillCollection From {
+                New Skill With {
                    .SkillNaming = "Blaue Piste",
                    .SortNumber = "510",
-                   .Description = "Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale"})
-            sc.Add(New Skill With {
+                   .Description = "Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale"},
+                New Skill With {
                    .SkillNaming = "Rote Piste",
                    .SortNumber = "520",
-                   .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"})
-            sc.Add(New Skill With {
+                   .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"},
+                New Skill With {
                    .SkillNaming = "Schwarze Piste",
                    .SortNumber = "530",
-                   .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"})
-            sc.Add(New Skill With {
+                   .Description = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"},
+                New Skill With {
                    .SkillNaming = "Gelände",
                    .SortNumber = "540",
-                   .Description = "Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition"})
+                   .Description = "Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition"}}
 
             Return sc
 
         End Function
 
         Private Function DescriptionAnfaenger() As String
+
             Dim sb = New StringBuilder
             sb.AppendLine("Das erste Mal auf Skiern oder")
             sb.AppendLine("1-2 Tage Skischule")
             Return sb.ToString
+
         End Function
 
         Private Function DescriptionFortgeschritten() As String
+
             Dim sb = New StringBuilder
             sb.AppendLine("Blaue Piste:")
             sb.AppendLine("Sicheres Befahren")
@@ -211,8 +214,11 @@ Namespace Services
             sb.AppendLine("Gelände:")
             sb.AppendLine("Erste Erfahrungen")
             Return sb.ToString
+
         End Function
+
         Private Function DescriptionGeniesser() As String
+
             Dim sb = New StringBuilder
             sb.AppendLine("Blaue Piste:")
             sb.AppendLine("Zügiges und sicheres Befahren, stabile Grundposition")
@@ -221,8 +227,11 @@ Namespace Services
             sb.AppendLine("Gelände:")
             sb.AppendLine("weitgehend sicheres Befahren in flachem Gelände")
             Return sb.ToString
+
         End Function
+
         Private Function DescriptionKoenner() As String
+
             Dim sb = New StringBuilder
             sb.AppendLine("Blaue Piste:")
             sb.AppendLine("Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert")
@@ -231,8 +240,11 @@ Namespace Services
             sb.AppendLine("Gelände:")
             sb.AppendLine("Sicheres Bewegen in flachem Gelände bei regulierender Grundposition")
             Return sb.ToString
+
         End Function
+
         Private Function DescriptionExperte() As String
+
             Dim sb = New StringBuilder
             sb.AppendLine("Blaue Piste:")
             sb.AppendLine("Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale")
@@ -241,6 +253,7 @@ Namespace Services
             sb.AppendLine("Gelände:")
             sb.AppendLine("Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition")
             Return sb.ToString
+
         End Function
 
         Private Function GroupPrintNames() As List(Of String)

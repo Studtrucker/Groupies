@@ -16,7 +16,7 @@
             </Grid.ColumnDefinitions>
             <Canvas Grid.Column="0" Height="100">
                 <Image x:Name="QRWeb" Canvas.Left="-10" Canvas.Top="-10"
-                 Height="100" Source="/Images/QRWebsiteSportKroen.png" Visibility="Hidden"/>
+                 Height="100" Source="/Images/QRWebsiteSportKroen.png" />
                 <TextBlock Text="Scan Me Website" FontSize="8" Canvas.Left="6" Canvas.Bottom="0" Visibility="Hidden"/>
             </Canvas>
             <Image x:Name="Logo" Margin="5"  HorizontalAlignment="Center" Grid.Column="1"

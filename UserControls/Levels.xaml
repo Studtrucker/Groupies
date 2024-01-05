@@ -19,7 +19,7 @@
         
         <Grid x:Name="LayerViewGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition MinWidth="200"/>
                 <ColumnDefinition SharedSizeGroup="ExplorerColumn"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

@@ -7,12 +7,17 @@ Namespace Services
 
         Public Property Skiclub As Skiclub
 
+        Public ReadOnly Property availableInstructors As InstructorCollection
+            Get
+                Return InstructorsAvailable()
+            End Get
+        End Property
 
-        'Public Function InstructorsAvailable() As InstructorCollection
-        '    Dim available = New InstructorCollection
-        '    Skiclub.Instructorlist.Where(Function(y) y.IsAvailable).ToList.ForEach(Sub(i) available.Add(i))
-        '    Return available
-        'End Function
+        Private Function InstructorsAvailable() As InstructorCollection
+            Dim available = New InstructorCollection
+            Skiclub.Instructorlist.Where(Function(y) y.IsAvailable).ToList.ForEach(Sub(i) available.Add(i))
+            Return available
+        End Function
 
     End Module
 

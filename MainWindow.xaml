@@ -119,45 +119,67 @@
 
         </Menu>
 
-        <DockPanel DockPanel.Dock="Top" >
-
-            <Grid  IsSharedSizeScope="True">
+            <Grid  IsSharedSizeScope="True" >
 
                 <Grid x:Name="GroupOverviewGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15*" />
-                        <ColumnDefinition Width="131*"/>
-                        <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="600"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="ParticipantColumn"/>
                     </Grid.ColumnDefinitions>
 
-                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
+                <Border>
+                    
+                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <WrapPanel x:Name="GroupOverviewWrapPanel"/>
                     </ScrollViewer>
-                </Grid>
+                </Border>
+            </Grid>
 
                 <Grid x:Name="ParticipantToDistributeOverviewGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid Grid.Column="1" Grid.Row="0" x:Name="participantlistOverviewGrid"
-                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
-                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                              IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource groupiesDataGridStyle}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
-                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
-                </Grid>
-            </Grid>
+                    <DockPanel Grid.Column="1" Grid.Row="0">
 
-        </DockPanel>
+                        <TextBlock Text="Teilnehmer für die Gruppeneinteilung" 
+                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                        <DataGrid x:Name="participantlistOverviewGrid"
+                                      DockPanel.Dock="Top"
+                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                                      MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                                      DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                                      IsReadOnly="True" CanUserAddRows="False" 
+                                      Style="{StaticResource groupiesDataGridStyle}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                                <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Separator DockPanel.Dock="Top"/>
+                        <TextBlock Text="Skilehrer für die Gruppen" 
+                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                        <DataGrid x:Name="groupLeaderlistOverviewGrid"
+                                      DockPanel.Dock="Top"
+                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                                      MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                                      DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                                      IsReadOnly="True" CanUserAddRows="False" 
+                                      Style="{StaticResource groupiesDataGridStyle}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </DockPanel>
+                </Grid>
+                    <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="10" Background="red"/>
+           </Grid>
+
+
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" Visibility="Collapsed" >
 
@@ -197,7 +219,7 @@
                                     <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Left" Width="10" Background="Transparent"/>
+                            <GridSplitter Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="10" Background="red"/>
                         </Grid>
                     </Grid>
                 </DockPanel>

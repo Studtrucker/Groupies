@@ -64,7 +64,7 @@ Class MainWindow
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        '_Skiclub = CDS.Skiclub
+        '_Skiclub = CDS.Skiclubs
 
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.

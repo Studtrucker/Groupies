@@ -20,8 +20,8 @@
         Loaded="HandleMainWindowLoaded" Closed="HandleMainwindowClosed" Closing="HandleMainWindowClosing">
 
     <Window.Resources>
-        <convert:InvertableBoolToVisibleConverter Inverted="False" x:Key="BooleanToVisibility"/>
-        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
+        <!--<convert:InvertableBoolToVisibleConverter Inverted="False" x:Key="BooleanToVisibility"/>
+        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>-->
 
         <!-- Style für die MenuItems -->
         <Style TargetType="{x:Type MenuItem}">
@@ -117,68 +117,128 @@
 
         </Menu>
 
-            <Grid  IsSharedSizeScope="True" >
+        <Grid  IsSharedSizeScope="True" >
 
-                <Grid x:Name="GroupOverviewGrid">
+                <!--Layer 0-->
+                <Grid x:Name="GroupExplorerGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition SharedSizeGroup="ParticipantColumn"/>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="GroupExplorerColumn"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="PersonExplorerColumn"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0">
+                <DockPanel Grid.Column="0" Grid.Row="0">
+
+                    <TextBlock Text="Gruppenliste" 
+                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="GroupExplorerDataGrid"
+                                      DockPanel.Dock="Top"
+                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                                      IsReadOnly="True" CanUserAddRows="False" 
+                                      Style="{StaticResource groupiesDataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Gruppenname" Binding="{Binding GroupNaming}"/>
+                            <DataGridTextColumn Header="Printname" Binding="{Binding GroupPrintNaming}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </DockPanel>
+                <!--<GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                  Width="5" Background="Transparent"/>-->
+                </Grid>
+            
+
+                <!--Layer 1-->
+                <Grid x:Name="GroupViewerGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="GroupExplorerColumn"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="PersonExplorerColumn"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="2">
                         <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                            <WrapPanel x:Name="GroupOverviewWrapPanel"/>
+                            <StackPanel>
+                                <TextBlock Text="Gruppenviewer"/>
+                                <WrapPanel x:Name="GroupOverviewWrapPanel" Visibility="Collapsed"/>
+                            </StackPanel>
                         </ScrollViewer>
                     </Border>
                 </Grid>
-
-                <Grid x:Name="ParticipantToDistributeOverviewGrid">
+                
+                <!--Layer 2-->
+                <Grid x:Name="PersonExplorerGrid">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="GroupExplorerColumn"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
                         <ColumnDefinition />
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition SharedSizeGroup="ParticipantColumn" Width="300"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                        <ColumnDefinition Width="1*"   SharedSizeGroup="PersonExplorerColumn"/>
                     </Grid.ColumnDefinitions>
 
-             <DockPanel Grid.Column="2" Grid.Row="0">
+                    <DockPanel Grid.Column="4" Grid.Row="0">
 
                         <TextBlock Text="Teilnehmer für die Gruppeneinteilung" 
-                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                                           Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
                         <DataGrid x:Name="participantlistOverviewGrid"
-                                      DockPanel.Dock="Top"
-                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                                      MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
-                                      DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                                      IsReadOnly="True" CanUserAddRows="False" 
-                                      Style="{StaticResource groupiesDataGridStyle}">
+                                          DockPanel.Dock="Top"
+                                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                                          MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                                          DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                                          IsReadOnly="True" CanUserAddRows="False" 
+                                          Style="{StaticResource groupiesDataGridStyle}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
                                 <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        
+
                         <Separator DockPanel.Dock="Top"/>
-                        
+
                         <TextBlock Text="Skilehrer für die Gruppen" 
-                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                                           Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
                         <DataGrid x:Name="groupLeaderlistOverviewGrid"
-                                      DockPanel.Dock="Top"
-                                      IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                                      MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
-                                      DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                                      IsReadOnly="True" CanUserAddRows="False" 
-                                      Style="{StaticResource groupiesDataGridStyle}">
+                                          DockPanel.Dock="Top"
+                                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                                          MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                                          DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                                          IsReadOnly="True" CanUserAddRows="False" 
+                                          Style="{StaticResource groupiesDataGridStyle}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
-
+                        
                     </DockPanel>
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="10" Background="red"/>
+                
+
                 </Grid>
-           </Grid>
+
+            <!--Layer 3-->
+
+            <Grid x:Name="GridSplitterGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"   SharedSizeGroup="GroupExplorerColumn"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                    <ColumnDefinition Width="1*"   SharedSizeGroup="PersonExplorerColumn"/>
+                </Grid.ColumnDefinitions>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                          Width="5" Background="Transparent"/>                
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                          Width="5" Background="Transparent"/>  
+            </Grid>
+
+
+
+
+        </Grid>
 
         <TabControl TabStripPlacement="Left" Margin="5" BorderBrush="Black" Visibility="Collapsed" >
 
@@ -730,7 +790,7 @@
                 </DockPanel>
             </TabItem>
 
-        </TabControl>
+    </TabControl> 
 
     </DockPanel>
 

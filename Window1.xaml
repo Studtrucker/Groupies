@@ -5,39 +5,152 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
+        xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
 
-    <StackPanel>
-        <uc:Levels x:Name="LevelsUserControl"/>
-    </StackPanel>
-
-    <!--<Grid DockPanel.Dock="Left" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <ScrollViewer Grid.Column="0" 
-                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Border Background="AliceBlue" Margin="5"/>
-            </ScrollViewer>
-
-        <Grid Grid.Column="2" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Background="PaleGreen" Margin="5"/>
-                <Border Background="PowderBlue" Margin="5" Grid.Row="2"/>
-                <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Black"/>
-            </Grid>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="DarkGray"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style> 
+    </Window.Resources>
     
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="Black"/>
-    </Grid>-->
-        
+    <DockPanel>
+        <Menu Background="white" DockPanel.Dock="Top">
 
+            <MenuItem  Header="_Datei" Background="white" Foreground="Black">
+                <MenuItem Header="_Neue Skischule" Command="ApplicationCommands.New">
+                    <MenuItem.Icon>
+                        <Image Source="Images/neueGruppe-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skischule ö_ffnen" Command="ApplicationCommands.Open">
+                    <MenuItem.Icon>
+                        <Image Source="Images/GruppeOeffnen-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skiclub importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Skiclub _speichern" Command="ApplicationCommands.Save">
+                    <MenuItem.Icon>
+                        <Image Source="Images/speichern-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skiclub speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <Separator/>
+                <MenuItem  Header="Einteilungen _drucken..." Command="ApplicationCommands.Print" CommandParameter="ParticipantInfo">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/drucken-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
+                <Separator/>
+                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
+                <Separator/>
+                <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
+            </MenuItem>
+            <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
+                <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
+                <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
+                <Separator/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
+                <Separator/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
+                <Separator/>
+                <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
+                <MenuItem Header="Level löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
+            </MenuItem>
+            <MenuItem Header="Ansichten" Background="white" Foreground="Black">
+                <MenuItem Header="Teilnehmer"></MenuItem>
+                <MenuItem Header="Skilehrer"></MenuItem>
+                <MenuItem Header="Gruppen"></MenuItem>
+                <MenuItem Header="Levels"></MenuItem>
+                <MenuItem Header="Testfenster"></MenuItem>
+            </MenuItem>
+            <MenuItem  Header="Extras" Background="white" Foreground="Black">
+            </MenuItem>
+
+        </Menu>
+
+        <TextBlock Text="Statusleiste" DockPanel.Dock="Bottom"/>
+                
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" SharedSizeGroup="GroupExplorerColumn" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
+                <ColumnDefinition Width="2*"  SharedSizeGroup="GroupViewerColumn" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
+                <ColumnDefinition Width="1*" SharedSizeGroup="PersonExplorerColumn" />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="Gruppen Explorer"/>
+                </ScrollViewer>
+            </DockPanel>
+            <DockPanel Grid.Column="2">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="Gruppen Viewer"/>
+                </ScrollViewer>
+            </DockPanel>
+            <ScrollViewer  Grid.Column="4" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <DockPanel>
+                    <TextBlock Text="Teilnehmer Explorer" DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="participantlistOverviewGrid"
+                              DockPanel.Dock="Top"
+                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                              IsReadOnly="True" CanUserAddRows="False" 
+                              Style="{StaticResource groupiesDataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Separator DockPanel.Dock="Top"/>
+                    <TextBlock Text="Skilehrer Explorer"  DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="groupLeaderlistOverviewGrid"
+                              DockPanel.Dock="Top"
+                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
+                              AllowDrop="True" 
+                              IsReadOnly="True" CanUserAddRows="False" 
+                              Style="{StaticResource groupiesDataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </ScrollViewer>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="2" Background="WhiteSmoke"/>
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="2" Background="WhiteSmoke"/>
+            
+        </Grid>
+    </DockPanel>
+    
 </Window>
     
     

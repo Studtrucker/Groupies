@@ -95,7 +95,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" SharedSizeGroup="GroupExplorerColumn" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
-                <ColumnDefinition Width="2*"  SharedSizeGroup="GroupViewerColumn" />
+                <ColumnDefinition Width="3*"  SharedSizeGroup="GroupViewerColumn" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
                 <ColumnDefinition Width="1*" SharedSizeGroup="PersonExplorerColumn" />
             </Grid.ColumnDefinitions>

@@ -69,7 +69,7 @@ Namespace Services
                     groupCol.Add(New Group With {
                         .GroupNaming = String.Format("{0}{1}", item.Key.LevelNaming, i + 1),
                         .GroupPrintNaming = GroupPrintNames.Item(IndexGruppenName),
-                        .GroupSorting = GroupSorting.Item(IndexGruppenName),
+                        .GroupSort = GroupSorting.Item(IndexGruppenName),
                         .GroupLevel = item.Key})
                     IndexGruppenName += 1
                 Next

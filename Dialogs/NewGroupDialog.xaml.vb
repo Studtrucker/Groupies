@@ -20,7 +20,6 @@ Public Class NewGroupDialog
         _levelListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Levellist)
         _instructorListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Instructorlist)
 
-        GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
         GroupLevelCombobox.ItemsSource = _levelListCollectionView
 
     End Sub

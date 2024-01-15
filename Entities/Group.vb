@@ -22,7 +22,7 @@ Namespace Entities
         Public Property GroupPrintNaming As String
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist ein Pflichtfeld")>
-        Public Property GroupSorting As String
+        Public Property GroupSort As String
 
         Public Property GroupLevel As Level
 

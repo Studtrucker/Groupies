@@ -120,7 +120,7 @@ Public Class Window1
         ' Neue ListCollectionView laden
         _groupListCollectionView = New ListCollectionView(CDS.Skiclub.Grouplist)
         If _groupListCollectionView.CanSort Then
-            _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSorting", ListSortDirection.Ascending))
+            _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
         End If
         DataContext = _groupListCollectionView
 

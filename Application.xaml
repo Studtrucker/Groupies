@@ -99,7 +99,7 @@
 
             <!--Style for TextBlocks-->
             <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="6"/>
+                <Setter Property="Margin" Value="4"/>
                 <Setter Property="Foreground" Value="DarkGray"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>

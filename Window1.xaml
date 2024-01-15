@@ -104,9 +104,13 @@
                 <TextBlock Text="Gruppen Explorer"/>
 
                 <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
-                          Margin="6"                          
+                          Margin="6"  Foreground="Black"             
                           AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                     <DataGrid.Resources>
+                        <Style TargetType="TextBlock" x:Key="TextblockStyle">
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="Margin" Value="1"/>
+                        </Style>
                         <DataTemplate x:Key="GruppenlisteDataTemplate">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -119,12 +123,18 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Druckname"/>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding GroupPrintNaming}"    />
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Gruppe" />
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding GroupNaming}"    />
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Gruppenmitglieder"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMemberCount}"    />
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Druckname" 
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding GroupPrintNaming}"
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Gruppe"
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding GroupNaming}"
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Gruppenmitglieder" 
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMemberCount}"
+                                           Style="{StaticResource TextblockStyle}" />
                             </Grid>
                         </DataTemplate>
                     </DataGrid.Resources>

@@ -18,9 +18,11 @@ Namespace Entities
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Gruppenbennung ist ein Pflichtfeld")>
         Public Property GroupNaming As String
 
-
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Printbenennung ist ein Pflichtfeld")>
         Public Property GroupPrintNaming As String
+
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist ein Pflichtfeld")>
+        Public Property GroupSorting As String
 
         Public Property GroupLevel As Level
 

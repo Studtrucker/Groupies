@@ -25,7 +25,7 @@ Namespace Services
                 .SortNumber = "020",
                 .LevelNaming = "Fortgeschritten",
                 .LevelDescription = DescriptionFortgeschritten(),
-                .LevelSkills = SkillsFortgeschritten,
+                .LevelSkills = SkillsFortgeschritten(),
                 .LevelID = Guid.NewGuid}
 
             Dim Geniesser = New Level(True) With {
@@ -69,6 +69,7 @@ Namespace Services
                     groupCol.Add(New Group With {
                         .GroupNaming = String.Format("{0}{1}", item.Key.LevelNaming, i + 1),
                         .GroupPrintNaming = GroupPrintNames.Item(IndexGruppenName),
+                        .GroupSorting = GroupSorting.Item(IndexGruppenName),
                         .GroupLevel = item.Key})
                     IndexGruppenName += 1
                 Next
@@ -258,6 +259,10 @@ Namespace Services
 
         Private Function GroupPrintNames() As List(Of String)
             Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2", "Mount Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata", "Monte Viso", "Ortler"}
+        End Function
+
+        Private Function GroupSorting() As List(Of String)
+            Return New List(Of String) From {"010", "020", "030", "040", "050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150"}
         End Function
 
 #End Region

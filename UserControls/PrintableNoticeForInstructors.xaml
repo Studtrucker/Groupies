@@ -45,8 +45,9 @@
         <DockPanel Grid.Row="2" Margin="5">
 
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="MembersDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                      GridLinesVisibility="None" DockPanel.Dock="Top"  Style="{StaticResource PrintoutInfo}">
+            <DataGrid x:Name="MembersDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
+                      AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
+                      Style="{StaticResource PrintoutInfo}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
                     <DataGridTextColumn Width="10" />

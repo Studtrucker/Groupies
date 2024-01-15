@@ -6,8 +6,9 @@
              xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              StartupUri="Window1.xaml"
              Startup="Skikurs_Startup">
-    <!--MainWindow-->
-    <!--Window1-->
+            <!--MainWindow-->
+            <!--Window1-->
+    
     <Application.Resources>
         <ResourceDictionary>
 

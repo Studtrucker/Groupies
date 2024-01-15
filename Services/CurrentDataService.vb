@@ -1,8 +1,10 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Windows.Shell
 Imports Groupies.Entities
 
 Namespace Services
 
+    ' Hier werden alle Daten der aktuellen Groupies Datei gesammelt
     Module CurrentDataService
 
         Public Property Skiclub As Skiclub

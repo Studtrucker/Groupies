@@ -139,7 +139,7 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LevelLoeschen, AddressOf HandleLevelLoeschenExecuted, AddressOf HandleLevelLoeschenCanExecuted))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-        _mRUSortedList = New SortedList(Of Integer, String)
+        StartService.mRuSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
         Services.StartService.LoadmRUSortedListMenu()
@@ -820,54 +820,6 @@ Class MainWindow
         End Using
     End Sub
 
-    Private Sub QueueMostRecentFilename(fileName As String)
-
-        Dim max As Integer = 0
-        For Each i In _mRUSortedList.Keys
-            If i > max Then max = i
-        Next
-
-        Dim keysToRemove = New List(Of Integer)
-        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-        Next
-
-        For Each i As Integer In keysToRemove
-            _mRUSortedList.Remove(i)
-        Next
-
-        _mRUSortedList.Add(max + 1, fileName)
-
-        If _mRUSortedList.Count > 5 Then
-            Dim min As Integer = Integer.MaxValue
-            For Each i As Integer In _mRUSortedList.Keys
-                If i < min Then min = i
-            Next
-            _mRUSortedList.Remove(min)
-        End If
-
-        RefreshMostRecentMenu()
-
-    End Sub
-
-    Private Sub RefreshMostRecentMenu()
-        mostrecentlyUsedMenuItem.Items.Clear()
-        RefreshMenuInApplication()
-        RefreshJumpListInWinTaskbar()
-    End Sub
-
-    Private Sub RefreshMenuInApplication()
-        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi = New MenuItem With {.Header = _mRUSortedList.Values(i)}
-            AddHandler mi.Click, AddressOf HandleMostRecentClick
-            mostrecentlyUsedMenuItem.Items.Add(mi)
-        Next
-
-        If mostrecentlyUsedMenuItem.Items.Count = 0 Then
-            Dim mi = New MenuItem With {.Header = "keine"}
-            mostrecentlyUsedMenuItem.Items.Add(mi)
-        End If
-    End Sub
 
     Private Sub RefreshJumpListInWinTaskbar()
 
@@ -890,7 +842,7 @@ Class MainWindow
         ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-        For i = Services.StartService.RuSortedList.Values.Count - 1 To 0 Step -1
+        For i = Services.StartService.mRuSortedList.Values.Count - 1 To 0 Step -1
             Dim jumpPath = New JumpPath With {
                 .CustomCategory = "Zuletzt geöffnet",
                 .Path = _mRUSortedList.Values(i)}

@@ -25,28 +25,28 @@ Namespace UserControls
 
 
         Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-            'Group = DirectCast(DataContext, Group)
-            'Group = DataContext
-            SetView()
 
-            _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
-            If _levelListCollectionView.CanSort Then
-                _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-            End If
-            GroupLevelCombobox.ItemsSource = _levelListCollectionView
+            If CDS.Skiclub IsNot Nothing Then
 
-            '*****************************************************************************************************
-            '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
-            '* If _instructorListCollectionView.CanFilter Then                                                   *
-            '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
-            '* End If                                                                                            *
-            '*****************************************************************************************************
-            _instructorListCollectionView = New ListCollectionView(CDS.Skiclub.Instructorlist)
-            If _instructorListCollectionView.CanSort Then
-                _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
-                _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
+                _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
+                If _levelListCollectionView.CanSort Then
+                    _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+                End If
+                GroupLevelCombobox.ItemsSource = _levelListCollectionView
+
+                '*****************************************************************************************************
+                '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
+                '* If _instructorListCollectionView.CanFilter Then                                                   *
+                '*     _instructorListCollectionView.Filter = Function(f As Instructor) f.IsAvailable                *
+                '* End If                                                                                            *
+                '*****************************************************************************************************
+                _instructorListCollectionView = New ListCollectionView(CDS.Skiclub.Instructorlist)
+                If _instructorListCollectionView.CanSort Then
+                    _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
+                    _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
+                End If
+                'GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
             End If
-            'GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         End Sub
 

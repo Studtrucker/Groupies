@@ -8,6 +8,7 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
         WindowState="Maximized"
+        Closed="HandleMainWindowClosed" 
         Title="Groupies" Height="450" Width="800">
 
     <Window.Resources>

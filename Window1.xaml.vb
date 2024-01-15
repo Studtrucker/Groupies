@@ -2,11 +2,15 @@
 Imports System.IO
 Imports System.IO.IsolatedStorage
 Imports System.Reflection
+Imports System.Windows.Markup
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports Groupies.Commands
 Imports Groupies.Entities
+Imports Groupies.Interfaces
+Imports Groupies.MainWindow
 Imports Groupies.Services
+Imports Groupies.UserControls
 Imports Microsoft.Win32
 Imports CDS = Groupies.Services.CurrentDataService
 
@@ -16,11 +20,6 @@ Public Class Window1
     Private _participantListCollectionView As ICollectionView
     Private _groupListCollectionView As ICollectionView
     Private _intructorListCollectionView As ICollectionView
-
-    Private _mRUSortedList As SortedList(Of Integer, String)
-    Private _skischuleListFile As FileInfo
-
-
 #End Region
 
 #Region "Constructor"
@@ -38,6 +37,8 @@ Public Class Window1
         ' DataContext groupleaderDataGrid
         _intructorListCollectionView = New ListCollectionView(New InstructorCollection)
 
+        StartService.mostrecentlyUsedMenuItem = New MenuItem
+
     End Sub
 
 #End Region
@@ -50,12 +51,13 @@ Public Class Window1
 
         CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf HandleNewExecuted))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleListSaveExecuted, AddressOf HandleListSaveCanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleClubOpenExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleClubSaveExecuted, AddressOf HandleClubSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleClubSaveAsExecuted, AddressOf HandleClubSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-        _mRUSortedList = New SortedList(Of Integer, String)
+        StartService.mRuSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
         Services.StartService.LoadmRUSortedListMenu()
@@ -69,11 +71,41 @@ Public Class Window1
             Services.StartService.LoadLastSkischule()
         End If
 
-        Title = String.Format("Groupies - {0}", CDS.SkiclubFileName)
-        setView(CDS.Skiclub)
+        ' Lokal im Window ansiedeln
+        mostrecentlyUsedMenuItem.Items.Add(StartService.mostrecentlyUsedMenuItem)
+
+        If CDS.Skiclub IsNot Nothing Then
+            Title = String.Format("Groupies - {0}", CDS.SkiclubFileName)
+            setView(CDS.Skiclub)
+        End If
 
     End Sub
 
+    Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
+        ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
+        If StartService.SkiclubListFile IsNot Nothing Then
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
+                    Using writer = New StreamWriter(stream)
+                        writer.WriteLine(StartService.SkiclubListFile.FullName)
+                    End Using
+                End Using
+            End Using
+        End If
+
+        ' 2. Die meist genutzen Listen ins Isolated Storage speichern
+        If StartService.mRuSortedList.Count > 0 Then
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
+                    Using writer = New StreamWriter(stream)
+                        For Each kvp As KeyValuePair(Of Integer, String) In StartService.mRuSortedList
+                            writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
+                        Next
+                    End Using
+                End Using
+            End Using
+        End If
+    End Sub
 
 
 #End Region
@@ -112,52 +144,79 @@ Public Class Window1
         Close()
     End Sub
 
-
-    Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        If dlg.ShowDialog = True Then
-            OpenSkischule(dlg.FileName)
-        End If
+    Private Sub HandleClubOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        OpenFile()
     End Sub
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
         OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
-    Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub HandleClubSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = CDS.Skiclub IsNot Nothing
     End Sub
 
-    Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleClubSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If _skischuleListFile IsNot Nothing Then
-            dlg.FileName = _skischuleListFile.Name
+        If StartService.SkiclubListFile IsNot Nothing Then
+            dlg.FileName = StartService.SkiclubListFile.Name
         End If
 
         If dlg.ShowDialog = True Then
             SaveSkischule(dlg.FileName)
-            _skischuleListFile = New FileInfo(dlg.FileName)
+            StartService.SkiclubListFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
-    Private Sub HandleListSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If _skischuleListFile Is Nothing Then
+    Private Sub HandleClubSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        If StartService.SkiclubListFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(_skischuleListFile.FullName)
+            SaveSkischule(CDS.SkiclubFileName)
         End If
+    End Sub
+
+    Private Sub HandleClubPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dlg = New PrintDialog()
+        If dlg.ShowDialog = True Then
+            Dim doc As FixedDocument
+            Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+            Dim pageMargin = New Thickness(30, 30, 30, 60)
+            If e.Parameter = "InstructorInfo" Then
+                doc = PrintoutInfo(Printversion.Instructor, printArea, pageMargin)
+            Else
+                doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
+            End If
+            dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
+        End If
+
+    End Sub
+
+    Private Sub HandleClubPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        ' Todo: Can execute festlegen
+        e.CanExecute = True '_skischule IsNot Nothing OrElse _skischule.Skikursgruppenliste IsNot Nothing OrElse _skischule.Skikursgruppenliste.Count > 0
     End Sub
 
 #End Region
 
 #Region "Helper-Methoden"
+
+    Private Sub OpenFile()
+
+        StartService.OpenFile()
+        mostrecentlyUsedMenuItem = StartService.mostrecentlyUsedMenuItem
+
+        setView(Services.Skiclub)
+        Title = "Groupies - " & CDS.SkiclubFileName
+    End Sub
+
     Private Sub OpenSkischule(fileName As String)
 
+        'StartService.OpenSkischule(fileName)
 
-        '_skischuleListFile = New FileInfo(fileName)
-        'QueueMostRecentFilename(fileName)
-        setView(Services.Skiclub)
-        Title = "Groupies - " & fileName
+        'setView(Services.Skiclub)
+        'Title = "Groupies - " & CDS.SkiclubFileName
 
     End Sub
 
@@ -180,84 +239,20 @@ Public Class Window1
 
     Private Sub QueueMostRecentFilename(fileName As String)
 
-        Dim max As Integer = 0
-        For Each i In _mRUSortedList.Keys
-            If i > max Then max = i
-        Next
-
-        Dim keysToRemove = New List(Of Integer)
-        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-        Next
-
-        For Each i As Integer In keysToRemove
-            _mRUSortedList.Remove(i)
-        Next
-
-        _mRUSortedList.Add(max + 1, fileName)
-
-        If _mRUSortedList.Count > 5 Then
-            Dim min As Integer = Integer.MaxValue
-            For Each i As Integer In _mRUSortedList.Keys
-                If i < min Then min = i
-            Next
-            _mRUSortedList.Remove(min)
-        End If
-
+        StartService.QueueMostRecentFilename(fileName)
         RefreshMostRecentMenu()
 
     End Sub
 
     Private Sub RefreshMostRecentMenu()
         mostrecentlyUsedMenuItem.Items.Clear()
-        RefreshMenuInApplication()
-        RefreshJumpListInWinTaskbar()
-    End Sub
-
-    Private Sub RefreshMenuInApplication()
-        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi = New MenuItem With {.Header = _mRUSortedList.Values(i)}
+        For i = StartService.mRuSortedList.Values.Count - 1 To 0 Step -1
+            Dim mi = New MenuItem With {.Header = StartService.mRuSortedList.Values(i)}
             AddHandler mi.Click, AddressOf HandleMostRecentClick
             mostrecentlyUsedMenuItem.Items.Add(mi)
         Next
-
-        If mostrecentlyUsedMenuItem.Items.Count = 0 Then
-            Dim mi = New MenuItem With {.Header = "keine"}
-            mostrecentlyUsedMenuItem.Items.Add(mi)
-        End If
-    End Sub
-
-    Private Sub RefreshJumpListInWinTaskbar()
-
-        Dim jumplist = New JumpList With {
-            .ShowFrequentCategory = False,
-            .ShowRecentCategory = False}
-
-        Dim jumptask = New JumpTask With {
-            .CustomCategory = "Release Notes",
-            .Title = "SkikursReleaseNotes",
-            .Description = "Zeigt die ReleaseNotes zu Skikurse an",
-            .ApplicationPath = "C:\Windows\notepad.exe",
-            .IconResourcePath = "C:\Windows\notepad.exe",
-            .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            .Arguments = "SkikursReleaseNotes.txt"}
-
-        jumplist.JumpItems.Add(jumptask)
-
-        ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
-        ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
-        ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
-
-        For i = Services.StartService.RuSortedList.Values.Count - 1 To 0 Step -1
-            Dim jumpPath = New JumpPath With {
-                .CustomCategory = "Zuletzt geöffnet",
-                .Path = _mRUSortedList.Values(i)}
-
-            jumplist.JumpItems.Add(jumpPath)
-        Next
-
-        JumpList.SetJumpList(Application.Current, jumplist)
-
+        StartService.RefreshMenuInApplication()
+        StartService.RefreshJumpListInWinTaskbar()
     End Sub
 
     Private Sub setView(Skikursliste As Skiclub)
@@ -275,6 +270,95 @@ Public Class Window1
         InstuctorDataGrid.DataContext = _intructorListCollectionView
 
     End Sub
+
+    Private Function PrintoutInfo(Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
+
+        ' ein paar Variablen setzen
+        Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
+        Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
+
+        ' ermitteln der tatsächlich verfügbaren Seitengrösse
+        Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
+        Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
+
+        ' ermitteln der Anzahl Spalten und Zeilen
+        Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
+        Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
+
+        ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
+        If rowsPerPage = 0 Then rowsPerPage = 1
+        If columnsPerPage = 0 Then columnsPerPage = 1
+
+        Dim participantsPerPage As Integer = rowsPerPage * columnsPerPage
+
+
+        ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
+        Dim vMarginBetweenFriends As Double = 0
+        If rowsPerPage > 1 Then
+            Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
+            vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
+        End If
+
+        Dim hMarginBetweenFriends As Double = 0
+        If columnsPerPage > 1 Then
+            Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
+            hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
+        End If
+
+        'Todo: Berechnen, wieviele Teilnehmer auf einer Seite gedruckt werden können
+        Dim doc = New FixedDocument()
+        doc.DocumentPaginator.PageSize = pageSize
+        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
+        CDS.Skiclub = CDS.Skiclub.GetAktualisierungen()
+
+        '_Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
+        ' nach AngezeigterName sortierte Liste verwenden
+        Dim sortedGroupView = New ListCollectionView(CDS.Skiclub.Grouplist)
+        sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
+
+        Dim skikursgruppe As Group
+        Dim page As FixedPage = Nothing
+
+        ' durch die Gruppen loopen und Seiten generieren
+        For i As Integer = 0 To sortedGroupView.Count - 1
+            sortedGroupView.MoveCurrentToPosition(i)
+            skikursgruppe = CType(sortedGroupView.CurrentItem, Group)
+
+            If i Mod participantsPerPage = 0 Then
+                page = New FixedPage
+                If page IsNot Nothing Then
+                    Dim content = New PageContent()
+                    TryCast(content, IAddChild).AddChild(page)
+                    doc.Pages.Add(content)
+                End If
+            End If
+
+
+            ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
+            Dim pSkikursgruppe As IPrintableNotice
+            If Printversion = Printversion.Participant Then
+                pSkikursgruppe = New PrintableNoticeForParticipants
+            Else
+                pSkikursgruppe = New PrintableNoticeForInstructors
+            End If
+
+            DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
+            DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
+
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe)
+            Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
+            Dim currentColumn As Integer = i Mod columnsPerPage
+
+            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
+            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
+            page.Children.Add(pSkikursgruppe)
+        Next
+
+        Return doc
+
+    End Function
+
+
 #End Region
 
     Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
@@ -288,6 +372,11 @@ Public Class Window1
     Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
 
     End Sub
+
+    Enum Printversion
+        Instructor
+        Participant
+    End Enum
 
 
 End Class

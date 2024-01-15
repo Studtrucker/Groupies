@@ -28,6 +28,12 @@ Namespace Entities
 
         Public Property GroupMembers As ParticipantCollection
 
+        Public ReadOnly Property GroupMemberCount As Integer
+            Get
+                Return GroupMembers.Count
+            End Get
+        End Property
+
         Public Sub AddMember(Teilnehmer As Participant)
             _GroupMembers.Add(Teilnehmer)
         End Sub

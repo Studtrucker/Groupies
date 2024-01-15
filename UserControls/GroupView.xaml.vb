@@ -5,7 +5,8 @@ Imports CDS = Groupies.Services.CurrentDataService
 Namespace UserControls
 
     Public Class GroupView
-        'Private _group As Group
+
+        Public Property Group As Group
         Private _levelListCollectionView As ICollectionView
         Private _instructorListCollectionView As ICollectionView
         Private _groupmemberListCollectionView As ICollectionView
@@ -16,16 +17,16 @@ Namespace UserControls
             InitializeComponent()
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-            _levelListCollectionView = New ListCollectionView(New LevelCollection())
-            _instructorListCollectionView = New ListCollectionView(New InstructorCollection())
-            _groupmemberListCollectionView = New ListCollectionView(New ParticipantCollection())
+            '_levelListCollectionView = New ListCollectionView(New LevelCollection())
+            '_instructorListCollectionView = New ListCollectionView(New InstructorCollection())
+            '_groupmemberListCollectionView = New ListCollectionView(New ParticipantCollection())
 
         End Sub
 
-        Public Property Group As Group
 
         Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-            Group = DirectCast(DataContext, Group)
+            'Group = DirectCast(DataContext, Group)
+            'Group = DataContext
             SetView()
 
             _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
@@ -45,7 +46,7 @@ Namespace UserControls
                 _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorFirstName", ListSortDirection.Ascending))
                 _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorLastName", ListSortDirection.Ascending))
             End If
-            GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
+            'GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
 
         End Sub
 
@@ -68,13 +69,14 @@ Namespace UserControls
 
         Private Sub SetView()
 
-            _groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
-            If _groupmemberListCollectionView.CanSort Then
-                _groupmemberListCollectionView.SortDescriptions.Clear()
-                _groupmemberListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFullName", ListSortDirection.Ascending))
-            End If
-            _groupmemberListCollectionView.MoveCurrentToFirst()
-            GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
+            '_groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
+            'If _groupmemberListCollectionView.CanSort Then
+            '    _groupmemberListCollectionView.SortDescriptions.Clear()
+            '    _groupmemberListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFullName", ListSortDirection.Ascending))
+            'End If
+            '_groupmemberListCollectionView.MoveCurrentToFirst()
+            'GroupMembersDataGrid.ItemsSource = _groupmemberListCollectionView
+
         End Sub
 
         ' Für den Empfang von Objekten 

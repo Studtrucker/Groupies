@@ -131,7 +131,7 @@
                 <DockPanel Grid.Column="0" Grid.Row="0">
 
                     <TextBlock Text="Gruppenliste" 
-                                       Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
+                                       Foreground="DarkGray" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GroupExplorerDataGrid"
                                       DockPanel.Dock="Top"
                                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"

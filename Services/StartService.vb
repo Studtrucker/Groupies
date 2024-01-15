@@ -50,6 +50,7 @@ Namespace Services
             CDS.Skiclub = Nothing
 
             CDS.Skiclub = loadedSkischule
+            CDS.SkiclubFileName = fileName
 
             _skischuleListFile = New FileInfo(fileName)
 

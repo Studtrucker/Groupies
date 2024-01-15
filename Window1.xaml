@@ -7,15 +7,13 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        WindowState="Maximized"
+        Title="Groupies" Height="450" Width="800">
 
     <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="DarkGray"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style> 
+
     </Window.Resources>
-    
+
     <DockPanel>
         <Menu Background="white" DockPanel.Dock="Top">
 
@@ -55,23 +53,24 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
+                <MenuItem Header="Gruppen erstellen" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
                 <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
                 <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
                 <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
@@ -90,7 +89,7 @@
         </Menu>
 
         <TextBlock Text="Statusleiste" DockPanel.Dock="Bottom"/>
-                
+
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" SharedSizeGroup="GroupExplorerColumn" />
@@ -99,86 +98,122 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
                 <ColumnDefinition Width="1*" SharedSizeGroup="PersonExplorerColumn" />
             </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="0">
-                <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="Gruppen Explorer"/>
-                </ScrollViewer>
-            </DockPanel>
+
+            <StackPanel>
+
+                <TextBlock Text="Gruppen Explorer"/>
+
+                <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
+                          Margin="6"                          
+                          AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
+                    <DataGrid.Resources>
+                        <DataTemplate x:Key="GruppenlisteDataTemplate">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Druckname"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding GroupPrintNaming}"    />
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Gruppe" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding GroupNaming}"    />
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Gruppenmitglieder"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMemberCount}"    />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Gruppen" Width="*"
+                                                CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
             <DockPanel Grid.Column="2">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="Gruppen Viewer"/>
+                    <StackPanel>
+                        <TextBlock Text="Gruppen Viewer" />
+                        <uc:GroupView x:Name="GroupView"/>
+                    </StackPanel>
                 </ScrollViewer>
             </DockPanel>
-            <ScrollViewer  Grid.Column="4" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <DockPanel>
-                    <TextBlock Text="Teilnehmer Explorer" DockPanel.Dock="Top"/>
-                    <DataGrid x:Name="participantlistOverviewGrid"
-                              DockPanel.Dock="Top"
-                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
-                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                              IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource groupiesDataGridStyle}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
-                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+            <StackPanel Grid.Column="4">
 
-                    <Separator DockPanel.Dock="Top"/>
-                    <TextBlock Text="Skilehrer Explorer"  DockPanel.Dock="Top"/>
-                    <DataGrid x:Name="groupLeaderlistOverviewGrid"
-                              DockPanel.Dock="Top"
+                <TextBlock Text="Skilehrer Explorer" />
+                <DataGrid x:Name="InstuctorDataGrid"
+                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
                               DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
                               AllowDrop="True" 
                               IsReadOnly="True" CanUserAddRows="False" 
                               Style="{StaticResource groupiesDataGridStyle}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </ScrollViewer>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <TextBlock Text="Teilnehmer Explorer"/>
+                <DataGrid x:Name="ParticipantDataGrid" 
+                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
+                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
+                              IsReadOnly="True" CanUserAddRows="False" 
+                              Style="{StaticResource groupiesDataGridStyle}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                        <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </StackPanel>
+
             <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="2" Background="WhiteSmoke"/>
             <GridSplitter Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="2" Background="WhiteSmoke"/>
-            
+
         </Grid>
     </DockPanel>
-    
+
 </Window>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--    <StackPanel>
 
             <StackPanel Grid.IsSharedSizeScope="True">

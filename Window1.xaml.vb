@@ -11,7 +11,7 @@ Imports Groupies.Interfaces
 Imports Groupies.MainWindow
 Imports Groupies.Services
 Imports Groupies.UserControls
-Imports Microsoft.Office.Interop.Excel
+'Imports Microsoft.Office.Interop.Excel
 Imports Microsoft.Win32
 Imports CDS = Groupies.Services.CurrentDataService
 
@@ -62,6 +62,7 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewInstructor, AddressOf HandleNewInstructorExecuted, AddressOf HandleNewInstructorCanExecuted))
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
@@ -321,6 +322,20 @@ Public Class Window1
         e.CanExecute = True
     End Sub
 
+    Private Sub HandleNewInstructorExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            CDS.Skiclub.Instructorlist.Add(dlg.Instructor)
+            '_uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
+            'uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
+        End If
+    End Sub
+
+    Private Sub HandleNewInstructorCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        'e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
+        e.CanExecute = True
+    End Sub
 
 
     ' Weitere Handles für die Commands
@@ -631,6 +646,16 @@ Public Class Window1
         Instructor
         Participant
     End Enum
+
+    Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
+
+    End Sub
+
+    Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
+
+    End Sub
+
+
 
 #End Region
 

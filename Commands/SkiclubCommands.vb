@@ -10,7 +10,7 @@ Namespace Commands
         Private ReadOnly _GruppeLoeschen As RoutedUICommand
         Private ReadOnly _neuerTeilnehmer As RoutedUICommand
         Private ReadOnly _teilnehmerLoeschen As RoutedUICommand
-        Private ReadOnly _neuerUebungsleiter As RoutedUICommand
+        Private ReadOnly _newInstructor As RoutedUICommand
         Private ReadOnly _uebungsleiterLoeschen As RoutedUICommand
         Private ReadOnly _neuesLevel As RoutedUICommand
         Private ReadOnly _levelLoeschen As RoutedUICommand
@@ -28,7 +28,7 @@ Namespace Commands
             _GruppeLoeschen = New RoutedUICommand("Gruppen löschen", "GruppeLoeschen", GetType(SkiclubCommands))
             _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkiclubCommands))
             _teilnehmerLoeschen = New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkiclubCommands))
-            _neuerUebungsleiter = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkiclubCommands))
+            _newInstructor = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkiclubCommands))
             _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkiclubCommands))
             _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkiclubCommands))
             _levelLoeschen = New RoutedUICommand("Level löschen", "LevelLoeschen", GetType(SkiclubCommands))
@@ -86,9 +86,9 @@ Namespace Commands
             End Get
         End Property
 
-        Public ReadOnly Property NeuerUebungsleiter As RoutedUICommand
+        Public ReadOnly Property NewInstructor As RoutedUICommand
             Get
-                Return _neuerUebungsleiter
+                Return _newInstructor
             End Get
         End Property
 

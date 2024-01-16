@@ -26,7 +26,7 @@
     <DockPanel>
         <Menu Background="white" DockPanel.Dock="Top">
 
-            <MenuItem  Header="_Datei" Foreground="Black" Background="white" >
+            <MenuItem  Header="_Datei" Foreground="Black" Background="white"  >
                 <MenuItem Header="_Neue Skischule" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
@@ -80,7 +80,7 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NewInstructor}"/>
                 <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>

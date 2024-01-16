@@ -20,6 +20,9 @@ Public Class Window1
     Private _participantListCollectionView As ICollectionView
     Private _groupListCollectionView As ICollectionView
     Private _intructorListCollectionView As ICollectionView
+
+    Private Property _mRuSortedList As SortedList(Of Integer, String)
+
 #End Region
 
 #Region "Constructor"
@@ -36,8 +39,6 @@ Public Class Window1
         _participantListCollectionView = New ListCollectionView(New ParticipantCollection)
         ' DataContext groupleaderDataGrid
         _intructorListCollectionView = New ListCollectionView(New InstructorCollection)
-
-        StartService.mostrecentlyUsedMenuItem = New MenuItem
 
     End Sub
 
@@ -57,10 +58,10 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-        StartService.mRuSortedList = New SortedList(Of Integer, String)
+        _mRuSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
-        Services.StartService.LoadmRUSortedListMenu()
+        LoadmRUSortedListMenu()
 
         ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
@@ -71,8 +72,6 @@ Public Class Window1
             Services.StartService.LoadLastSkischule()
         End If
 
-        ' Lokal im Window ansiedeln
-        mostrecentlyUsedMenuItem.Items.Add(StartService.mostrecentlyUsedMenuItem)
 
         If CDS.Skiclub IsNot Nothing Then
             Title = String.Format("Groupies - {0}", CDS.SkiclubFileName)
@@ -94,11 +93,11 @@ Public Class Window1
         End If
 
         ' 2. Die meist genutzen Listen ins Isolated Storage speichern
-        If StartService.mRuSortedList.Count > 0 Then
+        If _mRuSortedList.Count > 0 Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        For Each kvp As KeyValuePair(Of Integer, String) In StartService.mRuSortedList
+                        For Each kvp As KeyValuePair(Of Integer, String) In _mRuSortedList
                             writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
                         Next
                     End Using
@@ -202,10 +201,33 @@ Public Class Window1
 
 #Region "Helper-Methoden"
 
+    Public Sub LoadmRUSortedListMenu()
+        Try
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        Dim i = 0
+                        While reader.Peek <> -1
+                            Dim line = reader.ReadLine().Split(";")
+                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If File.Exists(line(1)) Then
+                                    i += 1
+                                    _mRuSortedList.Add(i, line(1))
+                                End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+            RefreshMostRecentMenu()
+        Catch ex As FileNotFoundException
+            Throw ex
+        End Try
+    End Sub
+
     Private Sub OpenFile()
 
         StartService.OpenFile()
-        mostrecentlyUsedMenuItem = StartService.mostrecentlyUsedMenuItem
 
         setView(Services.Skiclub)
         Title = "Groupies - " & CDS.SkiclubFileName
@@ -238,21 +260,66 @@ Public Class Window1
     End Sub
 
     Private Sub QueueMostRecentFilename(fileName As String)
-
-        StartService.QueueMostRecentFilename(fileName)
+        QueueMostRecentFilename(fileName)
         RefreshMostRecentMenu()
-
     End Sub
 
     Private Sub RefreshMostRecentMenu()
         mostrecentlyUsedMenuItem.Items.Clear()
-        For i = StartService.mRuSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi = New MenuItem With {.Header = StartService.mRuSortedList.Values(i)}
+        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            Dim mi = New MenuItem With {.Header = _mRuSortedList.Values(i)}
             AddHandler mi.Click, AddressOf HandleMostRecentClick
             mostrecentlyUsedMenuItem.Items.Add(mi)
         Next
-        StartService.RefreshMenuInApplication()
-        StartService.RefreshJumpListInWinTaskbar()
+        RefreshMenuInApplication()
+        RefreshJumpListInWinTaskbar()
+    End Sub
+
+    Private Sub RefreshMenuInApplication()
+        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            Dim mi As MenuItem = New MenuItem()
+            mi.Header = _mRuSortedList.Values(i)
+            AddHandler mi.Click, AddressOf HandleMostRecentClick
+            mostrecentlyUsedMenuItem.Items.Add(mi)
+        Next
+
+        If mostrecentlyUsedMenuItem.Items.Count = 0 Then
+            Dim mi = New MenuItem With {.Header = "keine"}
+            mostrecentlyUsedMenuItem.Items.Add(mi)
+        End If
+    End Sub
+
+    Private Sub RefreshJumpListInWinTaskbar()
+
+        Dim jumplist = New JumpList With {
+                .ShowFrequentCategory = False,
+                .ShowRecentCategory = False}
+
+        Dim jumptask = New JumpTask With {
+                .CustomCategory = "Release Notes",
+                .Title = "SkikursReleaseNotes",
+                .Description = "Zeigt die ReleaseNotes zu Skikurse an",
+                .ApplicationPath = "C:\Windows\notepad.exe",
+                .IconResourcePath = "C:\Windows\notepad.exe",
+                .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                .Arguments = "SkikursReleaseNotes.txt"}
+
+        jumplist.JumpItems.Add(jumptask)
+
+        ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
+        ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
+        ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
+
+        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            Dim jumpPath = New JumpPath With {
+                    .CustomCategory = "Zuletzt geöffnet",
+                    .Path = _mRuSortedList.Values(i)}
+
+            jumplist.JumpItems.Add(jumpPath)
+        Next
+
+        JumpList.SetJumpList(Application.Current, jumplist)
+
     End Sub
 
     Private Sub setView(Skikursliste As Skiclub)

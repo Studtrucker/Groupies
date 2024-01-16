@@ -139,10 +139,10 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LevelLoeschen, AddressOf HandleLevelLoeschenExecuted, AddressOf HandleLevelLoeschenCanExecuted))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-        StartService.mRuSortedList = New SortedList(Of Integer, String)
+        _mRUSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
-        Services.StartService.LoadmRUSortedListMenu()
+        LoadmRUSortedListMenu()
 
         ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
@@ -704,6 +704,59 @@ Class MainWindow
 #End Region
 
 #Region "Helper-Methoden"
+
+#Region "Methoden zum Laden der meist genutzten Listen und der letzten Freundesliste"
+
+    Public Sub LoadmRUSortedListMenu()
+
+        _mRUSortedList = New SortedList(Of Integer, String)
+        Try
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        Dim i = 0
+                        While reader.Peek <> -1
+                            Dim line = reader.ReadLine().Split(";")
+                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If File.Exists(line(1)) Then
+                                    i += 1
+                                    _mRUSortedList.Add(i, line(1))
+                                End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+            RefreshMostRecentMenu()
+        Catch ex As FileNotFoundException
+            Throw ex
+        End Try
+    End Sub
+
+    Private Sub RefreshMostRecentMenu()
+
+        mostrecentlyUsedMenuItem.Items.Clear()
+
+        RefreshMenuInApplication()
+        RefreshJumpListInWinTaskbar()
+    End Sub
+
+    Private Sub RefreshMenuInApplication()
+        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
+            Dim mi As MenuItem = New MenuItem With {.Header = _mRUSortedList.Values(i)}
+            AddHandler mi.Click, AddressOf HandleMostRecentClick
+            mostrecentlyUsedMenuItem.Items.Add(mi)
+        Next
+
+        If mostrecentlyUsedMenuItem.Items.Count = 0 Then
+            Dim mi = New MenuItem With {.Header = "keine"}
+            mostrecentlyUsedMenuItem.Items.Add(mi)
+        End If
+    End Sub
+
+#End Region
+
+
     Private Sub AddLevelToTeilnehmer(Teilnehmerliste As ParticipantCollection, Level As Level)
         Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantLevel = Level)
     End Sub
@@ -756,6 +809,36 @@ Class MainWindow
         QueueMostRecentFilename(fileName)
         SetView(Services.Skiclub)
         Title = "Groupies - " & fileName
+
+    End Sub
+
+    Public Sub QueueMostRecentFilename(fileName As String)
+
+        Dim max As Integer = 0
+        For Each i In _mRUSortedList.Keys
+            If i > max Then max = i
+        Next
+
+        Dim keysToRemove = New List(Of Integer)
+        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
+            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
+        Next
+
+        For Each i As Integer In keysToRemove
+            _mRUSortedList.Remove(i)
+        Next
+
+        _mRUSortedList.Add(max + 1, fileName)
+
+        If _mRUSortedList.Count > 5 Then
+            Dim min As Integer = Integer.MaxValue
+            For Each i As Integer In _mRUSortedList.Keys
+                If i < min Then min = i
+            Next
+            _mRUSortedList.Remove(min)
+        End If
+
+        RefreshMostRecentMenu()
 
     End Sub
 
@@ -842,7 +925,7 @@ Class MainWindow
         ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-        For i = Services.StartService.mRuSortedList.Values.Count - 1 To 0 Step -1
+        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
             Dim jumpPath = New JumpPath With {
                 .CustomCategory = "Zuletzt geöffnet",
                 .Path = _mRUSortedList.Values(i)}

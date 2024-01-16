@@ -10,21 +10,21 @@
     <DockPanel >
         <Grid DockPanel.Dock="Bottom" Width="Auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Canvas Grid.Column="0" Height="100">
-                <Image x:Name="QRWeb" Canvas.Left="-10" Canvas.Top="-10"
-                 Height="100" Source="/Images/QRWebsiteSportKroen.png" />
+                <Image x:Name="QRWeb" Canvas.Left="0" Canvas.Top="0"
+                 Height="100" Source="/Images/QRWebsiteSkisportMeerbusch.png" />
                 <TextBlock Text="Scan Me Website" FontSize="8" Canvas.Left="6" Canvas.Bottom="0" Visibility="Hidden"/>
             </Canvas>
             <Image x:Name="Logo" Margin="5"  HorizontalAlignment="Center" Grid.Column="1"
-               Width="Auto" Height="60" Source="/Images/LogoKroen.png"/>
+               Width="Auto" Height="60" Source="/Images/LogoSkisportMeerbusch.png"/>
 
             <Canvas Grid.Column="2" Height="100">
-                <Image x:Name="QRContact" Height="100" Canvas.Left="-10" Canvas.Top="-10"
-                Source="/Images/QRKontaktSportKroen.png" />
+                <Image x:Name="QRContact" Height="100" Canvas.Left="0" Canvas.Top="0"
+                Source="/Images/QRKontaktSkisportMeerbusch.png" />
                 <TextBlock Text="Scan Me Kontakt"  FontSize="8" Canvas.Left="6" Canvas.Bottom="0"/>
             </Canvas>
         </Grid>

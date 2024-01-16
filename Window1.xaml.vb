@@ -21,6 +21,7 @@ Public Class Window1
     Private _groupListCollectionView As ICollectionView
     Private _intructorListCollectionView As ICollectionView
 
+    Private Property _groupiesFile As FileInfo
     Private Property _mRuSortedList As SortedList(Of Integer, String)
 
 #End Region
@@ -57,6 +58,9 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleClubSaveAsExecuted, AddressOf HandleClubSaveCanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
+
+
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRuSortedList = New SortedList(Of Integer, String)
 
@@ -66,27 +70,30 @@ Public Class Window1
         ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
-            CDS.SkiclubFileName = args(1)
-            Services.StartService.OpenSkischule(CDS.SkiclubFileName)
+            Dim filename = args(1)
+            OpenSkischule(filename)
         Else
-            Services.StartService.LoadLastSkischule()
+            LoadLastSkischule()
         End If
 
 
-        If CDS.Skiclub IsNot Nothing Then
-            Title = String.Format("Groupies - {0}", CDS.SkiclubFileName)
-            setView(CDS.Skiclub)
-        End If
+        RefreshJumpListInWinTaskbar()
+
 
     End Sub
 
+    Private Sub HandleImportSkiclubCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
     Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
+
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
-        If StartService.SkiclubListFile IsNot Nothing Then
+        If _groupiesFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        writer.WriteLine(StartService.SkiclubListFile.FullName)
+                        writer.WriteLine(_groupiesFile.FullName)
                     End Using
                 End Using
             End Using
@@ -95,7 +102,7 @@ Public Class Window1
         ' 2. Die meist genutzen Listen ins Isolated Storage speichern
         If _mRuSortedList.Count > 0 Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
+                Using stream = New IsolatedStorageFileStream("_mRUSortedList", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         For Each kvp As KeyValuePair(Of Integer, String) In _mRuSortedList
                             writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
@@ -106,7 +113,31 @@ Public Class Window1
         End If
     End Sub
 
+    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
+        ' Ist aktuell eine Skischuldatei geöffnet?
+        If CDS.Skiclub IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie das aktuelle Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
+            If rs = MessageBoxResult.Yes Then
+                ApplicationCommands.Save.Execute(Nothing, Me)
+            ElseIf rs = MessageBoxResult.Cancel Then
+                Exit Sub
+            End If
+        End If
+
+        ' Skischulobjekt löschen
+        CDS.Skiclub = Nothing
+
+        ' Neues Skischulobjekt initialisieren
+        Title = "Groupies"
+
+        Dim importSkiclub = ImportService.ImportSkiclub
+        If importSkiclub IsNot Nothing Then
+            setView(importSkiclub)
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
+        End If
+
+    End Sub
 #End Region
 
 #Region "EventHandler der CommandBindings"
@@ -144,7 +175,11 @@ Public Class Window1
     End Sub
 
     Private Sub HandleClubOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        OpenFile()
+        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        If dlg.ShowDialog = True Then
+            unsetView()
+            OpenSkischule(dlg.FileName)
+        End If
     End Sub
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
@@ -157,21 +192,21 @@ Public Class Window1
 
     Private Sub HandleClubSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If StartService.SkiclubListFile IsNot Nothing Then
-            dlg.FileName = StartService.SkiclubListFile.Name
+        If _groupiesFile IsNot Nothing Then
+            dlg.FileName = _groupiesFile.Name
         End If
 
         If dlg.ShowDialog = True Then
             SaveSkischule(dlg.FileName)
-            StartService.SkiclubListFile = New FileInfo(dlg.FileName)
+            _groupiesFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
     Private Sub HandleClubSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If StartService.SkiclubListFile Is Nothing Then
+        If _groupiesFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(CDS.SkiclubFileName)
+            SaveSkischule(_groupiesFile.FullName)
         End If
     End Sub
 
@@ -225,21 +260,68 @@ Public Class Window1
         End Try
     End Sub
 
-    Private Sub OpenFile()
-
-        StartService.OpenFile()
-
-        setView(Services.Skiclub)
-        Title = "Groupies - " & CDS.SkiclubFileName
-    End Sub
 
     Private Sub OpenSkischule(fileName As String)
 
-        'StartService.OpenSkischule(fileName)
+        If __groupiesFile IsNot Nothing AndAlso fileName.Equals(__groupiesFile.FullName) Then
+            MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
+            Exit Sub
+        End If
 
-        'setView(Services.Skiclub)
-        'Title = "Groupies - " & CDS.SkiclubFileName
+        If Not File.Exists(fileName) Then
+            MessageBox.Show("Die Datei existiert nicht")
+            Exit Sub
+        End If
 
+        Dim loadedSkischule = OpenXML(fileName)
+        'Dim loadedSkischule = OpenZIP(fileName)
+        If loadedSkischule Is Nothing Then Exit Sub
+
+        __groupiesFile = New FileInfo(fileName)
+        QueueMostRecentFilename(fileName)
+
+        CDS.Skiclub = Nothing
+
+        ' Eintrag in CurrentDataService
+        CDS.Skiclub = loadedSkischule
+
+        setView(CDS.Skiclub)
+
+        Title = "Groupies - " & fileName
+
+    End Sub
+
+    Private Function OpenXML(fileName As String) As Entities.Skiclub
+        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim loadedSkiclub As Entities.Skiclub = Nothing
+
+        ' Datei deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Try
+                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Skiclub)
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Return Nothing
+            End Try
+        End Using
+        Return loadedSkiclub
+    End Function
+
+    Private Sub LoadLastSkischule()
+        ' Die letze Skischule aus dem IsolatedStorage holen.
+        Try
+            Dim x = ""
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        x = reader.ReadLine
+                    End Using
+                End Using
+
+            End Using
+            If File.Exists(x) Then OpenSkischule(x)
+        Catch ex As FileNotFoundException
+        End Try
     End Sub
 
     Private Sub SaveSkischule(fileName As String)
@@ -260,22 +342,43 @@ Public Class Window1
     End Sub
 
     Private Sub QueueMostRecentFilename(fileName As String)
-        QueueMostRecentFilename(fileName)
+
+        Dim max As Integer = 0
+        For Each i In _mRuSortedList.Keys
+            If i > max Then max = i
+        Next
+
+        Dim keysToRemove As List(Of Integer) = New List(Of Integer)()
+        For Each kvp In _mRuSortedList
+            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
+        Next
+        For Each i In keysToRemove
+            _mRuSortedList.Remove(i)
+        Next
+
+        _mRuSortedList.Add(max + 1, fileName)
+
+        If _mRuSortedList.Count > 5 Then
+            Dim min = Integer.MaxValue
+            For Each i In _mRuSortedList.Keys
+                If i < min Then min = i
+            Next
+
+            _mRuSortedList.Remove(min)
+        End If
+
         RefreshMostRecentMenu()
     End Sub
 
     Private Sub RefreshMostRecentMenu()
         mostrecentlyUsedMenuItem.Items.Clear()
-        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi = New MenuItem With {.Header = _mRuSortedList.Values(i)}
-            AddHandler mi.Click, AddressOf HandleMostRecentClick
-            mostrecentlyUsedMenuItem.Items.Add(mi)
-        Next
+
         RefreshMenuInApplication()
         RefreshJumpListInWinTaskbar()
     End Sub
 
     Private Sub RefreshMenuInApplication()
+
         For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
             Dim mi As MenuItem = New MenuItem()
             mi.Header = _mRuSortedList.Values(i)
@@ -290,11 +393,14 @@ Public Class Window1
     End Sub
 
     Private Sub RefreshJumpListInWinTaskbar()
-
+        'JumpList Klasse
+        'Stellt eine Liste von Elementen und Aufgaben dar, die auf einer Windows 7-Taskleistenschaltfläche als Menü angezeigt werden.
         Dim jumplist = New JumpList With {
                 .ShowFrequentCategory = False,
                 .ShowRecentCategory = False}
 
+        'JumpTask Klasse
+        'Stellt eine Verknüpfung zu einer Anwendung in der Taskleisten-Sprungliste unter Windows 7 dar.
         Dim jumptask = New JumpTask With {
                 .CustomCategory = "Release Notes",
                 .Title = "SkikursReleaseNotes",
@@ -323,10 +429,12 @@ Public Class Window1
     End Sub
 
     Private Sub setView(Skikursliste As Skiclub)
+
         ' Neue ListCollectionView laden
         _groupListCollectionView = New ListCollectionView(CDS.Skiclub.Grouplist)
         If _groupListCollectionView.CanSort Then
             _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
+            _groupListCollectionView.MoveCurrentToFirst()
         End If
         DataContext = _groupListCollectionView
 
@@ -335,6 +443,18 @@ Public Class Window1
 
         _intructorListCollectionView = New ListCollectionView(CDS.Skiclub.Instructorlist)
         InstuctorDataGrid.DataContext = _intructorListCollectionView
+
+    End Sub
+
+    Private Sub unsetView()
+
+        DataContext = Nothing
+        ParticipantDataGrid.DataContext = Nothing
+        InstuctorDataGrid.DataContext = Nothing
+
+        _groupListCollectionView = New ListCollectionView(New GroupCollection)
+        _participantListCollectionView = New ListCollectionView(New ParticipantCollection)
+        _intructorListCollectionView = New ListCollectionView(New InstructorCollection)
 
     End Sub
 
@@ -446,4 +566,8 @@ Public Class Window1
     End Enum
 
 
+    Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
+        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
+        e.Cancel = result = MessageBoxResult.No
+    End Sub
 End Class

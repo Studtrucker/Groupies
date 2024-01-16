@@ -150,17 +150,22 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            Services.StartService.LoadLastSkischule()
-            If CDS.Skiclub IsNot Nothing Then
-                SetView(CDS.Skiclub)
-            End If
+            LoadLastSkischule()
+
         End If
+
+        If CDS.Skiclub IsNot Nothing Then
+            SetView(CDS.Skiclub)
+        End If
+
         ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
     End Sub
 
+    Private Sub loadLastSkischule()
 
+    End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
         Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
@@ -803,7 +808,7 @@ Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        Services.StartService.OpenSkischule(fileName)
+        'OpenSkischule(fileName)
 
         _skischuleListFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)

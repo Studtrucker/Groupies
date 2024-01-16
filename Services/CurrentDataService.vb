@@ -8,7 +8,6 @@ Namespace Services
     Module CurrentDataService
 
         Public Property Skiclub As Skiclub
-        Public Property SkiclubFileName As String
 
         Public ReadOnly Property availableInstructors As InstructorCollection
             Get

@@ -12,77 +12,48 @@ Namespace Services
 
     Module StartService
 
-        Public Property SkiclubListFile As FileInfo
+        'Public Property SkiclubListFile As FileInfo
 
-        Public Sub OpenFile()
-            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-            If dlg.ShowDialog = True Then
-                OpenSkischule(dlg.FileName)
-            End If
-        End Sub
-
-
-        Public Sub OpenSkischule(fileName As String)
-
-            If _SkiclubListFile IsNot Nothing AndAlso fileName.Equals(_SkiclubListFile.FullName) Then
-                MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
-                Exit Sub
-            End If
-
-            If Not File.Exists(fileName) Then
-                MessageBox.Show("Die Datei existiert nicht")
-                Exit Sub
-            End If
-
-            Dim loadedSkischule = OpenXML(fileName)
-            'Dim loadedSkischule = OpenZIP(fileName)
-            If loadedSkischule Is Nothing Then Exit Sub
+        'Public Sub OpenFile()
+        '    Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        '    If dlg.ShowDialog = True Then
+        '        OpenSkischule(dlg.FileName)
+        '    End If
+        'End Sub
 
 
-            CDS.Skiclub = Nothing
+        'Public Sub OpenSkischule(fileName As String)
 
-            _SkiclubListFile = New FileInfo(fileName)
-            'QueueMostRecentFilename(fileName)
+        '    If _SkiclubListFile IsNot Nothing AndAlso fileName.Equals(_SkiclubListFile.FullName) Then
+        '        MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
+        '        Exit Sub
+        '    End If
 
-            ' Eintrag in CurrentDataService
-            CDS.Skiclub = loadedSkischule
-            CDS.SkiclubFileName = fileName
+        '    If Not File.Exists(fileName) Then
+        '        MessageBox.Show("Die Datei existiert nicht")
+        '        Exit Sub
+        '    End If
 
-        End Sub
+        '    Dim loadedSkischule = OpenXML(fileName)
+        '    'Dim loadedSkischule = OpenZIP(fileName)
+        '    If loadedSkischule Is Nothing Then Exit Sub
 
 
-        Private Function OpenXML(fileName As String) As Entities.Skiclub
-            Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
-            Dim loadedSkiclub As Entities.Skiclub = Nothing
+        '    CDS.Skiclub = Nothing
 
-            ' Datei deserialisieren
-            Using fs = New FileStream(fileName, FileMode.Open)
-                Try
-                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Skiclub)
-                Catch ex As InvalidDataException
-                    MessageBox.Show("Datei ungültig: " & ex.Message)
-                    Return Nothing
-                End Try
-            End Using
-            Return loadedSkiclub
-        End Function
+        '    _SkiclubListFile = New FileInfo(fileName)
+        '    QueueMostRecentFilename(fileName)
 
-        Public Sub LoadLastSkischule()
-            ' Die letze Skischule aus dem IsolatedStorage holen.
-            Try
-                Dim x = ""
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                    Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
-                        Using reader = New StreamReader(stream)
-                            x = reader.ReadLine
-                        End Using
-                    End Using
+        '    ' Eintrag in CurrentDataService
+        '    CDS.Skiclub = loadedSkischule
+        '    CDS.SkiclubFileName = fileName
 
-                End Using
-                If File.Exists(x) Then OpenSkischule(x)
-            Catch ex As FileNotFoundException
-            End Try
-        End Sub
+        'End Sub
+
+
+
+
+
 
 
 

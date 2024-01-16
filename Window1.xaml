@@ -8,17 +8,25 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Closed="HandleMainWindowClosed" 
+        Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
         Title="Groupies" Height="450" Width="800">
 
     <Window.Resources>
-
+         <!--Style für die MenuItems--> 
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="Gray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <DockPanel>
         <Menu Background="white" DockPanel.Dock="Top">
 
-            <MenuItem  Header="_Datei" Background="white" Foreground="Black">
+            <MenuItem  Header="_Datei" Foreground="Black" Background="white" >
                 <MenuItem Header="_Neue Skischule" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
@@ -53,6 +61,7 @@
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
+            
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
                 <MenuItem Header="Gruppen erstellen" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
@@ -77,6 +86,7 @@
                 <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
                 <MenuItem Header="Level löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
             </MenuItem>
+
             <MenuItem Header="Ansichten" Background="white" Foreground="Black">
                 <MenuItem Header="Teilnehmer"></MenuItem>
                 <MenuItem Header="Skilehrer"></MenuItem>
@@ -84,6 +94,7 @@
                 <MenuItem Header="Levels"></MenuItem>
                 <MenuItem Header="Testfenster"></MenuItem>
             </MenuItem>
+
             <MenuItem  Header="Extras" Background="white" Foreground="Black">
             </MenuItem>
 

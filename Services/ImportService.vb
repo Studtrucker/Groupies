@@ -157,6 +157,10 @@ Namespace Services
 
         Private Function FindLevel(Benennung As String) As Level
 
+            If String.IsNullOrEmpty(Benennung) Then
+                Return Nothing
+            End If
+
             Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelNaming = Benennung)
             If Level Is Nothing Then
                 Level = New Level(True) With {.LevelNaming = Benennung}

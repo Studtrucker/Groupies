@@ -13,14 +13,14 @@
 
     <Window.Resources>
          <!--Style für die MenuItems--> 
-        <Style TargetType="{x:Type MenuItem}">
+        <!--<Style TargetType="{x:Type MenuItem}">
             <Setter Property="Foreground" Value="Black"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Foreground" Value="Gray"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
     </Window.Resources>
 
     <DockPanel>

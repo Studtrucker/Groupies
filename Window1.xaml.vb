@@ -59,6 +59,8 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
@@ -79,6 +81,23 @@ Public Class Window1
 
         RefreshJumpListInWinTaskbar()
 
+
+    End Sub
+
+
+    Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Instructorlist IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportInstructors = ImportService.ImportInstructors
+        If ImportInstructors IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportInstructors.ToList.ForEach(Sub(x) Services.Skiclub.Instructorlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
+            setView(CDS.Skiclub)
+        End If
 
     End Sub
 
@@ -570,4 +589,21 @@ Public Class Window1
         Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
         e.Cancel = result = MessageBoxResult.No
     End Sub
+    Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportParticipants = ImportService.ImportParticipants
+        If ImportParticipants IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportParticipants.ToList.ForEach(Sub(x) Services.Skiclub.Participantlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
+            setView(CDS.Skiclub)
+        End If
+
+    End Sub
+
+    Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Participantlist IsNot Nothing
+    End Sub
+
+
 End Class

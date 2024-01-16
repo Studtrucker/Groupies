@@ -7,7 +7,7 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
-        WindowState="Maximized"
+        WindowState="Maximized" Loaded="HandleWindowLoaded"
         Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
         Title="Groupies" Height="450" Width="800">
 

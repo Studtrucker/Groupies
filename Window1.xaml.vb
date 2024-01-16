@@ -11,18 +11,19 @@ Imports Groupies.Interfaces
 Imports Groupies.MainWindow
 Imports Groupies.Services
 Imports Groupies.UserControls
+Imports Microsoft.Office.Interop.Excel
 Imports Microsoft.Win32
 Imports CDS = Groupies.Services.CurrentDataService
 
 Public Class Window1
 
 #Region "Fields"
+
     Private _participantListCollectionView As ICollectionView
     Private _groupListCollectionView As ICollectionView
     Private _intructorListCollectionView As ICollectionView
-
-    Private Property _groupiesFile As FileInfo
-    Private Property _mRuSortedList As SortedList(Of Integer, String)
+    Private _groupiesFile As FileInfo
+    Private _mRuSortedList As SortedList(Of Integer, String)
 
 #End Region
 
@@ -46,7 +47,7 @@ Public Class Window1
 #End Region
 
 #Region "Window-Events"
-    Private Sub Window1_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+    Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs)
 
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
@@ -84,25 +85,9 @@ Public Class Window1
 
     End Sub
 
-
-    Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Instructorlist IsNot Nothing
-    End Sub
-
-    Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim ImportInstructors = ImportService.ImportInstructors
-        If ImportInstructors IsNot Nothing Then
-            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportInstructors.ToList.ForEach(Sub(x) Services.Skiclub.Instructorlist.Add(x))
-            MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
-            setView(CDS.Skiclub)
-        End If
-
-    End Sub
-
-    Private Sub HandleImportSkiclubCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+    Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
+        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
+        e.Cancel = result = MessageBoxResult.No
     End Sub
 
     Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
@@ -132,31 +117,54 @@ Public Class Window1
         End If
     End Sub
 
-    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+#End Region
 
-        ' Ist aktuell eine Skischuldatei geöffnet?
-        If CDS.Skiclub IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie das aktuelle Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
-            If rs = MessageBoxResult.Yes Then
-                ApplicationCommands.Save.Execute(Nothing, Me)
-            ElseIf rs = MessageBoxResult.Cancel Then
-                Exit Sub
-            End If
-        End If
-
-        ' Skischulobjekt löschen
-        CDS.Skiclub = Nothing
-
-        ' Neues Skischulobjekt initialisieren
-        Title = "Groupies"
-
-        Dim importSkiclub = ImportService.ImportSkiclub
-        If importSkiclub IsNot Nothing Then
-            setView(importSkiclub)
-            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
-        End If
-
+#Region "Methoden zum Laden der meist genutzten Groupies und der letzten Groupies Datei"
+    Public Sub LoadmRUSortedListMenu()
+        Try
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        Dim i = 0
+                        While reader.Peek <> -1
+                            Dim line = reader.ReadLine().Split(";")
+                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If File.Exists(line(1)) Then
+                                    i += 1
+                                    _mRuSortedList.Add(i, line(1))
+                                End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+            RefreshMostRecentMenu()
+        Catch ex As FileNotFoundException
+            Throw ex
+        End Try
     End Sub
+
+    Private Sub LoadLastSkischule()
+        ' Die letze Skischule aus dem IsolatedStorage holen.
+        Try
+            Dim x = ""
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        x = reader.ReadLine
+                    End Using
+                End Using
+
+            End Using
+            If File.Exists(x) Then OpenSkischule(x)
+        Catch ex As FileNotFoundException
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Methoden zum Pinnen und Ein-/Ausblenden der Explorer"
+
 #End Region
 
 #Region "EventHandler der CommandBindings"
@@ -189,10 +197,6 @@ Public Class Window1
 
     End Sub
 
-    Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Close()
-    End Sub
-
     Private Sub HandleClubOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
@@ -201,8 +205,12 @@ Public Class Window1
         End If
     End Sub
 
-    Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+    Private Sub HandleClubSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        If _groupiesFile Is Nothing Then
+            ApplicationCommands.SaveAs.Execute(Nothing, Me)
+        Else
+            SaveSkischule(_groupiesFile.FullName)
+        End If
     End Sub
 
     Private Sub HandleClubSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -221,12 +229,12 @@ Public Class Window1
         End If
     End Sub
 
-    Private Sub HandleClubSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If _groupiesFile Is Nothing Then
-            ApplicationCommands.SaveAs.Execute(Nothing, Me)
-        Else
-            SaveSkischule(_groupiesFile.FullName)
-        End If
+    Private Sub HandleCloseExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Close()
+    End Sub
+
+    Private Sub HandleHelpExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException
     End Sub
 
     Private Sub HandleClubPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -251,38 +259,103 @@ Public Class Window1
         e.CanExecute = True '_skischule IsNot Nothing OrElse _skischule.Skikursgruppenliste IsNot Nothing OrElse _skischule.Skikursgruppenliste.Count > 0
     End Sub
 
+    Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportParticipants = ImportService.ImportParticipants
+        If ImportParticipants IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportParticipants.ToList.ForEach(Sub(x) Services.Skiclub.Participantlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
+            setView(CDS.Skiclub)
+        End If
+
+    End Sub
+
+    Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Participantlist IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim ImportInstructors = ImportService.ImportInstructors
+        If ImportInstructors IsNot Nothing Then
+            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
+            ImportInstructors.ToList.ForEach(Sub(x) Services.Skiclub.Instructorlist.Add(x))
+            MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
+            setView(CDS.Skiclub)
+        End If
+
+    End Sub
+
+    Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Instructorlist IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        ' Ist aktuell eine Skischuldatei geöffnet?
+        If CDS.Skiclub IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie das aktuelle Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
+            If rs = MessageBoxResult.Yes Then
+                ApplicationCommands.Save.Execute(Nothing, Me)
+            ElseIf rs = MessageBoxResult.Cancel Then
+                Exit Sub
+            End If
+        End If
+
+        ' Skischulobjekt löschen
+        CDS.Skiclub = Nothing
+
+        ' Neues Skischulobjekt initialisieren
+        Title = "Groupies"
+
+        Dim importSkiclub = ImportService.ImportSkiclub
+        If importSkiclub IsNot Nothing Then
+            setView(importSkiclub)
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
+        End If
+
+    End Sub
+
+    Private Sub HandleImportSkiclubCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+
+
+    ' Weitere Handles für die Commands
+
+#End Region
+
+#Region "Sonstige Eventhandler"
+
+    ' Handles für Drag and Drop
+
+    Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
+        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+    End Sub
+
+    Sub GroupiesCollectionView_CurrentChanged(sender As Object, e As EventArgs)
+        Throw New NotImplementedException
+    End Sub
+
+    Private Sub RefreshTaskBarItemOverlay()
+        Throw New NotImplementedException
+    End Sub
+
+    Private Sub HandleMenuOptionsClick(sender As Object, e As RoutedEventArgs)
+        Throw New NotImplementedException
+    End Sub
+
 #End Region
 
 #Region "Helper-Methoden"
 
-    Public Sub LoadmRUSortedListMenu()
-        Try
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        Dim i = 0
-                        While reader.Peek <> -1
-                            Dim line = reader.ReadLine().Split(";")
-                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
-                                If File.Exists(line(1)) Then
-                                    i += 1
-                                    _mRuSortedList.Add(i, line(1))
-                                End If
-                            End If
-                        End While
-                    End Using
-                End Using
-            End Using
-            RefreshMostRecentMenu()
-        Catch ex As FileNotFoundException
-            Throw ex
-        End Try
-    End Sub
 
 
     Private Sub OpenSkischule(fileName As String)
 
-        If __groupiesFile IsNot Nothing AndAlso fileName.Equals(__groupiesFile.FullName) Then
+        If _groupiesFile IsNot Nothing AndAlso fileName.Equals(_groupiesFile.FullName) Then
             MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
             Exit Sub
         End If
@@ -296,7 +369,7 @@ Public Class Window1
         'Dim loadedSkischule = OpenZIP(fileName)
         If loadedSkischule Is Nothing Then Exit Sub
 
-        __groupiesFile = New FileInfo(fileName)
+        _groupiesFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
 
         CDS.Skiclub = Nothing
@@ -326,22 +399,7 @@ Public Class Window1
         Return loadedSkiclub
     End Function
 
-    Private Sub LoadLastSkischule()
-        ' Die letze Skischule aus dem IsolatedStorage holen.
-        Try
-            Dim x = ""
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        x = reader.ReadLine
-                    End Using
-                End Using
 
-            End Using
-            If File.Exists(x) Then OpenSkischule(x)
-        Catch ex As FileNotFoundException
-        End Try
-    End Sub
 
     Private Sub SaveSkischule(fileName As String)
         ' 1. Skischule serialisieren und gezippt abspeichern
@@ -567,43 +625,13 @@ Public Class Window1
 
 #End Region
 
-    Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
-    Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-
-    End Sub
-
-    Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
-
-    End Sub
+#Region "Enum für Printversion"
 
     Enum Printversion
         Instructor
         Participant
     End Enum
 
-
-    Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
-        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
-        e.Cancel = result = MessageBoxResult.No
-    End Sub
-    Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim ImportParticipants = ImportService.ImportParticipants
-        If ImportParticipants IsNot Nothing Then
-            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportParticipants.ToList.ForEach(Sub(x) Services.Skiclub.Participantlist.Add(x))
-            MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
-            setView(CDS.Skiclub)
-        End If
-
-    End Sub
-
-    Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Skiclub IsNot Nothing AndAlso Services.Skiclub.Participantlist IsNot Nothing
-    End Sub
-
+#End Region
 
 End Class

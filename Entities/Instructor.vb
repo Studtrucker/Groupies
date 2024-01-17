@@ -74,7 +74,7 @@ Namespace Entities
             End Set
         End Property
 
-        Public ReadOnly Property IsDivided As Boolean
+        Public ReadOnly Property IsAssigned As Boolean
             Get
                 Return Not _IsAvailable
             End Get

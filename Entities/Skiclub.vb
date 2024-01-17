@@ -40,7 +40,7 @@ Namespace Entities
 #End Region
 
 #Region "Properties"
-        Public ReadOnly Property ParticipantsNotInGroup As ParticipantCollection
+        Public ReadOnly Property ParticipantsNotInAGroup As ParticipantCollection
             Get
                 Dim List = New ParticipantCollection
                 Participantlist.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
@@ -48,21 +48,22 @@ Namespace Entities
             End Get
         End Property
 
-#End Region
-
-        Public ReadOnly Property ParticipantsToDistribute As ParticipantCollection
+        Public ReadOnly Property InstructorsAvailable As InstructorCollection
             Get
-                Dim List = New ParticipantCollection
-                Participantlist.Where(Function(x) x.MemberOfGroup.Equals(Nothing)).ToList.ForEach(Sub(item) List.Add(item))
+                Dim List As New InstructorCollection
+                Instructorlist.Where(Function(x) x.IsAvailable).ToList.ForEach(Sub(item) List.Add(item))
                 Return List
             End Get
         End Property
+
+#End Region
 
         Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
             ' Levelsliste = Teilnehmer.ToList.ForEach()
         End Sub
+
         Private Sub readInstructorlist(Instructors As InstructorCollection)
             Instructorlist = Instructors
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()

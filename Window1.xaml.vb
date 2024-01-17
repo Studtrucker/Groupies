@@ -522,21 +522,29 @@ Public Class Window1
 
     Private Sub setView(Skikursliste As Skiclub)
 
+        unsetView()
+
         ' Neue ListCollectionView laden
         _groupListCollectionView = New ListCollectionView(CDS.Skiclub.Grouplist)
         If _groupListCollectionView.CanSort Then
             _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
-            _groupListCollectionView.MoveCurrentToFirst()
         End If
         DataContext = _groupListCollectionView
 
-        _participantListCollectionView = New ListCollectionView(CDS.Skiclub.ParticipantsToDistribute)
-        ParticipantDataGrid.DataContext = _participantListCollectionView
-
-        _intructorListCollectionView = New ListCollectionView(CDS.Skiclub.Instructorlist)
-        InstuctorDataGrid.DataContext = _intructorListCollectionView
-
+        setView(CDS.Skiclub.ParticipantsNotInAGroup)
+        setView(CDS.Skiclub.InstructorsAvailable)
     End Sub
+
+    Private Sub setView(Participants As ParticipantCollection)
+        _participantListCollectionView = New ListCollectionView(Participants)
+        ParticipantDataGrid.DataContext = _participantListCollectionView
+    End Sub
+
+    Private Sub setView(Instructors As InstructorCollection)
+        _intructorListCollectionView = New ListCollectionView(Instructors)
+        InstuctorDataGrid.DataContext = _intructorListCollectionView
+    End Sub
+
 
     Private Sub unsetView()
 
@@ -653,9 +661,30 @@ Public Class Window1
 
     Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
 
+        Dim Tn = TryCast(ParticipantDataGrid.SelectedItems, IList)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(IList), Tn)
+            DragDrop.DoDragDrop(ParticipantDataGrid, Data, DragDropEffects.Move)
+        End If
+
     End Sub
 
+    Private Sub InstuctorDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
 
+        Dim Tn = TryCast(InstuctorDataGrid.SelectedItem, Instructor)
+
+        If Tn IsNot Nothing Then
+            Dim Data = New DataObject(GetType(Instructor), Tn)
+            DragDrop.DoDragDrop(InstuctorDataGrid, Data, DragDropEffects.Move)
+        End If
+        '
+    End Sub
+
+    Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
+        setView(CurrentDataService.Skiclub.InstructorsAvailable)
+        setView(CurrentDataService.Skiclub.ParticipantsNotInAGroup)
+    End Sub
 
 
 #End Region

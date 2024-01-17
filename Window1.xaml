@@ -144,7 +144,7 @@
                                            Style="{StaticResource TextblockStyle}" />
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Gruppenmitglieder" 
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMemberCount}"
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMembers.Count}"
                                            Style="{StaticResource TextblockStyle}" />
                             </Grid>
                         </DataTemplate>
@@ -180,7 +180,7 @@
                     <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
                           DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                          MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                          MouseDown="InstuctorDataGrid_SendByMouseDown"
                           DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
                           AllowDrop="True" 
                           IsReadOnly="True" CanUserAddRows="False" 

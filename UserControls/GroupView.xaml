@@ -13,7 +13,7 @@
             <DropShadowEffect ShadowDepth="10" Color="DarkGray"/>
         </Border.Effect>
 
-        <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1">
+        <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1" AllowDrop="True" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -59,7 +59,7 @@
                           SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLevelCombobox" />
                 <TextBlock  FontSize="16" Grid.Column="2" Grid.Row="5"
-                        x:Name="GroupLeaderTextblock"
+                        x:Name="GroupLeaderTextblock" AllowDrop="True" DragDrop.Drop="GroupLeaderTextblock_ReceiveByDrop"
                         Text="{Binding Path=GroupLeader.InstructorFullName}" Mouse.MouseDown="TextBlock_MouseDown"/>
 
                 <!--Combobox Skilehrer-->
@@ -75,14 +75,20 @@
 
                 <!--</StackPanel>-->
 
-                <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Path=GroupMemberCount}" />
+                <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Path=GroupMembers.Count}" />
 
                 <DataGrid Grid.Column="2" Grid.Row="7" x:Name="GroupMembersDataGrid" 
                       IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                       ItemsSource="{Binding GroupMembers}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
                       DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
                       CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}"
-                      SelectionMode="Extended">
+                      SelectionMode="Extended" >
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Teilnehmer aus Gruppe entfernen" Click="MenuItemDeleteGroupMember_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>

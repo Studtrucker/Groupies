@@ -163,41 +163,59 @@
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
-            <StackPanel Grid.Column="4">
+            
 
-                <TextBlock Text="Skilehrer Explorer" />
-                <DataGrid x:Name="InstuctorDataGrid"
-                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
-                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
-                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
-                              AllowDrop="True" 
-                              IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource groupiesDataGridStyle}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+            <Grid Grid.Column="4"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Skilehrer Explorer" Grid.Row="0"/>
+                    <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
+                          DockPanel.Dock="Top"  ItemsSource="{Binding}" 
+                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                          MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                          DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
+                          AllowDrop="True" 
+                          IsReadOnly="True" CanUserAddRows="False" 
+                          Style="{StaticResource groupiesDataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Separator DockPanel.Dock="Top" Grid.Row="2"/>
+                </Grid>
 
-                <Separator DockPanel.Dock="Top"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="Teilnehmer Explorer"/>
-                <DataGrid x:Name="ParticipantDataGrid" 
+                    <TextBlock Text="Teilnehmer Explorer" Grid.Row="0"/>
+                    <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
                               DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
                               IsReadOnly="True" CanUserAddRows="False" 
                               Style="{StaticResource groupiesDataGridStyle}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
-                        <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
+                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
 
-            </StackPanel>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="2" Background="WhiteSmoke"/>

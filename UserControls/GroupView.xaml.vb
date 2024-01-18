@@ -81,7 +81,8 @@ Namespace UserControls
                 ' Hat es schon einen Skilehrer gegeben?
                 If CurrentGroup.GroupLeader IsNot Nothing Then
                     ' Alten Skilehrer wieder frei setzen
-                    CurrentGroup.GroupLeader.IsAvailable = True
+                    '                    CurrentGroup.GroupLeader.IsAvailable = True
+                    CDS.Skiclub.Instructorlist.Where(Function(x) x.InstructorID = CurrentGroup.GroupLeader.InstructorID).Single.IsAvailable = True
                 End If
                 CurrentGroup.GroupLeader = TN
                 ' Neuer Skilehrer ist nicht mehr frei

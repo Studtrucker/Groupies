@@ -89,7 +89,7 @@
 
             <MenuItem Header="Ansichten" Foreground="Black" >
                 <MenuItem Header="Teilnehmer"/>
-                <MenuItem Header="Skilehrer"/>
+                <MenuItem Header="Skilehrer" Click="HandleInstructorMenuItemClick"/>
                 <MenuItem Header="Gruppen"/>
                 <MenuItem Header="Levels"/>
             </MenuItem>

@@ -87,6 +87,9 @@
     <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
       <DependentUpon>NewSkillDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InstructorsWindow.xaml.vb">
+      <DependentUpon>InstructorsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="My Project\Annotations.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\ImageTypes.vb" />
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\NewSkillDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstructorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

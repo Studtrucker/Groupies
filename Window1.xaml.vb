@@ -21,7 +21,7 @@ Public Class Window1
 
     Private _participantListCollectionView As ICollectionView
     Private _groupListCollectionView As ICollectionView
-    Private _intructorListCollectionView As ICollectionView
+    Private _instructorListCollectionView As ICollectionView
     Private _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
 
@@ -40,7 +40,7 @@ Public Class Window1
         ' DataContext participantDataGrid
         _participantListCollectionView = New ListCollectionView(New ParticipantCollection)
         ' DataContext groupleaderDataGrid
-        _intructorListCollectionView = New ListCollectionView(New InstructorCollection)
+        _instructorListCollectionView = New ListCollectionView(New InstructorCollection)
 
     End Sub
 
@@ -541,8 +541,8 @@ Public Class Window1
     End Sub
 
     Private Sub setView(Instructors As InstructorCollection)
-        _intructorListCollectionView = New ListCollectionView(Instructors)
-        InstuctorDataGrid.DataContext = _intructorListCollectionView
+        _instructorListCollectionView = New ListCollectionView(Instructors)
+        InstuctorDataGrid.DataContext = _instructorListCollectionView
     End Sub
 
 
@@ -554,7 +554,7 @@ Public Class Window1
 
         _groupListCollectionView = New ListCollectionView(New GroupCollection)
         _participantListCollectionView = New ListCollectionView(New ParticipantCollection)
-        _intructorListCollectionView = New ListCollectionView(New InstructorCollection)
+        _instructorListCollectionView = New ListCollectionView(New InstructorCollection)
 
     End Sub
 
@@ -684,6 +684,11 @@ Public Class Window1
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
         setView(CurrentDataService.Skiclub.InstructorsAvailable)
         setView(CurrentDataService.Skiclub.ParticipantsNotInAGroup)
+    End Sub
+
+    Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
+        Dim InstructorWindow = New InstructorsWindow
+        InstructorWindow.Show()
     End Sub
 
 

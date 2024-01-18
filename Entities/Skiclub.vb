@@ -40,6 +40,7 @@ Namespace Entities
 #End Region
 
 #Region "Properties"
+
         Public ReadOnly Property ParticipantsNotInAGroup As ParticipantCollection
             Get
                 Dim List = New ParticipantCollection

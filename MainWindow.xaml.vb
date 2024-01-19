@@ -1220,7 +1220,7 @@ Class MainWindow
         If CorrectDataFormat Then
             Dim TN As Participant = e.Data.GetData("Groupies.Entities.Participant")
             'For Each Participant As Participant In ic
-            TN.DeleteFromGroup()
+            TN.RemoveFromGroup()
             CDS.Skiclub.Participantlist.Remove(CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(TN.ParticipantID)).First)
             CDS.Skiclub.Participantlist.Add(TN)
             'Next

@@ -78,11 +78,11 @@
                 <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Path=GroupMembers.Count}" />
 
                 <DataGrid Grid.Column="2" Grid.Row="7" x:Name="GroupMembersDataGrid" 
-                      IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
-                      ItemsSource="{Binding GroupMembers}" MouseDown="GroupMembersDataGrid_SendByMouseDown"  
-                      DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
-                      CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}"
-                      SelectionMode="Extended" >
+                          IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
+                          ItemsSource="{Binding GroupMembers}" MouseDown="GroupMembersDataGrid_SendByMouseDown" 
+                          DragDrop.Drop="GroupMembersDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
+                          CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}"
+                          SelectionMode="Extended" >
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Teilnehmer aus Gruppe entfernen" Click="MenuItemDeleteGroupMember_Click"/>

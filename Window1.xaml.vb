@@ -656,6 +656,40 @@ Public Class Window1
     End Enum
 
     Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
+        ' Participants werden aus der Group entfernt
+        Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
+        If CorrectDataFormat Then
+            Dim TN As IList = e.Data.GetData(GetType(IList))
+            Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
+
+            Dim i As Integer
+            Dim index(TN.Count - 1) As Integer
+            For Each Participant As Participant In TN
+                Participant.RemoveFromGroup()
+                index(i) = CurrentGroup.GroupMembers.IndexOf(Participant)
+                'CurrentGroup.RemoveMember(Participant)
+            Next
+
+            For i = 0 To TN.Count - 1
+                CurrentGroup.GroupMembers.RemoveAt(index(i))
+                i += 1
+            Next
+        End If
+    End Sub
+
+    Private Sub AusListeRemovenLoeschen()
+        Dim levelDataGrid As New DataGrid
+
+        Dim i As Integer
+        Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
+        For Each item As Level In levelDataGrid.SelectedItems
+            'RemoveLevelFromSkikursgruppe(item)
+            'RemoveLevelFromTeilnehmer(item)
+            index(i) = CDS.Skiclub.Levellist.IndexOf(item)
+            i += 1
+        Next
+
+        'RemoveItemsAt(CDS.Skiclub.Levellist, index)
 
     End Sub
 
@@ -681,9 +715,11 @@ Public Class Window1
         '
     End Sub
 
+    ' todo: Ansicht ParticipantsNotinAGroup aktualisieren
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
         setView(CurrentDataService.Skiclub.InstructorsAvailable)
         setView(CurrentDataService.Skiclub.ParticipantsNotInAGroup)
+        MessageBox.Show("Hier ist ein ToDo", "HandleParticipantsDrop")
     End Sub
 
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)

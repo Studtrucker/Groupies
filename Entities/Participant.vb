@@ -55,7 +55,7 @@ Namespace Entities
             _IsGroupMember = True
         End Sub
 
-        Public Sub DeleteFromGroup()
+        Public Sub RemoveFromGroup()
             MemberOfGroup = Nothing
             _IsGroupMember = False
         End Sub

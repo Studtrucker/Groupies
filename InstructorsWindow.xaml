@@ -44,7 +44,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid Grid.Column="3" Grid.Row="1">
+        <Grid Grid.Column="3" Grid.Row="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
@@ -65,16 +65,17 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border AllowDrop="True" Width="120" Height="180" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" 
-                VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" Drop="HandleDrop" 
-                BorderBrush="Black" BorderThickness="1">
+                    <Border AllowDrop="True" Width="120" Height="180" Grid.Row="0" Grid.Column="1" 
+                            Grid.RowSpan="4" VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" 
+                            Drop="HandleDrop" BorderBrush="Black" BorderThickness="1">
                         <Grid>
                             <!--<Rectangle Fill="{StaticResource DefaultImageBrush}"/>-->
                             <Rectangle Fill="Transparent"/>
-                            <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
-               Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
+                            <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png"
+                                   Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                             <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
                    Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 				<LineBreak/> Drag'n'Drop setzen
@@ -102,6 +103,7 @@
                             Grid.Column="3" Grid.Row="2"  />
                     <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="3" Grid.Row="3" />
+                    <Button Grid.Row="4" Grid.Column="3" Height="Auto" Content="anderes Bild" Drop="HandleDrop" AllowDrop="True"/>
 
                     <GridSplitter Grid.Column="2" Grid.RowSpan="4" Width="5"
                       HorizontalAlignment="Right" Background="Transparent"/>

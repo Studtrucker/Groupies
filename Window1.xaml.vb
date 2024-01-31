@@ -531,7 +531,7 @@ Public Class Window1
         End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.Skiclub.ParticipantsNotInAGroup)
+        setView(CDS.Skiclub.Participantlist.NotInAGroup)
         setView(CDS.Skiclub.InstructorsAvailable)
     End Sub
 
@@ -662,18 +662,20 @@ Public Class Window1
             Dim TN As IList = e.Data.GetData(GetType(IList))
             Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
 
-            Dim i As Integer
+            Dim i = 0
             Dim index(TN.Count - 1) As Integer
             For Each Participant As Participant In TN
-                Participant.RemoveFromGroup()
-                index(i) = CurrentGroup.GroupMembers.IndexOf(Participant)
-                'CurrentGroup.RemoveMember(Participant)
-            Next
-
-            For i = 0 To TN.Count - 1
-                CurrentGroup.GroupMembers.RemoveAt(index(i))
+                'Participant.RemoveFromGroup()
+                Dim x = CDS.Skiclub.Participantlist.Where(Function(y) y.ParticipantID = Participant.ParticipantID).Single
+                x.RemoveFromGroup()
+                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Group).GroupMembers.IndexOf(Participant)
                 i += 1
             Next
+
+            For i = TN.Count - 1 To 0 Step -1
+                DirectCast(_groupListCollectionView.CurrentItem, Group).GroupMembers.RemoveAt(index(i))
+            Next
+
         End If
     End Sub
 
@@ -693,13 +695,13 @@ Public Class Window1
 
     End Sub
 
-    Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
+    Private Sub ParticipantDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs)
 
         Dim Tn = TryCast(ParticipantDataGrid.SelectedItems, IList)
 
         If Tn IsNot Nothing Then
             Dim Data = New DataObject(GetType(IList), Tn)
-            DragDrop.DoDragDrop(ParticipantDataGrid, Data, DragDropEffects.Move)
+            DragDrop.DoDragDrop(ParticipantDataGrid, Data, DragDropEffects.Copy)
         End If
 
     End Sub
@@ -710,16 +712,14 @@ Public Class Window1
 
         If Tn IsNot Nothing Then
             Dim Data = New DataObject(GetType(Instructor), Tn)
-            DragDrop.DoDragDrop(InstuctorDataGrid, Data, DragDropEffects.Move)
+            DragDrop.DoDragDrop(InstuctorDataGrid, Data, DragDropEffects.Copy)
         End If
         '
     End Sub
 
-    ' todo: Ansicht ParticipantsNotinAGroup aktualisieren
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
         setView(CurrentDataService.Skiclub.InstructorsAvailable)
-        setView(CurrentDataService.Skiclub.ParticipantsNotInAGroup)
-        MessageBox.Show("Hier ist ein ToDo", "HandleParticipantsDrop")
+        setView(CurrentDataService.Skiclub.Participantlist.NotInAGroup)
     End Sub
 
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)

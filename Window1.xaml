@@ -203,7 +203,7 @@
                     <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
+                              MouseDown="ParticipantDataGrid_MouseDown"
                               DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
                               IsReadOnly="True" CanUserAddRows="False" 
                               Style="{StaticResource groupiesDataGridStyle}">

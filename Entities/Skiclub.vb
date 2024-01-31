@@ -41,13 +41,13 @@ Namespace Entities
 
 #Region "Properties"
 
-        Public ReadOnly Property ParticipantsNotInAGroup As ParticipantCollection
-            Get
-                Dim List = New ParticipantCollection
-                Participantlist.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
-                Return List
-            End Get
-        End Property
+        'Public ReadOnly Property ParticipantsNotInAGroup As ParticipantCollection
+        '    Get
+        '        Dim List = New ParticipantCollection
+        '        Participantlist.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
+        '        Return List
+        '    End Get
+        'End Property
 
         Public ReadOnly Property InstructorsAvailable As InstructorCollection
             Get

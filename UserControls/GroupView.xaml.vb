@@ -58,21 +58,26 @@ Namespace UserControls
 
         End Sub
 
-        ' Für den Empfang von Objekten 
-        Private Sub GroupMembersDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
+
+        ' Für den Empfang von ParticipantObjekten zu Groupmembern, jetzt okay 
+        Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs)
             ' Participants werden Groupmember
             Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
             If CorrectDataFormat Then
                 Dim TN = e.Data.GetData(GetType(IList))
                 Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
                 For Each Participant As Participant In TN
-                    Participant.SetAsGroupMember(CurrentGroup.GroupID)
-                    CurrentGroup.AddMember(Participant)
+                    If Participant.IsNotInGroup Then
+                        Participant.SetAsGroupMember(CurrentGroup.GroupID)
+                        CurrentGroup.AddMember(Participant)
+                    End If
                 Next
             End If
         End Sub
 
-        Private Sub GroupLeaderTextblock_ReceiveByDrop(sender As Object, e As DragEventArgs)
+
+        ' Für den Empfang von InstructorObjekten als Groupinstructor, jetzt okay 
+        Private Sub GroupLeaderTextblock_Drop(sender As Object, e As DragEventArgs)
             ' Instructor wird Groupleader
             Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(Instructor))
             If CorrectDataFormat Then
@@ -90,9 +95,18 @@ Namespace UserControls
             End If
         End Sub
 
-        ' Für das Verschieben von Objekten 
+        Private Sub TextBlock_MouseDown(sender As Object, e As MouseButtonEventArgs)
 
-        Private Sub GroupMembersDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
+            'Dim Tn = TryCast(GroupLeaderTextblock., Instructor)
+
+            'If Tn IsNot Nothing Then
+            '    Dim Data = New DataObject(GetType(Participant), Tn)
+            '    Group.GroupLeader = Nothing
+            'End If
+        End Sub
+
+        ' Für das Verschieben von ParticipantObjekten aus der Group, werden NotInAGroup 
+        Private Sub GroupMembersDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs)
 
             Dim Tn = TryCast(GroupMembersDataGrid.SelectedItems, IList)
 
@@ -106,21 +120,20 @@ Namespace UserControls
         End Sub
 
 
-        Private Sub TextBlock_MouseDown(sender As Object, e As MouseButtonEventArgs)
-
-            Dim Tn = TryCast(_instructorListCollectionView.CurrentItem, Instructor)
-
-            If Tn IsNot Nothing Then
-                Dim Data = New DataObject(GetType(Participant), Tn)
-                Group.GroupLeader = Nothing
-            End If
-        End Sub
 
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
             For Each item As Participant In GroupMembersDataGrid.SelectedItems
                 CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = item.ParticipantID).Single.RemoveFromGroup()
             Next
             SetView()
+        End Sub
+
+        Private Sub HandleDragOver(sender As Object, e As DragEventArgs)
+            If e.Data.GetDataPresent(GetType(IList)) Then
+                e.Effects = DragDropEffects.Copy
+            Else
+                e.Effects = DragDropEffects.None
+            End If
         End Sub
 
 

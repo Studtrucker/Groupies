@@ -15,5 +15,13 @@ Namespace Entities
             End Get
         End Property
 
+        Public ReadOnly Property NotInAGroup As ParticipantCollection
+            Get
+                Dim List = New ParticipantCollection
+                Me.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
+                Return List
+            End Get
+        End Property
+
     End Class
 End Namespace

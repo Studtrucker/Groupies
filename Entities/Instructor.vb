@@ -63,7 +63,6 @@ Namespace Entities
             End Get
         End Property
 
-        'Public Property LeaderOfGroup As Guid
         Private _IsAvailable As Boolean
         Public Property IsAvailable As Boolean
             Get
@@ -81,6 +80,10 @@ Namespace Entities
         End Property
 
         Public Property SaveOrDisplay As Boolean
+
+        Public Overrides Function ToString() As String
+            Return InstructorFullName
+        End Function
 
     End Class
 

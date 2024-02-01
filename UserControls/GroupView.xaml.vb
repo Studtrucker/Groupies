@@ -78,7 +78,7 @@ Namespace UserControls
 
         ' Für den Empfang von InstructorObjekten als Groupinstructor, jetzt okay 
         Private Sub GroupLeaderTextblock_Drop(sender As Object, e As DragEventArgs)
-            ' Instructor wird Groupleader
+            '' Instructor wird Groupleader
             Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(Instructor))
             If CorrectDataFormat Then
                 Dim TN = e.Data.GetData(GetType(Instructor))

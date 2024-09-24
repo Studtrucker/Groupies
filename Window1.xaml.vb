@@ -124,7 +124,7 @@ Public Class Window1
     Public Sub LoadmRUSortedListMenu()
         Try
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
+                Using stream = New IsolatedStorageFileStream("LastGroupies", System.IO.FileMode.Open, iso)
                     Using reader = New StreamReader(stream)
                         Dim i = 0
                         While reader.Peek <> -1

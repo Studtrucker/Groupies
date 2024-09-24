@@ -13,7 +13,7 @@ Public Class AppController
     ''' Lädt Daten aus einer XML Datei
     ''' </summary>
     ''' <returns></returns>
-    Public Function LoadFromXML(Filename As String) As String
+    Public Shared Function LoadFromXML(Filename As String) As String
         If Filename.Contains("/") OrElse Filename.Contains("\") OrElse Filename.Contains(" ") Then
             Return "Bitte geben Sie einen Dateinamen ohne Schrägstriche oder Leerzeichen ein."
         ElseIf Not File.Exists(Format("{0}.xml", Filename)) Then
@@ -26,7 +26,7 @@ Public Class AppController
     ''' Lädt Daten aus einer JSON Datei
     ''' </summary>
     ''' <returns></returns>
-    Public Function LoadFromJson(Filename As String) As String
+    Public Shared Function LoadFromJson(Filename As String) As String
         Return "Es wurde keine Datei geladen"
     End Function
 

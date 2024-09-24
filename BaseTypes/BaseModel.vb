@@ -22,6 +22,7 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Occurs when a property value changes.
+    ''' Tritt auf, wenn sich ein Eigenschaftswert ändert.
     ''' </summary>
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
@@ -30,6 +31,7 @@ Public MustInherit Class BaseModel
 #Region "constructors and destructors"
     ''' <summary>
     ''' Default constructor.
+    ''' Standard-Konstruktor.
     ''' </summary>
     Public Sub New()
         InitCommands()
@@ -40,9 +42,12 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Gets an error message indicating what is wrong with this object.
+    ''' Ruft eine Fehlermeldung ab, die angibt, was mit diesem Objekt nicht stimmt.
     ''' </summary>
     ''' <returns>
     ''' An error message indicating what is wrong with this object. The default is an empty string ("").
+    ''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
+    ''' Der Standardwert ist eine leere Zeichenkette ("").
     ''' </returns>
     Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
         Get
@@ -52,12 +57,15 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Gets the error message for the property with the given name.
+    ''' Ruft die Fehlermeldung für die Eigenschaft mit dem angegebenen Namen ab.
     ''' </summary>
     ''' <param name="propertyName">
     ''' The name of the property whose error message to get.
+    ''' Der Name der Eigenschaft, deren Fehlermeldung abgerufen werden soll.
     ''' </param>
     ''' <returns>
     ''' The error message for the property. The default is an empty string ("").
+    ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
     ''' </returns>
     Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
         Get
@@ -71,22 +79,25 @@ Public MustInherit Class BaseModel
 #Region "methods"
     ''' <summary>
     ''' Override this method in derived types to initialize command logic.
+    ''' Überschreiben Sie diese Methode in abgeleiteten Typen, um die Befehlslogik zu initialisieren.
     ''' </summary>
     Protected Overridable Sub InitCommands()
     End Sub
 
     ''' <summary>
     ''' Can be overridden by derived types to react on the finisihing of error-collections.
+    ''' Kann von abgeleiteten Typen überschrieben werden, um auf die Beendigung von Fehlersammlungen zu reagieren.
     ''' </summary>
     Protected Overridable Sub OnErrorsCollected()
     End Sub
-    'Protected MustOverride Sub OnErrorsCollected()
 
     ''' <summary>
     ''' Raises the <see cref="PropertyChanged"/> event.
+    ''' Löst das Ereignis <see cref="PropertyChanged"/> aus.
     ''' </summary>
     ''' <param name="propertyName">
     ''' The name of the property which value has changed.
+    ''' Der Name der Eigenschaft, deren Wert sich geändert hat.
     ''' </param>
     <NotifyPropertyChangedInvocator>
     Protected Overridable Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
@@ -95,10 +106,13 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Is called by the indexer to collect all errors and not only the one for a special field.
+    ''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
     ''' </summary>
     ''' <remarks>
     ''' Because <see cref="HasErrors"/> depends on the <see cref="Errors"/> dictionary this
     ''' ensures that controls like buttons can switch their state accordingly.
+    ''' Da <see cref="HasErrors"/> vom <see cref="Errors"/>-Wörterbuch abhängt, 
+    ''' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
     ''' </remarks>
     Private Sub CollectErrors()
         Errors.Clear()
@@ -132,6 +146,7 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Indicates whether this instance has any errors.
+    ''' Zeigt an, ob diese Instanz Fehler aufweist.
     ''' </summary>
     Public ReadOnly Property HasErrors As Boolean
         Get
@@ -141,9 +156,11 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' The opposite of <see cref="HasErrors"/>.
+    ''' Das Gegenteil von <see cref="HasErrors"/>.
     ''' </summary>
     ''' <remarks>
     ''' Exists for convenient binding only.
+    ''' Sie dient nur der bequemen Bindung.
     ''' </remarks>
     Public ReadOnly Property IsOk As Boolean
         Get
@@ -153,6 +170,7 @@ Public MustInherit Class BaseModel
 
     ''' <summary>
     ''' Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo"/> automation.
+    ''' Ruft eine Liste aller Eigenschaften mit Attributen ab, die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
     ''' </summary>
     Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
         Get
@@ -166,6 +184,8 @@ Public MustInherit Class BaseModel
     ''' <summary>
     ''' A dictionary of current errors with the name of the error-field as the key and the error
     ''' text as the value.
+    ''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
+    ''' dem Fehlertext als Wert.
     ''' </summary>
     Private ReadOnly Property Errors As Dictionary(Of String, String) = New Dictionary(Of String, String)()
 

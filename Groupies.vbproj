@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppController.vb" />
     <Compile Include="Dialogs\NewDialog.xaml.vb">
       <DependentUpon>NewDialog.xaml</DependentUpon>
     </Compile>

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34301.259
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Groupies", "Groupies.vbproj", "{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}"
+EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GroupiesTests", "GroupiesTests\GroupiesTests.vbproj", "{B7269D05-7F7F-45D1-82E8-C33B4245485A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7269D05-7F7F-45D1-82E8-C33B4245485A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7269D05-7F7F-45D1-82E8-C33B4245485A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7269D05-7F7F-45D1-82E8-C33B4245485A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7269D05-7F7F-45D1-82E8-C33B4245485A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,8 +7,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Groupies", "Groupies.vbproj
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GroupiesTestsVB", "GroupiesTestsVB\GroupiesTestsVB.vbproj", "{224951DA-335A-4E45-AA36-44CEE1B84471}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GroupiesMSTestsCSharp", "GroupiesMSTestsCSharp\GroupiesMSTestsCSharp.csproj", "{F21BFCE9-B153-490D-A54A-143F89A2D7F0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F21BFCE9-B153-490D-A54A-143F89A2D7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F21BFCE9-B153-490D-A54A-143F89A2D7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F21BFCE9-B153-490D-A54A-143F89A2D7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F21BFCE9-B153-490D-A54A-143F89A2D7F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

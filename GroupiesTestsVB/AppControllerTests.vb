@@ -1,5 +1,6 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies
+Imports System.IO
 
 Namespace GroupiesTestsVB
     <TestClass>
@@ -8,13 +9,21 @@ Namespace GroupiesTestsVB
         Sub TestLoadJson()
             Dim filename As String
             filename = "Test"
+            ' File erst erstellen
+            File.Create(String.Format("{0}.json", filename)).Close()
             Assert.AreEqual(String.Format("Die Datei {0} wurde geladen.", String.Format("{0}.json", filename)), AppController.LoadFromJson(filename))
+            ' File wieder löschen
+            File.Delete(String.Format("{0}.json", filename))
         End Sub
         <TestMethod>
         Sub TestLoadXML()
             Dim filename As String
             filename = "test"
+            ' File erst erstellen
+            File.Create(String.Format("{0}.xml", filename)).Close()
             Assert.AreEqual(String.Format("Die Datei {0} wurde geladen.", String.Format("{0}.xml", filename)), AppController.LoadFromXML(filename))
+            ' File wieder löschen
+            File.Delete(String.Format("{0}.xml", filename))
         End Sub
 
         <TestMethod>

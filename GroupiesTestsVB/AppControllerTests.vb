@@ -1,10 +1,33 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies
 Imports System.IO
+Imports Groupies.Entities
 
 Namespace GroupiesTestsVB
     <TestClass>
     Public Class AppControllerTests
+
+        <TestMethod>
+        Sub TestNeuenSkiclubErstellen()
+            Dim appController As New AppController
+            appController.CurrentGroupies = New Entities.Skiclub("Stubaital2024")
+            Assert.AreEqual("Stubaital2024", appController.CurrentGroupies.Name)
+            Assert.AreEqual(0, appController.CurrentGroupies.Grouplist.Count)
+            Assert.AreEqual(0, appController.CurrentGroupies.Participantlist.Count)
+            Assert.AreEqual(0, appController.CurrentGroupies.Levellist.Count)
+            Assert.AreEqual(0, appController.CurrentGroupies.Instructorlist.Count)
+
+            Dim Studti As New Participant("Andreas Studtrucker", Experte)
+            Dim Manuela As New Participant("Manuela Ramm", Fortgeschritten)
+
+            Dim Teilnehmerliste As New ParticipantCollection({Studti, Manuela})
+
+
+
+        End Sub
+
+
+
         <TestMethod>
         Sub TestLoadJson()
             Dim filename As String

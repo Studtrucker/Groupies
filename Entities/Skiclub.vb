@@ -8,6 +8,8 @@ Namespace Entities
 
 #Region "Fields"
 
+        Public Property Name As String
+
         Public Property Participantlist() As ParticipantCollection
         Public Property Grouplist() As GroupCollection
         Public Property Levellist() As LevelCollection
@@ -35,6 +37,31 @@ Namespace Entities
             _Participantlist = New ParticipantCollection
             _Levellist = New LevelCollection
             readInstructorlist(Instructorlist)
+        End Sub
+
+        Public Sub New(Clubname As String, Teilnehmerliste As ParticipantCollection)
+            _Name = Clubname
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
+            readParticipantlist(Teilnehmerliste)
+        End Sub
+
+        Public Sub New(Clubname As String, Instructorlist As InstructorCollection)
+            _Name = Clubname
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
+            readInstructorlist(Instructorlist)
+        End Sub
+
+
+        Public Sub New(Clubname As String)
+            _Name = Clubname
+            _Grouplist = New GroupCollection
+            _Participantlist = New ParticipantCollection
+            _Levellist = New LevelCollection
+            _Instructorlist = New InstructorCollection
         End Sub
 
 #End Region

@@ -16,6 +16,20 @@ Namespace Entities
             _ParticipantID = Guid.NewGuid()
         End Sub
 
+        Public Sub New(Vorname As String, Nachname As String, Level As Level)
+            _ParticipantID = Guid.NewGuid()
+            _ParticipantFirstName = Vorname
+            _ParticipantLastName = Nachname
+            _ParticipantLevel = New Level()
+        End Sub
+
+        Public Sub New(Vorname As String, Nachname As String)
+            _ParticipantID = Guid.NewGuid()
+            _ParticipantFirstName = Vorname
+            _ParticipantLastName = Nachname
+            _ParticipantLevel = New Level()
+        End Sub
+
 
         ''' <summary>
         ''' Das ist eine eindeutige Kennzeichnung für den Teilnehmer 

@@ -7,6 +7,15 @@ Namespace Entities
         Inherits ObservableCollection(Of Participant)
         Implements IEnumerable
 
+        Public Sub New()
+            MyBase.New
+        End Sub
+
+        Public Sub New(Teilnehmerliste As List(Of Participant))
+            MyBase.New
+            Teilnehmerliste.ForEach(Sub(x) Add(x))
+        End Sub
+
         Public ReadOnly Property ParticipantCollectionOrdered As ParticipantCollection
             Get
                 Dim Ordered = New ParticipantCollection

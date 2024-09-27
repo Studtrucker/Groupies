@@ -86,6 +86,14 @@ Namespace Entities
 
 #End Region
 
+        Public Function AnzahlFreieTeilnehmer() As Integer
+            Return Participantlist.Where(Function(TN) TN.IsNotInGroup).Count
+        End Function
+
+        Public Function AnzahlEingeteilteTeilnehmer() As Integer
+            Return Participantlist.Where(Function(TN) TN.IsGroupMember).Count
+        End Function
+
         Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()

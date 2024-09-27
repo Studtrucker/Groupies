@@ -9,6 +9,7 @@ Namespace GroupiesTestsVB
 
         <TestMethod>
         Sub TestNeuenSkiclubErstellen()
+
             Dim appController As New AppController
             appController.CurrentGroupies = New Entities.Skiclub("Stubaital2024")
             Assert.AreEqual("Stubaital2024", appController.CurrentGroupies.Name)
@@ -17,12 +18,13 @@ Namespace GroupiesTestsVB
             Assert.AreEqual(0, appController.CurrentGroupies.Levellist.Count)
             Assert.AreEqual(0, appController.CurrentGroupies.Instructorlist.Count)
 
-            Dim Studti As New Participant("Andreas Studtrucker", Experte)
-            Dim Manuela As New Participant("Manuela Ramm", Fortgeschritten)
+            Dim Studti As New Participant("Andreas", "Studtrucker")
+            Dim Manuela As New Participant("Manuela", "Ramm")
 
-            Dim Teilnehmerliste As New ParticipantCollection({Studti, Manuela})
-
-
+            appController.CurrentGroupies.Participantlist = New ParticipantCollection(New List(Of Participant) From {Studti, Manuela})
+            Assert.AreEqual(2, appController.CurrentGroupies.Participantlist.Count)
+            Assert.AreEqual(2, appController.CurrentGroupies.AnzahlFreieTeilnehmer)
+            Assert.AreEqual(0, appController.CurrentGroupies.AnzahlEingeteilteTeilnehmer)
 
         End Sub
 
@@ -38,6 +40,7 @@ Namespace GroupiesTestsVB
             ' File wieder löschen
             File.Delete(String.Format("{0}.json", filename))
         End Sub
+
         <TestMethod>
         Sub TestLoadXML()
             Dim filename As String

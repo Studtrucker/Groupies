@@ -26,7 +26,7 @@ Namespace GroupiesTestsVB
             Assert.AreEqual(2, appController.CurrentGroupies.AnzahlFreieTeilnehmer)
             Assert.AreEqual(0, appController.CurrentGroupies.AnzahlEingeteilteTeilnehmer)
 
-            Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker", vbCrLf), appController.CurrentGroupies.Teilnehmerliste)
+            Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), appController.CurrentGroupies.Participantlist.Teilnehmerliste)
 
 
         End Sub

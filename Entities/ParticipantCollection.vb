@@ -32,5 +32,18 @@ Namespace Entities
             End Get
         End Property
 
+        Public Property Teilnehmerliste() = Function(x As Participant) x.ParticipantFullName
+        '    Exits
+        '    .OrderBy(KeyValuePair >= (Int())KeyValuePair.Key)
+        '.OrderBy(KeyValuePair >= Math.Abs((Int())KeyValuePair.Key))
+        '.Select(KeyValuePair >= $"the {KeyValuePair.Value} is {DescribeDirection(KeyValuePair.Key)}");
+
+        Public Overrides Function ToString() As String
+
+            '            Dim Namen As String = Me.ToList.OrderBy(Function(T) T.ParticipantLastName).OrderBy(Function(T) T.ParticipantFirstName).Select(Of String)(Function(TN) String.Format("{0}{1}", TN.ParticipantFullName, vbCrLf))
+            Dim Namen = Me.ToList.Select(Of String)(Function(TN) TN.ParticipantFullName)
+            Return Namen.ToString
+        End Function
+
     End Class
 End Namespace

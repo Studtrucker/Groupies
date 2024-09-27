@@ -94,6 +94,8 @@ Namespace Entities
             Return Participantlist.Where(Function(TN) TN.IsGroupMember).Count
         End Function
 
+        Public Property Teilnehmerliste = If(Participantlist Is Nothing, "", Participantlist.Select(Function(Tn) Tn.ParticipantFullName & vbCrLf))
+
         Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
             'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
@@ -122,7 +124,6 @@ Namespace Entities
         Private Sub GetAktualisierungen(Mitglied As Participant)
             'Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
         End Sub
-
 
     End Class
 

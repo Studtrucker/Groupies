@@ -467,7 +467,7 @@ Class MainWindow
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Instructor).InstructorPicture = buffer
+                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Trainer).InstructorPicture = buffer
                     RefreshTaskBarItemOverlay()
                     CommandManager.InvalidateRequerySuggested()
                     validPictureFile = True
@@ -589,7 +589,7 @@ Class MainWindow
     Private Sub HandleSkikursgruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim i As Integer
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Group In skikurseDataGrid.SelectedItems
+        For Each item As Gruppe In skikurseDataGrid.SelectedItems
             RemoveSkikursgruppeFromTeilnehmer(item)
             index(i) = CDS.Skiclub.Grouplist.IndexOf(item)
             i += 1
@@ -670,7 +670,7 @@ Class MainWindow
 
         Dim i As Integer
         Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Instructor In uebungsleiterDataGrid.SelectedItems
+        For Each item As Trainer In uebungsleiterDataGrid.SelectedItems
             RemoveUebungsleiterFromSkikursgruppe(item)
             index(i) = CDS.Skiclub.Instructorlist.IndexOf(item)
             i += 1
@@ -767,15 +767,15 @@ Class MainWindow
     End Sub
 
     Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Leistungsstufe)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.GroupLevel = Level)
+        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Leistungsstufe = Level)
     End Sub
 
-    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Group, Uebungsleiter As Instructor)
-        Skikursgruppe.GroupLeader = Uebungsleiter
+    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Gruppe, Uebungsleiter As Trainer)
+        Skikursgruppe.Trainer = Uebungsleiter
     End Sub
 
-    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As Group)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GroupID)
+    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As ParticipantCollection, Skikursgruppe As Gruppe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GruppenID)
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Leistungsstufe)
@@ -784,17 +784,17 @@ Class MainWindow
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Leistungsstufe)
-        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLevel Is level)
-        liste.ToList.ForEach(Sub(x) x.GroupLevel = Nothing)
+        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.Leistungsstufe Is level)
+        liste.ToList.ForEach(Sub(x) x.Leistungsstufe = Nothing)
     End Sub
 
-    Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Instructor)
-        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLeader Is Uebungsleiter)
-        liste.ToList.ForEach(Sub(x) x.GroupLeader = Nothing)
+    Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Trainer)
+        Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.Trainer Is Uebungsleiter)
+        liste.ToList.ForEach(Sub(x) x.Trainer = Nothing)
     End Sub
 
-    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Group)
-        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GroupID))
+    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Gruppe)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GruppenID))
         liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
     End Sub
 
@@ -1137,13 +1137,13 @@ Class MainWindow
         Dim sortedGroupView = New ListCollectionView(CDS.Skiclub.Grouplist)
         sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Group
+        Dim skikursgruppe As Gruppe
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
         For i As Integer = 0 To sortedGroupView.Count - 1
             sortedGroupView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedGroupView.CurrentItem, Group)
+            skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
 
             If i Mod participantsPerPage = 0 Then
                 page = New FixedPage
@@ -1181,20 +1181,20 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         For i = 0 To CDS.Skiclub.Grouplist.Count - 1
-            CDS.Skiclub.Grouplist(i).GroupLeader = CDS.Skiclub.Instructorlist.Item(i)
+            CDS.Skiclub.Grouplist(i).Trainer = CDS.Skiclub.Instructorlist.Item(i)
         Next
     End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
-        DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
-        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupID
+        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
+        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
         setView(CDS.Skiclub.Grouplist)
     End Sub
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
             Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
-            DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
+            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
             tn.MemberOfGroup = Nothing
         End If
         setView(CDS.Skiclub.Grouplist)

@@ -122,7 +122,7 @@ Namespace Entities
             Return Me
         End Function
 
-        Private Sub GetAktualisierungen(Skikurs As Group)
+        Private Sub GetAktualisierungen(Skikurs As Gruppe)
             'Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
             'For i = 0 To Skikurs.Mitgliederliste.Count - 1
             '    Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))

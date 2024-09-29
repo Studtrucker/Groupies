@@ -3,6 +3,9 @@ Imports System.ComponentModel
 
 Namespace Entities
 
+    ''' <summary>
+    ''' Fähigkeit zur Beschreibung von Leistungsstufen 
+    ''' </summary>
     Public Class Faehigkeit
         Inherits BaseModel
 
@@ -52,7 +55,7 @@ Namespace Entities
         ''' Sortierungszahl für die Ausgabeinformationen 
         ''' </summary>
         ''' <returns></returns>
-        Public Property Sortierung As String
+        Public Property Sortierung As Integer?
 
 
         ''' <summary>
@@ -83,7 +86,7 @@ Namespace Entities
         End Function
 
         Public Overrides Function ToString() As String
-            Return Beschreibung
+            Return Benennung
         End Function
 #End Region
 

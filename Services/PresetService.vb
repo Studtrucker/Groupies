@@ -15,35 +15,35 @@ Namespace Services
         Public Function CreateLevels() As LevelCollection
 
             Dim Anfaenger = New Leistungsstufe(True) With {
-                .SortNumber = "010",
+                .Sortierung = "010",
                 .Benennung = "Anfänger",
                 .LeistungsstufeID = Guid.NewGuid,
                 .Faehigkeiten = SkillsAnfaenger(),
                 .Beschreibung = DescriptionAnfaenger()}
 
             Dim Fortgeschrittener = New Leistungsstufe(True) With {
-                .SortNumber = "020",
+                .Sortierung = "020",
                 .Benennung = "Fortgeschritten",
                 .Beschreibung = DescriptionFortgeschritten(),
                 .Faehigkeiten = SkillsFortgeschritten(),
                 .LeistungsstufeID = Guid.NewGuid}
 
             Dim Geniesser = New Leistungsstufe(True) With {
-                .SortNumber = "030",
+                .Sortierung = "030",
                 .Benennung = "Genießer",
                 .Beschreibung = DescriptionGeniesser(),
                 .Faehigkeiten = SkillsGeniesser(),
                 .LeistungsstufeID = Guid.NewGuid}
 
             Dim Koenner = New Leistungsstufe(True) With {
-                .SortNumber = "040",
+                .Sortierung = "040",
                 .Benennung = "Könner",
                 .Beschreibung = DescriptionKoenner(),
                 .Faehigkeiten = SkillsKoenner(),
                 .LeistungsstufeID = Guid.NewGuid}
 
             Dim Experte = New Leistungsstufe(True) With {
-                .SortNumber = "050",
+                .Sortierung = "050",
                 .Benennung = "Experte",
                 .Beschreibung = DescriptionExperte(),
                 .Faehigkeiten = SkillsExperte(),
@@ -60,10 +60,10 @@ Namespace Services
 
             Dim IndexGruppenName As Integer
             For i = 0 To NumberOfGroups - 1
-                groupCol.Add(New Group With {
-                        .GroupNaming = "Genießer",
-                        .GroupPrintNaming = GroupPrintNames.Item(IndexGruppenName),
-                        .GroupSort = GroupSorting.Item(IndexGruppenName)})
+                groupCol.Add(New Gruppe With {
+                        .Benennung = "Genießer",
+                        .Ausgabename = GroupPrintNames.Item(IndexGruppenName),
+                        .Sortierung = GroupSorting.Item(IndexGruppenName)})
                 IndexGruppenName += 1
             Next
 

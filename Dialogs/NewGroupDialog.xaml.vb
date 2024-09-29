@@ -4,7 +4,7 @@ Imports Groupies.Entities
 Imports Groupies.Commands
 
 Public Class NewGroupDialog
-    Public ReadOnly Property Group() As Group
+    Public ReadOnly Property Group() As Gruppe
     Private ReadOnly _levelListCollectionView As ICollectionView
     Private ReadOnly _instructorListCollectionView As ICollectionView
 
@@ -14,7 +14,7 @@ Public Class NewGroupDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Group = New Group
+        _Group = New Gruppe
         DataContext = _Group
 
         _levelListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Levellist)

@@ -7,7 +7,7 @@ Namespace UserControls
 
     Public Class GroupView
 
-        Public Property Group As Group
+        Public Property Group As Gruppe
         Private _levelListCollectionView As ICollectionView
         Private _instructorListCollectionView As ICollectionView
         Private _groupmemberListCollectionView As ICollectionView
@@ -65,10 +65,10 @@ Namespace UserControls
             Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
             If CorrectDataFormat Then
                 Dim TN = e.Data.GetData(GetType(IList))
-                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
+                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
                 For Each Participant As Teilnehmer In TN
                     If Participant.IsNotInGroup Then
-                        Participant.SetAsGroupMember(CurrentGroup.GroupID)
+                        Participant.SetAsGroupMember(CurrentGroup.GruppenID)
                         CurrentGroup.AddMember(Participant)
                     End If
                 Next
@@ -79,19 +79,19 @@ Namespace UserControls
         ' Für den Empfang von InstructorObjekten als Groupinstructor, jetzt okay 
         Private Sub GroupLeaderTextblock_Drop(sender As Object, e As DragEventArgs)
             '' Instructor wird Groupleader
-            Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(Instructor))
+            Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(Trainer))
             If CorrectDataFormat Then
-                Dim TN = e.Data.GetData(GetType(Instructor))
-                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
+                Dim TN = e.Data.GetData(GetType(Trainer))
+                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
                 ' Hat es schon einen Skilehrer gegeben?
-                If CurrentGroup.GroupLeader IsNot Nothing Then
+                If CurrentGroup.Trainer IsNot Nothing Then
                     ' Alten Skilehrer wieder frei setzen
                     '                    CurrentGroup.GroupLeader.IsAvailable = True
-                    CDS.Skiclub.Instructorlist.Where(Function(x) x.InstructorID = CurrentGroup.GroupLeader.InstructorID).Single.IsAvailable = True
+                    CDS.Skiclub.Instructorlist.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IsAvailable = True
                 End If
-                CurrentGroup.GroupLeader = TN
+                CurrentGroup.Trainer = TN
                 ' Neuer Skilehrer ist nicht mehr frei
-                DirectCast(TN, Instructor).IsAvailable = False
+                DirectCast(TN, Trainer).IsAvailable = False
             End If
         End Sub
 

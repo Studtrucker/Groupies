@@ -6,19 +6,19 @@ Imports System.Data.SqlClient
 Namespace Entities
 
     Public Class InstructorCollection
-        Inherits ObservableCollection(Of Instructor)
-        Implements IEnumerable(Of Instructor)
+        Inherits ObservableCollection(Of Trainer)
+        Implements IEnumerable(Of Trainer)
 
-        Public Function GetPrintName(Instructor As Instructor) As String
-            Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPrintName
+        Public Function GetPrintName(Instructor As Trainer) As String
+            Return First(Function(x) x.TrainerID = Instructor.TrainerID).Spitzname
         End Function
 
-        Public Function GetHatFoto(Instructor As Instructor) As Boolean
-            Return First(Function(x) x.InstructorID = Instructor.InstructorID).HasPicture
+        Public Function GetHatFoto(Instructor As Trainer) As Boolean
+            Return First(Function(x) x.TrainerID = Instructor.TrainerID).HasPicture
         End Function
 
-        Public Function GetFoto(Instructor As Instructor) As Byte()
-            Return First(Function(x) x.InstructorID = Instructor.InstructorID).InstructorPicture
+        Public Function GetFoto(Instructor As Trainer) As Byte()
+            Return First(Function(x) x.TrainerID = Instructor.TrainerID).InstructorPicture
         End Function
 
     End Class

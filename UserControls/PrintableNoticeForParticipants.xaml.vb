@@ -19,17 +19,17 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Group) Implements IPrintableNotice.InitPropsFromGroup
+        Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
-            GroupPrintName = Group.GroupPrintNaming
-            Members = Group.GroupMembers.ParticipantCollectionOrdered
+            GroupPrintName = Group.Ausgabename
+            Members = Group.Mitglieder.ParticipantCollectionOrdered
 
-            If Group.GroupLeader IsNot Nothing Then
-                GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.GroupLeader)
-                If CDS.Skiclub.Instructorlist.GetHatFoto(Group.GroupLeader) Then
+            If Group.Trainer IsNot Nothing Then
+                GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.Trainer)
+                If CDS.Skiclub.Instructorlist.GetHatFoto(Group.Trainer) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.Skiclub.Instructorlist.GetFoto(Group.GroupLeader))
+                    bi.StreamSource = New MemoryStream(CDS.Skiclub.Instructorlist.GetFoto(Group.Trainer))
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else
@@ -38,7 +38,7 @@ Namespace UserControls
                 End If
             End If
 
-            If Group.GroupMembers.Count > 14 Then
+            If Group.Mitglieder.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 

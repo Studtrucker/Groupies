@@ -4,6 +4,10 @@ Imports System.ComponentModel.DataAnnotations
 
 Namespace Entities
 
+
+    ''' <summary>
+    ''' Beschreibt die Leistungsstufe mit einem Satz von Fähigkeiten
+    ''' </summary>
     <DefaultProperty("Benennung")>
     Public Class Leistungsstufe
         Inherits BaseModel
@@ -15,12 +19,14 @@ Namespace Entities
         ''' </summary>
         Public Sub New()
             _LeistungsstufeID = Guid.NewGuid()
+            _Faehigkeiten = New SkillCollection
         End Sub
 
 
         <Obsolete>
         Public Sub New(SaveMe As Boolean)
             _LeistungsstufeID = Guid.NewGuid()
+            _Faehigkeiten = New SkillCollection
             SaveOrDisplay = SaveMe
         End Sub
 
@@ -29,7 +35,16 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Benennung"></param>
         Public Sub New(Benennung As String)
+            _LeistungsstufeID = Guid.NewGuid()
             _Benennung = Benennung
+            _Faehigkeiten = New SkillCollection
+        End Sub
+
+        Public Sub New(Benennung As String, Sortierung As Integer)
+            _LeistungsstufeID = Guid.NewGuid()
+            _Benennung = Benennung
+            _Sortierung = Sortierung
+            _Faehigkeiten = New SkillCollection
         End Sub
 
 #End Region
@@ -48,7 +63,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         <StringLength(3)>
-        Public Property SortNumber As String
+        Public Property Sortierung As Integer?
 
         ''' <summary>
         ''' Die Benennung der Leistungsstufe

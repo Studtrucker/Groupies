@@ -603,13 +603,13 @@ Public Class Window1
         Dim sortedGroupView = New ListCollectionView(CDS.Skiclub.Grouplist)
         sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
 
-        Dim skikursgruppe As Group
+        Dim skikursgruppe As Gruppe
         Dim page As FixedPage = Nothing
 
         ' durch die Gruppen loopen und Seiten generieren
         For i As Integer = 0 To sortedGroupView.Count - 1
             sortedGroupView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedGroupView.CurrentItem, Group)
+            skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
 
             If i Mod participantsPerPage = 0 Then
                 page = New FixedPage
@@ -660,7 +660,7 @@ Public Class Window1
         Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
         If CorrectDataFormat Then
             Dim TN As IList = e.Data.GetData(GetType(IList))
-            Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
+            Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
 
             Dim i = 0
             Dim index(TN.Count - 1) As Integer
@@ -668,12 +668,12 @@ Public Class Window1
                 'Participant.RemoveFromGroup()
                 Dim x = CDS.Skiclub.Participantlist.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
                 x.RemoveFromGroup()
-                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Group).GroupMembers.IndexOf(Participant)
+                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitglieder.IndexOf(Participant)
                 i += 1
             Next
 
             For i = TN.Count - 1 To 0 Step -1
-                DirectCast(_groupListCollectionView.CurrentItem, Group).GroupMembers.RemoveAt(index(i))
+                DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitglieder.RemoveAt(index(i))
             Next
 
         End If
@@ -708,10 +708,10 @@ Public Class Window1
 
     Private Sub InstuctorDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
 
-        Dim Tn = TryCast(InstuctorDataGrid.SelectedItem, Instructor)
+        Dim Tn = TryCast(InstuctorDataGrid.SelectedItem, Trainer)
 
         If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(Instructor), Tn)
+            Dim Data = New DataObject(GetType(Trainer), Tn)
             DragDrop.DoDragDrop(InstuctorDataGrid, Data, DragDropEffects.Copy)
         End If
         '

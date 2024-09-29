@@ -4,11 +4,11 @@ Imports System.Collections.ObjectModel
 Namespace Entities
 
     Public Class GroupCollection
-        Inherits ObservableCollection(Of Group)
+        Inherits ObservableCollection(Of Gruppe)
 
-        Public ReadOnly Property SortedListGroupNaming As ObservableCollection(Of Group)
+        Public ReadOnly Property SortedListGroupNaming As ObservableCollection(Of Gruppe)
             Get
-                Return New ObservableCollection(Of Group)(Me.OrderBy(Of String)(Function(x) x.GroupNaming))
+                Return New ObservableCollection(Of Gruppe)(Me.OrderBy(Of String)(Function(x) x.Benennung))
             End Get
         End Property
 

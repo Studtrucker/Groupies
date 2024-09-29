@@ -6,7 +6,7 @@ Imports Microsoft.Win32
 
 Public Class NewInstructorDialog
 
-    Public ReadOnly Property Instructor() As Instructor
+    Public ReadOnly Property Instructor() As Trainer
 
     Public Sub New()
 
@@ -14,7 +14,7 @@ Public Class NewInstructorDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Instructor = New Instructor(True, True)
+        _Instructor = New Trainer(True, True)
         DataContext = _Instructor
 
     End Sub

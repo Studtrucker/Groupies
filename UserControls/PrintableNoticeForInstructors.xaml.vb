@@ -19,20 +19,20 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Group) Implements IPrintableNotice.InitPropsFromGroup
+        Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
-            GroupPrintName = Group.GroupPrintNaming
-            GroupNaming = Group.GroupNaming
-            Members = Group.GroupMembers.ParticipantCollectionOrdered
-            If Group.GroupLevel IsNot Nothing Then
-                GroupLevelNaming = Group.GroupLevel.Benennung
+            GroupPrintName = Group.Ausgabename
+            GroupNaming = Group.Benennung
+            Members = Group.Mitglieder.ParticipantCollectionOrdered
+            If Group.Leistungsstufe IsNot Nothing Then
+                GroupLevelNaming = Group.Leistungsstufe.Benennung
             End If
-            If Group.GroupLeader IsNot Nothing Then
-                GroupLeaderPrintName = Group.GroupLeader.InstructorPrintName
+            If Group.Trainer IsNot Nothing Then
+                GroupLeaderPrintName = Group.Trainer.Spitzname
             End If
 
             ' For Style setting
-            If Group.GroupMembers.Count > 14 Then
+            If Group.Mitglieder.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 

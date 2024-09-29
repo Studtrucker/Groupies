@@ -89,7 +89,7 @@ Namespace Services
         Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Entities.Club
             Dim CurrentRow = 4
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
-            Dim Skikursgruppe As Group
+            Dim Skikursgruppe As Gruppe
             Do Until CurrentRow > RowCount
 
                 Dim Teilnehmer As New Teilnehmer With {
@@ -105,7 +105,7 @@ Namespace Services
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.AddMember(Teilnehmer)
-                        Teilnehmer.MemberOfGroup = Skikursgruppe.GroupID
+                        Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
                     End If
                 End If
                 CurrentRow += 1
@@ -143,10 +143,10 @@ Namespace Services
 
             Do Until CurrentRow > RowCount
 
-                Dim Teilnehmer As New Instructor(True, True) With {
-                .InstructorFirstName = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .InstructorLastName = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .InstructorPrintName = Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)}
+                Dim Teilnehmer As New Trainer(True, True) With {
+                .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                .Spitzname = Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)}
                 _Participantlist.Add(Teilnehmer)
 
                 CurrentRow += 1
@@ -170,10 +170,10 @@ Namespace Services
             Return Level
         End Function
 
-        Private Function FindSkikursgruppe(Naming As String) As Group
+        Private Function FindSkikursgruppe(Naming As String) As Gruppe
             Dim Group = _skischule.Grouplist.FirstOrDefault(Function(s) s.GroupNaming = Naming)
             If Group Is Nothing Then
-                Group = New Group With {.GroupNaming = Naming}
+                Group = New Gruppe With {.Benennung = Naming}
                 _skischule.Grouplist.Add(Group)
             End If
             Return Group

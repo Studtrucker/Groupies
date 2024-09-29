@@ -202,8 +202,8 @@
     <Compile Include="Entities\LevelCollection.vb" />
     <Compile Include="Services\ImportService.vb" />
     <Compile Include="Entities\Leistungsstufe.vb" />
-    <Compile Include="Entities\Group.vb" />
-    <Compile Include="Entities\Instructor.vb" />
+    <Compile Include="Entities\Gruppe.vb" />
+    <Compile Include="Entities\Trainer.vb" />
     <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\ParticipantCollection.vb" />

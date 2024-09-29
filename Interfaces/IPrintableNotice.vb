@@ -3,7 +3,7 @@
 Namespace Interfaces
 
     Public Interface IPrintableNotice
-        Sub InitPropsFromGroup(Group As Group)
+        Sub InitPropsFromGroup(Group As Gruppe)
 
     End Interface
 

@@ -5,6 +5,10 @@ Imports CDS = Groupies.Services.CurrentDataService
 
 Namespace Entities
 
+
+    ''' <summary>
+    ''' Teilnehmer mit Angabe seines Leistungsstandes mit Hilfe einer Leistungsstufe
+    ''' </summary>
     <DefaultBindingProperty("ParticipantFirstname")>
     <DefaultProperty("ParticipantFullName")>
     Public Class Teilnehmer
@@ -101,7 +105,7 @@ Namespace Entities
         ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public Function AusgabeAnTeilnehmerinfo() As String
+        Public Function AusgabeInTeilnehmerinfo() As String
             Return VorUndNachname
         End Function
 
@@ -109,7 +113,7 @@ Namespace Entities
         ''' Gibt den Vor-, Nachnamen und Leistungsstand für die Trainerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public Function AusgabeAnTrainerinfo() As String
+        Public Function AusgabeInTrainerinfo() As String
             If Leistungsstand Is Nothing Then
                 Return $"{VorUndNachname}, Leistungsstand unbekannt"
             Else
@@ -128,6 +132,7 @@ Namespace Entities
         ''' mit dem Gruppenkennzeichen
         ''' </summary>
         ''' <returns></returns>
+        <Obsolete>
         Public Property MemberOfGroup As Guid
 
         ''' <summary>
@@ -135,9 +140,10 @@ Namespace Entities
         ''' mit dem Gruppennamen 
         ''' </summary>
         ''' <returns></returns>
+        <Obsolete>
         Public ReadOnly Property MemberOfGroup_Naming() As String
             Get
-                Return CDS.Skiclub.Grouplist.Where(Function(x) x.GroupID.Equals(MemberOfGroup)).DefaultIfEmpty(New Group With {.GroupNaming = String.Empty}).Single.GroupNaming
+                Return CDS.Skiclub.Grouplist.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
             End Get
         End Property
 
@@ -146,6 +152,7 @@ Namespace Entities
         ''' mit dem Gruppenkennzeichen
         ''' </summary>
         ''' <param name="GroupID"></param>
+        <Obsolete>
         Public Sub SetAsGroupMember(GroupID As Guid)
             MemberOfGroup = GroupID
             _IsGroupMember = True
@@ -154,6 +161,7 @@ Namespace Entities
         ''' <summary>
         ''' Wird als Gruppenmitgleid gekennzeichnet
         ''' </summary>
+        <Obsolete>
         Public Sub SetAsGroupMember()
             _IsGroupMember = True
         End Sub
@@ -161,15 +169,19 @@ Namespace Entities
         ''' <summary>
         ''' Wird als Gruppenmitglied entfernt
         ''' </summary>
+        <Obsolete>
         Public Sub RemoveFromGroup()
             MemberOfGroup = Nothing
             _IsGroupMember = False
         End Sub
 
+        <Obsolete>
+        Private _IsGroupMember As Boolean
+
         ''' <summary>
         ''' Setzt und liest die Gruppenmitgliedschaft
         ''' </summary>
-        Private _IsGroupMember As Boolean
+        <Obsolete>
         Public Property IsGroupMember As Boolean
             Get
                 Return _IsGroupMember
@@ -185,6 +197,7 @@ Namespace Entities
         ''' Liest die umgekehrte Gruppenmitgliedschaft
         ''' </summary>
         ''' <returns></returns>
+        <Obsolete>
         Public ReadOnly Property IsNotInGroup As Boolean
             Get
                 Return Not _IsGroupMember

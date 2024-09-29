@@ -10,7 +10,7 @@ Public Class TeilnehmerTests
         Assert.AreEqual("Manuela Ramm", Tn.ToString)
         Assert.AreEqual("Manuela Ramm", Tn.VorUndNachname)
         Dim Tn1 As New Teilnehmer("Manuela", "Ramm", New Leistungsstufe("Könner"))
-        Assert.AreEqual("Manuela Ramm, Könner", Tn1.AusgabeAnTrainerinfo)
-        Assert.AreEqual("Manuela Ramm", Tn1.AusgabeAnTeilnehmerinfo)
+        Assert.AreEqual("Manuela Ramm, Könner", Tn1.AusgabeInTrainerinfo)
+        Assert.AreEqual("Manuela Ramm", Tn1.AusgabeInTeilnehmerinfo)
     End Sub
 End Class

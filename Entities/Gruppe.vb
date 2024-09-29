@@ -6,7 +6,7 @@ Namespace Entities
 
 
     ''' <summary>
-    ''' Gruppen in dem Club
+    ''' Gruppe mit Angabe seiner Leistungsstufe
     ''' </summary>
     <DefaultProperty("GruppenName")>
     Public Class Gruppe
@@ -55,6 +55,7 @@ Namespace Entities
             _Benennung = Benennung
             _Ausgabename = Ausgabename
             _Sortierung = Sortierung
+            Mitglieder = New ParticipantCollection
         End Sub
 
 #End Region
@@ -112,7 +113,7 @@ Namespace Entities
         ''' Fügt der Gruppe einen Teilnehmer hinzu
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
-        Public Sub AddMember(Teilnehmer As Teilnehmer)
+        Public Sub TeilnehmerHinzufuegen(Teilnehmer As Teilnehmer)
             _Mitglieder.Add(Teilnehmer)
         End Sub
 
@@ -120,7 +121,7 @@ Namespace Entities
         ''' Entfernt einen Teilnehmer aus der Gruppe
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
-        Public Sub RemoveMember(Teilnehmer As Teilnehmer)
+        Public Sub TeilnehmerEntfernen(Teilnehmer As Teilnehmer)
             _Mitglieder.Remove(Teilnehmer)
         End Sub
 

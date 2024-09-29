@@ -14,8 +14,6 @@ Public Class AppController
     Public Shared Function CreateNewClub(Clubname As String, NumberOfGroups As Integer) As String
 
         CurrentClub = New Club(Clubname, NumberOfGroups)
-
-
         Return $"{Clubname} wurde mit {CurrentClub.Grouplist.Count} Gruppen erfolgreich erstellt."
 
     End Function

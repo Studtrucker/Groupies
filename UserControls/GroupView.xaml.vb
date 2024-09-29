@@ -69,7 +69,7 @@ Namespace UserControls
                 For Each Participant As Teilnehmer In TN
                     If Participant.IsNotInGroup Then
                         Participant.SetAsGroupMember(CurrentGroup.GruppenID)
-                        CurrentGroup.AddMember(Participant)
+                        CurrentGroup.TeilnehmerHinzufuegen(Participant)
                     End If
                 Next
             End If

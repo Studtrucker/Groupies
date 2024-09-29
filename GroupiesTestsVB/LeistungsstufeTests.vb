@@ -2,7 +2,7 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 <TestClass>
-Public Class LeistungstufeTests
+Public Class LeistungsstufeTests
     <TestMethod>
     Public Sub TestKonstruktor()
 

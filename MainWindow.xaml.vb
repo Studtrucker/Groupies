@@ -1186,7 +1186,7 @@ Class MainWindow
     End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
-        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
+        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerHinzufuegen(_participantsToDistributeListCollectionView.CurrentItem)
         DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
         setView(CDS.Skiclub.Grouplist)
     End Sub
@@ -1194,7 +1194,7 @@ Class MainWindow
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
             Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
-            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
+            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerEntfernen(_participantsInGroupMemberListCollectionView.CurrentItem)
             tn.MemberOfGroup = Nothing
         End If
         setView(CDS.Skiclub.Grouplist)

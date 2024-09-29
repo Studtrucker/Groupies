@@ -9,12 +9,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Groupies</RootNamespace>
     <AssemblyName>Groupies</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,6 +55,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\ski-48.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PropertyChanged, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
@@ -112,11 +116,11 @@
     <Compile Include="Dialogs\NewParticipantDialog.xaml.vb">
       <DependentUpon>NewParticipantDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Skill.vb" />
+    <Compile Include="Entities\Faehigkeit.vb" />
     <Compile Include="Entities\GroupCollection.vb" />
     <Compile Include="Entities\SkillCollection.vb" />
     <Compile Include="Entities\InstructorCollection.vb" />
-    <Compile Include="Services\CreateDefaultService.vb" />
+    <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
     <Compile Include="Services\StartService.vb" />
@@ -197,10 +201,10 @@
     <Compile Include="Commands\SkiclubCommands.vb" />
     <Compile Include="Entities\LevelCollection.vb" />
     <Compile Include="Services\ImportService.vb" />
-    <Compile Include="Entities\Level.vb" />
+    <Compile Include="Entities\Leistungsstufe.vb" />
     <Compile Include="Entities\Group.vb" />
     <Compile Include="Entities\Instructor.vb" />
-    <Compile Include="Entities\Participant.vb" />
+    <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\ParticipantCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
@@ -272,7 +276,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Skiclub.vb" />
+    <Compile Include="Entities\Club.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

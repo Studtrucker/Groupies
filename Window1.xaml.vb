@@ -398,14 +398,14 @@ Public Class Window1
 
     End Sub
 
-    Private Function OpenXML(fileName As String) As Entities.Skiclub
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
-        Dim loadedSkiclub As Entities.Skiclub = Nothing
+    Private Function OpenXML(fileName As String) As Entities.Club
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
+        Dim loadedSkiclub As Entities.Club = Nothing
 
         ' Datei deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Try
-                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Skiclub)
+                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Club)
             Catch ex As InvalidDataException
                 MessageBox.Show("Datei ungültig: " & ex.Message)
                 Return Nothing
@@ -427,7 +427,7 @@ Public Class Window1
     End Sub
 
     Private Sub SaveXML(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
             serializer.Serialize(fs, CDS.Skiclub)
         End Using
@@ -520,7 +520,7 @@ Public Class Window1
 
     End Sub
 
-    Private Sub setView(Skikursliste As Skiclub)
+    Private Sub setView(Skikursliste As Club)
 
         unsetView()
 
@@ -664,9 +664,9 @@ Public Class Window1
 
             Dim i = 0
             Dim index(TN.Count - 1) As Integer
-            For Each Participant As Participant In TN
+            For Each Participant As Teilnehmer In TN
                 'Participant.RemoveFromGroup()
-                Dim x = CDS.Skiclub.Participantlist.Where(Function(y) y.ParticipantID = Participant.ParticipantID).Single
+                Dim x = CDS.Skiclub.Participantlist.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
                 x.RemoveFromGroup()
                 index(i) = DirectCast(_groupListCollectionView.CurrentItem, Group).GroupMembers.IndexOf(Participant)
                 i += 1
@@ -684,7 +684,7 @@ Public Class Window1
 
         Dim i As Integer
         Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Level In levelDataGrid.SelectedItems
+        For Each item As Leistungsstufe In levelDataGrid.SelectedItems
             'RemoveLevelFromSkikursgruppe(item)
             'RemoveLevelFromTeilnehmer(item)
             index(i) = CDS.Skiclub.Levellist.IndexOf(item)

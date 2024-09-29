@@ -4,7 +4,7 @@ Imports Groupies.Commands
 
 Public Class NewLevelDialog
 
-    Public ReadOnly Property Level() As Level
+    Public ReadOnly Property Level() As Leistungsstufe
 
     Public Sub New()
 
@@ -12,7 +12,7 @@ Public Class NewLevelDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Level = New Level(True)
+        _Level = New Leistungsstufe(True)
         DataContext = _Level
 
     End Sub

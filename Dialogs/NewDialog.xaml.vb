@@ -14,7 +14,7 @@ Public Class NewDialog
         View = New SkillView With {.Name = "View"}
         UserControlBorder.Child = View
         Me.Title = "Neue Fähigkeit"
-        View.Skill = New Skill
+        View.Skill = New Faehigkeit
 
 
     End Sub

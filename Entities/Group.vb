@@ -24,7 +24,7 @@ Namespace Entities
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist ein Pflichtfeld")>
         Public Property GroupSort As String
 
-        Public Property GroupLevel As Level
+        Public Property GroupLevel As Leistungsstufe
 
         Public Property GroupLeader As Instructor
 
@@ -36,12 +36,12 @@ Namespace Entities
         '    End Get
         'End Property
 
-        Public Sub AddMember(Teilnehmer As Participant)
+        Public Sub AddMember(Teilnehmer As Teilnehmer)
             _GroupMembers.Add(Teilnehmer)
         End Sub
 
 
-        Public Sub RemoveMember(Teilnehmer As Participant)
+        Public Sub RemoveMember(Teilnehmer As Teilnehmer)
             _GroupMembers.Remove(Teilnehmer)
         End Sub
 

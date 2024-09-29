@@ -66,7 +66,7 @@ Namespace UserControls
             If CorrectDataFormat Then
                 Dim TN = e.Data.GetData(GetType(IList))
                 Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
-                For Each Participant As Participant In TN
+                For Each Participant As Teilnehmer In TN
                     If Participant.IsNotInGroup Then
                         Participant.SetAsGroupMember(CurrentGroup.GroupID)
                         CurrentGroup.AddMember(Participant)
@@ -122,8 +122,8 @@ Namespace UserControls
 
 
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
-            For Each item As Participant In GroupMembersDataGrid.SelectedItems
-                CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = item.ParticipantID).Single.RemoveFromGroup()
+            For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
+                CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
             Next
             SetView()
         End Sub

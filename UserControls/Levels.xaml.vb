@@ -38,7 +38,7 @@ Namespace UserControls
             If dlg.ShowDialog = True Then
                 Dim s = dlg.Skill
                 Dim i = CDS.Skiclub.Levellist.IndexOf(_levelListCollectionView.CurrentItem)
-                CDS.Skiclub.Levellist(i).LevelSkills.Add(s)
+                CDS.Skiclub.Levellist(i).Faehigkeiten.Add(s)
                 _skillListCollectionView.MoveCurrentTo(s)
                 LevelViewUserControl.SkillsDataGrid.ScrollIntoView(s)
             End If

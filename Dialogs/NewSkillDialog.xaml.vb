@@ -4,7 +4,7 @@ Imports Groupies.Commands
 
 Public Class NewSkillDialog
 
-    Public ReadOnly Property Skill() As Skill
+    Public ReadOnly Property Skill() As Faehigkeit
 
     Public Sub New()
 
@@ -12,7 +12,7 @@ Public Class NewSkillDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skill = New Skill()
+        _Skill = New Faehigkeit()
         DataContext = _Skill
 
     End Sub

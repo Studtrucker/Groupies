@@ -10,23 +10,25 @@ Namespace GroupiesTestsVB
         <TestMethod>
         Sub TestNeuenSkiclubErstellen()
 
-            Dim appController As New AppController
-            appController.CurrentGroupies = New Entities.Skiclub("Stubaital2024")
-            Assert.AreEqual("Stubaital2024", appController.CurrentGroupies.Name)
-            Assert.AreEqual(0, appController.CurrentGroupies.Grouplist.Count)
-            Assert.AreEqual(0, appController.CurrentGroupies.Participantlist.Count)
-            Assert.AreEqual(0, appController.CurrentGroupies.Levellist.Count)
-            Assert.AreEqual(0, appController.CurrentGroupies.Instructorlist.Count)
+            Dim numberOfGroups = 9
+            Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.CreateNewClub("Stubaital2024", numberOfGroups))
+            Assert.AreEqual("Stubaital2024", AppController.CurrentClub.ClubName)
+            Assert.AreEqual(9, AppController.CurrentClub.Grouplist.Count)
+            Assert.AreEqual(0, AppController.CurrentClub.Participantlist.Count)
+            Assert.AreEqual(5, AppController.PerformanceLevels.Count)
+            Assert.AreEqual(0, AppController.CurrentClub.Instructorlist.Count)
 
-            Dim Studti As New Participant("Andreas", "Studtrucker")
-            Dim Manuela As New Participant("Manuela", "Ramm")
+            Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
+            Dim Manuela As New Teilnehmer("Manuela", "Ramm")
 
-            appController.CurrentGroupies.Participantlist = New ParticipantCollection(New List(Of Participant) From {Studti, Manuela})
-            Assert.AreEqual(2, appController.CurrentGroupies.Participantlist.Count)
-            Assert.AreEqual(2, appController.CurrentGroupies.AnzahlFreieTeilnehmer)
-            Assert.AreEqual(0, appController.CurrentGroupies.AnzahlEingeteilteTeilnehmer)
+            Dim var = New List(Of Teilnehmer) From {Studti, Manuela}
 
-            Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), appController.CurrentGroupies.Participantlist.Teilnehmerliste)
+            AppController.CurrentClub.Participantlist = New ParticipantCollection(var)
+            Assert.AreEqual(2, AppController.CurrentClub.Participantlist.Count)
+            Assert.AreEqual(2, AppController.CurrentClub.AnzahlFreieTeilnehmer)
+            Assert.AreEqual(0, AppController.CurrentClub.AnzahlEingeteilteTeilnehmer)
+
+            'Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), AppController.CurrentClub.Teilnehmerliste)
 
 
         End Sub

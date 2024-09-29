@@ -1,14 +1,16 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
+Imports Groupies.Services
 
 Namespace Entities
 
 
-    Public Class Skiclub
+    Public Class Club
+
 
 #Region "Fields"
 
-        Public Property Name As String
+        Public Property ClubName As String
 
         Public Property Participantlist() As ParticipantCollection
         Public Property Grouplist() As GroupCollection
@@ -21,48 +23,50 @@ Namespace Entities
         Public Sub New()
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             _Instructorlist = New InstructorCollection
         End Sub
 
         Public Sub New(Teilnehmerliste As ParticipantCollection)
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             readParticipantlist(Teilnehmerliste)
         End Sub
 
         Public Sub New(Instructorlist As InstructorCollection)
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             readInstructorlist(Instructorlist)
         End Sub
 
         Public Sub New(Clubname As String, Teilnehmerliste As ParticipantCollection)
-            _Name = Clubname
+            _ClubName = Clubname
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             readParticipantlist(Teilnehmerliste)
         End Sub
 
         Public Sub New(Clubname As String, Instructorlist As InstructorCollection)
-            _Name = Clubname
+            _ClubName = Clubname
             _Grouplist = New GroupCollection
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             readInstructorlist(Instructorlist)
         End Sub
 
 
         Public Sub New(Clubname As String)
-            _Name = Clubname
-            _Grouplist = New GroupCollection
+            _ClubName = Clubname
+            _Grouplist = PresetService.CreateGroups(5)
             _Participantlist = New ParticipantCollection
-            _Levellist = New LevelCollection
             _Instructorlist = New InstructorCollection
         End Sub
+
+        Public Sub New(Clubname As String, NumberOfGroups As Integer)
+            _ClubName = Clubname
+            _Grouplist = PresetService.CreateGroups(NumberOfGroups)
+            _Participantlist = New ParticipantCollection
+            _Instructorlist = New InstructorCollection
+        End Sub
+
 
 #End Region
 
@@ -94,7 +98,11 @@ Namespace Entities
             Return Participantlist.Where(Function(TN) TN.IsGroupMember).Count
         End Function
 
-        Public Property Teilnehmerliste = If(Participantlist Is Nothing, "", Participantlist.Select(Function(Tn) Tn.ParticipantFullName & vbCrLf))
+        Public Overrides Function ToString() As String
+            Return ClubName
+        End Function
+
+        Public Property Teilnehmerliste = If(_Participantlist Is Nothing, "", _Participantlist.Select(Function(Tn) Tn.VorUndNachname & vbCrLf))
 
         Private Sub readParticipantlist(Teilnehmer As ParticipantCollection)
             Participantlist = Teilnehmer
@@ -108,7 +116,7 @@ Namespace Entities
             ' Levelsliste = Teilnehmer.ToList.ForEach()
         End Sub
 
-        Public Function GetAktualisierungen() As Skiclub
+        Public Function GetAktualisierungen() As Club
             Grouplist.ToList.ForEach(AddressOf GetAktualisierungen)
             Participantlist.ToList.ForEach(AddressOf GetAktualisierungen)
             Return Me
@@ -121,7 +129,7 @@ Namespace Entities
             'Next
         End Sub
 
-        Private Sub GetAktualisierungen(Mitglied As Participant)
+        Private Sub GetAktualisierungen(Mitglied As Teilnehmer)
             'Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
         End Sub
 

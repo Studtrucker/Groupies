@@ -6,7 +6,7 @@ Imports DS = Groupies.Services
 Imports Groupies.Commands
 
 Public Class NewParticipantDialog
-    Public ReadOnly Property Teilnehmer() As Participant
+    Public ReadOnly Property Teilnehmer() As Teilnehmer
     Private ReadOnly _instructorListCollectionView As ICollectionView
     Private ReadOnly _levelListCollectionView As ICollectionView
 
@@ -16,7 +16,7 @@ Public Class NewParticipantDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Teilnehmer = New Participant
+        _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
         _levelListCollectionView = New CollectionView(DS.Skiclub.Levellist)

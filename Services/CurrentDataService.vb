@@ -7,7 +7,7 @@ Namespace Services
     ' Hier werden alle Daten der aktuellen Groupies Datei gesammelt
     Module CurrentDataService
 
-        Public Property Skiclub As Skiclub
+        Public Property Skiclub As Club
 
         Public ReadOnly Property availableInstructors As InstructorCollection
             Get
@@ -22,11 +22,11 @@ Namespace Services
         End Function
 
         Public Sub CreateNewSkiclub()
-            Skiclub = New Entities.Skiclub With {.Levellist = CreateDefaultService.CreateLevels()}
+            Skiclub = New Entities.Club With {.Levellist = PresetService.CreateLevels()}
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Skiclub.Grouplist = CreateDefaultService.CreateGroups(dlg.Count.Text)
+                    Skiclub.Grouplist = PresetService.CreateGroups(dlg.Count.Text)
                 End If
             End If
         End Sub

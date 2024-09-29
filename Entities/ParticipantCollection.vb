@@ -4,14 +4,14 @@ Imports System.Collections.ObjectModel
 Namespace Entities
 
     Public Class ParticipantCollection
-        Inherits ObservableCollection(Of Participant)
+        Inherits ObservableCollection(Of Teilnehmer)
         Implements IEnumerable
 
         Public Sub New()
             MyBase.New
         End Sub
 
-        Public Sub New(Teilnehmerliste As List(Of Participant))
+        Public Sub New(Teilnehmerliste As List(Of Teilnehmer))
             MyBase.New
             Teilnehmerliste.ForEach(Sub(x) Add(x))
         End Sub
@@ -19,7 +19,7 @@ Namespace Entities
         Public ReadOnly Property ParticipantCollectionOrdered As ParticipantCollection
             Get
                 Dim Ordered = New ParticipantCollection
-                Me.OrderBy(Of String)(Function(x) x.ParticipantFullName).ToList.ForEach(Sub(x) Ordered.Add(x))
+                Me.OrderBy(Of String)(Function(x) x.VorUndNachname).ToList.ForEach(Sub(x) Ordered.Add(x))
                 Return Ordered
             End Get
         End Property
@@ -32,7 +32,7 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property Teilnehmerliste() = Function(x As Participant) x.ParticipantFullName
+        Public Property Teilnehmerliste() = Function(x As Teilnehmer) x.VorUndNachname
         '    Exits
         '    .OrderBy(KeyValuePair >= (Int())KeyValuePair.Key)
         '.OrderBy(KeyValuePair >= Math.Abs((Int())KeyValuePair.Key))
@@ -41,7 +41,7 @@ Namespace Entities
         Public Overrides Function ToString() As String
 
             '            Dim Namen As String = Me.ToList.OrderBy(Function(T) T.ParticipantLastName).OrderBy(Function(T) T.ParticipantFirstName).Select(Of String)(Function(TN) String.Format("{0}{1}", TN.ParticipantFullName, vbCrLf))
-            Dim Namen = Me.ToList.Select(Of String)(Function(TN) TN.ParticipantFullName)
+            Dim Namen = Me.ToList.Select(Of String)(Function(TN) TN.VorUndNachname)
             Return Namen.ToString
         End Function
 

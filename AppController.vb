@@ -1,13 +1,30 @@
 ﻿Imports System.IO
 Imports Groupies.Entities
+Imports Microsoft.Office.Interop.Excel
+Imports Groupies.Services
 
 Public Class AppController
     ''' <summary>
     ''' Der aktuell verwaltete Club
     ''' </summary>
     ''' <returns></returns>
-    Public Property CurrentGroupies As Skiclub
+    Public Shared Property CurrentClub As Club
+    Public Shared Property PerformanceLevels = PresetService.CreateLevels
 
+    Public Shared Function CreateNewClub(Clubname As String, NumberOfGroups As Integer) As String
+
+        CurrentClub = New Club(Clubname, NumberOfGroups)
+
+
+        Return $"{Clubname} wurde mit {CurrentClub.Grouplist.Count} Gruppen erfolgreich erstellt."
+
+    End Function
+
+    Public Function Status() As String
+        Return $"Der aktuelle Club heißt {CurrentClub}." & Environment.NewLine &
+            $"Er hat {CurrentClub.Participantlist.Count} Mitglieder" & Environment.NewLine &
+            "{String.Join(Environment.NewLine & " - ", CurrentClub.Participantlist)}" & $"{Environment.NewLine}"
+    End Function
 
     ''' <summary>
     ''' Lädt Daten aus einer XML Datei

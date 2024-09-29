@@ -7,78 +7,128 @@ Namespace Entities
 
     <DefaultBindingProperty("ParticipantFirstname")>
     <DefaultProperty("ParticipantFullName")>
-    Public Class Participant
+    Public Class Teilnehmer
         Inherits BaseModel
 
-        Public Event ChangeGroup(Participant As Participant)
+#Region "Events"
+        Public Event ChangeGroup(Participant As Teilnehmer)
+#End Region
 
-        Public Sub New()
-            _ParticipantID = Guid.NewGuid()
-        End Sub
-
-        Public Sub New(Vorname As String, Nachname As String, Level As Level)
-            _ParticipantID = Guid.NewGuid()
-            _ParticipantFirstName = Vorname
-            _ParticipantLastName = Nachname
-            _ParticipantLevel = New Level()
-        End Sub
-
-        Public Sub New(Vorname As String, Nachname As String)
-            _ParticipantID = Guid.NewGuid()
-            _ParticipantFirstName = Vorname
-            _ParticipantLastName = Nachname
-            _ParticipantLevel = New Level()
-        End Sub
-
+#Region "Konstruktor"
 
         ''' <summary>
-        ''' Das ist eine eindeutige Kennzeichnung für den Teilnehmer 
+        ''' Erstellt einen neuen Teilnehmer
+        ''' </summary>
+        <Obsolete>
+        Public Sub New()
+            _TeilnehmerID = Guid.NewGuid()
+        End Sub
+
+        ''' <summary>
+        ''' Erstellt einen neuen Teilnehmer mit Vorname und Nachname unter Angabe seines Leistungsstandes
+        ''' </summary>
+        ''' <param name="Vorname"></param>
+        ''' <param name="Nachname"></param>
+        ''' <param name="Leistungsstufe"></param>
+        Public Sub New(Vorname As String, Nachname As String, Leistungsstufe As Leistungsstufe)
+            _TeilnehmerID = Guid.NewGuid()
+            _Vorname = Vorname
+            _Nachname = Nachname
+            _Leistungsstand = Leistungsstufe
+        End Sub
+
+        ''' <summary>
+        ''' Erstellt einen neuen Teilnehmer mit Vorname und Nachname
+        ''' </summary>
+        ''' <param name="Vorname"></param>
+        ''' <param name="Nachname"></param>
+        Public Sub New(Vorname As String, Nachname As String)
+            _TeilnehmerID = Guid.NewGuid()
+            _Vorname = Vorname
+            _Nachname = Nachname
+            _Leistungsstand = New Leistungsstufe()
+        End Sub
+
+#End Region
+
+#Region "Eigenschaften"
+        ''' <summary>
+        ''' Eindeutige Kennzeichnung des Teilnehmers 
         ''' </summary>
         ''' <returns></returns>
-        Public Property ParticipantID As Guid
+        Public Property TeilnehmerID As Guid
 
         ''' <summary>
         ''' Der Nachname des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
-        Public Property ParticipantLastName As String
+        Public Property Nachname As String
 
         ''' <summary>
         ''' Der Vorname des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
-        Public Property ParticipantFirstName As String
+        Public Property Vorname As String
 
         ''' <summary>
         ''' Der Vor- und Nachname
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property ParticipantFullName As String
+        Public ReadOnly Property VorUndNachname As String
             Get
-                If _ParticipantFirstName Is Nothing Then
-                    Return _ParticipantLastName
-                ElseIf _ParticipantLastName Is Nothing Then
-                    Return _ParticipantFirstName
+                If _Vorname Is Nothing Then
+                    Return _Nachname
+                ElseIf _Nachname Is Nothing Then
+                    Return _Vorname
                 Else
-                    Return String.Format("{0} {1}", _ParticipantFirstName, _ParticipantLastName)
+                    Return String.Format("{0} {1}", _Vorname, _Nachname)
                 End If
             End Get
         End Property
 
+
         ''' <summary>
-        ''' Der Leistungsstand des Teilnehmers
+        ''' Setzt und liest den Leistungsstand des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
-        Public Property ParticipantLevel As Level
+        Public Property Leistungsstand As Leistungsstufe
 
+#End Region
+
+#Region "Funktionen und Methoden"
+        ''' <summary>
+        ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function AusgabeAnTeilnehmerinfo() As String
+            Return VorUndNachname
+        End Function
+
+        ''' <summary>
+        ''' Gibt den Vor-, Nachnamen und Leistungsstand für die Trainerinformation zurück
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function AusgabeAnTrainerinfo() As String
+            If Leistungsstand Is Nothing Then
+                Return $"{VorUndNachname}, Leistungsstand unbekannt"
+            Else
+                Return $"{VorUndNachname}, {Leistungsstand.Benennung}"
+            End If
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return VorUndNachname
+        End Function
+#End Region
+
+#Region "Veraltert"
         ''' <summary>
         ''' Gruppenmitglied in der Gruppe 
         ''' mit dem Gruppenkennzeichen
         ''' </summary>
         ''' <returns></returns>
         Public Property MemberOfGroup As Guid
-
 
         ''' <summary>
         ''' Gruppenmitglied in der Gruppe 
@@ -90,7 +140,6 @@ Namespace Entities
                 Return CDS.Skiclub.Grouplist.Where(Function(x) x.GroupID.Equals(MemberOfGroup)).DefaultIfEmpty(New Group With {.GroupNaming = String.Empty}).Single.GroupNaming
             End Get
         End Property
-
 
         ''' <summary>
         ''' Wird Gruppenmitglied von der Gruppe
@@ -131,6 +180,7 @@ Namespace Entities
         End Property
 
 
+
         ''' <summary>
         ''' Liest die umgekehrte Gruppenmitgliedschaft
         ''' </summary>
@@ -141,6 +191,7 @@ Namespace Entities
             End Get
         End Property
 
+#End Region
 
     End Class
 End Namespace

@@ -25,7 +25,7 @@ Namespace UserControls
             GroupNaming = Group.GroupNaming
             Members = Group.GroupMembers.ParticipantCollectionOrdered
             If Group.GroupLevel IsNot Nothing Then
-                GroupLevelNaming = Group.GroupLevel.LevelNaming
+                GroupLevelNaming = Group.GroupLevel.Benennung
             End If
             If Group.GroupLeader IsNot Nothing Then
                 GroupLeaderPrintName = Group.GroupLeader.InstructorPrintName

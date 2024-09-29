@@ -343,10 +343,10 @@ Class MainWindow
         CDS.Skiclub = Nothing
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
-        Dim NeueSkischule = New Entities.Skiclub With {.Levellist = CreateDefaultService.CreateLevels()}
+        Dim NeueSkischule = New Entities.Club With {.Levellist = PresetService.CreateLevels()}
         Dim dlg = New CountOfGroupsDialog
         If dlg.ShowDialog Then
-            NeueSkischule.Grouplist = CreateDefaultService.CreateGroups(dlg.Count.Text)
+            NeueSkischule.Grouplist = PresetService.CreateGroups(dlg.Count.Text)
         End If
         GroupOverviewWrapPanel.Children.Clear()
         SetView(NeueSkischule)
@@ -555,7 +555,7 @@ Class MainWindow
     Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim i As Integer
         Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Level In levelDataGrid.SelectedItems
+        For Each item As Leistungsstufe In levelDataGrid.SelectedItems
             RemoveLevelFromSkikursgruppe(item)
             RemoveLevelFromTeilnehmer(item)
             index(i) = CDS.Skiclub.Levellist.IndexOf(item)
@@ -625,7 +625,7 @@ Class MainWindow
     Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim i As Integer
         Dim index(teilnehmerDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Participant In teilnehmerDataGrid.SelectedItems
+        For Each item As Teilnehmer In teilnehmerDataGrid.SelectedItems
             index(i) = CDS.Skiclub.Participantlist.IndexOf(item)
             i += 1
         Next
@@ -762,11 +762,11 @@ Class MainWindow
 #End Region
 
 
-    Private Sub AddLevelToTeilnehmer(Teilnehmerliste As ParticipantCollection, Level As Level)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.ParticipantLevel = Level)
+    Private Sub AddLevelToTeilnehmer(Teilnehmerliste As ParticipantCollection, Level As Leistungsstufe)
+        Teilnehmerliste.ToList.ForEach(Sub(x) x.Leistungsstand = Level)
     End Sub
 
-    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Level)
+    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GroupCollection, Level As Leistungsstufe)
         Skikursgruppenliste.ToList.ForEach(Sub(x) x.GroupLevel = Level)
     End Sub
 
@@ -778,12 +778,12 @@ Class MainWindow
         Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GroupID)
     End Sub
 
-    Private Sub RemoveLevelFromTeilnehmer(level As Level)
-        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.ParticipantLevel.LevelID = level.LevelID)
-        liste.ToList.ForEach(Sub(x) x.ParticipantLevel = Nothing)
+    Private Sub RemoveLevelFromTeilnehmer(level As Leistungsstufe)
+        Dim liste = CDS.Skiclub.Participantlist.TakeWhile(Function(x) x.Leistungsstand.LeistungsstufeID = level.LeistungsstufeID)
+        liste.ToList.ForEach(Sub(x) x.Leistungsstand = Nothing)
     End Sub
 
-    Private Sub RemoveLevelFromSkikursgruppe(level As Level)
+    Private Sub RemoveLevelFromSkikursgruppe(level As Leistungsstufe)
         Dim liste = CDS.Skiclub.Grouplist.TakeWhile(Function(x) x.GroupLevel Is level)
         liste.ToList.ForEach(Sub(x) x.GroupLevel = Nothing)
     End Sub
@@ -847,14 +847,14 @@ Class MainWindow
 
     End Sub
 
-    Private Function OpenXML(fileName As String) As Entities.Skiclub
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
-        Dim loadedSkiclub As Entities.Skiclub = Nothing
+    Private Function OpenXML(fileName As String) As Entities.Club
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
+        Dim loadedSkiclub As Entities.Club = Nothing
 
         ' Datei deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Try
-                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Skiclub)
+                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Club)
             Catch ex As InvalidDataException
                 MessageBox.Show("Datei ungültig: " & ex.Message)
                 Return Nothing
@@ -863,15 +863,15 @@ Class MainWindow
         Return loadedSkiclub
     End Function
 
-    Private Function OpenZIP(fileName As String) As Entities.Skiclub
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
-        Dim loadedSkischule As Entities.Skiclub = Nothing
+    Private Function OpenZIP(fileName As String) As Entities.Club
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
+        Dim loadedSkischule As Entities.Club = Nothing
 
         ' Datei entzippen und deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
                 Try
-                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Skiclub)
+                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Club)
                 Catch ex As InvalidDataException
                     MessageBox.Show("Datei ungültig: " & ex.Message)
                     Return Nothing
@@ -893,7 +893,7 @@ Class MainWindow
     End Sub
 
     Private Sub SaveZIP(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
                 serializer.Serialize(zipStream, CDS.Skiclub)
@@ -902,7 +902,7 @@ Class MainWindow
     End Sub
 
     Private Sub SaveXML(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Skiclub))
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
             serializer.Serialize(fs, CDS.Skiclub)
         End Using
@@ -942,7 +942,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub SetView(Schule As Entities.Skiclub)
+    Private Sub SetView(Schule As Entities.Club)
 
         CDS.Skiclub = Schule
 
@@ -975,7 +975,7 @@ Class MainWindow
         _participantListOverviewCollectionView = New ListCollectionView(CDS.Skiclub.Participantlist)
         ' ListCollectionView nach Teilnehmer in Gruppen filtern
         If _participantListOverviewCollectionView.CanFilter Then
-            _participantListOverviewCollectionView.Filter = Function(x As Participant) x.IsNotInGroup = True
+            _participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IsNotInGroup = True
         End If
 
         ' ListCollectionView sortieren
@@ -1187,13 +1187,13 @@ Class MainWindow
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
         DirectCast(_skikursListCollectionView.CurrentItem, Group).AddMember(_participantsToDistributeListCollectionView.CurrentItem)
-        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Participant).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupID
+        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Group).GroupID
         setView(CDS.Skiclub.Grouplist)
     End Sub
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
-            Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Participant).ParticipantID).Single
+            Dim tn = CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
             DirectCast(_skikursListCollectionView.CurrentItem, Group).RemoveMember(_participantsInGroupMemberListCollectionView.CurrentItem)
             tn.MemberOfGroup = Nothing
         End If
@@ -1203,10 +1203,10 @@ Class MainWindow
 
     ' Für das Verschieben von Objekten 
     Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-        Dim Tn = TryCast(participantlistOverviewDataGrid.SelectedItem, Participant)
+        Dim Tn = TryCast(participantlistOverviewDataGrid.SelectedItem, Teilnehmer)
 
         If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(Participant), Tn)
+            Dim Data = New DataObject(GetType(Teilnehmer), Tn)
             DragDrop.DoDragDrop(participantlistOverviewDataGrid, Data, DragDropEffects.Move)
         End If
 
@@ -1218,10 +1218,10 @@ Class MainWindow
     Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
         Dim CorrectDataFormat = e.Data.GetDataPresent("Groupies.Entities.Participant")
         If CorrectDataFormat Then
-            Dim TN As Participant = e.Data.GetData("Groupies.Entities.Participant")
+            Dim TN As Teilnehmer = e.Data.GetData("Groupies.Entities.Participant")
             'For Each Participant As Participant In ic
             TN.RemoveFromGroup()
-            CDS.Skiclub.Participantlist.Remove(CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID.Equals(TN.ParticipantID)).First)
+            CDS.Skiclub.Participantlist.Remove(CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID.Equals(TN.TeilnehmerID)).First)
             CDS.Skiclub.Participantlist.Add(TN)
             'Next
         End If

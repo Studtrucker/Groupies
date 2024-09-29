@@ -3,7 +3,7 @@
 Namespace UserControls
 
     Public Class SkillView
-        Public Property Skill() As Skill
+        Public Property Skill() As Faehigkeit
 
     End Class
 End Namespace

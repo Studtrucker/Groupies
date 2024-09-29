@@ -22,14 +22,6 @@ Namespace Entities
             _Faehigkeiten = New SkillCollection
         End Sub
 
-
-        <Obsolete>
-        Public Sub New(SaveMe As Boolean)
-            _LeistungsstufeID = Guid.NewGuid()
-            _Faehigkeiten = New SkillCollection
-            SaveOrDisplay = SaveMe
-        End Sub
-
         ''' <summary>
         ''' Erstellt eine Leistungsstufe mit Angabe der Benennung
         ''' </summary>
@@ -84,9 +76,6 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Faehigkeiten As SkillCollection
 
-        <Obsolete>
-        Property SaveOrDisplay As Boolean
-
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -113,6 +102,17 @@ Namespace Entities
 
 #End Region
 
+#Region "Veraltert"
+        <Obsolete>
+        Public Sub New(SaveMe As Boolean)
+            _LeistungsstufeID = Guid.NewGuid()
+            _Faehigkeiten = New SkillCollection
+            SaveOrDisplay = SaveMe
+        End Sub
 
+
+        <Obsolete>
+        Property SaveOrDisplay As Boolean
+#End Region
     End Class
 End Namespace

@@ -399,6 +399,13 @@ Public Class Window1
     End Sub
 
     Private Function OpenXML(fileName As String) As Entities.Club
+
+        ' Herausfinden, welcher Typ liegt vor?
+        ' Veraltertes xml mit englischen Bezeichnungen, hier muss ein Mapping erfolgen
+
+        ' Neues xml mit deutschen Bezeichnungen
+
+
         Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Dim loadedSkiclub As Entities.Club = Nothing
 

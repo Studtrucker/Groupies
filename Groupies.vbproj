@@ -94,6 +94,17 @@
     <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
       <DependentUpon>NewSkillDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EntitiesAlt\Group.vb" />
+    <Compile Include="EntitiesAlt\GroupCollection.vb" />
+    <Compile Include="EntitiesAlt\Instructor.vb" />
+    <Compile Include="EntitiesAlt\InstructorCollection.vb" />
+    <Compile Include="EntitiesAlt\Level.vb" />
+    <Compile Include="EntitiesAlt\LevelCollection.vb" />
+    <Compile Include="EntitiesAlt\Participant.vb" />
+    <Compile Include="EntitiesAlt\ParticipantCollection.vb" />
+    <Compile Include="EntitiesAlt\Skiclub.vb" />
+    <Compile Include="EntitiesAlt\Skill.vb" />
+    <Compile Include="EntitiesAlt\SkillCollection.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
@@ -415,6 +426,7 @@
   <ItemGroup>
     <Resource Include="Images\QRKontaktSkisportMeerbusch.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

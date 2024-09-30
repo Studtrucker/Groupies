@@ -19,7 +19,7 @@ Namespace Entities
         ''' </summary>
         Public Sub New()
             _LeistungsstufeID = Guid.NewGuid()
-            _Faehigkeiten = New SkillCollection
+            _Faehigkeiten = New FaehigkeitCollection
         End Sub
 
         ''' <summary>
@@ -29,14 +29,14 @@ Namespace Entities
         Public Sub New(Benennung As String)
             _LeistungsstufeID = Guid.NewGuid()
             _Benennung = Benennung
-            _Faehigkeiten = New SkillCollection
+            _Faehigkeiten = New FaehigkeitCollection
         End Sub
 
         Public Sub New(Benennung As String, Sortierung As Integer)
             _LeistungsstufeID = Guid.NewGuid()
             _Benennung = Benennung
             _Sortierung = Sortierung
-            _Faehigkeiten = New SkillCollection
+            _Faehigkeiten = New FaehigkeitCollection
         End Sub
 
 #End Region
@@ -74,7 +74,7 @@ Namespace Entities
         ''' Ein Liste von erforderlichen Fähigkeiten für diese Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        Public Property Faehigkeiten As SkillCollection
+        Public Property Faehigkeiten As FaehigkeitCollection
 
 #End Region
 
@@ -106,7 +106,7 @@ Namespace Entities
         <Obsolete>
         Public Sub New(SaveMe As Boolean)
             _LeistungsstufeID = Guid.NewGuid()
-            _Faehigkeiten = New SkillCollection
+            _Faehigkeiten = New FaehigkeitCollection
             SaveOrDisplay = SaveMe
         End Sub
 

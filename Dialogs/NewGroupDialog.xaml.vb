@@ -17,8 +17,8 @@ Public Class NewGroupDialog
         _Group = New Gruppe
         DataContext = _Group
 
-        _levelListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Levellist)
-        _instructorListCollectionView = New ListCollectionView(Services.CurrentDataService.Skiclub.Instructorlist)
+        _levelListCollectionView = New ListCollectionView(Services.CurrentDataService.Club.Leistungsstufeliste)
+        _instructorListCollectionView = New ListCollectionView(Services.CurrentDataService.Club.Trainerliste)
 
         GroupLevelCombobox.ItemsSource = _levelListCollectionView
 

@@ -22,9 +22,9 @@ Namespace UserControls
 
         Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-            If CDS.Skiclub IsNot Nothing AndAlso CDS.Skiclub.Levellist IsNot Nothing Then
+            If CDS.Club IsNot Nothing AndAlso CDS.Club.Leistungsstufeliste IsNot Nothing Then
 
-                _levelListCollectionView = New ListCollectionView(CDS.Skiclub.Levellist)
+                _levelListCollectionView = New ListCollectionView(CDS.Club.Leistungsstufeliste)
                 If _levelListCollectionView.CanSort Then
                     _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
                 End If
@@ -87,7 +87,7 @@ Namespace UserControls
                 If CurrentGroup.Trainer IsNot Nothing Then
                     ' Alten Skilehrer wieder frei setzen
                     '                    CurrentGroup.GroupLeader.IsAvailable = True
-                    CDS.Skiclub.Instructorlist.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IsAvailable = True
+                    CDS.Club.Trainerliste.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IsAvailable = True
                 End If
                 CurrentGroup.Trainer = TN
                 ' Neuer Skilehrer ist nicht mehr frei
@@ -123,7 +123,7 @@ Namespace UserControls
 
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
             For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
-                CDS.Skiclub.Participantlist.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
+                CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
             Next
             SetView()
         End Sub

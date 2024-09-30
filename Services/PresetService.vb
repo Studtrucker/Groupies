@@ -6,13 +6,13 @@ Namespace Services
     Module PresetService
 
 #Region "Fields"
-        Private _levelCollection As LevelCollection
+        Private _levelCollection As LeistungsstufeCollection
         Private ReadOnly _CountOfGroups As Dictionary(Of Leistungsstufe, Integer)
 #End Region
 
 #Region "Public"
         'C:\Users\studt_era90oc\Source\Repos\Skischule\Services\GroupLevelDistribution.xlsx
-        Public Function CreateLevels() As LevelCollection
+        Public Function CreateLevels() As LeistungsstufeCollection
 
             Dim Anfaenger = New Leistungsstufe(True) With {
                 .Sortierung = "010",
@@ -49,14 +49,14 @@ Namespace Services
                 .Faehigkeiten = SkillsExperte(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            _levelCollection = New LevelCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            _levelCollection = New LeistungsstufeCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
             Return _levelCollection
 
         End Function
 
-        Public Function CreateGroups(NumberOfGroups As Integer) As GroupCollection
+        Public Function CreateGroups(NumberOfGroups As Integer) As GruppenCollection
 
-            Dim groupCol = New GroupCollection
+            Dim groupCol = New GruppenCollection
 
             Dim IndexGruppenName As Integer
             For i = 0 To NumberOfGroups - 1
@@ -76,9 +76,9 @@ Namespace Services
 
 #Region "Private"
 
-        Private Function SkillsAnfaenger() As SkillCollection
+        Private Function SkillsAnfaenger() As FaehigkeitCollection
 
-            Dim sc = New SkillCollection From {
+            Dim sc = New FaehigkeitCollection From {
                 New Faehigkeit With {
                    .Benennung = "Schneepflug",
                    .Sortierung = "110",
@@ -92,9 +92,9 @@ Namespace Services
 
         End Function
 
-        Private Function SkillsFortgeschritten() As SkillCollection
+        Private Function SkillsFortgeschritten() As FaehigkeitCollection
 
-            Dim sc = New SkillCollection From {
+            Dim sc = New FaehigkeitCollection From {
                 New Faehigkeit With {
                    .Benennung = "Skiführung",
                    .Sortierung = "210",
@@ -120,9 +120,9 @@ Namespace Services
 
         End Function
 
-        Private Function SkillsGeniesser() As SkillCollection
+        Private Function SkillsGeniesser() As FaehigkeitCollection
 
-            Dim sc = New SkillCollection From {
+            Dim sc = New FaehigkeitCollection From {
                 New Faehigkeit With {
                    .Benennung = "Blaue Piste",
                    .Sortierung = "310",
@@ -140,9 +140,9 @@ Namespace Services
 
         End Function
 
-        Private Function SkillsKoenner() As SkillCollection
+        Private Function SkillsKoenner() As FaehigkeitCollection
 
-            Dim sc = New SkillCollection From {
+            Dim sc = New FaehigkeitCollection From {
                 New Faehigkeit With {
                    .Benennung = "Blaue Piste",
                    .Sortierung = "410",
@@ -164,9 +164,9 @@ Namespace Services
 
         End Function
 
-        Private Function SkillsExperte() As SkillCollection
+        Private Function SkillsExperte() As FaehigkeitCollection
 
-            Dim sc = New SkillCollection From {
+            Dim sc = New FaehigkeitCollection From {
                 New Faehigkeit With {
                    .Benennung = "Blaue Piste",
                    .Sortierung = "510",

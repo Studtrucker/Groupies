@@ -70,13 +70,13 @@
             
             <templ:GruppenGroesseDataTemplate x:Key="GruppenGroesseDataTemplate"/>
             
-            <DataTemplate x:Key="KleineGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+            <DataTemplate x:Key="KleineGruppeDataTemplate" DataType="{x:Type en:TeilnehmerCollection}">
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="48"/>
             </DataTemplate>
-            <DataTemplate x:Key="NormaleGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+            <DataTemplate x:Key="NormaleGruppeDataTemplate" DataType="{x:Type en:TeilnehmerCollection}">
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="36"/>
             </DataTemplate>
-            <DataTemplate x:Key="GrosseGruppeDataTemplate" DataType="{x:Type en:ParticipantCollection}">
+            <DataTemplate x:Key="GrosseGruppeDataTemplate" DataType="{x:Type en:TeilnehmerCollection}">
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>
             </DataTemplate>
 

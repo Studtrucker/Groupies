@@ -14,11 +14,11 @@ Namespace UserControls
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-            _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Skiclub.Levellist)
+            _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Club.Leistungsstufeliste)
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
             DataContext = _levelListCollectionView
 
-            _skillListCollectionView = New ListCollectionView(New SkillCollection())
+            _skillListCollectionView = New ListCollectionView(New FaehigkeitCollection())
 
         End Sub
 
@@ -37,8 +37,8 @@ Namespace UserControls
             Dim dlg = New NewSkillDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
             If dlg.ShowDialog = True Then
                 Dim s = dlg.Skill
-                Dim i = CDS.Skiclub.Levellist.IndexOf(_levelListCollectionView.CurrentItem)
-                CDS.Skiclub.Levellist(i).Faehigkeiten.Add(s)
+                Dim i = CDS.Club.Leistungsstufeliste.IndexOf(_levelListCollectionView.CurrentItem)
+                CDS.Club.Leistungsstufeliste(i).Faehigkeiten.Add(s)
                 _skillListCollectionView.MoveCurrentTo(s)
                 LevelViewUserControl.SkillsDataGrid.ScrollIntoView(s)
             End If

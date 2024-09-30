@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 
 Namespace Entities
 
-    Public Class LevelCollection
+    Public Class LeistungsstufeCollection
         Inherits ObservableCollection(Of Leistungsstufe)
 
     End Class

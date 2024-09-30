@@ -19,8 +19,8 @@ Public Class NewParticipantDialog
         _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
-        _levelListCollectionView = New CollectionView(DS.Skiclub.Levellist)
-        _instructorListCollectionView = New CollectionView(DS.Skiclub.Grouplist)
+        _levelListCollectionView = New CollectionView(DS.Club.Leistungsstufeliste)
+        _instructorListCollectionView = New CollectionView(DS.Club.Gruppenliste)
 
         ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
         'MemberOfGroupComboBox.ItemsSource = _instructorListCollectionView

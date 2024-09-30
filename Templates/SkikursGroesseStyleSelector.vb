@@ -18,7 +18,7 @@ Namespace TemplateSelectors
             If KleineGruppeStyleSelector Is Nothing Then
                 KleineGruppeStyleSelector = TryCast(Application.Current.FindResource("KleineGruppeStyleSelector"), Style)
             End If
-            Dim SK = TryCast(item, ParticipantCollection)
+            Dim SK = TryCast(item, TeilnehmerCollection)
             If SK IsNot Nothing Then
                 If SK.Count < 5 Then
                     Return KleineGruppeStyleSelector

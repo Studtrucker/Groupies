@@ -55,7 +55,7 @@ Namespace Entities
             _Benennung = Benennung
             _Ausgabename = Ausgabename
             _Sortierung = Sortierung
-            Mitglieder = New ParticipantCollection
+            Mitglieder = New TeilnehmerCollection
         End Sub
 
 #End Region
@@ -103,7 +103,7 @@ Namespace Entities
         ''' Liste der Gruppenmitglieder
         ''' </summary>
         ''' <returns></returns>
-        Public Property Mitglieder As ParticipantCollection
+        Public Property Mitglieder As TeilnehmerCollection
 
 #End Region
 
@@ -131,7 +131,7 @@ Namespace Entities
         <Obsolete>
         Public Sub New()
             _GruppenID = Guid.NewGuid()
-            _Mitglieder = New ParticipantCollection
+            _Mitglieder = New TeilnehmerCollection
         End Sub
 
 #End Region

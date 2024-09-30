@@ -25,11 +25,11 @@ Namespace UserControls
             Members = Group.Mitglieder.ParticipantCollectionOrdered
 
             If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = CDS.Skiclub.Instructorlist.GetPrintName(Group.Trainer)
-                If CDS.Skiclub.Instructorlist.GetHatFoto(Group.Trainer) Then
+                GroupLeaderPrintName = CDS.Club.Trainerliste.GetPrintName(Group.Trainer)
+                If CDS.Club.Trainerliste.GetHatFoto(Group.Trainer) Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.Skiclub.Instructorlist.GetFoto(Group.Trainer))
+                    bi.StreamSource = New MemoryStream(CDS.Club.Trainerliste.GetFoto(Group.Trainer))
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else
@@ -74,11 +74,11 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Members As ParticipantCollection
+        Public Property Members As TeilnehmerCollection
             Get
                 Return lstMitglieder.ItemsSource
             End Get
-            Set(value As ParticipantCollection)
+            Set(value As TeilnehmerCollection)
                 lstMitglieder.ItemsSource = value
             End Set
         End Property

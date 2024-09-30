@@ -5,28 +5,31 @@ Imports Groupies.Entities
 Namespace Services
 
     ' Hier werden alle Daten der aktuellen Groupies Datei gesammelt
-    Module CurrentDataService
+    Public Module CurrentDataService
 
-        Public Property Skiclub As Club
+        Public Property Club As Club
 
-        Public ReadOnly Property availableInstructors As InstructorCollection
+        <Obsolete>
+        Public Property Skiclub As Veraltert.Skiclub
+
+        Public ReadOnly Property availableInstructors As TrainerCollection
             Get
                 Return InstructorsAvailable()
             End Get
         End Property
 
-        Private Function InstructorsAvailable() As InstructorCollection
-            Dim available = New InstructorCollection
-            Skiclub.Instructorlist.Where(Function(y) y.IsAvailable).ToList.ForEach(Sub(i) available.Add(i))
+        Private Function InstructorsAvailable() As TrainerCollection
+            Dim available = New TrainerCollection
+            Club.Trainerliste.Where(Function(y) y.IsAvailable).ToList.ForEach(Sub(i) available.Add(i))
             Return available
         End Function
 
         Public Sub CreateNewSkiclub()
-            Skiclub = New Entities.Club With {.Levellist = PresetService.CreateLevels()}
+            Club = New Entities.Club With {.Leistungsstufeliste = PresetService.CreateLevels()}
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Skiclub.Grouplist = PresetService.CreateGroups(dlg.Count.Text)
+                    Club.Gruppenliste = PresetService.CreateGroups(dlg.Count.Text)
                 End If
             End If
         End Sub

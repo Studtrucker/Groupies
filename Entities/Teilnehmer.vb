@@ -143,7 +143,7 @@ Namespace Entities
         <Obsolete>
         Public ReadOnly Property MemberOfGroup_Naming() As String
             Get
-                Return CDS.Skiclub.Grouplist.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
+                Return CDS.Club.Gruppenliste.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
             End Get
         End Property
 

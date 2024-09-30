@@ -42,7 +42,7 @@ Namespace Services
 
         End Function
 
-        Public Function ImportParticipants() As Entities.ParticipantCollection
+        Public Function ImportParticipants() As Entities.TeilnehmerCollection
             Workbook = Nothing
 
             _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -62,7 +62,7 @@ Namespace Services
 
         End Function
 
-        Public Function ImportInstructors() As Entities.InstructorCollection
+        Public Function ImportInstructors() As Entities.TrainerCollection
             Workbook = Nothing
 
             _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -113,12 +113,12 @@ Namespace Services
             Return _skischule
         End Function
 
-        Private Function ReadImportExcelfileParticipants(Excelsheet As Excel.Worksheet) As Entities.ParticipantCollection
+        Private Function ReadImportExcelfileParticipants(Excelsheet As Excel.Worksheet) As Entities.TeilnehmerCollection
             Dim CurrentRow = 2
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
 
 
-            Dim _Participantlist = New ParticipantCollection
+            Dim _Participantlist = New TeilnehmerCollection
 
             Do Until CurrentRow > RowCount
 
@@ -134,12 +134,12 @@ Namespace Services
 
         End Function
 
-        Private Function ReadImportExcelfileInstructors(Excelsheet As Excel.Worksheet) As Entities.InstructorCollection
+        Private Function ReadImportExcelfileInstructors(Excelsheet As Excel.Worksheet) As Entities.TrainerCollection
             Dim CurrentRow = 2
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
 
 
-            Dim _Participantlist = New InstructorCollection
+            Dim _Participantlist = New TrainerCollection
 
             Do Until CurrentRow > RowCount
 

@@ -19,7 +19,7 @@ Namespace TemplateSelectors
             If KleineGruppeDataTemplate Is Nothing Then
                 KleineGruppeDataTemplate = TryCast(Application.Current.FindResource("KleineGruppeDataTemplate"), DataTemplate)
             End If
-            Dim SK = TryCast(item, ParticipantCollection)
+            Dim SK = TryCast(item, TeilnehmerCollection)
             If SK IsNot Nothing Then
                 If SK.Count < 5 Then
                     Return KleineGruppeDataTemplate

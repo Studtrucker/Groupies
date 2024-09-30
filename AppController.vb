@@ -14,13 +14,13 @@ Public Class AppController
     Public Shared Function CreateNewClub(Clubname As String, NumberOfGroups As Integer) As String
 
         CurrentClub = New Club(Clubname, NumberOfGroups)
-        Return $"{Clubname} wurde mit {CurrentClub.Grouplist.Count} Gruppen erfolgreich erstellt."
+        Return $"{Clubname} wurde mit {CurrentClub.Gruppenliste.Count} Gruppen erfolgreich erstellt."
 
     End Function
 
     Public Function Status() As String
         Return $"Der aktuelle Club heißt {CurrentClub}." & Environment.NewLine &
-            $"Er hat {CurrentClub.Participantlist.Count} Mitglieder" & Environment.NewLine &
+            $"Er hat {CurrentClub.Teilnehmerliste.Count} Mitglieder" & Environment.NewLine &
             "{String.Join(Environment.NewLine & " - ", CurrentClub.Participantlist)}" & $"{Environment.NewLine}"
     End Function
 

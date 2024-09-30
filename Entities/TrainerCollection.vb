@@ -5,7 +5,7 @@ Imports System.Data.SqlClient
 
 Namespace Entities
 
-    Public Class InstructorCollection
+    Public Class TrainerCollection
         Inherits ObservableCollection(Of Trainer)
         Implements IEnumerable(Of Trainer)
 

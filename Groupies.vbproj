@@ -100,6 +100,7 @@
     <Compile Include="EntitiesAlt\InstructorCollection.vb" />
     <Compile Include="EntitiesAlt\Level.vb" />
     <Compile Include="EntitiesAlt\LevelCollection.vb" />
+    <Compile Include="EntitiesAlt\VeralterteKlassenMapping.vb" />
     <Compile Include="EntitiesAlt\Participant.vb" />
     <Compile Include="EntitiesAlt\ParticipantCollection.vb" />
     <Compile Include="EntitiesAlt\Skiclub.vb" />
@@ -128,9 +129,9 @@
       <DependentUpon>NewParticipantDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\Faehigkeit.vb" />
-    <Compile Include="Entities\GroupCollection.vb" />
-    <Compile Include="Entities\SkillCollection.vb" />
-    <Compile Include="Entities\InstructorCollection.vb" />
+    <Compile Include="Entities\GruppenCollection.vb" />
+    <Compile Include="Entities\FaehigkeitCollection.vb" />
+    <Compile Include="Entities\TrainerCollection.vb" />
     <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
@@ -210,14 +211,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\SkiclubCommands.vb" />
-    <Compile Include="Entities\LevelCollection.vb" />
+    <Compile Include="Entities\LeistungsstufeCollection.vb" />
     <Compile Include="Services\ImportService.vb" />
     <Compile Include="Entities\Leistungsstufe.vb" />
     <Compile Include="Entities\Gruppe.vb" />
     <Compile Include="Entities\Trainer.vb" />
     <Compile Include="Entities\Teilnehmer.vb" />
     <Compile Include="Entities\ParticipantRelationship.vb" />
-    <Compile Include="Entities\ParticipantCollection.vb" />
+    <Compile Include="Entities\TeilnehmerCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>

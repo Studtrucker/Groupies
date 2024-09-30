@@ -75,11 +75,11 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property Members As ParticipantCollection
+        Public Property Members As TeilnehmerCollection
             Get
                 Return MembersDataGrid.ItemsSource
             End Get
-            Set(value As ParticipantCollection)
+            Set(value As TeilnehmerCollection)
                 MembersDataGrid.ItemsSource = value
             End Set
         End Property

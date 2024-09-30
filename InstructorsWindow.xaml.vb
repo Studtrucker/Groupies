@@ -16,21 +16,21 @@ Public Class InstructorsWindow
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _instructorListCollectionView = New ListCollectionView(New InstructorCollection)
+        _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
 #End Region
 
 #Region "Window Events"
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        If CDS.Skiclub IsNot Nothing AndAlso CDS.Skiclub.Instructorlist IsNot Nothing Then
-            setView(CDS.Skiclub.Instructorlist)
+        If CDS.Club IsNot Nothing AndAlso CDS.Club.Trainerliste IsNot Nothing Then
+            setView(CDS.Club.Trainerliste)
         End If
     End Sub
 #End Region
 
 #Region "Helper Methoden"
-    Private Sub setView(Instructorlist As InstructorCollection)
+    Private Sub setView(Instructorlist As TrainerCollection)
         _instructorListCollectionView = New ListCollectionView(Instructorlist)
         If _instructorListCollectionView.CanSort Then
             _instructorListCollectionView.SortDescriptions.Add(New SortDescription("InstructorVorname", ListSortDirection.Ascending))

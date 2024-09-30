@@ -13,18 +13,18 @@ Namespace GroupiesTestsVB
             Dim numberOfGroups = 9
             Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.CreateNewClub("Stubaital2024", numberOfGroups))
             Assert.AreEqual("Stubaital2024", AppController.CurrentClub.ClubName)
-            Assert.AreEqual(9, AppController.CurrentClub.Grouplist.Count)
-            Assert.AreEqual(0, AppController.CurrentClub.Participantlist.Count)
+            Assert.AreEqual(9, AppController.CurrentClub.Gruppenliste.Count)
+            Assert.AreEqual(0, AppController.CurrentClub.Teilnehmerliste.Count)
             Assert.AreEqual(5, AppController.PerformanceLevels.Count)
-            Assert.AreEqual(0, AppController.CurrentClub.Instructorlist.Count)
+            Assert.AreEqual(0, AppController.CurrentClub.Trainerliste.Count)
 
             Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
             Dim Manuela As New Teilnehmer("Manuela", "Ramm")
 
             Dim var = New List(Of Teilnehmer) From {Studti, Manuela}
 
-            AppController.CurrentClub.Participantlist = New ParticipantCollection(var)
-            Assert.AreEqual(2, AppController.CurrentClub.Participantlist.Count)
+            AppController.CurrentClub.Teilnehmerliste = New TeilnehmerCollection(var)
+            Assert.AreEqual(2, AppController.CurrentClub.Teilnehmerliste.Count)
             Assert.AreEqual(2, AppController.CurrentClub.AnzahlFreieTeilnehmer)
             Assert.AreEqual(0, AppController.CurrentClub.AnzahlEingeteilteTeilnehmer)
 

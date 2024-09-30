@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 
 Namespace Entities
 
-    Public Class GroupCollection
+    Public Class GruppenCollection
         Inherits ObservableCollection(Of Gruppe)
 
         Public ReadOnly Property SortedListGroupNaming As ObservableCollection(Of Gruppe)

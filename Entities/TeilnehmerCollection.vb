@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 
 Namespace Entities
 
-    Public Class ParticipantCollection
+    Public Class TeilnehmerCollection
         Inherits ObservableCollection(Of Teilnehmer)
         Implements IEnumerable
 
@@ -16,17 +16,17 @@ Namespace Entities
             Teilnehmerliste.ForEach(Sub(x) Add(x))
         End Sub
 
-        Public ReadOnly Property ParticipantCollectionOrdered As ParticipantCollection
+        Public ReadOnly Property ParticipantCollectionOrdered As TeilnehmerCollection
             Get
-                Dim Ordered = New ParticipantCollection
+                Dim Ordered = New TeilnehmerCollection
                 Me.OrderBy(Of String)(Function(x) x.VorUndNachname).ToList.ForEach(Sub(x) Ordered.Add(x))
                 Return Ordered
             End Get
         End Property
 
-        Public ReadOnly Property NotInAGroup As ParticipantCollection
+        Public ReadOnly Property NotInAGroup As TeilnehmerCollection
             Get
-                Dim List = New ParticipantCollection
+                Dim List = New TeilnehmerCollection
                 Me.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
                 Return List
             End Get

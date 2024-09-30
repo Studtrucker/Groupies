@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 
 Namespace Entities
 
-    Public Class SkillCollection
+    Public Class FaehigkeitCollection
         Inherits ObservableCollection(Of Faehigkeit)
     End Class
 

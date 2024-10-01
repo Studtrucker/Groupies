@@ -14,6 +14,8 @@ Namespace Entities
     Public Class Teilnehmer
         Inherits BaseModel
 
+        Private _Leistungsstand = New Leistungsstufe("Leistungsstand unbekannt", -1)
+
 #Region "Events"
         Public Event ChangeGroup(Participant As Teilnehmer)
 #End Region
@@ -50,7 +52,6 @@ Namespace Entities
             _TeilnehmerID = Guid.NewGuid()
             _Vorname = Vorname
             _Nachname = Nachname
-            _Leistungsstand = New Leistungsstufe()
         End Sub
 
 #End Region
@@ -97,29 +98,48 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Leistungsstand As Leistungsstufe
+            Get
+                Return _Leistungsstand
+            End Get
+            Set(value As Leistungsstufe)
+                _Leistungsstand = value
+            End Set
+        End Property
 
-#End Region
-
-#Region "Funktionen und Methoden"
         ''' <summary>
         ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public Function AusgabeInTeilnehmerinfo() As String
-            Return VorUndNachname
-        End Function
+        Public ReadOnly Property AusgabeTeilnehmerinfo
+            Get
+                Return VorUndNachname
+            End Get
+        End Property
+
 
         ''' <summary>
         ''' Gibt den Vor-, Nachnamen und Leistungsstand für die Trainerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public Function AusgabeInTrainerinfo() As String
-            If Leistungsstand Is Nothing Then
-                Return $"{VorUndNachname}, Leistungsstand unbekannt"
-            Else
+        Public ReadOnly Property AusgabeTrainerinfo As String
+            Get
                 Return $"{VorUndNachname}, {Leistungsstand.Benennung}"
-            End If
-        End Function
+            End Get
+        End Property
+
+        'Function()
+        '    Dim text As String
+        '    If Leistungsstand Is Nothing Then
+        '        text = $"{VorUndNachname}, Leistungsstand unbekannt"
+        '    Else
+        '        text = $"{VorUndNachname}, {Leistungsstand.Benennung}"
+        '    End If
+        '    Return text
+        'End Function
+
+#End Region
+
+#Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
             Return VorUndNachname

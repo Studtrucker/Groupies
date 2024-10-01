@@ -10,6 +10,11 @@ Namespace Entities
     Public Class Trainer
         Inherits BaseModel
 
+
+        'Todo:Standardfoto festlegen
+        'Private _bi As BitmapImage = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
+        Private _Foto As Byte()
+
 #Region "Konstruktor"
 
         ''' <summary>
@@ -77,6 +82,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Foto As Byte()
+            Get
+                Return _Foto
+            End Get
+            Set(value As Byte())
+                _Foto = value
+            End Set
+        End Property
 
         ''' <summary>
         '''  Gültige eMailadresse des Trainers
@@ -99,7 +111,7 @@ Namespace Entities
         ''' Ausgabe des Trainernamens auf der Information
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property Ausgabename As String
+        Public ReadOnly Property AusgabeTeilnehmerInfo As String
             Get
                 Return LeseAusgabename()
             End Get
@@ -150,8 +162,7 @@ Namespace Entities
         End Sub
 
 
-        <Obsolete>
-        Public ReadOnly Property HasPicture As Boolean
+        Public ReadOnly Property HatFoto As Boolean
             Get
                 Return _Foto IsNot Nothing AndAlso Foto.Length > 0
             End Get

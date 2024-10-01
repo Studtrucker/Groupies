@@ -12,9 +12,9 @@ Namespace Entities
         End Sub
 
         <Obsolete>
-        Public Sub New(Teilnehmerliste As List(Of Teilnehmer))
+        Public Sub New(Teilnehmerliste As IEnumerable(Of Teilnehmer))
             MyBase.New
-            Teilnehmerliste.ForEach(Sub(x) Add(x))
+            Teilnehmerliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
         Public ReadOnly Property ParticipantCollectionOrdered As TeilnehmerCollection
@@ -25,6 +25,7 @@ Namespace Entities
             End Get
         End Property
 
+        <Obsolete>
         Public ReadOnly Property NotInAGroup As TeilnehmerCollection
             Get
                 Dim List = New TeilnehmerCollection
@@ -33,27 +34,26 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property Teilnehmerliste = Me.Select(Function(t) t.VorUndNachname)
-
-        'Public Property GeordnetNachNachnameVorname = (Me.OrderBy(Function(t) t.Vorname).OrderBy(Function(t) t.Nachname)).Select(Function(t) $"{t.AusgabeInTrainerinfo}")
-        Public Property GeordnetFunctionT = Function(t) t
-        Public Property GeordnetMe = Me.OrderBy(Function(x) x.Nachname)
-
-        Public Property GeordnetNachLeistungsstufeNachnameVorname = OrderBy(Function(t) t.Leistungsstand.Sortierung).OrderBy(Function(t) t.Nachname).OrderBy(Function(t) t.Vorname).Select(Function(t) t.VorUndNachname)
-
-
-
-        '    Exits
-        '    .OrderBy(KeyValuePair >= (Int())KeyValuePair.Key)
-        '.OrderBy(KeyValuePair >= Math.Abs((Int())KeyValuePair.Key))
-        '.Select(KeyValuePair >= $"the {KeyValuePair.Value} is {DescribeDirection(KeyValuePair.Key)}");
-
-        Public Overrides Function ToString() As String
-
-            '            Dim Namen As String = Me.ToList.OrderBy(Function(T) T.ParticipantLastName).OrderBy(Function(T) T.ParticipantFirstName).Select(Of String)(Function(TN) String.Format("{0}{1}", TN.ParticipantFullName, vbCrLf))
-            Dim Namen = Me.ToList.Select(Of String)(Function(TN) TN.VorUndNachname)
-            Return Namen.ToString
-        End Function
+        ''' <summary>
+        ''' Die Teilnehmerliste geordnet nach Nachname, Vorname
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property GeordnetNachnameVorname = From t In Me
+                                                  Order By
+                                                      t.Nachname,
+                                                      t.Vorname
+        ''' <summary>
+        ''' Die Teilnehmerliste geordnet nach 
+        ''' der absteigenden Sortierkennzahl 
+        ''' aus der Teilnehmer Leistungsstufe, 
+        ''' dann aufsteigend Nachname, Vorname 
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property GeordnetLeistungsstufeNachnameVorname = From t In Me
+                                                                Order By
+                                                                        t.Leistungsstand.Sortierung Descending,
+                                                                        t.Nachname,
+                                                                        t.Vorname
 
     End Class
 End Namespace

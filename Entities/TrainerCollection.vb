@@ -9,17 +9,15 @@ Namespace Entities
         Inherits ObservableCollection(Of Trainer)
         Implements IEnumerable(Of Trainer)
 
-        Public Function GetPrintName(Instructor As Trainer) As String
-            Return First(Function(x) x.TrainerID = Instructor.TrainerID).Spitzname
-        End Function
+        Public Sub New()
+            MyBase.New
+        End Sub
 
-        Public Function GetHatFoto(Instructor As Trainer) As Boolean
-            Return First(Function(x) x.TrainerID = Instructor.TrainerID).HasPicture
-        End Function
+        Public Sub New(Trainerliste As IEnumerable(Of Trainer))
+            Trainerliste.ToList.ForEach(Sub(T) Add(T))
+        End Sub
 
-        Public Function GetFoto(Instructor As Trainer) As Byte()
-            Return First(Function(x) x.TrainerID = Instructor.TrainerID).Foto
-        End Function
+        Public Property GeordnetNachnameVorname = From t In Me Order By t.Nachname, t.Vorname
 
     End Class
 End Namespace

@@ -25,11 +25,11 @@ Namespace UserControls
             Members = Group.Mitglieder.ParticipantCollectionOrdered
 
             If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = CDS.Club.Trainerliste.GetPrintName(Group.Trainer)
-                If CDS.Club.Trainerliste.GetHatFoto(Group.Trainer) Then
+                GroupLeaderPrintName = CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
+                If CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.Club.Trainerliste.GetFoto(Group.Trainer))
+                    bi.StreamSource = New MemoryStream(CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else

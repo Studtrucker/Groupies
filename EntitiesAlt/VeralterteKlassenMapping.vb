@@ -1,12 +1,12 @@
 ﻿Imports Groupies.Entities
 Public Module VeralterteKlassenMapping
 
-    Private Gruppen As GruppenCollection
+    Private Gruppen As GruppeCollection
 
     Public Function MapSkiClub2Club(Skiclub As Veraltert.Skiclub) As Club
 
         ' Eine Collection instanziieren
-        Dim NeueGruppenCollection = New GruppenCollection
+        Dim NeueGruppenCollection = New GruppeCollection
         ' Eine Liste aus neuen Klassen aus den veralterten Klassen erstellen
         Dim NeueGruppenliste = (From Group In Skiclub.Grouplist Select MapGroup2Gruppe(Group)).ToList
         ' Jedes Mitglied der neuen Klasse aus der Liste der Collection hinzufügen
@@ -78,7 +78,7 @@ Public Module VeralterteKlassenMapping
     Private Function MapInstructor2Trainer(Instructor As Veraltert.Instructor) As Trainer
         Dim Trainer = New Trainer(Instructor.InstructorFirstName) With {
             .eMail = Instructor.eMail,
-            .InstructorPicture = Instructor.InstructorPicture,
+            .Foto = Instructor.InstructorPicture,
             .Nachname = Instructor.InstructorLastName,
             .Spitzname = Instructor.InstructorPrintName,
             .TrainerID = Instructor.InstructorID}

@@ -51,7 +51,7 @@ Public Class NewInstructorDialog
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    _Instructor.InstructorPicture = buffer
+                    _Instructor.Foto = buffer
                     validPictureFile = True
                 End Using
             Else

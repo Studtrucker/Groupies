@@ -18,7 +18,7 @@ Namespace Entities
         End Function
 
         Public Function GetFoto(Instructor As Trainer) As Byte()
-            Return First(Function(x) x.TrainerID = Instructor.TrainerID).InstructorPicture
+            Return First(Function(x) x.TrainerID = Instructor.TrainerID).Foto
         End Function
 
     End Class

@@ -20,7 +20,7 @@ Namespace Entities
         ''' Es wird zusätzlich eine leere Teilnehmerliste und leere Trainerliste erstellt
         ''' </summary>
         Public Sub New()
-            _Gruppenliste = New GruppenCollection
+            _Gruppenliste = New GruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
             _Trainerliste = New TrainerCollection
         End Sub
@@ -32,7 +32,7 @@ Namespace Entities
         ''' <param name="Teilnehmerliste"></param>
         <Obsolete>
         Public Sub New(Teilnehmerliste As TeilnehmerCollection)
-            _Gruppenliste = New GruppenCollection
+            _Gruppenliste = New GruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
             LadeTeilnehmerliste(Teilnehmerliste)
         End Sub
@@ -43,7 +43,7 @@ Namespace Entities
         ''' <param name="Trainerliste"></param>
         <Obsolete>
         Public Sub New(Trainerliste As TrainerCollection)
-            _Gruppenliste = New GruppenCollection
+            _Gruppenliste = New GruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
             LadeTrainerliste(Trainerliste)
         End Sub
@@ -51,7 +51,7 @@ Namespace Entities
         <Obsolete>
         Public Sub New(Clubname As String, Teilnehmerliste As TeilnehmerCollection)
             _ClubName = Clubname
-            _Gruppenliste = New GruppenCollection
+            _Gruppenliste = New GruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
             LadeTeilnehmerliste(Teilnehmerliste)
         End Sub
@@ -64,7 +64,7 @@ Namespace Entities
         <Obsolete>
         Public Sub New(Benennung As String, Trainerliste As TrainerCollection)
             _ClubName = Benennung
-            _Gruppenliste = New GruppenCollection
+            _Gruppenliste = New GruppeCollection
             _Teilnehmerliste = New TeilnehmerCollection
             LadeTrainerliste(Trainerliste)
         End Sub
@@ -107,7 +107,7 @@ Namespace Entities
         ''' Eine Liste aller Gruppen im Club
         ''' </summary>
         ''' <returns></returns>
-        Public Property Gruppenliste() As GruppenCollection
+        Public Property Gruppenliste() As GruppeCollection
 
         ''' <summary>
         ''' Eine Liste aller Leistungsstufen

@@ -76,7 +76,7 @@ Namespace Entities
         ''' Foto des Trainers
         ''' </summary>
         ''' <returns></returns>
-        Public Property InstructorPicture As Byte()
+        Public Property Foto As Byte()
 
         ''' <summary>
         '''  Gültige eMailadresse des Trainers
@@ -101,7 +101,7 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property Ausgabename As String
             Get
-                Return LeseAusgabename
+                Return LeseAusgabename()
             End Get
         End Property
 
@@ -153,7 +153,7 @@ Namespace Entities
         <Obsolete>
         Public ReadOnly Property HasPicture As Boolean
             Get
-                Return _InstructorPicture IsNot Nothing AndAlso InstructorPicture.Length > 0
+                Return _Foto IsNot Nothing AndAlso Foto.Length > 0
             End Get
         End Property
 

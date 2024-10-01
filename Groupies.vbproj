@@ -129,7 +129,7 @@
       <DependentUpon>NewParticipantDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\Faehigkeit.vb" />
-    <Compile Include="Entities\GruppenCollection.vb" />
+    <Compile Include="Entities\GruppeCollection.vb" />
     <Compile Include="Entities\FaehigkeitCollection.vb" />
     <Compile Include="Entities\TrainerCollection.vb" />
     <Compile Include="Services\PresetService.vb" />

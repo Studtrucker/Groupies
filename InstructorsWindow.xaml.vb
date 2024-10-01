@@ -51,7 +51,7 @@ Public Class InstructorsWindow
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    DirectCast(_instructorListCollectionView.CurrentItem, Trainer).InstructorPicture = buffer
+                    DirectCast(_instructorListCollectionView.CurrentItem, Trainer).Foto = buffer
                     '                    _Instructor.InstructorPicture = buffer
                     validPictureFile = True
                 End Using

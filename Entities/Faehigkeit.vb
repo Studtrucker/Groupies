@@ -52,18 +52,17 @@ Namespace Entities
         Public Property Benennung As String
 
         ''' <summary>
-        ''' Sortierungszahl für die Ausgabeinformationen 
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Sortierung As Integer?
-
-
-        ''' <summary>
         ''' Beschreibung der Fähigkeit
         ''' </summary>
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Beschreibung ist ein Pflichtfeld")>
         Public Property Beschreibung As String
+
+        ''' <summary>
+        ''' Sortierungszahl für die Ausgabeinformationen 
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Sortierung As Integer?
 
 #End Region
 

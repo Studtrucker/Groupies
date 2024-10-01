@@ -36,7 +36,7 @@ Public Class Window1
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' DataContext Window
-        _groupListCollectionView = New ListCollectionView(New GruppenCollection)
+        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
         ' DataContext participantDataGrid
         _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
         ' DataContext groupleaderDataGrid
@@ -558,7 +558,7 @@ Public Class Window1
         ParticipantDataGrid.DataContext = Nothing
         InstuctorDataGrid.DataContext = Nothing
 
-        _groupListCollectionView = New ListCollectionView(New GruppenCollection)
+        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
         _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
         _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
 

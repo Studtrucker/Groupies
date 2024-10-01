@@ -54,7 +54,6 @@ Namespace Entities
         ''' Sortierungszahl für die Ausgabeinformationen
         ''' </summary>
         ''' <returns></returns>
-        <StringLength(3)>
         Public Property Sortierung As Integer?
 
         ''' <summary>
@@ -83,17 +82,17 @@ Namespace Entities
         ''' <summary>
         ''' Fügt der Leistungsstufe eine erforderliche Fähigkeit hinzu 
         ''' </summary>
-        ''' <param name="skill"></param>
-        Public Sub AddSkill(skill As Faehigkeit)
-            _Faehigkeiten.Add(skill)
+        ''' <param name="Faehigkeit"></param>
+        Public Sub FaehigkeitHinzufuegen(Faehigkeit As Faehigkeit)
+            _Faehigkeiten.Add(Faehigkeit)
         End Sub
 
         ''' <summary>
         ''' Entfernt die Leistungsstufe aus den Fähigkeiten 
         ''' </summary>
-        ''' <param name="skill"></param>
-        Public Sub RemoveSkill(skill As Faehigkeit)
-            _Faehigkeiten.Remove(skill)
+        ''' <param name="Faehigkeit"></param>
+        Public Sub FaehigkeitEntfernen(Faehigkeit As Faehigkeit)
+            _Faehigkeiten.Remove(Faehigkeit)
         End Sub
 
         Public Overrides Function ToString() As String

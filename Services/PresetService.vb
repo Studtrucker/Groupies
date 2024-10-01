@@ -54,9 +54,9 @@ Namespace Services
 
         End Function
 
-        Public Function CreateGroups(NumberOfGroups As Integer) As GruppenCollection
+        Public Function CreateGroups(NumberOfGroups As Integer) As GruppeCollection
 
-            Dim groupCol = New GruppenCollection
+            Dim groupCol = New GruppeCollection
 
             Dim IndexGruppenName As Integer
             For i = 0 To NumberOfGroups - 1

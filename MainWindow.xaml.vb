@@ -90,7 +90,7 @@ Class MainWindow
         AddHandler _participantListOverviewCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
         AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _skikursListCollectionView = New ListCollectionView(New GruppenCollection())
+        _skikursListCollectionView = New ListCollectionView(New GruppeCollection())
         AddHandler _skikursListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
         _uebungsleiterListCollectionView = New ListCollectionView(New TrainerCollection())
         AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
@@ -467,7 +467,7 @@ Class MainWindow
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Trainer).InstructorPicture = buffer
+                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Trainer).Foto = buffer
                     RefreshTaskBarItemOverlay()
                     CommandManager.InvalidateRequerySuggested()
                     validPictureFile = True
@@ -766,7 +766,7 @@ Class MainWindow
         Teilnehmerliste.ToList.ForEach(Sub(x) x.Leistungsstand = Level)
     End Sub
 
-    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GruppenCollection, Level As Leistungsstufe)
+    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GruppeCollection, Level As Leistungsstufe)
         Skikursgruppenliste.ToList.ForEach(Sub(x) x.Leistungsstufe = Level)
     End Sub
 
@@ -960,7 +960,7 @@ Class MainWindow
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelComboBox.ItemsSource = _participantLevelListCollectionView
-        CDS.Club.Gruppenliste.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CDS.Club.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
         setView(CDS.Club.Gruppenliste)
         SetView(CDS.Club.Teilnehmerliste)
@@ -969,7 +969,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub setView(Skikursliste As GruppenCollection)
+    Private Sub setView(Skikursliste As GruppeCollection)
 
         ' Neue ListCollectionView laden
         _participantListOverviewCollectionView = New ListCollectionView(CDS.Club.Teilnehmerliste)
@@ -1061,7 +1061,7 @@ Class MainWindow
 
     Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
         GroupOverviewWrapPanel.Children.Clear()
-        CDS.Club.Gruppenliste.SortedListGroupNaming.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CDS.Club.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)

@@ -6,21 +6,22 @@ Public Class TeilnehmerTests
 
     <TestMethod>
     Public Sub TestTeilnehmerErstellen()
-        Dim Tn As New Teilnehmer("Elke", "Steiner")
-        Assert.AreEqual("Elke Steiner", Tn.ToString)
-        Assert.AreEqual("Elke Steiner", Tn.VorUndNachname)
-        Dim Tn1 As New Teilnehmer("Manuela", "Steiner", New Leistungsstufe("Könner"))
-        Assert.AreEqual("Manuela Steiner, Könner", Tn1.AusgabeInTrainerinfo)
-        Assert.AreEqual("Manuela Steiner", Tn1.AusgabeInTeilnehmerinfo)
-        Dim Tn2 As New Teilnehmer("Willi", "Steiner", New Leistungsstufe("Experte"))
-        Dim Tn3 As New Teilnehmer("Lothar", "Hötger", New Leistungsstufe("Experte"))
-        Dim Tn4 As New Teilnehmer("Liane", "Hötger")
+        Dim Elke As New Teilnehmer("Elke", "Steiner")
+        Assert.AreEqual("Elke Steiner", Elke.ToString)
+        Assert.AreEqual("Elke Steiner", Elke.VorUndNachname)
+        Dim Manu As New Teilnehmer("Manuela", "Steiner", New Leistungsstufe("Könner"))
+        Assert.AreEqual("Manuela Steiner, Könner", Manu.AusgabeInTrainerinfo)
+        Assert.AreEqual("Manuela Steiner", Manu.AusgabeInTeilnehmerinfo)
+        Dim Willi As New Teilnehmer("Willi", "Steiner", New Leistungsstufe("Experte"))
+        Dim Lothar As New Teilnehmer("Lothar", "Hötger", New Leistungsstufe("Experte"))
+        Dim Liane As New Teilnehmer("Liane", "Hötger")
 
-        Dim tnL = New TeilnehmerCollection From {Tn, Tn1, Tn4}
-        tnL.Add(Tn2)
-        tnL.Add(Tn3)
+        Dim tnL = New TeilnehmerCollection From {Elke, Manu, Liane}
+        tnL.Add(Willi)
+        tnL.Add(Lothar)
 
-        Dim x = tnL.GeordnetNachNachnameVorname
+        Dim x = tnL.GeordnetFunctionT
+        Dim y = tnL.GeordnetMe
 
     End Sub
 End Class

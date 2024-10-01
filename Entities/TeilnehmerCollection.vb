@@ -11,6 +11,7 @@ Namespace Entities
             MyBase.New
         End Sub
 
+        <Obsolete>
         Public Sub New(Teilnehmerliste As List(Of Teilnehmer))
             MyBase.New
             Teilnehmerliste.ForEach(Sub(x) Add(x))
@@ -32,7 +33,13 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property Teilnehmerliste() = Function(x As Teilnehmer) x.VorUndNachname
+        Public Property Teilnehmerliste = Me.Select(Function(t) t.VorUndNachname)
+
+        Public Property GeordnetNachNachnameVorname = Me.OrderBy(Function(t) t.Nachname).OrderBy(Function(t) t.Vorname).Select(Function(t) t.VorUndNachname)
+        Public Property GeordnetNachLeistungsstufeNachnameVorname = OrderBy(Function(t) t.Leistungsstand.Sortierung).OrderBy(Function(t) t.Nachname).OrderBy(Function(t) t.Vorname).Select(Function(t) t.VorUndNachname)
+
+
+
         '    Exits
         '    .OrderBy(KeyValuePair >= (Int())KeyValuePair.Key)
         '.OrderBy(KeyValuePair >= Math.Abs((Int())KeyValuePair.Key))

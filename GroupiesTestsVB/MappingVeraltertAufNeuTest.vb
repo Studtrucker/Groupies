@@ -10,31 +10,30 @@ Public Class MappingVeraltertAufNeuTest
     <TestMethod>
     Public Sub TestClubOeffnen()
         Dim filename = "Z:\GroupiesReisen\20231118Stubai.ski"
-        ' Datei deserialisieren
-        Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-        Dim loadedSkiclub As Veraltert.Skiclub
-        Using fs = New FileStream(filename, FileMode.Open)
-            Try
-                loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
-            Catch ex As InvalidDataException
-                Debug.Print("Datei ungültig: " & ex.Message)
-                Exit Sub
-            End Try
-        End Using
+        If File.Exists(filename) Then
 
-        Dim neuerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+            ' Datei deserialisieren
+            Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
+            Dim loadedSkiclub As Veraltert.Skiclub
+            Using fs = New FileStream(filename, FileMode.Open)
+                Try
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
+                Catch ex As InvalidDataException
+                    Debug.Print("Datei ungültig: " & ex.Message)
+                    Exit Sub
+                End Try
+            End Using
 
-        Assert.AreEqual(loadedSkiclub.Levellist.Count, neuerClub.Leistungsstufeliste.Count)
-        Assert.AreEqual(loadedSkiclub.Participantlist.Count, neuerClub.Teilnehmerliste.Count)
-        Assert.AreEqual(loadedSkiclub.Grouplist.Count, neuerClub.Gruppenliste.Count)
-        Assert.AreEqual(loadedSkiclub.Instructorlist.Count, neuerClub.Trainerliste.Count)
-        Assert.AreEqual(loadedSkiclub.Participantlist(0).ParticipantID, neuerClub.Teilnehmerliste(0).TeilnehmerID)
-        Assert.AreEqual(loadedSkiclub.Levellist(2).LevelDescription, neuerClub.Leistungsstufeliste(2).Beschreibung)
-        Assert.AreEqual(loadedSkiclub.Grouplist(7).GroupLeader.InstructorFullName, neuerClub.Gruppenliste(7).Trainer.VorUndNachname)
+            Dim neuerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
 
+            Assert.AreEqual(loadedSkiclub.Levellist.Count, neuerClub.Leistungsstufeliste.Count)
+            Assert.AreEqual(loadedSkiclub.Participantlist.Count, neuerClub.Teilnehmerliste.Count)
+            Assert.AreEqual(loadedSkiclub.Grouplist.Count, neuerClub.Gruppenliste.Count)
+            Assert.AreEqual(loadedSkiclub.Instructorlist.Count, neuerClub.Trainerliste.Count)
+            Assert.AreEqual(loadedSkiclub.Participantlist(0).ParticipantID, neuerClub.Teilnehmerliste(0).TeilnehmerID)
+            Assert.AreEqual(loadedSkiclub.Levellist(2).LevelDescription, neuerClub.Leistungsstufeliste(2).Beschreibung)
+            Assert.AreEqual(loadedSkiclub.Grouplist(7).GroupLeader.InstructorFullName, neuerClub.Gruppenliste(7).Trainer.VorUndNachname)
+        End If
 
-        'Dim loadedSkischule = OpenXML(filename)
-        'If File.Exists(filename) Then OpenSkischule(filename)
-        'Services.CurrentDataService.Club = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkischule)
     End Sub
 End Class

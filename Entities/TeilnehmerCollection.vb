@@ -35,7 +35,7 @@ Namespace Entities
 
         Public Property Teilnehmerliste = Me.Select(Function(t) t.VorUndNachname)
 
-        Public Property GeordnetNachNachnameVorname = Me.OrderBy(Function(t) t.Nachname).OrderBy(Function(t) t.Vorname).Select(Function(t) t.VorUndNachname)
+        Public Property GeordnetNachNachnameVorname = (Me.OrderBy(Function(t) t.Vorname).OrderBy(Function(t) t.Nachname)).Select(Function(t) $"{t.AusgabeInTrainerinfo}")
         Public Property GeordnetNachLeistungsstufeNachnameVorname = OrderBy(Function(t) t.Leistungsstand.Sortierung).OrderBy(Function(t) t.Nachname).OrderBy(Function(t) t.Vorname).Select(Function(t) t.VorUndNachname)
 
 

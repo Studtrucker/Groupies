@@ -52,7 +52,7 @@ Public Class AppController
             Dim loadedSkiclub As Veraltert.Skiclub
             Using fs = New FileStream(Datei, FileMode.Open)
                 Try
-                    Return LeseVersuchVeraltertSkiclub(fs)
+                    LeseVersuchDateiVersion1(fs)
                 Catch ex As InvalidDataException
                     Debug.Print("Datei ungültig: " & ex.Message)
                     Return Nothing
@@ -62,7 +62,7 @@ Public Class AppController
         End If
     End Function
 
-    Private Shared Sub LeseVersuchVeraltertSkiclub(Filestream As FileStream)
+    Private Shared Sub LeseVersuchDateiVersion1(Filestream As FileStream)
         Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
         Dim loadedSkiclub As Veraltert.Skiclub
         Try
@@ -75,6 +75,18 @@ Public Class AppController
         End Try
     End Sub
 
+    Private Shared Sub LeseVersuchDateiVersion2(Filestream As FileStream)
+        Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
+        Dim loadedSkiclub As Veraltert.Skiclub
+        Try
+            loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
+            AktuelleGruppen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Gruppenliste
+            AktuelleLeistungsstufen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Leistungsstufeliste
+        Catch ex As InvalidDataException
+            Debug.Print("Datei ungültig: " & ex.Message)
+            Exit Sub
+        End Try
+    End Sub
 #End Region
 
 

@@ -20,7 +20,7 @@ Public Class AppController
     ''' um der Stufe gerecht zu werden
     ''' </summary>
     ''' <returns></returns>
-    Public Shared Property AktuelleLeistungsstufen = PresetService.StandardLeistungsstufenErstellen
+    Public Shared Property StandardLeistungsstufen = PresetService.StandardLeistungsstufenErstellen
 
     ''' <summary>
     ''' Aktuelle Gruppen
@@ -29,11 +29,31 @@ Public Class AppController
     ''' versehen werden
     ''' </summary>
     ''' <returns></returns>
-    Public Shared Property AktuelleGruppen = PresetService.StandardGruppenErstellen(10)
+    Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(10)
 
 #End Region
 
 #Region "Funktionen und Methoden"
+
+    ''' <summary>
+    ''' Neuen Club erstellen
+    ''' Es wird gefragt, ob Gruppen und Leistungsstufen erstellen werden sollen
+    ''' </summary>
+    ''' <param name="Benennung"></param>
+    Public Sub NeuenClubErstellen(Benennung As String)
+
+        Dim MeinClub = New Club(Benennung)
+        If MessageBox.Show("Sollen Standardgruppen erstellt werden?", vbYesNo) Then
+            Dim Anzahl = InputBox("Wie viele Gruppen werden benötigt?")
+
+        End If
+
+        If MessageBox.Show("Sollen Standardleistungsstufen erstellt werden?", vbYesNo) Then
+
+        End If
+
+    End Sub
+
     ''' <summary>
     ''' Eine gespeicherte Datei wird eingelesen 
     ''' </summary>
@@ -63,8 +83,8 @@ Public Class AppController
         Dim loadedSkiclub As Veraltert.Skiclub
         Try
             loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-            AktuelleGruppen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Gruppenliste
-            AktuelleLeistungsstufen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Leistungsstufeliste
+            StandardGruppen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Gruppenliste
+            StandardLeistungsstufen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Leistungsstufeliste
         Catch ex As InvalidDataException
             Debug.Print("Datei ungültig: " & ex.Message)
             Exit Sub
@@ -76,8 +96,8 @@ Public Class AppController
         Dim loadedSkiclub As Veraltert.Skiclub
         Try
             loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-            AktuelleGruppen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Gruppenliste
-            AktuelleLeistungsstufen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Leistungsstufeliste
+            StandardGruppen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Gruppenliste
+            StandardLeistungsstufen = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub).Leistungsstufeliste
         Catch ex As InvalidDataException
             Debug.Print("Datei ungültig: " & ex.Message)
             Exit Sub

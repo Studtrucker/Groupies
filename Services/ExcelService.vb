@@ -83,7 +83,7 @@ Namespace Services
                 Dim CurrentRow = 1 + NumberOfGroups
 
                 Dim dic = New Dictionary(Of Leistungsstufe, Integer)
-                Dim Levels As LeistungsstufeCollection = AppController.AktuelleLeistungsstufen
+                Dim Levels As LeistungsstufeCollection = AppController.StandardLeistungsstufen
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Anfänger").Single) = CInt(Trim(xlApp.ActiveSheet.Range("B" & CurrentRow).Value))
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Fortgeschritten").Single) = CInt(Trim(xlApp.ActiveSheet.Range("C" & CurrentRow).Value))
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Genießer").Single) = CInt(Trim(xlApp.ActiveSheet.Range("D" & CurrentRow).Value))

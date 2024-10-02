@@ -12,39 +12,34 @@ Namespace Services
 
 #Region "Public"
         'C:\Users\studt_era90oc\Source\Repos\Skischule\Services\GroupLevelDistribution.xlsx
-        Public Function CreateLevels() As LeistungsstufeCollection
+        Public Function StandardLeistungsstufenErstellen() As LeistungsstufeCollection
 
-            Dim Anfaenger = New Leistungsstufe(True) With {
+            Dim Anfaenger = New Leistungsstufe("Anfänger") With {
                 .Sortierung = "010",
-                .Benennung = "Anfänger",
                 .LeistungsstufeID = Guid.NewGuid,
                 .Faehigkeiten = SkillsAnfaenger(),
                 .Beschreibung = DescriptionAnfaenger()}
 
-            Dim Fortgeschrittener = New Leistungsstufe(True) With {
+            Dim Fortgeschrittener = New Leistungsstufe("Fortgeschritten") With {
                 .Sortierung = "020",
-                .Benennung = "Fortgeschritten",
                 .Beschreibung = DescriptionFortgeschritten(),
                 .Faehigkeiten = SkillsFortgeschritten(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Geniesser = New Leistungsstufe(True) With {
+            Dim Geniesser = New Leistungsstufe("Genießer") With {
                 .Sortierung = "030",
-                .Benennung = "Genießer",
                 .Beschreibung = DescriptionGeniesser(),
                 .Faehigkeiten = SkillsGeniesser(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Koenner = New Leistungsstufe(True) With {
+            Dim Koenner = New Leistungsstufe("Könner") With {
                 .Sortierung = "040",
-                .Benennung = "Könner",
                 .Beschreibung = DescriptionKoenner(),
                 .Faehigkeiten = SkillsKoenner(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Experte = New Leistungsstufe(True) With {
+            Dim Experte = New Leistungsstufe("Experte") With {
                 .Sortierung = "050",
-                .Benennung = "Experte",
                 .Beschreibung = DescriptionExperte(),
                 .Faehigkeiten = SkillsExperte(),
                 .LeistungsstufeID = Guid.NewGuid}
@@ -54,14 +49,13 @@ Namespace Services
 
         End Function
 
-        Public Function CreateGroups(NumberOfGroups As Integer) As GruppeCollection
+        Public Function StandardGruppenErstellen(AnzahlGruppen As Integer) As GruppeCollection
 
             Dim groupCol = New GruppeCollection
 
             Dim IndexGruppenName As Integer
-            For i = 0 To NumberOfGroups - 1
-                groupCol.Add(New Gruppe With {
-                        .Benennung = "Genießer",
+            For i = 0 To AnzahlGruppen - 1
+                groupCol.Add(New Gruppe("Genießer", 3) With {
                         .Ausgabename = GroupPrintNames.Item(IndexGruppenName),
                         .Sortierung = GroupSorting.Item(IndexGruppenName)})
                 IndexGruppenName += 1
@@ -79,14 +73,10 @@ Namespace Services
         Private Function SkillsAnfaenger() As FaehigkeitCollection
 
             Dim sc = New FaehigkeitCollection From {
-                New Faehigkeit With {
-                   .Benennung = "Schneepflug",
-                   .Sortierung = "110",
+                New Faehigkeit("Schneepflug", 110) With {
                    .Beschreibung = "Stoppen auf flachem Gelände"},
-                   New Faehigkeit With {
-                   .Benennung = "Schneepflug",
-                   .Sortierung = "120",
-                   .Beschreibung = "Kurvern fahren auf flachem Gelände"}}
+                   New Faehigkeit("Schneepflug", 120) With {
+                   .Beschreibung = "Kurven fahren auf flachem Gelände"}}
 
             Return sc
 
@@ -95,25 +85,15 @@ Namespace Services
         Private Function SkillsFortgeschritten() As FaehigkeitCollection
 
             Dim sc = New FaehigkeitCollection From {
-                New Faehigkeit With {
-                   .Benennung = "Skiführung",
-                   .Sortierung = "210",
+                New Faehigkeit("Skiführung", 210) With {
                    .Beschreibung = "Erste Kurven mit parallelen Skiern"},
-                New Faehigkeit With {
-                   .Benennung = "Blaue Piste",
-                   .Sortierung = "220",
+                New Faehigkeit("Blaue Piste", 220) With {
                    .Beschreibung = "Sicheres Befahren"},
-                New Faehigkeit With {
-                   .Benennung = "Rote Piste",
-                   .Sortierung = "230",
+                New Faehigkeit("Rote Piste", 230) With {
                    .Beschreibung = "Sicheres Befahren"},
-                New Faehigkeit With {
-                   .Benennung = "Schwarze Piste",
-                   .Sortierung = "240",
+                New Faehigkeit("Schwarze Piste", 240) With {
                    .Beschreibung = "Erste Erfahrungen"},
-                New Faehigkeit With {
-                   .Benennung = "Gelände",
-                   .Sortierung = "250",
+                New Faehigkeit("Gelände", 250) With {
                    .Beschreibung = "Erste Erfahrungen"}}
 
             Return sc
@@ -123,17 +103,11 @@ Namespace Services
         Private Function SkillsGeniesser() As FaehigkeitCollection
 
             Dim sc = New FaehigkeitCollection From {
-                New Faehigkeit With {
-                   .Benennung = "Blaue Piste",
-                   .Sortierung = "310",
+                New Faehigkeit("Blaue Piste", 310) With {
                    .Beschreibung = "Zügiges und sicheres Befahren, stabile Grundposition"},
-                New Faehigkeit With {
-                   .Benennung = "Rote/schwarze Piste",
-                   .Sortierung = "320",
+                New Faehigkeit("Rote/schwarze Piste", 320) With {
                    .Beschreibung = "Sicheres Befahren bei geringem Tempo"},
-                New Faehigkeit With {
-                   .Benennung = "Gelände",
-                   .Sortierung = "330",
+                New Faehigkeit("Gelände", 330) With {
                    .Beschreibung = "Weitgehend sicheres Befahren in flachem Gelände"}}
 
             Return sc
@@ -143,21 +117,13 @@ Namespace Services
         Private Function SkillsKoenner() As FaehigkeitCollection
 
             Dim sc = New FaehigkeitCollection From {
-                New Faehigkeit With {
-                   .Benennung = "Blaue Piste",
-                   .Sortierung = "410",
-                   .Beschreibung = "Kurze und mittlere Radien bei regulierender Grundposition, rhytmisch und tempokontrolliert"},
-                New Faehigkeit With {
-                   .Benennung = "Rote Piste",
-                   .Sortierung = "420",
+                New Faehigkeit("Blaue Piste", 410) With {
+                   .Beschreibung = "Kurze und mittlere Radien bei regulierender Grundposition, rhythmisch und tempokontrolliert"},
+                New Faehigkeit("Rote Piste", 420) With {
                    .Beschreibung = "Sicheres Befahren bei zügigem Tempo"},
-                New Faehigkeit With {
-                   .Benennung = "Schwarze Piste",
-                   .Sortierung = "430",
+                New Faehigkeit("Schwarze Piste", 430) With {
                    .Beschreibung = "Sicheres Befahren bei zügigem Tempo"},
-                New Faehigkeit With {
-                   .Benennung = "Gelände",
-                   .Sortierung = "440",
+                New Faehigkeit("Gelände", 440) With {
                    .Beschreibung = "Sicheres Bewegen in flachem Gelände bei regulierender Grundposition"}}
 
             Return sc
@@ -167,21 +133,13 @@ Namespace Services
         Private Function SkillsExperte() As FaehigkeitCollection
 
             Dim sc = New FaehigkeitCollection From {
-                New Faehigkeit With {
-                   .Benennung = "Blaue Piste",
-                   .Sortierung = "510",
+                New Faehigkeit("Blaue Piste", 510) With {
                    .Beschreibung = "Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale"},
-                New Faehigkeit With {
-                   .Benennung = "Rote Piste",
-                   .Sortierung = "520",
-                   .Beschreibung = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"},
-                New Faehigkeit With {
-                   .Benennung = "Schwarze Piste",
-                   .Sortierung = "530",
-                   .Beschreibung = "Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch"},
-                New Faehigkeit With {
-                   .Benennung = "Gelände",
-                   .Sortierung = "540",
+                New Faehigkeit("Rote Piste", 520) With {
+                   .Beschreibung = "Mittlere und kurze Radien, tempokontrolliert, fließend, rhythmisch"},
+                New Faehigkeit("Schwarze Piste", 530) With {
+                   .Beschreibung = "Mittlere und kurze Radien, tempokontrolliert, fließend, rhythmisch"},
+                New Faehigkeit("Gelände", 540) With {
                    .Beschreibung = "Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition"}}
 
             Return sc
@@ -242,15 +200,37 @@ Namespace Services
             sb.AppendLine("Blaue Piste:")
             sb.AppendLine("Fahren einer geführten Kurve bei kurzem und mittlerem Radius unter Erfüllung der Grundmerkmale")
             sb.AppendLine("Rote/schwarze Piste:")
-            sb.AppendLine("Mittlere und kurze Radien, tempokontrolliert, fließend, rythmisch")
+            sb.AppendLine("Mittlere und kurze Radien, tempokontrolliert, fließend, rhythmisch")
             sb.AppendLine("Gelände:")
             sb.AppendLine("Sicheres Bewegen in mittelsteilem Gelände bei regulierender Grundposition")
             Return sb.ToString
 
         End Function
 
+        Private Function GruppenAusgabeNamenUndSortierung() As Dictionary(Of Integer, String)
+            Dim Namen = New Dictionary(Of Integer, String)
+            Namen.Add(10, "Zugspitze")
+            Namen.Add(20, "Großglockner")
+            Namen.Add(30, "Wildspitze")
+            Namen.Add(40, "Zuckerhütl")
+            Namen.Add(50, "K2")
+            Namen.Add(60, "Mount Everest")
+            Namen.Add(70, "Fernau")
+            Namen.Add(80, "Finsteraarhorn")
+            Namen.Add(90, "Piz Permina")
+            Namen.Add(100, "Hochkönig")
+            Namen.Add(110, "Hoher Dachstein")
+            Namen.Add(120, "Marmolata")
+            Namen.Add(130, "Monte Viso")
+            Namen.Add(140, "Ortler")
+            Namen.Add(150, "Matterhorn")
+            Return Namen
+        End Function
+
         Private Function GroupPrintNames() As List(Of String)
-            Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2", "Mount Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata", "Monte Viso", "Ortler"}
+            Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2",
+                "Mount Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata",
+                "Monte Viso", "Ortler"}
         End Function
 
         Private Function GroupSorting() As List(Of String)

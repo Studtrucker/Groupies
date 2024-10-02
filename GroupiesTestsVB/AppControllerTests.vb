@@ -15,7 +15,7 @@ Namespace GroupiesTestsVB
             Assert.AreEqual("Stubaital2024", AppController.CurrentClub.ClubName)
             Assert.AreEqual(9, AppController.CurrentClub.Gruppenliste.Count)
             Assert.AreEqual(0, AppController.CurrentClub.Teilnehmerliste.Count)
-            Assert.AreEqual(5, AppController.PerformanceLevels.Count)
+            Assert.AreEqual(5, AppController.AktuelleLeistungsstufen.Count)
             Assert.AreEqual(0, AppController.CurrentClub.Trainerliste.Count)
 
             Dim Studti As New Teilnehmer("Andreas", "Studtrucker")

@@ -343,10 +343,10 @@ Class MainWindow
         CDS.Club = Nothing
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
-        Dim NeueSkischule = New Entities.Club With {.Leistungsstufeliste = PresetService.CreateLevels()}
+        Dim NeueSkischule = New Entities.Club With {.Leistungsstufeliste = PresetService.StandardLeistungsstufenErstellen()}
         Dim dlg = New CountOfGroupsDialog
         If dlg.ShowDialog Then
-            NeueSkischule.Gruppenliste = PresetService.CreateGroups(dlg.Count.Text)
+            NeueSkischule.Gruppenliste = PresetService.StandardGruppenErstellen(dlg.Count.Text)
         End If
         GroupOverviewWrapPanel.Children.Clear()
         SetView(NeueSkischule)

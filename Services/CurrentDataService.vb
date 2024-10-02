@@ -25,11 +25,11 @@ Namespace Services
         End Function
 
         Public Sub CreateNewSkiclub()
-            Club = New Entities.Club With {.Leistungsstufeliste = PresetService.CreateLevels()}
+            Club = New Entities.Club With {.Leistungsstufeliste = PresetService.StandardLeistungsstufenErstellen()}
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Club.Gruppenliste = PresetService.CreateGroups(dlg.Count.Text)
+                    Club.Gruppenliste = PresetService.StandardGruppenErstellen(dlg.Count.Text)
                 End If
             End If
         End Sub

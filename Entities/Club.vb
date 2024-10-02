@@ -75,14 +75,14 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         Public Sub New(Benennung As String)
             _ClubName = Benennung
-            _Gruppenliste = PresetService.CreateGroups(5)
+            _Gruppenliste = PresetService.StandardGruppenErstellen(5)
             _Teilnehmerliste = New TeilnehmerCollection
             _Trainerliste = New TrainerCollection
         End Sub
 
         Public Sub New(Benennung As String, NumberOfGroups As Integer)
             _ClubName = Benennung
-            _Gruppenliste = PresetService.CreateGroups(NumberOfGroups)
+            _Gruppenliste = PresetService.StandardGruppenErstellen(NumberOfGroups)
             _Teilnehmerliste = New TeilnehmerCollection
             _Trainerliste = New TrainerCollection
         End Sub

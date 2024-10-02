@@ -51,9 +51,9 @@ Namespace Entities
         ''' <returns></returns>
         Public Property GeordnetLeistungsstufeNachnameVorname = From t In Me
                                                                 Order By
-                                                                        t.Leistungsstand.Sortierung Descending,
-                                                                        t.Nachname,
-                                                                        t.Vorname
+                                                                    t.Leistungsstand.Sortierung Descending,
+                                                                    t.Nachname,
+                                                                    t.Vorname
 
     End Class
 End Namespace

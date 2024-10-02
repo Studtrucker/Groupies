@@ -9,21 +9,10 @@ Public Class MappingVeraltertAufNeuTest
 
     <TestMethod>
     Public Sub TestClubOeffnen()
-        Dim filename = "Z:\GroupiesReisen\20231118Stubai.ski"
+        Dim filename = "C:\Users\studtan\OneDrive\Dokumente\Reisen\20231124Stubai.ski"
         If File.Exists(filename) Then
 
-            ' Datei deserialisieren
-            Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-            Dim loadedSkiclub As Veraltert.Skiclub
-            Using fs = New FileStream(filename, FileMode.Open)
-                Try
-                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
-                Catch ex As InvalidDataException
-                    Debug.Print("Datei ungültig: " & ex.Message)
-                    Exit Sub
-                End Try
-            End Using
-
+            Dim loadedSkiclub = AppController.DateiEinlesen(filename)
             Dim neuerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
 
             Assert.AreEqual(loadedSkiclub.Levellist.Count, neuerClub.Leistungsstufeliste.Count)

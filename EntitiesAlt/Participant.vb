@@ -23,6 +23,7 @@ Namespace Entities.Veraltert
             _ParticipantLevel = New Level()
         End Sub
 
+        <Obsolete>
         Public Sub New(Vorname As String, Nachname As String)
             _ParticipantID = Guid.NewGuid()
             _ParticipantFirstName = Vorname

@@ -9,12 +9,8 @@ Public Class AppController
 #Region "Eigenschaften"
     ''' <summary>
     ''' Der aktuell verwaltete Club
-    ''' Veraltert!
-    ''' Neue Verwaltung mit Hilfe eines 
-    ''' App Controllers
     ''' </summary>
     ''' <returns></returns>
-    <Obsolete>
     Public Shared Property CurrentClub As Club
 
     ''' <summary>
@@ -49,10 +45,10 @@ Public Class AppController
             ' Datei aus Groupies Version 1
             ' Todo: Datei aus Groupies Version 2
             Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-            Dim loadedSkiclub As Veraltert.Skiclub
             Using fs = New FileStream(Datei, FileMode.Open)
                 Try
                     LeseVersuchDateiVersion1(fs)
+                    LeseVersuchDateiVersion2(fs)
                 Catch ex As InvalidDataException
                     Debug.Print("Datei ungültig: " & ex.Message)
                     Return Nothing

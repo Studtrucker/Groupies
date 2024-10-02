@@ -127,15 +127,12 @@ Namespace Entities
             End Get
         End Property
 
-        'Function()
-        '    Dim text As String
-        '    If Leistungsstand Is Nothing Then
-        '        text = $"{VorUndNachname}, Leistungsstand unbekannt"
-        '    Else
-        '        text = $"{VorUndNachname}, {Leistungsstand.Benennung}"
-        '    End If
-        '    Return text
-        'End Function
+
+        ''' <summary>
+        ''' Setzt und liest die Gruppenmitgliedschaft
+        ''' </summary>
+        Public Property IstGruppenmitglied As Boolean
+
 
 #End Region
 
@@ -175,7 +172,7 @@ Namespace Entities
         <Obsolete>
         Public Sub SetAsGroupMember(GroupID As Guid)
             MemberOfGroup = GroupID
-            _IsGroupMember = True
+            _IstGruppenmitglied = True
         End Sub
 
         ''' <summary>
@@ -183,7 +180,7 @@ Namespace Entities
         ''' </summary>
         <Obsolete>
         Public Sub SetAsGroupMember()
-            _IsGroupMember = True
+            _IstGruppenmitglied = True
         End Sub
 
         ''' <summary>
@@ -192,24 +189,11 @@ Namespace Entities
         <Obsolete>
         Public Sub RemoveFromGroup()
             MemberOfGroup = Nothing
-            _IsGroupMember = False
+            _IstGruppenmitglied = False
         End Sub
 
-        <Obsolete>
-        Private _IsGroupMember As Boolean
 
-        ''' <summary>
-        ''' Setzt und liest die Gruppenmitgliedschaft
-        ''' </summary>
-        <Obsolete>
-        Public Property IsGroupMember As Boolean
-            Get
-                Return _IsGroupMember
-            End Get
-            Set(value As Boolean)
-                _IsGroupMember = value
-            End Set
-        End Property
+
 
 
 
@@ -220,7 +204,7 @@ Namespace Entities
         <Obsolete>
         Public ReadOnly Property IsNotInGroup As Boolean
             Get
-                Return Not _IsGroupMember
+                Return Not _IstGruppenmitglied
             End Get
         End Property
 

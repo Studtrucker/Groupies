@@ -6,7 +6,7 @@ Public Class FaehigkeitenTests
 
     <TestMethod>
     Public Sub TestKonstruktor()
-        Dim f = New Entities.Faehigkeit With {.Benennung = "Bremsen", .Sortierung = 3, .Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen stoppen"}
+        Dim f = New Entities.Faehigkeit("Bremsen", 3) With {.Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen stoppen"}
         Assert.AreEqual("Bremsen", f.Benennung)
         Assert.AreEqual("Kann mit Hilfe des Pflugs an flachen Hängen stoppen", f.Beschreibung)
         Assert.AreEqual($"3. Bremsen{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen stoppen.", f.AusgabeAnTrainerinfo)

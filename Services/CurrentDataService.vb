@@ -20,7 +20,7 @@ Namespace Services
 
         Private Function InstructorsAvailable() As TrainerCollection
             Dim available = New TrainerCollection
-            Club.Trainerliste.Where(Function(y) y.IsAvailable).ToList.ForEach(Sub(i) available.Add(i))
+            Club.Trainerliste.Where(Function(y) y.IstEinerGruppeZugewiesen = False).ToList.ForEach(Sub(i) available.Add(i))
             Return available
         End Function
 

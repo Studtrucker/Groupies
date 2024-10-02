@@ -104,23 +104,25 @@ Namespace Entities
         Public Property Teilnehmerliste() As TeilnehmerCollection
 
         ''' <summary>
+        ''' Eine Liste aller Trainer im Club
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Trainerliste() As TrainerCollection
+
+        ''' <summary>
         ''' Eine Liste aller Gruppen im Club
         ''' </summary>
         ''' <returns></returns>
         Public Property Gruppenliste() As GruppeCollection
 
         ''' <summary>
-        ''' Eine Liste aller Leistungsstufen
+        ''' Eine Liste der verwendeten Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
         Public Property Leistungsstufeliste() As LeistungsstufeCollection
 
-        ''' <summary>
-        ''' Eine Liste aller Trainer
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Trainerliste() As TrainerCollection
 
+        <Obsolete>
         Public Property Participantliste = If(_Teilnehmerliste Is Nothing, "", _Teilnehmerliste.Select(Function(Tn) Tn.VorUndNachname & vbCrLf))
 
         'Public ReadOnly Property ParticipantsNotInAGroup As ParticipantCollection
@@ -148,7 +150,7 @@ Namespace Entities
         End Function
 
         Public Function AnzahlEingeteilteTeilnehmer() As Integer
-            Return Teilnehmerliste.Where(Function(TN) TN.IsGroupMember).Count
+            Return Teilnehmerliste.Where(Function(TN) TN.IstGruppenmitglied).Count
         End Function
 
         Public Overrides Function ToString() As String

@@ -117,6 +117,15 @@ Namespace Entities
             End Get
         End Property
 
+        Public ReadOnly Property IstEinerGruppeZugewiesen As Boolean
+
+        Public ReadOnly Property HatFoto As Boolean
+            Get
+                Return _Foto IsNot Nothing AndAlso Foto.Length > 0
+            End Get
+        End Property
+
+
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -161,35 +170,15 @@ Namespace Entities
             IsAvailable = IAmAvailable
         End Sub
 
-
-        Public ReadOnly Property HatFoto As Boolean
-            Get
-                Return _Foto IsNot Nothing AndAlso Foto.Length > 0
-            End Get
-        End Property
-
-        <Obsolete>
-        Private _IsAvailable As Boolean
-
         <Obsolete>
         Public Property IsAvailable As Boolean
-            Get
-                Return _IsAvailable
-            End Get
-            Set(value As Boolean)
-                _IsAvailable = value
-            End Set
-        End Property
-
-        <Obsolete>
-        Public ReadOnly Property IsAssigned As Boolean
-            Get
-                Return Not _IsAvailable
-            End Get
-        End Property
 
         <Obsolete>
         Public Property SaveOrDisplay As Boolean
+
+        <Obsolete>
+        Public ReadOnly Property IsAssigned As Boolean
+
 #End Region
 
     End Class

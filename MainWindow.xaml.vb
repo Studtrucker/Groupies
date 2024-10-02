@@ -1130,8 +1130,6 @@ Class MainWindow
         'Todo: Berechnen, wieviele Teilnehmer auf einer Seite gedruckt werden können
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
-        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-        CurrentClub = CurrentClub.GetAktualisierungen()
 
         '_Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
         ' nach AngezeigterName sortierte Liste verwenden

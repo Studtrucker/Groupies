@@ -88,63 +88,38 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Leistungsstufenliste() As LeistungsstufeCollection
 
-        <Obsolete>
-        Public ReadOnly Property InstructorsAvailable As TrainerCollection
+        ''' <summary>
+        ''' Anzahl der Teilnehmer, die keiner Gruppe zugeteilt sind
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property AnzahlFreieTeilnehmer As Integer
             Get
-                Dim List As New TrainerCollection
-                Trainerliste.Where(Function(x) x.IsAvailable).ToList.ForEach(Sub(item) List.Add(item))
-                Return List
+                Return (From t In Teilnehmerliste Where Not t.IstGruppenmitglied).Count
+            End Get
+        End Property
+
+
+        ''' <summary>
+        ''' Anzahl der Teilnehmer, die bereits einer Gruppe zugeteilt sind
+        ''' </summary>
+        ''' <returns></returns>
+
+        Public ReadOnly Property AnzahlEingeteilteTeilnehmer As Integer
+            Get
+                Return (From t In Teilnehmerliste Where t.IstGruppenmitglied).Count
             End Get
         End Property
 
 #End Region
 
 #Region "Funktionen und Methoden"
-        Public Function AnzahlFreieTeilnehmer() As Integer
-            Return Teilnehmerliste.Where(Function(TN) TN.IstGruppenmitglied = False).Count
-        End Function
-
-        Public Function AnzahlEingeteilteTeilnehmer() As Integer
-            Return Teilnehmerliste.Where(Function(TN) TN.IstGruppenmitglied).Count
-        End Function
 
         Public Overrides Function ToString() As String
             Return ClubName
         End Function
 
-        Public Function GetAktualisierungen() As Club
-            Gruppenliste.ToList.ForEach(AddressOf GetAktualisierungen)
-            Teilnehmerliste.ToList.ForEach(AddressOf GetAktualisierungen)
-            Return Me
-        End Function
-
-        Private Sub LadeTeilnehmerliste(Teilnehmer As TeilnehmerCollection)
-            _Teilnehmerliste = Teilnehmer
-            'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
-            ' Levelsliste = Teilnehmer.ToList.ForEach()
-        End Sub
-
-        Private Sub LadeTrainerliste(Instructors As TrainerCollection)
-            _Trainerliste = Instructors
-            'Skikursgruppenliste = Teilnehmer.ToList.ForEach()
-            ' Levelsliste = Teilnehmer.ToList.ForEach()
-        End Sub
-        Private Sub GetAktualisierungen(Skikurs As Gruppe)
-            'Skikurs.Skilehrer = Skilehrerliste.Where(Function(x) x.SkilehrerID = Skikurs.Skilehrer.SkilehrerID).First
-            'For i = 0 To Skikurs.Mitgliederliste.Count - 1
-            '    Skikurs.Mitgliederliste.Item(i) = GetAktualisierungen(Skikurs.Mitgliederliste.Item(i))
-            'Next
-        End Sub
-
-        Private Sub GetAktualisierungen(Mitglied As Teilnehmer)
-            'Participantlist.Where(Function(x) x.ParticipantID = Mitglied.ParticipantID).First
-        End Sub
-
 #End Region
 
-#Region "Veraltert"
-
-#End Region
 
     End Class
 

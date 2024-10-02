@@ -48,12 +48,12 @@ Namespace Controller
                     Dim DateiGelesen
                     Using fs = New FileStream(Datei, FileMode.Open)
                         ' Versuche XML mit Struktur Groupies 2 zu lesen
-                        DateiGelesen = LeseVersuchDateiVersion2(fs)
+                        DateiGelesen = LeseXMLDateiVersion2(fs)
                     End Using
                     ' Versuche XML mit Struktur Groupies 1 zu lesen
                     Using fs = New FileStream(Datei, FileMode.Open)
                         If Not DateiGelesen Then
-                            LeseVersuchDateiVersion1(fs)
+                            LeseXMLDateiVersion1(fs)
                         End If
                     End Using
                 Catch ex As InvalidDataException
@@ -63,7 +63,7 @@ Namespace Controller
             End If
         End Sub
 
-        Private Shared Function LeseVersuchDateiVersion1(Filestream As FileStream) As Boolean
+        Private Shared Function LeseXMLDateiVersion1(Filestream As FileStream) As Boolean
             Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
             Dim loadedSkiclub As Veraltert.Skiclub
             Try
@@ -76,10 +76,10 @@ Namespace Controller
             End Try
         End Function
 
-        Private Shared Function LeseVersuchDateiVersion2(Filestream As FileStream) As Boolean
+        Private Shared Function LeseXMLDateiVersion2(Filestream As FileStream) As Boolean
             Dim serializer = New XmlSerializer(GetType(Club))
             Try
-                CurrentClub = TryCast(serializer.Deserialize(Filestream), club)
+                CurrentClub = TryCast(serializer.Deserialize(Filestream), Club)
                 Return True
             Catch ex As InvalidOperationException
                 Return False

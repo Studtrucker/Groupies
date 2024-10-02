@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System.Text
 Imports Groupies.Entities
-Imports CDS = Groupies.Services.CurrentDataService
+Imports Groupies.Controller.AppController
 
 Public Class InstructorsWindow
 #Region "Fields"
@@ -23,8 +23,8 @@ Public Class InstructorsWindow
 
 #Region "Window Events"
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        If CDS.Club IsNot Nothing AndAlso CDS.Club.Trainerliste IsNot Nothing Then
-            setView(CDS.Club.Trainerliste)
+        If CurrentClub IsNot Nothing AndAlso CurrentClub.Trainerliste IsNot Nothing Then
+            setView(CurrentClub.Trainerliste)
         End If
     End Sub
 #End Region

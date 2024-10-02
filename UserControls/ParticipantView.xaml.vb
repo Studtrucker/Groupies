@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Entities
-Imports CDS = Groupies.Services.CurrentDataService
+Imports CDS = Groupies.Controller.AppController
 
 Namespace UserControls
 
@@ -20,7 +20,7 @@ Namespace UserControls
         End Sub
 
         Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs)
-            _levelListCollectionView = New ListCollectionView(CDS.Club.Leistungsstufeliste)
+            _levelListCollectionView = New ListCollectionView(CDS.CurrentClub.Leistungsstufenliste)
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
             ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
         End Sub

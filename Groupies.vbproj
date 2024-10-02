@@ -135,7 +135,6 @@
     <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\ExcelService.vb" />
-    <Compile Include="Services\StartService.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>

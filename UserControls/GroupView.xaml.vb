@@ -1,8 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Entities
 Imports PropertyChanged
-Imports CDS = Groupies.Services.CurrentDataService
-
+Imports CDS = Groupies.Controller.AppController
 Namespace UserControls
 
     Public Class GroupView
@@ -22,9 +21,9 @@ Namespace UserControls
 
         Private Sub GroupView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-            If CDS.Club IsNot Nothing AndAlso CDS.Club.Leistungsstufeliste IsNot Nothing Then
+            If CDS.CurrentClub IsNot Nothing AndAlso CDS.CurrentClub.Leistungsstufenliste IsNot Nothing Then
 
-                _levelListCollectionView = New ListCollectionView(CDS.Club.Leistungsstufeliste)
+                _levelListCollectionView = New ListCollectionView(CDS.CurrentClub.Leistungsstufenliste)
                 If _levelListCollectionView.CanSort Then
                     _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
                 End If
@@ -68,7 +67,7 @@ Namespace UserControls
                 Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
                 For Each Participant As Teilnehmer In TN
                     If Not Participant.IstGruppenmitglied Then
-                        Participant.SetAsGroupMember(CurrentGroup.GruppenID)
+                        'Participant.SetAsGroupMember(CurrentGroup.GruppenID)
                         CurrentGroup.TeilnehmerHinzufuegen(Participant)
                     End If
                 Next
@@ -87,11 +86,11 @@ Namespace UserControls
                 If CurrentGroup.Trainer IsNot Nothing Then
                     ' Alten Skilehrer wieder frei setzen
                     '                    CurrentGroup.GroupLeader.IsAvailable = True
-                    CDS.Club.Trainerliste.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IsAvailable = True
+                    '                    CDS.Club.Trainerliste.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IstEinerGruppeZugewiesen = True
                 End If
                 CurrentGroup.Trainer = TN
                 ' Neuer Skilehrer ist nicht mehr frei
-                DirectCast(TN, Trainer).IsAvailable = False
+                'DirectCast(TN, Trainer).IsAvailable = False
             End If
         End Sub
 
@@ -123,7 +122,7 @@ Namespace UserControls
 
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
             For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
-                CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
+                'CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
             Next
             SetView()
         End Sub

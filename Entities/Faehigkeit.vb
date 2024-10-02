@@ -9,13 +9,17 @@ Namespace Entities
     Public Class Faehigkeit
         Inherits BaseModel
 
+#Region "Felder"
+        Private _Faehigkeit = Guid.NewGuid
+#End Region
+
 #Region "Konstruktor"
+
+
         ''' <summary>
         ''' Erstellt eine neue Fähigkeit
         ''' </summary>
-        <Obsolete>
         Public Sub New()
-            _FaehigkeitID = Guid.NewGuid()
         End Sub
 
         ''' <summary>

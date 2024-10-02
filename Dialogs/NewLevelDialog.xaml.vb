@@ -12,7 +12,7 @@ Public Class NewLevelDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Level = New Leistungsstufe(True)
+        _Level = New Leistungsstufe(String.Empty)
         DataContext = _Level
 
     End Sub

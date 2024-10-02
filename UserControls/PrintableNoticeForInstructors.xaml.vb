@@ -1,7 +1,7 @@
 ﻿Imports Groupies.Entities
 Imports System.IO
 Imports System.Windows.Markup
-Imports CDS = Groupies.Services.CurrentDataService
+Imports CDS = Groupies.Controller.AppController
 Imports Groupies.Interfaces
 
 Namespace UserControls

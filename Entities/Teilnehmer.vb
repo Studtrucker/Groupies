@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports CDS = Groupies.Services.CurrentDataService
+Imports Groupies.Controller.AppController
 
 
 Namespace Entities
@@ -14,7 +14,12 @@ Namespace Entities
     Public Class Teilnehmer
         Inherits BaseModel
 
+
+#Region "Fields"
         Private _Leistungsstand = New Leistungsstufe("Leistungsstand unbekannt", -1)
+        Private _TeilnehmerID = Guid.NewGuid()
+
+#End Region
 
 #Region "Events"
         Public Event ChangeGroup(Participant As Teilnehmer)
@@ -25,9 +30,7 @@ Namespace Entities
         ''' <summary>
         ''' Erstellt einen neuen Teilnehmer
         ''' </summary>
-        <Obsolete>
         Public Sub New()
-            _TeilnehmerID = Guid.NewGuid()
         End Sub
 
         ''' <summary>
@@ -37,7 +40,6 @@ Namespace Entities
         ''' <param name="Nachname"></param>
         ''' <param name="Leistungsstufe"></param>
         Public Sub New(Vorname As String, Nachname As String, Leistungsstufe As Leistungsstufe)
-            _TeilnehmerID = Guid.NewGuid()
             _Vorname = Vorname
             _Nachname = Nachname
             _Leistungsstand = Leistungsstufe
@@ -49,7 +51,6 @@ Namespace Entities
         ''' <param name="Vorname"></param>
         ''' <param name="Nachname"></param>
         Public Sub New(Vorname As String, Nachname As String)
-            _TeilnehmerID = Guid.NewGuid()
             _Vorname = Vorname
             _Nachname = Nachname
         End Sub
@@ -62,6 +63,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TeilnehmerID As Guid
+            Get
+                Return _TeilnehmerID
+            End Get
+            Set(value As Guid)
+                _TeilnehmerID = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Der Nachname des Teilnehmers
@@ -160,7 +168,7 @@ Namespace Entities
         <Obsolete>
         Public ReadOnly Property MemberOfGroup_Naming() As String
             Get
-                Return CDS.Club.Gruppenliste.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
+                Return CurrentClub.Gruppenliste.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
             End Get
         End Property
 

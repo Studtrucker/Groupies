@@ -15,7 +15,7 @@ Namespace Services
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
-        Private ReadOnly _skischule = New Entities.Club
+        Private ReadOnly _skischule = New Entities.Club("Club")
 
 #End Region
 
@@ -95,9 +95,10 @@ Namespace Services
                 Dim Teilnehmer As New Teilnehmer With {
                 .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
                 .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .Leistungsstand = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)),
-                .MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
+                .Leistungsstand = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
+
                 _skischule.Participantlist.Add(Teilnehmer)
+                '.MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
 
                 'Gibt es die Skikursgruppe aus der Excelliste schon?
                 If Not String.IsNullOrEmpty(Excelsheet.UsedRange(CurrentRow, 4).Value) Then
@@ -105,7 +106,7 @@ Namespace Services
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
                         Skikursgruppe.TeilnehmerHinzufuegen(Teilnehmer)
-                        Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
+                        'Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
                     End If
                 End If
                 CurrentRow += 1
@@ -143,11 +144,10 @@ Namespace Services
 
             Do Until CurrentRow > RowCount
 
-                Dim Teilnehmer As New Trainer(True, True) With {
-                .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .Spitzname = Trim(Excelsheet.UsedRange(CurrentRow, 3).Value)}
-                _Participantlist.Add(Teilnehmer)
+                Dim Trainer As New Trainer(Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+                                              Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+                                              Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))
+                _Participantlist.Add(Trainer)
 
                 CurrentRow += 1
             Loop
@@ -163,7 +163,7 @@ Namespace Services
 
             Dim Level = _skischule.Levellist.FirstOrDefault(Function(k) k.LevelNaming = Benennung)
             If Level Is Nothing Then
-                Level = New Leistungsstufe(True) With {.Benennung = Benennung}
+                Level = New Leistungsstufe(Benennung)
                 _skischule.Levellist.Add(Level)
             End If
 

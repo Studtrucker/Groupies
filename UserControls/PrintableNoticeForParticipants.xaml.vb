@@ -1,7 +1,7 @@
 ﻿Imports Groupies.Entities
 Imports System.IO
 Imports System.Windows.Markup
-Imports CDS = Groupies.Services.CurrentDataService
+Imports CDS = Groupies.Controller.AppController
 Imports Groupies.Interfaces
 
 Namespace UserControls
@@ -25,11 +25,11 @@ Namespace UserControls
             Members = Group.Mitglieder.ParticipantCollectionOrdered
 
             If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
-                If CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
+                GroupLeaderPrintName = CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
+                If CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.Club.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
+                    bi.StreamSource = New MemoryStream(CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else

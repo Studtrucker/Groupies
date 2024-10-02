@@ -1,9 +1,9 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports CDS = Groupies.Services.CurrentDataService
-
+Imports CDS = Groupies.Controller.AppController
 
 Namespace Entities.Veraltert
+
 
     <DefaultBindingProperty("ParticipantFirstname")>
     <DefaultProperty("ParticipantFullName")>
@@ -23,7 +23,6 @@ Namespace Entities.Veraltert
             _ParticipantLevel = New Level()
         End Sub
 
-        <Obsolete>
         Public Sub New(Vorname As String, Nachname As String)
             _ParticipantID = Guid.NewGuid()
             _ParticipantFirstName = Vorname
@@ -88,7 +87,7 @@ Namespace Entities.Veraltert
         ''' <returns></returns>
         Public ReadOnly Property MemberOfGroup_Naming() As String
             Get
-                Return CDS.Skiclub.Grouplist.Where(Function(x) x.GroupID.Equals(MemberOfGroup)).DefaultIfEmpty(New Group With {.GroupNaming = String.Empty}).Single.GroupNaming
+                Return Controller.AppController.CurrentClub.Gruppenliste.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe("Gruppe")).Single.Benennung
             End Get
         End Property
 

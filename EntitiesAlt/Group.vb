@@ -30,16 +30,9 @@ Namespace Entities.Veraltert
 
         Public Property GroupMembers As ParticipantCollection
 
-        'Public ReadOnly Property GroupMemberCount As Integer
-        '    Get
-        '        Return GroupMembers.Count
-        '    End Get
-        'End Property
-
         Public Sub AddMember(Teilnehmer As Participant)
             _GroupMembers.Add(Teilnehmer)
         End Sub
-
 
         Public Sub RemoveMember(Teilnehmer As Participant)
             _GroupMembers.Remove(Teilnehmer)

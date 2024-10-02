@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Commands
-Imports CDS = Groupies.Services.CurrentDataService
 Imports Groupies.Entities
 
 Namespace UserControls

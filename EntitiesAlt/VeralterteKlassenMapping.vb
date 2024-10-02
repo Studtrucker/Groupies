@@ -33,9 +33,9 @@ Public Module VeralterteKlassenMapping
         Dim TrainerCollection = New TrainerCollection
         NeueTrainerliste.ForEach(Sub(t) TrainerCollection.Add(t))
 
-        Dim NeuerClub = New Club() With {
+        Dim NeuerClub = New Club("Club") With {
             .Gruppenliste = NeueGruppenCollection,
-            .Leistungsstufeliste = LeistungsstufeCollection,
+            .Leistungsstufenliste = LeistungsstufeCollection,
             .Teilnehmerliste = TeilnehmerCollection,
             .Trainerliste = TrainerCollection}
 

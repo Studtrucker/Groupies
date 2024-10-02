@@ -19,7 +19,7 @@ Public Class NewParticipantDialog
         _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
-        _levelListCollectionView = New CollectionView(DS.Club.Leistungsstufeliste)
+        _levelListCollectionView = New CollectionView(DS.Club.Leistungsstufenliste)
         _instructorListCollectionView = New CollectionView(DS.Club.Gruppenliste)
 
         ParticipantLevelComboBox.ItemsSource = _levelListCollectionView

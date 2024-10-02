@@ -14,7 +14,7 @@ Public Class NewInstructorDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Instructor = New Trainer(True, True)
+        _Instructor = New Trainer(String.Empty)
         DataContext = _Instructor
 
     End Sub

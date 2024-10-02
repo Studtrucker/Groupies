@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Entities
 Imports Groupies.Commands
-Imports CDS = Groupies.Services.CurrentDataService
+
 Namespace UserControls
     Public Class Levels
         Private _levelListCollectionView As ICollectionView
@@ -14,7 +14,7 @@ Namespace UserControls
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-            _levelListCollectionView = New ListCollectionView(Groupies.Services.CurrentDataService.Club.Leistungsstufeliste)
+            _levelListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.Leistungsstufenliste)
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
             DataContext = _levelListCollectionView
 
@@ -37,8 +37,8 @@ Namespace UserControls
             Dim dlg = New NewSkillDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
             If dlg.ShowDialog = True Then
                 Dim s = dlg.Skill
-                Dim i = CDS.Club.Leistungsstufeliste.IndexOf(_levelListCollectionView.CurrentItem)
-                CDS.Club.Leistungsstufeliste(i).Faehigkeiten.Add(s)
+                Dim i = Controller.AppController.CurrentClub.Leistungsstufenliste.IndexOf(_levelListCollectionView.CurrentItem)
+                Controller.AppController.CurrentClub.Leistungsstufenliste(i).Faehigkeiten.Add(s)
                 _skillListCollectionView.MoveCurrentTo(s)
                 LevelViewUserControl.SkillsDataGrid.ScrollIntoView(s)
             End If

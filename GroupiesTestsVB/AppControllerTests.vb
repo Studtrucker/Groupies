@@ -2,6 +2,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies
 Imports System.IO
 Imports Groupies.Entities
+Imports Groupies.Controller
 
 Namespace GroupiesTestsVB
     <TestClass>
@@ -11,7 +12,7 @@ Namespace GroupiesTestsVB
         Sub TestNeuenSkiclubErstellen()
 
             Dim numberOfGroups = 9
-            Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.CreateNewClub("Stubaital2024", numberOfGroups))
+            Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024", numberOfGroups))
             Assert.AreEqual("Stubaital2024", AppController.CurrentClub.ClubName)
             Assert.AreEqual(9, AppController.CurrentClub.Gruppenliste.Count)
             Assert.AreEqual(0, AppController.CurrentClub.Teilnehmerliste.Count)
@@ -21,9 +22,8 @@ Namespace GroupiesTestsVB
             Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
             Dim Manuela As New Teilnehmer("Manuela", "Ramm")
 
-            Dim var = New List(Of Teilnehmer) From {Studti, Manuela}
 
-            AppController.CurrentClub.Teilnehmerliste = New TeilnehmerCollection(var)
+            AppController.CurrentClub.Teilnehmerliste = New TeilnehmerCollection From {Studti, Manuela}
             Assert.AreEqual(2, AppController.CurrentClub.Teilnehmerliste.Count)
             Assert.AreEqual(2, AppController.CurrentClub.AnzahlFreieTeilnehmer)
             Assert.AreEqual(0, AppController.CurrentClub.AnzahlEingeteilteTeilnehmer)
@@ -71,6 +71,13 @@ Namespace GroupiesTestsVB
             Assert.AreEqual(String.Format("Die Datei {0} im Ordner {1} existiert nicht.", filename & ".json", Environment.CurrentDirectory), AppController.LoadFromJson(filename))
             Assert.AreEqual(String.Format("Die Datei {0} im Ordner {1} existiert nicht.", filename & ".xml", Environment.CurrentDirectory), AppController.LoadFromXML(filename))
         End Sub
+
+        <TestMethod>
+        Public Sub TestDateiEinlesen()
+            AppController.XMLDateiEinlesen("Z:\GroupiesReisen\Stubaital\20231118Stubai.ski")
+
+        End Sub
+
 
     End Class
 

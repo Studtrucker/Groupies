@@ -12,13 +12,21 @@ Namespace Entities
     Public Class Gruppe
         Inherits BaseModel
 
+#Region "Felder"
+        Private _GruppenID = Guid.NewGuid()
+#End Region
+
 #Region "Konstruktor"
+
+        Public Sub New()
+            _Mitglieder = New TeilnehmerCollection
+        End Sub
+
         ''' <summary>
         ''' Erstellt eine Gruppe unter Angabe des Namens für die Information
         ''' </summary>
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String)
-            _GruppenID = Guid.NewGuid()
             _Ausgabename = Ausgabename
         End Sub
 
@@ -28,7 +36,6 @@ Namespace Entities
         ''' <param name="Ausgabename"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Sortierung As Integer)
-            _GruppenID = Guid.NewGuid()
             _Ausgabename = Ausgabename
             _Sortierung = Sortierung
         End Sub
@@ -39,7 +46,6 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String, Benennung As String)
-            _GruppenID = Guid.NewGuid()
             _Benennung = Benennung
             _Ausgabename = Ausgabename
         End Sub
@@ -51,7 +57,6 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Benennung As String, Sortierung As Integer)
-            _GruppenID = Guid.NewGuid()
             _Benennung = Benennung
             _Ausgabename = Ausgabename
             _Sortierung = Sortierung
@@ -66,6 +71,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property GruppenID As Guid
+            Get
+                Return _GruppenID
+            End Get
+            Set(value As Guid)
+                _GruppenID = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Die interne Benennung der Gruppe
@@ -128,11 +140,7 @@ Namespace Entities
 #End Region
 
 #Region "Veraltert"
-        <Obsolete>
-        Public Sub New()
-            _GruppenID = Guid.NewGuid()
-            _Mitglieder = New TeilnehmerCollection
-        End Sub
+
 
 #End Region
 

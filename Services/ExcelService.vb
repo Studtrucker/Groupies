@@ -1,6 +1,7 @@
 ﻿Imports Excel = Microsoft.Office.Interop.Excel
 Imports Groupies.Entities
 Imports Microsoft.Office.Interop.Excel
+Imports Groupies.Controller.AppController
 
 Namespace Services
 
@@ -83,7 +84,7 @@ Namespace Services
                 Dim CurrentRow = 1 + NumberOfGroups
 
                 Dim dic = New Dictionary(Of Leistungsstufe, Integer)
-                Dim Levels As LeistungsstufeCollection = AppController.StandardLeistungsstufen
+                Dim Levels As LeistungsstufeCollection = StandardLeistungsstufen
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Anfänger").Single) = CInt(Trim(xlApp.ActiveSheet.Range("B" & CurrentRow).Value))
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Fortgeschritten").Single) = CInt(Trim(xlApp.ActiveSheet.Range("C" & CurrentRow).Value))
                 dic.Item(Levels.Where(Function(x) x.Benennung = "Genießer").Single) = CInt(Trim(xlApp.ActiveSheet.Range("D" & CurrentRow).Value))
@@ -108,11 +109,11 @@ Namespace Services
 
         Private Function StandardDistribution() As Dictionary(Of Leistungsstufe, Integer)
 
-            dic.Item(Services.Club.Leistungsstufeliste.Where(Function(x) x.Benennung = "Anfänger").Single) = 2
-            dic.Item(Services.Club.Leistungsstufeliste.Where(Function(x) x.Benennung = "Fortgeschrittene").Single) = 4
-            dic.Item(Services.Club.Leistungsstufeliste.Where(Function(x) x.Benennung = "Genießer").Single) = 5
-            dic.Item(Services.Club.Leistungsstufeliste.Where(Function(x) x.Benennung = "Könner").Single) = 3
-            dic.Item(Services.Club.Leistungsstufeliste.Where(Function(x) x.Benennung = "Experten").Single) = 1
+            dic.Item(Services.Club.Leistungsstufenliste.Where(Function(x) x.Benennung = "Anfänger").Single) = 2
+            dic.Item(Services.Club.Leistungsstufenliste.Where(Function(x) x.Benennung = "Fortgeschrittene").Single) = 4
+            dic.Item(Services.Club.Leistungsstufenliste.Where(Function(x) x.Benennung = "Genießer").Single) = 5
+            dic.Item(Services.Club.Leistungsstufenliste.Where(Function(x) x.Benennung = "Könner").Single) = 3
+            dic.Item(Services.Club.Leistungsstufenliste.Where(Function(x) x.Benennung = "Experten").Single) = 1
 
             Return dic
 

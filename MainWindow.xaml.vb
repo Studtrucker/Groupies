@@ -17,9 +17,9 @@ Imports Microsoft.Office.Core
 Imports Groupies.UserControls
 Imports Groupies.Services
 Imports Groupies.Entities
-Imports CDS = Groupies.Services.CurrentDataService
 Imports Groupies.Commands
 Imports Groupies.Interfaces
+Imports Groupies.Controller.AppController
 
 Class MainWindow
 
@@ -154,8 +154,8 @@ Class MainWindow
 
         End If
 
-        If CDS.Club IsNot Nothing Then
-            SetView(CDS.Club)
+        If CurrentClub IsNot Nothing Then
+            SetView(CurrentClub)
         End If
 
         ' 5. JumpList in Windows Taskbar aktualisieren
@@ -330,7 +330,7 @@ Class MainWindow
     Private Sub HandleNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If CDS.Club IsNot Nothing Then
+        If CurrentClub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -340,10 +340,10 @@ Class MainWindow
         End If
 
         ' Skischulobjekt löschen
-        CDS.Club = Nothing
+        CurrentClub = Nothing
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
-        Dim NeueSkischule = New Entities.Club With {.Leistungsstufeliste = PresetService.StandardLeistungsstufenErstellen()}
+        Dim NeueSkischule = New Entities.Club("Club") With {.Leistungsstufenliste = PresetService.StandardLeistungsstufenErstellen()}
         Dim dlg = New CountOfGroupsDialog
         If dlg.ShowDialog Then
             NeueSkischule.Gruppenliste = PresetService.StandardGruppenErstellen(dlg.Count.Text)
@@ -370,7 +370,7 @@ Class MainWindow
     End Sub
 
     Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CDS.Club IsNot Nothing
+        e.CanExecute = CurrentClub IsNot Nothing
     End Sub
 
     Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -408,7 +408,7 @@ Class MainWindow
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
             ImportParticipants.ToList.ForEach(Sub(x) Services.Club.Teilnehmerliste.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
-            setView(CDS.Club.Gruppenliste)
+            setView(CurrentClub.Gruppenliste)
         End If
 
     End Sub
@@ -424,7 +424,7 @@ Class MainWindow
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
             ImportInstructors.ToList.ForEach(Sub(x) Services.Club.Trainerliste.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
-            setView(CDS.Club.Gruppenliste)
+            setView(CurrentClub.Gruppenliste)
         End If
 
     End Sub
@@ -432,7 +432,7 @@ Class MainWindow
     Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If CDS.Club IsNot Nothing Then
+        If CurrentClub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuellen Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -442,7 +442,7 @@ Class MainWindow
         End If
 
         ' Skischulobjekt löschen
-        CDS.Club = Nothing
+        CurrentClub = Nothing
 
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
@@ -536,13 +536,13 @@ Class MainWindow
 #Region "Level"
 
     Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CDS.Club IsNot Nothing
+        e.CanExecute = CurrentClub IsNot Nothing
     End Sub
 
     Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            CDS.Club.Leistungsstufeliste.Add(dlg.Level)
+            CurrentClub.Leistungsstufenliste.Add(dlg.Level)
             _levelListCollectionView.MoveCurrentTo(dlg.Level)
             levelDataGrid.ScrollIntoView(dlg.Level)
         End If
@@ -558,11 +558,11 @@ Class MainWindow
         For Each item As Leistungsstufe In levelDataGrid.SelectedItems
             RemoveLevelFromSkikursgruppe(item)
             RemoveLevelFromTeilnehmer(item)
-            index(i) = CDS.Club.Leistungsstufeliste.IndexOf(item)
+            index(i) = CurrentClub.Leistungsstufenliste.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(CDS.Club.Leistungsstufeliste, index)
+        RemoveItemsAt(CurrentClub.Leistungsstufenliste, index)
     End Sub
 
 #End Region
@@ -570,13 +570,13 @@ Class MainWindow
 #Region "Skikursgruppe"
 
     Private Sub HandleNeueSkikursgruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CDS.Club IsNot Nothing
+        e.CanExecute = CurrentClub IsNot Nothing
     End Sub
 
     Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         If dlg.ShowDialog = True Then
-            CDS.Club.Gruppenliste.Add(dlg.Group)
+            CurrentClub.Gruppenliste.Add(dlg.Group)
             _skikursListCollectionView.MoveCurrentTo(dlg.Group)
             skikurseDataGrid.ScrollIntoView(dlg.Group)
         End If
@@ -591,11 +591,11 @@ Class MainWindow
         Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Gruppe In skikurseDataGrid.SelectedItems
             RemoveSkikursgruppeFromTeilnehmer(item)
-            index(i) = CDS.Club.Gruppenliste.IndexOf(item)
+            index(i) = CurrentClub.Gruppenliste.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(CDS.Club.Gruppenliste, index)
+        RemoveItemsAt(CurrentClub.Gruppenliste, index)
     End Sub
 
 #End Region
@@ -603,7 +603,7 @@ Class MainWindow
 #Region "Teilnehmer"
 
     Private Sub HandleNewParticipantCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CDS.Club IsNot Nothing
+        e.CanExecute = CurrentClub IsNot Nothing
     End Sub
 
     Private Sub HandleNewParticipantExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -611,7 +611,7 @@ Class MainWindow
         Dim dlg = New NewParticipantDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CDS.Club.Teilnehmerliste.Add(dlg.Teilnehmer)
+            CurrentClub.Teilnehmerliste.Add(dlg.Teilnehmer)
             _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
             teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
         End If
@@ -626,11 +626,11 @@ Class MainWindow
         Dim i As Integer
         Dim index(teilnehmerDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Teilnehmer In teilnehmerDataGrid.SelectedItems
-            index(i) = CDS.Club.Teilnehmerliste.IndexOf(item)
+            index(i) = CurrentClub.Teilnehmerliste.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(CDS.Club.Teilnehmerliste, index)
+        RemoveItemsAt(CurrentClub.Teilnehmerliste, index)
     End Sub
 
     Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -649,14 +649,14 @@ Class MainWindow
 #Region "Uebungsleiter"
 
     Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CDS.Club IsNot Nothing
+        e.CanExecute = CurrentClub IsNot Nothing
     End Sub
 
     Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CDS.Club.Trainerliste.Add(dlg.Instructor)
+            CurrentClub.Trainerliste.Add(dlg.Instructor)
             _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
             uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
@@ -672,11 +672,11 @@ Class MainWindow
         Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
         For Each item As Trainer In uebungsleiterDataGrid.SelectedItems
             RemoveUebungsleiterFromSkikursgruppe(item)
-            index(i) = CDS.Club.Trainerliste.IndexOf(item)
+            index(i) = CurrentClub.Trainerliste.IndexOf(item)
             i += 1
         Next
 
-        RemoveItemsAt(CDS.Club.Trainerliste, index)
+        RemoveItemsAt(CurrentClub.Trainerliste, index)
 
     End Sub
 
@@ -775,27 +775,28 @@ Class MainWindow
     End Sub
 
     Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As Gruppe)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GruppenID)
+        ' Todo: Zuweisung umschreiben
+        'Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GruppenID)
     End Sub
 
     Private Sub RemoveLevelFromTeilnehmer(level As Leistungsstufe)
-        Dim liste = CDS.Club.Teilnehmerliste.TakeWhile(Function(x) x.Leistungsstand.LeistungsstufeID = level.LeistungsstufeID)
+        Dim liste = CurrentClub.Teilnehmerliste.TakeWhile(Function(x) x.Leistungsstand.LeistungsstufeID = level.LeistungsstufeID)
         liste.ToList.ForEach(Sub(x) x.Leistungsstand = Nothing)
     End Sub
 
     Private Sub RemoveLevelFromSkikursgruppe(level As Leistungsstufe)
-        Dim liste = CDS.Club.Gruppenliste.TakeWhile(Function(x) x.Leistungsstufe Is level)
+        Dim liste = CurrentClub.Gruppenliste.TakeWhile(Function(x) x.Leistungsstufe Is level)
         liste.ToList.ForEach(Sub(x) x.Leistungsstufe = Nothing)
     End Sub
 
     Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Trainer)
-        Dim liste = CDS.Club.Gruppenliste.TakeWhile(Function(x) x.Trainer Is Uebungsleiter)
+        Dim liste = CurrentClub.Gruppenliste.TakeWhile(Function(x) x.Trainer Is Uebungsleiter)
         liste.ToList.ForEach(Sub(x) x.Trainer = Nothing)
     End Sub
 
     Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Gruppe)
-        Dim liste = CDS.Club.Teilnehmerliste.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GruppenID))
-        liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
+        'Dim liste = CDS.Club.Teilnehmerliste.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GruppenID))
+        'liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
     End Sub
 
     Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())
@@ -896,7 +897,7 @@ Class MainWindow
         Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
             Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, CDS.Club)
+                serializer.Serialize(zipStream, CurrentClub)
             End Using
         End Using
     End Sub
@@ -904,7 +905,7 @@ Class MainWindow
     Private Sub SaveXML(fileName As String)
         Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, CDS.Club)
+            serializer.Serialize(fs, CurrentClub)
         End Using
     End Sub
 
@@ -944,13 +945,13 @@ Class MainWindow
 
     Private Sub SetView(Schule As Entities.Club)
 
-        CDS.Club = Schule
+        CurrentClub = Schule
 
-        If CDS.Club IsNot Nothing Then
-            _groupLevelListCollectionView = New ListCollectionView(CDS.Club.Leistungsstufeliste)
-            _groupLeaderListCollectionView = New ListCollectionView(CDS.Club.Trainerliste)
-            _participantMemberOfGroupListCollectionView = New ListCollectionView(CDS.Club.Gruppenliste)
-            _participantLevelListCollectionView = New ListCollectionView(CDS.Club.Leistungsstufeliste)
+        If CurrentClub IsNot Nothing Then
+            _groupLevelListCollectionView = New ListCollectionView(CurrentClub.Leistungsstufenliste)
+            _groupLeaderListCollectionView = New ListCollectionView(CurrentClub.Trainerliste)
+            _participantMemberOfGroupListCollectionView = New ListCollectionView(CurrentClub.Gruppenliste)
+            _participantLevelListCollectionView = New ListCollectionView(CurrentClub.Leistungsstufenliste)
         End If
 
         If _participantLevelListCollectionView.CanSort Then
@@ -960,22 +961,22 @@ Class MainWindow
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelComboBox.ItemsSource = _participantLevelListCollectionView
-        CDS.Club.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CurrentClub.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
-        setView(CDS.Club.Gruppenliste)
-        SetView(CDS.Club.Teilnehmerliste)
-        SetView(CDS.Club.Trainerliste)
-        SetView(CDS.Club.Leistungsstufeliste)
+        setView(CurrentClub.Gruppenliste)
+        SetView(CurrentClub.Teilnehmerliste)
+        SetView(CurrentClub.Trainerliste)
+        SetView(CurrentClub.Leistungsstufenliste)
 
     End Sub
 
     Private Sub setView(Skikursliste As GruppeCollection)
 
         ' Neue ListCollectionView laden
-        _participantListOverviewCollectionView = New ListCollectionView(CDS.Club.Teilnehmerliste)
+        _participantListOverviewCollectionView = New ListCollectionView(CurrentClub.Teilnehmerliste)
         ' ListCollectionView nach Teilnehmer in Gruppen filtern
         If _participantListOverviewCollectionView.CanFilter Then
-            _participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IsNotInGroup = True
+            _participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IstGruppenmitglied = False
         End If
 
         ' ListCollectionView sortieren
@@ -1061,7 +1062,7 @@ Class MainWindow
 
     Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
         GroupOverviewWrapPanel.Children.Clear()
-        CDS.Club.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CurrentClub.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)
@@ -1130,11 +1131,11 @@ Class MainWindow
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
         ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-        CDS.Club = CDS.Club.GetAktualisierungen()
+        CurrentClub = CurrentClub.GetAktualisierungen()
 
         '_Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(CDS.Club.Gruppenliste)
+        Dim sortedGroupView = New ListCollectionView(CurrentClub.Gruppenliste)
         sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
 
         Dim skikursgruppe As Gruppe
@@ -1180,24 +1181,25 @@ Class MainWindow
     End Function
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        For i = 0 To CDS.Club.Gruppenliste.Count - 1
-            CDS.Club.Gruppenliste(i).Trainer = CDS.Club.Trainerliste.Item(i)
+        For i = 0 To CurrentClub.Gruppenliste.Count - 1
+            CurrentClub.Gruppenliste(i).Trainer = CurrentClub.Trainerliste.Item(i)
         Next
     End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
         DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerHinzufuegen(_participantsToDistributeListCollectionView.CurrentItem)
-        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
-        setView(CDS.Club.Gruppenliste)
+        'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
+        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).IstGruppenmitglied = True
+        setView(CurrentClub.Gruppenliste)
     End Sub
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
-            Dim tn = CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
+            Dim tn = CurrentClub.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
             DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerEntfernen(_participantsInGroupMemberListCollectionView.CurrentItem)
-            tn.MemberOfGroup = Nothing
+            'tn.MemberOfGroup = Nothing
         End If
-        setView(CDS.Club.Gruppenliste)
+        setView(CurrentClub.Gruppenliste)
     End Sub
 
 
@@ -1218,11 +1220,11 @@ Class MainWindow
     Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
         Dim CorrectDataFormat = e.Data.GetDataPresent("Groupies.Entities.Participant")
         If CorrectDataFormat Then
-            Dim TN As Teilnehmer = e.Data.GetData("Groupies.Entities.Participant")
-            'For Each Participant As Participant In ic
-            TN.RemoveFromGroup()
-            CDS.Club.Teilnehmerliste.Remove(CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID.Equals(TN.TeilnehmerID)).First)
-            CDS.Club.Teilnehmerliste.Add(TN)
+            'Dim TN As Teilnehmer = e.Data.GetData("Groupies.Entities.Participant")
+            ''For Each Participant As Participant In ic
+            'TN.RemoveFromGroup()
+            'CDS.Club.Teilnehmerliste.Remove(CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID.Equals(TN.TeilnehmerID)).First)
+            'CDS.Club.Teilnehmerliste.Add(TN)
             'Next
         End If
     End Sub

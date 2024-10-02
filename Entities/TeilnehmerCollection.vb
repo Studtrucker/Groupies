@@ -25,11 +25,11 @@ Namespace Entities
             End Get
         End Property
 
-        <Obsolete>
-        Public ReadOnly Property NotInAGroup As TeilnehmerCollection
+
+        Public ReadOnly Property TeilnehmerOhneGruppe As TeilnehmerCollection
             Get
                 Dim List = New TeilnehmerCollection
-                Me.Where(Function(x) x.IsNotInGroup).ToList.ForEach(Sub(item) List.Add(item))
+                Me.Where(Function(x) x.IstGruppenmitglied = False).ToList.ForEach(Sub(item) List.Add(item))
                 Return List
             End Get
         End Property

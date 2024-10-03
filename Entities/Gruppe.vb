@@ -14,12 +14,12 @@ Namespace Entities
 
 #Region "Felder"
         Private _GruppenID = Guid.NewGuid()
+        Private _Mitgliederliste = New TeilnehmerCollection
 #End Region
 
 #Region "Konstruktor"
 
         Public Sub New()
-            _Mitglieder = New TeilnehmerCollection
         End Sub
 
         ''' <summary>
@@ -60,7 +60,7 @@ Namespace Entities
             _Benennung = Benennung
             _Ausgabename = Ausgabename
             _Sortierung = Sortierung
-            Mitglieder = New TeilnehmerCollection
+            Mitgliederliste = New TeilnehmerCollection
         End Sub
 
 #End Region
@@ -115,33 +115,22 @@ Namespace Entities
         ''' Liste der Gruppenmitglieder
         ''' </summary>
         ''' <returns></returns>
-        Public Property Mitglieder As TeilnehmerCollection
+        Public Property Mitgliederliste As TeilnehmerCollection
+            Get
+                Return _Mitgliederliste
+            End Get
+            Set(value As TeilnehmerCollection)
+                _Mitgliederliste = value
+            End Set
+        End Property
 
 #End Region
 
 #Region "Funktionen und Methoden"
 
-        ''' <summary>
-        ''' Fügt der Gruppe einen Teilnehmer hinzu
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        Public Sub TeilnehmerHinzufuegen(Teilnehmer As Teilnehmer)
-            _Mitglieder.Add(Teilnehmer)
-        End Sub
-
-        ''' <summary>
-        ''' Entfernt einen Teilnehmer aus der Gruppe
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        Public Sub TeilnehmerEntfernen(Teilnehmer As Teilnehmer)
-            _Mitglieder.Remove(Teilnehmer)
-        End Sub
-
-#End Region
-
-#Region "Veraltert"
-
-
+        Public Overrides Function ToString() As String
+            Return Ausgabename
+        End Function
 #End Region
 
     End Class

@@ -7,11 +7,11 @@ Namespace Entities
         Inherits ObservableCollection(Of Teilnehmer)
         Implements IEnumerable
 
+
         Public Sub New()
             MyBase.New
         End Sub
 
-        <Obsolete>
         Public Sub New(Teilnehmerliste As IEnumerable(Of Teilnehmer))
             MyBase.New
             Teilnehmerliste.ToList.ForEach(Sub(x) Add(x))
@@ -26,13 +26,7 @@ Namespace Entities
         End Property
 
 
-        Public ReadOnly Property TeilnehmerOhneGruppe As TeilnehmerCollection
-            Get
-                Dim List = New TeilnehmerCollection
-                Me.Where(Function(x) x.IstGruppenmitglied = False).ToList.ForEach(Sub(item) List.Add(item))
-                Return List
-            End Get
-        End Property
+
 
         ''' <summary>
         ''' Die Teilnehmerliste geordnet nach Nachname, Vorname

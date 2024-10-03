@@ -4,15 +4,15 @@ Imports Groupies.Services
 
 Namespace Entities
 
-
     Public Class Club
-
 
 #Region "Fields"
 
         Private _Gruppenliste = New GruppeCollection
         Private _Teilnehmerliste = New TeilnehmerCollection
+        Private _EingeteilteTeilnehmer = New TeilnehmerCollection
         Private _Trainerliste = New TrainerCollection
+        Private _EingeteilteTrainer = New TrainerCollection
 
 #End Region
 
@@ -44,6 +44,19 @@ Namespace Entities
         Public Property ClubName As String
 
         ''' <summary>
+        ''' Eine Liste aller Gruppen im Club
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Gruppenliste() As GruppeCollection
+            Get
+                Return _Gruppenliste
+            End Get
+            Set(value As GruppeCollection)
+                _Gruppenliste = value
+            End Set
+        End Property
+
+        ''' <summary>
         ''' Eine Liste aller Teilnehmer im Club
         ''' </summary>
         ''' <returns></returns>
@@ -54,6 +67,26 @@ Namespace Entities
             Set(value As TeilnehmerCollection)
                 _Teilnehmerliste = value
             End Set
+        End Property
+
+        ''' <summary>
+        ''' Gibt eine Liste den Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property EingeteilteTeilnehmer() As TeilnehmerCollection
+            Get
+                Return _EingeteilteTeilnehmer
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Gibt eine Liste mit den Teilnehmern zurück, die noch keiner Gruppe angehören
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property FreieTeilnehmer() As TeilnehmerCollection
+            Get
+                Return New TeilnehmerCollection(Teilnehmerliste.Except(_EingeteilteTeilnehmer))
+            End Get
         End Property
 
         ''' <summary>
@@ -70,16 +103,23 @@ Namespace Entities
         End Property
 
         ''' <summary>
-        ''' Eine Liste aller Gruppen im Club
+        ''' Gibt eine Liste der Trainer zurück, die bereits in eine Gruppe eingeteilt wurden 
         ''' </summary>
         ''' <returns></returns>
-        Public Property Gruppenliste() As GruppeCollection
+        Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
             Get
-                Return _Gruppenliste
+                Return _EingeteilteTrainer
             End Get
-            Set(value As GruppeCollection)
-                _Gruppenliste = value
-            End Set
+        End Property
+
+        ''' <summary>
+        ''' Gibt eine Liste mit den Trainer zurück, die noch keine Gruppe haben
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property FreieTrainer() As TrainerCollection
+            Get
+                Return New TrainerCollection(Trainerliste.Except(_EingeteilteTrainer))
+            End Get
         End Property
 
         ''' <summary>
@@ -88,38 +128,44 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Leistungsstufenliste() As LeistungsstufeCollection
 
-        ''' <summary>
-        ''' Anzahl der Teilnehmer, die keiner Gruppe zugeteilt sind
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AnzahlFreieTeilnehmer As Integer
-            Get
-                Return (From t In Teilnehmerliste Where Not t.IstGruppenmitglied).Count
-            End Get
-        End Property
-
-
-        ''' <summary>
-        ''' Anzahl der Teilnehmer, die bereits einer Gruppe zugeteilt sind
-        ''' </summary>
-        ''' <returns></returns>
-
-        Public ReadOnly Property AnzahlEingeteilteTeilnehmer As Integer
-            Get
-                Return (From t In Teilnehmerliste Where t.IstGruppenmitglied).Count
-            End Get
-        End Property
-
 #End Region
 
 #Region "Funktionen und Methoden"
+        ''' <summary>
+        ''' Die angegebene Gruppe bekommt den Teilnehmer als Mitglied
+        ''' </summary>
+        ''' <param name="Teilnehmer"></param>
+        ''' <param name="Gruppe"></param>
+        Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
+            Gruppe.Mitgliederliste.Add(Teilnehmer)
+            EingeteilteTeilnehmer.Add(Teilnehmer)
+        End Sub
+
+        ''' <summary>
+        ''' Der Teilnehmer wird aus der angegebenen Gruppe als Mitglied entfernt
+        ''' </summary>
+        ''' <param name="Teilnehmer"></param>
+        ''' <param name="Gruppe"></param>
+        Public Sub TeilnehmerAusGruppeEntfernen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
+            Gruppe.Mitgliederliste.Remove(Teilnehmer)
+            EingeteilteTeilnehmer.Remove(Teilnehmer)
+        End Sub
+
+        Public Sub TrainerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
+            Gruppe.Trainer = Trainer
+            EingeteilteTrainer.Add(Trainer)
+        End Sub
+        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
+            EingeteilteTrainer.Remove(Gruppe.Trainer)
+            Gruppe.Trainer = Nothing
+        End Sub
+
 
         Public Overrides Function ToString() As String
             Return ClubName
         End Function
 
 #End Region
-
 
     End Class
 

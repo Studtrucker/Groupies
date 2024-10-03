@@ -23,7 +23,7 @@ Namespace UserControls
 
             GroupPrintName = Group.Ausgabename
             GroupNaming = Group.Benennung
-            Members = Group.Mitglieder.ParticipantCollectionOrdered
+            Members = Group.Mitgliederliste.ParticipantCollectionOrdered
             If Group.Leistungsstufe IsNot Nothing Then
                 GroupLevelNaming = Group.Leistungsstufe.Benennung
             End If
@@ -32,7 +32,7 @@ Namespace UserControls
             End If
 
             ' For Style setting
-            If Group.Mitglieder.Count > 14 Then
+            If Group.Mitgliederliste.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 

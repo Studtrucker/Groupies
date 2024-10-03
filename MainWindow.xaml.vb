@@ -976,7 +976,7 @@ Class MainWindow
         _participantListOverviewCollectionView = New ListCollectionView(CurrentClub.Teilnehmerliste)
         ' ListCollectionView nach Teilnehmer in Gruppen filtern
         If _participantListOverviewCollectionView.CanFilter Then
-            _participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IstGruppenmitglied = False
+            '_participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IstGruppenmitglied = False
         End If
 
         ' ListCollectionView sortieren
@@ -1185,16 +1185,16 @@ Class MainWindow
     End Sub
 
     Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
-        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerHinzufuegen(_participantsToDistributeListCollectionView.CurrentItem)
+        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).Mitgliederliste.Add(_participantsToDistributeListCollectionView.CurrentItem)
         'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
-        DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).IstGruppenmitglied = True
+        'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).IstGruppenmitglied = True
         setView(CurrentClub.Gruppenliste)
     End Sub
 
     Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
         If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
             Dim tn = CurrentClub.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
-            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).TeilnehmerEntfernen(_participantsInGroupMemberListCollectionView.CurrentItem)
+            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).Mitgliederliste.Remove(_participantsInGroupMemberListCollectionView.CurrentItem)
             'tn.MemberOfGroup = Nothing
         End If
         setView(CurrentClub.Gruppenliste)

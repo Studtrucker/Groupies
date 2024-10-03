@@ -22,7 +22,7 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
             GroupPrintName = Group.Ausgabename
-            Members = Group.Mitglieder.ParticipantCollectionOrdered
+            Members = Group.Mitgliederliste.ParticipantCollectionOrdered
 
             If Group.Trainer IsNot Nothing Then
                 GroupLeaderPrintName = CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
@@ -38,7 +38,7 @@ Namespace UserControls
                 End If
             End If
 
-            If Group.Mitglieder.Count > 14 Then
+            If Group.Mitgliederliste.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 

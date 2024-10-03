@@ -9,8 +9,8 @@ Namespace Entities
     ''' <summary>
     ''' Teilnehmer mit Angabe seines Leistungsstandes mit Hilfe einer Leistungsstufe
     ''' </summary>
-    <DefaultBindingProperty("ParticipantFirstname")>
-    <DefaultProperty("ParticipantFullName")>
+    <DefaultBindingProperty("Vorname")>
+    <DefaultProperty("VorUndNachname")>
     Public Class Teilnehmer
         Inherits BaseModel
 
@@ -53,6 +53,14 @@ Namespace Entities
         Public Sub New(Vorname As String, Nachname As String)
             _Vorname = Vorname
             _Nachname = Nachname
+        End Sub
+
+        ''' <summary>
+        ''' Erstellt einen neuen Teilnehmer mit Vorname
+        ''' </summary>
+        ''' <param name="Vorname"></param>
+        Public Sub New(Vorname As String)
+            _Vorname = Vorname
         End Sub
 
 #End Region
@@ -135,13 +143,6 @@ Namespace Entities
             End Get
         End Property
 
-
-        ''' <summary>
-        ''' Setzt und liest die Gruppenmitgliedschaft
-        ''' </summary>
-        Public Property IstGruppenmitglied As Boolean
-
-
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -149,72 +150,6 @@ Namespace Entities
         Public Overrides Function ToString() As String
             Return VorUndNachname
         End Function
-#End Region
-
-#Region "Veraltert"
-        ''' <summary>
-        ''' Gruppenmitglied in der Gruppe 
-        ''' mit dem Gruppenkennzeichen
-        ''' </summary>
-        ''' <returns></returns>
-        <Obsolete>
-        Public Property MemberOfGroup As Guid
-
-        ''' <summary>
-        ''' Gruppenmitglied in der Gruppe 
-        ''' mit dem Gruppennamen 
-        ''' </summary>
-        ''' <returns></returns>
-        <Obsolete>
-        Public ReadOnly Property MemberOfGroup_Naming() As String
-            Get
-                Return CurrentClub.Gruppenliste.Where(Function(x) x.GruppenID.Equals(MemberOfGroup)).DefaultIfEmpty(New Gruppe With {.Benennung = String.Empty}).Single.Benennung
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Wird Gruppenmitglied von der Gruppe
-        ''' mit dem Gruppenkennzeichen
-        ''' </summary>
-        ''' <param name="GroupID"></param>
-        <Obsolete>
-        Public Sub SetAsGroupMember(GroupID As Guid)
-            MemberOfGroup = GroupID
-            _IstGruppenmitglied = True
-        End Sub
-
-        ''' <summary>
-        ''' Wird als Gruppenmitgleid gekennzeichnet
-        ''' </summary>
-        <Obsolete>
-        Public Sub SetAsGroupMember()
-            _IstGruppenmitglied = True
-        End Sub
-
-        ''' <summary>
-        ''' Wird als Gruppenmitglied entfernt
-        ''' </summary>
-        <Obsolete>
-        Public Sub RemoveFromGroup()
-            MemberOfGroup = Nothing
-            _IstGruppenmitglied = False
-        End Sub
-
-
-
-
-
-
-        ''' <summary>
-        ''' Liest die umgekehrte Gruppenmitgliedschaft
-        ''' </summary>
-        ''' <returns></returns>
-        <Obsolete>
-        Public ReadOnly Property IsNotInGroup As Boolean
-            Get
-                Return Not _IstGruppenmitglied
-            End Get
-        End Property
 
 #End Region
 

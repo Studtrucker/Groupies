@@ -60,7 +60,7 @@ Public Module VeralterteKlassenMapping
             .Trainer = MapInstructor2Trainer(Group.GroupLeader),
             .GruppenID = Group.GroupID,
             .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel),
-            .Mitglieder = TeilnehmerCollection}
+            .Mitgliederliste = TeilnehmerCollection}
 
         Return Gruppe
 

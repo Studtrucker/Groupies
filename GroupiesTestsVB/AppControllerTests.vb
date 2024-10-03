@@ -22,14 +22,12 @@ Namespace GroupiesTestsVB
             Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
             Dim Manuela As New Teilnehmer("Manuela", "Ramm")
 
-
             AppController.CurrentClub.Teilnehmerliste = New TeilnehmerCollection From {Studti, Manuela}
             Assert.AreEqual(2, AppController.CurrentClub.Teilnehmerliste.Count)
-            Assert.AreEqual(2, AppController.CurrentClub.AnzahlFreieTeilnehmer)
-            Assert.AreEqual(0, AppController.CurrentClub.AnzahlEingeteilteTeilnehmer)
+            Assert.AreEqual(2, AppController.CurrentClub.FreieTeilnehmer.Count)
+            Assert.AreEqual(0, AppController.CurrentClub.EingeteilteTeilnehmer.Count)
 
             'Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), AppController.CurrentClub.Teilnehmerliste)
-
 
         End Sub
 
@@ -77,6 +75,7 @@ Namespace GroupiesTestsVB
             AppController.XMLDateiEinlesen("Z:\GroupiesReisen\Stubaital\20231118Stubai.ski")
 
         End Sub
+
 
 
     End Class

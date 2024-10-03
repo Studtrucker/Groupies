@@ -536,7 +536,7 @@ Public Class Window1
         End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.Teilnehmerliste.TeilnehmerOhneGruppe)
+        setView(CDS.CurrentClub.Teilnehmerliste)
         setView(CDS.CurrentClub.Trainerliste.VerfuegbareTrainer)
     End Sub
 
@@ -673,12 +673,12 @@ Public Class Window1
                 'Participant.RemoveFromGroup()
                 Dim x = CDS.CurrentClub.Teilnehmerliste.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
                 'x.RemoveFromGroup()
-                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitglieder.IndexOf(Participant)
+                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitgliederliste.IndexOf(Participant)
                 i += 1
             Next
 
             For i = TN.Count - 1 To 0 Step -1
-                DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitglieder.RemoveAt(index(i))
+                DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitgliederliste.RemoveAt(index(i))
             Next
 
         End If
@@ -724,7 +724,7 @@ Public Class Window1
 
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
         setView(CDS.CurrentClub.Trainerliste.VerfuegbareTrainer)
-        setView(CDS.CurrentClub.Teilnehmerliste.TeilnehmerOhneGruppe)
+        setView(CDS.CurrentClub.Teilnehmerliste)
     End Sub
 
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)

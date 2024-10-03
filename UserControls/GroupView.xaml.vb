@@ -66,10 +66,10 @@ Namespace UserControls
                 Dim TN = e.Data.GetData(GetType(IList))
                 Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
                 For Each Participant As Teilnehmer In TN
-                    If Not Participant.IstGruppenmitglied Then
-                        'Participant.SetAsGroupMember(CurrentGroup.GruppenID)
-                        CurrentGroup.TeilnehmerHinzufuegen(Participant)
-                    End If
+                    'If Not Participant.IstGruppenmitglied Then
+                    '    'Participant.SetAsGroupMember(CurrentGroup.GruppenID)
+                    '    CurrentGroup.TeilnehmerHinzufuegen(Participant)
+                    'End If
                 Next
             End If
         End Sub

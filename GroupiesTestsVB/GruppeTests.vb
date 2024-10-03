@@ -4,6 +4,7 @@ Imports Groupies.Entities
 
 <TestClass>
 Public Class GruppeTests
+
     <TestMethod>
     Public Sub TestKonstruktor()
         Dim g1 = New Gruppe("Enzian", "Anfänger", 1)
@@ -22,10 +23,10 @@ Public Class GruppeTests
         Dim Koenner = New Leistungsstufe()
         Dim Manu = New Teilnehmer("Manuela", "Ramm", Koenner)
         Dim Willi = New Teilnehmer("Willi", "Sensmeier") With {.Leistungsstand = Koenner}
-        g1.TeilnehmerHinzufuegen(Manu)
-        g1.TeilnehmerHinzufuegen(Willi)
-        Assert.AreEqual(2, g1.Mitglieder.Count)
-        g1.TeilnehmerEntfernen(Willi)
-        Assert.AreEqual(1, g1.Mitglieder.Count)
+        g1.Mitgliederliste.Add(Manu)
+        g1.Mitgliederliste.Add(Willi)
+        Assert.AreEqual(2, g1.Mitgliederliste.Count)
+        g1.Mitgliederliste.Remove(Willi)
+        Assert.AreEqual(1, g1.Mitgliederliste.Count)
     End Sub
 End Class

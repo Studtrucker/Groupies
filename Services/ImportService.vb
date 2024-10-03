@@ -105,7 +105,7 @@ Namespace Services
                     Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
                     If Skikursgruppe IsNot Nothing Then
-                        Skikursgruppe.TeilnehmerHinzufuegen(Teilnehmer)
+                        Skikursgruppe.Mitgliederliste.Add(Teilnehmer)
                         'Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
                     End If
                 End If

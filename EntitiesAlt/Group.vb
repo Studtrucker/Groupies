@@ -15,13 +15,10 @@ Namespace Entities.Veraltert
 
         Public Property GroupID As Guid
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Gruppenbennung ist ein Pflichtfeld")>
         Public Property GroupNaming As String
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Printbenennung ist ein Pflichtfeld")>
         Public Property GroupPrintNaming As String
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist ein Pflichtfeld")>
         Public Property GroupSort As String
 
         Public Property GroupLevel As Level
@@ -30,13 +27,6 @@ Namespace Entities.Veraltert
 
         Public Property GroupMembers As ParticipantCollection
 
-        Public Sub AddMember(Teilnehmer As Participant)
-            _GroupMembers.Add(Teilnehmer)
-        End Sub
-
-        Public Sub RemoveMember(Teilnehmer As Participant)
-            _GroupMembers.Remove(Teilnehmer)
-        End Sub
 
     End Class
 

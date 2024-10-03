@@ -12,12 +12,10 @@ Namespace Entities.Veraltert
 
         Public Property SkillID As Guid
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
         Public Property SkillNaming As String
 
         Public Property SortNumber As String
 
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Beschreibung ist ein Pflichtfeld")>
         Public Property Description As String
 
 

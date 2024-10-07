@@ -25,7 +25,7 @@ Public Class TeilnehmerTests
 
         Dim x = tnL
         Dim y = tnL.GeordnetLeistungsstufeNachnameVorname
-        Dim z = tnL.GeordnetNachnameVorname
+        Dim z = tnL.GeordneterTextNachnameVorname
 
 
         Debug.Print(Environment.NewLine)

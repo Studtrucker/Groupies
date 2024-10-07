@@ -39,11 +39,14 @@ Namespace Entities
         ''' Die Teilnehmerliste geordnet nach Nachname, Vorname
         ''' </summary>
         ''' <returns></returns>
-        Public Property GeordnetNachnameVorname As IEnumerable(Of String) =
+        Public Property GeordneterTextNachnameVorname As IEnumerable(Of String) =
             OrderBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname) _
             .Select(Function(Tn) $"{Tn.VorUndNachname}")
 
+        Public Property GeordnetTeilnehmerNachnameVorname As IEnumerable(Of Teilnehmer) =
+            OrderBy(Function(Tn) Tn.Nachname) _
+            .ThenBy(Function(Tn) Tn.Vorname)
 
         ''' <summary>
         ''' Die Teilnehmerliste geordnet nach 
@@ -58,9 +61,11 @@ Namespace Entities
             .ThenBy(Function(o) o.Vorname)
 
         Public Property GruppeLeistungNachnameVorname =
-            GroupBy(Function(TN) TN.Leistungsstand.Sortierung) _
+            OrderBy(Function(TN) TN.Nachname) _
+            .ThenBy(Function(TN) TN.Vorname) _
+            .GroupBy(Function(TN) TN.Leistungsstand.Sortierung) _
             .OrderByDescending(Function(TN) TN.Key) _
-            .Select(Function(TNG) TNG)
+            .Select(Function(TNG) TNG.ToList.Select(Function(Tt) Tt))
 
 
     End Class

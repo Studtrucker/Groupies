@@ -59,7 +59,21 @@ Public Class TeilnehmerTests
         Dim Frank = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstand = Anfaenger}
         Dim tnl1 = New TeilnehmerCollection From {Frank, Marwin, Andreas1, Stefan, Andreas2, Andreas}
 
-        tnl1.GruppeLeistungNachnameVorname.ToList.ForEach(Sub(Gr) Debug.Print(Gr.AusgabeTrainerinfo))
+        For Each item In tnl1.GruppeLeistungNachnameVorname
+            For Each it As Teilnehmer In item
+                Debug.Print(it.AusgabeTrainerinfo)
+            Next
+        Next
+
+        ' Andreas Studtrucker, Experte
+        ' Marwin Studtrucker, Anfänger
+        ' Andreas Hötger, Experte
+
+        ' 1. Nachname
+        ' 2. Vorname
+
+        'tnl1.GruppeLeistungNachnameVorname.tolist.foreach(Function())
+
 
     End Sub
 End Class

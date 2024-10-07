@@ -22,7 +22,8 @@ Namespace Entities
             .Select(Function(f) f.AusgabeAnTrainerInfo)
 
         Public Property FaehigkeitGeordnet As IEnumerable(Of Faehigkeit) =
-            OrderBy(Function(f) f.Sortierung)
+            OrderBy(Function(f) f.Sortierung) _
+            .ThenBy(Function(f) f.Benennung)
 
     End Class
 

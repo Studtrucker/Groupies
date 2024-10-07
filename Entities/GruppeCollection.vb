@@ -21,12 +21,12 @@ Namespace Entities
             End Get
         End Property
 
-        Public Property BenennungGeordnet As IEnumerable(Of String) =
+        Public ReadOnly Property BenennungGeordnet As IEnumerable(Of String) =
             OrderBy(Function(G) G.Sortierung) _
             .ThenBy(Function(G) G.Benennung) _
             .Select(Function(G) G.Benennung)
 
-        Public Property GruppeGeordnet As IEnumerable(Of Gruppe) =
+        Public ReadOnly Property GruppeGeordnet As IEnumerable(Of Gruppe) =
             OrderBy(Function(G) G.Sortierung) _
             .ThenBy(Function(G) G.Benennung)
 

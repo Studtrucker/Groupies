@@ -27,7 +27,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String)
-            _Ausgabename = Ausgabename
+            _AusgabeTeilnehmerinfo = Ausgabename
         End Sub
 
         ''' <summary>
@@ -36,7 +36,7 @@ Namespace Entities
         ''' <param name="Ausgabename"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Sortierung As Integer)
-            _Ausgabename = Ausgabename
+            _AusgabeTeilnehmerinfo = Ausgabename
             _Sortierung = Sortierung
         End Sub
 
@@ -47,7 +47,7 @@ Namespace Entities
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String, Benennung As String)
             _Benennung = Benennung
-            _Ausgabename = Ausgabename
+            _AusgabeTeilnehmerinfo = Ausgabename
         End Sub
 
         ''' <summary>
@@ -58,7 +58,7 @@ Namespace Entities
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Benennung As String, Sortierung As Integer)
             _Benennung = Benennung
-            _Ausgabename = Ausgabename
+            _AusgabeTeilnehmerinfo = Ausgabename
             _Sortierung = Sortierung
             Mitgliederliste = New TeilnehmerCollection
         End Sub
@@ -87,11 +87,19 @@ Namespace Entities
         Public Property Benennung As String
 
         ''' <summary>
-        ''' Der Ausgabename für die Information
+        ''' Der Ausgabename für die Teilnehmerinformation
         ''' </summary>
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Ausgabename ist ein Pflichtfeld")>
-        Public Property Ausgabename As String
+        Public Property AusgabeTeilnehmerinfo As String
+
+        ''' <summary>
+        ''' Der Ausgabename für die Trainerinformation
+        ''' TeilnehmerinfoName und die Benennung
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property AusgabeTrainerinfo As String = $"{AusgabeTeilnehmerinfo} {Benennung}"
+
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen 
@@ -129,7 +137,7 @@ Namespace Entities
 #Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
-            Return Ausgabename
+            Return AusgabeTeilnehmerinfo
         End Function
 #End Region
 

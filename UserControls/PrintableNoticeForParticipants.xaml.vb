@@ -21,7 +21,7 @@ Namespace UserControls
 
         Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
-            GroupPrintName = Group.Ausgabename
+            GroupPrintName = Group.AusgabeTeilnehmerinfo
             Members = Group.Mitgliederliste.TeilnehmerGeordnet
 
             If Group.Trainer IsNot Nothing Then

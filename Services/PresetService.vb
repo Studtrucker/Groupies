@@ -56,7 +56,7 @@ Namespace Services
             Dim IndexGruppenName As Integer
             For i = 0 To AnzahlGruppen - 1
                 groupCol.Add(New Gruppe("Genießer", 3) With {
-                        .Ausgabename = GroupPrintNames.Item(IndexGruppenName),
+                        .AusgabeTeilnehmerinfo = GroupPrintNames.Item(IndexGruppenName),
                         .Sortierung = GroupSorting.Item(IndexGruppenName)})
                 IndexGruppenName += 1
             Next

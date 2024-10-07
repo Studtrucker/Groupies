@@ -70,7 +70,15 @@ Namespace Entities
 
         Public ReadOnly Property AusgabeAnTrainerInfo As String
             Get
-                Return LeseAusgabeAnTrainerinfo()
+                If Sortierung Is Nothing And Beschreibung Is Nothing Then
+                    Return Benennung
+                ElseIf Sortierung Is Nothing Then
+                    Return $"{Benennung}{Environment.NewLine}{Beschreibung}"
+                ElseIf Beschreibung Is Nothing Then
+                    Return $"{Sortierung}. {Benennung}"
+                Else
+                    Return $"{Sortierung}. {Benennung}{Environment.NewLine}{Beschreibung}"
+                End If
             End Get
         End Property
 

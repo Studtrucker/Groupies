@@ -14,8 +14,15 @@ Namespace Entities
         'Todo:Standardfoto festlegen
         'Private _bi As BitmapImage = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
         Private _Foto As Byte()
+        Private _TrainerID = Guid.NewGuid()
 
 #Region "Konstruktor"
+
+        ''' <summary>
+        ''' Erstellt einen neuen Teilnehmer
+        ''' </summary>
+        Public Sub New()
+        End Sub
 
         ''' <summary>
         ''' Trainer mit Angabe von Vorname, Nachname und Spitzname
@@ -56,6 +63,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TrainerID As Guid
+            Get
+                Return _TrainerID
+            End Get
+            Set(value As Guid)
+                _TrainerID = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Vorname des Trainers
@@ -103,7 +117,13 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property VorUndNachname As String
             Get
-                Return LeseVorUndNachname()
+                If Vorname Is Nothing Then
+                    Return Nachname
+                ElseIf Nachname Is Nothing Then
+                    Return Vorname
+                Else
+                    Return String.Format("{0} {1}", Vorname, Nachname)
+                End If
             End Get
         End Property
 
@@ -113,7 +133,13 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property AusgabeTeilnehmerInfo As String
             Get
-                Return LeseAusgabename()
+                If _Spitzname Is Nothing And Nachname Is Nothing Then
+                    Return Vorname
+                ElseIf _Spitzname Is Nothing Then
+                    Return $"{Vorname} {Nachname}"
+                Else
+                    Return Spitzname
+                End If
             End Get
         End Property
 
@@ -130,56 +156,12 @@ Namespace Entities
 
 #Region "Funktionen und Methoden"
 
-        Private Function LeseVorUndNachname() As String
-            If Vorname Is Nothing Then
-                Return Nachname
-            ElseIf Nachname Is Nothing Then
-                Return Vorname
-            Else
-                Return String.Format("{0} {1}", Vorname, Nachname)
-            End If
-        End Function
-
-        Private Function LeseAusgabename() As String
-            If _Spitzname Is Nothing And Nachname Is Nothing Then
-                Return Vorname
-            ElseIf _Spitzname Is Nothing Then
-                Return $"{Vorname} {Nachname.Substring(0, 2)}."
-            Else
-                Return Spitzname
-            End If
-        End Function
-
         Public Overrides Function ToString() As String
             Return VorUndNachname
         End Function
 
 #End Region
 
-#Region "Veraltert"
-
-        <Obsolete>
-        Public Sub New()
-            _TrainerID = Guid.NewGuid()
-        End Sub
-
-        <Obsolete>
-        Public Sub New(SaveMe As Boolean, IAmAvailable As Boolean)
-            _TrainerID = Guid.NewGuid()
-            SaveOrDisplay = SaveMe
-            IsAvailable = IAmAvailable
-        End Sub
-
-        <Obsolete>
-        Public Property IsAvailable As Boolean
-
-        <Obsolete>
-        Public Property SaveOrDisplay As Boolean
-
-        <Obsolete>
-        Public ReadOnly Property IsAssigned As Boolean
-
-#End Region
 
     End Class
 

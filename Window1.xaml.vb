@@ -537,7 +537,7 @@ Public Class Window1
         DataContext = _groupListCollectionView
 
         setView(CDS.CurrentClub.Teilnehmerliste)
-        setView(CDS.CurrentClub.Trainerliste.VerfuegbareTrainer)
+        setView(CDS.CurrentClub.FreieTrainer)
     End Sub
 
     Private Sub setView(Participants As TeilnehmerCollection)
@@ -723,7 +723,7 @@ Public Class Window1
     End Sub
 
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
-        setView(CDS.CurrentClub.Trainerliste.VerfuegbareTrainer)
+        setView(CDS.CurrentClub.FreieTrainer)
         setView(CDS.CurrentClub.Teilnehmerliste)
     End Sub
 

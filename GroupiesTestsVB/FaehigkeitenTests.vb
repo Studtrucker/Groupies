@@ -10,7 +10,7 @@ Public Class FaehigkeitenTests
     Public Sub TestKonstruktor1()
 
         Dim f = New Faehigkeit() With {.Benennung = "Kurven", .Beschreibung = "Kurven fahren", .Sortierung = 1}
-        Assert.AreEqual($"1. Kurven{Environment.NewLine}Kurven fahren.", f.AusgabeAnTrainerInfo)
+        Assert.AreEqual($"1. Kurven{Environment.NewLine}Kurven fahren", f.AusgabeAnTrainerInfo)
 
     End Sub
 
@@ -21,7 +21,7 @@ Public Class FaehigkeitenTests
         Assert.AreEqual("Pflug", f1.Benennung)
         Assert.AreEqual("Pflug fahren", f1.Beschreibung)
         Assert.AreEqual(Nothing, f1.Sortierung)
-        Assert.AreEqual($"Pflug{Environment.NewLine}Pflug fahren.", f1.AusgabeAnTrainerInfo)
+        Assert.AreEqual($"Pflug{Environment.NewLine}Pflug fahren", f1.AusgabeAnTrainerInfo)
 
     End Sub
 
@@ -30,20 +30,31 @@ Public Class FaehigkeitenTests
         Dim f = New Faehigkeit("Bremsen", 3) With {.Beschreibung = "Kann stoppen"}
         Assert.AreEqual("Bremsen", f.Benennung)
         Assert.AreEqual("Kann stoppen", f.Beschreibung)
-        Assert.AreEqual($"3. Bremsen{Environment.NewLine}Kann stoppen.", f.AusgabeAnTrainerInfo)
+        Assert.AreEqual($"3. Bremsen{Environment.NewLine}Kann stoppen", f.AusgabeAnTrainerInfo)
     End Sub
 
     <TestMethod>
     Public Sub TestSortierungSammlung()
 
-        Dim f = New Faehigkeit("Bremsen", 3) With {.Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen stoppen"}
-        Dim f1 = New Faehigkeit("Pflug") With {.Sortierung = 2, .Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen s"}
-        Dim f2 = New Faehigkeit("Kurven") With {.Sortierung = 1}
-        Dim f3 = New Faehigkeit("Einfache Kurven") With {.Beschreibung = "Kann einzelne Kurven mit Hilfe des Pflugbogens fahren"}
+        Dim f = New Faehigkeit("Bremsen", 3) With {
+            .Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen stoppen"}
+        Dim f1 = New Faehigkeit("Pflug") With {
+            .Sortierung = 2,
+            .Beschreibung = "Kann mit Hilfe des Pflugs an flachen Hängen Kurven fahren"}
+
+
+        Dim f2 = New Faehigkeit("Kurven") With {
+            .Sortierung = 1}
+        Dim f3 = New Faehigkeit("Einfache Kurven") With {
+            .Beschreibung = "Kann einzelne Kurven mit Hilfe des Pflugbogens fahren"}
 
         Dim fcol = New FaehigkeitCollection From {f, f1, f2, f3}
-        'Assert.AreEqual($"1. Kurven{Environment.NewLine}2. Pflug{Environment.NewLine}3. Bremsen{Environment.NewLine}. Einfache Kurven",
-        'fcol.GeordnetNachSortierung1())
+        CollectionAssert.AreEqual(New List(Of String) From {
+                                  $"Einfache Kurven{Environment.NewLine}Kann einzelne Kurven mit Hilfe des Pflugbogens fahren",
+                                  $"1. Kurven",
+                                  $"2. Pflug{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen Kurven fahren",
+                                  $"3. Bremsen{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen stoppen"},
+                                  fcol.TrainerInfoGeordnet.ToList)
 
     End Sub
 

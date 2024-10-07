@@ -22,7 +22,7 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
             GroupPrintName = Group.Ausgabename
-            Members = Group.Mitgliederliste.ParticipantCollectionOrdered
+            Members = Group.Mitgliederliste.TeilnehmerGeordnet
 
             If Group.Trainer IsNot Nothing Then
                 GroupLeaderPrintName = CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo

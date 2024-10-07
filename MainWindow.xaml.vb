@@ -961,7 +961,7 @@ Class MainWindow
         GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
         GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
         ParticipantLevelComboBox.ItemsSource = _participantLevelListCollectionView
-        CurrentClub.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CurrentClub.Gruppenliste.GruppeGeordnet.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
 
         setView(CurrentClub.Gruppenliste)
         SetView(CurrentClub.Teilnehmerliste)
@@ -1062,7 +1062,7 @@ Class MainWindow
 
     Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
         GroupOverviewWrapPanel.Children.Clear()
-        CurrentClub.Gruppenliste.GruppenListeSortierungNachName.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
+        CurrentClub.Gruppenliste.GruppeGeordnet.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
     End Sub
 
     Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)

@@ -5,20 +5,24 @@ Namespace Entities
 
     Public Class FaehigkeitCollection
         Inherits ObservableCollection(Of Faehigkeit)
+        Implements IEnumerable(Of Faehigkeit)
 
-        Property GeordnetNachSortierung As IEnumerable(Of String) = From f In Me
-                                                                    Order By f.Sortierung
-                                                                    Select $"{f.Benennung}{Environment.NewLine}"
+        Public Sub New()
+            MyBase.New
+        End Sub
 
-        ReadOnly Property GeordnetNachSortierung1 As String
-            Get
-                Dim x = (From t In Me Order By t.Sortierung
-                         Select $"{t.Sortierung}. {t.Benennung}{Environment.NewLine}{t.Beschreibung}").ToList
-                Dim Text As String = ""
-                x.ForEach(Function(a) Text = Text & a)
-                Return Text
-            End Get
-        End Property
+        Public Sub New(Faehigkeitenliste As IEnumerable(Of Faehigkeit))
+            MyBase.New
+            Faehigkeitenliste.ToList.ForEach(Sub(x) Add(x))
+        End Sub
+
+        Public Property TrainerInfoGeordnet As IEnumerable(Of String) =
+            OrderBy(Function(f) f.Sortierung) _
+            .ThenBy(Function(f) f.Benennung) _
+            .Select(Function(f) f.AusgabeAnTrainerInfo)
+
+        Public Property FaehigkeitGeordnet As IEnumerable(Of Faehigkeit) =
+            OrderBy(Function(f) f.Sortierung)
 
     End Class
 

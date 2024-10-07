@@ -86,6 +86,7 @@ Namespace Entities
         Public ReadOnly Property FreieTeilnehmer() As TeilnehmerCollection
             Get
                 Return New TeilnehmerCollection(Teilnehmerliste.Except(_EingeteilteTeilnehmer))
+                Return FreieTeilnehmer
             End Get
         End Property
 

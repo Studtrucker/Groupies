@@ -126,7 +126,7 @@ Namespace Entities
         ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AusgabeTeilnehmerinfo
+        Public ReadOnly Property AusgabeTeilnehmerinfo As String
             Get
                 Return VorUndNachname
             End Get

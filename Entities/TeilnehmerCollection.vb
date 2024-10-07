@@ -5,9 +5,9 @@ Namespace Entities
 
     Public Class TeilnehmerCollection
         Inherits ObservableCollection(Of Teilnehmer)
-        Implements IEnumerable
+        Implements IEnumerable(Of Teilnehmer)
 
-
+#Region "Konstruktor"
         Public Sub New()
             MyBase.New
         End Sub
@@ -17,48 +17,81 @@ Namespace Entities
             Teilnehmerliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
-        Public ReadOnly Property ParticipantCollectionOrdered As TeilnehmerCollection
-            Get
-                Dim Ordered = New TeilnehmerCollection
-                Me.OrderBy(Of String)(Function(x) x.VorUndNachname).ToList.ForEach(Sub(x) Ordered.Add(x))
-                Return Ordered
-            End Get
-        End Property
+#End Region
 
-
-        Public ReadOnly Property SortierteListe
-            Get
-                Dim ersteSortierung = Me.OrderBy(Function(x) x.Nachname)
-                Dim zweiteSortierung = ersteSortierung.OrderBy(Function(x) x.Vorname)
-                Return zweiteSortierung
-            End Get
-        End Property
-
-
+#Region "Porperties String Rückgabe"
         ''' <summary>
-        ''' Die Teilnehmerliste geordnet nach Nachname, Vorname
+        ''' Die Teilnehmer mit VorUndNachname ungeordnet
         ''' </summary>
         ''' <returns></returns>
-        Public Property GeordneterTextNachnameVorname As IEnumerable(Of String) =
+        Public Property Teilnehmerinfo As IEnumerable(Of String) = Me.Select(Function(Tn) Tn.VorUndNachname)
+
+        ''' <summary>
+        ''' Die Teilnehmer mit VorUndNachname
+        '''  Geordnet:
+        '''  Nachname aufsteigend
+        '''  Vorname aufsteigend
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property TeilnehmerinfoGeordnet As IEnumerable(Of String) =
             OrderBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname) _
-            .Select(Function(Tn) $"{Tn.VorUndNachname}")
+            .Select(Function(Tn) Tn.AusgabeTeilnehmerinfo)
 
-        Public Property GeordnetTeilnehmerNachnameVorname As IEnumerable(Of Teilnehmer) =
-            OrderBy(Function(Tn) Tn.Nachname) _
+        ''' <summary>
+        '''  Die Teilnehmer mit VorUndNachname, Leistungsstufe
+        '''  Geordnet:
+        '''  Leistungsstand absteigend
+        '''  Nachname aufsteigend
+        '''  Vorname aufsteigend
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property TrainerinfoGeordnet As IEnumerable(Of String) =
+            OrderByDescending(Function(o) o.Leistungsstand.Sortierung) _
+            .ThenBy(Function(o) o.Nachname) _
+            .ThenBy(Function(o) o.Vorname) _
+            .Select(Function(Tn) Tn.AusgabeTrainerinfo)
+
+
+
+#End Region
+
+#Region "Porperties IEnumerable Rückgabe"
+        ''' <summary>
+        ''' Die Teilnehmer ungeordnet
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Teilnehmer As IEnumerable(Of Teilnehmer) = Me
+
+        ''' <summary>
+        ''' Die Teilnehmer mit VorUndNachname
+        '''  Geordnet:
+        '''  Nachname aufsteigend
+        '''  Vorname aufsteigend
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property TeilnehmerGeordnet As IEnumerable(Of Teilnehmer) =
+            OrderByDescending(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname)
 
         ''' <summary>
-        ''' Die Teilnehmerliste geordnet nach 
-        ''' der absteigenden Sortierkennzahl 
-        ''' aus der Teilnehmer Leistungsstufe, 
-        ''' dann aufsteigend Nachname, Vorname 
+        '''  Die Teilnehmer mit VorUndNachname, Leistungsstufe
+        '''  Geordnet:
+        '''  Leistungsstand absteigend
+        '''  Nachname aufsteigend
+        '''  Vorname aufsteigend
         ''' </summary>
         ''' <returns></returns>
-        Public Property GeordnetLeistungsstufeNachnameVorname As IEnumerable(Of Teilnehmer) =
+        Public Property TeilnehmerMitLeistungsstufeGeordnet As IEnumerable(Of Teilnehmer) =
             OrderByDescending(Function(o) o.Leistungsstand.Sortierung) _
             .ThenBy(Function(o) o.Nachname) _
             .ThenBy(Function(o) o.Vorname)
+
+#End Region
+
+
+
+#Region "Beispiel Gruppierung"
 
         Public Property GruppeLeistungNachnameVorname =
             OrderBy(Function(TN) TN.Nachname) _
@@ -67,6 +100,7 @@ Namespace Entities
             .OrderByDescending(Function(TN) TN.Key) _
             .Select(Function(TNG) TNG.ToList.Select(Function(Tt) Tt))
 
+#End Region
 
     End Class
 End Namespace

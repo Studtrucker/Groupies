@@ -151,7 +151,7 @@ Namespace Entities
             EingeteilteTeilnehmer.Remove(Teilnehmer)
         End Sub
 
-        Public Sub TrainerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
+        Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
             Gruppe.Trainer = Trainer
             EingeteilteTrainer.Add(Trainer)
         End Sub

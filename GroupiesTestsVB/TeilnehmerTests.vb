@@ -27,6 +27,7 @@ Public Class TeilnehmerTests
         Dim y = tnL.GeordnetLeistungsstufeNachnameVorname
         Dim z = tnL.GeordnetNachnameVorname
 
+
         Debug.Print(Environment.NewLine)
         Debug.Print("ungeord")
         For Each item As Teilnehmer In x
@@ -39,9 +40,26 @@ Public Class TeilnehmerTests
         Next
         Debug.Print(Environment.NewLine)
         Debug.Print($"Nachname, Vorname")
-        For Each item As Teilnehmer In z
-            Debug.Print(item.AusgabeTrainerinfo & vbTab & item.Leistungsstand.Sortierung)
+        For Each item In z
+            Debug.Print(item)
+            'Debug.Print(item.AusgabeTrainerinfo & vbTab & item.Leistungsstand.Sortierung)
         Next
+
+        Debug.Print(Environment.NewLine)
+        Debug.Print("Gruppen")
+
+        Dim Anfaenger = New Leistungsstufe("Anfänger", 1)
+        Dim Experte = New Leistungsstufe("Experte", 3)
+
+        Dim Andreas = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstand = Experte}
+        Dim Marwin = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
+        Dim Stefan = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
+        Dim Andreas1 = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstand = Experte}
+        Dim Andreas2 = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstand = Experte}
+        Dim Frank = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstand = Anfaenger}
+        Dim tnl1 = New TeilnehmerCollection From {Frank, Marwin, Andreas1, Stefan, Andreas2, Andreas}
+
+        tnl1.GruppeLeistungNachnameVorname.ToList.ForEach(Sub(Gr) Debug.Print(Gr.AusgabeTrainerinfo))
 
     End Sub
 End Class

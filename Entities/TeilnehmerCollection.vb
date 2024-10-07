@@ -26,16 +26,25 @@ Namespace Entities
         End Property
 
 
+        Public ReadOnly Property SortierteListe
+            Get
+                Dim ersteSortierung = Me.OrderBy(Function(x) x.Nachname)
+                Dim zweiteSortierung = ersteSortierung.OrderBy(Function(x) x.Vorname)
+                Return zweiteSortierung
+            End Get
+        End Property
 
 
         ''' <summary>
         ''' Die Teilnehmerliste geordnet nach Nachname, Vorname
         ''' </summary>
         ''' <returns></returns>
-        Public Property GeordnetNachnameVorname = From t In Me
-                                                  Order By
-                                                      t.Nachname,
-                                                      t.Vorname
+        Public Property GeordnetNachnameVorname =
+            OrderBy(Function(Tn) Tn.Nachname) _
+            .ThenBy(Function(Tn) Tn.Vorname) _
+            .Select(Function(Tn) $"{Tn.VorUndNachname}")
+
+
         ''' <summary>
         ''' Die Teilnehmerliste geordnet nach 
         ''' der absteigenden Sortierkennzahl 
@@ -43,11 +52,15 @@ Namespace Entities
         ''' dann aufsteigend Nachname, Vorname 
         ''' </summary>
         ''' <returns></returns>
-        Public Property GeordnetLeistungsstufeNachnameVorname = From t In Me
-                                                                Order By
-                                                                    t.Leistungsstand.Sortierung Descending,
-                                                                    t.Nachname,
-                                                                    t.Vorname
+        Public Property GeordnetLeistungsstufeNachnameVorname =
+            OrderByDescending(Function(o) o.Leistungsstand.Sortierung) _
+            .ThenBy(Function(o) o.Nachname) _
+            .ThenBy(Function(o) o.Vorname)
 
+        Public Property GruppeLeistungNachnameVorname =
+            GroupBy(Function(TN) TN.Leistungsstand.Sortierung) _
+            .OrderByDescending(Function(G) G.Key)
+        '(Function(K,Tn) $"{K.Key} {Tl.VorUndNachname}")
+        '.OrderByDescending(Function(o) o.Key) _
     End Class
 End Namespace

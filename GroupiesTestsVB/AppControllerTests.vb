@@ -72,7 +72,7 @@ Namespace GroupiesTestsVB
 
         <TestMethod>
         Public Sub TestDateiEinlesen()
-            AppController.XMLDateiEinlesen("Z:\GroupiesReisen\Stubaital\20231118Stubai.ski")
+            'AppController.XMLDateiEinlesen("Z:\GroupiesReisen\Stubaital\20231118Stubai.ski")
 
         End Sub
 

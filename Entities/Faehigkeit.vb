@@ -68,6 +68,13 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Sortierung As Integer?
 
+        Public ReadOnly Property AusgabeAnTrainerInfo As String
+            Get
+                Return LeseAusgabeAnTrainerinfo()
+            End Get
+        End Property
+
+
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -76,7 +83,7 @@ Namespace Entities
         ''' Gibt die Benennung und Beschreibung für die Trainerinformation zurück
         ''' </summary>
         ''' <returns></returns>
-        Public Function AusgabeAnTrainerinfo() As String
+        Private Function LeseAusgabeAnTrainerinfo() As String
             If Sortierung Is Nothing And Beschreibung Is Nothing Then
                 Return $"{Benennung}"
             ElseIf Sortierung Is Nothing Then

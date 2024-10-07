@@ -58,7 +58,7 @@ Public Class ClubTests
 
         CurrentClub.Gruppenliste = StandardGruppen
 
-        CurrentClub.TrainerGruppeZuweisen(Studti, CurrentClub.Gruppenliste.ElementAt(0))
+        CurrentClub.TrainerEinerGruppeZuweisen(Studti, CurrentClub.Gruppenliste.ElementAt(0))
         Assert.AreEqual(2, AppController.CurrentClub.FreieTrainer.Count)
         Assert.AreEqual(1, AppController.CurrentClub.EingeteilteTrainer.Count)
 

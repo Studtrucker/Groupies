@@ -7,9 +7,8 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
-        WindowState="Maximized" Loaded="HandleWindowLoaded"
-        Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
-        Title="Groupies" Height="450" Width="800">
+        Loaded="HandleWindowLoaded" Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
+        WindowState="Maximized" Title="Groupies" Height="450" Width="800">
 
     <Window.Resources>
          <!--Style für die MenuItems--> 
@@ -132,19 +131,24 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Druckname" 
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer" 
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding GroupPrintNaming}"
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Gruppe"
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding GroupNaming}"
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Gruppenmitglieder" 
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Skilehrer"
                                            Style="{StaticResource TextblockStyle}" />
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GroupMembers.Count}"
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Trainer.VorUndNachname}"
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Anzahl Gruppenmitglieder" 
+                                           Style="{StaticResource TextblockStyle}" />
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Mitgliederliste.Count}"
                                            Style="{StaticResource TextblockStyle}" />
                             </Grid>
                         </DataTemplate>
@@ -158,7 +162,7 @@
             <DockPanel Grid.Column="2">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="Gruppen Viewer" />
+                        <TextBlock Text="Gruppe" />
                         <uc:GroupView x:Name="GroupView"/>
                     </StackPanel>
                 </ScrollViewer>

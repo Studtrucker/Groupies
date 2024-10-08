@@ -527,6 +527,8 @@ Public Class Window1
 
     Private Sub setView(Skikursliste As Club)
 
+        ' Hier wird der DataContext gesetzt!
+
         unsetView()
 
         ' Neue ListCollectionView laden

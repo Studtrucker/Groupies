@@ -69,6 +69,7 @@ Namespace Entities
             End Set
         End Property
 
+        Private _TeilnehmerInGruppen = New TeilnehmerCollection
         ''' <summary>
         ''' Gibt eine Liste den Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
         ''' </summary>
@@ -79,14 +80,26 @@ Namespace Entities
             End Get
         End Property
 
+
+        Public ReadOnly Property TeilnehmerInGruppen As IEnumerable(Of Teilnehmer)
+            Get
+                _TeilnehmerInGruppen.Clear()
+                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteTeilnehmerLesen))
+                Return _TeilnehmerInGruppen
+            End Get
+        End Property
+
+        Private Sub EingeteilteTeilnehmerLesen(Teilnehmer As Teilnehmer)
+            _TeilnehmerInGruppen.add(Teilnehmer)
+        End Sub
+
         ''' <summary>
         ''' Gibt eine Liste mit den Teilnehmern zurück, die noch keiner Gruppe angehören
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property FreieTeilnehmer() As TeilnehmerCollection
             Get
-                Return New TeilnehmerCollection(Teilnehmerliste.Except(_EingeteilteTeilnehmer))
-                Return FreieTeilnehmer
+                Return New TeilnehmerCollection(Teilnehmerliste.Except(_TeilnehmerInGruppen))
             End Get
         End Property
 

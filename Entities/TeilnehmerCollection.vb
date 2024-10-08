@@ -71,7 +71,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TeilnehmerGeordnet As IEnumerable(Of Teilnehmer) =
-            OrderByDescending(Function(Tn) Tn.Nachname) _
+            OrderBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname)
 
         ''' <summary>

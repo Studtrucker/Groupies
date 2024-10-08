@@ -180,7 +180,7 @@
                         <RowDefinition />
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Skilehrer Explorer" Grid.Row="0"/>
+                    <TextBlock Text="Nicht eingeteilte Skilehrer" Grid.Row="0"/>
                     <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
                           DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
@@ -190,8 +190,7 @@
                           IsReadOnly="True" CanUserAddRows="False" 
                           Style="{StaticResource groupiesDataGridStyle}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Separator DockPanel.Dock="Top" Grid.Row="2"/>
@@ -203,7 +202,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Teilnehmer Explorer" Grid.Row="0"/>
+                    <TextBlock Text="Nicht eingeteilte Teilnehmer" Grid.Row="0"/>
                     <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
@@ -212,9 +211,9 @@
                               IsReadOnly="True" CanUserAddRows="False" 
                               Style="{StaticResource groupiesDataGridStyle}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
-                            <DataGridTextColumn Header="Level" Binding="{Binding ParticipantLevel.LevelNaming}" Width="*"/>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>
+                            <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstand.Benennung}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

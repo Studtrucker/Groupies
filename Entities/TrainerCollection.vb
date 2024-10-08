@@ -44,5 +44,17 @@ Namespace Entities
             .ThenBy(Function(Tr) Tr.Vorname) _
             .Select(Function(Tr) Tr.VorUndNachname)
 
+        ''' <summary>
+        ''' Liste verfügbare Trainer
+        ''' Geordnet:
+        ''' Nachname
+        ''' Vorname
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property GeordnetVerfuegbar As IEnumerable(Of Trainer) =
+            Where(Function(Tr) Tr.IstEinerGruppeZugewiesen = False) _
+            .OrderBy(Function(Tr) Tr.Nachname) _
+            .ThenBy(Function(Tr) Tr.Vorname)
+
     End Class
 End Namespace

@@ -538,20 +538,29 @@ Public Class Window1
         'End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.Teilnehmerliste)
-        setView(CDS.CurrentClub.FreieTrainer)
+        setView(CDS.CurrentClub.FreieTeilnehmer.TeilnehmerGeordnet)
+        setView(CDS.CurrentClub.FreieTrainer.GeordnetVerfuegbar.ToList)
     End Sub
 
-    Private Sub setView(Participants As TeilnehmerCollection)
-        _participantListCollectionView = New ListCollectionView(Participants)
+    Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
+        _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
         ParticipantDataGrid.DataContext = _participantListCollectionView
     End Sub
 
-    Private Sub setView(Instructors As TrainerCollection)
-        _instructorListCollectionView = New ListCollectionView(Instructors)
+    Private Sub setView(FreieTeilnehmer As IEnumerable(Of Teilnehmer))
+        _participantListCollectionView = New ListCollectionView(FreieTeilnehmer.ToList)
+        ParticipantDataGrid.DataContext = _participantListCollectionView
+    End Sub
+
+    Private Sub setView(FreieTrainer As TrainerCollection)
+        _instructorListCollectionView = New ListCollectionView(FreieTrainer)
         InstuctorDataGrid.DataContext = _instructorListCollectionView
     End Sub
 
+    Private Sub setView(FreieTrainer As IEnumerable(Of Trainer))
+        _instructorListCollectionView = New ListCollectionView(FreieTrainer.ToList)
+        InstuctorDataGrid.DataContext = _instructorListCollectionView
+    End Sub
 
     Private Sub unsetView()
 

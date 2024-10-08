@@ -6,6 +6,9 @@ Namespace Entities
 
     Public Class Club
 
+
+        'Todo: Klasse AUFRÄUMEN
+
 #Region "Fields"
 
         Private _Gruppenliste = New GruppeCollection
@@ -71,7 +74,7 @@ Namespace Entities
 
         Private _TeilnehmerInGruppen = New TeilnehmerCollection
         ''' <summary>
-        ''' Gibt eine Liste den Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
+        ''' Gibt eine Liste der Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTeilnehmer() As TeilnehmerCollection
@@ -97,9 +100,9 @@ Namespace Entities
         ''' Gibt eine Liste mit den Teilnehmern zurück, die noch keiner Gruppe angehören
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property FreieTeilnehmer() As TeilnehmerCollection
+        Public ReadOnly Property FreieTeilnehmer() As IEnumerable(Of Teilnehmer)
             Get
-                Return New TeilnehmerCollection(Teilnehmerliste.Except(_TeilnehmerInGruppen))
+                Return Teilnehmerliste.Except(EingeteilteTeilnehmer)
             End Get
         End Property
 

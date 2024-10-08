@@ -538,7 +538,7 @@ Public Class Window1
         'End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.FreieTeilnehmer.TeilnehmerGeordnet)
+        setView(CDS.CurrentClub.Teilnehmerliste.TeilnehmerGeordnet.ToList)
         setView(CDS.CurrentClub.FreieTrainer.GeordnetVerfuegbar.ToList)
     End Sub
 

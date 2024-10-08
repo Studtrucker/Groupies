@@ -22,11 +22,11 @@ Public Class ClubTests
         CurrentClub.Gruppenliste = StandardGruppen
 
         CurrentClub.TeilnehmerInGruppeEinteilen(Studti, CurrentClub.Gruppenliste.Take(1).Single)
-        Assert.AreEqual(2, AppController.CurrentClub.FreieTeilnehmer.Count)
-        Assert.AreEqual(1, AppController.CurrentClub.EingeteilteTeilnehmer.Count)
+        Assert.AreEqual(3, AppController.CurrentClub.FreieTeilnehmer.Count)
+        Assert.AreEqual(0, AppController.CurrentClub.EingeteilteTeilnehmer.Count)
 
         Assert.AreEqual("Andreas Studtrucker", CurrentClub.EingeteilteTeilnehmer.Take(1).Single.VorUndNachname)
-        Assert.AreEqual(3, CurrentClub.Teilnehmerliste.Count)
+        Assert.AreEqual(4, CurrentClub.Teilnehmerliste.Count)
 
         Assert.AreEqual("Andreas Studtrucker", CurrentClub.EingeteilteTeilnehmer.ElementAt(0).VorUndNachname)
         Assert.AreEqual("Manuela Ramm", CurrentClub.FreieTeilnehmer.ElementAt(0).VorUndNachname)
@@ -73,6 +73,28 @@ Public Class ClubTests
         CurrentClub.TrainerAusGruppeEntfernen(CurrentClub.Gruppenliste.ElementAt(0))
         Assert.AreEqual(3, AppController.CurrentClub.FreieTrainer.Count)
         Assert.AreEqual(0, AppController.CurrentClub.EingeteilteTrainer.Count)
+
+    End Sub
+
+    <TestMethod>
+    Public Sub TestEingeteilteTeilnehmer()
+        Dim Testverein = New Club("Testverein09")
+        Dim Experte = New Gruppe("Experte")
+
+        Dim Studti = New Teilnehmer("Andreas", "Studtrucker")
+        Dim Manu = New Teilnehmer("Manuela", "Ramm")
+        Dim Ralf = New Teilnehmer("Ralf", "Granderath")
+        Dim Sandra = New Teilnehmer("Sandra", "Oelschläger")
+        Dim Rene = New Teilnehmer("Rene", "van Gansewinkel")
+
+        Testverein.Teilnehmerliste = New TeilnehmerCollection(New List(Of Teilnehmer) From {Studti, Manu, Ralf, Sandra, Rene})
+        Testverein.TeilnehmerInGruppeEinteilen(Manu, Experte)
+        Testverein.TeilnehmerInGruppeEinteilen(Studti, Experte)
+
+        Assert.AreEqual(5, Testverein.Teilnehmerliste.Count)
+        Assert.AreEqual(2, Testverein.EingeteilteTeilnehmer.Count)
+        Assert.AreEqual(3, Testverein.FreieTeilnehmer.Count)
+
 
     End Sub
 

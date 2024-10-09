@@ -13,10 +13,12 @@ Namespace Entities
 
         Private _Gruppenliste = New GruppeCollection
         Private _Teilnehmerliste = New TeilnehmerCollection
-        Private _EingeteilteTeilnehmer = New TeilnehmerCollection
         Private _Trainerliste = New TrainerCollection
-        Private _EingeteilteTrainer = New TrainerCollection
 
+        Private _EingeteilteTeilnehmer As TeilnehmerCollection
+        Private _FreieTeilnehmer As TeilnehmerCollection
+        Private _EingeteilteTrainer As TrainerCollection
+        Private _FreieTrainer As TrainerCollection
 #End Region
 
 #Region "Konstruktor"
@@ -72,39 +74,32 @@ Namespace Entities
             End Set
         End Property
 
-        Private _TeilnehmerInGruppen = New TeilnehmerCollection
+
         ''' <summary>
-        ''' Gibt eine Liste der Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
+        '''  Gibt eine Liste der Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property EingeteilteTeilnehmer() As TeilnehmerCollection
+        Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
             Get
+                _EingeteilteTeilnehmer = New TeilnehmerCollection
+                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteTeilnehmerLesen))
                 Return _EingeteilteTeilnehmer
             End Get
         End Property
 
 
-        Public ReadOnly Property TeilnehmerInGruppen As IEnumerable(Of Teilnehmer)
-            Get
-                _TeilnehmerInGruppen.Clear()
-                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteTeilnehmerLesen))
-                Return _TeilnehmerInGruppen
-            End Get
-        End Property
-
-        Private Sub EingeteilteTeilnehmerLesen(Teilnehmer As Teilnehmer)
-            _TeilnehmerInGruppen.add(Teilnehmer)
-        End Sub
-
         ''' <summary>
         ''' Gibt eine Liste mit den Teilnehmern zurück, die noch keiner Gruppe angehören
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property FreieTeilnehmer() As IEnumerable(Of Teilnehmer)
+        Public ReadOnly Property FreieTeilnehmer As TeilnehmerCollection
             Get
-                Return Teilnehmerliste.Except(EingeteilteTeilnehmer)
+                _FreieTeilnehmer = New TeilnehmerCollection(_Teilnehmerliste)
+                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteAusFreieTeilnehmerEntfernen))
+                Return _FreieTeilnehmer
             End Get
         End Property
+
 
         ''' <summary>
         ''' Eine Liste aller Trainer im Club
@@ -125,6 +120,8 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
             Get
+                _EingeteilteTrainer = New TrainerCollection
+                Gruppenliste.ToList.ForEach(Sub(Gr) EingeteilteTrainerLesen(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get
         End Property
@@ -135,7 +132,9 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property FreieTrainer() As TrainerCollection
             Get
-                Return New TrainerCollection(Trainerliste.Except(_EingeteilteTrainer))
+                _FreieTrainer = New TrainerCollection(Trainerliste)
+                Gruppenliste.ToList.ForEach(Sub(Gr) FreieTrainerLesen(Gr.Trainer))
+                Return _FreieTrainer
             End Get
         End Property
 
@@ -155,7 +154,6 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Add(Teilnehmer)
-            EingeteilteTeilnehmer.Add(Teilnehmer)
         End Sub
 
         ''' <summary>
@@ -165,18 +163,50 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerAusGruppeEntfernen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Remove(Teilnehmer)
-            EingeteilteTeilnehmer.Remove(Teilnehmer)
         End Sub
 
+        ''' <summary>
+        ''' Der Trainer wird der angegebenen Gruppe zugewiesen
+        ''' </summary>
+        ''' <param name="Trainer"></param>
+        ''' <param name="Gruppe"></param>
         Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
             Gruppe.Trainer = Trainer
-            EingeteilteTrainer.Add(Trainer)
         End Sub
+
+        ''' <summary>
+        ''' Ein Trainer wird aus der angegebenen Gruppe entfernt
+        ''' </summary>
+        ''' <param name="Gruppe"></param>
         Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            EingeteilteTrainer.Remove(Gruppe.Trainer)
             Gruppe.Trainer = Nothing
         End Sub
 
+        ''' <summary>
+        ''' FreieTrainer=AlleTrainer-EingeteilteTrainer 
+        ''' </summary>
+        ''' <param name="Trainer"></param>
+        Private Sub FreieTrainerLesen(Trainer As Trainer)
+            _FreieTrainer.Remove(Trainer)
+        End Sub
+
+        ''' <summary>
+        ''' EingeteilteTrainer=EingeteilteTrainer+Gruppentrainer
+        ''' </summary>
+        ''' <param name="Trainer"></param>
+        Private Sub EingeteilteTrainerLesen(Trainer As Trainer)
+            If Trainer IsNot Nothing Then
+                _EingeteilteTrainer.Add(Trainer)
+            End If
+        End Sub
+
+        Private Sub EingeteilteAusFreieTeilnehmerEntfernen(Teilnehmer As Teilnehmer)
+            _FreieTeilnehmer.Remove(Teilnehmer)
+        End Sub
+
+        Private Sub EingeteilteTeilnehmerLesen(Teilnehmer As Teilnehmer)
+            _EingeteilteTeilnehmer.Add(Teilnehmer)
+        End Sub
 
         Public Overrides Function ToString() As String
             Return ClubName

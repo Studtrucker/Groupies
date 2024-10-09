@@ -1,43 +1,16 @@
 ﻿Imports Groupies.Entities
 Public Module VeralterteKlassenMapping
 
-    Private Gruppen As GruppeCollection
+    Private NeuerClub As Club
+    Private _Gruppenliste As GruppeCollection
 
     Public Function MapSkiClub2Club(Skiclub As Veraltert.Skiclub) As Club
 
-        ' Eine Collection instanziieren
-        Dim NeueGruppenCollection = New GruppeCollection
-        ' Eine Liste aus neuen Klassen aus den veralterten Klassen erstellen
-        Dim NeueGruppenliste = (From Group In Skiclub.Grouplist Select MapGroup2Gruppe(Group)).ToList
-        ' Jedes Mitglied der neuen Klasse aus der Liste der Collection hinzufügen
-        NeueGruppenliste.ForEach(Sub(Gruppe) NeueGruppenCollection.Add(Gruppe))
+        NeuerClub = New Club
+        ' Jeden Groupmember aus den Groups in die Teilnehmerliste des Clubs hängen
+        Skiclub.Grouplist.ToList.ForEach(Sub(Group) MapGroup2Gruppe(Group))
 
-
-        Dim NeueLeistungsstufeliste = (From Level In Skiclub.Levellist
-                                       Select MapLevel2Leistungsstufe(Level)).ToList
-
-        Dim LeistungsstufeCollection = New LeistungsstufeCollection
-        NeueLeistungsstufeliste.ForEach(Sub(L) LeistungsstufeCollection.Add(L))
-
-        Dim NeueTeilnehmerliste = (From Participant In Skiclub.Participantlist
-                                   Select New Teilnehmer(Participant.ParticipantFirstName, Participant.ParticipantLastName) With {
-                                      .Leistungsstand = MapLevel2Leistungsstufe(Participant.ParticipantLevel),
-                                      .TeilnehmerID = Participant.ParticipantID}).ToList
-
-        Dim TeilnehmerCollection = New TeilnehmerCollection
-        NeueTeilnehmerliste.ForEach(Sub(t) TeilnehmerCollection.Add(t))
-
-        Dim NeueTrainerliste = (From Instructor In Skiclub.Instructorlist
-                                Select MapInstructor2Trainer(Instructor)).ToList
-
-        Dim TrainerCollection = New TrainerCollection
-        NeueTrainerliste.ForEach(Sub(t) TrainerCollection.Add(t))
-
-        Dim NeuerClub = New Club("Club") With {
-            .Gruppenliste = NeueGruppenCollection,
-            .Leistungsstufenliste = LeistungsstufeCollection,
-            .Teilnehmerliste = TeilnehmerCollection,
-            .Trainerliste = TrainerCollection}
+        NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
 
         Return NeuerClub
 
@@ -45,22 +18,29 @@ Public Module VeralterteKlassenMapping
 
     Private Function MapGroup2Gruppe(Group As Veraltert.Group) As Gruppe
 
-        ' Eine Collection instanziieren
-        Dim TeilnehmerCollection = New TeilnehmerCollection
-        ' Eine Liste aus neuen Klassen aus den veralterten Klassen erstellen
-        Dim Mitgliederliste = (From Member In Group.GroupMembers
-                               Select MapParticipant2Teilnehmer(Member)).ToList
-        ' Jedes Mitglied der neuen Klasse aus der Liste der Collection hinzufügen
-        Mitgliederliste.ForEach(Sub(m) TeilnehmerCollection.Add(m))
-
-
+        ' Die Gruppe mappen
         Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
             .Benennung = Group.GroupNaming,
             .Sortierung = Group.GroupSort,
-            .Trainer = MapInstructor2Trainer(Group.GroupLeader),
             .GruppenID = Group.GroupID,
-            .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel),
-            .Mitgliederliste = TeilnehmerCollection}
+            .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel)}
+        NeuerClub.Gruppenliste.Add(Gruppe)
+
+        ' Den Trainer mappen
+        Dim Trainer = MapInstructor2Trainer(Group.GroupLeader)
+        NeuerClub.Trainerliste.Add(Trainer)
+        NeuerClub.TrainerEinerGruppeZuweisen(Trainer, Gruppe)
+
+        ' Die Teilnehmer mappen
+        'For Each Participant In Group.GroupMembers
+        '    Dim Teilnehmer = MapParticipant2Teilnehmer(Participant)
+        '    NeuerClub.Teilnehmerliste.Add(Teilnehmer)
+        '    NeuerClub.TeilnehmerInGruppeEinteilen(Teilnehmer, Gruppe)
+        'Next
+
+        Dim Mitglieder = Group.GroupMembers.Select(AddressOf MapParticipant2Teilnehmer).ToList
+        Mitglieder.ForEach(Sub(M) NeuerClub.Teilnehmerliste.Add(M))
+        Mitglieder.ForEach(Sub(M) NeuerClub.TeilnehmerInGruppeEinteilen(M, Gruppe))
 
         Return Gruppe
 

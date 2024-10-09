@@ -379,8 +379,11 @@ Public Class Window1
             Exit Sub
         End If
 
-        Dim loadedSkischule = OpenXML(fileName)
-        If loadedSkischule Is Nothing Then Exit Sub
+        Dim loadedSkiclub = OpenAltesXML(fileName)
+        Dim loadedClub = OpenXML(fileName)
+        If loadedSkiclub Is Nothing AndAlso loadedClub Is Nothing Then
+            Exit Sub
+        End If
 
         _groupiesFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
@@ -388,7 +391,10 @@ Public Class Window1
         CDS.CurrentClub = Nothing
 
         ' Eintrag in CurrentDataService
-        CDS.CurrentClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkischule)
+        CDS.CurrentClub = loadedClub
+        If CDS.CurrentClub Is Nothing Then
+            CDS.CurrentClub = MapSkiClub2Club(loadedSkiclub)
+        End If
 
         setView(CDS.CurrentClub)
 
@@ -396,29 +402,45 @@ Public Class Window1
 
     End Sub
 
-    Private Function OpenXML(fileName As String) As Veraltert.Skiclub
-
-        ' Herausfinden, welcher Typ liegt vor?
-        ' Veraltertes xml mit englischen Bezeichnungen, hier muss ein Mapping erfolgen
-
-        ' Neues xml mit deutschen Bezeichnungen
-
+    Private Function OpenAltesXML(fileName As String) As Veraltert.Skiclub
 
         Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-        Dim loadedSkiclub As Entities.Veraltert.Skiclub = Nothing
+        Dim loadedSkiclub As Veraltert.Skiclub = Nothing
 
         ' Datei deserialisieren
         Using fs = New FileStream(fileName, FileMode.Open)
             Try
                 loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
+            Catch ex As InvalidOperationException
+                Return Nothing
             Catch ex As InvalidDataException
                 MessageBox.Show("Datei ungültig: " & ex.Message)
                 Return Nothing
             End Try
         End Using
         Return loadedSkiclub
+
     End Function
 
+    Private Function OpenXML(fileName As String) As Club
+
+        Dim serializer = New XmlSerializer(GetType(Club))
+        Dim loadedClub As Club = Nothing
+
+        ' Datei deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Try
+                ' Todo: Doppelte Teilnehmer und Skilehrer - siehe Mapping altes Format!
+                loadedClub = TryCast(serializer.Deserialize(fs), Club)
+            Catch ex As InvalidOperationException
+                Return Nothing
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Return Nothing
+            End Try
+        End Using
+        Return loadedClub
+    End Function
 
 
     Private Sub SaveSkischule(fileName As String)
@@ -538,7 +560,7 @@ Public Class Window1
         'End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.Teilnehmerliste.TeilnehmerGeordnet.ToList)
+        setView(CDS.CurrentClub.FreieTeilnehmer.TeilnehmerGeordnet.ToList)
         setView(CDS.CurrentClub.FreieTrainer.GeordnetVerfuegbar.ToList)
     End Sub
 

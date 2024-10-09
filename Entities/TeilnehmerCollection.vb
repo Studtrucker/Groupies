@@ -19,7 +19,7 @@ Namespace Entities
 
 #End Region
 
-#Region "Porperties String Rückgabe"
+#Region "Porperties IEnumerable(String) Rückgabe"
         ''' <summary>
         ''' Die Teilnehmer mit VorUndNachname ungeordnet
         ''' </summary>
@@ -47,16 +47,16 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TrainerinfoGeordnet As IEnumerable(Of String) =
-            OrderByDescending(Function(o) o.Leistungsstand.Sortierung) _
-            .ThenBy(Function(o) o.Nachname) _
-            .ThenBy(Function(o) o.Vorname) _
+            OrderByDescending(Function(Tr) Tr.Leistungsstand.Sortierung) _
+            .ThenBy(Function(Tr) Tr.Nachname) _
+            .ThenBy(Function(Tr) Tr.Vorname) _
             .Select(Function(Tn) Tn.AusgabeTrainerinfo)
 
 
 
 #End Region
 
-#Region "Porperties IEnumerable Rückgabe"
+#Region "Porperties IEnumerable(Teilnehmer) Rückgabe"
         ''' <summary>
         ''' Die Teilnehmer ungeordnet
         ''' </summary>
@@ -83,12 +83,23 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TeilnehmerMitLeistungsstufeGeordnet As IEnumerable(Of Teilnehmer) =
-            OrderByDescending(Function(o) o.Leistungsstand.Sortierung) _
-            .ThenBy(Function(o) o.Nachname) _
-            .ThenBy(Function(o) o.Vorname)
+            OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung) _
+            .ThenBy(Function(Tn) Tn.Nachname) _
+            .ThenBy(Function(Tn) Tn.Vorname)
 
 #End Region
 
+#Region "Funktionen und Methoden"
+
+        'Public Overloads Sub Add(Teilnehmer As Teilnehmer)
+        '    Add(Teilnehmer)
+        'End Sub
+
+        'Public Overloads Sub Remove(Teilnehmer As Teilnehmer)
+        '    Remove(Teilnehmer)
+        'End Sub
+
+#End Region
 
 
 #Region "Beispiel Gruppierung"

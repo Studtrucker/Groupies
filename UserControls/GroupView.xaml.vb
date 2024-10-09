@@ -110,10 +110,10 @@ Namespace UserControls
             Dim Tn = TryCast(GroupMembersDataGrid.SelectedItems, IList)
 
             If Tn IsNot Nothing Then
-                'For Each item As Participant In Tn
-                Dim Data = New DataObject(GetType(IList), Tn)
-                DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Move)
-                'Next
+                ''For Each item As Participant In Tn
+                'Dim Data = New DataObject(GetType(IList), Tn)
+                'DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Move)
+                ''Next
             End If
 
         End Sub

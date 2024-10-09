@@ -32,7 +32,7 @@ Namespace Controller
         ''' versehen werden
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(10)
+        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(15)
 
 #End Region
 

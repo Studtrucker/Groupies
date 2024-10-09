@@ -6,9 +6,6 @@ Namespace Entities
 
     Public Class Club
 
-
-        'Todo: Klasse AUFRÄUMEN
-
 #Region "Fields"
 
         Private _Gruppenliste = New GruppeCollection

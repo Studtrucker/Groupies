@@ -264,7 +264,7 @@ Public Class Window1
         Dim ImportParticipants = ImportService.ImportParticipants
         If ImportParticipants IsNot Nothing Then
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportParticipants.ToList.ForEach(Sub(x) Services.Club.Teilnehmerliste.Add(x))
+            ImportParticipants.ToList.ForEach(Sub(x) Services.Club.GruppenloseTeilnehmer.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
             setView(CDS.CurrentClub)
         End If
@@ -272,7 +272,7 @@ Public Class Window1
     End Sub
 
     Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.Teilnehmerliste IsNot Nothing
+        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -280,7 +280,7 @@ Public Class Window1
         Dim ImportInstructors = ImportService.ImportInstructors
         If ImportInstructors IsNot Nothing Then
             'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportInstructors.ToList.ForEach(Sub(x) Services.Club.Trainerliste.Add(x))
+            ImportInstructors.ToList.ForEach(Sub(x) Services.Club.GruppenloseTrainer.Add(x))
             MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
             setView(CDS.CurrentClub)
         End If
@@ -288,7 +288,7 @@ Public Class Window1
     End Sub
 
     Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.Trainerliste IsNot Nothing
+        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -325,7 +325,7 @@ Public Class Window1
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CDS.CurrentClub.Trainerliste.Add(dlg.Instructor)
+            CDS.CurrentClub.GruppenloseTrainer.Add(dlg.Instructor)
             '_uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
             'uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
@@ -379,10 +379,13 @@ Public Class Window1
             Exit Sub
         End If
 
-        Dim loadedSkiclub = OpenAltesXML(fileName)
         Dim loadedClub = OpenXML(fileName)
-        If loadedSkiclub Is Nothing AndAlso loadedClub Is Nothing Then
-            Exit Sub
+        Dim loadedSkiclub
+        If loadedClub Is Nothing Then
+            loadedSkiclub = OpenAltesXML(fileName)
+            If loadedSkiclub Is Nothing Then
+                Exit Sub
+            End If
         End If
 
         _groupiesFile = New FileInfo(fileName)
@@ -391,9 +394,10 @@ Public Class Window1
         CDS.CurrentClub = Nothing
 
         ' Eintrag in CurrentDataService
-        CDS.CurrentClub = loadedClub
-        If CDS.CurrentClub Is Nothing Then
+        If loadedClub Is Nothing Then
             CDS.CurrentClub = MapSkiClub2Club(loadedSkiclub)
+        Else
+            CDS.CurrentClub = loadedClub
         End If
 
         setView(CDS.CurrentClub)
@@ -560,8 +564,8 @@ Public Class Window1
         'End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.FreieTeilnehmer.TeilnehmerGeordnet.ToList)
-        setView(CDS.CurrentClub.FreieTrainer.GeordnetVerfuegbar.ToList)
+        setView(CDS.CurrentClub.GruppenloseTeilnehmer.Geordnet.ToList)
+        setView(CDS.CurrentClub.GruppenloseTrainer.GeordnetVerfuegbar.ToList)
     End Sub
 
     Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
@@ -704,7 +708,7 @@ Public Class Window1
             Dim index(TN.Count - 1) As Integer
             For Each Participant As Teilnehmer In TN
                 'Participant.RemoveFromGroup()
-                Dim x = CDS.CurrentClub.Teilnehmerliste.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
+                Dim x = CDS.CurrentClub.GruppenloseTeilnehmer.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
                 'x.RemoveFromGroup()
                 index(i) = DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitgliederliste.IndexOf(Participant)
                 i += 1
@@ -756,8 +760,8 @@ Public Class Window1
     End Sub
 
     Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
-        setView(CDS.CurrentClub.FreieTrainer)
-        setView(CDS.CurrentClub.Teilnehmerliste)
+        setView(CDS.CurrentClub.AlleTrainer)
+        setView(CDS.CurrentClub.GruppenloseTeilnehmer)
     End Sub
 
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)

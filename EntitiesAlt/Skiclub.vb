@@ -14,6 +14,7 @@ Namespace Entities.Veraltert
         Public Property Grouplist() As GroupCollection
         Public Property Levellist() As LevelCollection
         Public Property Instructorlist() As InstructorCollection
+        Public Property ParticipantsNotInGroup() As ParticipantCollection
 
 #End Region
 

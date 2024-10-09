@@ -23,7 +23,7 @@ Namespace UserControls
 
             GroupPrintName = Group.AusgabeTeilnehmerinfo
             GroupNaming = Group.Benennung
-            Members = Group.Mitgliederliste.TeilnehmerGeordnet
+            Members = Group.Mitgliederliste.Geordnet
             If Group.Leistungsstufe IsNot Nothing Then
                 GroupLevelNaming = Group.Leistungsstufe.Benennung
             End If

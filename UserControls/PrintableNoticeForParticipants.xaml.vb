@@ -22,14 +22,14 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
             GroupPrintName = Group.AusgabeTeilnehmerinfo
-            Members = Group.Mitgliederliste.TeilnehmerGeordnet
+            Members = Group.Mitgliederliste.Geordnet
 
             If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
-                If CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
+                GroupLeaderPrintName = CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
+                If CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.CurrentClub.Trainerliste.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
+                    bi.StreamSource = New MemoryStream(CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else

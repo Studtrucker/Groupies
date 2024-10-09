@@ -23,8 +23,8 @@ Public Class InstructorsWindow
 
 #Region "Window Events"
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        If CurrentClub IsNot Nothing AndAlso CurrentClub.Trainerliste IsNot Nothing Then
-            setView(CurrentClub.Trainerliste)
+        If CurrentClub IsNot Nothing AndAlso CurrentClub.GruppenloseTrainer IsNot Nothing Then
+            setView(CurrentClub.GruppenloseTrainer)
         End If
     End Sub
 #End Region

@@ -70,7 +70,7 @@ Namespace Entities
         '''  Vorname aufsteigend
         ''' </summary>
         ''' <returns></returns>
-        Public Property TeilnehmerGeordnet As IEnumerable(Of Teilnehmer) =
+        Public Property Geordnet As IEnumerable(Of Teilnehmer) =
             OrderBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname)
 

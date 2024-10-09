@@ -19,6 +19,11 @@ Namespace Entities
             Trainerliste.ToList.ForEach(Sub(T) Add(T))
         End Sub
 
+        Public Sub RemoveByTrainerID(TrainerID As Guid)
+            Dim Trainers = Where(Function(Tr) Tr.TrainerID = TrainerID)
+            Trainers.ToList.ForEach(Sub(Tr) Remove(Tr))
+        End Sub
+
         ''' <summary>
         ''' Liste verfügbare Trainer
         ''' Geordnet:

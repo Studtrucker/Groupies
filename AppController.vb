@@ -32,7 +32,7 @@ Namespace Controller
         ''' versehen werden
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(15)
+        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(10)
 
 #End Region
 
@@ -104,7 +104,7 @@ Namespace Controller
 
         Public Function Status() As String
             Return $"Der aktuelle Club heißt {CurrentClub}." & Environment.NewLine &
-                $"Er hat {CurrentClub.Teilnehmerliste.Count} Mitglieder" & Environment.NewLine &
+                $"Er hat {CurrentClub.GruppenloseTeilnehmer.Count} Mitglieder" & Environment.NewLine &
                 "{String.Join(Environment.NewLine & " - ", CurrentClub.Participantlist)}" & $"{Environment.NewLine}"
         End Function
 

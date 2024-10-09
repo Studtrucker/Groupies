@@ -9,13 +9,14 @@ Namespace Entities
 #Region "Fields"
 
         Private _Gruppenliste = New GruppeCollection
-        Private _Teilnehmerliste = New TeilnehmerCollection
-        Private _Trainerliste = New TrainerCollection
 
-        Private _EingeteilteTeilnehmer As TeilnehmerCollection
-        Private _FreieTeilnehmer As TeilnehmerCollection
-        Private _EingeteilteTrainer As TrainerCollection
-        Private _FreieTrainer As TrainerCollection
+        Private _GruppenloseTeilnehmer As New TeilnehmerCollection
+        Private _EingeteilteTeilnehmer As New TeilnehmerCollection
+        Private _AlleTeilnehmer As New TeilnehmerCollection
+
+        Private _GruppenloseTrainer As New TrainerCollection
+        Private _EingeteilteTrainer As New TrainerCollection
+        Private _AlleTrainer As New TrainerCollection
 #End Region
 
 #Region "Konstruktor"
@@ -46,7 +47,7 @@ Namespace Entities
         Public Property ClubName As String
 
         ''' <summary>
-        ''' Eine Liste aller Gruppen im Club
+        ''' Eine Liste aller Gruppen
         ''' </summary>
         ''' <returns></returns>
         Public Property Gruppenliste() As GruppeCollection
@@ -59,79 +60,82 @@ Namespace Entities
         End Property
 
         ''' <summary>
-        ''' Eine Liste aller Teilnehmer im Club
+        ''' Teilnehmer ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public Property Teilnehmerliste() As TeilnehmerCollection
+        Public Property GruppenloseTeilnehmer() As TeilnehmerCollection
             Get
-                Return _Teilnehmerliste
+                Return _GruppenloseTeilnehmer
             End Get
             Set(value As TeilnehmerCollection)
-                _Teilnehmerliste = value
+                _GruppenloseTeilnehmer = value
             End Set
         End Property
 
 
         ''' <summary>
-        '''  Gibt eine Liste der Teilnehmern zurück, die bereits in Gruppen eingeteilt wurden 
+        '''  Teilnehmer, die bereits in Gruppen eingeteilt wurden 
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
+
             Get
-                _EingeteilteTeilnehmer = New TeilnehmerCollection
-                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteTeilnehmerLesen))
+                _EingeteilteTeilnehmer.Clear()
+                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
                 Return _EingeteilteTeilnehmer
             End Get
         End Property
 
 
         ''' <summary>
-        ''' Gibt eine Liste mit den Teilnehmern zurück, die noch keiner Gruppe angehören
+        ''' Liste mit allen Teilnehmern, Eingeteilte und die ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property FreieTeilnehmer As TeilnehmerCollection
+        Public ReadOnly Property AlleTeilnehmer As TeilnehmerCollection
             Get
-                _FreieTeilnehmer = New TeilnehmerCollection(_Teilnehmerliste)
-                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(AddressOf EingeteilteAusFreieTeilnehmerEntfernen))
-                Return _FreieTeilnehmer
+                _AlleTeilnehmer.Clear()
+                EingeteilteTeilnehmer.ToList.ForEach(Sub(M) _AlleTeilnehmer.Add(M))
+                GruppenloseTeilnehmer.ToList.ForEach(Sub(M) _AlleTeilnehmer.Add(M))
+                Return _AlleTeilnehmer
             End Get
         End Property
 
 
         ''' <summary>
-        ''' Eine Liste aller Trainer im Club
+        ''' Trainer ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public Property Trainerliste() As TrainerCollection
+        Public Property GruppenloseTrainer() As TrainerCollection
             Get
-                Return _Trainerliste
+                Return _GruppenloseTrainer
             End Get
             Set(value As TrainerCollection)
-                _Trainerliste = value
+                _GruppenloseTrainer = value
             End Set
         End Property
 
         ''' <summary>
-        ''' Gibt eine Liste der Trainer zurück, die bereits in eine Gruppe eingeteilt wurden 
+        ''' Trainer, die bereits in Gruppen eingeteilt wurden
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
             Get
-                _EingeteilteTrainer = New TrainerCollection
-                Gruppenliste.ToList.ForEach(Sub(Gr) EingeteilteTrainerLesen(Gr.Trainer))
+                _EingeteilteTrainer.Clear()
+                Gruppenliste.ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get
         End Property
 
         ''' <summary>
-        ''' Gibt eine Liste mit den Trainer zurück, die noch keine Gruppe haben
+        ''' Liste mit allen Trainern, Eingeteilte und die ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property FreieTrainer() As TrainerCollection
+        Public ReadOnly Property AlleTrainer() As TrainerCollection
             Get
-                _FreieTrainer = New TrainerCollection(Trainerliste)
-                Gruppenliste.ToList.ForEach(Sub(Gr) FreieTrainerLesen(Gr.Trainer))
-                Return _FreieTrainer
+                _AlleTrainer.Clear()
+                EingeteilteTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
+                GruppenloseTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
+                Return _AlleTrainer
             End Get
         End Property
 
@@ -151,6 +155,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Add(Teilnehmer)
+            GruppenloseTeilnehmer.Remove(Teilnehmer)
         End Sub
 
         ''' <summary>
@@ -160,6 +165,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerAusGruppeEntfernen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Remove(Teilnehmer)
+            GruppenloseTeilnehmer.Add(Teilnehmer)
         End Sub
 
         ''' <summary>
@@ -184,26 +190,9 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Trainer"></param>
         Private Sub FreieTrainerLesen(Trainer As Trainer)
-            _FreieTrainer.Remove(Trainer)
+            _AlleTrainer.Remove(Trainer)
         End Sub
 
-        ''' <summary>
-        ''' EingeteilteTrainer=EingeteilteTrainer+Gruppentrainer
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        Private Sub EingeteilteTrainerLesen(Trainer As Trainer)
-            If Trainer IsNot Nothing Then
-                _EingeteilteTrainer.Add(Trainer)
-            End If
-        End Sub
-
-        Private Sub EingeteilteAusFreieTeilnehmerEntfernen(Teilnehmer As Teilnehmer)
-            _FreieTeilnehmer.Remove(Teilnehmer)
-        End Sub
-
-        Private Sub EingeteilteTeilnehmerLesen(Teilnehmer As Teilnehmer)
-            _EingeteilteTeilnehmer.Add(Teilnehmer)
-        End Sub
 
         Public Overrides Function ToString() As String
             Return ClubName

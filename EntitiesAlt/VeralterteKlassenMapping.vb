@@ -1,4 +1,5 @@
 ﻿Imports Groupies.Entities
+Imports Groupies.Entities.Veraltert
 Public Module VeralterteKlassenMapping
 
     Private NeuerClub As Club
@@ -7,11 +8,16 @@ Public Module VeralterteKlassenMapping
     Public Function MapSkiClub2Club(Skiclub As Veraltert.Skiclub) As Club
 
         NeuerClub = New Club
-        ' Jeden Groupmember aus den Groups in die Teilnehmerliste des Clubs hängen
-        Skiclub.Grouplist.ToList.ForEach(Sub(Group) MapGroup2Gruppe(Group))
-
+        ' Jede Group dem Skiclub mappen und in die Gruppenliste des Clubs hängen
+        NeuerClub.Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
         NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
-
+        NeuerClub.GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
+        NeuerClub.GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
+        For Each item In NeuerClub.EingeteilteTrainer
+            If item IsNot Nothing Then
+                NeuerClub.GruppenloseTrainer.RemoveByTrainerID(item.TrainerID)
+            End If
+        Next
         Return NeuerClub
 
     End Function
@@ -24,29 +30,24 @@ Public Module VeralterteKlassenMapping
             .Sortierung = Group.GroupSort,
             .GruppenID = Group.GroupID,
             .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel)}
-        NeuerClub.Gruppenliste.Add(Gruppe)
 
         ' Den Trainer mappen
         Dim Trainer = MapInstructor2Trainer(Group.GroupLeader)
-        NeuerClub.Trainerliste.Add(Trainer)
-        NeuerClub.TrainerEinerGruppeZuweisen(Trainer, Gruppe)
+        Gruppe.Trainer = MapInstructor2Trainer(Group.GroupLeader)
 
-        ' Die Teilnehmer mappen
-        'For Each Participant In Group.GroupMembers
-        '    Dim Teilnehmer = MapParticipant2Teilnehmer(Participant)
-        '    NeuerClub.Teilnehmerliste.Add(Teilnehmer)
-        '    NeuerClub.TeilnehmerInGruppeEinteilen(Teilnehmer, Gruppe)
-        'Next
-
-        Dim Mitglieder = Group.GroupMembers.Select(AddressOf MapParticipant2Teilnehmer).ToList
-        Mitglieder.ForEach(Sub(M) NeuerClub.Teilnehmerliste.Add(M))
-        Mitglieder.ForEach(Sub(M) NeuerClub.TeilnehmerInGruppeEinteilen(M, Gruppe))
+        ' Jeder Member aus den Groupmembers wird zum Teilnehmer gemappt und kann sofort in die Gruppe gehängt werden
+        Group.GroupMembers.Select(AddressOf MapParticipant2Teilnehmer).ToList.ForEach(Sub(M) Gruppe.Mitgliederliste.Add(M))
 
         Return Gruppe
 
     End Function
 
     Private Function MapParticipant2Teilnehmer(Participant As Veraltert.Participant) As Teilnehmer
+
+        If Participant Is Nothing Then
+            Return Nothing
+        End If
+
         Dim Teilnehmer = New Teilnehmer(Participant.ParticipantFirstName, Participant.ParticipantLastName) With {
                                                                              .Leistungsstand = MapLevel2Leistungsstufe(Participant.ParticipantLevel),
                                                                              .TeilnehmerID = Participant.ParticipantID}
@@ -56,6 +57,11 @@ Public Module VeralterteKlassenMapping
     End Function
 
     Private Function MapInstructor2Trainer(Instructor As Veraltert.Instructor) As Trainer
+
+        If Instructor Is Nothing Then
+            Return Nothing
+        End If
+
         Dim Trainer = New Trainer(Instructor.InstructorFirstName) With {
             .eMail = Instructor.eMail,
             .Foto = Instructor.InstructorPicture,
@@ -68,6 +74,10 @@ Public Module VeralterteKlassenMapping
     End Function
 
     Private Function MapLevel2Leistungsstufe(Level As Veraltert.Level) As Leistungsstufe
+
+        If Level Is Nothing Then
+            Return Nothing
+        End If
 
         ' Eine Collection instanziieren
         Dim FaehigkeitCollection = New FaehigkeitCollection
@@ -88,6 +98,11 @@ Public Module VeralterteKlassenMapping
     End Function
 
     Private Function MapSkill2Faehigkeit(Skill As Veraltert.Skill) As Faehigkeit
+
+        If Skill Is Nothing Then
+            Return Nothing
+        End If
+
         Dim Faehigkeit = New Faehigkeit(Skill.SkillNaming) With {
                                 .Beschreibung = Skill.Description,
                                 .FaehigkeitID = Skill.SkillID,

@@ -111,7 +111,7 @@
 
             <StackPanel>
 
-                <TextBlock Text="Gruppen Explorer"/>
+                <TextBlock Text="Die Gruppen"/>
 
                 <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
                           Margin="6"  Foreground="Black"             
@@ -154,7 +154,7 @@
                         </DataTemplate>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Gruppen" Width="*"
+                        <DataGridTemplateColumn Header="Die Gruppen" Width="*"
                                                 CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -180,7 +180,7 @@
                         <RowDefinition />
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Nicht eingeteilte Skilehrer" Grid.Row="0"/>
+                    <TextBlock Text="Gruppenlose Skilehrer" Grid.Row="0"/>
                     <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
                           DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
@@ -202,7 +202,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Nicht eingeteilte Teilnehmer" Grid.Row="0"/>
+                    <TextBlock Text="Gruppenlose Teilnehmer" Grid.Row="0"/>
                     <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"

@@ -57,7 +57,7 @@
                 <DataGrid x:Name="lstMitglieder" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
                       GridLinesVisibility="None" DockPanel.Dock="Top" >
                     <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
+                        <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>  

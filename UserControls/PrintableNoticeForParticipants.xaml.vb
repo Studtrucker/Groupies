@@ -26,7 +26,6 @@ Namespace UserControls
 
             If Group.Trainer IsNot Nothing Then
                 GroupLeaderPrintName = Group.Trainer.AusgabeTeilnehmerInfo
-                'CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
                 If Group.Trainer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()

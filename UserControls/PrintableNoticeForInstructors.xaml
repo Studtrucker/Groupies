@@ -49,9 +49,7 @@
                       AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
                       Style="{StaticResource PrintoutInfo}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ParticipantFullName}" />
-                    <DataGridTextColumn Width="10" />
-                    <DataGridTextColumn Binding="{Binding ParticipantLevel.LevelNaming}"  FontStyle="Italic" />
+                    <DataGridTextColumn Binding="{Binding AusgabeTrainerinfo}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

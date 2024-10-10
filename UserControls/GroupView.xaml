@@ -58,9 +58,10 @@
                           SelectedValue="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLevelCombobox" />
-                <TextBlock  FontSize="16" Grid.Column="2" Grid.Row="5" 
-                            x:Name="GroupLeaderTextblock" AllowDrop="True" DragDrop.Drop="GroupLeaderTextblock_Drop"
-                            Text="{Binding Path=Trainer.VorUndNachname}" Mouse.MouseDown="TextBlock_MouseDown"/>
+                <TextBox  FontSize="16" Grid.Column="2" Grid.Row="5" 
+                            x:Name="GroupLeaderTextblock" AllowDrop="True" 
+                            Text="{Binding Path=Trainer.VorUndNachname}" MouseDoubleClick="GroupLeaderTextblock_MouseDoubleClick"/>
+                
 
                 <!--Combobox Skilehrer-->
                 <!--<StackPanel  Grid.Column="2" Grid.Row="5" >-->
@@ -79,10 +80,9 @@
 
                 <DataGrid Grid.Column="2" Grid.Row="7" x:Name="GroupMembersDataGrid" 
                           IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
-                          ItemsSource="{Binding Mitgliederliste}" MouseDown="GroupMembersDataGrid_MouseDown" 
-                          DragDrop.Drop="GroupMembersDataGrid_Drop" DragDrop.DragOver="HandleDragOver" AllowDrop="True" 
+                          ItemsSource="{Binding Mitgliederliste}" 
                           IsReadOnly="True" CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}"
-                          SelectionMode="Extended" >
+                          SelectionMode="Extended"  MouseDoubleClick="MenuItem_MouseDoubleClick">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Teilnehmer aus Gruppe entfernen" Click="MenuItemDeleteGroupMember_Click"/>

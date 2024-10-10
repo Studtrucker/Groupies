@@ -206,10 +206,8 @@
                     <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              MouseDown="ParticipantDataGrid_MouseDown"
-                              DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
                               IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource groupiesDataGridStyle}">
+                              Style="{StaticResource groupiesDataGridStyle}" MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>

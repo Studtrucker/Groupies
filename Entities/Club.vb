@@ -169,6 +169,7 @@ Namespace Entities
             GruppenloseTeilnehmer.Add(Teilnehmer)
         End Sub
 
+
         ''' <summary>
         ''' Der Trainer wird der angegebenen Gruppe zugewiesen
         ''' </summary>

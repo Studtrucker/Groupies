@@ -121,9 +121,12 @@ Namespace UserControls
 
 
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
-            For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
-                'CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID = item.TeilnehmerID).Single.RemoveFromGroup()
+            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
+                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
             Next
+            'For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
+            '    CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(item, DirectCast(DataContext, ICollectionView).CurrentItem)
+            'Next
             SetView()
         End Sub
 
@@ -133,6 +136,18 @@ Namespace UserControls
             Else
                 e.Effects = DragDropEffects.None
             End If
+        End Sub
+
+        Private Sub MenuItem_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+            ' Teilnehmer werden aus der Gruppe entfernt und in die Gruppe GruppenloseTeilnehmer eingetragen
+            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
+                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            Next
+        End Sub
+
+        Private Sub GroupLeaderTextblock_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+            ' Binding an das Objekt und nicht an die Eigenschaft
+            MessageBox.Show(GroupLeaderTextblock.Text)
         End Sub
 
 

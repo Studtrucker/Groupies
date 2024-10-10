@@ -115,7 +115,7 @@ Namespace Entities
         ''' Ausgabe von Vor- und Nachname
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property VorUndNachname As String
+        Public Property VorUndNachname As String
             Get
                 If Vorname Is Nothing Then
                     Return Nachname
@@ -125,6 +125,9 @@ Namespace Entities
                     Return String.Format("{0} {1}", Vorname, Nachname)
                 End If
             End Get
+            Set(value As String)
+
+            End Set
         End Property
 
         ''' <summary>

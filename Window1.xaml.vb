@@ -564,19 +564,24 @@ Public Class Window1
         'End If
         DataContext = _groupListCollectionView
 
-        setView(CDS.CurrentClub.GruppenloseTeilnehmer.Geordnet.ToList)
-        setView(CDS.CurrentClub.GruppenloseTrainer.GeordnetVerfuegbar.ToList)
+        setView(CDS.CurrentClub.GruppenloseTeilnehmer)
+        setView(CDS.CurrentClub.GruppenloseTrainer)
     End Sub
 
     Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
         _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
+        If _participantListCollectionView.CanSort Then
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
+        End If
         ParticipantDataGrid.DataContext = _participantListCollectionView
     End Sub
 
-    Private Sub setView(FreieTeilnehmer As IEnumerable(Of Teilnehmer))
-        _participantListCollectionView = New ListCollectionView(FreieTeilnehmer.ToList)
-        ParticipantDataGrid.DataContext = _participantListCollectionView
-    End Sub
+    'Private Sub setView(FreieTeilnehmer As IEnumerable(Of Teilnehmer))
+    '    _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
+    '    ParticipantDataGrid.DataContext = _participantListCollectionView
+    'End Sub
 
     Private Sub setView(FreieTrainer As TrainerCollection)
         _instructorListCollectionView = New ListCollectionView(FreieTrainer)
@@ -767,6 +772,12 @@ Public Class Window1
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
         Dim InstructorWindow = New InstructorsWindow
         InstructorWindow.Show()
+    End Sub
+
+    Private Sub ParticipantDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            CDS.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+        Next
     End Sub
 
 

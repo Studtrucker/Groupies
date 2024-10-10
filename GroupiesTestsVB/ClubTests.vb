@@ -63,10 +63,13 @@ Public Class ClubTests
         Stubai2024.GruppenloseTrainer.Add(Lina)
 
         Assert.AreEqual(3, Stubai2024.GruppenloseTrainer.Count)
+        Assert.AreEqual(0, Stubai2024.EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
 
         Stubai2024.TrainerEinerGruppeZuweisen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(2, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
         Assert.AreEqual(1, Stubai2024.EingeteilteTrainer.Count)
+        Assert.AreEqual(2, Stubai2024.GruppenloseTrainer.Count)
 
         Assert.AreEqual("Andreas Studtrucker", Stubai2024.Gruppenliste.ElementAt(0).Trainer.VorUndNachname)
         Assert.AreEqual(3, Stubai2024.GruppenloseTrainer.Count)
@@ -108,10 +111,10 @@ Public Class ClubTests
         Testverein.TeilnehmerInGruppeEinteilen(Manu, Experte)
         Testverein.TeilnehmerInGruppeEinteilen(Studti, Experte)
 
-        ' Testn
-        Assert.AreEqual(5, Testverein.GruppenloseTeilnehmer.Count)
+        ' Test
+        Assert.AreEqual(3, Testverein.GruppenloseTeilnehmer.Count)
         Assert.AreEqual(2, Testverein.EingeteilteTeilnehmer.Count)
-        Assert.AreEqual(3, Testverein.AlleTeilnehmer.Count)
+        Assert.AreEqual(5, Testverein.AlleTeilnehmer.Count)
 
 
     End Sub

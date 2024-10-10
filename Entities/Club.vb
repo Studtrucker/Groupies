@@ -119,9 +119,10 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
+            ' = Gruppenliste.ToList.Select(Function(Gr) Gr.Trainer))
             Get
-                _EingeteilteTrainer.Clear()
-                Gruppenliste.ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
+                _EingeteilteTrainer.ToList.Clear()
+                Gruppenliste.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get
         End Property
@@ -175,6 +176,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
             Gruppe.Trainer = Trainer
+            GruppenloseTrainer.Remove(Trainer)
         End Sub
 
         ''' <summary>
@@ -182,6 +184,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Gruppe"></param>
         Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
+            GruppenloseTrainer.Add(Gruppe.Trainer)
             Gruppe.Trainer = Nothing
         End Sub
 

@@ -121,7 +121,7 @@ Namespace Entities
         Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
             ' = Gruppenliste.ToList.Select(Function(Gr) Gr.Trainer))
             Get
-                _EingeteilteTrainer.ToList.Clear()
+                _EingeteilteTrainer.Clear()
                 Gruppenliste.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get

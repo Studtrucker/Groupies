@@ -7,7 +7,7 @@ Imports Groupies.Interfaces
 Namespace UserControls
 
     <ContentProperty("Skikursgruppe")>
-    Partial Public Class PrintableNoticeForParticipants
+    Partial Public Class TeilnehmerAusdruck
         Implements IPrintableNotice
 
         Public Sub New()
@@ -22,14 +22,15 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
             GroupPrintName = Group.AusgabeTeilnehmerinfo
-            Members = Group.Mitgliederliste.Geordnet
+            Members = New TeilnehmerCollection(Group.Mitgliederliste.Geordnet.ToList)
 
             If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
-                If CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.HatFoto Then
+                GroupLeaderPrintName = Group.Trainer.AusgabeTeilnehmerInfo
+                'CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.AusgabeTeilnehmerInfo
+                If Group.Trainer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(CDS.CurrentClub.GruppenloseTrainer.Where(Function(t) t.TrainerID = Group.Trainer.TrainerID).Single.Foto)
+                    bi.StreamSource = New MemoryStream(Group.Trainer.Foto)
                     bi.EndInit()
                     GroupLeaderPicture = bi
                 Else

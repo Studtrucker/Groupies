@@ -1157,7 +1157,7 @@ Class MainWindow
             ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
             Dim pSkikursgruppe As IPrintableNotice
             If Printversion = Printversion.Participant Then
-                pSkikursgruppe = New PrintableNoticeForParticipants
+                pSkikursgruppe = New TeilnehmerAusdruck
             Else
                 pSkikursgruppe = New PrintableNoticeForInstructors
             End If

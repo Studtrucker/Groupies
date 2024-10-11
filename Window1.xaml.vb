@@ -58,6 +58,11 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleClubSaveAsExecuted, AddressOf HandleClubSaveCanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
+        ' Neue Version
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf Handle_TeilnehmerInGruppeEinteilen_Executed, AddressOf Handle_TeilnehmerInGruppeEinteilen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Executed, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
+
+
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
@@ -336,6 +341,22 @@ Public Class Window1
         e.CanExecute = True
     End Sub
 
+    Private Sub Handle_TeilnehmerInGruppeEinteilen_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_TeilnehmerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = CDS.CurrentClub.GruppenloseTeilnehmer.Count > 0
+    End Sub
+
+    Private Sub Handle_TeilnehmerAusGruppeEntfernen_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben
+        e.CanExecute = True
+    End Sub
 
     ' Weitere Handles für die Commands
 

@@ -10,6 +10,8 @@ Namespace Commands
         Private Shared _GruppeLoeschen = New RoutedUICommand("Gruppen löschen", "GruppeLoeschen", GetType(SkiclubCommands))
         Private Shared _neuerTeilnehmer = New RoutedUICommand("Teilnehmer hinzufügen", "NeuerTeilnehmer", GetType(SkiclubCommands))
         Private Shared _teilnehmerLoeschen = New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkiclubCommands))
+        Private Shared _teilnehmerInGruppeEinteilen = New RoutedUICommand("Teilnehmer in Gruppe einteilen", "TeilnehmerInGruppeEinteilen", GetType(SkiclubCommands))
+        Private Shared _teilnehmerAusGruppeEntfernen = New RoutedUICommand("Teilnehmer aus Gruppe entfernen", "TeilnehmerAusGruppeEntfernen", GetType(SkiclubCommands))
         Private Shared _newInstructor = New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkiclubCommands))
         Private Shared _uebungsleiterLoeschen = New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkiclubCommands))
         Private Shared _neuesLevel = New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkiclubCommands))
@@ -61,6 +63,18 @@ Namespace Commands
         Public Shared ReadOnly Property NewParticipant As RoutedUICommand
             Get
                 Return _neuerTeilnehmer
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property TeilnehmerInGruppeEinteilen As RoutedUICommand
+            Get
+                Return _teilnehmerInGruppeEinteilen
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property TeilnehmerAusGruppeEntfernen As RoutedUICommand
+            Get
+                Return _teilnehmerAusGruppeEntfernen
             End Get
         End Property
 

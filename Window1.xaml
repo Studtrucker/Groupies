@@ -211,7 +211,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>
-                            <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstand.Benennung}" Width="*"/>
+                            <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand.Benennung}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

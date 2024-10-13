@@ -599,9 +599,9 @@ Public Class Window1
 
         ' Neue ListCollectionView laden
         _groupListCollectionView = New ListCollectionView(CDS.CurrentClub.Gruppenliste.GruppeGeordnet.ToList)
-        'If _groupListCollectionView.CanSort Then
-        '_groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
-        'End If
+        If _groupListCollectionView.CanSort Then
+            _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
+        End If
         DataContext = _groupListCollectionView
 
         setView(CDS.CurrentClub.GruppenloseTeilnehmer)

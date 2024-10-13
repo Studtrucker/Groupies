@@ -129,9 +129,9 @@ Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewParticipant, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTeilnehmer, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewInstructor, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NeueGruppe, AddressOf HandleNeueSkikursgruppeExecuted, AddressOf HandleNeueSkikursgruppeCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeLoeschen, AddressOf HandleSkikursgruppeLoeschenExecuted, AddressOf HandleSkikursgruppeLoeschenCanExecuted))
@@ -150,7 +150,7 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            LoadLastSkischule()
+            loadLastSkischule()
 
         End If
 
@@ -352,7 +352,7 @@ Class MainWindow
         SetView(NeueSkischule)
 
         If MessageBoxResult.Yes = MessageBox.Show("Auch gleich neue Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
-            SkiclubCommands.NewParticipant.Execute(Nothing, Me)
+            SkiclubCommands.NeuerTeilnehmer.Execute(Nothing, Me)
         End If
 
 

@@ -59,14 +59,16 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
         ' Neue Version
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf Handle_TeilnehmerInGruppeEinteilen_Executed, AddressOf Handle_TeilnehmerInGruppeEinteilen_CanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Executed, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf Handle_TeilnehmerInGruppeEinteilen_Execute, AddressOf Handle_TeilnehmerInGruppeEinteilen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeEinenTrainerZuweisen, AddressOf Handle_GruppeEinenTrainerZuweisen_Execute, AddressOf Handle_GruppeEinenTrainerZuweisen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppentrainerEntfernen, AddressOf Handle_GruppentrainerEntfernen_Execute, AddressOf Handle_GruppentrainerEntfernen_CanExecute))
 
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportParticipants, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NewInstructor, AddressOf HandleNewInstructorExecuted, AddressOf HandleNewInstructorCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNewInstructorExecuted, AddressOf HandleNewInstructorCanExecuted))
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
@@ -341,7 +343,24 @@ Public Class Window1
         e.CanExecute = True
     End Sub
 
-    Private Sub Handle_TeilnehmerInGruppeEinteilen_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_GruppeEinenTrainerZuweisen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_GruppeEinenTrainerZuweisen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = CDS.CurrentClub.GruppenloseTeilnehmer.Count > 0
+    End Sub
+
+    Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show("Window Trainer entfernen")
+    End Sub
+
+    Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
     End Sub
 
@@ -349,12 +368,12 @@ Public Class Window1
         e.CanExecute = CDS.CurrentClub.GruppenloseTeilnehmer.Count > 0
     End Sub
 
-    Private Sub Handle_TeilnehmerAusGruppeEntfernen_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
     End Sub
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben
+        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
         e.CanExecute = True
     End Sub
 

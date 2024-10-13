@@ -85,7 +85,7 @@
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
                 <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
@@ -93,7 +93,7 @@
                 </MenuItem>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NewInstructor}"/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
                 <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>

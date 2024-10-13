@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Groupies.Commands
 Imports Groupies.Entities
 Imports PropertyChanged
 Imports CDS = Groupies.Controller.AppController
@@ -43,8 +44,30 @@ Namespace UserControls
                 '    'GroupLeaderCombobox.ItemsSource = _instructorListCollectionView
             End If
 
+
+            CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
+            CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppentrainerEntfernen, AddressOf Handle_GruppentrainerEntfernen_Execute, AddressOf Handle_GruppentrainerEntfernen_CanExecute))
+
         End Sub
 
+
+        Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+            ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
+            e.CanExecute = False
+        End Sub
+
+        Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+            MessageBox.Show("GroupView Teinlnehmer raus")
+        End Sub
+
+        Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+            ' Todo: Regel einbauen: Der Gruppe muss einen Trainer haben
+            e.CanExecute = True
+        End Sub
+
+        Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+            MessageBox.Show("GroupView Trainer raus")
+        End Sub
         Private Sub SetView()
 
             '_groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
@@ -57,86 +80,13 @@ Namespace UserControls
 
         End Sub
 
-
-        ' Für den Empfang von ParticipantObjekten zu Groupmembern, jetzt okay 
-        Private Sub GroupMembersDataGrid_Drop(sender As Object, e As DragEventArgs)
-            ' Participants werden Groupmember
-            Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
-            If CorrectDataFormat Then
-                Dim TN = e.Data.GetData(GetType(IList))
-                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
-                For Each Participant As Teilnehmer In TN
-                    'If Not Participant.IstGruppenmitglied Then
-                    '    'Participant.SetAsGroupMember(CurrentGroup.GruppenID)
-                    '    CurrentGroup.TeilnehmerHinzufuegen(Participant)
-                    'End If
-                Next
-            End If
-        End Sub
-
-
-        ' Für den Empfang von InstructorObjekten als Groupinstructor, jetzt okay 
-        Private Sub GroupLeaderTextblock_Drop(sender As Object, e As DragEventArgs)
-            '' Instructor wird Groupleader
-            Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(Trainer))
-            If CorrectDataFormat Then
-                Dim TN = e.Data.GetData(GetType(Trainer))
-                Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
-                ' Hat es schon einen Skilehrer gegeben?
-                If CurrentGroup.Trainer IsNot Nothing Then
-                    ' Alten Skilehrer wieder frei setzen
-                    '                    CurrentGroup.GroupLeader.IsAvailable = True
-                    '                    CDS.Club.Trainerliste.Where(Function(x) x.TrainerID = CurrentGroup.Trainer.TrainerID).Single.IstEinerGruppeZugewiesen = True
-                End If
-                CurrentGroup.Trainer = TN
-                ' Neuer Skilehrer ist nicht mehr frei
-                'DirectCast(TN, Trainer).IsAvailable = False
-            End If
-        End Sub
-
-        Private Sub TextBlock_MouseDown(sender As Object, e As MouseButtonEventArgs)
-
-            'Dim Tn = TryCast(GroupLeaderTextblock., Instructor)
-
-            'If Tn IsNot Nothing Then
-            '    Dim Data = New DataObject(GetType(Participant), Tn)
-            '    Group.GroupLeader = Nothing
-            'End If
-        End Sub
-
-        ' Für das Verschieben von ParticipantObjekten aus der Group, werden NotInAGroup 
-        Private Sub GroupMembersDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs)
-
-            Dim Tn = TryCast(GroupMembersDataGrid.SelectedItems, IList)
-
-            If Tn IsNot Nothing Then
-                ''For Each item As Participant In Tn
-                'Dim Data = New DataObject(GetType(IList), Tn)
-                'DragDrop.DoDragDrop(GroupMembersDataGrid, Data, DragDropEffects.Move)
-                ''Next
-            End If
-
-        End Sub
-
-
-
         Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
             For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
                 CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
             Next
-            'For Each item As Teilnehmer In GroupMembersDataGrid.SelectedItems
-            '    CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(item, DirectCast(DataContext, ICollectionView).CurrentItem)
-            'Next
             SetView()
         End Sub
 
-        Private Sub HandleDragOver(sender As Object, e As DragEventArgs)
-            If e.Data.GetDataPresent(GetType(IList)) Then
-                e.Effects = DragDropEffects.Copy
-            Else
-                e.Effects = DragDropEffects.None
-            End If
-        End Sub
 
         Private Sub MenuItem_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
             ' Teilnehmer werden aus der Gruppe entfernt und in die Gruppe GruppenloseTeilnehmer eingetragen
@@ -150,17 +100,5 @@ Namespace UserControls
             MessageBox.Show(GroupLeaderTextblock.Text)
         End Sub
 
-
-        'Private Sub gridSkikursdetails_Drop(sender As Object, e As DragEventArgs)
-        '    ' Participants werden aus Group entfernt
-        '    Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
-        '    If CorrectDataFormat Then
-        '        Dim TN = e.Data.GetData(GetType(IList))
-        '        Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Group)
-        '        For Each Participant As Participant In TN
-        '            CDS.Skiclub.Participantlist.Where(Function(x) x.ParticipantID = Participant.ParticipantID).Single.DeleteFromGroup()
-        '        Next
-        '    End If
-        'End Sub
     End Class
 End Namespace

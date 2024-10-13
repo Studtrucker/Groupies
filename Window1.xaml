@@ -71,7 +71,7 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NewParticipant}"/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
@@ -79,7 +79,7 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NewInstructor}"/>
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
                 <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
@@ -114,13 +114,10 @@
                 <TextBlock Text="Die Gruppen"/>
 
                 <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
-                          Margin="6"  Foreground="Black"             
+                          Margin="6"  Foreground="Black" Style="{StaticResource DataGridStyle}"            
                           AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                     <DataGrid.Resources>
-                        <Style TargetType="TextBlock" x:Key="TextblockStyle">
-                            <Setter Property="Foreground" Value="Black"/>
-                            <Setter Property="Margin" Value="1"/>
-                        </Style>
+
                         <DataTemplate x:Key="GruppenlisteDataTemplate">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -135,21 +132,21 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer" 
-                                           Style="{StaticResource TextblockStyle}" />
+                                           />
                                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"
-                                           Style="{StaticResource TextblockStyle}" />
+                                          />
                                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"
-                                           Style="{StaticResource TextblockStyle}" />
+                                            />
                                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"
-                                           Style="{StaticResource TextblockStyle}" />
+                                            />
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Skilehrer"
-                                           Style="{StaticResource TextblockStyle}" />
+                                           />
                                 <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Trainer.VorUndNachname}"
-                                           Style="{StaticResource TextblockStyle}" />
+                                            />
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Anzahl Gruppenmitglieder" 
-                                           Style="{StaticResource TextblockStyle}" />
+                                            />
                                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Mitgliederliste.Count}"
-                                           Style="{StaticResource TextblockStyle}" />
+                                            />
                             </Grid>
                         </DataTemplate>
                     </DataGrid.Resources>
@@ -188,7 +185,7 @@
                           DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
                           AllowDrop="True" 
                           IsReadOnly="True" CanUserAddRows="False" 
-                          Style="{StaticResource groupiesDataGridStyle}">
+                          Style="{StaticResource DataGridStyle}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
@@ -207,7 +204,7 @@
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource groupiesDataGridStyle}" MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
+                              Style="{StaticResource DataGridStyle}" MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>

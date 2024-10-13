@@ -42,7 +42,7 @@
                 <Setter Property="FontSize" Value="36"/>
                 <Style.Triggers>
                     
-                    <!--Group with more than 10 participants -->
+                    <!--Group with more than 10 participants--> 
                     <DataTrigger Binding="{Binding}" Value="ZuGross">
                         <Setter Property="FontSize" Value="24"/>
                     </DataTrigger>
@@ -80,43 +80,43 @@
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>
             </DataTemplate>
 
-            <!--Explicit Style for Image Caption-->
+            <!--Explicit Style for Image Caption--><!--
             <Style TargetType="Image" x:Key="WindowImageCaption">
                 <Setter Property="Height" Value="32"/>
                 <Setter Property="Width" Value="48"/>
                 <Setter Property="Margin" Value="10,4"/>
             </Style>
 
-            <!--Explicit Style for TextBlocks Caption-->
+            --><!--Explicit Style for TextBlocks Caption--><!--
             <Style TargetType="TextBlock" x:Key="WindowCaption">
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
-            <!--Explicit Style for TextBlocks Required Fields-->
+            --><!--Explicit Style for TextBlocks Required Fields--><!--
             <Style TargetType="TextBlock" x:Key="RequiredField">
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
-            <!--Style for TextBlocks-->
+            --><!--Style for TextBlocks--><!--
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="4"/>
-                <Setter Property="Foreground" Value="DarkGray"/>
+                --><!--<Setter Property="Foreground" Value="Black"/>--><!--
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-            <!--Style for Comboboxes-->
+            --><!--Style for Comboboxes--><!--
             <Style TargetType="ComboBox" >
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="FontSize" Value="18"/>
             </Style>
 
-            <!--Style for Sliders-->
+            --><!--Style for Sliders--><!--
             <Style TargetType="Slider" >
                 <Setter Property="Margin" Value="4"/>
             </Style>
             
-            <!--Control template for errors -->
+            --><!--Control template for errors --><!--
             <ControlTemplate x:Key="ErrorTemplate">
                 <DockPanel LastChildFill="True">
                     <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
@@ -125,7 +125,7 @@
                 </DockPanel>
             </ControlTemplate>
 
-            <!--Style for TextBoxes-->
+            --><!--Style for TextBoxes--><!--
             <Style TargetType="TextBox">
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="FontSize" Value="18"/>
@@ -138,27 +138,46 @@
                 </Style.Triggers>
             </Style>
             
-            <!--Style for Labels-->
+            --><!--Style for Labels--><!--
             <Style TargetType="Label">
                 <Setter Property="Margin" Value="4,4,4,4"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-            <!--Style for Buttons-->
-            <Style TargetType="Button">
-                <Setter Property="Margin" Value="10"/>
+            -->
+
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="3"/>
             </Style>
             
-
-            <!-- Style für das DataGrid -->
-            <Style x:Key="groupiesDataGridStyle" TargetType="{x:Type DataGrid}">
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="RowBackground" Value="AliceBlue"/>
-                <Setter Property="AlternatingRowBackground" Value="LightSteelBlue"/>
-                <Setter Property="BorderThickness" Value="0"/>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="3"/>
                 <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Margin" Value="6"/>
+            </Style>
+            
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="3"/>
+            </Style>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <!--Style für das DataGrid--> 
+            <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+                <!--<Setter Property="Foreground" Value="Black"/>-->
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="RowBackground" Value="White"/>
+                <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="FontSize" Value="14"/>
+                <!--<Setter Property="BorderThickness" Value="0"/>-->
             </Style>
                       
         </ResourceDictionary>

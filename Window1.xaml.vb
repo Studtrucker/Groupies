@@ -122,6 +122,7 @@ Public Class Window1
                 End Using
             End Using
         End If
+
     End Sub
 
 #End Region
@@ -488,6 +489,10 @@ Public Class Window1
 
 
     Private Sub SaveSkischule(fileName As String)
+        ' Ewige Liste schreiben
+
+        CDS.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) CDS.CurrentClub.EwigeTeilnehmerliste.Add(Tn, Now.Date))
+
         ' 1. Skischule serialisieren und gezippt abspeichern
         SaveXML(fileName)
         'SaveZIP(fileName)
@@ -600,7 +605,7 @@ Public Class Window1
         ' Neue ListCollectionView laden
         _groupListCollectionView = New ListCollectionView(CDS.CurrentClub.Gruppenliste.GruppeGeordnet.ToList)
         If _groupListCollectionView.CanSort Then
-            _groupListCollectionView.SortDescriptions.Add(New SortDescription("GroupSort", ListSortDirection.Ascending))
+            _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If
         DataContext = _groupListCollectionView
 

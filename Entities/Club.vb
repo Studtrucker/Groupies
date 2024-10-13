@@ -72,6 +72,12 @@ Namespace Entities
             End Set
         End Property
 
+        ''' <summary>
+        ''' Ewige Teilnehmerliste
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
+
 
         ''' <summary>
         '''  Teilnehmer, die bereits in Gruppen eingeteilt wurden 

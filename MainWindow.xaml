@@ -134,8 +134,7 @@
                     <DataGrid x:Name="GroupExplorerDataGrid"
                                       DockPanel.Dock="Top"
                                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                                      IsReadOnly="True" CanUserAddRows="False" 
-                                      Style="{StaticResource groupiesDataGridStyle}">
+                                      IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Gruppenname" Binding="{Binding GroupNaming}"/>
                             <DataGridTextColumn Header="Printname" Binding="{Binding GroupPrintNaming}"/>
@@ -187,8 +186,7 @@
                                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                                           MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
                                           DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                                          IsReadOnly="True" CanUserAddRows="False" 
-                                          Style="{StaticResource groupiesDataGridStyle}">
+                                          IsReadOnly="True" CanUserAddRows="False" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
@@ -205,8 +203,7 @@
                                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                                           MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
                                           DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" 
-                                          IsReadOnly="True" CanUserAddRows="False" 
-                                          Style="{StaticResource groupiesDataGridStyle}">
+                                          IsReadOnly="True" CanUserAddRows="False" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>
@@ -270,7 +267,7 @@
                                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                                       MouseDown="ParticipantsToDistributeDataGrid_SendByMouseDown"
                                       DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" AllowDrop="True" IsReadOnly="True"
-                                      CanUserAddRows="False" Style="{StaticResource groupiesDataGridStyle}">
+                                      CanUserAddRows="False" >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Vorname" Binding="{Binding ParticipantFirstName}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding ParticipantLastName}"/>
@@ -365,7 +362,7 @@
                                              Grid.Column="1" Grid.Row="4" IsReadOnly="True"/>
                                     <DataGrid x:Name="GroupMembersDataGrid" Grid.Row="5" Grid.Column="1" 
                                               AutoGenerateColumns="False" ItemsSource="{Binding GroupMembers}"
-                                              IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" Margin="2">
+                                              IsReadOnly="True" >
 
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name" Binding="{Binding ParticipantFullName}"/>
@@ -423,7 +420,7 @@
                                         <DataGrid x:Name="skikurseDataGrid" Grid.Row="0" ItemsSource="{Binding}" 
                                                   IsSynchronizedWithCurrentItem="True" SelectionMode="Extended"  
                                                   AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                                  HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                                                  HeadersVisibility="Column"  
                                                   RowStyle="{StaticResource friendDataGridRowStyle}"   >
 
                                             <DataGrid.Columns>
@@ -437,7 +434,7 @@
 
                                         <DataGrid x:Name="ParticipantsToDistributeDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                               SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                              HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                                              HeadersVisibility="Column"  
                                               RowStyle="{StaticResource friendDataGridRowStyle}" Visibility="Collapsed">
 
                                             <DataGrid.Columns>
@@ -560,7 +557,7 @@
 
                                     <DataGrid  x:Name="teilnehmerDataGrid"  IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}"
                                    SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                   HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                                   HeadersVisibility="Column"   
                                    RowStyle="{StaticResource friendDataGridRowStyle}"  >
 
                                         <DataGrid.Columns>
@@ -700,7 +697,7 @@
                                     </Grid>
                                     <DataGrid x:Name="uebungsleiterDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                         SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                        HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                                        HeadersVisibility="Column"  
                                         RowStyle="{StaticResource friendDataGridRowStyle}"   >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Vorname"  Binding="{Binding InstructorFirstName}"/>
@@ -772,8 +769,7 @@
 
                                     <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                                         SelectionMode="Extended"     AutoGenerateColumns="False" Margin="2" IsReadOnly="True" 
-                                        HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
-                                        RowStyle="{StaticResource friendDataGridRowStyle}"   >
+                                        HeadersVisibility="Column" >
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Sortierung" Binding="{Binding SortNumber}"/>
                                             <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding LevelNaming}"/>

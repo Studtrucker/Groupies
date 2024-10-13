@@ -40,7 +40,7 @@
                         <DataGrid x:Name="levelDataGrid" Grid.Row="1" ItemsSource="{Binding}"
                               SelectionMode="Extended"     AutoGenerateColumns="False"
                               Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
-                              HeadersVisibility="Column"   Style="{StaticResource groupiesDataGridStyle}"
+                              HeadersVisibility="Column"   
                               RowStyle="{StaticResource groupiesDataGridRowStyle}"   
                               ScrollViewer.CanContentScroll="True">
                             <DataGrid.Columns>

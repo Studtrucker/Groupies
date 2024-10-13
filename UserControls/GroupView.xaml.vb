@@ -97,8 +97,13 @@ Namespace UserControls
 
         Private Sub GroupLeaderTextblock_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
             ' Binding an das Objekt und nicht an die Eigenschaft
-            MessageBox.Show(GroupLeaderTextblock.Text)
+            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+                CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            End If
         End Sub
 
+        Private Sub GroupLeaderTextblock_MouseDoubleClick_1(sender As Object, e As MouseButtonEventArgs)
+
+        End Sub
     End Class
 End Namespace

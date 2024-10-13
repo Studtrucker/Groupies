@@ -114,7 +114,7 @@
                 <TextBlock Text="Die Gruppen"/>
 
                 <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
-                          Margin="6"  Foreground="Black" Style="{StaticResource DataGridStyle}"            
+                          Margin="6"  Foreground="Black"           
                           AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                     <DataGrid.Resources>
 
@@ -131,22 +131,14 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer" 
-                                           />
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"
-                                          />
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"
-                                            />
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"
-                                            />
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Skilehrer"
-                                           />
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Trainer.VorUndNachname}"
-                                            />
-                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Anzahl Gruppenmitglieder" 
-                                            />
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Mitgliederliste.Count}"
-                                            />
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Skilehrer"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Anzahl Gruppenmitglieder"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Trainer.VorUndNachname}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Mitgliederliste.Count}"/>
                             </Grid>
                         </DataTemplate>
                     </DataGrid.Resources>
@@ -179,13 +171,10 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Gruppenlose Skilehrer" Grid.Row="0"/>
                     <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
-                          DockPanel.Dock="Top"  ItemsSource="{Binding}" 
-                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                          MouseDown="InstuctorDataGrid_SendByMouseDown"
-                          DragDrop.Drop="ParticipantsToDistributeDataGrid_ReceiveByDrop" 
-                          AllowDrop="True" 
-                          IsReadOnly="True" CanUserAddRows="False" 
-                          Style="{StaticResource DataGridStyle}">
+                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
+                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              IsReadOnly="True" CanUserAddRows="False" 
+                              MouseDoubleClick="InstuctorDataGrid_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
@@ -204,7 +193,7 @@
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
-                              Style="{StaticResource DataGridStyle}" MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
+                              MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>

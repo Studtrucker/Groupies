@@ -352,7 +352,7 @@ Public Class Window1
     End Sub
 
     Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show("Window Trainer entfernen")
+
     End Sub
 
     Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -742,73 +742,6 @@ Public Class Window1
         Participant
     End Enum
 
-    Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
-        ' Participants werden aus der Group entfernt
-        Dim CorrectDataFormat = e.Data.GetDataPresent(GetType(IList))
-        If CorrectDataFormat Then
-            Dim TN As IList = e.Data.GetData(GetType(IList))
-            Dim CurrentGroup = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe)
-
-            Dim i = 0
-            Dim index(TN.Count - 1) As Integer
-            For Each Participant As Teilnehmer In TN
-                'Participant.RemoveFromGroup()
-                Dim x = CDS.CurrentClub.GruppenloseTeilnehmer.Where(Function(y) y.TeilnehmerID = Participant.TeilnehmerID).Single
-                'x.RemoveFromGroup()
-                index(i) = DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitgliederliste.IndexOf(Participant)
-                i += 1
-            Next
-
-            For i = TN.Count - 1 To 0 Step -1
-                DirectCast(_groupListCollectionView.CurrentItem, Gruppe).Mitgliederliste.RemoveAt(index(i))
-            Next
-
-        End If
-    End Sub
-
-    Private Sub AusListeRemovenLoeschen()
-        Dim levelDataGrid As New DataGrid
-
-        Dim i As Integer
-        Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Leistungsstufe In levelDataGrid.SelectedItems
-            'RemoveLevelFromSkikursgruppe(item)
-            'RemoveLevelFromTeilnehmer(item)
-            index(i) = CDS.CurrentClub.Leistungsstufenliste.IndexOf(item)
-            i += 1
-        Next
-
-        'RemoveItemsAt(CDS.Skiclub.Levellist, index)
-
-    End Sub
-
-    Private Sub ParticipantDataGrid_MouseDown(sender As Object, e As MouseButtonEventArgs)
-
-        Dim Tn = TryCast(ParticipantDataGrid.SelectedItems, IList)
-
-        If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(IList), Tn)
-            DragDrop.DoDragDrop(ParticipantDataGrid, Data, DragDropEffects.Copy)
-        End If
-
-    End Sub
-
-    Private Sub InstuctorDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-
-        Dim Tn = TryCast(InstuctorDataGrid.SelectedItem, Trainer)
-
-        If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(Trainer), Tn)
-            DragDrop.DoDragDrop(InstuctorDataGrid, Data, DragDropEffects.Copy)
-        End If
-        '
-    End Sub
-
-    Private Sub HandleParticipantsDrop(sender As Object, e As RoutedEventArgs) Handles Me.Drop
-        setView(CDS.CurrentClub.AlleTrainer)
-        setView(CDS.CurrentClub.GruppenloseTeilnehmer)
-    End Sub
-
     Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
         Dim InstructorWindow = New InstructorsWindow
         InstructorWindow.Show()
@@ -818,6 +751,14 @@ Public Class Window1
         For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
             CDS.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
         Next
+    End Sub
+
+    Private Sub InstuctorDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        If DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
+            Exit Sub
+        End If
+        CDS.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
 

@@ -36,8 +36,7 @@
             <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
                       DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                       IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                      IsReadOnly="True" CanUserAddRows="False" 
-                      Style="{StaticResource groupiesDataGridStyle}">
+                      IsReadOnly="True" CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vorname" Binding="{Binding InstructorFirstName}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding InstructorLastName}" Width="*"/>

@@ -61,14 +61,11 @@
                           x:Name="GroupLevelCombobox" />
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
-                            Text="{Binding Path=Trainer.VorUndNachname}" />
-                <Button Grid.Column="3" Grid.Row="5" Height="28" Width="28" 
-                        Command="{x:Static cmd:SkiclubCommands.GruppentrainerEntfernen}">
-                    <Image Source="/Images/icons8-remove-48.png" />
-                </Button>
+                          Text="{Binding Path=Trainer.VorUndNachname}"
+                          MouseDoubleClick="GroupLeaderTextblock_MouseDoubleClick"/>
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                           IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
-                          ItemsSource="{Binding Mitgliederliste}" Style="{StaticResource DataGridStyle}" 
+                          ItemsSource="{Binding Mitgliederliste}"  
                           IsReadOnly="True" CanUserAddRows="False" 
                           SelectionMode="Extended"  MouseDoubleClick="MenuItem_MouseDoubleClick">
                     <DataGrid.ContextMenu>
@@ -83,10 +80,6 @@
                         <DataGridTextColumn Header="Leistungsstand" Width="*" Binding="{Binding Leistungsstand.Benennung}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Grid.Column="3" Grid.Row="6" Height="28" Width="28" VerticalAlignment="Top" 
-                        Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}">
-                    <Image Source="/Images/icons8-remove-48.png"/>
-                </Button>
             </Grid>
         </Grid>
     </Border>

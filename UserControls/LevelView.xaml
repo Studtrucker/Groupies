@@ -34,7 +34,7 @@
             <DataGrid  x:Name="SkillsDataGrid"
                        DockPanel.Dock="Top"
                        AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
-                       IsReadOnly="True" Style="{StaticResource groupiesDataGridStyle}" 
+                       IsReadOnly="True" 
                        CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
                 <DataGrid.ContextMenu>
                     <ContextMenu>

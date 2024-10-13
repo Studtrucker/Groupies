@@ -170,7 +170,7 @@
             </Style>
 
             <!--Style für das DataGrid--> 
-            <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Style TargetType="DataGrid">
                 <!--<Setter Property="Foreground" Value="Black"/>-->
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="RowBackground" Value="White"/>

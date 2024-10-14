@@ -28,15 +28,28 @@ Namespace Entities
 
         End Sub
 
-        Public Sub New(Vorname As String, Nachname As String)
-            Me.Vorname = Vorname
-            Me.Nachname = Nachname
+        'Public Sub New(Vorname As String, Nachname As String)
+        '    Me.Vorname = Vorname
+        '    Me.Nachname = Nachname
+        'End Sub
+
+        'Public Sub New(Vorname As String, Nachname As String, Datum As Date)
+        '    Me.Vorname = Vorname
+        '    Me.Nachname = Nachname
+        '    Me.ZuletztTeilgenommen = Datum
+        'End Sub
+
+        Public Sub New(Teilnehmer As Teilnehmer, Datum As Date)
+            Me.Vorname = Teilnehmer.Vorname
+            Me.Nachname = Teilnehmer.Nachname
+            Me.ZuletztTeilgenommen = Datum
         End Sub
 
-        Public Sub New(Vorname As String, Nachname As String, Datum As Date)
-            Me.Vorname = Vorname
-            Me.Nachname = Nachname
+        Public Sub New(Teilnehmer As Teilnehmer, Datum As Date, LetzteGruppeID As Guid)
+            Me.Vorname = Teilnehmer.Vorname
+            Me.Nachname = Teilnehmer.Nachname
             Me.ZuletztTeilgenommen = Datum
+            Me.LetzteGruppenmitgliedschaft = LetzteGruppeID
         End Sub
 
 #End Region
@@ -44,6 +57,8 @@ Namespace Entities
 #Region "Eigenschaften"
 
         Public Property ZuletztTeilgenommen As Date
+
+        Public Property LetzteGruppenmitgliedschaft As Guid
 
 #End Region
 

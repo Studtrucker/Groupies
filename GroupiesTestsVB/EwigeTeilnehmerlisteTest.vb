@@ -10,17 +10,12 @@ Public Class EwigeTeilnehmerlisteTest
 
         Dim Stubai24 As New Club
 
-        Dim Studti = New EwigerTeilnehmer("Andreas", "Studtrucker")
-        Dim Rene = New EwigerTeilnehmer("Rene", "Werthschütz")
-        Dim Ralf = New EwigerTeilnehmer("Ralf", "Granderath")
-        Dim Sandra = New EwigerTeilnehmer("Sandra", "Oelschläger")
-        Dim Lothar = New EwigerTeilnehmer("Lothar", "Hötger")
+        Dim Studti = New EwigerTeilnehmer(New Teilnehmer("Andreas", "Studtrucker"), "10.11.2023")
+        Dim Rene = New EwigerTeilnehmer(New Teilnehmer("Rene", "Werthschütz"), "10.11.2013")
+        Dim Ralf = New EwigerTeilnehmer(New Teilnehmer("Ralf", "Granderath"), "05.12.2020")
+        Dim Sandra = New EwigerTeilnehmer(New Teilnehmer("Sandra", "Oelschläger"), "10.11.2013")
+        Dim Lothar = New EwigerTeilnehmer(New Teilnehmer("Lothar", "Hötger"), "10.11.2023")
 
-        Studti.ZuletztTeilgenommen = "10.11.2023"
-        Rene.ZuletztTeilgenommen = "10.11.2013"
-        Ralf.ZuletztTeilgenommen = "05.12.2020"
-        Sandra.ZuletztTeilgenommen = "10.11.2013"
-        Lothar.ZuletztTeilgenommen = "10.11.2023"
 
         Dim EwigeStubailiste As New EwigeTeilnehmerCollection From {Studti, Rene, Ralf, Sandra, Lothar}
 

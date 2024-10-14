@@ -18,7 +18,11 @@ Namespace Entities
         End Sub
 
         Public Sub New(Teilnehmer As Teilnehmer, Datum As Date)
-            Add(New EwigerTeilnehmer(Teilnehmer.Vorname, Teilnehmer.Nachname, Datum))
+            Add(New EwigerTeilnehmer(Teilnehmer, Datum))
+        End Sub
+
+        Public Sub New(Teilnehmer As Teilnehmer, Datum As Date, LetzteGruppenmitgliedschaft As Guid)
+            Add(New EwigerTeilnehmer(Teilnehmer, Datum))
         End Sub
 
 #End Region
@@ -34,8 +38,6 @@ Namespace Entities
 
 #Region "Funktionen und Methoden"
 
-
-
         Public Overloads Sub Add(Teilnehmer As EwigerTeilnehmer)
             If Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Count = 1 Then
                 Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Single.ZuletztTeilgenommen = Teilnehmer.ZuletztTeilgenommen
@@ -44,11 +46,21 @@ Namespace Entities
             End If
 
         End Sub
+
         Public Overloads Sub Add(Teilnehmer As Teilnehmer, Datum As Date)
             If Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Count = 1 Then
                 Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Single.ZuletztTeilgenommen = Datum
             Else
-                MyBase.Add(New EwigerTeilnehmer(Teilnehmer.Vorname, Teilnehmer.Nachname, Datum))
+                MyBase.Add(New EwigerTeilnehmer(Teilnehmer, Datum))
+            End If
+
+        End Sub
+
+        Public Overloads Sub Add(Teilnehmer As Teilnehmer, Datum As Date, GruppenID As Guid)
+            If Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Count = 1 Then
+                Me.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID).Single.ZuletztTeilgenommen = Datum
+            Else
+                MyBase.Add(New EwigerTeilnehmer(Teilnehmer, Datum))
             End If
 
         End Sub

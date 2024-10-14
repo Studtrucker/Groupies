@@ -9,7 +9,7 @@ Namespace Services
 
     Public Module ImportService
 
-#Region "Fields"
+#Region "Felder"
 
         Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
         Public Workbook As Excel.Workbook
@@ -19,7 +19,11 @@ Namespace Services
 
 #End Region
 
-#Region "Public Functions"
+#Region "Eigenschaften"
+
+#End Region
+
+#Region "Funktionen und Methoden"
 
         Public Function ImportSkiclub() As Entities.Club
 

@@ -122,15 +122,16 @@ Namespace Services
         Public Function OpenExcelFile(Path As String) As Boolean
 
             xlApp = New Excel.Application
-            xlApp.Workbooks.Open(Path)
+            Try
+                xlApp.Workbooks.Open(Path)
+            Catch ex As Exception
+                Return False
+            End Try
             xlApp.Visible = True
-
-
-            'xlApp.ActiveWorkbook.Close()
-            'xlApp = Nothing
             Return True
 
         End Function
+
         Public Sub OpenWorkbook(Path As String)
 
             xlApp = New Excel.Application

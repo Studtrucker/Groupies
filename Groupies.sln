@@ -7,7 +7,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Groupies", "Groupies.vbproj
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GroupiesTestsVB", "GroupiesTestsVB\GroupiesTestsVB.vbproj", "{224951DA-335A-4E45-AA36-44CEE1B84471}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GroupiesTests", "GroupiesTests\GroupiesTests.vbproj", "{A6FC8582-F219-4495-BBB2-0C970FF43127}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MSTestGroupiesTests", "MSTestGroupiesTests\MSTestGroupiesTests.vbproj", "{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{224951DA-335A-4E45-AA36-44CEE1B84471}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6FC8582-F219-4495-BBB2-0C970FF43127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6FC8582-F219-4495-BBB2-0C970FF43127}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6FC8582-F219-4495-BBB2-0C970FF43127}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6FC8582-F219-4495-BBB2-0C970FF43127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

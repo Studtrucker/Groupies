@@ -23,6 +23,8 @@ Namespace Services
         Public Function LeseExcelTeilnehmer(Pfad As String) As IEnumerable(Of ImportTeilnehmer)
 
             Dim StreamReader As New StreamReader(Pfad)
+            Dim xlsReader As New Excel
+
             While Not StreamReader.EndOfStream
                 Dim ZeileAusExcel = StreamReader.ReadLine
                 Debug.Print(ZeileAusExcel)

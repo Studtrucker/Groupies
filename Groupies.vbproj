@@ -108,6 +108,7 @@
     <Compile Include="EntitiesAlt\SkillCollection.vb" />
     <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
     <Compile Include="Entities\EwigerTeilnehmer.vb" />
+    <Compile Include="Entities\ImportTeilnehmer.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>

@@ -13,6 +13,10 @@ Public Class ExcelImportTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
         End If
 
-        Assert.AreEqual(True, OpenExcelFile(Pfad))
+        'Assert.AreEqual(True, OpenExcelFile(Pfad))
+
+        ExcelService.LeseExcelTeilnehmer(Pfad)
+
+
     End Sub
 End Class

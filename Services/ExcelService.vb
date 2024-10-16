@@ -2,6 +2,7 @@
 Imports Groupies.Entities
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Controller.AppController
+Imports System.IO
 
 Namespace Services
 
@@ -11,6 +12,35 @@ Namespace Services
         'Private ReadOnly _skischule = New Entities.Club
         Private xlApp As Excel.Application
         Private dic As Dictionary(Of Leistungsstufe, Integer)
+
+        ''' <summary>
+        ''' Liest eine Liste von Teilnehmern aus einer Excel Datei
+        ''' Format:
+        ''' Spalte A: Vorname
+        ''' Spalte B: Nachname
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function LeseExcelTeilnehmer(Pfad As String) As IEnumerable(Of ImportTeilnehmer)
+
+            Dim StreamReader As New StreamReader(Pfad)
+            While Not StreamReader.EndOfStream
+                Dim ZeileAusExcel = StreamReader.ReadLine
+                Debug.Print(ZeileAusExcel)
+            End While
+            'NPOI DLL Excel Read
+            StreamReader.Close()
+
+            Return New List(Of ImportTeilnehmer)
+        End Function
+
+
+
+
+
+
+
+
+
 
         Private Function KontrolliereUndOeffneExcelFile(FilePath As String) As Boolean
 

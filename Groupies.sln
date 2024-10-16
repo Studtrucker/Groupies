@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.35325.158
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Groupies", "Groupies.vbproj", "{F52A8A2C-955C-4ED6-81C3-0F9CF98453E3}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GroupiesTestsVB", "GroupiesTestsVB\GroupiesTestsVB.vbproj", "{224951DA-335A-4E45-AA36-44CEE1B84471}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MSTestGroupiesTests", "MSTestGroupiesTests\MSTestGroupiesTests.vbproj", "{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "MSTestGroupiesTests", "MSTestGroupiesTests\MSTestGroupiesTests.vbproj", "{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelLeser", "..\ExcelLeser\ExcelLeser.csproj", "{4D51D3D6-5319-40BB-B42E-35BB98FA0B6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE06611D-3C62-4F07-B836-4E6FBBCC93B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D51D3D6-5319-40BB-B42E-35BB98FA0B6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D51D3D6-5319-40BB-B42E-35BB98FA0B6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D51D3D6-5319-40BB-B42E-35BB98FA0B6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D51D3D6-5319-40BB-B42E-35BB98FA0B6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

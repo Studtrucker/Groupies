@@ -7,7 +7,8 @@ Imports System.Text
 Imports ExcelDataReader
 
 ''' <summary>
-''' aus https://stackoverflow.com/questions/32999550/read-data-from-an-excel-file
+''' https//github.com/ExcelDataReader/ExcelDataReader
+''' https://stackoverflow.com/questions/32999550/read-data-from-an-excel-file
 ''' </summary>
 
 Public Class DatenTabelle

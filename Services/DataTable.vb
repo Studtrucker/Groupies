@@ -1,10 +1,8 @@
-﻿Imports excel
-Imports System
+﻿Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.IO
 Imports System.Text
-Imports ExcelDataReader
 
 ''' <summary>
 ''' https//github.com/ExcelDataReader/ExcelDataReader
@@ -28,19 +26,20 @@ Public Class DatenTabelle
     End Function
 
     Public Shared Function ConvertExcelToDataTable(Pfad As String, isXLSX As Boolean) As DataTable
-        Dim Stream As FileStream = Nothing
-        Dim excelReader As IExcelDataReader = Nothing
-        Dim DataTable As DataTable = Nothing
-        Stream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
+        'Dim Stream As FileStream = Nothing
+        'Dim excelReader As IExcelDataReader = Nothing
+        'Dim DataTable As DataTable = Nothing
+        'Stream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
 
-        excelReader = If(isXLSX, ExcelReaderFactory.CreateOpenXmlReader(Stream), ExcelReaderFactory.CreateBinaryReader(Stream))
-        excelReader.IsFirstRowAsColumnNames = True
-        Dim result As DataSet = excelReader.AsDataSet()
+        'excelReader = If(isXLSX, ExcelReaderFactory.CreateOpenXmlReader(Stream), ExcelReaderFactory.CreateBinaryReader(Stream))
+        'excelReader.IsFirstRowAsColumnNames = True
+        'Dim result As DataSet = excelReader.AsDataSet()
 
-        If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
-            DataTable = result.Tables(0)
-            Return DataTable
-        End If
+        'If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
+        '    DataTable = result.Tables(0)
+        '    Return DataTable
+        'End If
+        Return New DataTable
 
     End Function
 

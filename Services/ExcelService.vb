@@ -3,6 +3,7 @@ Imports Groupies.Entities
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Controller.AppController
 Imports System.IO
+Imports System.BitConverter
 
 Namespace Services
 
@@ -23,10 +24,11 @@ Namespace Services
         Public Function LeseExcelTeilnehmer(Pfad As String) As IEnumerable(Of ImportTeilnehmer)
 
             Dim StreamReader As New StreamReader(Pfad)
-            Dim xlsReader As New Excel
+
 
             While Not StreamReader.EndOfStream
                 Dim ZeileAusExcel = StreamReader.ReadLine
+
                 Debug.Print(ZeileAusExcel)
             End While
             'NPOI DLL Excel Read

@@ -421,7 +421,7 @@ Public Class Window1
         End If
 
         Dim loadedClub = OpenXML(fileName)
-        Dim loadedSkiclub
+        Dim loadedSkiclub = New Veraltert.Skiclub
         If loadedClub Is Nothing Then
             loadedSkiclub = OpenAltesXML(fileName)
             If loadedSkiclub Is Nothing Then

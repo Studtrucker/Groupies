@@ -3,6 +3,8 @@ Imports System.Collections.Generic
 Imports System.Data
 Imports System.IO
 Imports System.Text
+Imports ExcelDataReader
+Imports System.Text.CodePagesEncodingProvider
 
 ''' <summary>
 ''' https//github.com/ExcelDataReader/ExcelDataReader
@@ -10,13 +12,14 @@ Imports System.Text
 ''' </summary>
 
 Public Class DatenTabelle
+
     Public Shared Function LoadDataTable(Pfad As String) As DataTable
         Dim fileExtension As String = Path.GetExtension(Pfad)
         Select Case fileExtension.ToLower
             Case ".xlsx"
                 Return ConvertExcelToDataTable(Pfad, True)
             Case ".xls"
-                Return ConvertExcelToDataTable(Pfad, False)
+                Return ConvertExcelToDataTable(Pfad)
             Case ".csv"
                 Return ConvertCsvToDataTable(Pfad)
             Case Else
@@ -25,35 +28,44 @@ Public Class DatenTabelle
 
     End Function
 
-    Public Shared Function ConvertExcelToDataTable(Pfad As String, isXLSX As Boolean) As DataTable
-        'Dim Stream As FileStream = Nothing
-        'Dim excelReader As IExcelDataReader = Nothing
-        'Dim DataTable As DataTable = Nothing
-        'Stream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
+    Public Shared Function ConvertExcelToDataTable(Pfad As String, Optional isXlsx As Boolean = False) As DataTable
+        Dim Stream As FileStream = Nothing
+        Dim excelReader As IExcelDataReader = Nothing
+        Dim DataTable As DataTable = Nothing
 
-        'excelReader = If(isXLSX, ExcelReaderFactory.CreateOpenXmlReader(Stream), ExcelReaderFactory.CreateBinaryReader(Stream))
-        'excelReader.IsFirstRowAsColumnNames = True
-        'Dim result As DataSet = excelReader.AsDataSet()
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 
-        'If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
-        '    DataTable = result.Tables(0)
-        '    Return DataTable
-        'End If
-        Return New DataTable
+        Dim result As DataSet
+        Using varStream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
+            Using varReader = If(isXlsx, ExcelReaderFactory.CreateOpenXmlReader(varStream), ExcelReaderFactory.CreateBinaryReader(varStream))
+                Do
+                    While varReader.Read()
+
+                    End While
+                Loop While varReader.NextResult
+                result = varReader.AsDataSet
+            End Using
+        End Using
+
+        If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
+            DataTable = result.Tables(0)
+            Return DataTable
+        End If
+
+        Return Nothing
 
     End Function
-
 
     Public Shared Function ConvertCsvToDataTable(Pfad As String) As DataTable
 
         Dim dt = New DataTable()
         Using sr = New StreamReader(Pfad)
 
-            Dim headers() As String = sr.ReadLine().Split(",")
+            Dim headers() As String = sr.ReadLine().Split(";")
             For Each header In headers
                 dt.Columns.Add(header)
                 While Not sr.EndOfStream
-                    Dim zeilen() = sr.ReadLine().Split(",")
+                    Dim zeilen() = sr.ReadLine().Split(";")
                     Dim dr As DataRow = dt.NewRow
                     For i As Integer = 0 To i < header.Length
                         dr(i) = zeilen(i)

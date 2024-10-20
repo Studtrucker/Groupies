@@ -1,17 +1,124 @@
-﻿Imports Excel = Microsoft.Office.Interop.Excel
-Imports Groupies.Entities
+﻿Imports Groupies.Entities
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Controller.AppController
 Imports System.IO
 Imports System.BitConverter
+Imports System.Runtime.InteropServices
 
 Namespace Services
 
-    Public Module ExcelService
+    Public Module ExcelInteropService
+
+
+        Public Function OpenExcelAusInternet(Pfad As String) As List(Of String())
+            Dim xl As Microsoft.Office.Interop.Excel.Application = New Microsoft.Office.Interop.Excel.Application()
+            Dim Workbook As Workbook = xl.Workbooks.Open(Pfad)
+            Dim sheet As Worksheet = Workbook.Sheets(1)
+            sheet.Visible = True
+
+            Dim numRows = sheet.UsedRange.Rows.Count
+            Dim numColumns = 2     ' according To your sample
+
+            Dim contents = New List(Of String())
+
+            Dim record As String() = New String(2) {}
+
+            For rowIndex = 1 To numRows
+                ' assuming the data starts at 1,1
+                For colIndex = 1 To numColumns
+                    Dim cell As Range = DirectCast(sheet.Cells(rowIndex, colIndex), Range)
+                    If cell.Value IsNot Nothing Then
+                        record(colIndex - 1) = Convert.ToString(cell.Value)
+                    End If
+                Next
+                contents.Add(record)
+            Next
+
+            xl.Quit()
+            Marshal.ReleaseComObject(xl)
+
+            Return contents
+
+        End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         'Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
         'Private ReadOnly _xlCell As Excel.Range
         'Private ReadOnly _skischule = New Entities.Club
-        Private xlApp As Excel.Application
+        Private xlApp As Microsoft.Office.Interop.Excel.Application
         Private dic As Dictionary(Of Leistungsstufe, Integer)
 
         ''' <summary>
@@ -31,7 +138,6 @@ Namespace Services
 
                 Debug.Print(ZeileAusExcel)
             End While
-            'NPOI DLL Excel Read
             StreamReader.Close()
 
             Return New List(Of ImportTeilnehmer)
@@ -82,7 +188,7 @@ Namespace Services
 
         End Function
 
-        Private Function CheckFileFormat(wb As Excel.Workbook) As Boolean
+        Private Function CheckFileFormat(wb As Microsoft.Office.Interop.Excel.Workbook) As Boolean
             Dim XlValid As Boolean
 
             ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
@@ -155,20 +261,21 @@ Namespace Services
 
         Public Function OpenExcelFile(Path As String) As Boolean
 
-            xlApp = New Excel.Application
+            xlApp = New Microsoft.Office.Interop.Excel.Application
             Try
                 xlApp.Workbooks.Open(Path)
             Catch ex As Exception
                 Return False
             End Try
             xlApp.Visible = True
+            xlApp.Workbooks.Close()
             Return True
 
         End Function
 
         Public Sub OpenWorkbook(Path As String)
 
-            xlApp = New Excel.Application
+            xlApp = New Microsoft.Office.Interop.Excel.Application
             xlApp.Workbooks.Open(Path)
             xlApp.Visible = True
 

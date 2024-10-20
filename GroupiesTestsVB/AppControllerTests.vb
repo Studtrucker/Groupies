@@ -4,9 +4,8 @@ Imports System.IO
 Imports Groupies.Entities
 Imports Groupies.Controller
 
-Namespace GroupiesTestsVB
-    <TestClass>
-    Public Class AppControllerTests
+<TestClass>
+Public Class AppControllerTests
 
         <TestMethod>
         Sub TestNeuenSkiclubErstellen()
@@ -80,5 +79,4 @@ Namespace GroupiesTestsVB
 
     End Class
 
-End Namespace
 

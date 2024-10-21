@@ -35,22 +35,28 @@ Public Class DatenTabelle
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 
-        Dim result As DataSet
+        'Dim result As DataSet
         Using varStream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
             Using varReader = If(isXlsx, ExcelReaderFactory.CreateOpenXmlReader(varStream), ExcelReaderFactory.CreateBinaryReader(varStream))
-                Do
-                    While varReader.Read()
 
-                    End While
-                Loop While varReader.NextResult
-                result = varReader.AsDataSet
+                Dim result = varReader.AsDataSet(New ExcelDataSetConfiguration)
+                'Todo: Header Zeile feststellen
+                '{
+                'ConfigureDataTable = (_) => New ExcelDataTableConfiguration()
+                '{
+                'UseHeaderRow = True
+                '}
+                '});
+                If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
+                    DataTable = result.Tables(0)
+                    Return DataTable
+                End If
+
+
             End Using
         End Using
 
-        If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
-            DataTable = result.Tables(0)
-            Return DataTable
-        End If
+
 
         Return Nothing
 

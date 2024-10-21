@@ -26,7 +26,7 @@ Public Class ExcelImportTests
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\GroupLevelDistribution.xls"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xls"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\GroupLevelDistribution.xls"
         End If
 
         Dim x = LoadDataTable(Pfad)

@@ -128,7 +128,7 @@ Namespace Services
         ''' Spalte B: Nachname
         ''' </summary>
         ''' <returns></returns>
-        Public Function LeseExcelTeilnehmer(Pfad As String) As IEnumerable(Of ImportTeilnehmer)
+        Public Function LeseExcelTeilnehmer(Pfad As String) As IEnumerable(Of Teilnehmer)
 
             Dim StreamReader As New StreamReader(Pfad)
 
@@ -140,7 +140,7 @@ Namespace Services
             End While
             StreamReader.Close()
 
-            Return New List(Of ImportTeilnehmer)
+            Return New List(Of Teilnehmer)
         End Function
 
 

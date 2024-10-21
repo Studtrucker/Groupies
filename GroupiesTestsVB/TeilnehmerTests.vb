@@ -1,8 +1,46 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies.Entities
+Imports Groupies
+Imports Groupies.Controller
 
 <TestClass>
 Public Class TeilnehmerTests
+
+    <TestMethod>
+    Public Sub TestImportDaten()
+
+        Dim Pfad As String
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
+        End If
+
+        Dim Teilnehmerliste = ExcelDataReaderService.LeseTeilnehmerAusExcel(Pfad)
+        Dim Trainerliste = ExcelDataReaderService.LeseTrainerAusExcel(Pfad)
+
+        Assert.AreEqual(91, Teilnehmerliste.Count)
+        Assert.AreEqual(12, Trainerliste.Count)
+
+        'Todo: AppTn erstellen
+        AppController.NeuenClubErstellen("Testclub")
+
+        Dim Stephan As New Teilnehmer("Stephan", "Rath")
+        Dim Manuela As New Teilnehmer("Manuela", "Ramm")
+        Dim Manuel As New Teilnehmer("Manuel", "Adler")
+        Dim Julia As New Teilnehmer("Julia", "Crone")
+        Dim Jutta As New Teilnehmer("Jutta", "Meier")
+        Dim Andrea As New Teilnehmer("Andrea", "Heintz")
+
+        AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection From {Stephan, Manuela, Manuel, Julia, Jutta, Andrea}
+        For Each appTn In AppController.CurrentClub.AlleTeilnehmer
+            Teilnehmerliste.Where(Function(importTn) appTn.Nachname = importTn.Nachname AndAlso appTn.Vorname = importTn.Vorname).ToList.ForEach(Sub(importTn) importTn.IstBekannt = True)
+        Next
+        Debug.Print(Teilnehmerliste.Where(Function(Tn) Tn.IstBekannt).Count)
+
+    End Sub
+
+
 
     <TestMethod>
     Public Sub TestTeilnehmerErstellen()

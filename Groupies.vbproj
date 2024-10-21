@@ -131,7 +131,7 @@
     <Compile Include="EntitiesAlt\SkillCollection.vb" />
     <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
     <Compile Include="Entities\EwigerTeilnehmer.vb" />
-    <Compile Include="Entities\ImportTeilnehmer.vb" />
+    <Compile Include="Entities\ImportKlassen.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
@@ -158,7 +158,7 @@
     <Compile Include="Entities\GruppeCollection.vb" />
     <Compile Include="Entities\FaehigkeitCollection.vb" />
     <Compile Include="Entities\TrainerCollection.vb" />
-    <Compile Include="Services\DataTable.vb" />
+    <Compile Include="Services\XlLeser.vb" />
     <Compile Include="Services\ExcelDataReaderService.vb" />
     <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />

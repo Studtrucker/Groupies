@@ -86,7 +86,7 @@
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
                 <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
-                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportTeilnehmer}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>

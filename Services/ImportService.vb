@@ -86,6 +86,21 @@ Namespace Services
 
         End Function
 
+        Public Sub ImportTeilnehmer()
+
+            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
+            _ofdDokument.FilterIndex = 1
+            _ofdDokument.RestoreDirectory = True
+
+            If _ofdDokument.ShowDialog = DialogResult.OK Then
+                Dim NeueListe = XlLeser.LoadDataSet(_ofdDokument.FileName)
+            Else
+                Exit Sub
+            End If
+
+        End Sub
+
 #End Region
 
 #Region "Private"

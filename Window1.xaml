@@ -26,64 +26,63 @@
         <Menu Background="white" Foreground="Black" DockPanel.Dock="Top">
 
             <MenuItem  Header="_Datei"  >
-                <MenuItem Header="_Neue Skischule" Command="ApplicationCommands.New">
+                <MenuItem Header="_Neuer Club" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skischule ö_ffnen" Command="ApplicationCommands.Open">
+                <MenuItem Header="Club ö_ffnen" Command="ApplicationCommands.Open">
                     <MenuItem.Icon>
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skiclub importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
+                <MenuItem Header="Club importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Skiclub _speichern" Command="ApplicationCommands.Save">
+                <MenuItem Header="Club _speichern" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skiclub speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <MenuItem Header="Club speichern _unter..." Command="ApplicationCommands.SaveAs"/>
                 <Separator/>
-                <MenuItem  Header="Einteilungen _drucken..." Command="ApplicationCommands.Print" CommandParameter="ParticipantInfo">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="ApplicationCommands.Print" CommandParameter="ParticipantInfo">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Skilehrerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
-            
+
             <MenuItem  Header="B_earbeiten" >
-                <MenuItem Header="Gruppen erstellen" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportTeilnehmer}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Neue Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
+                <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
+                <Separator/>
+                <MenuItem Header="Trainer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Neuer Trainer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
+                <MenuItem Header="Trainer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
+                <Separator/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportParticipants}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
-                <Separator/>
-                <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportInstructors}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
-                <MenuItem Header="Skilehrer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
-                <Separator/>
-                <MenuItem Header="Neues Level" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
-                <MenuItem Header="Level löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
+                <MenuItem Header="Neue Leistungsstufe" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
+                <MenuItem Header="Leistungsstufe löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
             </MenuItem>
 
             <MenuItem Header="Ansichten" Foreground="Black" >

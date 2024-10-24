@@ -143,6 +143,8 @@ Namespace Entities
             End Get
         End Property
 
+        Public Property Archivieren As Boolean
+
 #End Region
 
 #Region "Funktionen und Methoden"

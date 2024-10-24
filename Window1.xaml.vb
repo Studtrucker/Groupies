@@ -492,7 +492,7 @@ Public Class Window1
     Private Sub SaveSkischule(fileName As String)
         ' Ewige Liste schreiben
 
-        AppCon.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) AppCon.CurrentClub.EwigeTeilnehmerliste.Add(Tn, Now.Date))
+        'AppCon.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) AppCon.CurrentClub.EwigeTeilnehmerliste.Add(Tn, Now.Date))
 
         ' 1. Skischule serialisieren und gezippt abspeichern
         SaveXML(fileName)

@@ -13,13 +13,18 @@ Public Module ExcelDataReaderService
 
     Public Function LeseTeilnehmerAusExcel(Pfad As String) As List(Of Teilnehmer)
 
+        Teilnehmerliste.Clear()
+
         If xl Is Nothing Then
             xl = LoadDataSet(Pfad)
         End If
 
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
-            Dim Tn = New Teilnehmer With {.Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")), .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Name"))}
+            Dim Tn = New Teilnehmer With {
+                .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
+                .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
+                .TeilnehmerIDText = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))}
             Teilnehmerliste.Add(Tn)
         Next
 
@@ -28,6 +33,8 @@ Public Module ExcelDataReaderService
     End Function
 
     Public Function LeseTrainerAusExcel(Pfad As String) As List(Of Trainer)
+
+        Trainerliste.Clear()
 
         If xl Is Nothing Then
             xl = LoadDataSet(Pfad)

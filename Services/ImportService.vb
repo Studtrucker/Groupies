@@ -4,6 +4,8 @@ Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Groupies.Entities
 Imports System.Text
+Imports Groupies.Controller
+Imports Groupies
 
 Namespace Services
 
@@ -93,12 +95,61 @@ Namespace Services
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
 
+            Dim ImportTeilnehmerliste As List(Of DataImport.Teilnehmer)
+
             If _ofdDokument.ShowDialog = DialogResult.OK Then
-                Dim NeueListe = XlLeser.LoadDataSet(_ofdDokument.FileName)
+                ImportTeilnehmerliste = ExcelDataReaderService.LeseTeilnehmerAusExcel(_ofdDokument.FileName)
             Else
                 Exit Sub
             End If
 
+
+            If AppController.CurrentClub.AlleTeilnehmer Is Nothing Then
+                AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection
+            End If
+
+            'Aus der Importdatei werden bekannte Teilnehmer markiert
+            For Each aktuellerTn As Teilnehmer In AppController.CurrentClub.AlleTeilnehmer
+                'ImportTeilnehmerliste.Where(Function(importTn) _
+                '                                importTn.Vorname = aktuellerTn.Vorname AndAlso
+                '                                importTn.Nachname = aktuellerTn.Nachname).ToList.ForEach(Sub(nTn) _
+                '                                                                                             nTn.IstBekannt = True)
+                ImportTeilnehmerliste.Where(Function(importTn) _
+                                                importTn.TeilnehmerID = aktuellerTn.TeilnehmerID) _
+                                                .ToList.ForEach(Sub(nTn) _
+                                                                    nTn.IstBekannt = True)
+            Next
+
+
+            ' Alle bekannten Teilnehmer bleiben wo sie sind
+            ' Alle unbekannten Teilnehmer werden in GruppenloseTeilnehmer einsortiert
+            Dim GLTn = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname))
+
+            ' Aus dem aktuellen Club werden alle Teilnehmer als potentieller Archivkandidat gesetzt
+            AppController.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) Tn.Archivieren = True)
+
+            ' Alle Archivkandidaten werden bei positiver Prüfung beibehalten
+            For Each importTn In ImportTeilnehmerliste
+                'AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(aktuellerTn) _
+                '                                                          aktuellerTn.Vorname = importTn.Vorname AndAlso
+                '                                                          aktuellerTn.Nachname = importTn.Nachname).ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
+                AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(aktuellerTn) _
+                                                                          aktuellerTn.TeilnehmerID = importTn.TeilnehmerID) _
+                                                                          .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
+            Next
+
+            Dim EwigeTn = AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTeilnehmer(Tn, Now.Date)))
+
+            MessageBox.Show($"Der Club hatte {AppController.CurrentClub.AlleTeilnehmer.Count} Teilnehmer")
+            MessageBox.Show($"{AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Tn.Archivieren = True).Count} Teilnehmer werden archiviert")
+            MessageBox.Show($"{AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Not Tn.Archivieren = True).Count} Teilnehmer sind weiterhin dabei")
+            MessageBox.Show($"Die Importdatei enthält {ImportTeilnehmerliste.Count} Teilnehmer")
+            MessageBox.Show($"Davon sind {ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).Count} Teilnehmer wieder dabei")
+            MessageBox.Show($"und zusätzlich {ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Count} neue Teilnehmer")
+
+            AppController.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
+            ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
+            AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Not Tn.Archivieren).ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
         End Sub
 
 #End Region

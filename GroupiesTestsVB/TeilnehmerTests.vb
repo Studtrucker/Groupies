@@ -16,6 +16,8 @@ Public Class TeilnehmerTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
         End If
 
+
+
         Dim Teilnehmerliste = ExcelDataReaderService.LeseTeilnehmerAusExcel(Pfad)
         Dim Trainerliste = ExcelDataReaderService.LeseTrainerAusExcel(Pfad)
 

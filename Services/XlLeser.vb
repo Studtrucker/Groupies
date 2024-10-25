@@ -15,14 +15,31 @@ Public Class XlLeser
 
     Public Shared Function LoadDataSet(Pfad As String) As DataSet
         Dim fileExtension As String = Path.GetExtension(Pfad)
+        Dim Dataset As DataSet
+
         Select Case fileExtension.ToLower
             Case ".xlsx"
-                Return ConvertExcelToDataSet(Pfad, True)
+                Dataset = ConvertExcelToDataSet(Pfad, True)
             Case ".xls"
-                Return ConvertExcelToDataSet(Pfad)
+                Dataset = ConvertExcelToDataSet(Pfad)
             Case Else
-                Return New DataSet()
+                Dataset = New DataSet()
         End Select
+
+        '' Prüfung, Excelsheet "Teilnehmer" vorhanden
+        'Dim ct = Dataset.Tables.IndexOf("Teilnehmer")
+        'If ct < 0 Then
+        '    MessageBox.Show("Die Datei enthält kein Tabellenblatt 'Teilnehmer' und kann nicht ausgewertet werden")
+        'End If
+
+        '' Prüfung, Excelsheet "Teilnehmer", erforderlichen Spalten vorhanden
+        'Dim cts = Dataset.Tables("Teilnehmer").Columns.Count
+        'If cts < 3 Then
+        '    MessageBox.Show("In dem Tabellenblatt 'Teilnehmer' fehlt eine der Spalten 'Vorname', 'Nachname' oder 'TeilnehmerID' und kann nicht ausgewertet werden")
+        'End If
+
+        Return Dataset
+
     End Function
 
     Public Shared Function ConvertExcelToDataSet(Pfad As String, Optional isXlsx As Boolean = False) As DataSet
@@ -59,6 +76,7 @@ Public Class XlLeser
             Case ".xls"
                 Return ConvertExcelToDataTable(Pfad)
             Case ".csv"
+                Return LeseCsvTabelle(Pfad)
                 Return ConvertCsvToDataTable(Pfad)
             Case Else
                 Return New DataTable()
@@ -69,21 +87,23 @@ Public Class XlLeser
     Public Shared Function ConvertExcelToDataTable(Pfad As String, Optional isXlsx As Boolean = False) As DataTable
 
         Dim stream As FileStream = Nothing
-        Dim excelReader As IExcelDataReader = Nothing
         Dim DataTable As DataTable = Nothing
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 
         stream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
-        excelReader = If(isXlsx, ExcelReaderFactory.CreateOpenXmlReader(stream), ExcelReaderFactory.CreateBinaryReader(stream))
+        Using excelReader = If(isXlsx, ExcelReaderFactory.CreateOpenXmlReader(stream), ExcelReaderFactory.CreateBinaryReader(stream))
 
-        Dim conf = New ExcelDataSetConfiguration With {.ConfigureDataTable = Function(x) New ExcelDataTableConfiguration With {.UseHeaderRow = True}}
-        Dim result As DataSet = excelReader.AsDataSet(conf)
+            Dim conf = New ExcelDataSetConfiguration With {.ConfigureDataTable = Function(x) New ExcelDataTableConfiguration With {.UseHeaderRow = True}}
+            Dim result As DataSet = excelReader.AsDataSet(conf)
 
-        If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
-            DataTable = result.Tables(0)
-            Return DataTable
-        End If
+            If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
+                DataTable = result.Tables(0)
+                Return DataTable
+            End If
+
+        End Using
+
 
         Return Nothing
 
@@ -92,6 +112,7 @@ Public Class XlLeser
     Public Shared Function ConvertCsvToDataTable(Pfad As String) As DataTable
 
         Dim dt = New DataTable()
+
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 
         Using sr = New StreamReader(Pfad)
@@ -113,6 +134,26 @@ Public Class XlLeser
         End Using
 
         Return dt
+
+    End Function
+
+    Public Shared Function LeseCsvTabelle(Pfad As String) As DataTable
+
+        Dim DataTable As DataTable
+        Dim stream = File.Open(Pfad, FileMode.Open, FileAccess.Read)
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
+        Using csvReader = ExcelReaderFactory.CreateCsvReader(stream)
+            Dim conf = New ExcelDataSetConfiguration With {.ConfigureDataTable = Function(x) New ExcelDataTableConfiguration With {.UseHeaderRow = True}}
+
+            Dim result As DataSet = csvReader.AsDataSet(conf)
+            If result IsNot Nothing AndAlso result.Tables.Count > 0 Then
+                DataTable = result.Tables(0)
+                Return DataTable
+            End If
+
+        End Using
+
+        Return Nothing
 
     End Function
 

@@ -19,6 +19,17 @@ Public Module ExcelDataReaderService
             xl = LoadDataSet(Pfad)
         End If
 
+        '' Prüfung, Excelsheet "Teilnehmer" vorhanden
+        'If xl.Tables.IndexOf("Teilnehmer2") < 0 Then
+        '    MessageBox.Show("Die Datei enthält kein Tabellenblatt 'Teilnehmer' und kann nicht ausgewertet werden")
+        '    Return Teilnehmerliste
+        'End If
+
+        '' Prüfung, Excelsheet "Teilnehmer", erforderlichen Spalten vorhanden
+        'If xl.Tables("Teilnehmer").Columns.Count < 3 Then
+        '    MessageBox.Show("In dem Tabellenblatt 'Teilnehmer' fehlt eine der Spalten 'Vorname', 'Nachname' oder 'TeilnehmerID' und kann nicht ausgewertet werden")
+        '    Return Teilnehmerliste
+        'End If
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
             Dim Tn = New Teilnehmer With {

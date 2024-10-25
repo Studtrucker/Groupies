@@ -2,7 +2,6 @@
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Controller.AppController
 Imports System.IO
-Imports System.BitConverter
 Imports System.Runtime.InteropServices
 
 Namespace Services
@@ -11,7 +10,7 @@ Namespace Services
 
 
         Public Function OpenExcelAusInternet(Pfad As String) As List(Of String())
-            Dim xl As Microsoft.Office.Interop.Excel.Application = New Microsoft.Office.Interop.Excel.Application()
+            Dim xl As New Microsoft.Office.Interop.Excel.Application()
             Dim Workbook As Workbook = xl.Workbooks.Open(Pfad)
             Dim sheet As Worksheet = Workbook.Sheets(1)
             sheet.Visible = True

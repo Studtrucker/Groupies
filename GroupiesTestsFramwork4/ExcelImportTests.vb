@@ -51,6 +51,8 @@ Public Class ExcelImportTests
 
         Dim x = XlLeser.LoadDataTable(Pfad)
 
+        If x Is Nothing Then Exit Sub
+
         For Each zeile As DataRow In x.Rows
             Debug.Print($"{zeile.ItemArray(0)} {zeile.ItemArray(1)}")
             Debug.Print($"{zeile.ItemArray(x.Columns.IndexOf("Vorname"))} {zeile.ItemArray(x.Columns.IndexOf("Name"))}")
@@ -68,6 +70,8 @@ Public Class ExcelImportTests
         End If
 
         Dim x As DataSet = XlLeser.LoadDataSet(Pfad)
+
+        If x Is Nothing Then Exit Sub
 
         For Each table As DataTable In x.Tables
             Debug.Print($"{table}")

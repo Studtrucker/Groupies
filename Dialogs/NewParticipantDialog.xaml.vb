@@ -1,6 +1,4 @@
-﻿Imports System.Text
-Imports System.Windows.Forms
-Imports Groupies.Entities
+﻿Imports Groupies.Entities
 Imports System.ComponentModel
 Imports DS = Groupies.Services
 Imports Groupies.Commands

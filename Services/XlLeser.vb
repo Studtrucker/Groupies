@@ -26,17 +26,19 @@ Public Class XlLeser
                 Dataset = New DataSet()
         End Select
 
-        '' Prüfung, Excelsheet "Teilnehmer" vorhanden
-        'Dim ct = Dataset.Tables.IndexOf("Teilnehmer")
-        'If ct < 0 Then
-        '    MessageBox.Show("Die Datei enthält kein Tabellenblatt 'Teilnehmer' und kann nicht ausgewertet werden")
-        'End If
+        ' Prüfung, Excelsheet "Teilnehmer" vorhanden
+        Dim ct = Dataset.Tables.IndexOf("Teilnehmer")
+        If ct < 0 Then
+            MessageBox.Show("Die Datei enthält kein Tabellenblatt 'Teilnehmer' und kann nicht ausgewertet werden")
+            Return Nothing
+        End If
 
-        '' Prüfung, Excelsheet "Teilnehmer", erforderlichen Spalten vorhanden
-        'Dim cts = Dataset.Tables("Teilnehmer").Columns.Count
-        'If cts < 3 Then
-        '    MessageBox.Show("In dem Tabellenblatt 'Teilnehmer' fehlt eine der Spalten 'Vorname', 'Nachname' oder 'TeilnehmerID' und kann nicht ausgewertet werden")
-        'End If
+        ' Prüfung, Excelsheet "Teilnehmer", erforderlichen Spalten vorhanden
+        Dim cts = Dataset.Tables("Teilnehmer").Columns.Count
+        If cts < 3 Then
+            MessageBox.Show("In dem Tabellenblatt 'Teilnehmer' fehlt eine der Spalten 'Vorname', 'Nachname' oder 'TeilnehmerID' und kann nicht ausgewertet werden")
+            Return Nothing
+        End If
 
         Return Dataset
 

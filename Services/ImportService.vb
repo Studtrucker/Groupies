@@ -1,4 +1,4 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Windows
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
@@ -13,7 +13,7 @@ Namespace Services
 
 #Region "Felder"
 
-        Private ReadOnly _ofdDokument As New Forms.OpenFileDialog
+        Private ReadOnly _ofdDokument As New OpenFileDialog
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
@@ -36,7 +36,7 @@ Namespace Services
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
 
-            If _ofdDokument.ShowDialog = DialogResult.OK Then
+            If _ofdDokument.ShowDialog = True Then
                 Dim xlApp = New Excel.Application
                 Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
                 If CheckExcelFileFormatSkiclub(Workbook) Then
@@ -56,7 +56,7 @@ Namespace Services
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
 
-            If _ofdDokument.ShowDialog = DialogResult.OK Then
+            If _ofdDokument.ShowDialog = True Then
                 Dim xlApp = New Excel.Application
                 Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
                 If CheckExcelFileFormatParticipants(Workbook) Then
@@ -76,7 +76,7 @@ Namespace Services
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
 
-            If _ofdDokument.ShowDialog = DialogResult.OK Then
+            If _ofdDokument.ShowDialog = True Then
                 Dim xlApp = New Excel.Application
                 Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
                 If CheckExcelFileFormatInstructors(Workbook) Then
@@ -97,12 +97,15 @@ Namespace Services
 
             Dim ImportTeilnehmerliste As List(Of DataImport.Teilnehmer)
 
-            If _ofdDokument.ShowDialog = DialogResult.OK Then
-                ImportTeilnehmerliste = ExcelDataReaderService.LeseTeilnehmerAusExcel(_ofdDokument.FileName)
+            If _ofdDokument.ShowDialog = True Then
+                ImportTeilnehmerliste = LeseTeilnehmerAusExcel(_ofdDokument.FileName)
             Else
                 Exit Sub
             End If
 
+            If ImportTeilnehmerliste Is Nothing Then
+                Exit Sub
+            End If
 
             If AppController.CurrentClub.AlleTeilnehmer Is Nothing Then
                 AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection

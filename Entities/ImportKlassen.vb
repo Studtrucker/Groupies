@@ -24,10 +24,17 @@ Namespace DataImport
     End Class
 
     Public Class Trainer
+        Public Property TrainerID() As Guid
         Public Property Vorname() As String
         Public Property Nachname() As String
         Public Property IstBekannt As Boolean = False
-
+        Public WriteOnly Property TrainerIDText() As String
+            Set(value As String)
+                Dim newGuid As Guid
+                If Guid.TryParse(value, newGuid) Then
+                    _TrainerID = newGuid
+                End If
+            End Set
+        End Property
     End Class
-
 End Namespace

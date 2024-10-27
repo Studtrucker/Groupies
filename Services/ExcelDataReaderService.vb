@@ -7,13 +7,13 @@ Imports Groupies.XlLeser
 Public Module ExcelDataReaderService
     Private Teilnehmerliste As New List(Of Teilnehmer)
     Private Trainerliste As New List(Of Trainer)
-    Public xl As DataSet
+    Private xl As DataSet
 
 
-    Public Function LeseTeilnehmerAusExcel(Pfad As String) As List(Of Teilnehmer)
+    Public Function LeseTeilnehmerAusDataset(Pfad As String) As List(Of Teilnehmer)
 
         Teilnehmerliste.Clear()
-        xl = LoadDataSet(Pfad)
+        xl = LoadDataSet(Pfad, "Teilnehmer")
 
         If xl Is Nothing Then Return Nothing
 
@@ -22,9 +22,6 @@ Public Module ExcelDataReaderService
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
                 .TeilnehmerIDText = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))}
-            'Dim Tn = New Teilnehmer With {
-            '    .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
-            '    .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Name"))}
             Teilnehmerliste.Add(Tn)
         Next
 
@@ -32,16 +29,19 @@ Public Module ExcelDataReaderService
 
     End Function
 
-    Public Function LeseTrainerAusExcel(Pfad As String) As List(Of Trainer)
+    Public Function LeseTrainerAusDataset(Pfad As String) As List(Of Trainer)
 
         Trainerliste.Clear()
 
-        xl = LoadDataSet(Pfad)
+        xl = LoadDataSet(Pfad, "Trainer")
 
         If xl Is Nothing Then Return Nothing
 
         For Each zeile As DataRow In xl.Tables("Trainer").Rows
-            Dim Tr = New Trainer With {.Vorname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Vorname")), .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Name"))}
+            Dim Tr = New Trainer With {
+                .Vorname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Vorname")),
+                .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname")),
+                .TrainerIDText = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname"))}
             Trainerliste.Add(Tr)
         Next
 

@@ -132,6 +132,7 @@
     <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
     <Compile Include="Entities\EwigerTeilnehmer.vb" />
     <Compile Include="Entities\ImportKlassen.vb" />
+    <Compile Include="Fabriken\FabrikDataImport.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
@@ -162,7 +163,6 @@
     <Compile Include="Services\ExcelDataReaderService.vb" />
     <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
-    <Compile Include="Services\ExcelInteropService.vb" />
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>

@@ -85,7 +85,7 @@
     <Compile Include="AppControllerTests.vb" />
     <Compile Include="ClubTests.vb" />
     <Compile Include="EwigeTeilnehmerlisteTest.vb" />
-    <Compile Include="ExcelImportTests.vb" />
+    <Compile Include="XlLeserTests.vb" />
     <Compile Include="FaehigkeitenTests.vb" />
     <Compile Include="GruppeTests.vb" />
     <Compile Include="LeistungsstufeTests.vb" />

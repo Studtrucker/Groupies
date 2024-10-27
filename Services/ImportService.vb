@@ -171,12 +171,6 @@ Namespace Services
             UnbekannteTeilnehmer.ToList.ForEach(Sub(Tn) AppController.CurrentClub.GruppenloseTeilnehmer.Add(Tn))
 
 
-
-
-
-            'ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
-            'AppController.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
-            'AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Not Tn.Archivieren).ToList.ForEach(Sub(tn) Debug.Print($"{tn.TeilnehmerID}; {tn.Vorname}; {tn.Nachname}"))
         End Sub
 
 #End Region

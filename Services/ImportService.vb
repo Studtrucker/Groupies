@@ -88,6 +88,75 @@ Namespace Services
 
         End Function
 
+        Public Sub ImportTrainer()
+
+
+            Dim Pfad = StarteOpenFileDialog()
+            If Pfad Is Nothing Then Exit Sub
+
+            Dim TraineranzahlVorImport = AppController.CurrentClub.AlleTrainer.Count
+            Dim ImportTrainerliste As List(Of DataImport.Trainer)
+
+            Try
+                ImportTrainerliste = LeseTrainerAusDataset(Pfad)
+            Catch ex As Exception
+                MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
+                Exit Sub
+            End Try
+
+            If AppController.CurrentClub.AlleTrainer Is Nothing Then
+                AppController.CurrentClub.GruppenloseTrainer = New TrainerCollection
+            End If
+
+            'Aus der Importdatei werden bekannte Trainer markiert
+            For Each aktuellerTr As Trainer In AppController.CurrentClub.AlleTrainer
+                ImportTrainerliste.Where(Function(importTr) importTr.TrainerID = aktuellerTr.TrainerID) _
+                                                .ToList.ForEach(Sub(neueTrainer) neueTrainer.IstBekannt = True)
+            Next
+
+            ' Aus dem aktuellen Club werden alle Trainer als potentieller Archivkandidat gesetzt
+            AppController.CurrentClub.AlleTrainer.ToList.ForEach(Sub(Tr) Tr.Archivieren = True)
+            ' Alle Archivkandidaten werden, wenn sie in der Importdatei gelistet sind, beibehalten
+            For Each importTn In ImportTrainerliste
+                AppController.CurrentClub.AlleTrainer.ToList.Where(Function(Tn) _
+                                                                          Tn.TrainerID = importTn.TrainerID) _
+                                                                          .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
+            Next
+
+            ' Alle unbekannten Teilnehmer 
+            Dim UnbekannteTrainer = ImportTrainerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Trainer(Tn.Vorname, Tn.Nachname))
+            ' Alle bekannten Teilnehmer 
+            Dim BekannteTeilnehmer = ImportTrainerliste.Where(Function(Tn) Tn.IstBekannt).
+                Select(Function(Tn) AppController.CurrentClub.AlleTrainer.
+                Where(Function(AlterTeilnehmer) Tn.TrainerID = AlterTeilnehmer.TrainerID))
+
+            ' Alle zu archivierenden Teilnehmer 
+            Dim ZuArchivierende = AppController.CurrentClub.AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
+
+            ' Teilnehmer in der ewigen Liste archivieren
+            Dim Archiv = AppController.CurrentClub.AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTrainer(Tn, Now.Date)))
+            ' Teilnehmer, die nicht dabei sind, aussortieren
+            For Each ArchivTr In ZuArchivierende
+                AppController.CurrentClub.Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)
+                AppController.CurrentClub.GruppenloseTrainer.Remove(ArchivTr)
+            Next
+
+            Dim sb As New StringBuilder
+
+            sb.Append($"Der Club hatte vor dem Datenimport {TraineranzahlVorImport} Trainer.{vbNewLine}{vbNewLine}")
+            sb.Append($"Die Importdatei enthält {ImportTrainerliste.Count} Trainer, ")
+            sb.Append($"von denen sind {BekannteTeilnehmer.Count} Trainer bereits bekannt.{vbNewLine}{vbNewLine}")
+            sb.Append($"{ZuArchivierende.Count} Trainer werden archiviert und ")
+            sb.Append($"{UnbekannteTrainer.Count} neu hinzugefügt")
+            MessageBox.Show($"{sb}", "Datenimport", MessageBoxButton.OK, MessageBoxImage.Information)
+
+
+            UnbekannteTrainer.ToList.ForEach(Sub(Tr) AppController.CurrentClub.GruppenloseTrainer.Add(Tr))
+
+
+        End Sub
+
+
         Public Sub ImportTeilnehmer()
 
 
@@ -135,7 +204,6 @@ Namespace Services
 
             ' Teilnehmer in der ewigen Liste archivieren
             Dim Archiv = AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTeilnehmer(Tn, Now.Date)))
-            MessageBox.Show($"Anzahl Teilnehmer vor dem Aussortieren {AppController.CurrentClub.AlleTeilnehmer.Count}")
             ' Teilnehmer, die nicht dabei sind, aussortieren
             For Each ArchivTn In ZuArchivierende
                 'AppController.CurrentClub.AlleTeilnehmer.Remove(AppController.CurrentClub.AlleTeilnehmer.Where(Function(Tn) Tn.TeilnehmerID = ArchivTn.TeilnehmerID).Single)
@@ -143,13 +211,11 @@ Namespace Services
                 AppController.CurrentClub.GruppenloseTeilnehmer.Remove(ArchivTn)
             Next
 
-            MessageBox.Show($"Anzahl Teilnehmer nach dem Aussortieren {AppController.CurrentClub.AlleTeilnehmer.Count}; Anzahl zum Aussortieren {ZuArchivierende.Count}")
-
             Dim sb As New StringBuilder
 
-            sb.Append($"Der Club hatte vor dem Datenimport {TeilnehmerzahlVorImport} Teilnehmer.{vbNewLine}")
+            sb.Append($"Der Club hatte vor dem Datenimport {TeilnehmerzahlVorImport} Teilnehmer.{vbNewLine}{vbNewLine}")
             sb.Append($"Die Importdatei enthält {ImportTeilnehmerliste.Count} Teilnehmer, ")
-            sb.Append($"von denen sind {BekannteTeilnehmer.Count} Teilnehmer bereits bekannt.{vbNewLine}")
+            sb.Append($"von denen sind {BekannteTeilnehmer.Count} Teilnehmer bereits bekannt.{vbNewLine}{vbNewLine}")
             sb.Append($"{ZuArchivierende.Count} Teilnehmer werden archiviert und ")
             sb.Append($"{UnbekannteTeilnehmer.Count} neu hinzugefügt")
             MessageBox.Show($"{sb}", "Datenimport", MessageBoxButton.OK, MessageBoxImage.Information)

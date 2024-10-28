@@ -19,7 +19,7 @@ Namespace Commands
 
         Public Shared ReadOnly Property ImportTeilnehmer As New RoutedUICommand("Teilnehmerliste importieren", "ImportParticipants", GetType(SkiclubCommands))
 
-        Public Shared ReadOnly Property ImportInstructors As New RoutedUICommand("Skilehrer importieren", "ImportInstructors", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property ImportTrainer As New RoutedUICommand("Trainer importieren", "ImportTrainer", GetType(SkiclubCommands))
 
         Public Shared ReadOnly Property BeurteileTeilnehmerlevel As New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerlevel", GetType(SkiclubCommands))
 

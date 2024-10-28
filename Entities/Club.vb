@@ -78,6 +78,11 @@ Namespace Entities
         ''' <returns></returns>
         Public Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
 
+        ''' <summary>
+        ''' Ewige Trainerliste
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property EwigeTrainerliste() As EwigeTrainerCollection
 
         ''' <summary>
         '''  Teilnehmer, die bereits in Gruppen eingeteilt wurden 

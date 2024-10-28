@@ -126,7 +126,7 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportInstructors, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTeilnehmer, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))

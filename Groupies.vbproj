@@ -129,6 +129,8 @@
     <Compile Include="EntitiesAlt\Skiclub.vb" />
     <Compile Include="EntitiesAlt\Skill.vb" />
     <Compile Include="EntitiesAlt\SkillCollection.vb" />
+    <Compile Include="Entities\EwigerTrainer.vb" />
+    <Compile Include="Entities\EwigeTrainerCollection.vb" />
     <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
     <Compile Include="Entities\EwigerTeilnehmer.vb" />
     <Compile Include="Entities\ImportKlassen.vb" />

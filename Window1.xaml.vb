@@ -286,7 +286,12 @@ Public Class Window1
 
     Private Sub HandleImportTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
 
+        AppCon.CurrentClub.AlleTrainer.ToList.ForEach(Sub(Tr) Debug.Print($"{Tr.TrainerID}; {Tr.Vorname}; {Tr.Nachname}"))
+        AppCon.CurrentClub.GruppenloseTrainer.ToList.ForEach(Sub(Tr) Debug.Print($"{Tr.TrainerID}; {Tr.Vorname}; {Tr.Nachname}"))
+
         ImportService.ImportTrainer()
+
+
         'Dim ImportInstructors = ImportService.ImportInstructors
         'If ImportInstructors IsNot Nothing Then
         '    'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
@@ -605,7 +610,7 @@ Public Class Window1
         unsetView()
 
         ' Neue ListCollectionView laden
-        _groupListCollectionView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste.GruppeGeordnet.ToList)
+        _groupListCollectionView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste.ToList)
         If _groupListCollectionView.CanSort Then
             _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If

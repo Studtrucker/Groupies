@@ -54,11 +54,11 @@
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <!--Combobox Level-->
                 <ComboBox Grid.Column="2" Grid.Row="4" 
-                          SelectedValuePath="LevelNaming" DisplayMemberPath="Benennung" 
-                          IsSynchronizedWithCurrentItem="True"
-                          SelectedValue="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
                           x:Name="GroupLevelCombobox" />
+                <!--DisplayMemberPath="Benennung"-->
+                           <!--SelectedValue="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"-->
+                         <!--SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"-->
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
                           Text="{Binding Path=Trainer.VorUndNachname}"

@@ -25,4 +25,6 @@ Public Class TrainerTests
         CollectionAssert.AreEqual(New List(Of String) From {"Ralf", "Andreas Studtrucker", "Sandra Witzel"}, trl.VorUndNachname.ToList)
 
     End Sub
+
+
 End Class

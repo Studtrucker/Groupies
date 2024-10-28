@@ -109,47 +109,51 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel>
+                    
+                    <TextBlock Text="Die Gruppen"/>
+                    
+                    <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
+                              Margin="6"  Foreground="Black"           
+                              AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
+                        <DataGrid.Resources>
 
-                <TextBlock Text="Die Gruppen"/>
+                            <DataTemplate x:Key="GruppenlisteDataTemplate">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
 
-                <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
-                          Margin="6"  Foreground="Black"           
-                          AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
-                    <DataGrid.Resources>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Leistungsstufe"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Skilehrer"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Anzahl Gruppenmitglieder"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Leistungsstufe}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Trainer.VorUndNachname}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Mitgliederliste.Count}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGrid.Resources>
+                    <!--<ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
 
-                        <DataTemplate x:Key="GruppenlisteDataTemplate">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Leistungsstufe"/>
-                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Skilehrer"/>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Anzahl Gruppenmitglieder"/>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Leistungsstufe}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Trainer.VorUndNachname}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Mitgliederliste.Count}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Die Gruppen" Width="*"
-                                                CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
-                    </DataGrid.Columns>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Gruppen" Width="*"
+                                                    CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
+                        </DataGrid.Columns>
+                    <!--</ScrollViewer>-->
                 </DataGrid>
             </StackPanel>
+                
             <DockPanel Grid.Column="2">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>

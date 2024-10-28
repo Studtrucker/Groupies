@@ -38,7 +38,7 @@ Public Class FabrikTabellenname
             Case ".csv"
                 Return New TabellennameCsv
             Case Else
-                Throw New Exception($"Der Dateityp [{Dateityp}] ist unbekannt")
+                Throw New IO.FileFormatException($"Der Dateityp [{Dateityp}] ist unbekannt")
         End Select
     End Function
 
@@ -52,7 +52,7 @@ Public Class FabrikSpalten
             Case "Trainer"
                 Return New SpaltennamenTrainer
             Case Else
-                Throw New Exception($"Der Datentyp [{Datentyp}] ist unbekannt")
+                Throw New IO.FileLoadException($"Der Datentyp [{Datentyp}] ist unbekannt")
         End Select
     End Function
 

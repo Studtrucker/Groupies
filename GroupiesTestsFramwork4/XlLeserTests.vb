@@ -18,15 +18,7 @@ Public Class XlLeserTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
         End If
 
-        Dim exception As Exception
-        Try
-            XlLeser.LoadDataSet(Pfad, "Teilnehmer")
-        Catch ex As Exception
-            exception = ex
-        End Try
-        Assert.IsNotNull(exception)
-
-        '        Assert.ThrowsException(Of Exception)(Sub() XlLeser.LoadDataSet(Pfad))
+        Assert.ThrowsException(Of InvalidDataException)(Sub() XlLeser.LoadDataSet(Pfad, "Teilnehmer"))
 
     End Sub
 

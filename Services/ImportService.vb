@@ -72,7 +72,7 @@ Namespace Services
             Workbook = Nothing
 
             _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
 
@@ -90,30 +90,19 @@ Namespace Services
 
         Public Sub ImportTeilnehmer()
 
+
+            Dim Pfad = StarteOpenFileDialog()
+            If Pfad Is Nothing Then Exit Sub
+
             Dim TeilnehmerzahlVorImport = AppController.CurrentClub.AlleTeilnehmer.Count
-
-            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
-            _ofdDokument.FilterIndex = 1
-
-            _ofdDokument.RestoreDirectory = True
-
             Dim ImportTeilnehmerliste As List(Of DataImport.Teilnehmer)
 
-            If _ofdDokument.ShowDialog = True Then
-                Try
-                    ImportTeilnehmerliste = LeseTeilnehmerAusDataset(_ofdDokument.FileName)
-                Catch ex As Exception
-                    MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
-                    Exit Sub
-                End Try
-            Else
+            Try
+                ImportTeilnehmerliste = LeseTeilnehmerAusDataset(Pfad)
+            Catch ex As Exception
+                MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
                 Exit Sub
-            End If
-
-            If ImportTeilnehmerliste Is Nothing Then
-                Exit Sub
-            End If
+            End Try
 
             If AppController.CurrentClub.AlleTeilnehmer Is Nothing Then
                 AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection
@@ -121,10 +110,8 @@ Namespace Services
 
             'Aus der Importdatei werden bekannte Teilnehmer markiert
             For Each aktuellerTn As Teilnehmer In AppController.CurrentClub.AlleTeilnehmer
-                ImportTeilnehmerliste.Where(Function(importTn) _
-                                                importTn.TeilnehmerID = aktuellerTn.TeilnehmerID) _
-                                                .ToList.ForEach(Sub(nTn) _
-                                                                    nTn.IstBekannt = True)
+                ImportTeilnehmerliste.Where(Function(importTn) importTn.TeilnehmerID = aktuellerTn.TeilnehmerID) _
+                                                .ToList.ForEach(Sub(nTn) nTn.IstBekannt = True)
             Next
 
             ' Aus dem aktuellen Club werden alle Teilnehmer als potentieller Archivkandidat gesetzt
@@ -176,6 +163,49 @@ Namespace Services
 #End Region
 
 #Region "Private"
+
+        Public Function StarteOpenFileDialog() As String
+            Return StarteOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
+        End Function
+
+        Public Function StarteOpenFileDialog(InitialDirectory As String, Filename As String) As String
+            _ofdDokument.InitialDirectory = IO.Path.GetDirectoryName(InitialDirectory)
+            _ofdDokument.FileName = Filename
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
+            _ofdDokument.FilterIndex = 1
+            _ofdDokument.RestoreDirectory = True
+
+            Return OpenFileDialog()
+
+        End Function
+
+        Public Function StarteOpenFileDialog(InitialDirectory As String) As String
+
+            _ofdDokument.InitialDirectory = IO.Path.GetDirectoryName(InitialDirectory)
+            _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
+            _ofdDokument.FilterIndex = 1
+            _ofdDokument.RestoreDirectory = True
+
+            Return OpenFileDialog()
+
+        End Function
+
+        Private Function OpenFileDialog() As String
+
+
+            If _ofdDokument.ShowDialog = True Then
+                Try
+                    Return _ofdDokument.FileName
+                Catch ex As Exception
+                    MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
+                    Return Nothing
+                End Try
+            Else
+                Return Nothing
+            End If
+
+        End Function
+
 
         Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Entities.Club
             Dim CurrentRow = 4

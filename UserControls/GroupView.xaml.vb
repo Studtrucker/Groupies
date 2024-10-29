@@ -24,11 +24,11 @@ Namespace UserControls
 
             If CDS.CurrentClub IsNot Nothing AndAlso CDS.CurrentClub.Leistungsstufenliste IsNot Nothing Then
 
-                _levelListCollectionView = New ListCollectionView(CDS.CurrentClub.Leistungsstufenliste)
+                _levelListCollectionView = New ListCollectionView(CDS.CurrentClub.Leistungsstufenliste.Leistungsstufen)
                 If _levelListCollectionView.CanSort Then
-                    _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+                    _levelListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
                 End If
-                GroupLevelCombobox.ItemsSource = _levelListCollectionView
+                Gruppenleistungsstufe.ItemsSource = _levelListCollectionView
 
                 '    '*****************************************************************************************************
                 '    '* Darf nicht gefiltert werden, denn sonst werden die einegteilten Instructoren nicht mehr angezeigt *
@@ -57,7 +57,7 @@ Namespace UserControls
         End Sub
 
         Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-            MessageBox.Show("GroupView Teinlnehmer raus")
+            MessageBox.Show("GroupView Teilnehmer raus")
         End Sub
 
         Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)

@@ -53,9 +53,11 @@
                 <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=Benennung, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <!--Combobox Level-->
-                <ComboBox Grid.Column="2" Grid.Row="4" 
-                          SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
-                          x:Name="GroupLevelCombobox" />
+                <ComboBox Grid.Column="2" Grid.Row="4" DisplayMemberPath="Benennung"
+                          SelectedValue="{Binding Path=Leistungsstufe.LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="LeistungsstufeID"
+                          Name="Gruppenleistungsstufe" />
+                <!--<TextBox Text="{Binding Path=Leistungsstufe.LeistungsstufeID,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2"/>-->
                 <!--DisplayMemberPath="Benennung"-->
                            <!--SelectedValue="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"-->
                          <!--SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"-->
@@ -63,6 +65,7 @@
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
                           Text="{Binding Path=Trainer.VorUndNachname}"
                           MouseDoubleClick="GroupLeaderTextblock_MouseDoubleClick"/>
+                
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                           IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Mitgliederliste}"  

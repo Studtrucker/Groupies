@@ -16,6 +16,8 @@ Namespace Entities
             Leistungsstufenliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
+        Public Property Leistungsstufen As IEnumerable(Of Leistungsstufe) = Me
+
         Public Property BenennungGeordnet As IEnumerable(Of String) =
             OrderBy(Function(L) L.Sortierung) _
             .ThenBy(Function(L) L.Benennung) _

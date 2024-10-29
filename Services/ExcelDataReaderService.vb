@@ -18,11 +18,15 @@ Public Module ExcelDataReaderService
         If xl Is Nothing Then Return Nothing
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
-            Dim x = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))
+            Dim guid As Guid
+            If IsNumeric(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID"))) Then
+                Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), guid)
+            End If
+
             Dim Tn = New Teilnehmer With {
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
-                .TeilnehmerIDText = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))}
+                .TeilnehmerID = guid}
             Teilnehmerliste.Add(Tn)
         Next
 
@@ -39,14 +43,15 @@ Public Module ExcelDataReaderService
         If xl Is Nothing Then Return Nothing
 
         For Each zeile As DataRow In xl.Tables("Trainer").Rows
-            Dim x As Guid
-            Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), x)
+            Dim guid As Guid
+            If IsNumeric(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID"))) Then
+                Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), guid)
+            End If
 
             Dim Tr = New Trainer With {
                 .Vorname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Vorname")),
-                .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname"))}
-
-            Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), Tr.TrainerID)
+                .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname")),
+                .TrainerID = guid}
 
             Trainerliste.Add(Tr)
         Next

@@ -108,11 +108,14 @@
                 <ColumnDefinition Width="1*" SharedSizeGroup="PersonExplorerColumn" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
+           <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>    
+                    <TextBlock Text="Die Gruppen" Grid.Row="0"/>
                     
-                    <TextBlock Text="Die Gruppen"/>
-                    
-                    <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Column="0"
+                    <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
                               Margin="6"  Foreground="Black"           
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                         <DataGrid.Resources>
@@ -144,15 +147,13 @@
                                 </Grid>
                             </DataTemplate>
                         </DataGrid.Resources>
-                    <!--<ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
 
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Gruppen" Width="*"
                                                     CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
                         </DataGrid.Columns>
-                    <!--</ScrollViewer>-->
                 </DataGrid>
-            </StackPanel>
+            </Grid>
                 
             <DockPanel Grid.Column="2">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

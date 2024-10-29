@@ -18,6 +18,7 @@ Public Module ExcelDataReaderService
         If xl Is Nothing Then Return Nothing
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
+            Dim x = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))
             Dim Tn = New Teilnehmer With {
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
@@ -38,10 +39,15 @@ Public Module ExcelDataReaderService
         If xl Is Nothing Then Return Nothing
 
         For Each zeile As DataRow In xl.Tables("Trainer").Rows
+            Dim x As Guid
+            Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), x)
+
             Dim Tr = New Trainer With {
                 .Vorname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Vorname")),
-                .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname")),
-                .TrainerIDText = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname"))}
+                .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname"))}
+
+            Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), Tr.TrainerID)
+
             Trainerliste.Add(Tr)
         Next
 

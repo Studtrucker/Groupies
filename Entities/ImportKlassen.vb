@@ -5,8 +5,8 @@ Namespace DataImport
     Public Class Teilnehmer
         Implements IEquatable(Of Entities.Teilnehmer)
 
-        Public Property TeilnehmerID() As Guid
-        Public WriteOnly Property TeilnehmerIDText() As String
+        Public Property TeilnehmerID As Guid
+        Public WriteOnly Property TeilnehmerIDText As String
             Set(value As String)
                 Dim newGuid As Guid
                 If Guid.TryParse(value, newGuid) Then
@@ -28,13 +28,14 @@ Namespace DataImport
         Public Property Vorname() As String
         Public Property Nachname() As String
         Public Property IstBekannt As Boolean = False
-        Public WriteOnly Property TrainerIDText() As String
-            Set(value As String)
-                Dim newGuid As Guid
-                If Guid.TryParse(value, newGuid) Then
-                    _TrainerID = newGuid
-                End If
-            End Set
-        End Property
+
+        'Public WriteOnly Property TrainerIDText As String
+        '    Set(value As String)
+        '        Dim newGuid As Guid
+        '        If Guid.TryParse(value, newGuid) Then
+        '            _TrainerID = newGuid
+        '        End If
+        '    End Set
+        'End Property
     End Class
 End Namespace

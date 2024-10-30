@@ -126,8 +126,6 @@ Class MainWindow
         'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportInstructorsExecuted, AddressOf HandleImportInstructorsCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportParticipantsExecuted, AddressOf HandleImportParticipantsCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTeilnehmer, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
@@ -397,38 +395,6 @@ Class MainWindow
         Close()
     End Sub
 
-    Private Sub HandleImportParticipantsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.GruppenloseTeilnehmer IsNot Nothing
-    End Sub
-
-    Private Sub HandleImportParticipantsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim ImportParticipants = ImportService.ImportParticipants
-        If ImportParticipants IsNot Nothing Then
-            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportParticipants.ToList.ForEach(Sub(x) Services.Club.GruppenloseTeilnehmer.Add(x))
-            MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
-            setView(CurrentClub.Gruppenliste)
-        End If
-
-    End Sub
-
-    Private Sub HandleImportInstructorsCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Services.Club IsNot Nothing AndAlso Services.Club.GruppenloseTrainer IsNot Nothing
-    End Sub
-
-    Private Sub HandleImportInstructorsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim ImportInstructors = ImportService.ImportInstructors
-        If ImportInstructors IsNot Nothing Then
-            'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-            ImportInstructors.ToList.ForEach(Sub(x) Services.Club.GruppenloseTrainer.Add(x))
-            MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
-            setView(CurrentClub.Gruppenliste)
-        End If
-
-    End Sub
-
     Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
@@ -455,59 +421,6 @@ Class MainWindow
 
     End Sub
 
-    Private Sub HandleDrop(sender As Object, e As DragEventArgs)
-
-        Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
-        Dim validPictureFile = False
-
-        If filepath.Length > 0 Then
-            Dim extension As String = Path.GetExtension(filepath(0)).ToLower()
-
-            If ImageTypes.AllImageTypes.Contains(extension) Then
-                Using filestream = New FileStream(filepath(0), FileMode.Open)
-                    Dim buffer = New Byte(filestream.Length - 1) {}
-                    filestream.Read(buffer, 0, filestream.Length)
-                    TryCast(_uebungsleiterListCollectionView.CurrentItem, Trainer).Foto = buffer
-                    RefreshTaskBarItemOverlay()
-                    CommandManager.InvalidateRequerySuggested()
-                    validPictureFile = True
-                End Using
-            Else
-                Dim sb = New StringBuilder()
-                sb.AppendLine("Es werden nur die folgenden Dateiformate")
-                sb.Append("unterstützt: ")
-
-                For Each fileformat As String In ImageTypes.AllImageTypes
-                    sb.Append(fileformat)
-                    sb.Append(", ")
-                Next
-                ' Das letzte ", " entfernen und Zeilenumbruch einfügen
-                sb.Remove(sb.Length - 2, 1)
-                MessageBox.Show(sb.ToString)
-            End If
-        End If
-
-        If filepath.Length > 1 AndAlso validPictureFile Then
-            MessageBox.Show("Sie haben mehr als eine Datei gedroppt, es wird nur die erste verwendet.")
-        End If
-
-    End Sub
-
-    Private Sub HandleDragOver(sender As Object, e As DragEventArgs)
-
-        e.Effects = DragDropEffects.None
-        Dim filepath As String() = TryCast(e.Data.GetData(DataFormats.FileDrop, True), String())
-
-        If filepath.Length > 0 Then
-            Dim extension As String = Path.GetExtension(filepath(0)).ToLower()
-
-            If ImageTypes.AllImageTypes.Contains(extension) Then
-                e.Effects = DragDropEffects.Copy
-            End If
-        End If
-
-        e.Handled = True
-    End Sub
 
     Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 

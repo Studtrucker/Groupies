@@ -48,46 +48,6 @@ Namespace Services
 
         End Function
 
-        Public Function ImportParticipants() As Entities.TeilnehmerCollection
-            Workbook = Nothing
-
-            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            _ofdDokument.Filter = "Excel Dateien (*.xlsx)| *.xlsx"
-            _ofdDokument.FilterIndex = 1
-            _ofdDokument.RestoreDirectory = True
-
-            If _ofdDokument.ShowDialog = True Then
-                Dim xlApp = New Excel.Application
-                Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
-                If CheckExcelFileFormatParticipants(Workbook) Then
-                    Return ReadImportExcelfileParticipants(Workbook.ActiveSheet)
-                End If
-                Workbook.Close()
-            End If
-            Return Nothing
-
-        End Function
-
-        Public Function ImportInstructors() As Entities.TrainerCollection
-            Workbook = Nothing
-
-            _ofdDokument.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
-            _ofdDokument.FilterIndex = 1
-            _ofdDokument.RestoreDirectory = True
-
-            If _ofdDokument.ShowDialog = True Then
-                Dim xlApp = New Excel.Application
-                Workbook = xlApp.Workbooks.Open(_ofdDokument.FileName,, True)
-                If CheckExcelFileFormatInstructors(Workbook) Then
-                    Return ReadImportExcelfileInstructors(Workbook.ActiveSheet)
-                End If
-                Workbook.Close()
-            End If
-            Return Nothing
-
-        End Function
-
         Public Sub ImportTrainer()
 
 
@@ -230,12 +190,13 @@ Namespace Services
 
 #Region "Private"
 
+
         Public Function StarteOpenFileDialog() As String
             Return StarteOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
         End Function
 
         Public Function StarteOpenFileDialog(InitialDirectory As String, Filename As String) As String
-            _ofdDokument.InitialDirectory = IO.Path.GetDirectoryName(InitialDirectory)
+            _ofdDokument.InitialDirectory = InitialDirectory
             _ofdDokument.FileName = Filename
             _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
             _ofdDokument.FilterIndex = 1
@@ -247,7 +208,7 @@ Namespace Services
 
         Public Function StarteOpenFileDialog(InitialDirectory As String) As String
 
-            _ofdDokument.InitialDirectory = IO.Path.GetDirectoryName(InitialDirectory)
+            _ofdDokument.InitialDirectory = InitialDirectory
             _ofdDokument.Filter = "Excel Dateien (*.xlsx, *.xls)| *.xlsx; *.xls|CSV (Trennzeichen-getrennt) (*.csv)| *.csv"
             _ofdDokument.FilterIndex = 1
             _ofdDokument.RestoreDirectory = True
@@ -301,46 +262,6 @@ Namespace Services
             Return _skischule
         End Function
 
-        Private Function ReadImportExcelfileParticipants(Excelsheet As Excel.Worksheet) As Entities.TeilnehmerCollection
-            Dim CurrentRow = 2
-            Dim RowCount = Excelsheet.UsedRange.Rows.Count
-
-
-            Dim _Participantlist = New TeilnehmerCollection
-
-            Do Until CurrentRow > RowCount
-
-                Dim Teilnehmer As New Teilnehmer With {
-                .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .Leistungsstand = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
-                _Participantlist.Add(Teilnehmer)
-
-                CurrentRow += 1
-            Loop
-            Return _Participantlist
-
-        End Function
-
-        Private Function ReadImportExcelfileInstructors(Excelsheet As Excel.Worksheet) As Entities.TrainerCollection
-            Dim CurrentRow = 2
-            Dim RowCount = Excelsheet.UsedRange.Rows.Count
-
-
-            Dim _Participantlist = New TrainerCollection
-
-            Do Until CurrentRow > RowCount
-
-                Dim Trainer As New Trainer(Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                                              Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                                              Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))
-                _Participantlist.Add(Trainer)
-
-                CurrentRow += 1
-            Loop
-            Return _Participantlist
-
-        End Function
 
         Private Function FindLevel(Benennung As String) As Leistungsstufe
 
@@ -400,69 +321,6 @@ Namespace Services
             Return XlValid
 
         End Function
-
-        Private Function CheckExcelFileFormatParticipants(Excelfile As Excel.Workbook) As Boolean
-
-            Dim XlValid As Boolean
-
-            ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
-            _xlSheet = Excelfile.ActiveSheet
-
-            If _xlSheet IsNot Nothing Then
-                XlValid = _xlSheet.UsedRange.Columns.Count = 3
-
-                ' Check column caption
-                XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
-                XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
-                XlValid = XlValid And _xlSheet.Range("C1").Value = "Level"
-
-                ' Check first data row
-                XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
-
-            End If
-
-            Dim Text = New StringBuilder
-            Text.AppendLine("Die Datei ist nicht zum Teilnehmerimport geeignet")
-            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1 und [Level] in C1")
-            Text.AppendLine("Pflichtfelder sind Vorname und Nachname")
-
-            If Not XlValid Then MessageBox.Show(Text.ToString)
-
-            Return XlValid
-
-        End Function
-
-        Private Function CheckExcelFileFormatInstructors(Excelfile As Excel.Workbook) As Boolean
-
-            Dim XlValid As Boolean
-
-            ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
-            _xlSheet = Excelfile.ActiveSheet
-
-            If _xlSheet IsNot Nothing Then
-                XlValid = _xlSheet.UsedRange.Columns.Count = 3
-
-                ' Check column caption
-                XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
-                XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
-                XlValid = XlValid And _xlSheet.Range("C1").Value = "Printname"
-
-                ' Check first data row
-                XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
-
-            End If
-
-            Dim Text = New StringBuilder
-            Text.AppendLine("Die Datei ist nicht zum Skilehrerimport geeignet")
-            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1 und [Printname] in C1")
-            Text.AppendLine("Pflichtfelder sind Vorname und Printname")
-
-            If Not XlValid Then MessageBox.Show(Text.ToString)
-
-            Return XlValid
-
-        End Function
-
 #End Region
 
     End Module

@@ -65,6 +65,8 @@ Public Class Window1
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppentrainerEntfernen, AddressOf Handle_GruppentrainerEntfernen_Execute, AddressOf Handle_GruppentrainerEntfernen_CanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportTeilnehmerExecute, AddressOf HandleImportTeilnehmerCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportTrainerExecute, AddressOf HandleImportTrainerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTeilnehmer, AddressOf HandleExportXlTeilnehmerExecute, AddressOf HandleExportXlTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTrainer, AddressOf HandleExportXlTrainerExecute, AddressOf HandleExportXlTrainerCanExecute))
 
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
@@ -268,16 +270,7 @@ Public Class Window1
     End Sub
 
     Private Sub HandleImportTeilnehmerExecute(sender As Object, e As ExecutedRoutedEventArgs)
-
         ImportService.ImportTeilnehmer()
-        'Dim ImportParticipants = ImportService.ImportParticipants
-        'If ImportParticipants IsNot Nothing Then
-        '    'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-        '    ImportParticipants.ToList.ForEach(Sub(x) Services.Club.GruppenloseTeilnehmer.Add(x))
-        '    MessageBox.Show(String.Format("Es wurden {0} Teilnehmer erfolgreich importiert", ImportParticipants.Count))
-        '    setView(AppCon.CurrentClub)
-        'End If
-
     End Sub
 
     Private Sub HandleImportTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -285,21 +278,23 @@ Public Class Window1
     End Sub
 
     Private Sub HandleImportTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
-
-        AppCon.CurrentClub.AlleTrainer.ToList.ForEach(Sub(Tr) Debug.Print($"{Tr.TrainerID}; {Tr.Vorname}; {Tr.Nachname}"))
-        'AppCon.CurrentClub.GruppenloseTrainer.ToList.ForEach(Sub(Tr) Debug.Print($"{Tr.TrainerID}; {Tr.Vorname}; {Tr.Nachname}"))
-
         ImportService.ImportTrainer()
+    End Sub
 
+    Private Sub HandleExportxlTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTeilnehmer.Count > 0
+    End Sub
 
-        'Dim ImportInstructors = ImportService.ImportInstructors
-        'If ImportInstructors IsNot Nothing Then
-        '    'DataService.Skiclub.Participantlist.ToList.AddRange(ImportParticipants)
-        '    ImportInstructors.ToList.ForEach(Sub(x) Services.Club.GruppenloseTrainer.Add(x))
-        '    MessageBox.Show(String.Format("Es wurden {0} Skilehrer erfolgreich importiert", ImportInstructors.Count))
-        '    setView(AppCon.CurrentClub)
-        'End If
+    Private Sub HandleExportXlTeilnehmerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ExportService.ExportTeilnehmer()
+    End Sub
 
+    Private Sub HandleExportxlTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTrainer.Count > 0
+    End Sub
+
+    Private Sub HandleExportXlTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ExportService.ExportTrainer()
     End Sub
 
     Private Sub HandleImportTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)

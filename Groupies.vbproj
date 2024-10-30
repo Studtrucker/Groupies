@@ -162,6 +162,7 @@
     <Compile Include="Entities\GruppeCollection.vb" />
     <Compile Include="Entities\FaehigkeitCollection.vb" />
     <Compile Include="Entities\TrainerCollection.vb" />
+    <Compile Include="Services\ExportService.vb" />
     <Compile Include="Services\XlLeser.vb" />
     <Compile Include="Services\ExcelDataReaderService.vb" />
     <Compile Include="Services\PresetService.vb" />
@@ -169,6 +170,7 @@
     <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
       <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
     <Compile Include="UserControls\GroupView.xaml.vb">

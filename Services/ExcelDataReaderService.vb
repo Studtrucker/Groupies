@@ -19,8 +19,8 @@ Public Module ExcelDataReaderService
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
             Dim guid As Guid
-            If IsNumeric(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID"))) Then
-                Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), guid)
+            If IsNumeric(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))) Then
+                Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID")), guid)
             End If
 
             Dim Tn = New Teilnehmer With {

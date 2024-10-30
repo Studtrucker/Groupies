@@ -69,6 +69,7 @@
                 </MenuItem>
                 <MenuItem Header="Neue Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
+                <MenuItem Header="Teilnehmer exportieren" Command="{x:Static cmd:SkiclubCommands.ExportXlTeilnehmer}"/>
                 <Separator/>
                 <MenuItem Header="Trainer importieren" Command="{x:Static cmd:SkiclubCommands.ImportTrainer}">
                     <MenuItem.Icon>
@@ -77,6 +78,7 @@
                 </MenuItem>
                 <MenuItem Header="Neuer Trainer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
                 <MenuItem Header="Trainer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
+                <MenuItem Header="Trainer exportieren" Command="{x:Static cmd:SkiclubCommands.ExportXlTrainer}"/>
                 <Separator/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>

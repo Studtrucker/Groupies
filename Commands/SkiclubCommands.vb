@@ -6,20 +6,18 @@ Namespace Commands
 
         ' Neue Commands
         Public Shared ReadOnly Property TeilnehmerInGruppeEinteilen As New RoutedUICommand("Teilnehmer in Gruppe einteilen", "TeilnehmerInGruppeEinteilen", GetType(SkiclubCommands))
-
         Public Shared ReadOnly Property TeilnehmerAusGruppeEntfernen As New RoutedUICommand("Teilnehmer aus Gruppe entfernen", "TeilnehmerAusGruppeEntfernen", GetType(SkiclubCommands))
-
         Public Shared ReadOnly Property GruppeEinenTrainerZuweisen As New RoutedUICommand("Gruppe einen Trainer zuweisen", "GruppeEinenTrainerZuweisen", GetType(SkiclubCommands))
-
         Public Shared ReadOnly Property GruppentrainerEntfernen As New RoutedUICommand("Trainer aus Gruppe entfernen", "GruppentrainerEntfernen", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property ImportTeilnehmer As New RoutedUICommand("Teilnehmerliste importieren", "ImportTeilnehmer", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property ImportTrainer As New RoutedUICommand("Trainer importieren", "ImportTrainer", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property ExportXlTeilnehmer As New RoutedUICommand("Teilnehmerliste exportieren", "ExportXlTeilnehmer", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property ExportXlTrainer As New RoutedUICommand("Trainer exportieren", "ExportXlTrainer", GetType(SkiclubCommands))
 
 
         ' Alte Commands
         Public Shared ReadOnly Property ImportSkiclub As New RoutedUICommand("Skiclub importieren", "ImportSkiclub", GetType(SkiclubCommands))
 
-        Public Shared ReadOnly Property ImportTeilnehmer As New RoutedUICommand("Teilnehmerliste importieren", "ImportParticipants", GetType(SkiclubCommands))
-
-        Public Shared ReadOnly Property ImportTrainer As New RoutedUICommand("Trainer importieren", "ImportTrainer", GetType(SkiclubCommands))
 
         Public Shared ReadOnly Property BeurteileTeilnehmerlevel As New RoutedUICommand("Teilnehmer beurteilen", "BeurteileTeilnehmerlevel", GetType(SkiclubCommands))
 

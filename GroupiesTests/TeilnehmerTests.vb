@@ -11,9 +11,9 @@ Public Class TeilnehmerTests
 
         Dim Pfad As String
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xlsx"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_StubaiBearbeitet.xlsx"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xlsx"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\2024_StubaiBearbeitet.xlsx"
         End If
 
 

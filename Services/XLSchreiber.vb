@@ -32,7 +32,7 @@ Public Class XLSchreiber
         oSheet.Name = Benennungen.Tabelle
 
         Dim c = 1, r = 1
-        For Each Spalte In Benennungen.Spalten.OrderBy(Function(t) t)
+        For Each Spalte In Benennungen.Spalten
             oSheet.Columns(c).rows(1).value = Spalte
             c += 1
         Next
@@ -41,24 +41,25 @@ Public Class XLSchreiber
         If Benennungen.Tabelle = "Trainer" Then
 
             AppController.CurrentClub.AlleTrainer.ToList.ForEach(Sub(Tn)
-                                                                     oSheet.Columns(2).Rows(r).value = Tn.TrainerID.ToString
-                                                                     oSheet.Columns(3).Rows(r).value = Tn.Vorname
-                                                                     oSheet.Columns(1).Rows(r).value = Tn.Nachname
+                                                                     oSheet.Columns(1).Rows(r).value = Tn.TrainerID.ToString
+                                                                     oSheet.Columns(2).Rows(r).value = Tn.Vorname
+                                                                     oSheet.Columns(3).Rows(r).value = Tn.Nachname
                                                                      r += 1
                                                                  End Sub)
 
         Else
 
             AppController.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn)
-                                                                        oSheet.Columns(2).Rows(r).value = Tn.TeilnehmerID.ToString
-                                                                        oSheet.Columns(3).Rows(r).value = Tn.Vorname
-                                                                        oSheet.Columns(1).Rows(r).value = Tn.Nachname
+                                                                        oSheet.Columns(1).Rows(r).value = Tn.TeilnehmerID.ToString
+                                                                        oSheet.Columns(2).Rows(r).value = Tn.Vorname
+                                                                        oSheet.Columns(3).Rows(r).value = Tn.Nachname
                                                                         r += 1
                                                                     End Sub)
         End If
 
-        oBook.SaveAs($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\{Year(Now)}{Month(Now)}{Day(Now)}{Hour(Now)}{Minute(Now)}{Second(Now)}{Benennungen.Tabelle}.xlsx")
-        'oExcel.Quit
+        oSheet.Columns("A:C").EntireColumn.AutoFit
+        oSheet.Columns("A:C").Rows(1).Font.Bold = True
+
     End Sub
 
 End Class

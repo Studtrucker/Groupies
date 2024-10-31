@@ -101,17 +101,5 @@ Namespace Entities
 
 #End Region
 
-#Region "Veraltert"
-        <Obsolete>
-        Public Sub New(SaveMe As Boolean)
-            _LeistungsstufeID = Guid.NewGuid()
-            _Faehigkeiten = New FaehigkeitCollection
-            SaveOrDisplay = SaveMe
-        End Sub
-
-
-        <Obsolete>
-        Property SaveOrDisplay As Boolean
-#End Region
     End Class
 End Namespace

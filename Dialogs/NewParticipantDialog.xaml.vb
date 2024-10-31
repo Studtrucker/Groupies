@@ -2,6 +2,7 @@
 Imports System.ComponentModel
 Imports DS = Groupies.Services
 Imports Groupies.Commands
+Imports Groupies.Controller
 
 Public Class NewParticipantDialog
     Public ReadOnly Property Teilnehmer() As Teilnehmer
@@ -17,11 +18,10 @@ Public Class NewParticipantDialog
         _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
-        _levelListCollectionView = New CollectionView(DS.Club.Leistungsstufenliste)
-        _instructorListCollectionView = New CollectionView(DS.Club.Gruppenliste)
+        _levelListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste)
+        _instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
 
         ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
-        'MemberOfGroupComboBox.ItemsSource = _instructorListCollectionView
 
     End Sub
 

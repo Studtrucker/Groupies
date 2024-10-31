@@ -16,7 +16,7 @@
             <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
                    Style="{StaticResource WindowImageCaption}" />
             <TextBlock Height="Auto" Text="Neuer Teilnehmer"
-                       Style="{StaticResource WindowCaption}" />
+                       Style="{StaticResource SmallCaption}" />
         </DockPanel>
 
         <!-- OK- und Cancel-Button -->
@@ -49,32 +49,21 @@
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
+            <Label Content="Nachname" Grid.Column="1" Grid.Row="2"/>
+            <Label Content="Persönliches Leistungsstufe" Grid.Column="1" Grid.Row="3"/>
+
             <TextBox x:Name="FirstNameField" Grid.Column="2" Grid.Row="1" 
-                     Text="{Binding ParticipantFirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
-
-            <Label Content="Name" Grid.Column="1" Grid.Row="2"/>
+                     Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
             <TextBox Grid.Column="2" Grid.Row="2"
-                Text="{Binding ParticipantLastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
+            <ComboBox Grid.Column="2" Grid.Row="3"     
+                        IsSynchronizedWithCurrentItem="True"
+                        SelectedValuePath="Benennung"
+                        SelectedItem="{Binding Path=Leistungsstand, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding Path=Leistungsstand, UpdateSourceTrigger=PropertyChanged}"
+                        Name="ParticipantLevelComboBox" />
 
-            <Label Content="Persönliches Level" Grid.Column="1" Grid.Row="3"/>
-            <StackPanel Grid.Column="2" Grid.Row="3">
-
-            <ComboBox Grid.Column="2" Grid.Row="3"
-                      x:Name="ParticipantLevelComboBox" 
-                      DisplayMemberPath="LevelNaming"
-                      SelectedItem="{Binding ParticipantLevel, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-
-            <!--<Label Content="Skikursgruppe" Grid.Column="1" Grid.Row="4"/>
-            <StackPanel Grid.Column="2" Grid.Row="4">
-
-            --><!--<ComboBox Grid.Column="2" Grid.Row="4"
-                      x:Name="MemberOfGroupComboBox" 
-                      DisplayMemberPath="GroupNaming"                   
-                      SelectedItem="{Binding MemberOfGroup, UpdateSourceTrigger=PropertyChanged}"/>--><!--
-            </StackPanel>-->
         </Grid>
         
     </DockPanel>

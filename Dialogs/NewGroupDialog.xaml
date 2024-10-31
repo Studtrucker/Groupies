@@ -14,8 +14,8 @@
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
                    Style="{StaticResource WindowImageCaption}" />
-            <TextBlock Height="Auto" Text="Neue Skikursgruppe"
-                       Style="{StaticResource WindowCaption}" />
+            <TextBlock Height="Auto" Text="Neue Gruppe"
+                       Style="{StaticResource SmallCaption}" />
         </DockPanel>
 
         <!-- OK- und Cancel-Button -->
@@ -46,13 +46,13 @@
 
             <!--Labels-->
             <Label Grid.Column="1" Grid.Row="1">
-                <TextBlock Style="{StaticResource RequiredField}">Print Benennung
+                <TextBlock Style="{StaticResource RequiredField}">Benennung für die Teilnehmerinfo
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
             
             <Label Grid.Column="1" Grid.Row="2">
-                <TextBlock Style="{StaticResource RequiredField}">Benennung
+                <TextBlock Style="{StaticResource RequiredField}">Interne Benennung
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
@@ -63,32 +63,26 @@
                 </TextBlock>
             </Label>
             
-            <Label Content="Level" 
+            <Label Content="Leistungsstufe" 
                    Grid.Column="1" Grid.Row="4"/>
             
-            <!--<Label Content="Skilehrer" 
-                   Grid.Column="1" Grid.Row="5"/>-->
-
             
             <!--Felder-->
-            <TextBox Text="{Binding GroupPrintNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="GroupPrintNameField" Grid.Column="2" Grid.Row="1"/>
+            <TextBox Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="Ausgabename" Grid.Column="2" Grid.Row="1"/>
 
-            <TextBox Text="{Binding GroupNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                     x:Name="GroupNamingTextBox" Grid.Column="2" Grid.Row="2" />
-            
-            <TextBox Text="{Binding GroupSort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="GroupSort" Grid.Column="2" Grid.Row="3"/>
+            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     x:Name="Benennung" Grid.Column="2" Grid.Row="2" />
 
-            <ComboBox Grid.Column="2" Grid.Row="4"
-                      x:Name="GroupLevelCombobox" 
-                      DisplayMemberPath="LevelNaming"
-                      SelectedItem="{Binding Path=GroupLevel, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="Sortierung" Grid.Column="2" Grid.Row="3"/>
 
-            <!--<ComboBox Grid.Column="2" Grid.Row="5"
-                      x:Name="GroupLeaderCombobox" 
-                      DisplayMemberPath="InstructorFullName"
-                      SelectedItem="{Binding Path=GroupLeader, UpdateSourceTrigger=PropertyChanged}" />-->
+            <ComboBox Grid.Column="2" Grid.Row="4"     
+                        IsSynchronizedWithCurrentItem="True"
+                        SelectedValuePath="Benennung"
+                        SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                        Name="GroupLevelCombobox" />
 
         </Grid>
     </DockPanel>

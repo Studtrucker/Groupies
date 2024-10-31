@@ -19,8 +19,8 @@
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
-                    />
-            <!--Style="{StaticResource SmallCaption}"-->
+            Style="{StaticResource WindowImageCaption}" />
+
             <TextBlock Height="Auto" Text="Neuer Übungsleiter"
                        Style="{StaticResource SmallCaption}" />
         </DockPanel>
@@ -73,19 +73,20 @@
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1"
-                Text="{Binding InstructorPrintName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Grid.Column="2" Grid.Row="2">
                 <TextBlock Style="{StaticResource RequiredField}">Vorname
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox Grid.Column="3" Grid.Row="2"
-                Text="{Binding InstructorFirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
-            <TextBox Grid.Column="3" Grid.Row="3"
-                Text="{Binding InstructorLastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
+
+            <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1"
+                Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Grid.Column="3" Grid.Row="2"
+                Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox Grid.Column="3" Grid.Row="3"
+                Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <TextBox Grid.Column="3" Grid.Row="4"
                 Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             

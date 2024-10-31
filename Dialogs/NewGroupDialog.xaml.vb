@@ -29,7 +29,7 @@ Public Class NewGroupDialog
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
 
-        GroupPrintNameField.Focus()
+        Ausgabename.Focus()
 
     End Sub
 

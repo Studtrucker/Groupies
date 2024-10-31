@@ -29,9 +29,9 @@ Namespace Commands
 
         Public Shared ReadOnly Property TeilnehmerLoeschen As New RoutedUICommand("Teilnehmer löschen", "TeilnehmerLoeschen", GetType(SkiclubCommands))
 
-        Public Shared ReadOnly Property NeuerUebungsleiter As New RoutedUICommand("Skilehrer hinzufügen", "NeuerUebungsleiter", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property NeuerTrainer As New RoutedUICommand("Trainer hinzufügen", "NeuerTrainer", GetType(SkiclubCommands))
 
-        Public Shared ReadOnly Property UebungsleiterLoeschen As New RoutedUICommand("Skilehrer löschen", "UebungsleiterLoeschen", GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TrainerLoeschen As New RoutedUICommand("Trainer löschen", "TrainerLoeschen", GetType(SkiclubCommands))
 
         Public Shared ReadOnly Property NeuesLevel As New RoutedUICommand("Level hinzufügen", "NeuesLevel", GetType(SkiclubCommands))
 

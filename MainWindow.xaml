@@ -36,11 +36,11 @@
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Club importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
+                <!--<MenuItem Header="Club importieren..." Command="{x:Static cmd:SkiclubCommands.ImportSkiclub}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
                 <Separator/>
                 <MenuItem Header="Club _speichern" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
@@ -67,7 +67,7 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neue Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <MenuItem Header="Teilnehmer exportieren" Command="{x:Static cmd:SkiclubCommands.ExportXlTeilnehmer}"/>
                 <Separator/>
@@ -76,8 +76,8 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Trainer" Command="{x:Static cmd:SkiclubCommands.NeuerUebungsleiter}"/>
-                <MenuItem Header="Trainer löschen" Command="{x:Static cmd:SkiclubCommands.UebungsleiterLoeschen}"/>
+                <MenuItem Header="Neuer Trainer" Command="{x:Static cmd:SkiclubCommands.NeuerTrainer}"/>
+                <MenuItem Header="Trainer löschen" Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
                 <MenuItem Header="Trainer exportieren" Command="{x:Static cmd:SkiclubCommands.ExportXlTrainer}"/>
                 <Separator/>
                 <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>

@@ -1,143 +1,79 @@
-﻿Imports System.Reflection
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.IO
-Imports System.IO.Compression
+Imports System.IO.IsolatedStorage
+Imports System.Reflection
+Imports System.Windows.Markup
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
-Imports System.IO.IsolatedStorage
-Imports System.Windows.Media.Animation
-Imports System.Windows.Controls.Primitives
-Imports System.Text
-Imports System.Windows.Markup
-Imports System.Linq
-Imports System.Collections.Generic
-Imports System.Collections.ObjectModel
-Imports Microsoft.Win32
-Imports Microsoft.Office.Core
-Imports Groupies.UserControls
-Imports Groupies.Services
-Imports Groupies.Entities
 Imports Groupies.Commands
+Imports Groupies.Entities
 Imports Groupies.Interfaces
-Imports Groupies.Controller.AppController
+Imports Groupies.Services
+Imports Groupies.UserControls
+Imports Microsoft.Win32
+Imports AppCon = Groupies.Controller.AppController
 
-Class MainWindow
+Public Class MainWindow
 
 #Region "Fields"
 
-    'Private _Skiclub As Entities.Skiclub
-
-    Private ReadOnly _dummySpalteFuerLayerTeilnehmerDetails As ColumnDefinition
-    Private ReadOnly _dummySpalteFuerLayerSkikurslisteDetails As ColumnDefinition
-    Private ReadOnly _dummySpalteFuerLayerUebungsleiterDetails As ColumnDefinition
-    Private ReadOnly _dummySpalteFuerLayerLevelDetails As ColumnDefinition
-
-    Private _teilnehmerListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _skikursListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _uebungsleiterListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _levelListCollectionView As ICollectionView '... DataContext für das MainWindow
-    Private _groupLevelListCollectionView As ICollectionView
-    Private _groupLeaderListCollectionView As ICollectionView
-    Private _participantLevelListCollectionView As ICollectionView
-    Private _participantMemberOfGroupListCollectionView As ICollectionView
-    Private _participantsToDistributeListCollectionView As ICollectionView
-    Private _participantsInGroupMemberListCollectionView As ICollectionView
-    Private _participantListOverviewCollectionView As ICollectionView
-
-    Private _skischuleListFile As FileInfo
-    Private _mRUSortedList As SortedList(Of Integer, String)
-
-    Private _schalterLayerDetails As Grid
-    Private _schalterBtnShowEplorer As Button
-    Private _schalterPinImage As Image
-    Private _schalterLayerListe As Grid
-    Private _schalterLayerListeTransform As TranslateTransform
-    Private _schalterDummySpalteFuerLayerDetails As ColumnDefinition
-    Private _schalterBtnPinit As ToggleButton
+    Private _participantListCollectionView As ICollectionView
+    Private _groupListCollectionView As ICollectionView
+    Private _instructorListCollectionView As ICollectionView
+    Private _groupiesFile As FileInfo
+    Private _mRuSortedList As SortedList(Of Integer, String)
 
 #End Region
 
 #Region "Constructor"
 
-    Public Sub New()
+    Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        '_Skiclub = CDS.Skiclubs
-
-
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        ' Spalte initialisieren und in dieselbe Gruppe setzen,
-        ' wie die Spalte mit dem Freunde Explorer im
-        ' layer1-Grid
-        _dummySpalteFuerLayerTeilnehmerDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinTeilnehmerSpalte"}
-        _dummySpalteFuerLayerSkikurslisteDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinSkikursgruppenSpalte"}
-        _dummySpalteFuerLayerUebungsleiterDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinUebungsleiterSpalte"}
-        _dummySpalteFuerLayerLevelDetails = New ColumnDefinition() With {.SharedSizeGroup = "pinLevelSpalte"}
-
-        ' das Grid gleich zu Beginn pinnen
-
-        tabitemSkikursuebersicht.Visibility = Visibility.Visible
-        'OverviewTabItem_GotFocus(Me, New RoutedEventArgs())
-
-        layerTeilnehmerliste.Visibility = Visibility.Visible
-        layerLevelliste.Visibility = Visibility.Visible
-        layerSkikursdetails.Visibility = Visibility.Visible
-        layerSkilehrerdetails.Visibility = Visibility.Visible
-
-        _participantListOverviewCollectionView = New ListCollectionView(New TeilnehmerCollection)
-        AddHandler _participantListOverviewCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _teilnehmerListCollectionView = New ListCollectionView(New TeilnehmerCollection())
-        AddHandler _teilnehmerListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _skikursListCollectionView = New ListCollectionView(New GruppeCollection())
-        AddHandler _skikursListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _uebungsleiterListCollectionView = New ListCollectionView(New TrainerCollection())
-        AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-        _levelListCollectionView = New ListCollectionView(New LeistungsstufeCollection())
-        AddHandler _uebungsleiterListCollectionView.CurrentChanged, New EventHandler(AddressOf _listCollectionView_CurrentChanged)
-
-        _participantsToDistributeListCollectionView = New ListCollectionView(New TeilnehmerCollection())
-        _participantsInGroupMemberListCollectionView = New ListCollectionView(New TeilnehmerCollection())
+        ' DataContext Window
+        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
+        ' DataContext participantDataGrid
+        _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
+        ' DataContext groupleaderDataGrid
+        _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
 
 #End Region
 
 #Region "Window-Events"
-
-    Private Sub HandleMainWindowLoaded(sender As Object, e As RoutedEventArgs)
-
-        ' 0. Zur InputBindings ein MouseBinding hinzufügen. Nur als Beispiel,
-        '    um mit Strg und Doppelklick eine neue Liste anlegen zu können
-        Dim mg = New MouseGesture(MouseAction.LeftDoubleClick, ModifierKeys.Control)
-        Dim m = New MouseBinding(ApplicationCommands.[New], mg)
-        InputBindings.Add(m)
-
+    Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs)
 
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf HandleNewExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleListOpenExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleListSaveExecuted, AddressOf HandleListSaveCanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleListSaveAsExecuted, AddressOf HandleListSaveCanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleListPrintExecuted, AddressOf HandleListPrintCanExecute))
-        'CommandBindings.Add(New CommandBinding(ApplicationCommands.Help, AddressOf HandleHelpExecuted))
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.BeurteileTeilnehmerlevel, AddressOf HandleBeurteileTeilnehmerkoennenExecuted, AddressOf HandleBeurteileTeilnehmerkoennenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTeilnehmer, AddressOf HandleNewParticipantExecuted, AddressOf HandleNewParticipantCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen, AddressOf HandleTeilnehmerLoeschenExecuted, AddressOf HandleTeilnehmerLoeschenCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNeuerUebungsleiterExecuted, AddressOf HandleNeuerUebungsleiterCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.UebungsleiterLoeschen, AddressOf HandleUebungsleiterLoeschenExecuted, AddressOf HandleUebungsleiterLoeschenCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeueGruppe, AddressOf HandleNeueSkikursgruppeExecuted, AddressOf HandleNeueSkikursgruppeCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeLoeschen, AddressOf HandleSkikursgruppeLoeschenExecuted, AddressOf HandleSkikursgruppeLoeschenCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuesLevel, AddressOf HandleNeuesLevelExecuted, AddressOf HandleNeuesLevelCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.LevelLoeschen, AddressOf HandleLevelLoeschenExecuted, AddressOf HandleLevelLoeschenCanExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf HandleNewExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleClubOpenExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleClubSaveExecuted, AddressOf HandleClubSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleClubSaveAsExecuted, AddressOf HandleClubSaveCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
+
+        ' Neue Version
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf Handle_TeilnehmerInGruppeEinteilen_Execute, AddressOf Handle_TeilnehmerInGruppeEinteilen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeEinenTrainerZuweisen, AddressOf Handle_GruppeEinenTrainerZuweisen_Execute, AddressOf Handle_GruppeEinenTrainerZuweisen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppentrainerEntfernen, AddressOf Handle_GruppentrainerEntfernen_Execute, AddressOf Handle_GruppentrainerEntfernen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportTeilnehmerExecute, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportTrainerExecute, AddressOf HandleImportTrainerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTeilnehmer, AddressOf HandleExportXlTeilnehmerExecute, AddressOf HandleExportXlTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTrainer, AddressOf HandleExportXlTrainerExecute, AddressOf HandleExportXlTrainerCanExecute))
+
+
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNewInstructorExecuted, AddressOf HandleNewInstructorCanExecuted))
+
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-        _mRUSortedList = New SortedList(Of Integer, String)
+        _mRuSortedList = New SortedList(Of Integer, String)
 
         ' 3. SortedList für meist genutzte Skischulen befüllen
         LoadmRUSortedListMenu()
@@ -148,20 +84,12 @@ Class MainWindow
             Dim filename = args(1)
             OpenSkischule(filename)
         Else
-            loadLastSkischule()
-
+            LoadLastSkischule()
         End If
 
-        If CurrentClub IsNot Nothing Then
-            SetView(CurrentClub)
-        End If
 
-        ' 5. JumpList in Windows Taskbar aktualisieren
         RefreshJumpListInWinTaskbar()
 
-    End Sub
-
-    Private Sub loadLastSkischule()
 
     End Sub
 
@@ -170,26 +98,26 @@ Class MainWindow
         e.Cancel = result = MessageBoxResult.No
     End Sub
 
-    Private Sub HandleMainwindowClosed(sender As Object, e As EventArgs)
+    Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
 
         ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
-        If _skischuleListFile IsNot Nothing Then
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("LastSkischule", System.IO.FileMode.OpenOrCreate, iso)
+        If _groupiesFile IsNot Nothing Then
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        writer.WriteLine(_skischuleListFile.FullName)
+                        writer.WriteLine(_groupiesFile.FullName)
                     End Using
                 End Using
             End Using
         End If
 
         ' 2. Die meist genutzen Listen ins Isolated Storage speichern
-        If _mRUSortedList.Count > 0 Then
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.OpenOrCreate, iso)
+        If _mRuSortedList.Count > 0 Then
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("_mRUSortedList", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-                            writer.WriteLine(kvp.Key & ";" & kvp.Value)
+                        For Each kvp As KeyValuePair(Of Integer, String) In _mRuSortedList
+                            writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
                         Next
                     End Using
                 End Using
@@ -200,126 +128,51 @@ Class MainWindow
 
 #End Region
 
-#Region "Methoden zum Laden der meist genutzten Listen und der letzten Skikurse"
+#Region "Methoden zum Laden der meist genutzten Groupies und der letzten Groupies Datei"
+    Public Sub LoadmRUSortedListMenu()
+        Try
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                Using stream = New IsolatedStorageFileStream("LastGroupies", System.IO.FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        Dim i = 0
+                        While reader.Peek <> -1
+                            Dim line = reader.ReadLine().Split(";")
+                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If File.Exists(line(1)) Then
+                                    i += 1
+                                    _mRuSortedList.Add(i, line(1))
+                                End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+            RefreshMostRecentMenu()
+        Catch ex As FileNotFoundException
+            Throw ex
+        End Try
+    End Sub
 
-    'Private Sub LoadmRUSortedListMenu()
-    '    Try
-    '        Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-    '            Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
-    '                Using reader = New StreamReader(stream)
-    '                    Dim i = 0
-    '                    While reader.Peek <> -1
-    '                        Dim line = reader.ReadLine().Split(";")
-    '                        If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
-    '                            If File.Exists(line(1)) Then
-    '                                i += 1
-    '                                _mRUSortedList.Add(i, line(1))
-    '                            End If
-    '                        End If
-    '                    End While
-    '                End Using
-    '            End Using
-    '        End Using
-    '        RefreshMostRecentMenu()
-    '    Catch ex As FileNotFoundException
-    '        'Throw ex
-    '    End Try
+    Private Sub LoadLastSkischule()
+        ' Die letze Skischule aus dem IsolatedStorage holen.
+        Try
+            Dim x = ""
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        x = reader.ReadLine
+                    End Using
+                End Using
 
-    'End Sub
-
-    'Private Sub LoadLastSkischule()
-    '    ' Die letze Skischule aus dem IsolatedStorage holen.
-    '    Try
-    '        Dim x = ""
-    '        Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-    '            Using stream = New IsolatedStorageFileStream("LastSkischule", FileMode.Open, iso)
-    '                Using reader = New StreamReader(stream)
-    '                    x = reader.ReadLine
-    '                End Using
-    '            End Using
-
-    '        End Using
-    '        If File.Exists(x) Then Me.OpenSkischule(x)
-    '    Catch ex As FileNotFoundException
-    '    End Try
-    'End Sub
+            End Using
+            If File.Exists(x) Then OpenSkischule(x)
+        Catch ex As FileNotFoundException
+        End Try
+    End Sub
 
 #End Region
 
-#Region "Methoden zum Pinnen und Ein-/Ausblenden des Freunde-Explorers"
-
-    Private Sub HandleListePinning(sender As Object, e As RoutedEventArgs)
-
-        ' Pinnen
-        ' 1. ColumnDefinition zum layer0-Grid hinzufügen
-        _schalterLayerDetails.ColumnDefinitions.Add(_schalterDummySpalteFuerLayerDetails)
-        '        layerTeilnehmerdetails.ColumnDefinitions.Add(_dummySpalteFuerLayer0)
-
-        ' 2. Button "Freunde Explorer" ausblenden
-        _schalterBtnShowEplorer.Visibility = Visibility.Collapsed
-
-        ' 3. pinImage in layer1-Grid auf pinned setzen
-        _schalterPinImage.Source = New BitmapImage(New Uri("Images\icons8-pin-48.png", UriKind.Relative))
-
-    End Sub
-
-    Private Sub HandleListeUnpinning(sender As Object, e As RoutedEventArgs)
-
-        ' Unpinnen
-        ' 1. ColumnDefinition von layer0-Grid entfernen
-        _schalterLayerDetails.ColumnDefinitions.Remove(_schalterDummySpalteFuerLayerDetails)
-
-        ' 2. Button "Freunde Explorer" einblenden
-        _schalterBtnShowEplorer.Visibility = Visibility.Visible
-
-        ' 3. pinImage in layer1-Grid auf unpinned setzen
-        _schalterPinImage.Source = New BitmapImage(New Uri("Images\icons8-unpin-2-48.png", UriKind.Relative))
-
-    End Sub
-
-    Private Sub HandleButtonExpMouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' TeilnehmerDetails-Grid mit den Explorern einblenden
-        If (_schalterLayerListe.Visibility <> Visibility.Visible) Then
-
-            ' 1. Das layerDetails-Grid um die Breite der "Teilnehmer   
-            ' Explorer"-Spalte nach rechts versetzen
-            _schalterLayerListeTransform.X = _schalterLayerListe.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1-Grid sichtbar machen
-            _schalterLayerListe.Visibility = Visibility.Visible
-
-            ' 3. Die X-Property der layer1Trans vom aktuellen Wert
-            ' hin zum Wert 0 animieren, Dauer 500 Millisek
-            Dim ani = New DoubleAnimation(0, New Duration(TimeSpan.FromMilliseconds(500)))
-            _schalterLayerListeTransform.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-
-    End Sub
-
-    Private Sub HandleLayerdetailsMouseEnter(sender As Object, e As RoutedEventArgs)
-
-        ' layer1-Grid ausblenden
-        If (Not _schalterBtnPinit.IsChecked.GetValueOrDefault() AndAlso layerTeilnehmerliste.Visibility = Visibility.Visible) Then
-
-            ' 1. Zielwert für die Animation setzen
-            Dim [to] = _schalterLayerListe.ColumnDefinitions(1).Width.Value
-
-            ' 2. layer1Trans.X zum ermittelten Zielwert animieren
-            ' und EventHandler für Completed-Event installieren
-            Dim ani = New DoubleAnimation([to], New Duration(TimeSpan.FromMilliseconds(500)))
-            AddHandler ani.Completed, New EventHandler(AddressOf ani_Completed)
-            _schalterLayerListeTransform.BeginAnimation(TranslateTransform.XProperty, ani)
-
-        End If
-
-    End Sub
-
-    Sub ani_Completed(sender As Object, e As EventArgs)
-        ' 3. layer1-Grid ausblenden
-        _schalterLayerListe.Visibility = Visibility.Collapsed
-    End Sub
+#Region "Methoden zum Pinnen und Ein-/Ausblenden der Explorer"
 
 #End Region
 
@@ -328,7 +181,7 @@ Class MainWindow
     Private Sub HandleNewExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If CurrentClub IsNot Nothing Then
+        If AppCon.CurrentClub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
@@ -338,56 +191,50 @@ Class MainWindow
         End If
 
         ' Skischulobjekt löschen
-        CurrentClub = Nothing
+        AppCon.CurrentClub = Nothing
+        ' Alle DataContexte löschen
+        DataContext = Nothing
+        ParticipantDataGrid.DataContext = Nothing
+        InstuctorDataGrid.DataContext = Nothing
+
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
-        Dim NeueSkischule = New Entities.Club("Club") With {.Leistungsstufenliste = PresetService.StandardLeistungsstufenErstellen()}
-        Dim dlg = New CountOfGroupsDialog
-        If dlg.ShowDialog Then
-            NeueSkischule.Gruppenliste = PresetService.StandardGruppenErstellen(dlg.Count.Text)
-        End If
-        GroupOverviewWrapPanel.Children.Clear()
-        SetView(NeueSkischule)
 
-        If MessageBoxResult.Yes = MessageBox.Show("Auch gleich neue Teilnehmer hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
-            SkiclubCommands.NeuerTeilnehmer.Execute(Nothing, Me)
-        End If
+        AppCon.NeuenClubErstellen("Club")
 
+        setView(AppCon.CurrentClub)
 
     End Sub
 
-    Private Sub HandleListOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleClubOpenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
+            unsetView()
             OpenSkischule(dlg.FileName)
         End If
     End Sub
 
-    Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+    Private Sub HandleClubSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        If _groupiesFile Is Nothing Then
+            ApplicationCommands.SaveAs.Execute(Nothing, Me)
+        Else
+            SaveSkischule(_groupiesFile.FullName)
+        End If
     End Sub
 
-    Private Sub HandleListSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CurrentClub IsNot Nothing
+    Private Sub HandleClubSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing
     End Sub
 
-    Private Sub HandleListSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleClubSaveAsExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If _skischuleListFile IsNot Nothing Then
-            dlg.FileName = _skischuleListFile.Name
+        If _groupiesFile IsNot Nothing Then
+            dlg.FileName = _groupiesFile.Name
         End If
 
         If dlg.ShowDialog = True Then
             SaveSkischule(dlg.FileName)
-            _skischuleListFile = New FileInfo(dlg.FileName)
-        End If
-    End Sub
-
-    Private Sub HandleListSaveExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        If _skischuleListFile Is Nothing Then
-            ApplicationCommands.SaveAs.Execute(Nothing, Me)
-        Else
-            SaveSkischule(_skischuleListFile.FullName)
+            _groupiesFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
@@ -395,34 +242,11 @@ Class MainWindow
         Close()
     End Sub
 
-    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        ' Ist aktuell eine Skischuldatei geöffnet?
-        If CurrentClub IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuellen Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
-            If rs = MessageBoxResult.Yes Then
-                ApplicationCommands.Save.Execute(Nothing, Me)
-            ElseIf rs = MessageBoxResult.Cancel Then
-                Exit Sub
-            End If
-        End If
-
-        ' Skischulobjekt löschen
-        CurrentClub = Nothing
-
-        ' Neues Skischulobjekt initialisieren
-        Title = "Groupies"
-
-        Dim importSkiclub = ImportService.ImportSkiclub
-        If importSkiclub IsNot Nothing Then
-            SetView(importSkiclub)
-            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
-        End If
-
+    Private Sub HandleHelpExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException
     End Sub
 
-
-    Private Sub HandleListPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleClubPrintExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New PrintDialog()
         If dlg.ShowDialog = True Then
@@ -439,220 +263,283 @@ Class MainWindow
 
     End Sub
 
-    Private Sub HandleListPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub HandleClubPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         ' Todo: Can execute festlegen
         e.CanExecute = True '_skischule IsNot Nothing OrElse _skischule.Skikursgruppenliste IsNot Nothing OrElse _skischule.Skikursgruppenliste.Count > 0
     End Sub
 
-
-
-#Region "Level"
-
-    Private Sub HandleNeuesLevelCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CurrentClub IsNot Nothing
+    Private Sub HandleImportTeilnehmerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ImportService.ImportTeilnehmer()
     End Sub
 
-    Private Sub HandleNeuesLevelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NewLevelDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        If dlg.ShowDialog = True Then
-            CurrentClub.Leistungsstufenliste.Add(dlg.Level)
-            _levelListCollectionView.MoveCurrentTo(dlg.Level)
-            levelDataGrid.ScrollIntoView(dlg.Level)
+    Private Sub HandleImportTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.GruppenloseTeilnehmer IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ImportService.ImportTrainer()
+    End Sub
+
+    Private Sub HandleExportxlTeilnehmerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTeilnehmer.Count > 0
+    End Sub
+
+    Private Sub HandleExportXlTeilnehmerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ExportService.ExportTeilnehmer()
+    End Sub
+
+    Private Sub HandleExportxlTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTrainer.Count > 0
+    End Sub
+
+    Private Sub HandleExportXlTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ExportService.ExportTrainer()
+    End Sub
+
+    Private Sub HandleImportTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+
+        ' Ist aktuell eine Skischuldatei geöffnet?
+        If AppCon.CurrentClub IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie das aktuelle Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
+            If rs = MessageBoxResult.Yes Then
+                ApplicationCommands.Save.Execute(Nothing, Me)
+            ElseIf rs = MessageBoxResult.Cancel Then
+                Exit Sub
+            End If
         End If
-    End Sub
 
-    Private Sub HandleLevelLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemLevels.IsSelected And levelDataGrid.SelectedItems.Count > 0
-    End Sub
+        ' Skischulobjekt löschen
+        AppCon.CurrentClub = Nothing
 
-    Private Sub HandleLevelLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim i As Integer
-        Dim index(levelDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Leistungsstufe In levelDataGrid.SelectedItems
-            RemoveLevelFromSkikursgruppe(item)
-            RemoveLevelFromTeilnehmer(item)
-            index(i) = CurrentClub.Leistungsstufenliste.IndexOf(item)
-            i += 1
-        Next
+        ' Neues Skischulobjekt initialisieren
+        Title = "Groupies"
 
-        RemoveItemsAt(CurrentClub.Leistungsstufenliste, index)
-    End Sub
-
-#End Region
-
-#Region "Skikursgruppe"
-
-    Private Sub HandleNeueSkikursgruppeCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CurrentClub IsNot Nothing
-    End Sub
-
-    Private Sub HandleNeueSkikursgruppeExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        If dlg.ShowDialog = True Then
-            CurrentClub.Gruppenliste.Add(dlg.Group)
-            _skikursListCollectionView.MoveCurrentTo(dlg.Group)
-            skikurseDataGrid.ScrollIntoView(dlg.Group)
-        End If
-    End Sub
-
-    Private Sub HandleSkikursgruppeLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemSkikurse.IsSelected And skikurseDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleSkikursgruppeLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim i As Integer
-        Dim index(skikurseDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Gruppe In skikurseDataGrid.SelectedItems
-            RemoveSkikursgruppeFromTeilnehmer(item)
-            index(i) = CurrentClub.Gruppenliste.IndexOf(item)
-            i += 1
-        Next
-
-        RemoveItemsAt(CurrentClub.Gruppenliste, index)
-    End Sub
-
-#End Region
-
-#Region "Teilnehmer"
-
-    Private Sub HandleNewParticipantCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CurrentClub IsNot Nothing
-    End Sub
-
-    Private Sub HandleNewParticipantExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim dlg = New NewParticipantDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        If dlg.ShowDialog = True Then
-            CurrentClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
-            _teilnehmerListCollectionView.MoveCurrentTo(dlg.Teilnehmer)
-            teilnehmerDataGrid.ScrollIntoView(dlg.Teilnehmer)
+        Dim importSkiclub = ImportService.ImportSkiclub
+        If importSkiclub IsNot Nothing Then
+            setView(importSkiclub)
+            MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
         End If
 
     End Sub
 
-    Private Sub HandleTeilnehmerLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemTeilnehmer.IsSelected And teilnehmerDataGrid.SelectedItems.Count > 0
+    Private Sub HandleImportSkiclubCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
     End Sub
 
-    Private Sub HandleTeilnehmerLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim i As Integer
-        Dim index(teilnehmerDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Teilnehmer In teilnehmerDataGrid.SelectedItems
-            index(i) = CurrentClub.GruppenloseTeilnehmer.IndexOf(item)
-            i += 1
-        Next
-
-        RemoveItemsAt(CurrentClub.GruppenloseTeilnehmer, index)
-    End Sub
-
-    Private Sub HandleBeurteileTeilnehmerkoennenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        'Todo: Das Handle Beurteilung erstellen
-        'For Each item In BasicObjects.Koennenstufenliste
-        '    Debug.WriteLine(item.KoennenstufeID.ToString & "; " & item.Benennung & "; " & item.AngezeigteBenennung)
-        'Next
-    End Sub
-
-    Private Sub HandleBeurteileTeilnehmerkoennenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = teilnehmerDataGrid.SelectedItems.Count > 0
-    End Sub
-
-#End Region
-
-#Region "Uebungsleiter"
-
-    Private Sub HandleNeuerUebungsleiterCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = CurrentClub IsNot Nothing
-    End Sub
-
-    Private Sub HandleNeuerUebungsleiterExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleNewInstructorExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            CurrentClub.GruppenloseTrainer.Add(dlg.Instructor)
-            _uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
-            uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
+            AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Instructor)
+            '_uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
+            'uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
     End Sub
 
-    Private Sub HandleUebungsleiterLoeschenCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
+    Private Sub HandleNewInstructorCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        'e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
+        e.CanExecute = True
     End Sub
 
-    Private Sub HandleUebungsleiterLoeschenExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-        Dim i As Integer
-        Dim index(uebungsleiterDataGrid.SelectedItems.Count - 1) As Integer
-        For Each item As Trainer In uebungsleiterDataGrid.SelectedItems
-            RemoveUebungsleiterFromSkikursgruppe(item)
-            index(i) = CurrentClub.GruppenloseTrainer.IndexOf(item)
-            i += 1
-        Next
-
-        RemoveItemsAt(CurrentClub.GruppenloseTrainer, index)
+    Private Sub Handle_GruppeEinenTrainerZuweisen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
     End Sub
 
-#End Region
+    Private Sub Handle_GruppeEinenTrainerZuweisen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer.Count > 0
+    End Sub
+
+    Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_TeilnehmerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer.Count > 0
+    End Sub
+
+    Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
+        e.CanExecute = True
+    End Sub
+
+    ' Weitere Handles für die Commands
 
 #End Region
 
 #Region "Sonstige Eventhandler"
 
-    Sub _listCollectionView_CurrentChanged(sender As Object, e As EventArgs)
-        RefreshTaskBarItemOverlay()
+    ' Handles für Drag and Drop
+
+    Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
+        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+    End Sub
+
+    Sub GroupiesCollectionView_CurrentChanged(sender As Object, e As EventArgs)
+        Throw New NotImplementedException
     End Sub
 
     Private Sub RefreshTaskBarItemOverlay()
-        ' Dim currentTeilnehmer = DirectCast(_teilnehmerListCollectionView.CurrentItem, Teilnehmer)
+        Throw New NotImplementedException
+    End Sub
 
-        'Todo: Aufbereiten für die Skilehrer Bilder
-
-        'If currentTeilnehmer IsNot Nothing AndAlso currentTeilnehmer.Image IsNot Nothing Then
-        '    Dim bi As New BitmapImage
-        '    bi.BeginInit()
-        '    bi.StreamSource = New MemoryStream(currentFriend.Image)
-        '    bi.EndInit()
-        '    TaskbarItemInfo.Overlay = bi
-        'Else
-        '    TaskbarItemInfo.Overlay = Nothing
-        'End If
+    Private Sub HandleMenuOptionsClick(sender As Object, e As RoutedEventArgs)
+        Throw New NotImplementedException
     End Sub
 
 #End Region
 
 #Region "Helper-Methoden"
 
-#Region "Methoden zum Laden der meist genutzten Listen und der letzten Freundesliste"
 
-    Public Sub LoadmRUSortedListMenu()
 
-        _mRUSortedList = New SortedList(Of Integer, String)
-        Try
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("mRUSortedList", System.IO.FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        Dim i = 0
-                        While reader.Peek <> -1
-                            Dim line = reader.ReadLine().Split(";")
-                            If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRUSortedList.ContainsKey(Integer.Parse(line(0))) Then
-                                If File.Exists(line(1)) Then
-                                    i += 1
-                                    _mRUSortedList.Add(i, line(1))
-                                End If
-                            End If
-                        End While
-                    End Using
-                End Using
-            End Using
-            RefreshMostRecentMenu()
-        Catch ex As FileNotFoundException
-            Throw ex
-        End Try
+    Private Sub OpenSkischule(fileName As String)
+
+        If _groupiesFile IsNot Nothing AndAlso fileName.Equals(_groupiesFile.FullName) Then
+            MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
+            Exit Sub
+        End If
+
+        If Not File.Exists(fileName) Then
+            MessageBox.Show("Die Datei existiert nicht")
+            Exit Sub
+        End If
+
+        Dim loadedClub = OpenXML(fileName)
+        Dim loadedSkiclub = New Veraltert.Skiclub
+        If loadedClub Is Nothing Then
+            loadedSkiclub = OpenAltesXML(fileName)
+            If loadedSkiclub Is Nothing Then
+                Exit Sub
+            End If
+        End If
+
+        _groupiesFile = New FileInfo(fileName)
+        QueueMostRecentFilename(fileName)
+
+        AppCon.CurrentClub = Nothing
+
+        ' Eintrag in CurrentDataService
+        If loadedClub Is Nothing Then
+            AppCon.CurrentClub = MapSkiClub2Club(loadedSkiclub)
+        Else
+            AppCon.CurrentClub = loadedClub
+        End If
+
+        setView(AppCon.CurrentClub)
+
+        Title = "Groupies - " & fileName
+
+    End Sub
+
+    Private Function OpenAltesXML(fileName As String) As Veraltert.Skiclub
+
+        Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
+        Dim loadedSkiclub As Veraltert.Skiclub = Nothing
+
+        ' Datei deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Try
+                loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
+            Catch ex As InvalidOperationException
+                Return Nothing
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Return Nothing
+            End Try
+        End Using
+        Return loadedSkiclub
+
+    End Function
+
+    Private Function OpenXML(fileName As String) As Club
+
+        Dim serializer = New XmlSerializer(GetType(Club))
+        Dim loadedClub As Club = Nothing
+
+        ' Datei deserialisieren
+        Using fs = New FileStream(fileName, FileMode.Open)
+            Try
+                ' Todo: Doppelte Teilnehmer und Skilehrer - siehe Mapping altes Format!
+                loadedClub = TryCast(serializer.Deserialize(fs), Club)
+            Catch ex As InvalidOperationException
+                Return Nothing
+            Catch ex As InvalidDataException
+                MessageBox.Show("Datei ungültig: " & ex.Message)
+                Return Nothing
+            End Try
+        End Using
+        Return loadedClub
+    End Function
+
+
+    Private Sub SaveSkischule(fileName As String)
+        ' Ewige Liste schreiben
+
+        'AppCon.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) AppCon.CurrentClub.EwigeTeilnehmerliste.Add(Tn, Now.Date))
+
+        ' 1. Skischule serialisieren und gezippt abspeichern
+        SaveXML(fileName)
+        'SaveZIP(fileName)
+        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+        Title = "Groupies - " & fileName
+        QueueMostRecentFilename(fileName)
+        MessageBox.Show("Groupies gespeichert!")
+    End Sub
+
+    Private Sub SaveXML(fileName As String)
+        Dim serializer = New XmlSerializer(GetType(Entities.Club))
+        Using fs = New FileStream(fileName, FileMode.Create)
+            serializer.Serialize(fs, AppCon.CurrentClub)
+        End Using
+    End Sub
+
+    Private Sub QueueMostRecentFilename(fileName As String)
+
+        Dim max As Integer = 0
+        For Each i In _mRuSortedList.Keys
+            If i > max Then max = i
+        Next
+
+        Dim keysToRemove As List(Of Integer) = New List(Of Integer)()
+        For Each kvp In _mRuSortedList
+            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
+        Next
+        For Each i In keysToRemove
+            _mRuSortedList.Remove(i)
+        Next
+
+        _mRuSortedList.Add(max + 1, fileName)
+
+        If _mRuSortedList.Count > 5 Then
+            Dim min = Integer.MaxValue
+            For Each i In _mRuSortedList.Keys
+                If i < min Then min = i
+            Next
+
+            _mRuSortedList.Remove(min)
+        End If
+
+        RefreshMostRecentMenu()
     End Sub
 
     Private Sub RefreshMostRecentMenu()
-
         mostrecentlyUsedMenuItem.Items.Clear()
 
         RefreshMenuInApplication()
@@ -660,8 +547,10 @@ Class MainWindow
     End Sub
 
     Private Sub RefreshMenuInApplication()
-        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi As MenuItem = New MenuItem With {.Header = _mRUSortedList.Values(i)}
+
+        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            Dim mi As MenuItem = New MenuItem()
+            mi.Header = _mRuSortedList.Values(i)
             AddHandler mi.Click, AddressOf HandleMostRecentClick
             mostrecentlyUsedMenuItem.Items.Add(mi)
         Next
@@ -672,171 +561,23 @@ Class MainWindow
         End If
     End Sub
 
-#End Region
-
-
-    Private Sub AddLevelToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Level As Leistungsstufe)
-        Teilnehmerliste.ToList.ForEach(Sub(x) x.Leistungsstand = Level)
-    End Sub
-
-    Private Sub AddLevelToSkikursgruppe(Skikursgruppenliste As GruppeCollection, Level As Leistungsstufe)
-        Skikursgruppenliste.ToList.ForEach(Sub(x) x.Leistungsstufe = Level)
-    End Sub
-
-    Private Sub AddUebungsleiterToSkikursgruppe(Skikursgruppe As Gruppe, Uebungsleiter As Trainer)
-        Skikursgruppe.Trainer = Uebungsleiter
-    End Sub
-
-    Private Sub AddSkikursgruppeToTeilnehmer(Teilnehmerliste As TeilnehmerCollection, Skikursgruppe As Gruppe)
-        ' Todo: Zuweisung umschreiben
-        'Teilnehmerliste.ToList.ForEach(Sub(x) x.MemberOfGroup = Skikursgruppe.GruppenID)
-    End Sub
-
-    Private Sub RemoveLevelFromTeilnehmer(level As Leistungsstufe)
-        Dim liste = CurrentClub.GruppenloseTeilnehmer.TakeWhile(Function(x) x.Leistungsstand.LeistungsstufeID = level.LeistungsstufeID)
-        liste.ToList.ForEach(Sub(x) x.Leistungsstand = Nothing)
-    End Sub
-
-    Private Sub RemoveLevelFromSkikursgruppe(level As Leistungsstufe)
-        Dim liste = CurrentClub.Gruppenliste.TakeWhile(Function(x) x.Leistungsstufe Is level)
-        liste.ToList.ForEach(Sub(x) x.Leistungsstufe = Nothing)
-    End Sub
-
-    Private Sub RemoveUebungsleiterFromSkikursgruppe(Uebungsleiter As Trainer)
-        Dim liste = CurrentClub.Gruppenliste.TakeWhile(Function(x) x.Trainer Is Uebungsleiter)
-        liste.ToList.ForEach(Sub(x) x.Trainer = Nothing)
-    End Sub
-
-    Private Sub RemoveSkikursgruppeFromTeilnehmer(Skikursgruppe As Gruppe)
-        'Dim liste = CDS.Club.Teilnehmerliste.TakeWhile(Function(x) x.MemberOfGroup.Equals(Skikursgruppe.GruppenID))
-        'liste.ToList.ForEach(Sub(x) x.MemberOfGroup = Nothing)
-    End Sub
-
-    Private Sub RemoveItemsAt(source As IList, ParamArray itemIndices As Integer())
-        If source Is Nothing Then Throw New ArgumentNullException("Source")
-        If itemIndices Is Nothing Then Throw New ArgumentNullException("itemIndices")
-        For Each itemIndex In itemIndices.OrderByDescending(Function(x) x)
-            source.RemoveAt(itemIndex)
-        Next
-    End Sub
-
-    Private Sub OpenSkischule(fileName As String)
-
-        'OpenSkischule(fileName)
-
-        _skischuleListFile = New FileInfo(fileName)
-        QueueMostRecentFilename(fileName)
-        SetView(Services.Club)
-        Title = "Groupies - " & fileName
-
-    End Sub
-
-    Public Sub QueueMostRecentFilename(fileName As String)
-
-        Dim max As Integer = 0
-        For Each i In _mRUSortedList.Keys
-            If i > max Then max = i
-        Next
-
-        Dim keysToRemove = New List(Of Integer)
-        For Each kvp As KeyValuePair(Of Integer, String) In _mRUSortedList
-            If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-        Next
-
-        For Each i As Integer In keysToRemove
-            _mRUSortedList.Remove(i)
-        Next
-
-        _mRUSortedList.Add(max + 1, fileName)
-
-        If _mRUSortedList.Count > 5 Then
-            Dim min As Integer = Integer.MaxValue
-            For Each i As Integer In _mRUSortedList.Keys
-                If i < min Then min = i
-            Next
-            _mRUSortedList.Remove(min)
-        End If
-
-        RefreshMostRecentMenu()
-
-    End Sub
-
-    Private Function OpenXML(fileName As String) As Entities.Club
-        Dim serializer = New XmlSerializer(GetType(Entities.Club))
-        Dim loadedSkiclub As Entities.Club = Nothing
-
-        ' Datei deserialisieren
-        Using fs = New FileStream(fileName, FileMode.Open)
-            Try
-                loadedSkiclub = TryCast(serializer.Deserialize(fs), Entities.Club)
-            Catch ex As InvalidDataException
-                MessageBox.Show("Datei ungültig: " & ex.Message)
-                Return Nothing
-            End Try
-        End Using
-        Return loadedSkiclub
-    End Function
-
-    Private Function OpenZIP(fileName As String) As Entities.Club
-        Dim serializer = New XmlSerializer(GetType(Entities.Club))
-        Dim loadedSkischule As Entities.Club = Nothing
-
-        ' Datei entzippen und deserialisieren
-        Using fs = New FileStream(fileName, FileMode.Open)
-            Using zipStream = New GZipStream(fs, CompressionMode.Decompress)
-                Try
-                    loadedSkischule = TryCast(serializer.Deserialize(zipStream), Entities.Club)
-                Catch ex As InvalidDataException
-                    MessageBox.Show("Datei ungültig: " & ex.Message)
-                    Return Nothing
-                End Try
-            End Using
-        End Using
-        Return loadedSkischule
-    End Function
-
-
-    Private Sub SaveSkischule(fileName As String)
-        ' 1. Skischule serialisieren und gezippt abspeichern
-        SaveXML(fileName)
-        'SaveZIP(fileName)
-        ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Groupies - " & fileName
-        QueueMostRecentFilename(fileName)
-        MessageBox.Show("Groupies gespeichert!")
-    End Sub
-
-    Private Sub SaveZIP(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Club))
-        Using fs = New FileStream(fileName, FileMode.Create)
-            Using zipStream = New GZipStream(fs, CompressionMode.Compress)
-                serializer.Serialize(zipStream, CurrentClub)
-            End Using
-        End Using
-    End Sub
-
-    Private Sub SaveXML(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Club))
-        Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, CurrentClub)
-        End Using
-    End Sub
-
-
     Private Sub RefreshJumpListInWinTaskbar()
-
+        'JumpList Klasse
+        'Stellt eine Liste von Elementen und Aufgaben dar, die auf einer Windows 7-Taskleistenschaltfläche als Menü angezeigt werden.
         Dim jumplist = New JumpList With {
-            .ShowFrequentCategory = False,
-            .ShowRecentCategory = False}
+                .ShowFrequentCategory = False,
+                .ShowRecentCategory = False}
 
+        'JumpTask Klasse
+        'Stellt eine Verknüpfung zu einer Anwendung in der Taskleisten-Sprungliste unter Windows 7 dar.
         Dim jumptask = New JumpTask With {
-            .CustomCategory = "Release Notes",
-            .Title = "SkikursReleaseNotes",
-            .Description = "Zeigt die ReleaseNotes zu Skikurse an",
-            .ApplicationPath = "C:\Windows\notepad.exe",
-            .IconResourcePath = "C:\Windows\notepad.exe",
-            .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            .Arguments = "SkikursReleaseNotes.txt"}
+                .CustomCategory = "Release Notes",
+                .Title = "SkikursReleaseNotes",
+                .Description = "Zeigt die ReleaseNotes zu Skikurse an",
+                .ApplicationPath = "C:\Windows\notepad.exe",
+                .IconResourcePath = "C:\Windows\notepad.exe",
+                .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                .Arguments = "SkikursReleaseNotes.txt"}
 
         jumplist.JumpItems.Add(jumptask)
 
@@ -844,10 +585,10 @@ Class MainWindow
         ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-        For i = _mRUSortedList.Values.Count - 1 To 0 Step -1
+        For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
             Dim jumpPath = New JumpPath With {
-                .CustomCategory = "Zuletzt geöffnet",
-                .Path = _mRUSortedList.Values(i)}
+                    .CustomCategory = "Zuletzt geöffnet",
+                    .Path = _mRuSortedList.Values(i)}
 
             jumplist.JumpItems.Add(jumpPath)
         Next
@@ -856,153 +597,57 @@ Class MainWindow
 
     End Sub
 
-    Private Sub SetView(Schule As Entities.Club)
+    Private Sub setView(Skikursliste As Club)
 
-        CurrentClub = Schule
+        ' Hier wird der DataContext gesetzt!
 
-        If CurrentClub IsNot Nothing Then
-            _groupLevelListCollectionView = New ListCollectionView(CurrentClub.Leistungsstufenliste)
-            _groupLeaderListCollectionView = New ListCollectionView(CurrentClub.GruppenloseTrainer)
-            _participantMemberOfGroupListCollectionView = New ListCollectionView(CurrentClub.Gruppenliste)
-            _participantLevelListCollectionView = New ListCollectionView(CurrentClub.Leistungsstufenliste)
-        End If
-
-        If _participantLevelListCollectionView.CanSort Then
-            _participantLevelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-        End If
-
-        GroupLevelComboBox.ItemsSource = _groupLevelListCollectionView
-        GroupLeaderCombobox.ItemsSource = _groupLeaderListCollectionView
-        ParticipantLevelComboBox.ItemsSource = _participantLevelListCollectionView
-        CurrentClub.Gruppenliste.GruppeGeordnet.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
-
-        setView(CurrentClub.Gruppenliste)
-        SetView(CurrentClub.GruppenloseTeilnehmer)
-        SetView(CurrentClub.GruppenloseTrainer)
-        SetView(CurrentClub.Leistungsstufenliste)
-
-    End Sub
-
-    Private Sub setView(Skikursliste As GruppeCollection)
+        unsetView()
 
         ' Neue ListCollectionView laden
-        _participantListOverviewCollectionView = New ListCollectionView(CurrentClub.GruppenloseTeilnehmer)
-        ' ListCollectionView nach Teilnehmer in Gruppen filtern
-        If _participantListOverviewCollectionView.CanFilter Then
-            '_participantListOverviewCollectionView.Filter = Function(x As Teilnehmer) x.IstGruppenmitglied = False
+        _groupListCollectionView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste.ToList)
+        If _groupListCollectionView.CanSort Then
+            _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If
+        DataContext = _groupListCollectionView
 
-        ' ListCollectionView sortieren
-        If _participantListOverviewCollectionView.CanSort Then
-            _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
-            _participantListOverviewCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
+        setView(AppCon.CurrentClub.GruppenloseTeilnehmer)
+        setView(AppCon.CurrentClub.GruppenloseTrainer)
+    End Sub
+
+    Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
+        _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
+        If _participantListCollectionView.CanSort Then
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
         End If
-        participantlistOverviewDataGrid.ItemsSource = _participantListOverviewCollectionView
-        'End If
-
-        _skikursListCollectionView = New ListCollectionView(Skikursliste)
-        ' Hinweis AddHandler Seite 764
-        AddHandler _skikursListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
-        ' DataContext wird gesetzt
-        ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemSkikurse.DataContext = _skikursListCollectionView
-        If _skikursListCollectionView.CanSort Then
-            _skikursListCollectionView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
-        End If
-        _skikursListCollectionView.MoveCurrentToFirst()
-
+        ParticipantDataGrid.DataContext = _participantListCollectionView
     End Sub
 
-    Private Sub SetView(Teilnehmers As TeilnehmerCollection)
-        _teilnehmerListCollectionView = New ListCollectionView(Teilnehmers)
-        _teilnehmerListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantFirstName", ListSortDirection.Ascending))
-        _teilnehmerListCollectionView.SortDescriptions.Add(New SortDescription("ParticipantLastName", ListSortDirection.Ascending))
+    'Private Sub setView(FreieTeilnehmer As IEnumerable(Of Teilnehmer))
+    '    _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
+    '    ParticipantDataGrid.DataContext = _participantListCollectionView
+    'End Sub
 
-        ' Hinweis AddHandler Seite 764
-        AddHandler _teilnehmerListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
-        ' DataContext wird gesetzt
-        ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemTeilnehmer.DataContext = _teilnehmerListCollectionView
-
+    Private Sub setView(FreieTrainer As TrainerCollection)
+        _instructorListCollectionView = New ListCollectionView(FreieTrainer)
+        InstuctorDataGrid.DataContext = _instructorListCollectionView
     End Sub
 
-    Private Sub SetView(Skilehrer As TrainerCollection)
-        _uebungsleiterListCollectionView = New ListCollectionView(Skilehrer)
-        ' Hinweis AddHandler Seite 764
-        AddHandler _uebungsleiterListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
-        ' DataContext wird gesetzt
-        ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemUebungsleiter.DataContext = _uebungsleiterListCollectionView
+    Private Sub setView(FreieTrainer As IEnumerable(Of Trainer))
+        _instructorListCollectionView = New ListCollectionView(FreieTrainer.ToList)
+        InstuctorDataGrid.DataContext = _instructorListCollectionView
     End Sub
 
-    Private Sub SetView(Level As LeistungsstufeCollection)
-        _levelListCollectionView = New ListCollectionView(Level)
-        '_levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Descending))
-        ' Hinweis AddHandler Seite 764
-        AddHandler _levelListCollectionView.CurrentChanged, AddressOf _listCollectionView_CurrentChanged
-        ' DataContext wird gesetzt
-        ' Inhalt = CollectionView, diese kennt sein CurrentItem
-        tabitemLevels.DataContext = _levelListCollectionView
-    End Sub
+    Private Sub unsetView()
 
-    Private Sub tabitemTeilnehmer_GotFocus(sender As Object, e As RoutedEventArgs)
+        DataContext = Nothing
+        ParticipantDataGrid.DataContext = Nothing
+        InstuctorDataGrid.DataContext = Nothing
 
-        _schalterLayerDetails = layerTeilnehmerdetails
-        _schalterBtnShowEplorer = btnShowTeilnehmerExplorer
-        _schalterPinImage = pinTeilnehmerImage
-        _schalterLayerListe = layerTeilnehmerliste
-        _schalterLayerListeTransform = layerTeilnehmerlisteTrans
-        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerTeilnehmerDetails
-        _schalterBtnPinit = btnTeilnehmerPinIt
-
-        btnTeilnehmerPinIt.IsChecked = True
-
-    End Sub
-
-    Private Sub tabitemSkikurs_GotFocus(sender As Object, e As RoutedEventArgs)
-
-        _schalterLayerDetails = layerSkikursdetails
-        _schalterBtnShowEplorer = btnShowSkikursExplorer
-        _schalterPinImage = pinSkikursImage
-        _schalterLayerListe = layerSkikursliste
-        _schalterLayerListeTransform = layerSkikurslisteTrans
-        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerSkikurslisteDetails
-        _schalterBtnPinit = btnSkikursPinIt
-
-        btnSkikursPinIt.IsChecked = True
-
-    End Sub
-
-    Private Sub OverviewTabItem_GotFocus(sender As Object, e As RoutedEventArgs)
-        GroupOverviewWrapPanel.Children.Clear()
-        CurrentClub.Gruppenliste.GruppeGeordnet.ToList.ForEach(Sub(x) GroupOverviewWrapPanel.Children.Add(New GroupView With {.DataContext = x}))
-    End Sub
-
-    Private Sub tabitemSkilehrer_GotFocus(sender As Object, e As RoutedEventArgs)
-
-        _schalterLayerDetails = layerSkilehrerdetails
-        _schalterBtnShowEplorer = btnShowSkilehrerExplorer
-        _schalterPinImage = pinSkilehrerImage
-        _schalterLayerListe = layerSkilehrerliste
-        _schalterLayerListeTransform = layerSkilehrerlisteTrans
-        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerUebungsleiterDetails
-        _schalterBtnPinit = btnSkilehrerPinIt
-
-        btnSkilehrerPinIt.IsChecked = True
-
-    End Sub
-
-    Private Sub tabitemLevel_GotFocus(sender As Object, e As RoutedEventArgs)
-
-        _schalterLayerDetails = layerLeveldetails
-        _schalterBtnShowEplorer = btnShowLevelExplorer
-        _schalterPinImage = pinLevelImage
-        _schalterLayerListe = layerLevelliste
-        _schalterLayerListeTransform = layerLevellisteTrans
-        _schalterDummySpalteFuerLayerDetails = _dummySpalteFuerLayerLevelDetails
-        _schalterBtnPinit = btnLevelPinIt
-
-        btnLevelPinIt.IsChecked = True
+        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
+        _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
+        _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
 
@@ -1043,10 +688,12 @@ Class MainWindow
         'Todo: Berechnen, wieviele Teilnehmer auf einer Seite gedruckt werden können
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
+        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
+
 
         '_Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(CurrentClub.Gruppenliste)
+        Dim sortedGroupView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste)
         sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
 
         Dim skikursgruppe As Gruppe
@@ -1091,64 +738,36 @@ Class MainWindow
 
     End Function
 
-    Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        For i = 0 To CurrentClub.Gruppenliste.Count - 1
-            CurrentClub.Gruppenliste(i).Trainer = CurrentClub.GruppenloseTrainer.Item(i)
-        Next
-    End Sub
-
-    Private Sub AddParticipant(sender As Object, e As RoutedEventArgs)
-        DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).Mitgliederliste.Add(_participantsToDistributeListCollectionView.CurrentItem)
-        'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).MemberOfGroup = DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).GruppenID
-        'DirectCast(_participantsToDistributeListCollectionView.CurrentItem, Teilnehmer).IstGruppenmitglied = True
-        setView(CurrentClub.Gruppenliste)
-    End Sub
-
-    Private Sub RemoveParticipant(sender As Object, e As RoutedEventArgs)
-        If _participantsInGroupMemberListCollectionView.CurrentItem IsNot Nothing Then
-            Dim tn = CurrentClub.GruppenloseTeilnehmer.Where(Function(x) x.TeilnehmerID = DirectCast(_participantsInGroupMemberListCollectionView.CurrentItem, Teilnehmer).TeilnehmerID).Single
-            DirectCast(_skikursListCollectionView.CurrentItem, Gruppe).Mitgliederliste.Remove(_participantsInGroupMemberListCollectionView.CurrentItem)
-            'tn.MemberOfGroup = Nothing
-        End If
-        setView(CurrentClub.Gruppenliste)
-    End Sub
-
-
-    ' Für das Verschieben von Objekten 
-    Private Sub ParticipantsToDistributeDataGrid_SendByMouseDown(sender As Object, e As MouseButtonEventArgs)
-        Dim Tn = TryCast(participantlistOverviewDataGrid.SelectedItem, Teilnehmer)
-
-        If Tn IsNot Nothing Then
-            Dim Data = New DataObject(GetType(Teilnehmer), Tn)
-            DragDrop.DoDragDrop(participantlistOverviewDataGrid, Data, DragDropEffects.Move)
-        End If
-
-    End Sub
-
-
-
-    ' Für den Empfang von Objekten 
-    Private Sub ParticipantsToDistributeDataGrid_ReceiveByDrop(sender As Object, e As DragEventArgs)
-        Dim CorrectDataFormat = e.Data.GetDataPresent("Groupies.Entities.Participant")
-        If CorrectDataFormat Then
-            'Dim TN As Teilnehmer = e.Data.GetData("Groupies.Entities.Participant")
-            ''For Each Participant As Participant In ic
-            'TN.RemoveFromGroup()
-            'CDS.Club.Teilnehmerliste.Remove(CDS.Club.Teilnehmerliste.Where(Function(x) x.TeilnehmerID.Equals(TN.TeilnehmerID)).First)
-            'CDS.Club.Teilnehmerliste.Add(TN)
-            'Next
-        End If
-    End Sub
 
 #End Region
+
+#Region "Enum für Printversion"
 
     Enum Printversion
         Instructor
         Participant
     End Enum
 
-    Private Sub MenuItem_Click_1(sender As Object, e As RoutedEventArgs)
-        Dim win = New Window1
-        win.ShowDialog()
+    Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
+        Dim InstructorWindow = New InstructorsWindow
+        InstructorWindow.Show()
     End Sub
+
+    Private Sub ParticipantDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+        Next
+    End Sub
+
+    Private Sub InstuctorDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        If DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
+            Exit Sub
+        End If
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+    End Sub
+
+
+#End Region
+
 End Class

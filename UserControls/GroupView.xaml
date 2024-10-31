@@ -53,11 +53,18 @@
                 <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=Benennung, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <!--Combobox Level-->
-                <ComboBox Grid.Column="2" Grid.Row="4" DisplayMemberPath="Benennung"
-                          SelectedValue="{Binding Path=Leistungsstufe.LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValuePath="LeistungsstufeID"
-                          Name="Gruppenleistungsstufe" />
-                <!--<TextBox Text="{Binding Path=Leistungsstufe.LeistungsstufeID,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2"/>-->
+                <ComboBox Grid.Column="2" Grid.Row="4"     
+                          IsSynchronizedWithCurrentItem="True"
+                          SelectedValuePath="Benennung"
+                          SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                           Name="Gruppenleistungsstufe" >
+                </ComboBox>
+                <!--SelectedItem="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"                          
+                          SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                DisplayMemberPath="Benennung"
+                          SelectedValuePath="Leistungsstufe.Benennung"-->
+                <TextBox Text="{Binding Path=Leistungsstufe.LeistungsstufeID,UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="2"/>
                 <!--DisplayMemberPath="Benennung"-->
                            <!--SelectedValue="{Binding Path=Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged}"-->
                          <!--SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"-->

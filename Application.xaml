@@ -5,7 +5,7 @@
              xmlns:en="clr-namespace:Groupies.Entities"
              xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              Startup="Skikurs_Startup"
-             StartupUri="Window1.xaml">
+             StartupUri="MainWindow.xaml">
     <!--MainWindow-->
     <!--Window1-->
     

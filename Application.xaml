@@ -107,12 +107,6 @@
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-            --><!--Style for Comboboxes--><!--
-            <Style TargetType="ComboBox" >
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="18"/>
-            </Style>
-
             --><!--Style for Sliders--><!--
             <Style TargetType="Slider" >
                 <Setter Property="Margin" Value="4"/>

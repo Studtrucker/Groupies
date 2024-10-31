@@ -68,6 +68,7 @@ Namespace UserControls
         Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
             MessageBox.Show("GroupView Trainer raus")
         End Sub
+
         Private Sub SetView()
 
             '_groupmemberListCollectionView = New ListCollectionView(DirectCast(DataContext, Group).GroupMembers)
@@ -102,8 +103,5 @@ Namespace UserControls
             End If
         End Sub
 
-        Private Sub GroupLeaderTextblock_MouseDoubleClick_1(sender As Object, e As MouseButtonEventArgs)
-
-        End Sub
     End Class
 End Namespace

@@ -19,9 +19,10 @@
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
-                   Style="{StaticResource WindowImageCaption}" />
+                    />
+            <!--Style="{StaticResource SmallCaption}"-->
             <TextBlock Height="Auto" Text="Neuer Übungsleiter"
-                       Style="{StaticResource WindowCaption}" />
+                       Style="{StaticResource SmallCaption}" />
         </DockPanel>
 
         <!-- OK- und Cancel-Button -->

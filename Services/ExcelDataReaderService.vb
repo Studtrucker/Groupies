@@ -19,7 +19,9 @@ Public Module ExcelDataReaderService
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
             Dim guid As Guid
-            If IsNumeric(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))) Then
+            If IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))) Then
+                guid = Nothing
+            Else
                 Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID")), guid)
             End If
 
@@ -44,7 +46,9 @@ Public Module ExcelDataReaderService
 
         For Each zeile As DataRow In xl.Tables("Trainer").Rows
             Dim guid As Guid
-            If IsNumeric(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID"))) Then
+            If IsDBNull(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID"))) Then
+                guid = Nothing
+            Else
                 Guid.TryParse(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("TrainerID")), guid)
             End If
 

@@ -116,7 +116,6 @@ Namespace Services
 
         End Sub
 
-
         Public Sub ImportTeilnehmer()
 
 
@@ -139,8 +138,8 @@ Namespace Services
 
             'Aus der Importdatei werden bekannte Teilnehmer markiert
             For Each aktuellerTn As Teilnehmer In AppController.CurrentClub.AlleTeilnehmer
-                ImportTeilnehmerliste.Where(Function(importTn) importTn.TeilnehmerID = aktuellerTn.TeilnehmerID) _
-                                                .ToList.ForEach(Sub(nTn) nTn.IstBekannt = True)
+                ImportTeilnehmerliste.Where(Function(importTn) importTn.TeilnehmerID.Equals(aktuellerTn.TeilnehmerID)) _
+                                                .ToList.ForEach(Sub(importTn) importTn.IstBekannt = True)
             Next
 
             ' Aus dem aktuellen Club werden alle Teilnehmer als potentieller Archivkandidat gesetzt

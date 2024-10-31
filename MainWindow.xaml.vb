@@ -58,15 +58,13 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecuted, AddressOf HandleClubPrintCanExecute))
 
         ' Neue Version
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf Handle_TeilnehmerInGruppeEinteilen_Execute, AddressOf Handle_TeilnehmerInGruppeEinteilen_CanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen, AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute, AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeEinenTrainerZuweisen, AddressOf Handle_GruppeEinenTrainerZuweisen_Execute, AddressOf Handle_GruppeEinenTrainerZuweisen_CanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppentrainerEntfernen, AddressOf Handle_GruppentrainerEntfernen_Execute, AddressOf Handle_GruppentrainerEntfernen_CanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportTeilnehmerExecute, AddressOf HandleImportTeilnehmerCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportTrainerExecute, AddressOf HandleImportTrainerCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTeilnehmer, AddressOf HandleExportXlTeilnehmerExecute, AddressOf HandleExportXlTeilnehmerCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTrainer, AddressOf HandleExportXlTrainerExecute, AddressOf HandleExportXlTrainerCanExecute))
 
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeEinenTrainerZuweisen, AddressOf HandleGruppeEinenTrainerZuweisenExecute, AddressOf HandleGruppeEinenTrainerZuweisenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf HandleTeilnehmerInGruppeEinteilenExecute, AddressOf HandleGruppeTeilnehmerInGruppeEinteilenCanExecute))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportSkiclub, AddressOf HandleImportSkiclubExecuted, AddressOf HandleImportSkiclubCanExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerUebungsleiter, AddressOf HandleNewInstructorExecuted, AddressOf HandleNewInstructorCanExecuted))
@@ -91,6 +89,25 @@ Public Class MainWindow
         RefreshJumpListInWinTaskbar()
 
 
+    End Sub
+
+    Private Sub HandleTeilnehmerInGruppeEinteilenExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        Next
+    End Sub
+
+    Private Sub HandleGruppeEinenTrainerZuweisenExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+    End Sub
+
+    Private Sub HandleGruppeTeilnehmerInGruppeEinteilenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = ParticipantDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub HandleGruppeEinenTrainerZuweisenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        Dim HatKeinTrainer = DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
+        e.CanExecute = InstuctorDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
@@ -335,51 +352,12 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Instructor)
-            '_uebungsleiterListCollectionView.MoveCurrentTo(dlg.Instructor)
-            'uebungsleiterDataGrid.ScrollIntoView(dlg.Instructor)
         End If
     End Sub
 
     Private Sub HandleNewInstructorCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        'e.CanExecute = tabitemUebungsleiter.IsSelected And uebungsleiterDataGrid.SelectedItems.Count > 0
-        e.CanExecute = True
+        e.CanExecute = AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
     End Sub
-
-    Private Sub Handle_GruppeEinenTrainerZuweisen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
-    End Sub
-
-    Private Sub Handle_GruppeEinenTrainerZuweisen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer.Count > 0
-    End Sub
-
-    Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
-    End Sub
-
-    Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
-        e.CanExecute = True
-    End Sub
-
-    Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
-    End Sub
-
-    Private Sub Handle_TeilnehmerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer.Count > 0
-    End Sub
-
-    Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
-    End Sub
-
-    Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
-        e.CanExecute = True
-    End Sub
-
-    ' Weitere Handles für die Commands
 
 #End Region
 

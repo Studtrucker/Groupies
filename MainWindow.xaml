@@ -187,6 +187,11 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Trainer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.GruppeEinenTrainerZuweisen}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                     <Separator DockPanel.Dock="Top" Grid.Row="2"/>
                 </Grid>
@@ -208,6 +213,11 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>
                             <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand.Benennung}" Width="*"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Teilnehmer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerInGruppeEinteilen}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </Grid>
             </Grid>

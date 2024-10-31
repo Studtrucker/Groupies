@@ -50,24 +50,50 @@ Namespace UserControls
 
         End Sub
 
-
+#Region "Teilnehmer"
         Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
             ' Todo: Regel einbauen: Die aktuelle Gruppe muß mehr als 0 Mitglieder haben und mindestens ein Mitglied markiert sein
-            e.CanExecute = False
+            e.CanExecute = GroupMembersDataGrid.SelectedItems.Count > 0
         End Sub
 
         Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-            MessageBox.Show("GroupView Teilnehmer raus")
+            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
+                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            Next
         End Sub
+
+        Private Sub Handle_TeilnehmerAusGruppeEntfernen(sender As Object, e As RoutedEventArgs)
+            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
+                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            Next
+            SetView()
+        End Sub
+
+#End Region
+
+#Region "Trainer"
 
         Private Sub Handle_GruppentrainerEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-            ' Todo: Regel einbauen: Der Gruppe muss einen Trainer haben
-            e.CanExecute = True
+            e.CanExecute = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing
+        End Sub
+        Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+                CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            End If
         End Sub
 
-        Private Sub Handle_GruppentrainerEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-            MessageBox.Show("GroupView Trainer raus")
+        Private Sub GroupLeaderTextblock_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+                CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            End If
         End Sub
+
+
+
+#End Region
+
+
+
 
         Private Sub SetView()
 
@@ -81,27 +107,20 @@ Namespace UserControls
 
         End Sub
 
-        Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As RoutedEventArgs)
-            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
-                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
-            Next
-            SetView()
-        End Sub
 
 
-        Private Sub MenuItem_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-            ' Teilnehmer werden aus der Gruppe entfernt und in die Gruppe GruppenloseTeilnehmer eingetragen
-            For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
-                CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
-            Next
-        End Sub
 
-        Private Sub GroupLeaderTextblock_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-            ' Binding an das Objekt und nicht an die Eigenschaft
-            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
-                CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
-            End If
-        End Sub
+        'Private Sub MenuItem_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        '    ' Teilnehmer werden aus der Gruppe entfernt und in die Gruppe GruppenloseTeilnehmer eingetragen
+        '    For i = GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
+        '        CDS.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        '    Next
+        'End Sub
 
+
+
+        'Private Sub MenuItemDeleteGroupMember_Click(sender As Object, e As MouseButtonEventArgs)
+
+        'End Sub
     End Class
 End Namespace

@@ -73,16 +73,23 @@
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
                           Text="{Binding Path=Trainer.VorUndNachname}"
-                          MouseDoubleClick="GroupLeaderTextblock_MouseDoubleClick"/>
+                          MouseDoubleClick="GroupLeaderTextblock_MouseDoubleClick">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Trainer aus Gruppe entfernen" 
+                                      Command="{x:Static cmd:SkiclubCommands.GruppentrainerEntfernen}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
                 
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="GroupMembersDataGrid" 
                           IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Mitgliederliste}"  
                           IsReadOnly="True" CanUserAddRows="False" 
-                          SelectionMode="Extended"  MouseDoubleClick="MenuItem_MouseDoubleClick">
+                          SelectionMode="Extended" MouseDoubleClick="Handle_TeilnehmerAusGruppeEntfernen">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Teilnehmer aus Gruppe entfernen" Click="MenuItemDeleteGroupMember_Click"/>
+                            <MenuItem Header="Teilnehmer aus Gruppe entfernen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 

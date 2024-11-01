@@ -82,7 +82,7 @@
                         SelectedValuePath="Benennung"
                         SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
                         SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
-                        Name="GroupLevelCombobox" />
+                        Name="GroupLevelCombobox"/>
 
         </Grid>
     </DockPanel>

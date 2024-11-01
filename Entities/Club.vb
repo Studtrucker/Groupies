@@ -89,7 +89,6 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
-
             Get
                 _EingeteilteTeilnehmer.Clear()
                 Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))

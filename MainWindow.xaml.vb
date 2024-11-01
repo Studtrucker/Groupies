@@ -50,25 +50,38 @@ Public Class MainWindow
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf HandleNewExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf HandleCloseExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf HandleClubOpenExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save, AddressOf HandleClubSaveExecute, AddressOf HandleClubSaveCanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs, AddressOf HandleClubSaveAsExecute, AddressOf HandleClubSaveCanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print, AddressOf HandleClubPrintExecute, AddressOf HandleClubPrintCanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf Handle_Open_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save,
+                                               AddressOf Handle_SaveClub_Execute, AddressOf Handle_SaveClub_CanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs,
+                                               AddressOf Handle_ClubSaveAs_Execute, AddressOf Handle_SaveClub_CanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print,
+                                               AddressOf Handle_PrintClub_Execute, AddressOf Handle_PrintClub_CanExecute))
 
         ' Neue Version
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTeilnehmer, AddressOf HandleImportTeilnehmerExecute, AddressOf HandleImportTeilnehmerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTeilnehmer, AddressOf HandleExportXlTeilnehmerExecute, AddressOf HandleExportxlTeilnehmerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen, AddressOf HandleTeilnehmerInGruppeEinteilenExecute, AddressOf HandleGruppeTeilnehmerInGruppeEinteilenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTeilnehmer, AddressOf HandleNeuerTeilnehmerExecute, AddressOf HandleNeuerTeilnehmerCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerlisteImportieren,
+                                               AddressOf HandleImportTeilnehmerExecute, AddressOf HandleImportTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerlisteExportierenXl,
+                                               AddressOf HandleExportXlTeilnehmerExecute, AddressOf HandleExportxlTeilnehmerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerInGruppeEinteilen,
+                                               AddressOf HandleTeilnehmerInGruppeEinteilenExecute, AddressOf HandleGruppeTeilnehmerInGruppeEinteilenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerNeuErstellen,
+                                               AddressOf HandleNeuerTeilnehmerExecute, AddressOf HandleNeuerTeilnehmerCanExecuted))
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ImportTrainer, AddressOf HandleImportTrainerExecute, AddressOf HandleImportTrainerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.ExportXlTrainer, AddressOf HandleExportXlTrainerExecute, AddressOf HandleExportxlTrainerCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeEinenTrainerZuweisen, AddressOf HandleGruppeEinenTrainerZuweisenExecute, AddressOf HandleGruppeEinenTrainerZuweisenCanExecute))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerTrainer, AddressOf HandleNeuerTrainerExecute, AddressOf HandleNeuerTrainerCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerlisteImportieren,
+                                               AddressOf HandleImportTrainerExecute, AddressOf HandleImportTrainerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerlisteExportierenXl,
+                                               AddressOf HandleExportXlTrainerExecute, AddressOf HandleExportxlTrainerCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerInGruppeEinteilen,
+                                               AddressOf HandleGruppeEinenTrainerZuweisenExecute,
+                                               AddressOf HandleGruppeEinenTrainerZuweisenCanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerNeuErstellen,
+                                               AddressOf HandleNeuerTrainerExecute, AddressOf HandleNeuerTrainerCanExecuted))
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.NeueGruppe, AddressOf HandleNeueGruppeExecute, AddressOf HandleNeueGruppeCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeNeuErstellen,
+                                               AddressOf HandleNeueGruppeExecute, AddressOf HandleNeueGruppeCanExecuted))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRuSortedList = New SortedList(Of Integer, String)
@@ -92,18 +105,6 @@ Public Class MainWindow
     End Sub
 
 
-    Private Sub HandleGruppeEinenTrainerZuweisenExecute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
-    End Sub
-
-    Private Sub HandleGruppeTeilnehmerInGruppeEinteilenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = ParticipantDataGrid.SelectedItems.Count > 0
-    End Sub
-
-    Private Sub HandleGruppeEinenTrainerZuweisenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        Dim HatKeinTrainer = DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
-        e.CanExecute = InstuctorDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
-    End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
         Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
@@ -194,7 +195,7 @@ Public Class MainWindow
 
 
 
-    Private Sub HandleNewExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
         If AppCon.CurrentClub IsNot Nothing Then
@@ -222,7 +223,7 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub HandleClubOpenExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
             unsetView()
@@ -230,7 +231,7 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub HandleClubSaveExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_SaveClub_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         If _groupiesFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
@@ -238,11 +239,11 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub HandleClubSaveCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub Handle_SaveClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = AppCon.CurrentClub IsNot Nothing
     End Sub
 
-    Private Sub HandleClubSaveAsExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_ClubSaveAs_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
         If _groupiesFile IsNot Nothing Then
             dlg.FileName = _groupiesFile.Name
@@ -254,11 +255,11 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub HandleCloseExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_Close_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Close()
     End Sub
 
-    Private Sub HandleClubPrintExecute(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub Handle_PrintClub_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New PrintDialog()
         If dlg.ShowDialog = True Then
@@ -275,39 +276,9 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub HandleClubPrintCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = AppCon.CurrentClub.Gruppenliste.Count > 0
     End Sub
-
-    'Private Sub HandleImportSkiclubExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-
-    '    ' Ist aktuell eine Skischuldatei geöffnet?
-    '    If AppCon.CurrentClub IsNot Nothing Then
-    '        Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie das aktuelle Groupies noch speichern?", "", MessageBoxButton.YesNoCancel)
-    '        If rs = MessageBoxResult.Yes Then
-    '            ApplicationCommands.Save.Execute(Nothing, Me)
-    '        ElseIf rs = MessageBoxResult.Cancel Then
-    '            Exit Sub
-    '        End If
-    '    End If
-
-    '    ' Skischulobjekt löschen
-    '    AppCon.CurrentClub = Nothing
-
-    '    ' Neues Skischulobjekt initialisieren
-    '    Title = "Groupies"
-
-    '    Dim importSkiclub = ImportService.ImportSkiclub
-    '    If importSkiclub IsNot Nothing Then
-    '        setView(importSkiclub)
-    '        MessageBox.Show(String.Format("Daten aus {0} erfolgreich importiert", ImportService.Workbook.Name))
-    '    End If
-
-    'End Sub
-
-    'Private Sub HandleImportSkiclubCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-    '    e.CanExecute = True
-    'End Sub
 
 #End Region
 
@@ -338,6 +309,9 @@ Public Class MainWindow
             AppCon.CurrentClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
         End If
     End Sub
+    Private Sub HandleGruppeTeilnehmerInGruppeEinteilenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = ParticipantDataGrid.SelectedItems.Count > 0
+    End Sub
 
     Private Sub HandleTeilnehmerInGruppeEinteilenExecute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
@@ -345,15 +319,17 @@ Public Class MainWindow
         Next
     End Sub
 
+
 #End Region
 
 #Region "Trainer"
-    Private Sub HandleImportTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
-        ImportService.ImportTrainer()
-    End Sub
 
     Private Sub HandleImportTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+    End Sub
+
+    Private Sub HandleImportTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        ImportService.ImportTrainer()
     End Sub
 
     Private Sub HandleExportxlTrainerCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -364,6 +340,10 @@ Public Class MainWindow
         ExportService.ExportTrainer()
     End Sub
 
+    Private Sub HandleNeuerTrainerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+    End Sub
+
     Private Sub HandleNeuerTrainerExecute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -372,8 +352,13 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub HandleNeuerTrainerCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+    Private Sub HandleGruppeEinenTrainerZuweisenExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+    End Sub
+
+    Private Sub HandleGruppeEinenTrainerZuweisenCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        Dim HatKeinTrainer = DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
+        e.CanExecute = InstuctorDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
 
 #End Region
@@ -609,21 +594,16 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub setView(Skikursliste As Club)
+    Private Sub setView(Club As Club)
 
         ' Hier wird der DataContext gesetzt!
 
         unsetView()
 
-        ' Neue ListCollectionView laden
-        _groupListCollectionView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste.ToList)
-        If _groupListCollectionView.CanSort Then
-            _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
-        End If
-        DataContext = _groupListCollectionView
+        setView(Club.Gruppenliste)
+        setView(Club.GruppenloseTeilnehmer)
+        setView(Club.GruppenloseTrainer)
 
-        setView(AppCon.CurrentClub.GruppenloseTeilnehmer)
-        setView(AppCon.CurrentClub.GruppenloseTrainer)
     End Sub
 
     Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
@@ -636,18 +616,19 @@ Public Class MainWindow
         ParticipantDataGrid.DataContext = _participantListCollectionView
     End Sub
 
-    'Private Sub setView(FreieTeilnehmer As IEnumerable(Of Teilnehmer))
-    '    _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
-    '    ParticipantDataGrid.DataContext = _participantListCollectionView
-    'End Sub
+    Private Sub setView(Gruppenliste As GruppeCollection)
+        _groupListCollectionView = New ListCollectionView(Gruppenliste)
+        If _groupListCollectionView.CanSort Then
+            _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+        End If
+        DataContext = _groupListCollectionView
+    End Sub
 
     Private Sub setView(FreieTrainer As TrainerCollection)
         _instructorListCollectionView = New ListCollectionView(FreieTrainer)
-        InstuctorDataGrid.DataContext = _instructorListCollectionView
-    End Sub
-
-    Private Sub setView(FreieTrainer As IEnumerable(Of Trainer))
-        _instructorListCollectionView = New ListCollectionView(FreieTrainer.ToList)
+        If _instructorListCollectionView.CanSort Then
+            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+        End If
         InstuctorDataGrid.DataContext = _instructorListCollectionView
     End Sub
 

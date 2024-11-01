@@ -82,19 +82,19 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
             <MenuItem  Header="B_earbeiten" Background="white" Foreground="Black">
-                <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.NeueGruppe}"/>
+                <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
                 <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.NeuerTeilnehmer}"/>
-                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.ImportTeilnehmer}">
+                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
+                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.NeuerTrainer}"/>
-                <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.ImportTrainer}">
+                <MenuItem Header="Neuer Skilehrer" Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                <MenuItem Header="Skilehrer importieren" Command="{x:Static cmd:SkiclubCommands.TrainerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>

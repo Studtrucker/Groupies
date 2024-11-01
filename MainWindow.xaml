@@ -10,17 +10,6 @@
         Loaded="HandleWindowLoaded" Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
         WindowState="Maximized" Title="Groupies" Height="450" Width="800">
 
-    <Window.Resources>
-         <!--Style für die MenuItems--> 
-        <!--<Style TargetType="{x:Type MenuItem}">
-            <Setter Property="Foreground" Value="Black"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="Gray"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>-->
-    </Window.Resources>
 
     <DockPanel>
         <Menu Background="white" Foreground="Black" DockPanel.Dock="Top">
@@ -57,34 +46,34 @@
             </MenuItem>
 
             <MenuItem  Header="B_earbeiten" >
-                <MenuItem Header="Teilnehmer importieren" Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Teilnehmer" Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
-                <MenuItem Header="Teilnehmer löschen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
-                <MenuItem Header="Teilnehmer exportieren" Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteExportierenXl}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteExportierenXl}"/>
                 <Separator/>
-                <MenuItem Header="Trainer importieren" Command="{x:Static cmd:SkiclubCommands.TrainerlisteImportieren}">
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Neuer Trainer" Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                <MenuItem Header="Trainer löschen" Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
-                <MenuItem Header="Trainer exportieren" Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}"/>
                 <Separator/>
-                <MenuItem Header="Neue Gruppe" Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
-                <MenuItem Header="Gruppe löschen" Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 <Separator/>
-                <MenuItem Header="Neue Leistungsstufe" Command="{x:Static cmd:SkiclubCommands.NeuesLevel}"/>
-                <MenuItem Header="Leistungsstufe löschen" Command="{x:Static cmd:SkiclubCommands.LevelLoeschen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
             </MenuItem>
 
             <MenuItem Header="Ansichten" Foreground="Black" >
                 <MenuItem Header="Teilnehmer"/>
-                <MenuItem Header="Skilehrer" Click="HandleInstructorMenuItemClick"/>
+                <MenuItem Header="Skilehrer" />
                 <MenuItem Header="Gruppen"/>
                 <MenuItem Header="Levels"/>
             </MenuItem>
@@ -112,7 +101,7 @@
                 </Grid.RowDefinitions>    
                     <TextBlock Text="Die Gruppen" Grid.Row="0"/>
                     
-                    <DataGrid x:Name="GroupDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
+                    <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
                               Margin="6"  Foreground="Black"           
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                         <DataGrid.Resources>
@@ -144,6 +133,11 @@
                                 </Grid>
                             </DataTemplate>
                         </DataGrid.Resources>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
 
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Gruppen" Width="*"

@@ -4,9 +4,9 @@ Imports Groupies.Entities
 Imports Groupies.Commands
 Imports Microsoft.Win32
 
-Public Class NewInstructorDialog
+Public Class NeuerTrainerDialog
 
-    Public ReadOnly Property Instructor() As Trainer
+    Public ReadOnly Property Trainer() As Trainer
 
     Public Sub New()
 
@@ -14,8 +14,8 @@ Public Class NewInstructorDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Instructor = New Trainer(String.Empty)
-        DataContext = _Instructor
+        _Trainer = New Trainer(String.Empty)
+        DataContext = _Trainer
 
     End Sub
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
@@ -26,7 +26,7 @@ Public Class NewInstructorDialog
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Instructor.IsOk
+        e.CanExecute = Trainer.IsOk
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -51,7 +51,7 @@ Public Class NewInstructorDialog
                 Using filestream = New FileStream(filepath(0), FileMode.Open)
                     Dim buffer = New Byte(filestream.Length - 1) {}
                     filestream.Read(buffer, 0, filestream.Length)
-                    _Instructor.Foto = buffer
+                    _Trainer.Foto = buffer
                     validPictureFile = True
                 End Using
             Else

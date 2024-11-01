@@ -1,21 +1,19 @@
-﻿Imports Groupies.UserControls
-Imports Groupies.Commands
+﻿Imports System.Text
 Imports Groupies.Entities
+Imports Groupies.Commands
 
-Public Class NewDialog
-    Private View As SkillView
-    Sub New(Entity As EntityType)
+Public Class NeueLeistungsstufeDialog
+
+    Public ReadOnly Property Leistungsstufe() As Leistungsstufe
+
+    Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-
-        View = New SkillView With {.Name = "View"}
-        UserControlBorder.Child = View
-        Me.Title = "Neue Fähigkeit"
-        View.Skill = New Faehigkeit
-
+        _Leistungsstufe = New Leistungsstufe(String.Empty)
+        DataContext = _Leistungsstufe
 
     End Sub
 
@@ -23,12 +21,12 @@ Public Class NewDialog
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+        NamingField.Focus()
 
     End Sub
 
-
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = View.Skill.IsOk
+        e.CanExecute = Leistungsstufe.IsOk
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -39,12 +37,10 @@ Public Class NewDialog
         DialogResult = False
     End Sub
 
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        Dim text = New StringBuilder
+        Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.OrderByDescending(Function(Ls) Ls.Sortierung).ToList.ForEach(Sub(Ls) text.Append($"{Ls.Sortierung} {Ls.Benennung}{Environment.NewLine}"))
+        text.Remove(text.Length - Environment.NewLine.Length, Environment.NewLine.Length)
+        MessageBox.Show($"{text}", "Aktuelle Leistungsstufen", MessageBoxButton.OK, MessageBoxImage.Information)
+    End Sub
 End Class
-
-Public Enum EntityType
-    Group
-    Instructor
-    Participant
-    Level
-    Skill
-End Enum

@@ -20,6 +20,7 @@ Public Class MainWindow
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
+    Private _leistungsstufenlisteCollectionView As ICollectionView
     Private _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
 
@@ -98,10 +99,18 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerArchivieren,
                                                AddressOf Handle_TrainerArchivieren_Execute,
                                                AddressOf Handle_TrainerArchivieren_CanExecuted))
-
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeNeuErstellen,
                                                AddressOf Handle_GruppeNeuErstellen_Execute,
                                                AddressOf Handle_GruppeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeLoeschen,
+                                               AddressOf Handle_GruppeLoeschen_Execute,
+                                               AddressOf Handle_GruppeLoeschen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
+                                               AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
+                                               AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeLoeschen,
+                                               AddressOf Handle_LeistungsstufeLoeschen_Execute,
+                                               AddressOf Handle_LeistungsstufeLoeschen_CanExecuted))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRuSortedList = New SortedList(Of Integer, String)
@@ -322,7 +331,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NewParticipantDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NeuerTeilnehmerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
@@ -360,7 +369,7 @@ Public Class MainWindow
     End Sub
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -389,19 +398,19 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NewInstructorDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Instructor)
+            AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Trainer)
         End If
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        Dim HatKeinTrainer = DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
+        Dim HatKeinTrainer = DirectCast(DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
         e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
     Private Sub Handle_TrainerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -423,11 +432,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        If DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+        If DirectCast(DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
             MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
             Exit Sub
         End If
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
 #End Region
@@ -438,13 +447,49 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NewGroupDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.Gruppenliste.Add(dlg.Group)
         End If
     End Sub
 
+    Private Sub Handle_GruppeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
+    End Sub
+
+    Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        AppCon.CurrentClub.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
+    End Sub
+
+#End Region
+
+#Region "Leistungsstufe"
+    Private Sub Handle_LeistungsstufeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.CurrentClub.Leistungsstufenliste IsNot Nothing
+    End Sub
+
+    Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeueLeistungsstufeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            Try
+                AppCon.CurrentClub.Leistungsstufenliste.Add(dlg.Leistungsstufe, AppCon.CurrentClub.Leistungsstufenliste)
+            Catch ex As Exception
+                MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+            End Try
+        End If
+    End Sub
+
+    Private Sub Handle_LeistungsstufeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        'wer ist hier der sender?
+        Dim wirdverwendet = AppCon.CurrentClub.AlleTeilnehmer.ToList.TrueForAll(Function(Tn) Tn.Leistungsstand.Equals(sender))
+        e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
+    End Sub
+
+    Private Sub Handle_LeistungsstufeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException
+    End Sub
 #End Region
 
 #End Region
@@ -457,23 +502,9 @@ Public Class MainWindow
         OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
-    Sub GroupiesCollectionView_CurrentChanged(sender As Object, e As EventArgs)
-        Throw New NotImplementedException
-    End Sub
-
-    Private Sub RefreshTaskBarItemOverlay()
-        Throw New NotImplementedException
-    End Sub
-
-    Private Sub HandleMenuOptionsClick(sender As Object, e As RoutedEventArgs)
-        Throw New NotImplementedException
-    End Sub
-
 #End Region
 
 #Region "Helper-Methoden"
-
-
 
     Private Sub OpenSkischule(fileName As String)
 
@@ -668,7 +699,11 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
 
         unsetView()
-        GroupView.Gruppenleistungsstufe.ItemsSource = Club.Leistungsstufenliste
+        _leistungsstufenlisteCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
+        If _leistungsstufenlisteCollectionView.CanSort Then
+            _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+        End If
+        GroupView.Gruppenleistungsstufe.ItemsSource = _leistungsstufenlisteCollectionView
 
         setView(Club.Gruppenliste)
         setView(Club.GruppenloseTeilnehmer)
@@ -711,6 +746,7 @@ Public Class MainWindow
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
         _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
+        _leistungsstufenlisteCollectionView = New ListCollectionView(New LeistungsstufeCollection)
 
     End Sub
 
@@ -811,10 +847,10 @@ Public Class MainWindow
         Participant
     End Enum
 
-    Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
-        Dim InstructorWindow = New InstructorsWindow
-        InstructorWindow.Show()
-    End Sub
+    'Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
+    '    Dim InstructorWindow = New InstructorsWindow
+    '    InstructorWindow.Show()
+    'End Sub
 
 
 

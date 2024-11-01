@@ -111,9 +111,6 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Constants\Level.vb" />
-    <Compile Include="Dialogs\NewDialog.xaml.vb">
-      <DependentUpon>NewDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
       <DependentUpon>NewSkillDialog.xaml</DependentUpon>
     </Compile>
@@ -146,17 +143,17 @@
     <Compile Include="Dialogs\CountOfGroupsDialog.xaml.vb">
       <DependentUpon>CountOfGroupsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewLevelDialog.xaml.vb">
-      <DependentUpon>NewLevelDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NeueLeistungsstufeDialog.xaml.vb">
+      <DependentUpon>NeueLeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewGroupDialog.xaml.vb">
-      <DependentUpon>NewGroupDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NeueGruppeDialog.xaml.vb">
+      <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewInstructorDialog.xaml.vb">
-      <DependentUpon>NewInstructorDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NeuerTrainerDialog.xaml.vb">
+      <DependentUpon>NeuerTrainerDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewParticipantDialog.xaml.vb">
-      <DependentUpon>NewParticipantDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NeuerTeilnehmerDialog.xaml.vb">
+      <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\Faehigkeit.vb" />
     <Compile Include="Entities\GruppeCollection.vb" />
@@ -206,23 +203,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NewDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\NewLevelDialog.xaml">
+    <Page Include="Dialogs\NeueLeistungsstufeDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\NewGroupDialog.xaml">
+    <Page Include="Dialogs\NeueGruppeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NewInstructorDialog.xaml">
+    <Page Include="Dialogs\NeuerTrainerDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\NewParticipantDialog.xaml">
+    <Page Include="Dialogs\NeuerTeilnehmerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -233,10 +226,6 @@
     <Page Include="InstructorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindowAlt.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="Application.xaml.vb">
       <DependentUpon>Application.xaml</DependentUpon>
@@ -252,10 +241,6 @@
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\TeilnehmerCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
-    <Compile Include="MainWindowAlt.xaml.vb">
-      <DependentUpon>MainWindowAlt.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Dialogs\ContextMenuLevel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

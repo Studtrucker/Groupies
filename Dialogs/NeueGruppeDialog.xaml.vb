@@ -1,13 +1,12 @@
-﻿Imports Groupies.Entities
-Imports System.ComponentModel
-Imports DS = Groupies.Services
+﻿Imports System.ComponentModel
+Imports System.Text
+Imports Groupies.Entities
 Imports Groupies.Commands
-Imports Groupies.Controller
 
-Public Class NewParticipantDialog
-    Public ReadOnly Property Teilnehmer() As Teilnehmer
-    Private ReadOnly _instructorListCollectionView As ICollectionView
+Public Class NeueGruppeDialog
+    Public ReadOnly Property Group() As Gruppe
     Private ReadOnly _levelListCollectionView As ICollectionView
+    Private ReadOnly _instructorListCollectionView As ICollectionView
 
     Public Sub New()
 
@@ -15,28 +14,27 @@ Public Class NewParticipantDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Teilnehmer = New Teilnehmer
-        DataContext = _Teilnehmer
+        _Group = New Gruppe
+        DataContext = _Group
 
-        _levelListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste)
-        _instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
+        _levelListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.Leistungsstufenliste)
+        _instructorListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.GruppenloseTrainer)
 
-        ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
+        GroupLevelCombobox.ItemsSource = _levelListCollectionView
 
     End Sub
 
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
 
-        FirstNameField.Focus()
+        Ausgabename.Focus()
 
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Teilnehmer.IsOk
+        e.CanExecute = Group.IsOk
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)

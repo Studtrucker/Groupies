@@ -37,11 +37,11 @@
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
+            
             <Style TargetType="DataGrid" x:Key="PrintoutInfo">
                 <!--Standard-->
                 <Setter Property="FontSize" Value="36"/>
                 <Style.Triggers>
-                    
                     <!--Group with more than 10 participants--> 
                     <DataTrigger Binding="{Binding}" Value="ZuGross">
                         <Setter Property="FontSize" Value="24"/>
@@ -142,17 +142,19 @@
 
             -->
 
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+            
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Margin" Value="4,4,4,4"/>
+                <Setter Property="FontSize" Value="14"/>
             </Style>
             
             <Style TargetType="ComboBox">
                 <Setter Property="Margin" Value="3"/>
                 <Setter Property="FontSize" Value="14"/>
-            </Style>
-            
-            <Style TargetType="Button">
-                <Setter Property="Margin" Value="3"/>
             </Style>
 
             <Style TargetType="TextBlock">

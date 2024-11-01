@@ -179,6 +179,15 @@ Namespace Entities
             GruppenloseTeilnehmer.Add(Teilnehmer)
         End Sub
 
+        ''' <summary>
+        ''' Teilnehmer wird aus dem Club entfernt und 
+        ''' in der Ewigen Teilnehmerliste archiviert
+        ''' </summary>
+        ''' <param name="Teilnehmer"></param>
+        Public Sub TeilnehmerArchivieren(Teilnehmer As Teilnehmer)
+            GruppenloseTeilnehmer.Remove(Teilnehmer)
+            EwigeTeilnehmerliste.Add(Teilnehmer, Now)
+        End Sub
 
         ''' <summary>
         ''' Der Trainer wird der angegebenen Gruppe zugewiesen
@@ -205,6 +214,16 @@ Namespace Entities
         ''' <param name="Trainer"></param>
         Private Sub FreieTrainerLesen(Trainer As Trainer)
             _AlleTrainer.Remove(Trainer)
+        End Sub
+
+        ''' <summary>
+        ''' Trainer wird aus dem Club entfernt und 
+        ''' in der Ewigen Trainerliste archiviert
+        ''' </summary>
+        ''' <param name="Trainer"></param>
+        Public Sub TrainerArchivieren(Trainer As Trainer)
+            GruppenloseTrainer.Remove(Trainer)
+            EwigeTrainerliste.Add(Trainer, Now)
         End Sub
 
 

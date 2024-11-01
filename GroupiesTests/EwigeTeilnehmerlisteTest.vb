@@ -21,11 +21,11 @@ Public Class EwigeTeilnehmerlisteTest
 
         Assert.AreEqual(5, EwigeStubailiste.Count)
 
-        Assert.AreEqual(2, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.ZuletztTeilgenommen).GroupBy(Function(tn) tn.ZuletztTeilgenommen).OrderByDescending(Function(x) x.Key)(0).Count)
-        Assert.AreEqual(1, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.ZuletztTeilgenommen).GroupBy(Function(tn) tn.ZuletztTeilgenommen).OrderByDescending(Function(x) x.Key)(1).Count)
-        Assert.AreEqual(2, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.ZuletztTeilgenommen).GroupBy(Function(tn) tn.ZuletztTeilgenommen).OrderByDescending(Function(x) x.Key)(2).Count)
+        Assert.AreEqual(2, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.Archivierungsdatum).GroupBy(Function(tn) tn.Archivierungsdatum).OrderByDescending(Function(x) x.Key)(0).Count)
+        Assert.AreEqual(1, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.Archivierungsdatum).GroupBy(Function(tn) tn.Archivierungsdatum).OrderByDescending(Function(x) x.Key)(1).Count)
+        Assert.AreEqual(2, EwigeStubailiste.OrderByDescending(Function(Tn) Tn.Archivierungsdatum).GroupBy(Function(tn) tn.Archivierungsdatum).OrderByDescending(Function(x) x.Key)(2).Count)
 
-        Rene.ZuletztTeilgenommen = "31.12.2023"
+        Rene.Archivierungsdatum = "31.12.2023"
 
         EwigeStubailiste.Add(Rene)
         Assert.AreEqual(5, EwigeStubailiste.Count)

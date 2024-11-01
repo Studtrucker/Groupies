@@ -174,17 +174,18 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Gruppenlose Skilehrer" Grid.Row="0"/>
-                    <DataGrid x:Name="InstuctorDataGrid" Grid.Row="1"
+                    <DataGrid x:Name="GruppenloseTrainerDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
-                              MouseDoubleClick="InstuctorDataGrid_MouseDoubleClick">
+                              MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Trainer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
+                                <MenuItem Header="Trainer archivieren" Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -198,11 +199,11 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Gruppenlose Teilnehmer" Grid.Row="0"/>
-                    <DataGrid x:Name="ParticipantDataGrid" Grid.Row="1"
+                    <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" Grid.Row="1"
                               DockPanel.Dock="Top"  ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
-                              MouseDoubleClick="ParticipantDataGrid_MouseDoubleClick">
+                              MouseDoubleClick="GruppenloseTeilnehmer_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname}"/>
@@ -211,6 +212,7 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Teilnehmer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerInGruppeEinteilen}"/>
+                                <MenuItem Header="Teilnehmer archivieren" Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

@@ -17,9 +17,9 @@ Public Class MainWindow
 
 #Region "Fields"
 
-    Private _participantListCollectionView As ICollectionView
-    Private _groupListCollectionView As ICollectionView
-    Private _instructorListCollectionView As ICollectionView
+    Private _gruppenloseTeilnehmerCollectionView As ICollectionView
+    Private _gruppenloseTrainerCollectionView As ICollectionView
+    Private _gruppenlisteCollectionView As ICollectionView
     Private _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
 
@@ -34,11 +34,11 @@ Public Class MainWindow
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' DataContext Window
-        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
+        _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         ' DataContext participantDataGrid
-        _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
+        _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
         ' DataContext groupleaderDataGrid
-        _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
+        _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
 
@@ -76,6 +76,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerArchivieren,
+                                               AddressOf Handle_TeilnehmerArchivieren_Execute,
+                                               AddressOf Handle_TeilnehmerArchivieren_CanExecuted))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerlisteImportieren,
                                                AddressOf Handle_TrainerlisteImportieren_Execute,
@@ -92,6 +95,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerAusGruppeEntfernen,
                                                AddressOf Handle_TrainerAusGruppeEntfernen_Execute,
                                                AddressOf Handle_TrainerAusGruppeEntfernen_CanExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerArchivieren,
+                                               AddressOf Handle_TrainerArchivieren_Execute,
+                                               AddressOf Handle_TrainerArchivieren_CanExecuted))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeNeuErstellen,
                                                AddressOf Handle_GruppeNeuErstellen_Execute,
@@ -224,8 +230,8 @@ Public Class MainWindow
         AppCon.CurrentClub = Nothing
         ' Alle DataContexte löschen
         DataContext = Nothing
-        ParticipantDataGrid.DataContext = Nothing
-        InstuctorDataGrid.DataContext = Nothing
+        GruppenloseTeilnehmerDataGrid.DataContext = Nothing
+        GruppenloseTrainerDataGrid.DataContext = Nothing
 
         ' Neues Skischulobjekt initialisieren
         Title = "Groupies"
@@ -322,13 +328,14 @@ Public Class MainWindow
             AppCon.CurrentClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
         End If
     End Sub
+
     Private Sub Handle_TeilnehmerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = ParticipantDataGrid.SelectedItems.Count > 0
+        e.CanExecute = GruppenloseTeilnehmerDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -339,6 +346,21 @@ Public Class MainWindow
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GroupView.GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
             AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        Next
+    End Sub
+
+    Private Sub Handle_TeilnehmerArchivieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = GruppenloseTeilnehmerDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub Handle_TeilnehmerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
+        Next
+    End Sub
+    Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -375,12 +397,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         Dim HatKeinTrainer = DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
-        e.CanExecute = InstuctorDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
+        e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
     Private Sub Handle_TrainerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing
@@ -388,6 +410,24 @@ Public Class MainWindow
 
     Private Sub Handle_TrainerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         AppCon.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+    End Sub
+
+    Private Sub Handle_TrainerArchivieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+    End Sub
+
+    Private Sub Handle_TrainerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TrainerArchivieren(GruppenloseTrainerDataGrid.SelectedItems.Item(i))
+        Next
+    End Sub
+
+    Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
+        If DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
+            Exit Sub
+        End If
+        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
 #End Region
@@ -628,48 +668,49 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
 
         unsetView()
+        GroupView.Gruppenleistungsstufe.ItemsSource = Club.Leistungsstufenliste
 
         setView(Club.Gruppenliste)
         setView(Club.GruppenloseTeilnehmer)
         setView(Club.GruppenloseTrainer)
-
     End Sub
 
-    Private Sub setView(FreieTeilnehmer As TeilnehmerCollection)
-        _participantListCollectionView = New ListCollectionView(FreieTeilnehmer)
-        If _participantListCollectionView.CanSort Then
-            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
-            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
-            _participantListCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
+    Private Sub setView(GruppenloseTeilnehmer As TeilnehmerCollection)
+        _gruppenloseTeilnehmerCollectionView = New ListCollectionView(GruppenloseTeilnehmer)
+        If _gruppenloseTeilnehmerCollectionView.CanSort Then
+            _gruppenloseTeilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
+            _gruppenloseTeilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+            _gruppenloseTeilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
         End If
-        ParticipantDataGrid.DataContext = _participantListCollectionView
+        GruppenloseTeilnehmerDataGrid.DataContext = _gruppenloseTeilnehmerCollectionView
     End Sub
 
     Private Sub setView(Gruppenliste As GruppeCollection)
-        _groupListCollectionView = New ListCollectionView(Gruppenliste)
-        If _groupListCollectionView.CanSort Then
-            _groupListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+        _gruppenlisteCollectionView = New ListCollectionView(Gruppenliste)
+        If _gruppenlisteCollectionView.CanSort Then
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If
-        DataContext = _groupListCollectionView
+
+        DataContext = _gruppenlisteCollectionView
     End Sub
 
-    Private Sub setView(FreieTrainer As TrainerCollection)
-        _instructorListCollectionView = New ListCollectionView(FreieTrainer)
-        If _instructorListCollectionView.CanSort Then
-            _instructorListCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+    Private Sub setView(GruppenloseTrainer As TrainerCollection)
+        _gruppenloseTrainerCollectionView = New ListCollectionView(GruppenloseTrainer)
+        If _gruppenloseTrainerCollectionView.CanSort Then
+            _gruppenloseTrainerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
         End If
-        InstuctorDataGrid.DataContext = _instructorListCollectionView
+        GruppenloseTrainerDataGrid.DataContext = _gruppenloseTrainerCollectionView
     End Sub
 
     Private Sub unsetView()
 
         DataContext = Nothing
-        ParticipantDataGrid.DataContext = Nothing
-        InstuctorDataGrid.DataContext = Nothing
+        GruppenloseTeilnehmerDataGrid.DataContext = Nothing
+        GruppenloseTrainerDataGrid.DataContext = Nothing
 
-        _groupListCollectionView = New ListCollectionView(New GruppeCollection)
-        _participantListCollectionView = New ListCollectionView(New TeilnehmerCollection)
-        _instructorListCollectionView = New ListCollectionView(New TrainerCollection)
+        _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
+        _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
+        _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
 
@@ -775,19 +816,6 @@ Public Class MainWindow
         InstructorWindow.Show()
     End Sub
 
-    Private Sub ParticipantDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        For i = ParticipantDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(ParticipantDataGrid.SelectedItems.Item(i), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
-        Next
-    End Sub
-
-    Private Sub InstuctorDataGrid_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        If DirectCast(DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
-            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
-            Exit Sub
-        End If
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(InstuctorDataGrid.SelectedItems.Item(0), DirectCast(GroupDataGrid.DataContext, ICollectionView).CurrentItem)
-    End Sub
 
 
 #End Region

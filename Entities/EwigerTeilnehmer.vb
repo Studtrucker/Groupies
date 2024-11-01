@@ -31,30 +31,21 @@ Namespace Entities
         Public Sub New(Teilnehmer As Teilnehmer, Datum As Date)
             Me.Vorname = Teilnehmer.Vorname
             Me.Nachname = Teilnehmer.Nachname
-            Me.ZuletztTeilgenommen = Datum
-        End Sub
-
-        Public Sub New(Teilnehmer As Teilnehmer, Datum As Date, LetzteGruppeID As Guid)
-            Me.Vorname = Teilnehmer.Vorname
-            Me.Nachname = Teilnehmer.Nachname
-            Me.ZuletztTeilgenommen = Datum
-            Me.LetzteGruppenmitgliedschaft = LetzteGruppeID
+            Me.Archivierungsdatum = Datum
         End Sub
 
 #End Region
 
 #Region "Eigenschaften"
 
-        Public Property ZuletztTeilgenommen As Date
-
-        Public Property LetzteGruppenmitgliedschaft As Guid
+        Public Property Archivierungsdatum As Date
 
 #End Region
 
 #Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
-            Return $"{VorUndNachname} war zuletzt in {ZuletztTeilgenommen.Month}.{ZuletztTeilgenommen.Year} dabei"
+            Return $"{VorUndNachname} war zuletzt in {Archivierungsdatum.Month}.{Archivierungsdatum.Year} dabei"
         End Function
 
 #End Region

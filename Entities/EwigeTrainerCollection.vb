@@ -40,8 +40,9 @@ Namespace Entities
 #Region "Funktionen und Methoden"
 
         Public Overloads Sub Add(Trainer As EwigerTrainer)
+
             If Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Count = 1 Then
-                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.ZuletztTeilgenommen = Trainer.ZuletztTeilgenommen
+                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.Archivierungsdatum = Trainer.Archivierungsdatum
             Else
                 MyBase.Add(Trainer)
             End If
@@ -49,8 +50,10 @@ Namespace Entities
         End Sub
 
         Public Overloads Sub Add(Trainer As Trainer, Datum As Date)
+
+            ' Wenn der Trainer bereits archiviert wurde, dann nur das Archivierungsdatum aktualisieren
             If Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Count = 1 Then
-                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.ZuletztTeilgenommen = Datum
+                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.Archivierungsdatum = Datum
             Else
                 MyBase.Add(New EwigerTrainer(Trainer, Datum))
             End If
@@ -59,7 +62,7 @@ Namespace Entities
 
         Public Overloads Sub Add(Trainer As Trainer, Datum As Date, GruppenID As Guid)
             If Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Count = 1 Then
-                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.ZuletztTeilgenommen = Datum
+                Me.Where(Function(Tn) Tn.TrainerID = Trainer.TrainerID).Single.Archivierungsdatum = Datum
             Else
                 MyBase.Add(New EwigerTrainer(Trainer, Datum))
             End If

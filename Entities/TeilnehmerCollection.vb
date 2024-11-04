@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
+Imports System.Text
 
 Namespace Entities
 
@@ -52,7 +53,29 @@ Namespace Entities
             .ThenBy(Function(Tr) Tr.Vorname) _
             .Select(Function(Tn) Tn.AusgabeTrainerinfo)
 
+        'Public Overloads Sub Add(Teilnehmer As Teilnehmer, Vergleichsliste As TeilnehmerCollection)
+        '    Fehler.Clear()
+        '    PruefeSortierungVorhanden(Leistungsstufe.Sortierung, Vergleichsliste)
+        '    PruefeBenennungVorhanden(Leistungsstufe.Benennung, Vergleichsliste)
+        '    If Fehler.Count > 0 Then
+        '        Dim FText As New StringBuilder
+        '        FText.Append($"Leistungsstufe kann nicht erstellt werden.{Environment.NewLine}")
+        '        Fehler.ForEach(Sub(F) FText.Append($"{F}{Environment.NewLine}"))
+        '        Throw New GroupiesException("Leistungsstufe kann nicht erstellt werden", New GroupiesException($"{FText}"))
+        '    End If
+        '    Add(Leistungsstufe)
+        'End Sub
 
+        'Private Sub PruefeSortierungVorhanden(Kennzahl As Integer?, AktuelleListe As LeistungsstufeCollection)
+        '    If AktuelleListe.Where(Function(Ls) Ls.Sortierung = Kennzahl).Count > 0 Then
+        '        Fehler.Add($"Sortierung {Kennzahl} ist schon vorhanden")
+        '    End If
+        'End Sub
+        'Private Sub PruefeBenennungVorhanden(Benennung As String, AktuelleListe As LeistungsstufeCollection)
+        '    If AktuelleListe.Where(Function(Ls) Ls.Benennung = Benennung).Count > 0 Then
+        '        Fehler.Add($"Benennung {Benennung} ist schon vorhanden")
+        '    End If
+        'End Sub
 
 #End Region
 

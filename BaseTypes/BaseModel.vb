@@ -104,13 +104,15 @@ Public MustInherit Class BaseModel
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+
+    ' Is called by the indexer to collect all errors and not only the one for a special field.
+    ' Because <see cref="HasErrors"/> depends on the <see cref="Errors"/> dictionary this
+    ' ensures that controls like buttons can switch their state accordingly.
+
     ''' <summary>
-    ''' Is called by the indexer to collect all errors and not only the one for a special field.
     ''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
     ''' </summary>
     ''' <remarks>
-    ''' Because <see cref="HasErrors"/> depends on the <see cref="Errors"/> dictionary this
-    ''' ensures that controls like buttons can switch their state accordingly.
     ''' Da <see cref="HasErrors"/> vom <see cref="Errors"/>-Wörterbuch abhängt, 
     ''' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
     ''' </remarks>

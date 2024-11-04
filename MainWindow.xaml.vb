@@ -474,7 +474,7 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             Try
-                AppCon.CurrentClub.Leistungsstufenliste.Add(dlg.Leistungsstufe, AppCon.CurrentClub.Leistungsstufenliste)
+                AppCon.CurrentClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
             Catch ex As Exception
                 MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             End Try

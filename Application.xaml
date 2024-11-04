@@ -162,9 +162,27 @@
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
+            <!--Control template for errors -->
+
+            <ControlTemplate x:Key="ErrorTemplate">
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
+                        <AdornedElementPlaceholder />
+                    </Border>
+                </DockPanel>
+            </ControlTemplate>
+
             <Style TargetType="TextBox">
                 <Setter Property="Margin" Value="3"/>
                 <Setter Property="FontSize" Value="14"/>
+                <!--<Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />-->
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip" Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, 
+                            RelativeSource={x:Static RelativeSource.Self}}" />
+                    </Trigger>
+                </Style.Triggers>
+
             </Style>
 
             <!--Style für das DataGrid--> 

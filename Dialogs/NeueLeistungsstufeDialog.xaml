@@ -44,13 +44,13 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            
-            
-            <Label Content="Sortierung" Grid.Column="1" Grid.Row="3"/>
+
+
+            <Label Grid.Column="1" Grid.Row="3">
+                <TextBlock Style="{StaticResource RequiredField}">Sortierung<Run Foreground="Red">*</Run></TextBlock>
+            </Label>
             <Label Grid.Column="1" Grid.Row="1">
-                <TextBlock Style="{StaticResource RequiredField}">Benennung
-				<Run Foreground="Red">*</Run>
-                </TextBlock>
+                <TextBlock Style="{StaticResource RequiredField}">Benennung<Run Foreground="Red">*</Run></TextBlock>
             </Label>
             <Label Content="Beschreibung" Grid.Column="1" Grid.Row="2"/>
 

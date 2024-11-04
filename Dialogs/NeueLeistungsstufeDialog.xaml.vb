@@ -39,7 +39,8 @@ Public Class NeueLeistungsstufeDialog
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
         Dim text = New StringBuilder
-        Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.OrderByDescending(Function(Ls) Ls.Sortierung).ToList.ForEach(Sub(Ls) text.Append($"{Ls.Sortierung} {Ls.Benennung}{Environment.NewLine}"))
+        Dim x = Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.OrderByDescending(Function(Ls) Ls.Sortierung).ToList.Select(Function(Ls) $"{Ls.Sortierung} {Ls.Benennung}{Environment.NewLine}")
+        x.ToList.ForEach(Sub(Ls) text.Append(Ls))
         text.Remove(text.Length - Environment.NewLine.Length, Environment.NewLine.Length)
         MessageBox.Show($"{text}", "Aktuelle Leistungsstufen", MessageBoxButton.OK, MessageBoxImage.Information)
     End Sub

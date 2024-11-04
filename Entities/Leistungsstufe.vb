@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
+Imports System.Runtime.InteropServices
 
 
 Namespace Entities
@@ -66,7 +67,15 @@ Namespace Entities
                 Return _Sortierung
             End Get
             Set(value As Integer?)
-
+                _Sortierung = value
+                If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+                    Dim errorMessage As String = ""
+                    If SortierungCheck(_Sortierung, errorMessage) Then
+                        _errors.Clear()
+                    Else
+                        _errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
+                    End If
+                End If
             End Set
         End Property
 
@@ -81,14 +90,36 @@ Namespace Entities
             End Get
             Set(value As String)
                 _Benennung = value
-                ' wpf Seite 715
                 If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                    If Controller.AppController.CurrentClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = _Benennung).Count > 0 Then
-                        _errors.Add(NameOf(Benennung), New List(Of String) From {$"Die Leistungsstufe {value} wurde bereits definiert"})
+                    Dim errorMessage As String = ""
+                    If BenennungCheck(_Benennung, errorMessage) Then
+                        _errors.Clear()
+                    Else
+                        _errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
                     End If
                 End If
             End Set
         End Property
+
+        Private Function BenennungCheck(Value As String, ByRef errorMessage As String)
+            errorMessage = ""
+            Dim isValid = True
+            If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung}").Contains(Value) Then
+                errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
+                isValid = False
+            End If
+            Return isValid
+        End Function
+
+        Private Function SortierungCheck(Value As Integer, ByRef errorMessage As String)
+            errorMessage = ""
+            Dim isValid = True
+            If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) Ls.Sortierung).Contains(Value) Then
+                errorMessage = "Die Sortierung der Leistungsstufe darf nicht doppelt vergeben werden"
+                isValid = False
+            End If
+            Return isValid
+        End Function
 
         ''' <summary>
         ''' Beschreibung der Leistungsstufe
@@ -117,7 +148,7 @@ Namespace Entities
         Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
         Private _errors As New Dictionary(Of String, List(Of String))
-        Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String)
+        Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
             If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
                 If _errors.ContainsKey(NameOf(Benennung)) Then
                     Return _errors(NameOf(Benennung))
@@ -152,9 +183,12 @@ Namespace Entities
             Return Benennung
         End Function
 
-        Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-            Return _errors(propertyName)
-        End Function
+        'Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        '    If _errors(NameOf(propertyName)).Count > 0 Then
+        '        Return _errors(propertyName)
+        '    End If
+        '    Return Nothing
+        'End Function
 
 #End Region
 

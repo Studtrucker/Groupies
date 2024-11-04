@@ -12,7 +12,7 @@ Namespace Entities
     <DefaultProperty("Benennung")>
     Public Class Leistungsstufe
         Inherits BaseModel
-        Implements INotifyDataErrorInfo
+        'Implements INotifyDataErrorInfo
 
 #Region "Felder"
         Private _Sortierung As Integer?
@@ -27,6 +27,8 @@ Namespace Entities
         Public Sub New()
             _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
+            Benennung = String.Empty
+            Sortierung = 0
         End Sub
 
         ''' <summary>
@@ -71,9 +73,9 @@ Namespace Entities
                 If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
                     Dim errorMessage As String = ""
                     If SortierungCheck(_Sortierung, errorMessage) Then
-                        _errors.Clear()
+                        Errors(NameOf(Sortierung)).Clear()
                     Else
-                        _errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
+                        Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
                     End If
                 End If
             End Set
@@ -90,13 +92,11 @@ Namespace Entities
             End Get
             Set(value As String)
                 _Benennung = value
-                If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                    Dim errorMessage As String = ""
-                    If BenennungCheck(_Benennung, errorMessage) Then
-                        _errors.Clear()
-                    Else
-                        _errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
-                    End If
+                Dim errorMessage As String = ""
+                If BenennungCheck(_Benennung, errorMessage) Then
+                    Errors(NameOf(Benennung)).Clear()
+                Else
+                    Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
                 End If
             End Set
         End Property
@@ -104,8 +104,14 @@ Namespace Entities
         Private Function BenennungCheck(Value As String, ByRef errorMessage As String)
             errorMessage = ""
             Dim isValid = True
-            If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung}").Contains(Value) Then
-                errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
+            If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+                If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung}").Contains(Value) Then
+                    errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
+                    isValid = False
+                End If
+            End If
+            If String.IsNullOrEmpty(Trim(Value)) Then
+                errorMessage = "Die Benennung ist eine Pflichtangabe"
                 isValid = False
             End If
             Return isValid
@@ -114,8 +120,14 @@ Namespace Entities
         Private Function SortierungCheck(Value As Integer, ByRef errorMessage As String)
             errorMessage = ""
             Dim isValid = True
-            If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) Ls.Sortierung).Contains(Value) Then
-                errorMessage = "Die Sortierung der Leistungsstufe darf nicht doppelt vergeben werden"
+            If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+                If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) Ls.Sortierung).Contains(Value) Then
+                    errorMessage = "Die Sortierung der Leistungsstufe darf nicht doppelt vergeben werden"
+                    isValid = False
+                End If
+            End If
+            If Value <= 0 Then
+                errorMessage = "Die Sortierung der Leistungsstufe muss größer als Null sein"
                 isValid = False
             End If
             Return isValid
@@ -133,32 +145,32 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Faehigkeiten As FaehigkeitCollection
 
-        Public Overloads ReadOnly Property [Error] As String
-            Get
-                Return Nothing
-            End Get
-        End Property
+        'Public Overloads ReadOnly Property [Error] As String
+        '    Get
+        '        Return Nothing
+        '    End Get
+        'End Property
 
-        Private ReadOnly Property INotifyDataErrorInfo_HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
-            Get
-                Return _errors.Count > 0
-            End Get
-        End Property
+        'Private ReadOnly Property INotifyDataErrorInfo_HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
+        '    Get
+        '        Return _errors.Count > 0
+        '    End Get
+        'End Property
 
-        Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
+        'Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
-        Private _errors As New Dictionary(Of String, List(Of String))
-        Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-            If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
-                If _errors.ContainsKey(NameOf(Benennung)) Then
-                    Return _errors(NameOf(Benennung))
-                End If
-                If _errors.ContainsKey(NameOf(Sortierung)) Then
-                    Return _errors(NameOf(Sortierung))
-                End If
-            End If
-            Return Nothing
-        End Function
+        'Private _errors As New Dictionary(Of String, List(Of String))
+        'Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        '    If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
+        '        If _errors.ContainsKey(NameOf(Benennung)) Then
+        '            Return _errors(NameOf(Benennung))
+        '        End If
+        '        If _errors.ContainsKey(NameOf(Sortierung)) Then
+        '            Return _errors(NameOf(Sortierung))
+        '        End If
+        '    End If
+        '    Return Nothing
+        'End Function
 #End Region
 
 #Region "Funktionen und Methoden"

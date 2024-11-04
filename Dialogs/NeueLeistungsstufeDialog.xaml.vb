@@ -12,7 +12,7 @@ Public Class NeueLeistungsstufeDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Leistungsstufe = New Leistungsstufe(String.Empty)
+        _Leistungsstufe = New Leistungsstufe()
         DataContext = _Leistungsstufe
 
     End Sub

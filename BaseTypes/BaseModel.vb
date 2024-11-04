@@ -12,7 +12,7 @@ Imports Groupies.Annotations
 ''' Abstrakte Basisklasse für alle Modelle  
 ''' </summary>
 Public MustInherit Class BaseModel
-    Implements INotifyPropertyChanged, IDataErrorInfo
+    Implements INotifyPropertyChanged, INotifyDataErrorInfo
 
 #Region "constants"
     Private Shared _propertyInfos As List(Of PropertyInfo)
@@ -25,6 +25,11 @@ Public MustInherit Class BaseModel
     ''' Tritt auf, wenn sich ein Eigenschaftswert ändert.
     ''' </summary>
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    ''' <summary>
+    ''' Tritt auf, wenn sich ein Fehler ändert
+    ''' </summary>
+    Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
 #End Region
 
@@ -49,27 +54,24 @@ Public MustInherit Class BaseModel
     ''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
     ''' Der Standardwert ist eine leere Zeichenkette ("").
     ''' </returns>
-    Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
+    Public ReadOnly Property [Error] As String
         Get
             Throw New NotImplementedException()
         End Get
     End Property
 
     ''' <summary>
-    ''' Gets the error message for the property with the given name.
     ''' Ruft die Fehlermeldung für die Eigenschaft mit dem angegebenen Namen ab.
     ''' </summary>
     ''' <param name="propertyName">
-    ''' The name of the property whose error message to get.
     ''' Der Name der Eigenschaft, deren Fehlermeldung abgerufen werden soll.
     ''' </param>
     ''' <returns>
-    ''' The error message for the property. The default is an empty string ("").
     ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
     ''' </returns>
-    Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
+    Default Public ReadOnly Property Item(propertyName As String) As String
         Get
-            CollectErrors()
+            'CollectErrors()
             Return If(Errors.ContainsKey(propertyName), Errors(propertyName), String.Empty)
         End Get
     End Property
@@ -109,38 +111,45 @@ Public MustInherit Class BaseModel
     ' Because <see cref="HasErrors"/> depends on the <see cref="Errors"/> dictionary this
     ' ensures that controls like buttons can switch their state accordingly.
 
-    ''' <summary>
-    ''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
-    ''' </summary>
-    ''' <remarks>
-    ''' Da <see cref="HasErrors"/> vom <see cref="Errors"/>-Wörterbuch abhängt, 
-    ''' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
-    ''' </remarks>
-    Private Sub CollectErrors()
-        Errors.Clear()
-        PropertyInfos.ForEach(Sub(prop)
-                                  Dim currentValue = prop.GetValue(Me)
-                                  Dim requiredAttr = prop.GetCustomAttribute(Of RequiredAttribute)()
-                                  Dim maxLenAttr = prop.GetCustomAttribute(Of MaxLengthAttribute)()
-                                  If requiredAttr IsNot Nothing Then
-                                      If String.IsNullOrEmpty(If(currentValue?.ToString(), String.Empty)) Then
-                                          Errors.Add(prop.Name, requiredAttr.ErrorMessage)
-                                      End If
-                                  End If
-                                  If maxLenAttr IsNot Nothing Then
-                                      If If(currentValue?.ToString(), String.Empty).Length > maxLenAttr.Length Then
-                                          Errors.Add(prop.Name, maxLenAttr.ErrorMessage)
-                                      End If
-                                  End If
-                                  ' TODO further attributes
-                              End Sub)
-        ' we have to do this because the Dictionary does not implement INotifyPropertyChanged            
-        OnPropertyChanged(NameOf(BaseModel.HasErrors))
-        OnPropertyChanged(NameOf(BaseModel.IsOk))
-        ' commands do not recognize property changes automatically
-        OnErrorsCollected()
-    End Sub
+    '''' <summary>
+    '''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
+    '''' </summary>
+    '''' <remarks>
+    '''' Da <see cref="HasErrors"/> vom <see cref="Errors"/>-Wörterbuch abhängt, 
+    '''' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
+    '''' </remarks>
+    'Private Sub CollectErrors()
+    '    Errors.Clear()
+    '    PropertyInfos.ForEach(Sub(prop)
+    '                              Dim currentValue = prop.GetValue(Me)
+    '                              Dim requiredAttr = prop.GetCustomAttribute(Of RequiredAttribute)()
+    '                              Dim maxLenAttr = prop.GetCustomAttribute(Of MaxLengthAttribute)()
+    '                              If requiredAttr IsNot Nothing Then
+    '                                  If String.IsNullOrEmpty(If(currentValue?.ToString(), String.Empty)) Then
+    '                                      Errors.Add(prop.Name, requiredAttr.ErrorMessage)
+    '                                  End If
+    '                              End If
+    '                              If maxLenAttr IsNot Nothing Then
+    '                                  If If(currentValue?.ToString(), String.Empty).Length > maxLenAttr.Length Then
+    '                                      Errors.Add(prop.Name, maxLenAttr.ErrorMessage)
+    '                                  End If
+    '                              End If
+    '                              ' TODO further attributes
+    '                          End Sub)
+    '    ' we have to do this because the Dictionary does not implement INotifyPropertyChanged            
+    '    OnPropertyChanged(NameOf(BaseModel.HasErrors))
+    '    OnPropertyChanged(NameOf(BaseModel.IsOk))
+    '    ' commands do not recognize property changes automatically
+    '    OnErrorsCollected()
+    'End Sub
 
+    Public Function GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        If String.IsNullOrEmpty(PropertyName) Then Return Nothing
+        If _Errors.ContainsKey(PropertyName) Then
+            Return _Errors(PropertyName)
+        End If
+        Return Nothing
+    End Function
 
 #End Region
 
@@ -150,7 +159,7 @@ Public MustInherit Class BaseModel
     ''' Indicates whether this instance has any errors.
     ''' Zeigt an, ob diese Instanz Fehler aufweist.
     ''' </summary>
-    Public ReadOnly Property HasErrors As Boolean
+    Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
         Get
             Return Errors.Any()
         End Get
@@ -184,12 +193,10 @@ Public MustInherit Class BaseModel
     End Property
 
     ''' <summary>
-    ''' A dictionary of current errors with the name of the error-field as the key and the error
-    ''' text as the value.
     ''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
-    ''' dem Fehlertext als Wert.
+    ''' dem Fehlertext als Wert aufnimmt
     ''' </summary>
-    Private ReadOnly Property Errors As Dictionary(Of String, String) = New Dictionary(Of String, String)()
+    Private Protected Property Errors As Dictionary(Of String, List(Of String)) = New Dictionary(Of String, List(Of String))
 
 #End Region
 

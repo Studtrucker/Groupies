@@ -82,9 +82,10 @@ Namespace Entities
             Set(value As String)
                 _Benennung = value
                 ' wpf Seite 715
-                If Controller.AppController.CurrentClub.Leistungsstufenliste.Contains(New Leistungsstufe With {.Benennung = _Benennung}) Then
-                    _errors.Add(NameOf(Benennung), New List(Of String) From {$"Die Leistungsstufe {value} wurde bereits definiert"})
-
+                If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+                    If Controller.AppController.CurrentClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = _Benennung).Count > 0 Then
+                        _errors.Add(NameOf(Benennung), New List(Of String) From {$"Die Leistungsstufe {value} wurde bereits definiert"})
+                    End If
                 End If
             End Set
         End Property
@@ -152,7 +153,7 @@ Namespace Entities
         End Function
 
         Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-            Throw New NotImplementedException()
+            Return _errors(propertyName)
         End Function
 
 #End Region

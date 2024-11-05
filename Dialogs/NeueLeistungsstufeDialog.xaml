@@ -22,10 +22,11 @@
 
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True"/>
-                <Button Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True"/>
-            </StackPanel>
+            <DockPanel LastChildFill="False">
+                <Button Content="Aktuelle Stufen anzeigen" Width="200" Click="Button_Click" IsDefault="False" DockPanel.Dock="Left" />
+                <Button Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True" DockPanel.Dock="Right"/>
+                <Button Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True" DockPanel.Dock="Right"/>
+            </DockPanel>
         </Border>
 
         <!--Inputfields-->
@@ -57,8 +58,6 @@
             <StackPanel Grid.Column="2" Grid.Row="3"  Orientation="Horizontal" >
                 <TextBox x:Name="SortTextBox" Width="50" HorizontalAlignment="Left"
                      Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
-
-                <Button Width="200"  Content="Aktuellen Stufen anzeigen" Click="Button_Click" IsDefault="False"/>
             </StackPanel>
             
             <TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField"

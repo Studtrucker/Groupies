@@ -73,7 +73,7 @@ Namespace Entities
                 If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
                     Dim errorMessage As String = ""
                     If SortierungCheck(_Sortierung, errorMessage) Then
-                        Errors(NameOf(Sortierung)).Clear()
+                        Errors.Clear()
                     Else
                         Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
                     End If
@@ -94,7 +94,7 @@ Namespace Entities
                 _Benennung = value
                 Dim errorMessage As String = ""
                 If BenennungCheck(_Benennung, errorMessage) Then
-                    Errors(NameOf(Benennung)).Clear()
+                    Errors.Clear()
                 Else
                     Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
                 End If

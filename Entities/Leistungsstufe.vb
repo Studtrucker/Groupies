@@ -77,6 +77,7 @@ Namespace Entities
                     Else
                         Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
                     End If
+                    RaiseEvent mybase.ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Sortierung)))
                 End If
             End Set
         End Property
@@ -97,6 +98,9 @@ Namespace Entities
                     Errors.Clear()
                 Else
                     Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
+                End If
+                If True Then
+
                 End If
             End Set
         End Property

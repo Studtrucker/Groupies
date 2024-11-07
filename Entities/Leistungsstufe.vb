@@ -19,6 +19,12 @@ Namespace Entities
         Private _Benennung As String
 #End Region
 
+#Region "Events"
+
+        Public Shadows Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs)
+
+#End Region
+
 #Region "Konstruktor"
 
         ''' <summary>
@@ -28,7 +34,7 @@ Namespace Entities
             _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
             Benennung = String.Empty
-            Sortierung = 0
+            Sortierung = Nothing
         End Sub
 
         ''' <summary>
@@ -64,7 +70,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe")>
-        Public Property Sortierung As Integer?
+        Public Property Sortierung As Nullable(Of Integer)
             Get
                 Return _Sortierung
             End Get
@@ -77,7 +83,7 @@ Namespace Entities
                     Else
                         Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
                     End If
-                    RaiseEvent mybase.ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Sortierung)))
+                    OnPropertyChanged(NameOf(Sortierung))
                 End If
             End Set
         End Property
@@ -100,7 +106,7 @@ Namespace Entities
                     Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
                 End If
                 If True Then
-
+                    OnPropertyChanged(NameOf(Benennung))
                 End If
             End Set
         End Property

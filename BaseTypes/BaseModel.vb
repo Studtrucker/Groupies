@@ -14,14 +14,15 @@ Imports Groupies.Annotations
 Public MustInherit Class BaseModel
     Implements INotifyPropertyChanged, INotifyDataErrorInfo
 
-#Region "constants"
+#Region "Felder"
     Private Shared _propertyInfos As List(Of PropertyInfo)
+
 #End Region
 
-#Region "events"
+#Region "Events"
 
+    '    Occurs when a property value changes.
     ''' <summary>
-    ''' Occurs when a property value changes.
     ''' Tritt auf, wenn sich ein Eigenschaftswert ändert.
     ''' </summary>
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
@@ -33,9 +34,9 @@ Public MustInherit Class BaseModel
 
 #End Region
 
-#Region "constructors and destructors"
+#Region "Konstruktoren"
+    '   Default constructor.
     ''' <summary>
-    ''' Default constructor.
     ''' Standard-Konstruktor.
     ''' </summary>
     Public Sub New()
@@ -45,65 +46,63 @@ Public MustInherit Class BaseModel
 
 #Region "explicit interfaces"
 
-    ''' <summary>
-    ''' Gets an error message indicating what is wrong with this object.
-    ''' Ruft eine Fehlermeldung ab, die angibt, was mit diesem Objekt nicht stimmt.
-    ''' </summary>
-    ''' <returns>
-    ''' An error message indicating what is wrong with this object. The default is an empty string ("").
-    ''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
-    ''' Der Standardwert ist eine leere Zeichenkette ("").
-    ''' </returns>
-    Public ReadOnly Property [Error] As String
-        Get
-            Throw New NotImplementedException()
-        End Get
-    End Property
+    '''' <summary>
+    '''' Ruft eine Fehlermeldung ab, die angibt, was mit diesem Objekt nicht stimmt.
+    '''' </summary>
+    '''' <returns>
+    '''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
+    '''' Der Standardwert ist eine leere Zeichenkette ("").
+    '''' </returns>
+    'Public ReadOnly Property [Error] As String
+    '    Get
+    '        Throw New NotImplementedException()
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Ruft die Fehlermeldung für die Eigenschaft mit dem angegebenen Namen ab.
-    ''' </summary>
-    ''' <param name="propertyName">
-    ''' Der Name der Eigenschaft, deren Fehlermeldung abgerufen werden soll.
-    ''' </param>
-    ''' <returns>
-    ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
-    ''' </returns>
-    Default Public ReadOnly Property Item(propertyName As String) As String
-        Get
-            'CollectErrors()
-            Return If(Errors.ContainsKey(propertyName), Errors(propertyName), String.Empty)
-        End Get
-    End Property
+
 
 #End Region
 
 #Region "methods"
+
+    '   Override this method in derived types to initialize command logic.
     ''' <summary>
-    ''' Override this method in derived types to initialize command logic.
     ''' Überschreiben Sie diese Methode in abgeleiteten Typen, um die Befehlslogik zu initialisieren.
     ''' </summary>
     Protected Overridable Sub InitCommands()
     End Sub
 
+    '   Can be overridden by derived types to react on the finisihing of error-collections.
     ''' <summary>
-    ''' Can be overridden by derived types to react on the finisihing of error-collections.
     ''' Kann von abgeleiteten Typen überschrieben werden, um auf die Beendigung von Fehlersammlungen zu reagieren.
     ''' </summary>
     Protected Overridable Sub OnErrorsCollected()
     End Sub
 
+    '   Raises the <see cref="PropertyChanged"/> event.
+    '   The name of the property which value has changed.
     ''' <summary>
-    ''' Raises the <see cref="PropertyChanged"/> event.
     ''' Löst das Ereignis <see cref="PropertyChanged"/> aus.
     ''' </summary>
     ''' <param name="propertyName">
-    ''' The name of the property which value has changed.
     ''' Der Name der Eigenschaft, deren Wert sich geändert hat.
     ''' </param>
     <NotifyPropertyChangedInvocator>
     Protected Overridable Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+    End Sub
+
+    '   Raises the <see cref="PropertyChanged"/> event.
+    '   The name of the property which value has changed.
+    ''' <summary>
+    ''' Löst das Ereignis <see cref="ErrorsChanged"/> aus.
+    ''' </summary>
+    ''' <param name="propertyName">
+    ''' Der Name der Eigenschaft, deren Fehlerliste sich geändert hat.
+    ''' </param>
+    <NotifyPropertyChangedInvocator>
+    Protected Overridable Sub OnErrorsChanged(<CallerMemberName> Optional propertyName As String = Nothing)
+        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(propertyName))
     End Sub
 
 
@@ -153,10 +152,35 @@ Public MustInherit Class BaseModel
 
 #End Region
 
-#Region "properties"
+#Region "Eigenschaften"
 
     ''' <summary>
-    ''' Indicates whether this instance has any errors.
+    ''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
+    ''' dem Fehlertext als Wert aufnimmt
+    ''' </summary>
+    Private Protected Property Errors As Dictionary(Of String, List(Of String)) = New Dictionary(Of String, List(Of String))
+
+    '   Gets an error message indicating what is wrong with this object.
+    '   An error message indicating what is wrong with this object. The default is an empty string ("").
+
+    ''' <summary>
+    ''' Ruft die Fehlermeldung für die Eigenschaft mit dem angegebenen Namen ab.
+    ''' </summary>
+    ''' <param name="propertyName">
+    ''' Der Name der Eigenschaft, deren Fehlermeldung abgerufen werden soll.
+    ''' </param>
+    ''' <returns>
+    ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
+    ''' </returns>
+    Default Public ReadOnly Property Item(propertyName As String) As String
+        Get
+            'CollectErrors()
+            Return If(Errors.ContainsKey(propertyName), Errors(propertyName), String.Empty)
+        End Get
+    End Property
+
+    '   Indicates whether this instance has any errors.
+    ''' <summary>
     ''' Zeigt an, ob diese Instanz Fehler aufweist.
     ''' </summary>
     Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
@@ -165,12 +189,12 @@ Public MustInherit Class BaseModel
         End Get
     End Property
 
+    '   The opposite of <see cref="HasErrors"/>.
+    '   Exists for convenient binding only.
     ''' <summary>
-    ''' The opposite of <see cref="HasErrors"/>.
     ''' Das Gegenteil von <see cref="HasErrors"/>.
     ''' </summary>
     ''' <remarks>
-    ''' Exists for convenient binding only.
     ''' Sie dient nur der bequemen Bindung.
     ''' </remarks>
     Public ReadOnly Property IsOk As Boolean
@@ -179,24 +203,20 @@ Public MustInherit Class BaseModel
         End Get
     End Property
 
-    ''' <summary>
-    ''' Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo"/> automation.
-    ''' Ruft eine Liste aller Eigenschaften mit Attributen ab, die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
-    ''' </summary>
-    Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
-        Get
-            Return If(_propertyInfos, Function()
-                                          _propertyInfos = [GetType]().GetProperties(BindingFlags.Public Or BindingFlags.Instance).Where(Function(prop) prop.IsDefined(GetType(RequiredAttribute), True) OrElse prop.IsDefined(GetType(MaxLengthAttribute), True)).ToList()
-                                          Return _propertyInfos
-                                      End Function())
-        End Get
-    End Property
+    ''   Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo"/> automation.
+    '''' <summary>
+    '''' Ruft eine Liste aller Eigenschaften mit Attributen ab, 
+    '''' die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
+    '''' </summary>
+    'Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
+    '    Get
+    '        Return If(_propertyInfos, Function()
+    '                                      _propertyInfos = [GetType]().GetProperties(BindingFlags.Public Or BindingFlags.Instance).Where(Function(prop) prop.IsDefined(GetType(RequiredAttribute), True) OrElse prop.IsDefined(GetType(MaxLengthAttribute), True)).ToList()
+    '                                      Return _propertyInfos
+    '                                  End Function())
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
-    ''' dem Fehlertext als Wert aufnimmt
-    ''' </summary>
-    Private Protected Property Errors As Dictionary(Of String, List(Of String)) = New Dictionary(Of String, List(Of String))
 
 #End Region
 

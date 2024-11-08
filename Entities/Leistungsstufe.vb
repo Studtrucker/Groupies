@@ -13,8 +13,7 @@ Namespace Entities
     '<DefaultProperty("Benennung")>
     Public Class Leistungsstufe
         Inherits BaseModel
-        Implements IDataErrorInfo
-        Implements INotifyDataErrorInfo
+        'Implements INotifyDataErrorInfo
 
 #Region "Felder"
         Private _Sortierung As Integer?
@@ -111,6 +110,7 @@ Namespace Entities
                 '    _errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
                 'End If
                 'GetErrors(NameOf(Benennung))
+                Dim x = MyBase.PropertyInfos
                 OnPropertyChanged(NameOf(Benennung))
             End Set
         End Property
@@ -161,11 +161,6 @@ Namespace Entities
         Public Property Faehigkeiten As FaehigkeitCollection
 
 
-        'Public Overloads ReadOnly Property [Error] As String
-        '    Get
-        '        Return Nothing
-        '    End Get
-        'End Property
 
         'Private ReadOnly Property INotifyDataErrorInfo_HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
         '    Get
@@ -201,9 +196,7 @@ Namespace Entities
 
 #Region "Validation"
 
-        Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
-
-        Private _errors As New Dictionary(Of String, List(Of String))
+        'Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
         'Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
         '    If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
@@ -217,30 +210,19 @@ Namespace Entities
         '    Return Nothing
         'End Function
 
-        Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-            If _errors.ContainsKey(propertyName) Then
-                Return _errors(propertyName)
-            End If
-            Return Nothing
-        End Function
+        'Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        '    If _errors.ContainsKey(propertyName) Then
+        '        Return _errors(propertyName)
+        '    End If
+        '    Return Nothing
+        'End Function
 
-        Public Overloads ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
-            Get
-                Return _errors.Any()
-            End Get
-        End Property
+        'Public Overloads ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
+        '    Get
+        '        Return _errors.Any()
+        '    End Get
+        'End Property
 
-        Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
-            Get
-                Return If(_errors.ContainsKey(propertyName), _errors(propertyName), String.Empty)
-            End Get
-        End Property
-
-        Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
-            Get
-                Return Nothing
-            End Get
-        End Property
 
 #End Region
 

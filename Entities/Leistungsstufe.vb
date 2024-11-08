@@ -1,18 +1,20 @@
 ﻿Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
 Imports System.Runtime.InteropServices
+Imports Microsoft.Office.Interop.Excel
 
 
 Namespace Entities
 
 
-    ''' <summary>
-    ''' Beschreibt die Leistungsstufe mit einem Satz von Fähigkeiten
-    ''' </summary>
-    <DefaultProperty("Benennung")>
+    '''' <summary>
+    '''' Beschreibt die Leistungsstufe mit einem Satz von Fähigkeiten
+    '''' </summary>
+    '<DefaultProperty("Benennung")>
     Public Class Leistungsstufe
         Inherits BaseModel
-        'Implements INotifyDataErrorInfo
+        Implements IDataErrorInfo
+        Implements INotifyDataErrorInfo
 
 #Region "Felder"
         Private _Sortierung As Integer?
@@ -21,7 +23,6 @@ Namespace Entities
 
 #Region "Events"
 
-        Public Shadows Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs)
 
 #End Region
 
@@ -34,7 +35,6 @@ Namespace Entities
             _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
             Benennung = String.Empty
-            Sortierung = Nothing
         End Sub
 
         ''' <summary>
@@ -47,6 +47,11 @@ Namespace Entities
             _Faehigkeiten = New FaehigkeitCollection
         End Sub
 
+        ''' <summary>
+        ''' Erstellt eine Leistungsstufe mit Angabe Benennung und Sortierung
+        ''' </summary>
+        ''' <param name="Benennung"></param>
+        ''' <param name="Sortierung"></param>
         Public Sub New(Benennung As String, Sortierung As Integer)
             _LeistungsstufeID = Guid.NewGuid()
             _Benennung = Benennung
@@ -77,12 +82,12 @@ Namespace Entities
             Set(value As Integer?)
                 _Sortierung = value
                 If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                    Dim errorMessage As String = ""
-                    If SortierungCheck(_Sortierung, errorMessage) Then
-                        Errors.Clear()
-                    Else
-                        Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
-                    End If
+                    'Dim errorMessage As String = ""
+                    'If SortierungCheck(_Sortierung, errorMessage) Then
+                    '    Errors.Clear()
+                    'Else
+                    '    Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
+                    'End If
                     OnPropertyChanged(NameOf(Sortierung))
                 End If
             End Set
@@ -92,38 +97,38 @@ Namespace Entities
         ''' Die Benennung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Name ist eine Pflichtangabe")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe")>
         Public Property Benennung As String
             Get
                 Return _Benennung
             End Get
             Set(value As String)
                 _Benennung = value
-                Dim errorMessage As String = ""
-                If BenennungCheck(_Benennung, errorMessage) Then
-                    Errors.Clear()
-                Else
-                    Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
-                End If
-                If True Then
-                    OnPropertyChanged(NameOf(Benennung))
-                End If
+                'Dim errorMessage As String = ""
+                'If BenennungCheck(_Benennung, errorMessage) Then
+                '    _errors.Clear()
+                'Else
+                '    _errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
+                'End If
+                'GetErrors(NameOf(Benennung))
+                OnPropertyChanged(NameOf(Benennung))
             End Set
         End Property
 
         Private Function BenennungCheck(Value As String, ByRef errorMessage As String)
             errorMessage = ""
             Dim isValid = True
-            If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung}").Contains(Value) Then
-                    errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
-                    isValid = False
-                End If
-            End If
-            If String.IsNullOrEmpty(Trim(Value)) Then
-                errorMessage = "Die Benennung ist eine Pflichtangabe"
-                isValid = False
-            End If
+            'If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+            '    If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
+            '        errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
+            '        isValid = False
+            '    End If
+            'End If
+            'If String.IsNullOrEmpty(Trim(Value)) Then
+            '    '                errorMessage = "Die Benennung ist eine Pflichtangabe"
+            '    errorMessage = "Pflichtangabe"
+            '    isValid = False
+            'End If
             Return isValid
         End Function
 
@@ -155,6 +160,7 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Faehigkeiten As FaehigkeitCollection
 
+
         'Public Overloads ReadOnly Property [Error] As String
         '    Get
         '        Return Nothing
@@ -167,20 +173,6 @@ Namespace Entities
         '    End Get
         'End Property
 
-        'Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
-
-        'Private _errors As New Dictionary(Of String, List(Of String))
-        'Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-        '    If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
-        '        If _errors.ContainsKey(NameOf(Benennung)) Then
-        '            Return _errors(NameOf(Benennung))
-        '        End If
-        '        If _errors.ContainsKey(NameOf(Sortierung)) Then
-        '            Return _errors(NameOf(Sortierung))
-        '        End If
-        '    End If
-        '    Return Nothing
-        'End Function
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -205,12 +197,50 @@ Namespace Entities
             Return Benennung
         End Function
 
-        'Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-        '    If _errors(NameOf(propertyName)).Count > 0 Then
-        '        Return _errors(propertyName)
+#End Region
+
+#Region "Validation"
+
+        Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
+
+        Private _errors As New Dictionary(Of String, List(Of String))
+
+        'Public Function INotifyDataErrorInfo_GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        '    If PropertyName = NameOf(Benennung) OrElse PropertyName = NameOf(Sortierung) Then
+        '        If _errors.ContainsKey(NameOf(Benennung)) Then
+        '            Return _errors(NameOf(Benennung))
+        '        End If
+        '        If _errors.ContainsKey(NameOf(Sortierung)) Then
+        '            Return _errors(NameOf(Sortierung))
+        '        End If
         '    End If
         '    Return Nothing
         'End Function
+
+        Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+            If _errors.ContainsKey(propertyName) Then
+                Return _errors(propertyName)
+            End If
+            Return Nothing
+        End Function
+
+        Public Overloads ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
+            Get
+                Return _errors.Any()
+            End Get
+        End Property
+
+        Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
+            Get
+                Return If(_errors.ContainsKey(propertyName), _errors(propertyName), String.Empty)
+            End Get
+        End Property
+
+        Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
+            Get
+                Return Nothing
+            End Get
+        End Property
 
 #End Region
 

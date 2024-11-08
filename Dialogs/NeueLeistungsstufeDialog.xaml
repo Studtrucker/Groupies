@@ -55,15 +55,25 @@
             </Label>
             <Label Content="Beschreibung" Grid.Column="1" Grid.Row="2"/>
 
+            
+            <!--<TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField"
+                     Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>-->
+            <TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField">
+                <Binding Path="Benennung" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule/>
+                        <!--<NotifyDataErrorValidationRule/>-->
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
+
+            <TextBox Grid.Column="2" Grid.Row="2" TextWrapping="Wrap"
+                     Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
             <StackPanel Grid.Column="2" Grid.Row="3"  Orientation="Horizontal" >
                 <TextBox x:Name="SortTextBox" Width="50" HorizontalAlignment="Left"
                      Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
             </StackPanel>
-            
-            <TextBox Grid.Column="2" Grid.Row="1" x:Name="NamingField"
-                     Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
-            <TextBox Grid.Column="2" Grid.Row="2" TextWrapping="Wrap"
-                     Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+
             <ListView x:Name="SkillsListView" Grid.Column="2" Grid.Row="4" Visibility="Collapsed"
                       HorizontalAlignment="Left" VerticalAlignment="Top"  Height="Auto"  Margin="2">
                 <ListView.View>

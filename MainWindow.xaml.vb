@@ -349,12 +349,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = GroupView.GroupMembersDataGrid.SelectedItems.Count > 0
+        e.CanExecute = GroupView.MitgliederlisteDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        For i = GroupView.GroupMembersDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.GroupMembersDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        For i = GroupView.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -725,7 +725,6 @@ Public Class MainWindow
         If _gruppenlisteCollectionView.CanSort Then
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If
-
         DataContext = _gruppenlisteCollectionView
     End Sub
 

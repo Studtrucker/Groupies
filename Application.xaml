@@ -167,7 +167,7 @@
 
             <ControlTemplate x:Key="ErrorTemplate">
                 <DockPanel LastChildFill="True">
-                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
+                    <Border DockPanel.Dock="Top" BorderBrush="Orange" Background="Orange" BorderThickness="1">
                         <AdornedElementPlaceholder />
                     </Border>
                 </DockPanel>

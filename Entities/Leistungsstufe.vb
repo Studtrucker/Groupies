@@ -68,12 +68,12 @@ Namespace Entities
         ''' <returns></returns>
         Public Property LeistungsstufeID As Guid
 
+        '<Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe")>
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe")>
         Public Property Sortierung As Nullable(Of Integer)
             Get
                 Return _Sortierung
@@ -92,6 +92,31 @@ Namespace Entities
             End Set
         End Property
 
+
+        Private _Sort As String
+        ''' <summary>
+        ''' Sortierungszahl für die Ausgabeinformationen
+        ''' </summary>
+        ''' <returns></returns>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Sort ist eine Pflichtangabe")>
+        Public Property Sort As String
+            Get
+                Return _Sort
+            End Get
+            Set(value As String)
+                _Sort = value
+                If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+                    'Dim errorMessage As String = ""
+                    'If SortierungCheck(_Sortierung, errorMessage) Then
+                    '    Errors.Clear()
+                    'Else
+                    '    Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
+                    'End If
+                    OnPropertyChanged(NameOf(Sort))
+                End If
+            End Set
+        End Property
+
         ''' <summary>
         ''' Die Benennung der Leistungsstufe
         ''' </summary>
@@ -102,51 +127,45 @@ Namespace Entities
                 Return _Benennung
             End Get
             Set(value As String)
+                Dim errorMessage As String = ""
+                If BenennungCheck(value, errorMessage) Then
+                    Errors.Clear()
+                Else
+                    Errors(NameOf(Benennung)) = errorMessage
+                End If
                 _Benennung = value
-                'Dim errorMessage As String = ""
-                'If BenennungCheck(_Benennung, errorMessage) Then
-                '    _errors.Clear()
-                'Else
-                '    _errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
-                'End If
-                'GetErrors(NameOf(Benennung))
-                Dim x = MyBase.PropertyInfos
                 OnPropertyChanged(NameOf(Benennung))
             End Set
         End Property
 
-        Private Function BenennungCheck(Value As String, ByRef errorMessage As String)
-            errorMessage = ""
-            Dim isValid = True
-            'If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-            '    If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
-            '        errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
-            '        isValid = False
-            '    End If
-            'End If
-            'If String.IsNullOrEmpty(Trim(Value)) Then
-            '    '                errorMessage = "Die Benennung ist eine Pflichtangabe"
-            '    errorMessage = "Pflichtangabe"
-            '    isValid = False
-            'End If
-            Return isValid
-        End Function
-
-        Private Function SortierungCheck(Value As Integer, ByRef errorMessage As String)
-            errorMessage = ""
+        Private Function BenennungCheck(Value As String, ByRef errorMessage As String) As Boolean
+            errorMessage = String.Empty
             Dim isValid = True
             If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) Ls.Sortierung).Contains(Value) Then
-                    errorMessage = "Die Sortierung der Leistungsstufe darf nicht doppelt vergeben werden"
+                If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
+                    errorMessage = "Die Benennung der Leistungsstufe darf nicht doppelt vergeben werden"
+                    'Errors.Add(NameOf(Benennung), errorMessage)
                     isValid = False
                 End If
             End If
-            If Value <= 0 Then
-                errorMessage = "Die Sortierung der Leistungsstufe muss größer als Null sein"
-                isValid = False
-            End If
             Return isValid
         End Function
+
+        'Private Function SortierungCheck(Value As Integer, ByRef errorMessage As String)
+        '    errorMessage = ""
+        '    Dim isValid = True
+        '    If Controller.AppController.CurrentClub IsNot Nothing AndAlso Controller.AppController.CurrentClub.Leistungsstufenliste IsNot Nothing Then
+        '        If Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) Ls.Sortierung).Contains(Value) Then
+        '            errorMessage = "Die Sortierung der Leistungsstufe darf nicht doppelt vergeben werden"
+        '            isValid = False
+        '        End If
+        '    End If
+        '    If Value <= 0 Then
+        '        errorMessage = "Die Sortierung der Leistungsstufe muss größer als Null sein"
+        '        isValid = False
+        '    End If
+        '    Return isValid
+        'End Function
 
         ''' <summary>
         ''' Beschreibung der Leistungsstufe

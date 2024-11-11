@@ -29,6 +29,7 @@ Public Class NeueLeistungsstufeDialog
         e.CanExecute = Not Leistungsstufe.HasErrors
     End Sub
 
+
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = True
     End Sub

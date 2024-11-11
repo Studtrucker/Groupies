@@ -694,6 +694,10 @@ Public Class MainWindow
 
     End Sub
 
+    Private Sub setGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
+        GroupView.setView(sender, New RoutedEventArgs)
+    End Sub
+
     Private Sub setView(Club As Club)
 
         ' Hier wird der DataContext gesetzt!
@@ -704,6 +708,7 @@ Public Class MainWindow
             _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
         End If
         GroupView.Gruppenleistungsstufe.ItemsSource = _leistungsstufenlisteCollectionView
+        GroupView.TeilnehmerLeistungsstand.ItemsSource = _leistungsstufenlisteCollectionView
 
         setView(Club.Gruppenliste)
         setView(Club.GruppenloseTeilnehmer)
@@ -737,9 +742,6 @@ Public Class MainWindow
     End Sub
 
 
-    Private Sub SetGroupView()
-        GroupView.SetView()
-    End Sub
 
     Private Sub unsetView()
 
@@ -850,13 +852,6 @@ Public Class MainWindow
         Instructor
         Participant
     End Enum
-
-    'Private Sub HandleInstructorMenuItemClick(sender As Object, e As RoutedEventArgs)
-    '    Dim InstructorWindow = New InstructorsWindow
-    '    InstructorWindow.Show()
-    'End Sub
-
-
 
 #End Region
 

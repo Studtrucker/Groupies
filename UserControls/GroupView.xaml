@@ -10,8 +10,6 @@
              Loaded="UserControl_Loaded"
              Width="Auto" Height="Auto">
 
-    
-
 
     <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
         <Border.Effect>
@@ -72,7 +70,7 @@
                           SelectedValuePath="Benennung"
                           SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
-                           Name="Gruppenleistungsstufe" >
+                          Name="Gruppenleistungsstufe" >
                 </ComboBox>
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
@@ -102,7 +100,11 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Leistungsstand" Width="*" Binding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<DataGridTextColumn Header="Leistungsstand" Width="*" Binding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstand" Header="Leistungsstand" Width="*" 
+                                                SelectedValuePath="Benennung" 
+                                                SelectedItemBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValueBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

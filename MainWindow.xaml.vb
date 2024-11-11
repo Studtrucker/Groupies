@@ -736,6 +736,11 @@ Public Class MainWindow
         GruppenloseTrainerDataGrid.DataContext = _gruppenloseTrainerCollectionView
     End Sub
 
+
+    Private Sub SetGroupView()
+        GroupView.SetView()
+    End Sub
+
     Private Sub unsetView()
 
         DataContext = Nothing

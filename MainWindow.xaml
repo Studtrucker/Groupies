@@ -102,7 +102,7 @@
                     <TextBlock Text="Die Gruppen" Grid.Row="0"/>
                     
                     <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
-                              Margin="6"  Foreground="Black"           
+                              Margin="6"  Foreground="Black"  SelectedCellsChanged="unsetView"         
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                         <DataGrid.Resources>
 

@@ -10,16 +10,7 @@
              Loaded="UserControl_Loaded"
              Width="Auto" Height="Auto">
 
-    <!--<UserControl.Resources>
-        <CollectionViewSource x:Key="cvs" Source="{StaticResourcemodelle}>
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Nachname"/>
-                <scm:SortDescription PropertyName="Vorname"/>
-                <scm:SortDescription PropertyName="Leistungsstufe"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        
-    </UserControl.Resources>-->
+    
 
 
     <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
@@ -99,7 +90,7 @@
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="true" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
-                          ItemsSource="{Binding Mitgliederliste}"
+                          ItemsSource="{Binding Mitgliederliste}" 
                           SelectionMode="Extended" MouseDoubleClick="Handle_TeilnehmerAusGruppeEntfernen">
 
                     <DataGrid.ContextMenu>

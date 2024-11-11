@@ -15,6 +15,19 @@ Namespace UserControls
         End Sub
 
 
+        Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
+            SetView()
+        End Sub
+
+        Private Sub SetView()
+            Dim cv As ICollectionView = CollectionViewSource.GetDefaultView(DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Mitgliederliste)
+            cv.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+            cv.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
+            cv.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
+        End Sub
+
+
+
 #Region "Teilnehmer"
 
         Private Sub Handle_TeilnehmerAusGruppeEntfernen(sender As Object, e As RoutedEventArgs)
@@ -33,11 +46,8 @@ Namespace UserControls
             End If
         End Sub
 
-        Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
-            Dim cv As ICollectionView = CollectionViewSource.GetDefaultView(DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Mitgliederliste)
-            cv.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
-            cv.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
-            cv.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
+        Private Sub GroupView_DataContextChanged(sender As Object, e As DependencyPropertyChangedEventArgs) Handles Me.DataContextChanged
+            SetView()
         End Sub
 
 #End Region

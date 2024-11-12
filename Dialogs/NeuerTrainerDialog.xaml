@@ -63,7 +63,7 @@
                                Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop setzen
                     </TextBlock>
-                    <Image Width="120" Height="180" Source="{Binding InstructorPicture}" />
+                    <Image Width="120" Height="180" Source="{Binding Foto}" />
                 </Grid>
             </Border>
 

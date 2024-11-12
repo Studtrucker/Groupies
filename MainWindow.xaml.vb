@@ -15,7 +15,7 @@ Imports AppCon = Groupies.Controller.AppController
 
 Public Class MainWindow
 
-#Region "Fields"
+#Region "Felder"
 
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
@@ -26,7 +26,7 @@ Public Class MainWindow
 
 #End Region
 
-#Region "Constructor"
+#Region "Konstruktor"
 
     Sub New()
 
@@ -61,7 +61,6 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print,
                                                AddressOf Handle_PrintClub_Execute, AddressOf Handle_PrintClub_CanExecute))
 
-        ' Neue Version
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerlisteImportieren,
                                                AddressOf Handle_TeilnehmerlisteImportieren_Execute,
                                                AddressOf Handle_TeilnehmerlisteImportieren_CanExecute))
@@ -93,6 +92,10 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerNeuErstellen,
                                                AddressOf Handle_TrainerNeuErstellen_Execute,
                                                AddressOf Handle_TrainerNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerBearbeiten,
+                                               AddressOf Handle_TrainerBearbeiten_Execute,
+                                               AddressOf Handle_TrainerBearbeiten_CanExecuted))
+
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerAusGruppeEntfernen,
                                                AddressOf Handle_TrainerAusGruppeEntfernen_Execute,
                                                AddressOf Handle_TrainerAusGruppeEntfernen_CanExecute))
@@ -405,6 +408,20 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Trainer)
+        End If
+    End Sub
+
+    Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.Bearbeiten(AppCon.CurrentClub.AlleTrainer(0))
+
+        If dlg.ShowDialog = True Then
+            AppCon.CurrentClub.AlleTrainer(0) = dlg.Trainer
         End If
     End Sub
 

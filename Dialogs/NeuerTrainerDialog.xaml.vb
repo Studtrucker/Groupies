@@ -25,6 +25,11 @@ Public Class NeuerTrainerDialog
         PrintNameField.Focus()
     End Sub
 
+    Public Sub Bearbeiten(Trainer As Trainer)
+        _Trainer = Trainer
+        DataContext = _Trainer
+    End Sub
+
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = Trainer.IsOk
     End Sub

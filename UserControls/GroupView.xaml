@@ -79,8 +79,8 @@
 
                         <TextBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Trainer aus Gruppe entfernen" 
-                                      Command="{x:Static cmd:SkiclubCommands.TrainerAusGruppeEntfernen}" />
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}" />
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerAusGruppeEntfernen}" />
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>

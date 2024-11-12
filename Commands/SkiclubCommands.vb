@@ -41,8 +41,12 @@ Namespace Commands
                                                                                         NameOf(TrainerAusGruppeEntfernen),
                                                                                         GetType(SkiclubCommands))
         Public Shared ReadOnly Property TrainerNeuErstellen As New RoutedUICommand("Trainer hinzufügen",
-                                                                                  NameOf(TrainerNeuErstellen),
+                                                                                   NameOf(TrainerNeuErstellen),
+                                                                                   GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TrainerBearbeiten As New RoutedUICommand("Trainer bearbeiten",
+                                                                                  NameOf(TrainerBearbeiten),
                                                                                   GetType(SkiclubCommands))
+
         Public Shared ReadOnly Property TrainerArchivieren As New RoutedUICommand("Trainer archivieren",
                                                                                   NameOf(TrainerArchivieren),
                                                                                   GetType(SkiclubCommands))

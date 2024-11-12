@@ -20,8 +20,6 @@ Namespace UserControls
             cv.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
             cv.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
             cv.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
-
-
         End Sub
 
         Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)

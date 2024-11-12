@@ -45,7 +45,7 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
 
-            <MenuItem  Header="B_earbeiten" >
+            <MenuItem  Header="B_earbeiten" Foreground="Black">
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
@@ -61,6 +61,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}"/>
                 <Separator/>
@@ -179,8 +180,10 @@
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Trainer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
-                                <MenuItem Header="Trainer archivieren" Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

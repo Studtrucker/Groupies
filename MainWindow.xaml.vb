@@ -38,7 +38,7 @@ Public Class MainWindow
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         ' DataContext participantDataGrid
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
-        ' DataContext groupleaderDataGrid
+        ' DataContext GruppenleiterDataGrid
         _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
 
     End Sub
@@ -138,13 +138,13 @@ Public Class MainWindow
 
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
-        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schliessen?", "Achtung", MessageBoxButton.YesNo)
+        Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
         e.Cancel = result = MessageBoxResult.No
     End Sub
 
     Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
 
-        ' 1. Den Pfad der letzen Liste ins IsolatedStorage speichern.
+        ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
         If _groupiesFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
@@ -155,7 +155,7 @@ Public Class MainWindow
             End Using
         End If
 
-        ' 2. Die meist genutzen Listen ins Isolated Storage speichern
+        ' 2. Die meist genutzten Listen ins Isolated Storage speichern
         If _mRuSortedList.Count > 0 Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("_mRUSortedList", FileMode.OpenOrCreate, iso)
@@ -198,7 +198,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub LoadLastSkischule()
-        ' Die letze Skischule aus dem IsolatedStorage holen.
+        ' Die letzte Skischule aus dem IsolatedStorage holen.
         Try
             Dim x = ""
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
@@ -240,7 +240,7 @@ Public Class MainWindow
 
         ' Skischulobjekt löschen
         AppCon.CurrentClub = Nothing
-        ' Alle DataContexte löschen
+        ' Jeden DataContext löschen
         DataContext = Nothing
         GruppenloseTeilnehmerDataGrid.DataContext = Nothing
         GruppenloseTrainerDataGrid.DataContext = Nothing
@@ -621,7 +621,7 @@ Public Class MainWindow
             If i > max Then max = i
         Next
 
-        Dim keysToRemove As List(Of Integer) = New List(Of Integer)()
+        Dim keysToRemove As New List(Of Integer)()
         For Each kvp In _mRuSortedList
             If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
         Next
@@ -653,8 +653,7 @@ Public Class MainWindow
     Private Sub RefreshMenuInApplication()
 
         For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
-            Dim mi As MenuItem = New MenuItem()
-            mi.Header = _mRuSortedList.Values(i)
+            Dim mi As New MenuItem() With {.Header = _mRuSortedList.Values(i)}
             AddHandler mi.Click, AddressOf HandleMostRecentClick
             mostrecentlyUsedMenuItem.Items.Add(mi)
         Next
@@ -769,7 +768,7 @@ Public Class MainWindow
         Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
         Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
 
-        ' ermitteln der tatsächlich verfügbaren Seitengrösse
+        ' ermitteln der tatsächlich verfügbaren Seitengröße
         Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
         Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
 
@@ -797,16 +796,15 @@ Public Class MainWindow
             hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
         End If
 
-        'Todo: Berechnen, wieviele Teilnehmer auf einer Seite gedruckt werden können
+        'Todo: Berechnen, wie viele Teilnehmer auf einer Seite gedruckt werden können
         Dim doc = New FixedDocument()
         doc.DocumentPaginator.PageSize = pageSize
         ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
 
 
-        '_Skiclub.Grouplist.ToList.ForEach(Sub(GL) GL.GroupMembers.ToList.Sort(Function(P1, P2) P1.ParticipantFullName.CompareTo(P2.ParticipantFullName)))
         ' nach AngezeigterName sortierte Liste verwenden
         Dim sortedGroupView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste)
-        sortedGroupView.SortDescriptions.Add(New SortDescription("GroupNaming", ListSortDirection.Ascending))
+        sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
         Dim skikursgruppe As Gruppe
         Dim page As FixedPage = Nothing

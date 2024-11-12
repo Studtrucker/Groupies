@@ -17,21 +17,28 @@
 
         <!--Area Group Header-->
         <DockPanel Grid.Row="0" Margin="5">
-            <TextBlock Text="Gruppe (Printname)" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
-            <TextBlock x:Name="GroupPrintNameTextBlock" Style="{StaticResource BigCaptionValue}" />
-            <Grid HorizontalAlignment="Right" DockPanel.Dock="Right">
+            <Grid HorizontalAlignment="Left" DockPanel.Dock="Right">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="380"/>
+                    <ColumnDefinition Width="115"/>
+                    <ColumnDefinition Width="185"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Gruppenname" Grid.Column="0" Style="{StaticResource SmallCaption}"/>
-                <TextBlock x:Name="GroupNamingTextBlock" Grid.Column="1" Style="{StaticResource SmallCaptionValue}" />
-                <TextBlock  Text="Gruppenlevel" Grid.Column="0" Grid.Row="1" Style="{StaticResource SmallCaption}" />
-                <TextBlock x:Name="GroupLevelNamingTextBlock" Grid.Column="1" Grid.Row="1" Style="{StaticResource SmallCaptionValue}" />
+                <TextBlock Text="Gruppename" Grid.Column="0" Grid.Row="0"
+                           Style="{StaticResource BigCaption}"/>
+                <TextBlock x:Name="GroupPrintNameTextBlock" Grid.Column="0" Grid.Row="1" 
+                           Style="{StaticResource BigCaptionValue}" />
+                <TextBlock Text="Gruppenname" Grid.Column="1" 
+                           Style="{StaticResource SmallCaption}"/>
+                <TextBlock x:Name="GroupNamingTextBlock" Grid.Column="2" 
+                           Style="{StaticResource SmallCaptionValue}" />
+                <TextBlock Text="Gruppenlevel" Grid.Column="1" Grid.Row="1" 
+                           Style="{StaticResource SmallCaption}" />
+                <TextBlock x:Name="GroupLevelNamingTextBlock" Grid.Column="2" Grid.Row="1" 
+                           Style="{StaticResource SmallCaptionValue}" />
             </Grid>
         </DockPanel>
 

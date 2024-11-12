@@ -105,6 +105,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeLoeschen,
                                                AddressOf Handle_GruppeLoeschen_Execute,
                                                AddressOf Handle_GruppeLoeschen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeSortieren,
+                                               AddressOf Handle_GruppeSortieren_Execute))
+
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
@@ -462,6 +465,10 @@ Public Class MainWindow
         AppCon.CurrentClub.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
     End Sub
 
+    Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        _gruppenlisteCollectionView.Refresh()
+    End Sub
+
 #End Region
 
 #Region "Leistungsstufe"
@@ -695,7 +702,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub setGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
-        GroupView.setView(sender, New RoutedEventArgs)
+        GroupView.SetView(sender, New RoutedEventArgs)
     End Sub
 
     Private Sub setView(Club As Club)

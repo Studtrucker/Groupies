@@ -56,6 +56,9 @@ Namespace Commands
         Public Shared ReadOnly Property GruppeLoeschen As New RoutedUICommand("Gruppe löschen",
                                                                                  NameOf(GruppeLoeschen),
                                                                                  GetType(SkiclubCommands))
+        Public Shared ReadOnly Property GruppeSortieren As New RoutedUICommand("Gruppen sortieren",
+                                                                                 NameOf(GruppeSortieren),
+                                                                                 GetType(SkiclubCommands))
 
 
         ' AllgemeineCommands

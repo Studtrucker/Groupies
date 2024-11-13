@@ -412,16 +412,34 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
+        'e.CanExecute = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer) IsNot Nothing
+        e.CanExecute = e.OriginalSource.DataContext IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        dlg.Bearbeiten(AppCon.CurrentClub.AlleTrainer(0))
+        ' Trainer ermitteln
+        Dim Trainer As Trainer
+        If e.OriginalSource.GetType.Equals(GetType(DataGridCell)) Then
+            If e.Source.Name.ToString.Equals("GruppenloseTrainerGrid") Then
+                Trainer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer)
+            Else
+                Trainer = DirectCast(DirectCast(GruppenlisteDataGrid.SelectedItem, Gruppe).Trainer, Trainer)
+            End If
+        ElseIf e.OriginalSource.GetType.Equals(GetType(MenuItem)) Then
+            Trainer = DirectCast(DirectCast(GruppenlisteDataGrid.SelectedItem, Gruppe).Trainer, Trainer)
+        ElseIf e.OriginalSource.GetType.Equals(GetType(ContextMenu)) Then
+            Trainer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer)
+        End If
 
-        If dlg.ShowDialog = True Then
-            AppCon.CurrentClub.AlleTrainer(0) = dlg.Trainer
+        If Trainer IsNot Nothing Then
+            Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            dlg.Bearbeiten(Trainer)
+
+            If dlg.ShowDialog = True Then
+                Trainer = dlg.Trainer
+            End If
         End If
     End Sub
 
@@ -718,7 +736,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub setGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
-        GroupView.SetView(sender, New RoutedEventArgs)
+        GroupView.setView(sender, New RoutedEventArgs)
     End Sub
 
     Private Sub setView(Club As Club)

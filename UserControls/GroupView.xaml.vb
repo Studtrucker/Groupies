@@ -12,6 +12,10 @@ Namespace UserControls
             ' Dieser Aufruf ist für den Designer erforderlich.
             InitializeComponent()
 
+            CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerBearbeiten,
+                                       AddressOf Handle_TrainerBearbeiten_Execute,
+                                       AddressOf Handle_TrainerBearbeiten_CanExecuted))
+
         End Sub
 
         Public Sub setView(sender As Object, e As RoutedEventArgs)
@@ -46,7 +50,22 @@ Namespace UserControls
             End If
         End Sub
 
+        Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+            e.CanExecute = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing
+        End Sub
 
+        Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+            Dim dlg = New NeuerTrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            ' Trainer aus der Gruppenliste holen
+            Dim Trainer = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer
+            dlg.Bearbeiten(Trainer)
+
+            If dlg.ShowDialog = True Then
+                Trainer = dlg.Trainer
+            End If
+        End Sub
 
 #End Region
 

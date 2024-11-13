@@ -421,7 +421,7 @@ Public Class MainWindow
         ' Trainer ermitteln
         Dim Trainer As Trainer
         If e.OriginalSource.GetType.Equals(GetType(DataGridCell)) Then
-            If e.Source.Name.ToString.Equals("GruppenloseTrainerGrid") Then
+            If e.Source.Name.ToString.Equals("GruppenloseTrainerDataGrid") Then
                 Trainer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer)
             Else
                 Trainer = DirectCast(DirectCast(GruppenlisteDataGrid.SelectedItem, Gruppe).Trainer, Trainer)

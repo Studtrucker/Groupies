@@ -114,6 +114,9 @@
     <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
       <DependentUpon>NewSkillDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\TeilnehmerSuchErgebnis.xaml.vb">
+      <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EntitiesAlt\Group.vb" />
     <Compile Include="EntitiesAlt\GroupCollection.vb" />
     <Compile Include="EntitiesAlt\Instructor.vb" />
@@ -220,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\NewSkillDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\TeilnehmerSuchErgebnis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -153,6 +153,7 @@
                     <StackPanel>
                         <TextBlock Text="Gruppe" />
                         <uc:GroupView x:Name="GroupView"/>
+
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>

@@ -76,6 +76,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerSuchen,
+                                               AddressOf Handle_TeilnehmerSuchen_Execute,
+                                               AddressOf Handle_TeilnehmerSuchen_CanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerArchivieren,
                                                AddressOf Handle_TeilnehmerArchivieren_Execute,
                                                AddressOf Handle_TeilnehmerArchivieren_CanExecuted))
@@ -362,6 +365,13 @@ Public Class MainWindow
         For i = GroupView.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
             AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
+    End Sub
+    Private Sub Handle_TeilnehmerSuchen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TeilnehmerSuchen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        AppCon.TeilnehmerSuchen()
     End Sub
 
     Private Sub Handle_TeilnehmerArchivieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)

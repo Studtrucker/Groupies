@@ -17,6 +17,11 @@
         </Border.Effect>
 
         <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1" >
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerSuchen}"/>
+                </ContextMenu>
+            </Grid.ContextMenu>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>

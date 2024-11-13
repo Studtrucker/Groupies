@@ -134,5 +134,10 @@ Namespace Controller
             Return String.Format("Die Datei {0} wurde geladen.", String.Format("{0}.json", Filename))
         End Function
 
+        Public Shared Sub TeilnehmerSuchen()
+            Dim dlg As New TeilnehmerSuchErgebnis(CurrentClub.Gruppenliste)
+            dlg.ShowDialog()
+        End Sub
+
     End Class
 End Namespace

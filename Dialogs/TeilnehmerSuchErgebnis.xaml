@@ -15,8 +15,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="Suche nach"/>
-        <TextBox  Grid.Column="1"/>
+        <!--<Label Content="Suche nach"/>
+        <TextBox  Grid.Column="1"/>-->
         <DataGrid x:Name="SuchergebnisDataGrid" ItemsSource="{Binding}" Grid.Row="1" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

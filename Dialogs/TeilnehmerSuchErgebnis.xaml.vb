@@ -1,29 +1,42 @@
-﻿
+﻿Imports System.ComponentModel
 Imports Groupies.Entities
+Imports Groupies.Controller.AppController
 
 Public Class TeilnehmerSuchErgebnis
 
-    Public Sub New(Suchergebnis As GruppeCollection)
+    Private _teilnehmerCollectionView As ICollectionView
+    Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        Dim liste As New List(Of Object)
+        'Suchergebnis.ToList.ForEach(Sub(Gr) _
+        '                                Gr.Mitgliederliste.ToList.
+        '                                ForEach(Sub(Tn) _
+        '                                            liste.Add(New With {.Vorname = Tn.Vorname,
+        '                                                  .Nachname = Tn.Nachname,
+        '                                                  .GruppenName = Gr.Benennung,
+        '                                                  .Trainer = Gr.Trainer.VorUndNachname,
+        '                                                  .Gruppenstufe = Gr.Leistungsstufe.Benennung})))
 
-        'Dim x = Suchergebnis.ToList.Select(Function(Gr) Gr.Mitgliederliste.Select(Function(Tn) New With {.TeilnehmerID = Tn.TeilnehmerID, .Name = Tn.VorUndNachname, .GruppenID = Gr.GruppenID, .GruppenName = Gr.Benennung, .Trainer = Gr.Trainer.VorUndNachname, .Gruppenstufe = Gr.Leistungsstufe.Benennung}))
+        'liste.OrderBy(Function(Tn) Tn.Vorname).ToList.OrderBy(Function(Tn) Tn.Nachname)
 
-        Dim l As New List(Of Object)
-        Suchergebnis.ToList.ForEach(Sub(Gr) Gr.Mitgliederliste.ToList.ForEach(Sub(Tn) l.Add(New With {.Name = Tn.VorUndNachname, .GruppenName = Gr.Benennung})))
-        Dim a = New With {.Name = "Andreas", .Nachname = "Studtrucker"}
-        Dim r = New With {.Name = "Rainer", .Nachname = "Studtrucker"}
+        'Groupies.Controller.AppController.CurrentClub.AlleTeilnehmer.(
 
-        Dim x As List(Of Object)
-        x = New List(Of Object)
-        x.AddRange({a, r})
+        Dim Teilnehmerliste As New List(Of Object)
 
-        DataContext = l
+        For Each TnL In CurrentClub.Gruppenliste
+            Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
+        Next
+
+        Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {.Vorname = y.Teilnehmer.Vorname, .Nachname = y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, .Sortierung = y.Gruppe.Sortierung})
+
+        DataContext = geordneteliste
 
     End Sub
+
 
 
 

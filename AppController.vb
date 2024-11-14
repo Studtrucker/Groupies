@@ -135,7 +135,8 @@ Namespace Controller
         End Function
 
         Public Shared Sub TeilnehmerSuchen()
-            Dim dlg As New TeilnehmerSuchErgebnis(CurrentClub.Gruppenliste)
+            'Dim dlg As New TeilnehmerSuchErgebnis(CurrentClub.Gruppenliste)
+            Dim dlg As New TeilnehmerSuchErgebnis
             dlg.ShowDialog()
         End Sub
 

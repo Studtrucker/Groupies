@@ -314,7 +314,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.Gruppenliste.Count > 0
+        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.Gruppenliste.Count > 0
     End Sub
 
 #End Region

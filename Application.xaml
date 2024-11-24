@@ -6,13 +6,72 @@
              xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              Startup="Skikurs_Startup"
              StartupUri="MainWindow.xaml">
-    <!--MainWindow-->
-    <!--Window1-->
+
     
     <Application.Resources>
         <ResourceDictionary>
 
-            <!--Styles Printout-->
+            
+            <!--Explicit Style for Image Caption-->
+            <Style TargetType="Image" x:Key="WindowImageCaption">
+                <Setter Property="Height" Value="32"/>
+                <Setter Property="Width" Value="48"/>
+                <Setter Property="Margin" Value="10,4"/>
+            </Style>
+
+             
+            <!--Allgemeine Styles-->
+
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip" Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, 
+                            RelativeSource={x:Static RelativeSource.Self}}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="DataGrid">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="RowBackground" Value="White"/>
+                <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <!--Control Template für Fehler -->
+            <ControlTemplate x:Key="ErrorTemplate">
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Top" BorderBrush="Orange" Background="Orange" BorderThickness="1">
+                        <AdornedElementPlaceholder />
+                    </Border>
+                </DockPanel>
+            </ControlTemplate>
+
+            <!--Spezielle Styles für den Ausdruck-->
             <Style TargetType="TextBlock" x:Key="BigCaption">
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="FontStyle" Value="Italic"/>
@@ -37,39 +96,39 @@
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
-            
+
             <Style TargetType="DataGrid" x:Key="PrintoutInfo">
                 <!--Standard-->
                 <Setter Property="FontSize" Value="36"/>
                 <Style.Triggers>
-                    <!--Group with more than 10 participants--> 
+                    <!--Group with more than 10 participants-->
                     <DataTrigger Binding="{Binding}" Value="ZuGross">
                         <Setter Property="FontSize" Value="24"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            
-            <LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
+
+            <!--<LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>
                 <GradientStop Offset="0.6" Color="White"/>
                 <GradientStop Offset="1.5" Color="White"/>
-            </LinearGradientBrush>
+            </LinearGradientBrush>-->
 
             <templ:SkikursGroesseStyleSelector x:Key="SkikursGroesseStyleSelector"/>
-            
-           <Style x:Key="KleineGruppeStyleSelector" TargetType="DataGrid">
-                <Setter Property="FontSize" Value="48"/> 
+
+            <Style x:Key="KleineGruppeStyleSelector" TargetType="DataGrid">
+                <Setter Property="FontSize" Value="48"/>
             </Style>
             <Style x:Key="NormaleGruppeStyleSelector" TargetType="DataGrid">
-                  <Setter Property="FontSize" Value="36"/>
+                <Setter Property="FontSize" Value="36"/>
             </Style>
             <Style x:Key="GrosseGruppeStyleSelector" TargetType="DataGrid">
                 <Setter Property="FontSize" Value="24"/>
             </Style>
 
-            
+
             <templ:GruppenGroesseDataTemplate x:Key="GruppenGroesseDataTemplate"/>
-            
+
             <DataTemplate x:Key="KleineGruppeDataTemplate" DataType="{x:Type en:TeilnehmerCollection}">
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="48"/>
             </DataTemplate>
@@ -79,124 +138,83 @@
             <DataTemplate x:Key="GrosseGruppeDataTemplate" DataType="{x:Type en:TeilnehmerCollection}">
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>
             </DataTemplate>
-            
+
             <Style TargetType="TextBlock" x:Key="RequiredField">
                 <Setter Property="Margin" Value="4"/>
             </Style>
-            
-            <!--Explicit Style for Image Caption-->
-            <Style TargetType="Image" x:Key="WindowImageCaption">
-                <Setter Property="Height" Value="32"/>
-                <Setter Property="Width" Value="48"/>
-                <Setter Property="Margin" Value="10,4"/>
-            </Style>
-
-            <!--Explicit Style for TextBlocks Caption--><!--
-            <Style TargetType="TextBlock" x:Key="WindowCaption">
-                <Setter Property="FontSize" Value="24"/>
-                <Setter Property="Margin" Value="4"/>
-            </Style>
-
-            --><!--Explicit Style for TextBlocks Required Fields--><!--
 
 
-            --><!--Style for TextBlocks--><!--
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="4"/>
-                --><!--<Setter Property="Foreground" Value="Black"/>--><!--
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
+            <SolidColorBrush x:Key="darkRedBrush" Color="DarkRed"/>
 
-            --><!--Style for Sliders--><!--
-            <Style TargetType="Slider" >
-                <Setter Property="Margin" Value="4"/>
-            </Style>
-            
-            --><!--Control template for errors --><!--
-            <ControlTemplate x:Key="ErrorTemplate">
-                <DockPanel LastChildFill="True">
-                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
-                        <AdornedElementPlaceholder />
-                    </Border>
-                </DockPanel>
-            </ControlTemplate>
 
-            --><!--Style for TextBoxes--><!--
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip"
-                                Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            
-            --><!--Style for Labels--><!--
-            <Style TargetType="Label">
-                <Setter Property="Margin" Value="4,4,4,4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-
-            -->
-
-            <Style TargetType="Button">
-                <Setter Property="Width" Value="100"/>
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-            
-            <Style TargetType="Label">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-            
-            <Style TargetType="ComboBox">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-
-            <!--Control template for errors -->
-
-            <ControlTemplate x:Key="ErrorTemplate">
-                <DockPanel LastChildFill="True">
-                    <Border DockPanel.Dock="Top" BorderBrush="Orange" Background="Orange" BorderThickness="1">
-                        <AdornedElementPlaceholder />
-                    </Border>
-                </DockPanel>
-            </ControlTemplate>
-
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="3"/>
-                <Setter Property="FontSize" Value="14"/>
-                <!--<Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />-->
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip" Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, 
-                            RelativeSource={x:Static RelativeSource.Self}}" />
-                    </Trigger>
-                </Style.Triggers>
-
-            </Style>
-
-            <!--Style für das DataGrid--> 
-            <Style TargetType="DataGrid">
-                <!--<Setter Property="Foreground" Value="Black"/>-->
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="RowBackground" Value="White"/>
-                <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
-                <Setter Property="Margin" Value="3"/>
-                <Setter Property="FontSize" Value="14"/>
-                <!--<Setter Property="BorderThickness" Value="0"/>-->
-            </Style>
-                      
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>
+    
+    
+    
+    
+<!--Explicit Style for TextBlocks Caption-->
+<!--
+           <Style TargetType="TextBlock" x:Key="WindowCaption">
+               <Setter Property="FontSize" Value="24"/>
+               <Setter Property="Margin" Value="4"/>
+           </Style>
+
+           -->
+<!--Explicit Style for TextBlocks Required Fields-->
+<!--
+
+
+           -->
+<!--Style for TextBlocks-->
+<!--
+           <Style TargetType="TextBlock">
+               <Setter Property="Margin" Value="4"/>
+               -->
+<!--<Setter Property="Foreground" Value="Black"/>-->
+<!--
+               <Setter Property="FontSize" Value="14"/>
+           </Style>
+
+           -->
+<!--Style for Sliders-->
+<!--
+           <Style TargetType="Slider" >
+               <Setter Property="Margin" Value="4"/>
+           </Style>
+           
+           -->
+<!--Control template for errors -->
+<!--
+           <ControlTemplate x:Key="ErrorTemplate">
+               <DockPanel LastChildFill="True">
+                   <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
+                       <AdornedElementPlaceholder />
+                   </Border>
+               </DockPanel>
+           </ControlTemplate>
+
+           -->
+<!--Style for TextBoxes-->
+<!--
+           <Style TargetType="TextBox">
+               <Setter Property="Margin" Value="4"/>
+               <Setter Property="FontSize" Value="18"/>
+               <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
+               <Style.Triggers>
+                   <Trigger Property="Validation.HasError" Value="true">
+                       <Setter Property="ToolTip"
+                               Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                   </Trigger>
+               </Style.Triggers>
+           </Style>
+           
+           -->
+<!--Style for Labels-->
+<!--
+           <Style TargetType="Label">
+               <Setter Property="Margin" Value="4,4,4,4"/>
+               <Setter Property="FontSize" Value="14"/>
+           </Style>-->

@@ -86,6 +86,12 @@ Namespace Entities
         Public Property Nachname As String
 
         ''' <summary>
+        ''' Das Geburtsdatum des Teilnehmers
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Geburtsdatum As Date
+
+        ''' <summary>
         ''' Der Vorname des Teilnehmers
         ''' </summary>
         ''' <returns></returns>

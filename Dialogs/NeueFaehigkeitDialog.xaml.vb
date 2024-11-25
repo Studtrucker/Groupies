@@ -2,9 +2,9 @@
 Imports Groupies.Entities
 Imports Groupies.Commands
 
-Public Class NewSkillDialog
+Public Class NeueFaehigkeitDialog
 
-    Public ReadOnly Property Skill() As Faehigkeit
+    Public ReadOnly Property Faehigkeit() As Faehigkeit
 
     Public Sub New()
 
@@ -12,8 +12,8 @@ Public Class NewSkillDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Skill = New Faehigkeit()
-        DataContext = _Skill
+        _Faehigkeit = New Faehigkeit()
+        DataContext = _Faehigkeit
 
     End Sub
 
@@ -26,7 +26,7 @@ Public Class NewSkillDialog
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Skill.IsOk
+        e.CanExecute = Faehigkeit.IsOk
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)

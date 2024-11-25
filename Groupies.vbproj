@@ -111,8 +111,8 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Constants\Level.vb" />
-    <Compile Include="Dialogs\NewSkillDialog.xaml.vb">
-      <DependentUpon>NewSkillDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\NeueFaehigkeitDialog.xaml.vb">
+      <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
@@ -222,7 +222,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NewSkillDialog.xaml">
+    <Page Include="Dialogs\NeueFaehigkeitDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -19,10 +19,19 @@ Public Class NeueLeistungsstufeDialog
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecute, AddressOf HandleButtonOKCanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecute))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.FaehigkeitNeuErstellen, AddressOf HandleFaehigkeitNeuErstellenExecute))
         NamingField.Focus()
 
+    End Sub
+
+    Private Sub HandleFaehigkeitNeuErstellenExecute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeueFaehigkeitDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            Leistungsstufe.Faehigkeiten.Add(dlg.Faehigkeit)
+        End If
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -30,11 +39,11 @@ Public Class NeueLeistungsstufeDialog
     End Sub
 
 
-    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleButtonOKExecute(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = True
     End Sub
 
-    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleButtonCancelExecute(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
     End Sub
 

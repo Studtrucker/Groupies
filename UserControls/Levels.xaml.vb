@@ -34,9 +34,9 @@ Namespace UserControls
         End Sub
 
         Private Sub HandleNewSkillExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-            Dim dlg = New NewSkillDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New NeueFaehigkeitDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
             If dlg.ShowDialog = True Then
-                Dim s = dlg.Skill
+                Dim s = dlg.Faehigkeit
                 Dim i = Controller.AppController.CurrentClub.Leistungsstufenliste.IndexOf(_levelListCollectionView.CurrentItem)
                 Controller.AppController.CurrentClub.Leistungsstufenliste(i).Faehigkeiten.Add(s)
                 _skillListCollectionView.MoveCurrentTo(s)

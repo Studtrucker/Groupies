@@ -1,4 +1,4 @@
-﻿<Window x:Class="NewSkillDialog"
+﻿<Window x:Class="NeueFaehigkeitDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:Groupies"
         xmlns:cmd="clr-namespace:Groupies.Commands"
         mc:Ignorable="d"
-        Title="NewSkillDialog" Height="450" Width="800">
+        Title="Fähigkeiten" Height="450" Width="800">
     <DockPanel>
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-trophäe-48.png" 
                    Style="{StaticResource WindowImageCaption}" />
             <TextBlock Height="Auto" Text="Neue Fähigkeit"
-                       Style="{StaticResource WindowCaption}"/>
+                       Style="{StaticResource SmallCaption}"/>
         </DockPanel>
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">

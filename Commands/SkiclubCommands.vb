@@ -67,6 +67,10 @@ Namespace Commands
                                                                                  NameOf(GruppeSortieren),
                                                                                  GetType(SkiclubCommands))
 
+        ' FähigkeitenCommands
+        Public Shared ReadOnly Property FaehigkeitNeuErstellen As New RoutedUICommand("Fähigkeit erstellen",
+                                                                                 NameOf(FaehigkeitNeuErstellen),
+                                                                                 GetType(SkiclubCommands))
 
         ' AllgemeineCommands
 

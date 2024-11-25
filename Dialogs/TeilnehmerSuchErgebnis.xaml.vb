@@ -23,14 +23,14 @@ Public Class TeilnehmerSuchErgebnis
 
         _teilnehmerCollectionView = New ListCollectionView(Teilnehmerliste)
         If _teilnehmerCollectionView.CanSort Then
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Nachname", ListSortDirection.Ascending))
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Vorname", ListSortDirection.Ascending))
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Gruppe.Sortierung", ListSortDirection.Ascending))
+        End If
+        If _teilnehmerCollectionView.CanFilter Then
+
         End If
         DataContext = _teilnehmerCollectionView
-
-        'Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {y.Teilnehmer.Vorname, y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, y.Gruppe.Sortierung})
-        'DataContext = geordneteliste
 
     End Sub
 

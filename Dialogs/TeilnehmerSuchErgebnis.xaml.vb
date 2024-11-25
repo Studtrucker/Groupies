@@ -31,7 +31,7 @@ Public Class TeilnehmerSuchErgebnis
             Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
         Next
 
-        Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {.Vorname = y.Teilnehmer.Vorname, .Nachname = y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, .Sortierung = y.Gruppe.Sortierung})
+        Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {y.Teilnehmer.Vorname, y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, y.Gruppe.Sortierung})
 
         DataContext = geordneteliste
 

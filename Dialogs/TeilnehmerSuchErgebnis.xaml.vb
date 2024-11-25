@@ -5,6 +5,7 @@ Imports Groupies.Controller.AppController
 Public Class TeilnehmerSuchErgebnis
 
     Private _teilnehmerCollectionView As ICollectionView
+
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -12,18 +13,6 @@ Public Class TeilnehmerSuchErgebnis
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Dim liste As New List(Of Object)
-        'Suchergebnis.ToList.ForEach(Sub(Gr) _
-        '                                Gr.Mitgliederliste.ToList.
-        '                                ForEach(Sub(Tn) _
-        '                                            liste.Add(New With {.Vorname = Tn.Vorname,
-        '                                                  .Nachname = Tn.Nachname,
-        '                                                  .GruppenName = Gr.Benennung,
-        '                                                  .Trainer = Gr.Trainer.VorUndNachname,
-        '                                                  .Gruppenstufe = Gr.Leistungsstufe.Benennung})))
-
-        'liste.OrderBy(Function(Tn) Tn.Vorname).ToList.OrderBy(Function(Tn) Tn.Nachname)
-
-        'Groupies.Controller.AppController.CurrentClub.AlleTeilnehmer.(
 
         Dim Teilnehmerliste As New List(Of Object)
 
@@ -31,13 +20,24 @@ Public Class TeilnehmerSuchErgebnis
             Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
         Next
 
-        Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {y.Teilnehmer.Vorname, y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, y.Gruppe.Sortierung})
 
-        DataContext = geordneteliste
+        _teilnehmerCollectionView = New ListCollectionView(Teilnehmerliste)
+        If _teilnehmerCollectionView.CanSort Then
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
+            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        End If
+        DataContext = _teilnehmerCollectionView
+
+        'Dim geordneteliste = Teilnehmerliste.OrderBy(Function(x) x.Teilnehmer.Nachname).ToList.Select(Function(y) New With {y.Teilnehmer.Vorname, y.Teilnehmer.Nachname, .Gruppe = y.Gruppe.Benennung, y.Gruppe.Sortierung})
+        'DataContext = geordneteliste
 
     End Sub
 
+    Private Sub sort()
 
+
+    End Sub
 
 
 End Class

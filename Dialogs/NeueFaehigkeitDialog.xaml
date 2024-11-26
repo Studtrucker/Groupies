@@ -34,14 +34,14 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Content="Sortierung" Grid.Column="0" Grid.Row="0"/>
-            <TextBox Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="1" Grid.Row="0" Width="50" HorizontalAlignment="Left"
                      x:Name="NamingField"/>
             <Label Content="Fähigkeit" Grid.Column="0" Grid.Row="1"/>
-            <TextBox Text="{Binding SkillNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      Grid.Column="1" Grid.Row="1" />
             <Label Content="Beschreibung" Grid.Column="0" Grid.Row="2"/>
-            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+            <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"/>
         </Grid>
     </DockPanel>

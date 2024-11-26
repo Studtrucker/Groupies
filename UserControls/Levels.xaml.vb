@@ -40,7 +40,7 @@ Namespace UserControls
                 Dim i = Controller.AppController.CurrentClub.Leistungsstufenliste.IndexOf(_levelListCollectionView.CurrentItem)
                 Controller.AppController.CurrentClub.Leistungsstufenliste(i).Faehigkeiten.Add(s)
                 _skillListCollectionView.MoveCurrentTo(s)
-                LevelViewUserControl.SkillsDataGrid.ScrollIntoView(s)
+                Leistungsstufe.SkillsDataGrid.ScrollIntoView(s)
             End If
         End Sub
 

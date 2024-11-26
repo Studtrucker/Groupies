@@ -183,8 +183,8 @@
     <Compile Include="UserControls\Levels.xaml.vb">
       <DependentUpon>Levels.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LevelView.xaml.vb">
-      <DependentUpon>LevelView.xaml</DependentUpon>
+    <Compile Include="UserControls\LeistungsstufeView.xaml.vb">
+      <DependentUpon>LeistungsstufeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ParticipantView.xaml.vb">
       <DependentUpon>ParticipantView.xaml</DependentUpon>
@@ -264,7 +264,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LevelView.xaml">
+    <Page Include="UserControls\LeistungsstufeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

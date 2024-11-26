@@ -23,7 +23,7 @@
                 <ColumnDefinition SharedSizeGroup="ExplorerColumn"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <uc:LevelView x:Name="LevelViewUserControl" Margin="10" />
+                <uc:LeistungsstufeView x:Name="Leistungsstufe" Margin="10" />
             </ScrollViewer>
         </Grid>
         

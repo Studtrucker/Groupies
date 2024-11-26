@@ -3,7 +3,7 @@ Imports Groupies.Commands
 Imports Groupies.Entities
 
 Namespace UserControls
-    Public Class LevelView
+    Public Class LeistungsstufeView
         'Public Property Level
         'Private _skillListCollectionView As ICollectionView
 

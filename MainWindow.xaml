@@ -67,16 +67,17 @@
                 <Separator/>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
-                <Separator/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
             </MenuItem>
 
             <MenuItem Header="Ansichten" Foreground="Black" >
                 <MenuItem Header="Teilnehmer"/>
                 <MenuItem Header="Skilehrer" />
                 <MenuItem Header="Gruppen"/>
-                <MenuItem Header="Levels"/>
+                <MenuItem Header="Leistungsstufen">
+                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
+                </MenuItem>
             </MenuItem>
 
             <MenuItem  Header="Extras" >

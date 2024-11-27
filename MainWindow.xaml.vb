@@ -117,9 +117,7 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeLoeschen,
-                                               AddressOf Handle_LeistungsstufeLoeschen_Execute,
-                                               AddressOf Handle_LeistungsstufeLoeschen_CanExecuted))
+
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRuSortedList = New SortedList(Of Integer, String)
@@ -533,15 +531,7 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub Handle_LeistungsstufeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        'wer ist hier der sender?
-        Dim wirdverwendet = AppCon.CurrentClub.AlleTeilnehmer.ToList.TrueForAll(Function(Tn) Tn.Leistungsstand.Equals(sender))
-        e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
-    End Sub
 
-    Private Sub Handle_LeistungsstufeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Throw New NotImplementedException
-    End Sub
 #End Region
 
 #End Region
@@ -552,6 +542,12 @@ Public Class MainWindow
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
         OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+    End Sub
+
+    Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
+        Dim Leistungsstufenuebericht As New LeistungsstufenuebersichtFenster
+        Leistungsstufenuebericht.Show()
+
     End Sub
 
 #End Region
@@ -902,6 +898,7 @@ Public Class MainWindow
         Instructor
         Participant
     End Enum
+
 
 #End Region
 

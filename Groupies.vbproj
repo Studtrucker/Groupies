@@ -180,8 +180,11 @@
     <Compile Include="UserControls\InstructorView.xaml.vb">
       <DependentUpon>InstructorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Levels.xaml.vb">
-      <DependentUpon>Levels.xaml</DependentUpon>
+    <Compile Include="UserControls\Leistungsstufenuebersicht.xaml.vb">
+      <DependentUpon>Leistungsstufenuebersicht.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\LeistungsstufenuebersichtFenster.xaml.vb">
+      <DependentUpon>LeistungsstufenuebersichtFenster.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LeistungsstufeView.xaml.vb">
       <DependentUpon>LeistungsstufeView.xaml</DependentUpon>
@@ -260,7 +263,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Levels.xaml">
+    <Page Include="UserControls\Leistungsstufenuebersicht.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LeistungsstufenuebersichtFenster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

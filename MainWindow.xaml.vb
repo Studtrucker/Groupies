@@ -760,7 +760,7 @@ Public Class MainWindow
         UnsetView()
         _leistungsstufenlisteCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
         If _leistungsstufenlisteCollectionView.CanSort Then
-            _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+            _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         End If
         GroupView.Gruppenleistungsstufe.ItemsSource = _leistungsstufenlisteCollectionView
         GroupView.TeilnehmerLeistungsstand.ItemsSource = _leistungsstufenlisteCollectionView

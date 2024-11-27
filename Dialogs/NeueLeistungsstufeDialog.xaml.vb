@@ -22,7 +22,6 @@ Public Class NeueLeistungsstufeDialog
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecute, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.FaehigkeitNeuErstellen, AddressOf HandleFaehigkeitNeuErstellenExecute))
-        NamingField.Focus()
 
     End Sub
 

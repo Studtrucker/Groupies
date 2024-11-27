@@ -159,6 +159,21 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
+
+        ''' <summary>
+        ''' Prüfung, ob die Leistungsstufe in Gebrauch ist
+        ''' </summary>
+        ''' <param name="Leistungsstufe"></param>
+        ''' <returns></returns>
+        Public Function LeistungsstufeWirdNichtGenutzt(Leistungsstufe As Leistungsstufe) As Boolean
+            Dim TnL = AlleTeilnehmer.Where(Function(Tn) Tn.Leistungsstand.Equals(Leistungsstufe))
+            Dim GrL = Gruppenliste.Where(Function(Gr) Gr.Leistungsstufe.Equals(Leistungsstufe))
+            If TnL.Count = 0 AndAlso GrL.Count = 0 Then
+                Return True
+            End If
+            Return False
+        End Function
+
         ''' <summary>
         ''' Die angegebene Gruppe bekommt den Teilnehmer als Mitglied
         ''' </summary>

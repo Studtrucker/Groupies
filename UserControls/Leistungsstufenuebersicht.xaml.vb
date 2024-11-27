@@ -36,11 +36,11 @@ Public Class Leistungsstufenuebersicht
 #Region "EventHandler CommandBindings"
 
     Private Sub Handle_Delete_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = False
+        e.CanExecute = AppCon.CurrentClub.LeistungsstufeWirdNichtGenutzt(_LeistungsstufenCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_Delete_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
+        AppCon.CurrentClub.Leistungsstufenliste.Remove(_LeistungsstufenCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_New_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)

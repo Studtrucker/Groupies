@@ -11,8 +11,8 @@
         Title="Übersicht Leistungsstufen" Height="450" Width="800">
     
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Start">
+        <Menu DockPanel.Dock="Top" Background="White">
+            <MenuItem Header="Bearbeiten">
                 <MenuItem Command="ApplicationCommands.New"/>
                 <MenuItem Command="ApplicationCommands.Delete"/>
                 <Separator/>
@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
             <uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Column="0" Margin="5"/>
             <GridSplitter DockPanel.Dock="Left"  HorizontalAlignment="Right"  Width="2" Background="LightGray" />
-            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="1" Margin="5"/>
+            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="1" Margin="5,5,5,5"/>
         </Grid>
 
     </DockPanel>

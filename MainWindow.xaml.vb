@@ -254,14 +254,14 @@ Public Class MainWindow
 
         AppCon.NeuenClubErstellen("Club")
 
-        setView(AppCon.CurrentClub)
+        SetView(AppCon.CurrentClub)
 
     End Sub
 
     Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
-            unsetView()
+            UnsetView()
             OpenSkischule(dlg.FileName)
         End If
     End Sub
@@ -438,7 +438,15 @@ Public Class MainWindow
             Trainer = DirectCast(DirectCast(GruppenlisteDataGrid.SelectedItem, Gruppe).Trainer, Trainer)
         ElseIf e.OriginalSource.GetType.Equals(GetType(ContextMenu)) Then
             Trainer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer)
+        Else
+            Trainer = Nothing
         End If
+
+        If Trainer IsNot Nothing Then TrainerBearbeiten(Trainer)
+
+    End Sub
+
+    Private Sub TrainerBearbeiten(Trainer As Trainer)
 
         If Trainer IsNot Nothing Then
             Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
@@ -446,7 +454,7 @@ Public Class MainWindow
             dlg.Bearbeiten(Trainer)
 
             If dlg.ShowDialog = True Then
-                Trainer = dlg.Trainer
+                Dim unused As Trainer = dlg.Trainer
             End If
         End If
     End Sub
@@ -545,7 +553,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Leistungsstufenuebericht As New LeistungsstufenuebersichtFenster
+        Dim Leistungsstufenuebericht As New Leistungsstufenuebersicht
         Leistungsstufenuebericht.Show()
 
     End Sub
@@ -587,7 +595,7 @@ Public Class MainWindow
             AppCon.CurrentClub = loadedClub
         End If
 
-        setView(AppCon.CurrentClub)
+        SetView(AppCon.CurrentClub)
 
         Title = "Groupies - " & fileName
 
@@ -741,15 +749,15 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub setGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
+    Private Sub SetGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
         GroupView.setView(sender, New RoutedEventArgs)
     End Sub
 
-    Private Sub setView(Club As Club)
+    Private Sub SetView(Club As Club)
 
         ' Hier wird der DataContext gesetzt!
 
-        unsetView()
+        UnsetView()
         _leistungsstufenlisteCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
         If _leistungsstufenlisteCollectionView.CanSort Then
             _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
@@ -757,12 +765,13 @@ Public Class MainWindow
         GroupView.Gruppenleistungsstufe.ItemsSource = _leistungsstufenlisteCollectionView
         GroupView.TeilnehmerLeistungsstand.ItemsSource = _leistungsstufenlisteCollectionView
 
-        setView(Club.Gruppenliste)
-        setView(Club.GruppenloseTeilnehmer)
-        setView(Club.GruppenloseTrainer)
+        SetView(Club.Gruppenliste)
+        SetView(Club.GruppenloseTeilnehmer)
+        SetView(Club.GruppenloseTrainer)
+
     End Sub
 
-    Private Sub setView(GruppenloseTeilnehmer As TeilnehmerCollection)
+    Private Sub SetView(GruppenloseTeilnehmer As TeilnehmerCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(GruppenloseTeilnehmer)
         If _gruppenloseTeilnehmerCollectionView.CanSort Then
             _gruppenloseTeilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
@@ -772,7 +781,7 @@ Public Class MainWindow
         GruppenloseTeilnehmerDataGrid.DataContext = _gruppenloseTeilnehmerCollectionView
     End Sub
 
-    Private Sub setView(Gruppenliste As GruppeCollection)
+    Private Sub SetView(Gruppenliste As GruppeCollection)
         _gruppenlisteCollectionView = New ListCollectionView(Gruppenliste)
         If _gruppenlisteCollectionView.CanSort Then
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
@@ -780,7 +789,7 @@ Public Class MainWindow
         DataContext = _gruppenlisteCollectionView
     End Sub
 
-    Private Sub setView(GruppenloseTrainer As TrainerCollection)
+    Private Sub SetView(GruppenloseTrainer As TrainerCollection)
         _gruppenloseTrainerCollectionView = New ListCollectionView(GruppenloseTrainer)
         If _gruppenloseTrainerCollectionView.CanSort Then
             _gruppenloseTrainerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
@@ -790,7 +799,7 @@ Public Class MainWindow
 
 
 
-    Private Sub unsetView()
+    Private Sub UnsetView()
 
         DataContext = Nothing
         GruppenloseTeilnehmerDataGrid.DataContext = Nothing

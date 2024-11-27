@@ -110,7 +110,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
-    <Compile Include="Constants\Level.vb" />
+    <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Dialogs\NeueFaehigkeitDialog.xaml.vb">
       <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>
     </Compile>
@@ -180,11 +180,11 @@
     <Compile Include="UserControls\InstructorView.xaml.vb">
       <DependentUpon>InstructorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Leistungsstufenliste.xaml.vb">
+      <DependentUpon>Leistungsstufenliste.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Leistungsstufenuebersicht.xaml.vb">
       <DependentUpon>Leistungsstufenuebersicht.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\LeistungsstufenuebersichtFenster.xaml.vb">
-      <DependentUpon>LeistungsstufenuebersichtFenster.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LeistungsstufeView.xaml.vb">
       <DependentUpon>LeistungsstufeView.xaml</DependentUpon>
@@ -263,11 +263,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Leistungsstufenuebersicht.xaml">
+    <Page Include="UserControls\Leistungsstufenliste.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LeistungsstufenuebersichtFenster.xaml">
+    <Page Include="UserControls\Leistungsstufenuebersicht.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

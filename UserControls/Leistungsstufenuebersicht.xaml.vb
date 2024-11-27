@@ -1,58 +1,65 @@
 ﻿Imports System.ComponentModel
-Imports Groupies.Entities
-Imports Groupies.Commands
+Imports AppCon = Groupies.Controller.AppController
 
-Namespace UserControls
-    Public Class Leistungsstufenuebersicht
-        Private _levelListCollectionView As ICollectionView
-        Private _skillListCollectionView As ICollectionView
+Public Class Leistungsstufenuebersicht
 
-        Sub New()
+#Region "Felder"
 
-            ' Dieser Aufruf ist für den Designer erforderlich.
-            InitializeComponent()
+    Private _LeistungsstufenCollectionView As ICollectionView
 
-            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-            _levelListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.Leistungsstufenliste)
-            _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-            DataContext = _levelListCollectionView
+#End Region
 
-            _skillListCollectionView = New ListCollectionView(New FaehigkeitCollection())
+#Region "WindowEvents"
 
-        End Sub
+    Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs)
 
-        ' Zur Ausführung des Handles HandleNewSkillExecuted erstellen, kann auf dem Mutter Window ein RoutedEvent registriert werden.
-        ' Siehe auch EventTrigger (= Ereignisauslöser) Kapitel 11 »Styles, Trigger und Templates«
 
-        Private Sub LevelView_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-            CommandBindings.Add(New CommandBinding(SkiclubCommands.NeuerSkill, AddressOf HandleNewSkillExecuted, AddressOf HandleNewSkillCanExecute))
-        End Sub
+        ' 1. CommandBindings zur CommandBindings-Property des Window
+        '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
-        Private Sub HandleNewSkillCanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-            e.CanExecute = True
-        End Sub
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Delete, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
 
-        Private Sub HandleNewSkillExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-            Dim dlg = New NeueFaehigkeitDialog ' With {.Owner = Me.Parent, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-            If dlg.ShowDialog = True Then
-                Dim s = dlg.Faehigkeit
-                Dim i = Controller.AppController.CurrentClub.Leistungsstufenliste.IndexOf(_levelListCollectionView.CurrentItem)
-                Controller.AppController.CurrentClub.Leistungsstufenliste(i).Faehigkeiten.Add(s)
-                _skillListCollectionView.MoveCurrentTo(s)
-                Leistungsstufe.SkillsDataGrid.ScrollIntoView(s)
-            End If
-        End Sub
-        Private Sub Handle_LeistungsstufeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-            Throw New NotImplementedException
-            'wer ist hier der sender?
-            'Dim wirdverwendet = AppCon.CurrentClub.AlleTeilnehmer.ToList.TrueForAll(Function(Tn) Tn.Leistungsstand.Equals(sender))
-            'e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
-        End Sub
+        _LeistungsstufenCollectionView = New ListCollectionView(AppCon.CurrentClub.Leistungsstufenliste)
+        If _LeistungsstufenCollectionView.CanSort Then
+            _LeistungsstufenCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        End If
+        DataContext = _LeistungsstufenCollectionView
 
-        Private Sub Handle_LeistungsstufeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-            Throw New NotImplementedException
-        End Sub
-    End Class
+    End Sub
 
-End Namespace
+#End Region
+
+
+#Region "EventHandler CommandBindings"
+
+    Private Sub Handle_Delete_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = False
+    End Sub
+
+    Private Sub Handle_Delete_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+    End Sub
+
+    Private Sub Handle_New_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_Close_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Me.Close()
+    End Sub
+
+    Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dlg = New NeueLeistungsstufeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        If dlg.ShowDialog = True Then
+            AppCon.CurrentClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
+        End If
+    End Sub
+
+#End Region
+
+End Class

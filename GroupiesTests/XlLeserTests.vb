@@ -10,7 +10,7 @@ Imports System.Net.WebRequestMethods
 Public Class XlLeserTests
 
     <TestMethod>
-    Public Sub testXLSXReaderMitFehler()
+    Public Sub TestXLSXReaderMitFehler()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
@@ -23,7 +23,7 @@ Public Class XlLeserTests
     End Sub
 
     <TestMethod>
-    Public Sub testXLSXReaderTeilnehmer()
+    Public Sub TestXLSXReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xlsx"
@@ -42,7 +42,7 @@ Public Class XlLeserTests
     End Sub
 
     <TestMethod>
-    Public Sub testXLSXReaderTrainer()
+    Public Sub TestXLSXReaderTrainer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_TrainerBearbeitet.xlsx"
@@ -63,7 +63,7 @@ Public Class XlLeserTests
     End Sub
 
     <TestMethod>
-    Public Sub testXLSReaderTeilnehmer()
+    Public Sub TestXLSReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xls"
@@ -82,7 +82,7 @@ Public Class XlLeserTests
     End Sub
 
     <TestMethod>
-    Public Sub testCSVReaderTeilnehmer()
+    Public Sub TestCSVReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Teilnehmer.csv"
@@ -90,19 +90,17 @@ Public Class XlLeserTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Teilnehmer.csv"
         End If
 
-        Dim exception As Exception
-
         Try
             Dim Dataset = XlLeser.LoadDataSet(Pfad, "Teilnehmer")
         Catch ex As Exception
-            exception = ex
+            Assert.IsNotNull(ex)
         End Try
-        Assert.IsNotNull(exception)
+
 
     End Sub
 
     <TestMethod>
-    Public Sub testCSVReaderTrainer()
+    Public Sub TestCSVReaderTrainer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Trainer.csv"

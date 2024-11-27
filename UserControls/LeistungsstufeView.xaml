@@ -33,13 +33,14 @@
                  Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
         <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
                  Grid.Column="1" Grid.Row="2" />
-        <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
-                 Grid.Column="1" Grid.Row="3" />
-        <DockPanel Grid.Column="1" Grid.Row="4">
+            <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Column="1" Grid.Row="3" 
+                 TextWrapping="Wrap" AcceptsReturn="True" />
+
+            <DockPanel Grid.Column="1" Grid.Row="4">
             <DataGrid  x:Name="SkillsDataGrid"
                        DockPanel.Dock="Top"
-                       AutoGenerateColumns="False" ItemsSource="{Binding LevelSkills}"
-                       IsReadOnly="True" 
+                       AutoGenerateColumns="False" ItemsSource="{Binding Faehigkeiten}"
                        CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
                 <DataGrid.ContextMenu>
                     <ContextMenu>

@@ -7,7 +7,6 @@ Public Class Leistungsstufenuebersicht
 
     Private _LeistungsstufenCollectionView As ICollectionView
 
-
 #End Region
 
 #Region "WindowEvents"
@@ -19,7 +18,7 @@ Public Class Leistungsstufenuebersicht
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Delete, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute, AddressOf Handle_New_CanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
 
         _LeistungsstufenCollectionView = New ListCollectionView(AppCon.CurrentClub.Leistungsstufenliste)
@@ -29,6 +28,7 @@ Public Class Leistungsstufenuebersicht
         DataContext = _LeistungsstufenCollectionView
 
     End Sub
+
 
 #End Region
 
@@ -49,6 +49,10 @@ Public Class Leistungsstufenuebersicht
 
     Private Sub Handle_Close_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Me.Close()
+    End Sub
+
+    Private Sub Handle_New_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
     End Sub
 
     Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)

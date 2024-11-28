@@ -11,12 +11,12 @@ Namespace Entities
         Private _Gruppenliste = New GruppeCollection
 
         Private _GruppenloseTeilnehmer As New TeilnehmerCollection
-        Private _EingeteilteTeilnehmer As New TeilnehmerCollection
-        Private _AlleTeilnehmer As New TeilnehmerCollection
+        Private ReadOnly _EingeteilteTeilnehmer As New TeilnehmerCollection
+        Private ReadOnly _AlleTeilnehmer As New TeilnehmerCollection
 
         Private _GruppenloseTrainer As New TrainerCollection
-        Private _EingeteilteTrainer As New TrainerCollection
-        Private _AlleTrainer As New TrainerCollection
+        Private ReadOnly _EingeteilteTrainer As New TrainerCollection
+        Private ReadOnly _AlleTrainer As New TrainerCollection
 #End Region
 
 #Region "Konstruktor"
@@ -166,8 +166,8 @@ Namespace Entities
         ''' <param name="Leistungsstufe"></param>
         ''' <returns></returns>
         Public Function LeistungsstufeWirdNichtGenutzt(Leistungsstufe As Leistungsstufe) As Boolean
-            Dim TnL = AlleTeilnehmer.Where(Function(Tn) Tn.Leistungsstand.Equals(Leistungsstufe))
-            Dim GrL = Gruppenliste.Where(Function(Gr) Gr.Leistungsstufe.Equals(Leistungsstufe))
+            Dim TnL = AlleTeilnehmer.Where(Function(Tn) Tn.Leistungsstand.Benennung.Equals(Leistungsstufe.Benennung)).ToList
+            Dim GrL = Gruppenliste.Where(Function(Gr) Gr.Leistungsstufe.Benennung.Equals(Leistungsstufe.Benennung)).ToList
             If TnL.Count = 0 AndAlso GrL.Count = 0 Then
                 Return True
             End If
@@ -223,13 +223,13 @@ Namespace Entities
             Gruppe.Trainer = Nothing
         End Sub
 
-        ''' <summary>
-        ''' FreieTrainer=AlleTrainer-EingeteilteTrainer 
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        Private Sub FreieTrainerLesen(Trainer As Trainer)
-            _AlleTrainer.Remove(Trainer)
-        End Sub
+        '''' <summary>
+        '''' FreieTrainer=AlleTrainer-EingeteilteTrainer 
+        '''' </summary>
+        '''' <param name="Trainer"></param>
+        'Private Sub FreieTrainerLesen(Trainer As Trainer)
+        '    _AlleTrainer.Remove(Trainer)
+        'End Sub
 
         ''' <summary>
         ''' Trainer wird aus dem Club entfernt und 

@@ -21,12 +21,12 @@
         <TextBlock Text="Leistungsstufen" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
 
         <Grid>
-            <DataGrid x:Name="leistungsstufenDataGrid" Grid.Row="1" ItemsSource="{Binding}"
-                              SelectionMode="Extended"     AutoGenerateColumns="False"
-                              Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
-                              HeadersVisibility="Column"   
-                              RowStyle="{StaticResource groupiesDataGridRowStyle}"   
-                              ScrollViewer.CanContentScroll="True">
+            <DataGrid x:Name="leistungsstufenDataGrid" ItemsSource="{Binding}"
+                      SelectionMode="Extended"     AutoGenerateColumns="False"
+                      Margin="4" IsReadOnly="False" IsSynchronizedWithCurrentItem="True"
+                      HeadersVisibility="Column" 
+                      RowStyle="{StaticResource groupiesDataGridRowStyle}"   
+                      ScrollViewer.CanContentScroll="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}"/>
                     <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding Benennung}"/>

@@ -17,9 +17,10 @@ Public Class Leistungsstufenuebersicht
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Delete, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute, AddressOf Handle_New_CanExecute))
+        CommandBindings.Add(New CommandBinding(Commands.SkiclubCommands.LeistungsstufeNeuErstellen, AddressOf Handle_New_Execute, AddressOf Handle_New_CanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
+
+        CommandBindings.Add(New CommandBinding(Commands.SkiclubCommands.LeistungsstufeLoeschen, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
 
         _LeistungsstufenCollectionView = New ListCollectionView(AppCon.CurrentClub.Leistungsstufenliste)
         If _LeistungsstufenCollectionView.CanSort Then
@@ -29,33 +30,32 @@ Public Class Leistungsstufenuebersicht
 
     End Sub
 
-
 #End Region
 
 
 #Region "EventHandler CommandBindings"
 
-    Private Sub Handle_Delete_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+    Public Sub Handle_Delete_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = AppCon.CurrentClub.LeistungsstufeWirdNichtGenutzt(_LeistungsstufenCollectionView.CurrentItem)
     End Sub
 
-    Private Sub Handle_Delete_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+    Public Sub Handle_Delete_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         AppCon.CurrentClub.Leistungsstufenliste.Remove(_LeistungsstufenCollectionView.CurrentItem)
     End Sub
 
-    Private Sub Handle_New_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+    Public Sub Handle_New_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = True
     End Sub
 
-    Private Sub Handle_Close_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+    Public Sub Handle_Close_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Me.Close()
     End Sub
 
-    Private Sub Handle_New_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
+    Public Sub Handle_New_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = True
     End Sub
 
-    Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+    Public Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim dlg = New NeueLeistungsstufeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

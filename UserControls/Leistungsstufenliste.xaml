@@ -23,7 +23,7 @@
         <Grid>
             <DataGrid x:Name="leistungsstufenDataGrid" ItemsSource="{Binding}"
                       SelectionMode="Extended"     AutoGenerateColumns="False"
-                      Margin="4" IsReadOnly="False" IsSynchronizedWithCurrentItem="True"
+                      Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
                       HeadersVisibility="Column" 
                       RowStyle="{StaticResource groupiesDataGridRowStyle}"   
                       ScrollViewer.CanContentScroll="True">

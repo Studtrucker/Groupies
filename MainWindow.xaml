@@ -76,7 +76,7 @@
                 <MenuItem Header="Leistungsstufen">
                     <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
+                    <!--<MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>-->
                 </MenuItem>
             </MenuItem>
 

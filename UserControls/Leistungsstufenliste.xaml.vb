@@ -7,20 +7,20 @@ Namespace UserControls
         'Private _levelListCollectionView As ICollectionView
         'Private _skillListCollectionView As ICollectionView
 
-        Sub New()
+        'Sub New()
 
-            ' Dieser Aufruf ist für den Designer erforderlich.
-            InitializeComponent()
+        '    ' Dieser Aufruf ist für den Designer erforderlich.
+        '    InitializeComponent()
 
-            '' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        '    '' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-            '_levelListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.Leistungsstufenliste)
-            '_levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
-            'DataContext = _levelListCollectionView
+        '    '_levelListCollectionView = New ListCollectionView(Controller.AppController.CurrentClub.Leistungsstufenliste)
+        '    '_levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
+        '    'DataContext = _levelListCollectionView
 
-            '_skillListCollectionView = New ListCollectionView(New FaehigkeitCollection())
+        '    '_skillListCollectionView = New ListCollectionView(New FaehigkeitCollection())
 
-        End Sub
+        'End Sub
 
         ' Zur Ausführung des Handles HandleNewSkillExecuted erstellen, kann auf dem Mutter Window ein RoutedEvent registriert werden.
         ' Siehe auch EventTrigger (= Ereignisauslöser) Kapitel 11 »Styles, Trigger und Templates«
@@ -44,16 +44,16 @@ Namespace UserControls
         '    End If
         'End Sub
 
-        Private Sub Handle_LeistungsstufeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-            Throw New NotImplementedException
-            'wer ist hier der sender?
-            'Dim wirdverwendet = AppCon.CurrentClub.AlleTeilnehmer.ToList.TrueForAll(Function(Tn) Tn.Leistungsstand.Equals(sender))
-            'e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
-        End Sub
+        'Private Sub Handle_LeistungsstufeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        '    Throw New NotImplementedException
+        '    'wer ist hier der sender?
+        '    'Dim wirdverwendet = AppCon.CurrentClub.AlleTeilnehmer.ToList.TrueForAll(Function(Tn) Tn.Leistungsstand.Equals(sender))
+        '    'e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
+        'End Sub
 
-        Private Sub Handle_LeistungsstufeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-            Throw New NotImplementedException
-        End Sub
+        'Private Sub Handle_LeistungsstufeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        '    Throw New NotImplementedException
+        'End Sub
     End Class
 
 End Namespace

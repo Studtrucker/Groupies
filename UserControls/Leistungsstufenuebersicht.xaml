@@ -9,16 +9,16 @@
         Loaded="HandleWindowLoaded"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         Title="Übersicht Leistungsstufen" Height="450" Width="800">
-    
+
     <Window.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
     </Window.Resources>
-    
+
     <DockPanel>
         <Menu DockPanel.Dock="Top" Background="White">
             <MenuItem Header="Bearbeiten">
-                <MenuItem Command="ApplicationCommands.New"/>
-                <MenuItem Command="ApplicationCommands.Delete"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
                 <Separator/>
                 <MenuItem Command="ApplicationCommands.Close"/>
             </MenuItem>
@@ -28,93 +28,11 @@
                 <ColumnDefinition MinWidth="200" Width="1*" />
                 <ColumnDefinition MinWidth="200" Width="3*" />
             </Grid.ColumnDefinitions>
-            <!--<uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Column="0" Margin="5"/>-->
-            <Grid>
-                <DataGrid x:Name="leistungsstufenDataGrid" ItemsSource="{Binding}"
-                      SelectionMode="Extended"     AutoGenerateColumns="False"
-                      Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
-                      HeadersVisibility="Column" 
-                      RowStyle="{StaticResource groupiesDataGridRowStyle}"   
-                      ScrollViewer.CanContentScroll="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}"/>
-                        <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding Benennung}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Column="0" Margin="5"/>
             <GridSplitter DockPanel.Dock="Left"  HorizontalAlignment="Right"  Width="2" Background="LightGray" />
-            <!--<uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="1" Margin="5,5,5,5"/>-->
-            <Grid Grid.Column="1">
-                <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="10" Color="DarkGray"/>
-                    </Border.Effect>
+            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="1" Margin="5,5,5,5"/>
 
-                    <Grid Background="white" Panel.ZIndex="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Column="0" Grid.Row="1" Content="Sortierung" />
-                        <Label Grid.Column="0" Grid.Row="2" Content="Benennung" />
-                        <Label Grid.Column="0" Grid.Row="3" Content="Beschreibung" />
-                        <Label Grid.Column="0" Grid.Row="4" Content="Liste Fähigkeiten"/>
-
-                        <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
-                     Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
-                        <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" 
-                     Grid.Column="1" Grid.Row="2" />
-                        <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
-                     Grid.Column="1" Grid.Row="3" 
-                     TextWrapping="Wrap" AcceptsReturn="True" />
-
-                        <DockPanel Grid.Column="1" Grid.Row="4">
-                            <DataGrid  x:Name="FaehigkeitenDataGrid"
-                           AutoGenerateColumns="False" ItemsSource="{Binding Faehigkeiten}"
-                           CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
-                                <DataGrid.ContextMenu>
-
-                                    <ContextMenu>
-                                        <!--MenuItem implementiert das Interface 'ICommandSource'-->
-                                        <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitNeuErstellen}"/>
-                                    </ContextMenu>
-                                </DataGrid.ContextMenu>
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}" />
-                                    <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}" >
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
-                                                <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="*">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
-                                                <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DockPanel>
-
-                    </Grid>
-                </Border>
-
-            </Grid>
         </Grid>
 
     </DockPanel>

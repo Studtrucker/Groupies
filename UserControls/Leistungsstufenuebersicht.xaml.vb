@@ -18,9 +18,9 @@ Public Class Leistungsstufenuebersicht
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
         CommandBindings.Add(New CommandBinding(Commands.SkiclubCommands.LeistungsstufeNeuErstellen, AddressOf Handle_New_Execute, AddressOf Handle_New_CanExecute))
+        CommandBindings.Add(New CommandBinding(Commands.SkiclubCommands.LeistungsstufeLoeschen, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
 
-        CommandBindings.Add(New CommandBinding(Commands.SkiclubCommands.LeistungsstufeLoeschen, AddressOf Handle_Delete_Execute, AddressOf Handle_Delete_CanExecuted))
 
         _LeistungsstufenCollectionView = New ListCollectionView(AppCon.CurrentClub.Leistungsstufenliste)
         If _LeistungsstufenCollectionView.CanSort Then

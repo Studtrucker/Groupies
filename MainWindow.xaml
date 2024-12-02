@@ -71,8 +71,10 @@
 
             <MenuItem Header="Ansichten" Foreground="Black" >
                 <MenuItem Header="Teilnehmer"/>
-                <MenuItem Header="Skilehrer" />
-                <MenuItem Header="Gruppen"/>
+                <MenuItem Header="Trainer">
+                    <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                </MenuItem>
                 <MenuItem Header="Leistungsstufen">
                     <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>

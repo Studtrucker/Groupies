@@ -167,9 +167,6 @@
     <Compile Include="Services\ExcelDataReaderService.vb" />
     <Compile Include="Services\PresetService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
-    <Compile Include="Dialogs\ContextMenuLevel.xaml.vb">
-      <DependentUpon>ContextMenuLevel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
@@ -177,8 +174,14 @@
       <DependentUpon>GroupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IPrintableNotice.vb" />
-    <Compile Include="UserControls\InstructorView.xaml.vb">
-      <DependentUpon>InstructorView.xaml</DependentUpon>
+    <Compile Include="UserControls\Trainerliste.xaml.vb">
+      <DependentUpon>Trainerliste.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Traineruebersicht.xaml.vb">
+      <DependentUpon>Traineruebersicht.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TrainerView.xaml.vb">
+      <DependentUpon>TrainerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Leistungsstufenliste.xaml.vb">
       <DependentUpon>Leistungsstufenliste.xaml</DependentUpon>
@@ -198,8 +201,8 @@
     <Compile Include="UserControls\PrintableNoticeForParticipants.xaml.vb">
       <DependentUpon>PrintableNoticeForParticipants.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SkillView.xaml.vb">
-      <DependentUpon>SkillView.xaml</DependentUpon>
+    <Compile Include="UserControls\FaehigkeitView.xaml.vb">
+      <DependentUpon>FaehigkeitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\NameValidationRule.vb" />
     <Compile Include="MainWindow.xaml.vb">
@@ -251,15 +254,19 @@
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\TeilnehmerCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
-    <Page Include="Dialogs\ContextMenuLevel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\GroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\InstructorView.xaml">
+    <Page Include="UserControls\Trainerliste.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Traineruebersicht.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TrainerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -287,7 +294,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\SkillView.xaml">
+    <Page Include="UserControls\FaehigkeitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

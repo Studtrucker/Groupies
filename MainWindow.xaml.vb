@@ -555,7 +555,11 @@ Public Class MainWindow
     Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
         Dim Leistungsstufenuebericht As New Leistungsstufenuebersicht
         Leistungsstufenuebericht.Show()
+    End Sub
 
+    Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
+        Dim Traineruebersicht As New Traineruebersicht
+        Traineruebersicht.Show()
     End Sub
 
 #End Region
@@ -907,6 +911,7 @@ Public Class MainWindow
         Instructor
         Participant
     End Enum
+
 
 
 #End Region

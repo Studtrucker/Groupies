@@ -1,6 +1,6 @@
 ﻿Namespace UserControls
-    Public Class InstructorView
 
+    Public Class Trainerliste
 
     End Class
 End Namespace

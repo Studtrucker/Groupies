@@ -21,10 +21,10 @@
                       RowStyle="{StaticResource groupiesDataGridRowStyle}"   
                       ScrollViewer.CanContentScroll="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Spitzname" Width="Auto" Binding="{Binding Spitzname}"/>
                     <DataGridTextColumn Header="Vorname" Width="Auto" Binding="{Binding Vorname}"/>
-                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Nachname}"/>
-                </DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Nachname}"/>
+                    <DataGridTextColumn Header="Spitzname" Width="*" Binding="{Binding Spitzname}"/>
+               </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </DockPanel>

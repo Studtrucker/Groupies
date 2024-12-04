@@ -7,6 +7,7 @@
              xmlns:convert="clr-namespace:Groupies.Converters"
              mc:Ignorable="d"
              Height="Auto" Width="Auto">
+    
     <UserControl.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
     </UserControl.Resources>
@@ -21,13 +22,15 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
-        <Border AllowDrop="True" Width="120" Height="180" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" 
+        <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                 VerticalAlignment="Top" Margin="2" 
                 BorderBrush="Black" BorderThickness="1">
             <Grid>
@@ -37,31 +40,32 @@
                        Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                 <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
                            Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
-				<LineBreak/> Drag'n'Drop setzen
+                    <LineBreak/> Drag'n'Drop 
+                    <LineBreak/>setzen
                 </TextBlock>
-                <Image Width="120" Height="180" Source="{Binding InstructorPicture}" />
+                <Image Width="120" Height="180" Source="{Binding Foto}" />
             </Grid>
         </Border>
 
-        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5"
+        <!--<Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5"
                 BorderThickness="1" BorderBrush="DarkGray"  
                 MaxHeight="360" MaxWidth="240" >
             <Image Source="{Binding Foto, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
-            </Border>
+            </Border>-->
 
-            <Label Grid.Column="2" Grid.Row="0" Content="Spitzname"/>
-        <Label Grid.Column="2" Grid.Row="1" Content="Vorname"/>
-        <Label Grid.Column="2" Grid.Row="2" Content="Nachname" />
-        <Label Grid.Column="2" Grid.Row="3" Content="e-Mail" />
+            <Label Grid.Column="2" Grid.Row="1" Content="Spitzname"/>
+        <Label Grid.Column="2" Grid.Row="2" Content="Vorname"/>
+        <Label Grid.Column="2" Grid.Row="3" Content="Nachname" />
+        <Label Grid.Column="2" Grid.Row="4" Content="e-Mail" />
 
             <TextBox Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Column="3" Grid.Row="0" />
+                            Grid.Column="3" Grid.Row="1" />
             <TextBox Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="3" Grid.Row="1"  />
-            <TextBox Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="3" Grid.Row="2"  />
+            <TextBox Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Column="3" Grid.Row="3"  />
             <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="3" Grid.Row="3" />
+                            Grid.Column="3" Grid.Row="4" />
 
             <GridSplitter Grid.Column="2" Grid.RowSpan="4" Width="5"
                       HorizontalAlignment="Right" Background="Transparent"/>

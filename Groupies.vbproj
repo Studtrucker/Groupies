@@ -195,11 +195,11 @@
     <Compile Include="UserControls\ParticipantView.xaml.vb">
       <DependentUpon>ParticipantView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintableNoticeForInstructors.xaml.vb">
-      <DependentUpon>PrintableNoticeForInstructors.xaml</DependentUpon>
+    <Compile Include="UserControls\Trainerausdruck.xaml.vb">
+      <DependentUpon>Trainerausdruck.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintableNoticeForParticipants.xaml.vb">
-      <DependentUpon>PrintableNoticeForParticipants.xaml</DependentUpon>
+    <Compile Include="UserControls\Teilnehmerausdruck.xaml.vb">
+      <DependentUpon>Teilnehmerausdruck.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\FaehigkeitView.xaml.vb">
       <DependentUpon>FaehigkeitView.xaml</DependentUpon>
@@ -286,11 +286,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintableNoticeForInstructors.xaml">
+    <Page Include="UserControls\Trainerausdruck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintableNoticeForParticipants.xaml">
+    <Page Include="UserControls\Teilnehmerausdruck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

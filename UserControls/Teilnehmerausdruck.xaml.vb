@@ -19,67 +19,67 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub InitPropsFromGroup(Group As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
+        Public Sub InitPropsFromGroup(Gruppe As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
 
-            GroupPrintName = Group.AusgabeTeilnehmerinfo
-            Members = New TeilnehmerCollection(Group.Mitgliederliste.Geordnet.ToList)
+            AusgabeTeilnehmerinfo = Gruppe.AusgabeTeilnehmerinfo
+            Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
 
-            If Group.Trainer IsNot Nothing Then
-                GroupLeaderPrintName = Group.Trainer.AusgabeTeilnehmerInfo
-                If Group.Trainer.HatFoto Then
+            If Gruppe.Trainer IsNot Nothing Then
+                Trainer = Gruppe.Trainer.AusgabeTeilnehmerInfo
+                If Gruppe.Trainer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()
-                    bi.StreamSource = New MemoryStream(Group.Trainer.Foto)
+                    bi.StreamSource = New MemoryStream(Gruppe.Trainer.Foto)
                     bi.EndInit()
-                    GroupLeaderPicture = bi
+                    TrainerFoto = bi
                 Else
                     ' Todo: Ersatzfoto festlegen
-                    GroupLeaderPicture = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
+                    TrainerFoto = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
                 End If
             End If
 
-            If Group.Mitgliederliste.Count > 14 Then
+            If Gruppe.Mitgliederliste.Count > 14 Then
                 DataContext = "ZuGross"
             End If
 
             Dim x = New Groupies.TemplateSelectors.SkikursGroesseStyleSelector
-            lstMitglieder.Style = x.SelectStyle(Members, lstMitglieder)
+            lstMitgliederliste.Style = x.SelectStyle(Mitgliederliste, lstMitgliederliste)
 
         End Sub
 
-        Public Property GroupPrintName As String
+        Public Property AusgabeTeilnehmerinfo As String
             Get
-                Return txtSkigruppenname.Text
+                Return txtAusgabeTeilnehmerinfo.Text
             End Get
             Set(value As String)
-                txtSkigruppenname.Text = value
+                txtAusgabeTeilnehmerinfo.Text = value
             End Set
         End Property
 
-        Public Property GroupLeaderPrintName As String
+        Public Property Trainer As String
             Get
-                Return txtSkilehrername.Text
+                Return txtTrainer.Text
             End Get
             Set(value As String)
-                txtSkilehrername.Text = value
+                txtTrainer.Text = value
             End Set
         End Property
 
-        Public Property GroupLeaderPicture As ImageSource
+        Public Property TrainerFoto As ImageSource
             Get
-                Return imgSkilehrerfoto.Source
+                Return imgTrainerFoto.Source
             End Get
             Set(value As ImageSource)
-                imgSkilehrerfoto.Source = value
+                imgTrainerFoto.Source = value
             End Set
         End Property
 
-        Public Property Members As TeilnehmerCollection
+        Public Property Mitgliederliste As TeilnehmerCollection
             Get
-                Return lstMitglieder.ItemsSource
+                Return lstMitgliederliste.ItemsSource
             End Get
             Set(value As TeilnehmerCollection)
-                lstMitglieder.ItemsSource = value
+                lstMitgliederliste.ItemsSource = value
             End Set
         End Property
 

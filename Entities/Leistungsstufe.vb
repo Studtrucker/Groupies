@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
 Imports System.Runtime.InteropServices
+Imports System.Text
 Imports Microsoft.Office.Interop.Excel
 
 
@@ -137,6 +138,21 @@ Namespace Entities
                 OnPropertyChanged(NameOf(Benennung))
             End Set
         End Property
+
+        Public ReadOnly Property Faehigkeitentext As String
+            Get
+                Return LeseFaehigkeiten()
+            End Get
+        End Property
+
+        Private Function LeseFaehigkeiten() As String
+            Dim txt As New StringBuilder
+
+            Me.Faehigkeiten.OrderBy(Function(f) f.Sortierung).ToList.ForEach(Sub(f) txt.Append($"{f.Benennung}: {f.Beschreibung}"))
+
+            Return txt.ToString
+
+        End Function
 
         Private Function BenennungCheck(Value As String, ByRef errorMessage As String) As Boolean
             errorMessage = String.Empty

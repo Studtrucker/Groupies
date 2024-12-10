@@ -29,30 +29,41 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Gruppename" Grid.Column="0" Grid.Row="0"
                            Style="{StaticResource BigCaption}"/>
-                <TextBlock x:Name="GroupPrintNameTextBlock" Grid.Column="0" Grid.Row="1" 
+                <TextBlock x:Name="AusgabeTeilnehmerinfoTextBlock" Grid.Column="0" Grid.Row="1" 
                            Style="{StaticResource BigCaptionValue}" />
-                <TextBlock Text="Gruppenname" Grid.Column="1" 
+                <TextBlock Text="Benennung" Grid.Column="1" 
                            Style="{StaticResource SmallCaption}"/>
-                <TextBlock x:Name="GroupNamingTextBlock" Grid.Column="2" 
+                <TextBlock x:Name="AusgabeTrainerinfoTextBlock" Grid.Column="2" 
                            Style="{StaticResource SmallCaptionValue}" />
-                <TextBlock Text="Gruppenlevel" Grid.Column="1" Grid.Row="1" 
+                <TextBlock Text="Leistungsstufe" Grid.Column="1" Grid.Row="1" 
                            Style="{StaticResource SmallCaption}" />
-                <TextBlock x:Name="GroupLevelNamingTextBlock" Grid.Column="2" Grid.Row="1" 
+                <TextBlock x:Name="GruppenleistungsstufeTextBlock" Grid.Column="2" Grid.Row="1" 
                            Style="{StaticResource SmallCaptionValue}" />
             </Grid>
         </DockPanel>
 
         <!--Area Instructor Header-->
-        <DockPanel Grid.Row="1" Margin="5">
-            <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}" />
-            <TextBlock x:Name="GroupLeaderPrintNameTextBox"  Style="{StaticResource BigCaptionValue}"/>
-        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}" />
+                <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
+            </DockPanel>
+            <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top"/>
+                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top"/>
+                <TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top"/>
+            </DockPanel>
+        </Grid>
 
-        <!--Area Instructor Header-->
+        <!--Area Teilnehmerliste-->
         <DockPanel Grid.Row="2" Margin="5">
 
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="MembersDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
+            <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
                       AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
                       Style="{StaticResource PrintoutInfo}">
                 <DataGrid.Columns>

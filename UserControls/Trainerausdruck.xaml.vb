@@ -26,8 +26,7 @@ Namespace UserControls
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
                 Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung
-                BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibung
-                FaehigkeitenLeistungsanforderung = Gruppe.Leistungsstufe.Faehigkeitentext
+                BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
             End If
             If Gruppe.Trainer IsNot Nothing Then
                 TrainerSpitzname = Gruppe.Trainer.Spitzname
@@ -96,13 +95,13 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property FaehigkeitenLeistungsanforderung As String
-            Get
-                Return FaehigkeitenLeistungsanforderungTextblock.Text
-            End Get
-            Set(value As String)
-                FaehigkeitenLeistungsanforderungTextblock.Text = value
-            End Set
-        End Property
+        'Public Property FaehigkeitenLeistungsanforderung As String
+        '    Get
+        '        Return FaehigkeitenLeistungsanforderungTextblock.Text
+        '    End Get
+        '    Set(value As String)
+        '        FaehigkeitenLeistungsanforderungTextblock.Text = value
+        '    End Set
+        'End Property
     End Class
 End Namespace

@@ -54,8 +54,8 @@
             </DockPanel>
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
                 <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top"/>
-                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top"/>
-                <TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>
+                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>
+                <!--<TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>-->
             </DockPanel>
         </Grid>
 

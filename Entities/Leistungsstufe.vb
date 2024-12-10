@@ -139,16 +139,16 @@ Namespace Entities
             End Set
         End Property
 
-        Public ReadOnly Property Faehigkeitentext As String
+        Public ReadOnly Property Beschreibungstext As String
             Get
-                Return LeseFaehigkeiten()
+                Return GeneriereBeschreibungstext()
             End Get
         End Property
 
-        Private Function LeseFaehigkeiten() As String
+        Private Function GeneriereBeschreibungstext() As String
             Dim txt As New StringBuilder
-
-            Me.Faehigkeiten.OrderBy(Function(f) f.Sortierung).ToList.ForEach(Sub(f) txt.Append($"{f.Benennung}: {f.Beschreibung}"))
+            txt.Append($"Beschreibung: {Beschreibung}")
+            Me.Faehigkeiten.OrderBy(Function(f) f.Sortierung).ToList.ForEach(Sub(f) txt.Append($"{f.Benennung}: {f.Beschreibung}{vbNewLine}"))
 
             Return txt.ToString
 

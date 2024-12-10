@@ -26,10 +26,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Gruppename" Grid.Column="0" Grid.Row="0"
+                <TextBlock Text="Gruppenname" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                            Style="{StaticResource BigCaption}"/>
-                <TextBlock x:Name="AusgabeTeilnehmerinfoTextBlock" Grid.Column="0" Grid.Row="1" 
+                <TextBlock x:Name="AusgabeTeilnehmerinfoTextBlock" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
                            Style="{StaticResource BigCaptionValue}" />
                 <TextBlock Text="Benennung" Grid.Column="1" 
                            Style="{StaticResource SmallCaption}"/>
@@ -53,7 +54,7 @@
                 <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
             </DockPanel>
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
-                <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top"/>
+                <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>
                 <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>
                 <!--<TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>-->
             </DockPanel>

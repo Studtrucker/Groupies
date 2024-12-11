@@ -55,7 +55,7 @@
             </DockPanel>
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
                 <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>
-                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>
+                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow"/>
                 <!--<TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>-->
             </DockPanel>
         </Grid>
@@ -66,7 +66,7 @@
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
             <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
                       AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
-                      Style="{StaticResource PrintoutInfo}">
+                      Style="{StaticResource PrintoutTrainerInfo}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding AusgabeTrainerinfo}" />
                 </DataGrid.Columns>

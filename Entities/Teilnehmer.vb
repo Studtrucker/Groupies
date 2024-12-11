@@ -145,7 +145,7 @@ Namespace Entities
         ''' <returns></returns>
         Public ReadOnly Property AusgabeTrainerinfo As String
             Get
-                Return $"{VorUndNachname}, {Leistungsstand.Benennung}"
+                Return GetAusgabeTrainerInfo()
             End Get
         End Property
 
@@ -154,6 +154,14 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
+
+        Private Function GetAusgabeTrainerInfo() As String
+            If Leistungsstand Is Nothing Then
+                Return $"{VorUndNachname}, Leistungsstand unbekannt"
+            Else
+                Return $"{VorUndNachname}, {Leistungsstand.Benennung}"
+            End If
+        End Function
 
         Public Overrides Function ToString() As String
             Return VorUndNachname

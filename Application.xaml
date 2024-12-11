@@ -108,6 +108,11 @@
                 </Style.Triggers>
             </Style>
 
+            <Style TargetType="DataGrid" x:Key="PrintoutTrainerInfo">
+                <!--Standard-->
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
+            
             <!--<LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>
                 <GradientStop Offset="0.6" Color="White"/>

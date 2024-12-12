@@ -54,9 +54,15 @@
                 <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
             </DockPanel>
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
-                <TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>
-                <TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow"/>
-                <!--<TextBlock x:Name="FaehigkeitenLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="Wrap"/>-->
+                <!--<TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>-->
+                <!--<TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow"/>-->
+                <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None"
+                          AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutSmall}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Benennung}" />
+                        <DataGridTextColumn Binding="{Binding Beschreibung}" CellStyle="{StaticResource Umbruch}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </DockPanel>
         </Grid>
 

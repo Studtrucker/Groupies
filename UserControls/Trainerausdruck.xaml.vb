@@ -24,6 +24,7 @@ Namespace UserControls
             AusgabeTeilnehmerinfo = Gruppe.AusgabeTeilnehmerinfo
             AusgabeTrainerinfo = Gruppe.Benennung
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
+            Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
                 Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung
                 BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
@@ -31,7 +32,6 @@ Namespace UserControls
             If Gruppe.Trainer IsNot Nothing Then
                 TrainerSpitzname = Gruppe.Trainer.Spitzname
             End If
-
 
             ' For Style setting
             If Gruppe.Mitgliederliste.Count > 14 Then
@@ -88,20 +88,21 @@ Namespace UserControls
 
         Public Property BeschreibungLeistungsanforderung As String
             Get
-                Return BeschreibungLeistungsanforderungTextblock.Text
+                'Return BeschreibungLeistungsanforderungTextblock.Text
             End Get
             Set(value As String)
-                BeschreibungLeistungsanforderungTextblock.Text = value
+                'BeschreibungLeistungsanforderungTextblock.Text = value
             End Set
         End Property
 
-        'Public Property FaehigkeitenLeistungsanforderung As String
-        '    Get
-        '        Return FaehigkeitenLeistungsanforderungTextblock.Text
-        '    End Get
-        '    Set(value As String)
-        '        FaehigkeitenLeistungsanforderungTextblock.Text = value
-        '    End Set
-        'End Property
+        Public Property Faehigkeitenliste As FaehigkeitCollection
+            Get
+                Return FaehigkeitenlisteDataGrid.ItemsSource
+            End Get
+            Set(value As FaehigkeitCollection)
+                FaehigkeitenlisteDataGrid.ItemsSource = value
+            End Set
+        End Property
+
     End Class
 End Namespace

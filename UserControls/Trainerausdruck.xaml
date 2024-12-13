@@ -7,8 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
 
-
-    <Grid>
+     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,10 +35,6 @@
                            Style="{StaticResource SmallCaption}"/>
                 <TextBlock x:Name="AusgabeTrainerinfoTextBlock" Grid.Column="2" 
                            Style="{StaticResource SmallCaptionValue}" />
-                <TextBlock Text="Leistungsstufe" Grid.Column="1" Grid.Row="1" 
-                           Style="{StaticResource SmallCaption}" />
-                <TextBlock x:Name="GruppenleistungsstufeTextBlock" Grid.Column="2" Grid.Row="1" 
-                           Style="{StaticResource SmallCaptionValue}" />
             </Grid>
         </DockPanel>
 
@@ -54,16 +49,36 @@
                 <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
             </DockPanel>
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                
                 <!--<TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>-->
                 <!--<TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow"/>-->
-                <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None"
-                          AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutSmall}">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Leistungsstufe" Grid.Column="0" Grid.Row="0" Style="{StaticResource SmallCaption}" />
+                    <TextBlock x:Name="GruppenleistungsstufeTextBlock" Grid.Column="1" Grid.Row="0"  Style="{StaticResource SmallCaptionValue}" />
+                <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" Width="Auto"
+                          AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource PrintoutSmall}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Benennung}" />
-                        <DataGridTextColumn Binding="{Binding Beschreibung}" CellStyle="{StaticResource Umbruch}"/>
+                        <DataGridTextColumn Binding="{Binding Benennung}" Width="Auto" />
+                        <DataGridTextColumn Binding="{Binding Beschreibung}" Width="Auto" MaxWidth="500">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </DockPanel>
+                  </Grid>
+          </DockPanel>
         </Grid>
 
         <!--Area Teilnehmerliste-->

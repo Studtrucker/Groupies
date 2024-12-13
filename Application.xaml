@@ -120,7 +120,12 @@
 
             <Style TargetType="DataGridCell" x:Key="Umbruch">
                 <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
-            </Style> 
+            </Style>
+            
+            <DataTemplate x:Key="UmbruchTemplate">
+                <TextBlock TextWrapping="WrapWithOverflow"/>
+            </DataTemplate>
+            
             <!--<LinearGradientBrush x:Key="DefaultImageBrush" StartPoint="0 0" EndPoint="0 1">
                 <GradientStop Offset="0" Color="White"/>
                 <GradientStop Offset="0.6" Color="White"/>

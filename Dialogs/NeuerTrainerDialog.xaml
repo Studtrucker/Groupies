@@ -89,12 +89,12 @@
                 </Binding>
             </TextBox>
             <TextBox Grid.Column="3" Grid.Row="2"
-                Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Column="3" Grid.Row="3"
-                Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Column="3" Grid.Row="4"
-                Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            
+                Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}" />
+            <!--, ValidatesOnDataErrors=True-->
         </Grid>
 
     </DockPanel>

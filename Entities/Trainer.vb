@@ -89,7 +89,7 @@ Namespace Entities
         ''' Spitzname des Trainers
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Print Name ist eine Pflichtangabe")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Spitzname ist eine Pflichtangabe")>
         Public Property Spitzname As String
             Get
                 Return _Spitzname
@@ -173,7 +173,6 @@ Namespace Entities
         End Function
 
 #End Region
-
 
     End Class
 

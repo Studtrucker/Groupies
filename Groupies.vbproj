@@ -208,6 +208,7 @@
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\TrainernameValidationRule.vb" />
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

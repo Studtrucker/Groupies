@@ -3,7 +3,7 @@ Namespace Commands
 
     Public Module SkiclubCommands
 
-        Private _LeistungsstufeLoeschen As RoutedUICommand
+        Private ReadOnly _LeistungsstufeLoeschen As RoutedUICommand
 
         Sub New()
             _LeistungsstufeLoeschen = New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))

@@ -15,6 +15,7 @@ Namespace Entities
         'Private _bi As BitmapImage = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
         Private _Foto As Byte()
         Private _TrainerID = Guid.NewGuid()
+        Private _Spitzname As String
 
 #Region "Konstruktor"
 
@@ -90,6 +91,13 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Print Name ist eine Pflichtangabe")>
         Public Property Spitzname As String
+            Get
+                Return _Spitzname
+            End Get
+            Set(value As String)
+                _Spitzname = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Foto des Trainers
@@ -109,7 +117,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         <DataAnnotations.EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
-        Public Property eMail() As String
+        Public Property EMail() As String
 
         ''' <summary>
         ''' Ausgabe von Vor- und Nachname

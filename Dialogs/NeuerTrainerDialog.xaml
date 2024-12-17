@@ -81,8 +81,13 @@
             <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
             <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
 
-            <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1"                    
-                Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged, ValidationRules=TrainernameValidationRule}" />
+            <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1">
+                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <rules:TrainernameValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
             <TextBox Grid.Column="3" Grid.Row="2"
                 Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             <TextBox Grid.Column="3" Grid.Row="3"

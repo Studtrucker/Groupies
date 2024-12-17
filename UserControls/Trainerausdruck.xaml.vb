@@ -27,7 +27,7 @@ Namespace UserControls
             Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
                 Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung
-                BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
+                'BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
             End If
             If Gruppe.Trainer IsNot Nothing Then
                 TrainerSpitzname = Gruppe.Trainer.Spitzname
@@ -86,14 +86,14 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property BeschreibungLeistungsanforderung As String
-            Get
-                'Return BeschreibungLeistungsanforderungTextblock.Text
-            End Get
-            Set(value As String)
-                'BeschreibungLeistungsanforderungTextblock.Text = value
-            End Set
-        End Property
+        'Public Property BeschreibungLeistungsanforderung As String
+        '    Get
+        '        'Return BeschreibungLeistungsanforderungTextblock.Text
+        '    End Get
+        '    Set(value As String)
+        '        'BeschreibungLeistungsanforderungTextblock.Text = value
+        '    End Set
+        'End Property
 
         Public Property Faehigkeitenliste As FaehigkeitCollection
             Get

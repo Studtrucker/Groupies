@@ -61,7 +61,7 @@
                            Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                     <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
                                Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
-							<LineBreak/> Drag'n'Drop setzen
+							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
                     </TextBlock>
                     <Image Width="120" Height="180" Source="{Binding Foto}" />
                 </Grid>
@@ -69,12 +69,12 @@
 
 
             <Label Grid.Column="2" Grid.Row="1">
-                <TextBlock Style="{StaticResource RequiredField}">Name auf Ausdruck
+                <TextBlock>Spitzname
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
             <Label Grid.Column="2" Grid.Row="2">
-                <TextBlock Style="{StaticResource RequiredField}">Vorname
+                <TextBlock>Vorname
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
@@ -84,7 +84,8 @@
             <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1">
                 <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <rules:TrainernameValidationRule/>
+                        <!--<NotifyDataErrorValidationRule/>-->
+                        <rules:TrainerSpitznameValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>

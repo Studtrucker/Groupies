@@ -130,9 +130,9 @@ Namespace Entities
             Set(value As String)
                 Dim errorMessage As String = ""
                 If BenennungCheck(value, errorMessage) Then
-                    Errors.Clear()
+                    _Errors.Clear()
                 Else
-                    Errors(NameOf(Benennung)) = errorMessage
+                    _Errors(NameOf(Benennung)).Add(errorMessage)
                 End If
                 _Benennung = value
                 OnPropertyChanged(NameOf(Benennung))

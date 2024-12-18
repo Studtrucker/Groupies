@@ -1,6 +1,9 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
 Imports System.Linq
+Imports System.Runtime.InteropServices
+Imports System.Threading
+Imports Groupies.Controller.AppController
 
 Namespace Entities
 
@@ -96,8 +99,29 @@ Namespace Entities
             End Get
             Set(value As String)
                 _Spitzname = value
+                '---------------------------------------------
+                ' INotifyDataErrorInfo
+                'Dim errorMessage As String = ""
+                'If SpitznamenCheck(value, errorMessage) Then
+                '    _Errors.Clear()
+                'Else
+                '    _Errors(NameOf(Spitzname)) = New List(Of String) From {errorMessage}
+                'End If
+                '---------------------------------------------
+                '  12.4.4 Validieren mit eigener ValidationRule
+                ' Weiter mit Seite 718 -> Die Validation-Klasse
+                '---------------------------------------------
             End Set
         End Property
+
+        Private Function SpitznamenCheck(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
+            If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
+                ErrorMessage = $"Der Spitzname {Spitzname} wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
+                Return False
+            End If
+            Return True
+        End Function
+
 
         ''' <summary>
         ''' Foto des Trainers

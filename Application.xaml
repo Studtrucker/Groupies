@@ -160,7 +160,9 @@
             <Style TargetType="TextBlock" x:Key="RequiredField">
                 <Setter Property="Margin" Value="4"/>
             </Style>
-
+            <Style TargetType="Label" x:Key="RequiredLabelField">
+                <Setter Property="Margin" Value="4"/>
+            </Style>
 
             <SolidColorBrush x:Key="darkRedBrush" Color="DarkRed"/>
 

@@ -13,6 +13,16 @@
     
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
+        <!--<Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="Coral"/>
+                </Trigger>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
     </Window.Resources>
     
     <DockPanel>
@@ -28,7 +38,7 @@
         <!-- OK- und Cancel-Button -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}"/>
+                <Button Width="100" Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}"></Button>
                 <Button Width="100" Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
         </Border>
@@ -82,12 +92,8 @@
             <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
 
             <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1">
-                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <!--<NotifyDataErrorValidationRule/>-->
-                        <rules:TrainerSpitznameValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
+                <!--<Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True"/>-->
+                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" />
             </TextBox>
             <TextBox Grid.Column="3" Grid.Row="2"
                 Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" />
@@ -95,7 +101,7 @@
                 Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Column="3" Grid.Row="4"
                 Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}" />
-            <!--, ValidatesOnDataErrors=True-->
+
         </Grid>
 
     </DockPanel>

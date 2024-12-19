@@ -19,6 +19,8 @@ Namespace Entities
 #Region "Felder"
         Private _Sortierung As Integer?
         Private _Benennung As String
+        Private _Errorlist As New Dictionary(Of String, List(Of String))
+
 #End Region
 
 #Region "Events"
@@ -130,9 +132,9 @@ Namespace Entities
             Set(value As String)
                 Dim errorMessage As String = ""
                 If BenennungCheck(value, errorMessage) Then
-                    _Errors.Clear()
+                    _Errorlist.Clear()
                 Else
-                    _Errors(NameOf(Benennung)).Add(errorMessage)
+                    _Errorlist(NameOf(Benennung)).Add(errorMessage)
                 End If
                 _Benennung = value
                 OnPropertyChanged(NameOf(Benennung))

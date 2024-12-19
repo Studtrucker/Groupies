@@ -92,15 +92,14 @@
             <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
 
             <TextBox x:Name="PrintNameField" Grid.Column="3" Grid.Row="1">
-                <!--<Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True"/>-->
-                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" />
+                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True" />
             </TextBox>
             <TextBox Grid.Column="3" Grid.Row="2"
-                Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"   />
             <TextBox Grid.Column="3" Grid.Row="3"
                 Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Column="3" Grid.Row="4"
-                Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
         </Grid>
 

@@ -20,8 +20,7 @@ Namespace Entities
         Private _Foto As Byte()
         Private _TrainerID = Guid.NewGuid()
         Private _Spitzname As String
-        Private _Vorname As String
-        Private _Errorlist As New Dictionary(Of String, List(Of String))
+        'Private _Vorname As String
 
 #Region "Konstruktor"
 
@@ -79,21 +78,19 @@ Namespace Entities
         End Property
 
 
-
-        '<Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
-
         ''' <summary>
         ''' Vorname des Trainers
         ''' </summary>
         ''' <returns></returns>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Vorname As String
-            Get
-                Return _Vorname
-            End Get
-            Set(value As String)
-                _Vorname = value
-            End Set
-        End Property
+        '    Get
+        '        Return _Vorname
+        '    End Get
+        '    Set(value As String)
+        '        _Vorname = value
+        '    End Set
+        'End Property
 
         ''' <summary>
         ''' Nachname des Trainers
@@ -101,49 +98,26 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Nachname As String
 
-        '<Required(AllowEmptyStrings:=False, ErrorMessage:="Der Spitzname ist eine Pflichtangabe")>
+        '
         ''' <summary>
         ''' Spitzname des Trainers
         ''' </summary>
         ''' <returns></returns>
-        <CustomValidation(GetType(String), "SpitznamenCheck1", ErrorMessage:="Der Spitzname wird bereits verwendet und darf aber nur für einen Trainer vergeben werden")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Spitzname ist eine Pflichtangabe")>
         Public Property Spitzname As String
             Get
                 Return _Spitzname
             End Get
             Set(value As String)
                 _Spitzname = value
-                '---------------------------------------------
-                ' INotifyDataErrorInfo
-                'Dim errorMessage As String = ""
-                'If SpitznamenCheck(value, errorMessage) Then
-                '    _Errorlist.Clear()
-                'Else
-                '    _Errorlist(NameOf(Spitzname)) = New List(Of String) From {errorMessage}
-                '    '_Errors.Add(NameOf(Spitzname), errorMessage)
-                'End If
-                '---------------------------------------------
-                '  12.4.4 Validieren mit eigener ValidationRule
-                ' Weiter mit Seite 718 -> Die Validation-Klasse
-                '---------------------------------------------
+                Dim errorMessage As String = ""
+                If SpitznamenValidation(value, errorMessage) Then
+                    _Errors.Clear()
+                Else
+                    _Errors(NameOf(Spitzname)) = New List(Of String) From {errorMessage}
+                End If
             End Set
         End Property
-
-        Private Function SpitznamenCheck(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
-            If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
-                ErrorMessage = $"Der Spitzname {Spitzname} wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
-                Return False
-            End If
-            Return True
-        End Function
-
-        Private Sub SpitznamenCheck1(Spitzname As String, <Out> ByRef ErrorMessage As String)
-            If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
-                ErrorMessage = $"Der Spitzname {Spitzname} wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
-                _Errors.Add(NameOf(Spitzname), ErrorMessage)
-            End If
-
-        End Sub
 
 
         ''' <summary>
@@ -163,7 +137,7 @@ Namespace Entities
         '''  Gültige eMailadresse des Trainers
         ''' </summary>
         ''' <returns></returns>
-        <DataAnnotations.EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
+        <EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
         Public Property EMail() As String
 
         ''' <summary>
@@ -214,6 +188,15 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
+
+        Private Function SpitznamenValidation(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
+            If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
+                ErrorMessage = $"Der Spitzname [{Spitzname}] wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
+                Return False
+            End If
+            Return True
+        End Function
+
 
         Public Overrides Function ToString() As String
             Return VorUndNachname

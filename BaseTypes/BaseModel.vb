@@ -6,6 +6,7 @@ Imports System.Linq
 Imports System.Runtime.CompilerServices
 Imports Groupies.Annotations
 Imports Microsoft.Office.Interop.Excel
+Imports System.Text
 
 ' Erklärungen siehe Video https://codingfreaks.de/wpf-mvvm-03/
 
@@ -17,8 +18,11 @@ Public MustInherit Class BaseModel
     Implements INotifyDataErrorInfo
     Implements IDataErrorInfo
 
+
 #Region "Felder"
 
+
+    Friend _Errors As New Dictionary(Of String, List(Of String))
 
     Private _propertyInfos As List(Of PropertyInfo)
 
@@ -26,7 +30,6 @@ Public MustInherit Class BaseModel
     '''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
     '''' dem Fehlertext als Wert aufnimmt
     '''' </summary>
-    Friend _Errors As New Dictionary(Of String, String)
 
 #End Region
 
@@ -137,6 +140,47 @@ Public MustInherit Class BaseModel
         End Get
     End Property
 
+#End Region
+
+#Region "Property Attribute"
+
+    ''' <summary>
+    ''' Ruft eine Liste aller Eigenschaften mit Attributen ab, 
+    ''' die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
+    ''' </summary>
+    Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
+        Get
+            If _propertyInfos Is Nothing Then
+                _propertyInfos = [GetType].GetProperties(BindingFlags.Public Or BindingFlags.Instance).
+                    Where(Function(prop) _
+                              prop.IsDefined(GetType(RequiredAttribute), True) OrElse
+                              prop.IsDefined(GetType(MaxLengthAttribute), True)).ToList()
+            End If
+            Return _propertyInfos
+        End Get
+    End Property
+
+
+#End Region
+
+#Region "Dekativiert ExceptionValidationRule"
+    ' Um Validierungen mit der ExceptionValidationRule zu prüfen, muss die Property in der
+    ' Modell-Klasse eine Exception auslösen
+    ' xaml: ValidatesOnExceptions=True oder ExceptionValidationRule
+    ' Seite 710
+#End Region
+
+#Region "Dekativiert DataErrorValidationRule"
+    ' Um Validierungen mit der DataErrorValidationRule zu prüfen,
+    ' muss die Modell-Klasse das IDataErrorInfo implementieren
+    ' xaml: ValidatesOnDataErrors=True oder DataErrorValidationRule
+    ' Seite 712
+
+    'Friend _Errors As New Dictionary(Of String, String)
+
+
+
+
 
     ''' <summary>
     ''' Ruft eine Fehlermeldung ab, die angibt, was mit diesem Objekt nicht stimmt.
@@ -147,6 +191,14 @@ Public MustInherit Class BaseModel
     ''' </returns>
     Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
         Get
+            'Dim sb As New StringBuilder
+
+            '_Errors.ToList.ForEach(Sub(E)
+            '                           sb.AppendLine(E.Key)
+            '                           E.Value.ForEach(Sub(Et) sb.AppendLine(Et))
+            '                       End Sub)
+
+            'Return sb.ToString
             Return String.Empty
         End Get
     End Property
@@ -167,28 +219,9 @@ Public MustInherit Class BaseModel
     Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
         Get
             CollectErrors()
-            Return If(_Errors.ContainsKey(propertyName), _Errors(propertyName), String.Empty)
+            Return If(_Errors.ContainsKey(propertyName), _Errors(propertyName)(0), String.Empty)
         End Get
     End Property
-
-
-    ''' <summary>
-    ''' Ruft eine Liste aller Eigenschaften mit Attributen ab, 
-    ''' die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
-    ''' Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo"/> automation.
-    ''' </summary>
-    Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
-        Get
-            If _propertyInfos Is Nothing Then
-                _propertyInfos = [GetType].GetProperties(BindingFlags.Public Or BindingFlags.Instance).
-                    Where(Function(prop) _
-                              prop.IsDefined(GetType(RequiredAttribute), True) OrElse
-                              prop.IsDefined(GetType(MaxLengthAttribute), True)).ToList()
-            End If
-            Return _propertyInfos
-        End Get
-    End Property
-
 
     ''' <summary>
     ''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
@@ -205,12 +238,14 @@ Public MustInherit Class BaseModel
                                   Dim maxLenAttr = prop.GetCustomAttribute(Of MaxLengthAttribute)()
                                   If requiredAttr IsNot Nothing Then
                                       If String.IsNullOrEmpty(If(currentValue?.ToString(), String.Empty)) Then
-                                          _Errors.Add(prop.Name, requiredAttr.ErrorMessage)
+                                          '_Errors.Add(prop.Name, requiredAttr.ErrorMessage)
+                                          _Errors.Add(prop.Name, New List(Of String) From {requiredAttr.ErrorMessage})
                                       End If
                                   End If
                                   If maxLenAttr IsNot Nothing Then
                                       If If(currentValue?.ToString(), String.Empty).Length > maxLenAttr.Length Then
-                                          _Errors.Add(prop.Name, maxLenAttr.ErrorMessage)
+                                          '_Errors.Add(prop.Name, maxLenAttr.ErrorMessage)
+                                          _Errors.Add(prop.Name, New List(Of String) From {maxLenAttr.ErrorMessage})
                                       End If
                                   End If
                                   ' TODO further attributes
@@ -228,7 +263,15 @@ Public MustInherit Class BaseModel
     ''' </summary>
     Protected Overridable Sub OnErrorsCollected()
     End Sub
-
 #End Region
+
+#Region "Dekativiert NotifyDataErrorValidationRule"
+    ' Um Validierungen mit der NotifyDataErrorValidationRule zu prüfen,
+    ' muss die Modell-Klasse das INotifyDataErrorInfo implementieren
+    ' xaml: ValidatesOnNotifyDataErrors=True oder NotifyDataErrorValidationRule
+    ' Seite 713
+#End Region
+
+
 
 End Class

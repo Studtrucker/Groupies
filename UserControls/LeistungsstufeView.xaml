@@ -27,15 +27,19 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            
-            <Label Grid.Column="0" Grid.Row="1" Content="Sortierung" />
-            <Label Grid.Column="0" Grid.Row="2" Content="Benennung" />
+
+            <Label Grid.Column="0" Grid.Row="1" >
+                <TextBlock>Sortierung <Run Foreground="Red">*</Run></TextBlock>
+            </Label>
+            <Label Grid.Column="0" Grid.Row="2" >
+                <TextBlock>Benennung <Run Foreground="Red">*</Run></TextBlock>
+            </Label>
             <Label Grid.Column="0" Grid.Row="3" Content="Beschreibung" />
             <Label Grid.Column="0" Grid.Row="4" Content="Liste Fähigkeiten"/>
-            
-            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
+
+            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True,  NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
                      Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
-            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" 
+            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
                      Grid.Column="1" Grid.Row="2" />
             <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="1" Grid.Row="3" 

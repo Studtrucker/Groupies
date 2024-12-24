@@ -13,14 +13,18 @@ Namespace Entities
     Public Class Trainer
         Inherits BaseModel
 
-
-
+#Region "Felder"
         'Todo:Standardfoto festlegen
-        'Private _bi As BitmapImage = New BitmapImage(New Uri("/Images/icons8-ski-goggles-96.png", UriKind.Relative))
         Private _Foto As Byte()
         Private _TrainerID = Guid.NewGuid()
         Private _Spitzname As String
-        'Private _Vorname As String
+
+#End Region
+
+#Region "Events"
+
+
+#End Region
 
 #Region "Konstruktor"
 
@@ -84,13 +88,7 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Vorname As String
-        '    Get
-        '        Return _Vorname
-        '    End Get
-        '    Set(value As String)
-        '        _Vorname = value
-        '    End Set
-        'End Property
+
 
         ''' <summary>
         ''' Nachname des Trainers
@@ -187,8 +185,7 @@ Namespace Entities
 
 #End Region
 
-#Region "Funktionen und Methoden"
-
+#Region "Validation"
         Private Function SpitznamenValidation(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
             If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
                 ErrorMessage = $"Der Spitzname [{Spitzname}] wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
@@ -197,6 +194,9 @@ Namespace Entities
             Return True
         End Function
 
+#End Region
+
+#Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
             Return VorUndNachname

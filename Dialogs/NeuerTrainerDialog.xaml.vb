@@ -24,7 +24,7 @@ Public Class NeuerTrainerDialog
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
 
-        PrintNameField.Focus()
+        SpitznameFeld.Focus()
     End Sub
 
     Public Sub Bearbeiten(Trainer As Trainer)

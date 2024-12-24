@@ -163,14 +163,14 @@ Public MustInherit Class BaseModel
 
 #End Region
 
-#Region "Dekativiert ExceptionValidationRule"
+#Region "Dekativiert: ExceptionValidationRule"
     ' Um Validierungen mit der ExceptionValidationRule zu prüfen, muss die Property in der
     ' Modell-Klasse eine Exception auslösen
     ' xaml: ValidatesOnExceptions=True oder ExceptionValidationRule
     ' Seite 710
 #End Region
 
-#Region "Dekativiert DataErrorValidationRule"
+#Region "Dekativiert: DataErrorValidationRule"
     ' Um Validierungen mit der DataErrorValidationRule zu prüfen,
     ' muss die Modell-Klasse das IDataErrorInfo implementieren
     ' xaml: ValidatesOnDataErrors=True oder DataErrorValidationRule
@@ -191,14 +191,6 @@ Public MustInherit Class BaseModel
     ''' </returns>
     Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
         Get
-            'Dim sb As New StringBuilder
-
-            '_Errors.ToList.ForEach(Sub(E)
-            '                           sb.AppendLine(E.Key)
-            '                           E.Value.ForEach(Sub(Et) sb.AppendLine(Et))
-            '                       End Sub)
-
-            'Return sb.ToString
             Return String.Empty
         End Get
     End Property

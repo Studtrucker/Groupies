@@ -9,7 +9,10 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
         Title="Leistungsstufe" Width="700" Height="450">
-    
+    <Window.Resources>
+        
+    </Window.Resources>
+
     <DockPanel>
         <!--Menu-->
         <Menu DockPanel.Dock="Top" Background="White">
@@ -30,7 +33,7 @@
         <Border DockPanel.Dock="Bottom">
             <DockPanel LastChildFill="False">
                 <Button Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True" DockPanel.Dock="Right"/>
-                <Button Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True" DockPanel.Dock="Right"/>
+                <Button Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True" DockPanel.Dock="Right" />
             </DockPanel>
         </Border>
 

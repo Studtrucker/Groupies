@@ -3,15 +3,8 @@ Namespace Commands
 
     Public Class SkiclubCommands
 
-        Private Shared _LeistungsstufeLoeschen As RoutedUICommand
-        Private Shared _LeistungsstufeNeuErstellen As RoutedUICommand
-
-        Sub New()
-            'LeistungsstufeLoeschen = New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))
-            'LeistungsstufeLoeschen.InputGestures.Add(New KeyGesture(Key.Delete, ModifierKeys.Alt))
-            LeistungsstufeNeuErstellen.InputGestures.Add(New KeyGesture(Key.N, ModifierKeys.Alt))
-        End Sub
-
+        Private Shared _LeistungsstufeLoeschen As New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))
+        Private Shared _LeistungsstufeNeuErstellen As New RoutedUICommand("Leistungsstufe erstellen", NameOf(LeistungsstufeNeuErstellen), GetType(SkiclubCommands))
 
 
         ' TeilnehmerCommands
@@ -95,7 +88,6 @@ Namespace Commands
 
         Public Shared ReadOnly Property LeistungsstufeNeuErstellen As RoutedUICommand
             Get
-                _LeistungsstufeNeuErstellen = New RoutedUICommand("Leistungsstufe erstellen", NameOf(LeistungsstufeNeuErstellen), GetType(SkiclubCommands))
                 _LeistungsstufeNeuErstellen.InputGestures.Add(New KeyGesture(Key.N, ModifierKeys.Alt))
                 Return _LeistungsstufeNeuErstellen
             End Get
@@ -104,7 +96,6 @@ Namespace Commands
 
         Public Shared ReadOnly Property LeistungsstufeLoeschen As RoutedUICommand
             Get
-                _LeistungsstufeLoeschen = New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))
                 _LeistungsstufeLoeschen.InputGestures.Add(New KeyGesture(Key.Delete, ModifierKeys.Alt))
                 Return _LeistungsstufeLoeschen
             End Get

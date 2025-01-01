@@ -114,9 +114,10 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeSortieren,
                                                AddressOf Handle_GruppeSortieren_Execute))
 
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
-                                               AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
-                                               AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        'CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
+        '                                       AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
+        '                                       AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen, AddressOf Handle_LeistungsstufeNeuErstellen_Execute, AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
@@ -524,7 +525,8 @@ Public Class MainWindow
 
 #Region "Leistungsstufe"
     Private Sub Handle_LeistungsstufeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.Leistungsstufenliste IsNot Nothing
+        e.CanExecute = True
+        ' e.CanExecute = AppCon.CurrentClub.Leistungsstufenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)

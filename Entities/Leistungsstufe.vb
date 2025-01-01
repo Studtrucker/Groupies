@@ -75,19 +75,20 @@ Namespace Entities
         ''' Sortierungszahl für die Ausgabeinformationen
         ''' </summary>
         ''' <returns></returns>
-        <Required()>'AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe"
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe (Required)")>
         Public Property Sortierung As Integer
             Get
                 Return _Sortierung
             End Get
             Set(value As Integer)
+                _Sortierung = value
                 Dim errorMessage As String = String.Empty
                 If SortierungValidation(value, errorMessage) Then
                     _Errors.Clear()
                 Else
                     _Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
                 End If
-                _Sortierung = value
+                OnErrorsChanged(NameOf(Sortierung))
             End Set
         End Property
 
@@ -95,19 +96,19 @@ Namespace Entities
         ''' Die Benennung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe (Required)")>
         Public Property Benennung As String
             Get
                 Return _Benennung
             End Get
             Set(value As String)
 
-                Dim errorMessage As String = ""
-                If BenennungValidation(value, errorMessage) Then
-                    _Errors.Clear()
-                Else
-                    _Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
-                End If
+                'Dim errorMessage As String = ""
+                'If BenennungValidation(value, errorMessage) Then
+                '    _Errors.Clear()
+                'Else
+                '    _Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
+                'End If
                 _Benennung = value
             End Set
         End Property
@@ -168,21 +169,39 @@ Namespace Entities
 #Region "Validation"
         Private Function SortierungValidation(Value As Integer, <Out> ByRef errorMessage As String) As Boolean
             Dim isValid = True
-            If Not IsNumeric(Value) Then
-                Throw New Exception("Die Sortierung muss numerisch sein")
-                isValid = False
-            End If
-
-            'If Value <= 0 Then
-            '    Throw New ArgumentOutOfRangeException("Die Sortierung muss eine positive Zahl größer als Null sein")
+            'If Not IsNumeric(Value) Then
+            '    Throw New Exception("Die Sortierung muss numerisch sein")
             '    isValid = False
             'End If
-            If CurrentClub IsNot Nothing AndAlso CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                If CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Sortierung}").Contains(Value) Then
-                    errorMessage = $"Die Sortierung [{Value}] wird bereits verwendet und darf aber nur für eine Leistungsstufe vergeben werden"
-                    isValid = False
-                End If
+
+            ''If Value <= 0 Then
+            ''    Throw New ArgumentOutOfRangeException("Die Sortierung muss eine positive Zahl größer als Null sein")
+            ''    isValid = False
+            ''End If
+            'If CurrentClub IsNot Nothing AndAlso CurrentClub.Leistungsstufenliste IsNot Nothing Then
+            '    If CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Sortierung}").Contains(Value) Then
+            '        errorMessage = $"Die Sortierung [{Value}] wird bereits verwendet und darf aber nur für eine Leistungsstufe vergeben werden"
+            '        isValid = False
+            '    End If
+            'End If
+            If String.IsNullOrWhiteSpace(Value) Then
+                errorMessage = $"Die Eingabe ist eine Pflichtangabe{vbNewLine}({Me.ToString})"
+                Return False
             End If
+
+            Dim result As Integer
+            If Not Int32.TryParse(Value, result) Then
+                errorMessage = $"Die Eingabe muss eine Zahl sein{vbNewLine}({Me.ToString})"
+                Return False
+            End If
+
+            'For Each Ls In CurrentClub.Leistungsstufenliste
+            '    If Ls.Sortierung = Value Then
+            '        errorMessage = $"Die Sortierung {Value} wird bereits verwendet {vbNewLine}({Me.ToString})"
+            '        Return False
+            '    End If
+            'Next
+
             Return isValid
         End Function
 

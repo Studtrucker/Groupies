@@ -1,4 +1,5 @@
 ﻿Imports Groupies.Controller.AppController
+
 Namespace ValidationRules
 
     Public Class TrainerSpitznameValidationRule

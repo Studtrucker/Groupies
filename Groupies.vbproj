@@ -204,10 +204,12 @@
     <Compile Include="UserControls\FaehigkeitView.xaml.vb">
       <DependentUpon>FaehigkeitView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\IntegerValidationRule.vb" />
     <Compile Include="ValidationRules\NameValidationRule.vb" />
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\SortierungLeistungsstufeUniqueValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>

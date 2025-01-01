@@ -4,9 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
+             xmlns:rules="clr-namespace:Groupies.ValidationRules"
              mc:Ignorable="d"
              xmlns:cmd="clr-namespace:Groupies.Commands"
              Height="Auto" d:DesignWidth="400" Width="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBox" x:Key="IntegerValidation">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=(Validation.HasError), RelativeSource={RelativeSource Self}}" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+    </UserControl.Resources>
 
     <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
         <Border.Effect>
@@ -37,8 +49,19 @@
             <Label Grid.Column="0" Grid.Row="3" Content="Beschreibung" />
             <Label Grid.Column="0" Grid.Row="4" Content="Liste Fähigkeiten"/>
 
-            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True,  NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
-                     Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>
+            <!--<TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True,  NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
+                     Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>-->
+            <TextBox Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left" Style="{StaticResource IntegerValidation}">
+                <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <!--<NotifyDataErrorValidationRule/>-->
+                        <rules:IntegerValidationRule/>
+                        <rules:SortierungLeistungsstufeUniqueValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
+
+
             <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
                      Grid.Column="1" Grid.Row="2" />
             <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 

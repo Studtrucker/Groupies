@@ -16,7 +16,7 @@ Imports System.Text
 Public MustInherit Class BaseModel
     Implements INotifyPropertyChanged
     Implements INotifyDataErrorInfo
-    Implements IDataErrorInfo
+    'Implements IDataErrorInfo
 
 
 #Region "Felder"
@@ -100,12 +100,9 @@ Public MustInherit Class BaseModel
     End Sub
 
 
-    ' Is called by the indexer to collect all errors and not only the one for a special field.
-    ' Because <see cref="HasErrors"/> depends on the <see cref="Errors"/> dictionary this
-    ' ensures that controls like buttons can switch their state accordingly.
-
-
-
+    ' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein spezielles Feld.
+    ' Da <see cref=„HasErrors“/> vom <see cref=„Errors“/>-Wörterbuch abhängt, 
+    ' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
     Public Function GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
         If String.IsNullOrEmpty(PropertyName) Then Return Nothing
         If _Errors.ContainsKey(PropertyName) Then
@@ -189,7 +186,7 @@ Public MustInherit Class BaseModel
     ''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
     ''' Der Standardwert ist eine leere Zeichenkette ("").
     ''' </returns>
-    Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
+    Public ReadOnly Property [Error] As String 'Implements IDataErrorInfo.Error
         Get
             Return String.Empty
         End Get
@@ -208,7 +205,7 @@ Public MustInherit Class BaseModel
     ''' <returns>
     ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
     ''' </returns>
-    Default Public ReadOnly Property Item(propertyName As String) As String Implements IDataErrorInfo.Item
+    Default Public ReadOnly Property Item(propertyName As String) As String 'Implements IDataErrorInfo.Item
         Get
             CollectErrors()
             Return If(_Errors.ContainsKey(propertyName), _Errors(propertyName)(0), String.Empty)

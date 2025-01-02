@@ -36,7 +36,7 @@ Namespace Entities
             _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
             Benennung = String.Empty
-            Sortierung = 0
+            'Sortierung = 0
         End Sub
 
         ''' <summary>
@@ -82,13 +82,13 @@ Namespace Entities
             End Get
             Set(value As Integer)
                 _Sortierung = value
-                Dim errorMessage As String = String.Empty
-                If SortierungValidation(value, errorMessage) Then
-                    _Errors.Clear()
-                Else
-                    _Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
-                End If
-                OnErrorsChanged(NameOf(Sortierung))
+                'Dim errorMessage As String = String.Empty
+                'If SortierungValidation(value, errorMessage) Then
+                '    _Errors.Clear()
+                'Else
+                '    _Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
+                'End If
+                'OnErrorsChanged(NameOf(Sortierung))
             End Set
         End Property
 

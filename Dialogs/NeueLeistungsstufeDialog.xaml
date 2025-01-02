@@ -9,8 +9,9 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
         Title="Leistungsstufe" Width="700" Height="450">
+    
     <Window.Resources>
-        
+
     </Window.Resources>
 
     <DockPanel>
@@ -46,7 +47,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <uc:LeistungsstufeView Grid.Row="1" Grid.Column="1" />
+            <uc:LeistungsstufeView x:Name="LeistungsstufeView" Grid.Row="1" Grid.Column="1" />
 
         </Grid>
         

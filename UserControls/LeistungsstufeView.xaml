@@ -51,18 +51,20 @@
 
             <!--<TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True,  NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
                      Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>-->
-            <TextBox Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left" Style="{StaticResource IntegerValidation}">
-                <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged">
+            <TextBox x:Name="SortierungText" Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left" >
+                <!--<Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged" NotifyOnTargetUpdated="True" NotifyOnSourceUpdated="True">
                     <Binding.ValidationRules>
-                        <!--<NotifyDataErrorValidationRule/>-->
+                        --><!--<NotifyDataErrorValidationRule/>--><!--
                         <rules:IntegerValidationRule/>
                         <rules:SortierungLeistungsstufeUniqueValidationRule/>
                     </Binding.ValidationRules>
-                </Binding>
+                </Binding>-->
             </TextBox>
 
 
-            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
+            <!--<TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
+                     Grid.Column="1" Grid.Row="2" />-->
+            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="1" Grid.Row="2" />
             <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="1" Grid.Row="3" 

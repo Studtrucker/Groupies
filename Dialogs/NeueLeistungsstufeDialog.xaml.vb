@@ -23,19 +23,65 @@ Public Class NeueLeistungsstufeDialog
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecute, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecute))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.FaehigkeitNeuErstellen, AddressOf HandleFaehigkeitNeuErstellenExecute))
+        BindingsErstellen()
+
+    End Sub
+
+    Private Sub BindingsErstellen()
+        BindSortierung()
+        BindBenennung()
+    End Sub
+
+    Private Sub BindSortierung()
+
         ' Binding hier erstellen, da das Binding aus XAML hier noch nicht aktiv ist
         Dim b As New Binding(NameOf(LeistungsstufeView.SortierungText))
         b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-        b.Path = New PropertyPath("Sortierung")
-        Dim IVR As New ValidationRules.IntegerValidationRule
-        Dim RVR As New ValidationRules.SortierungLeistungsstufeUniqueValidationRule
-        b.ValidationRules.Add(IVR)
-        b.ValidationRules.Add(RVR)
-        ' Sortierung ist per default leer. Gleich hier mit einem Error markieren
-        Dim be = LeistungsstufeView.SortierungText.SetBinding(TextBox.TextProperty, b)
-        Dim Fehler = New ValidationError(IVR, be, "Die Sortierung ist eine Pflichtangabe", Nothing)
+        b.Path = New PropertyPath(NameOf(Leistungsstufe.Sortierung))
 
-        Validation.MarkInvalid(be, Fehler)
+        ' Erforderliche ValidationRules
+        Dim IntegerValidationRule As New ValidationRules.IntegerValidationRule
+        Dim SortierungUniqueValidationRule As New ValidationRules.SortierungUniqueValidationRule
+        b.ValidationRules.Add(IntegerValidationRule)
+        b.ValidationRules.Add(SortierungUniqueValidationRule)
+
+        ' Binding setzen
+        Dim be = LeistungsstufeView.SortierungText.SetBinding(TextBox.TextProperty, b)
+
+        ' ValidationRules abarbeiten
+        For Each r In b.ValidationRules
+            Dim f = r.Validate(LeistungsstufeView.SortierungText.Text, Globalization.CultureInfo.CurrentCulture)
+            If Not f.IsValid Then
+                Validation.MarkInvalid(be, New ValidationError(r, be, f.ErrorContent, Nothing))
+                Exit For
+            End If
+        Next
+
+    End Sub
+
+    Private Sub BindBenennung()
+
+        ' Binding hier erstellen, da das Binding aus XAML hier noch nicht aktiv ist
+        Dim b As New Binding(NameOf(LeistungsstufeView.BenennungText))
+        b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+        b.Path = New PropertyPath(NameOf(Leistungsstufe.Benennung))
+
+        ' Erforderliche ValidationRules
+        Dim NameValidationRule As New ValidationRules.BenennungValidationRule
+        b.ValidationRules.Add(NameValidationRule)
+
+        ' Binding setzen
+        Dim be = LeistungsstufeView.BenennungText.SetBinding(TextBox.TextProperty, b)
+
+        ' ValidationRules abarbeiten
+        For Each regel In b.ValidationRules
+            Dim validationResult = regel.Validate(LeistungsstufeView.BenennungText.Text, Globalization.CultureInfo.CurrentCulture)
+            If Not validationResult.IsValid Then
+                Validation.MarkInvalid(be, New ValidationError(regel, be, validationResult.ErrorContent, Nothing))
+                Exit For
+            End If
+        Next
+
     End Sub
 
     Private Sub HandleFaehigkeitNeuErstellenExecute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -47,26 +93,40 @@ Public Class NeueLeistungsstufeDialog
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _Leistungsstufe.IsOk
+        e.CanExecute = ValidateInput()
     End Sub
 
 
     Private Sub HandleButtonOKExecute(sender As Object, e As ExecutedRoutedEventArgs)
-        If ValidateInput Then
+        If ValidateInput() Then
             DialogResult = True
         Else
             MessageBox.Show(GetErrors())
         End If
-
     End Sub
 
     Private Function ValidateInput() As Boolean
-        Return Not Validation.GetHasError(LeistungsstufeView.SortierungText)
+        Return Not Validation.GetHasError(LeistungsstufeView.SortierungText) AndAlso Not Validation.GetHasError(LeistungsstufeView.BenennungText)
     End Function
 
-    Private Function GetErrors() As String
+    Private Function GetErrors()
+        Dim sb As New StringBuilder
+        sb.AppendLine(GetErrorsLeistungsstufe)
+        sb.AppendLine(GetErrorsBenennung)
+        Return sb.ToString
+    End Function
+
+    Private Function GetErrorsLeistungsstufe() As String
         Dim sb As New StringBuilder
         For Each [Error] In Validation.GetErrors(LeistungsstufeView.SortierungText)
+            sb.AppendLine([Error].ErrorContent.ToString)
+        Next
+        Return sb.ToString
+    End Function
+
+    Private Function GetErrorsBenennung() As String
+        Dim sb As New StringBuilder
+        For Each [Error] In Validation.GetErrors(LeistungsstufeView.BenennungText)
             sb.AppendLine([Error].ErrorContent.ToString)
         Next
         Return sb.ToString

@@ -36,7 +36,6 @@ Namespace Entities
             _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
             Benennung = String.Empty
-            'Sortierung = 0
         End Sub
 
         ''' <summary>

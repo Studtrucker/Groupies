@@ -9,6 +9,7 @@ Public Class NeueLeistungsstufeDialog
 
     Public Sub New()
 
+
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
@@ -35,13 +36,13 @@ Public Class NeueLeistungsstufeDialog
     Private Sub BindSortierung()
 
         ' Binding hier erstellen, da das Binding aus XAML hier noch nicht aktiv ist
-        Dim b As New Binding(NameOf(LeistungsstufeView.SortierungText))
-        b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-        b.Path = New PropertyPath(NameOf(Leistungsstufe.Sortierung))
+        Dim b = New Binding(NameOf(LeistungsstufeView.SortierungText)) With {
+            .UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+            .Path = New PropertyPath(NameOf(Leistungsstufe.Sortierung))}
 
         ' Erforderliche ValidationRules
-        Dim IntegerValidationRule As New ValidationRules.IntegerValidationRule
-        Dim SortierungUniqueValidationRule As New ValidationRules.SortierungUniqueValidationRule
+        Dim IntegerValidationRule = New ValidationRules.IntegerValidationRule
+        Dim SortierungUniqueValidationRule = New ValidationRules.SortierungUniqueValidationRule
         b.ValidationRules.Add(IntegerValidationRule)
         b.ValidationRules.Add(SortierungUniqueValidationRule)
 
@@ -62,9 +63,9 @@ Public Class NeueLeistungsstufeDialog
     Private Sub BindBenennung()
 
         ' Binding hier erstellen, da das Binding aus XAML hier noch nicht aktiv ist
-        Dim b As New Binding(NameOf(LeistungsstufeView.BenennungText))
-        b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-        b.Path = New PropertyPath(NameOf(Leistungsstufe.Benennung))
+        Dim b = New Binding(NameOf(LeistungsstufeView.BenennungText)) With {
+        .UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+        .Path = New PropertyPath(NameOf(Leistungsstufe.Benennung))}
 
         ' Erforderliche ValidationRules
         Dim NameValidationRule As New ValidationRules.BenennungValidationRule

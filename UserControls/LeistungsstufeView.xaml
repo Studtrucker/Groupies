@@ -52,13 +52,13 @@
             <!--<TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True,  NotifyOnValidationError=True, ValidatesOnDataErrors=True }" 
                      Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left"/>-->
             <TextBox x:Name="SortierungText" Grid.Column="1" Grid.Row="1" Width="50" HorizontalAlignment="Left" >
-                <!--<Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged" NotifyOnTargetUpdated="True" NotifyOnSourceUpdated="True">
+                <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged" NotifyOnTargetUpdated="True" NotifyOnSourceUpdated="True">
                     <Binding.ValidationRules>
-                        --><!--<NotifyDataErrorValidationRule/>--><!--
+                        <!--<NotifyDataErrorValidationRule/>--><!--
                         <rules:IntegerValidationRule/>
-                        <rules:SortierungLeistungsstufeUniqueValidationRule/>
+                        <rules:SortierungLeistungsstufeUniqueValidationRule/>-->
                     </Binding.ValidationRules>
-                </Binding>-->
+                </Binding>
             </TextBox>
 
 

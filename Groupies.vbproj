@@ -204,6 +204,7 @@
     <Compile Include="UserControls\FaehigkeitView.xaml.vb">
       <DependentUpon>FaehigkeitView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\CountFaehigkeitenValidationRule.vb" />
     <Compile Include="ValidationRules\LeistungsstufeValidationRule.vb" />
     <Compile Include="ValidationRules\IntegerValidationRule.vb" />
     <Compile Include="ValidationRules\BenennungValidationRule.vb" />

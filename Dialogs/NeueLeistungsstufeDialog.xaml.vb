@@ -31,6 +31,7 @@ Public Class NeueLeistungsstufeDialog
     Private Sub BindingsErstellen()
         BindSortierung()
         BindBenennung()
+        BindFaehigkeiten()
     End Sub
 
     Private Sub BindSortierung()
@@ -83,6 +84,29 @@ Public Class NeueLeistungsstufeDialog
             End If
         Next
 
+    End Sub
+
+    Private Sub BindFaehigkeiten()
+        ' Binding hier erstellen, da das Binding aus XAML hier noch nicht aktiv ist
+        Dim b = New Binding(NameOf(LeistungsstufeView.FaehigkeitenDataGrid)) With {
+        .UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+        .Path = New PropertyPath(NameOf(Leistungsstufe.Faehigkeiten))}
+
+        ' Erforderliche ValidationRules
+        Dim CountFaehigkeitenValidationRule As New ValidationRules.CountFaehigkeitenValidationRule
+        b.ValidationRules.Add(CountFaehigkeitenValidationRule)
+
+        ' Binding setzen
+        Dim be = LeistungsstufeView.FaehigkeitenDataGrid.SetBinding(DataGrid.CurrentItemProperty, b)
+
+        ' ValidationRules abarbeiten
+        For Each regel In b.ValidationRules
+            Dim validationResult = regel.Validate(LeistungsstufeView.FaehigkeitenDataGrid.Items, Globalization.CultureInfo.CurrentCulture)
+            If Not validationResult.IsValid Then
+                Validation.MarkInvalid(be, New ValidationError(regel, be, validationResult.ErrorContent, Nothing))
+                Exit For
+            End If
+        Next
     End Sub
 
     Private Sub HandleFaehigkeitNeuErstellenExecute(sender As Object, e As ExecutedRoutedEventArgs)

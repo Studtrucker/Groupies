@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         Loaded="HandleWindowLoaded"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
-        Title="Übersicht Leistungsstufen" Height="450" Width="800">
+        Title="Übersicht Leistungsstufen" Height="450" Width="1000">
 
     <Window.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
@@ -25,13 +25,14 @@
         </Menu>
         <Grid DockPanel.Dock="Top" x:Name="SharedGrid" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="200" Width="41*" />
-                <ColumnDefinition Width="159*"/>
-                <ColumnDefinition MinWidth="200" Width="600*" />
+                <ColumnDefinition Width="1*" SharedSizeGroup="LeistungsstufenExplorerColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
+                <ColumnDefinition Width="4*" SharedSizeGroup="LeistungsstufedetailExplorerColumn"/>
             </Grid.ColumnDefinitions>
-            <uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Column="0" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
-            <GridSplitter  HorizontalAlignment="Left"  Width="2" Background="LightGray" Grid.Column="1" Margin="157,0,0,0" />
-            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="2" Margin="5,5,5,5" />
+            <uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"/>
+            <GridSplitter  Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="5" Background="WhiteSmoke"  />
+            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Column="2" />
 
 
         </Grid>

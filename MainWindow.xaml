@@ -223,9 +223,9 @@
 
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                          Width="2" Background="WhiteSmoke"/>
+                          Width="5" Background="WhiteSmoke"/>
             <GridSplitter Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                          Width="2" Background="WhiteSmoke"/>
+                          Width="5" Background="WhiteSmoke"/>
 
         </Grid>
     </DockPanel>

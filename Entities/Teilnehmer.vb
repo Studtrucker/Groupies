@@ -31,6 +31,7 @@ Namespace Entities
         ''' Erstellt einen neuen Teilnehmer
         ''' </summary>
         Public Sub New()
+            Geburtsdatum = DateAndTime.Now.ToLongDateString
         End Sub
 
         ''' <summary>

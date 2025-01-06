@@ -31,19 +31,19 @@
 
         <Grid Background="white" Panel.ZIndex="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">

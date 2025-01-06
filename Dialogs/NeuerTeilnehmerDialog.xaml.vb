@@ -15,8 +15,7 @@ Public Class NeuerTeilnehmerDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        _Teilnehmer = New Teilnehmer
-        DataContext = _Teilnehmer
+        DataContext = New Teilnehmer
 
         _levelListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste)
         _instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)

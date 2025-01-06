@@ -7,32 +7,47 @@
              xmlns:uc="clr-namespace:Groupies.UserControls" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300" Width="Auto">
-    
     <UserControl.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
     </UserControl.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+        </Grid.ColumnDefinitions>
 
+        <DockPanel  Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Leistungsstufen" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
 
-
-
-
-    <DockPanel >
-        <TextBlock Text="Leistungsstufen" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
-
-        <Grid>
-            <DataGrid x:Name="leistungsstufenDataGrid" ItemsSource="{Binding}"
+            <Grid>
+                <DataGrid x:Name="leistungsstufenDataGrid" ItemsSource="{Binding}"
                       SelectionMode="Extended"     AutoGenerateColumns="False"
                       Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
                       HeadersVisibility="Column" 
                       RowStyle="{StaticResource groupiesDataGridRowStyle}"   
                       ScrollViewer.CanContentScroll="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}"/>
-                    <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding Benennung}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </DockPanel>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}"/>
+                        <DataGridTextColumn Header="Benennung" Width="*" Binding="{Binding Benennung}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </DockPanel>
+
+    </Grid>
+    
+
+
+
+
+
+
 
 </UserControl>

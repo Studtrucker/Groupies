@@ -15,7 +15,6 @@
         <Border.Effect>
             <DropShadowEffect ShadowDepth="10" Color="DarkGray"/>
         </Border.Effect>
-
         <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1" >
             <Grid.ContextMenu>
                 <ContextMenu>
@@ -33,21 +32,21 @@
             <!-- Detailangaben -->
             <Grid Grid.Row="1" Margin="2" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="350"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="1" Grid.Row="1" Content="Sortierung für Gruppenliste" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="Gruppenname in Teilnehmerinfo" Margin="2"/>

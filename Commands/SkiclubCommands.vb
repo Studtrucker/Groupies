@@ -26,6 +26,10 @@ Namespace Commands
         Public Shared ReadOnly Property TeilnehmerNeuErstellen As New RoutedUICommand("Teilnehmer hinzufügen",
                                                                                      NameOf(TeilnehmerNeuErstellen),
                                                                                      GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TeilnehmerBearbeiten As New RoutedUICommand("Teilnehmer bearbeiten",
+                                                                                     NameOf(TeilnehmerBearbeiten),
+                                                                                     GetType(SkiclubCommands))
+
         Public Shared ReadOnly Property TeilnehmerSuchen As New RoutedUICommand("Teilnehmer suchen",
                                                                                      NameOf(TeilnehmerSuchen),
                                                                                      GetType(SkiclubCommands))

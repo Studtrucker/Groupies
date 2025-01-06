@@ -19,6 +19,10 @@
                 <Setter Property="Foreground" Value="Black"/>
             </Style>
 
+            <Style TargetType="MenuItem">
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
             <!-- Design für Labels -->
             <Style TargetType="Label" BasedOn="{StaticResource {x:Type Control}}">
 

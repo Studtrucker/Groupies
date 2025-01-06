@@ -12,9 +12,9 @@
 
 
     <DockPanel>
-        <Menu Background="white" Foreground="Black" DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightSlateGray">
 
-            <MenuItem  Header="_Datei"  >
+            <MenuItem  Header="_Datei">
                 <MenuItem Header="_Neuer Club" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
@@ -40,65 +40,84 @@
                 </MenuItem>
                 <MenuItem Header="Trainerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
                 <Separator/>
-                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem"/>
+                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem" />
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
 
-            <MenuItem  Header="B_earbeiten" Foreground="Black">
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
+            <MenuItem  Header="B_earbeiten">
+                <MenuItem Header="Gruppen">
+                    <MenuItem Header="Übersicht" />
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>                    
+                </MenuItem>
+
+                <MenuItem Header="Leistungsstufen">
+                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Personen" >
+                <MenuItem Header="Teilnehmer">
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteExportierenXl}"/>
+                </MenuItem>
+
+                <MenuItem Header="Trainer">
+                    <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem  Header="_Extras" >
+                <MenuItem Header="Daten importieren">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteExportierenXl}"/>
-                <Separator/>
                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteImportieren}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}"/>
-                <Separator/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
-            </MenuItem>
-
-            <MenuItem Header="Ansichten" Foreground="Black" >
-                <MenuItem Header="Teilnehmer"/>
-                <MenuItem Header="Trainer">
-                    <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                    </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Leistungsstufen">
-                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
-                    <!--<MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>-->
-                </MenuItem>
-            </MenuItem>
 
-            <MenuItem  Header="Extras" >
             </MenuItem>
 
         </Menu>
 
-        <TextBlock Text="Statusleiste" DockPanel.Dock="Bottom"/>
 
         <Grid >
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="1*" SharedSizeGroup="GroupExplorerColumn" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
                 <ColumnDefinition Width="3*"  SharedSizeGroup="GroupViewerColumn" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
                 <ColumnDefinition Width="1*" SharedSizeGroup="PersonExplorerColumn" />
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
-
-           <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                <RowDefinition />
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
@@ -150,8 +169,8 @@
                         </DataGrid.Columns>
                 </DataGrid>
             </Grid>
-                
-            <DockPanel Grid.Column="2">
+
+            <DockPanel Grid.Column="3" Grid.Row="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Gruppe" />
@@ -160,9 +179,8 @@
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
-            
 
-            <Grid Grid.Column="4"  >
+            <Grid Grid.Column="5" Grid.Row="1" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="3*"/>
@@ -221,10 +239,9 @@
                 </Grid>
             </Grid>
 
-
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+            <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="5" Background="WhiteSmoke"/>
-            <GridSplitter Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+            <GridSplitter Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="5" Background="WhiteSmoke"/>
 
         </Grid>

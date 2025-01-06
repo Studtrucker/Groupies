@@ -212,6 +212,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\SortierungUniqueValidationRule.vb" />
+    <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>

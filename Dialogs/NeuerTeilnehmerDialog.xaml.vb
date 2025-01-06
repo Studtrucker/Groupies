@@ -15,7 +15,8 @@ Public Class NeuerTeilnehmerDialog
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        DataContext = New Teilnehmer
+        _Teilnehmer = New Teilnehmer
+        DataContext = _Teilnehmer
 
         _levelListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste)
         _instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
@@ -39,10 +40,12 @@ Public Class NeuerTeilnehmerDialog
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        BindingGroup.CommitEdit()
         DialogResult = True
     End Sub
 
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        BindingGroup.CancelEdit()
         DialogResult = False
     End Sub
 

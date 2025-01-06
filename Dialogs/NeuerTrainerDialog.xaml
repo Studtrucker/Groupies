@@ -46,26 +46,26 @@
         <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
             <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                     VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" Drop="HandleDrop" 
                     BorderBrush="Black" BorderThickness="1">
+                
                 <Grid>
-                    <!--<Rectangle Fill="{StaticResource DefaultImageBrush}"/>-->
                     <Rectangle Fill="Transparent"/>
                     <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
                            Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
@@ -75,29 +75,32 @@
                     </TextBlock>
                     <Image Width="120" Height="180" Source="{Binding Foto}" />
                 </Grid>
+
             </Border>
 
 
-            <Label Grid.Column="2" Grid.Row="1">
+            <Label Grid.Column="2" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
                 <TextBlock>Spitzname
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <Label Grid.Column="2" Grid.Row="2">
+            <TextBox x:Name="SpitznameFeld" Grid.Column="3" Grid.Row="1">
+                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True" />
+            </TextBox>
+                
+            <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
                 <TextBlock>Vorname
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
-            <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
-
-            <TextBox x:Name="SpitznameFeld" Grid.Column="3" Grid.Row="1">
-                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True" />
-            </TextBox>
             <TextBox Grid.Column="3" Grid.Row="2"
                 Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"   />
+
+            <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
             <TextBox Grid.Column="3" Grid.Row="3"
                 Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
             <TextBox Grid.Column="3" Grid.Row="4"
                 Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 

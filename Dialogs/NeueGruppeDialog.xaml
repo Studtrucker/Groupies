@@ -29,36 +29,36 @@
         <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
             <!--Labels-->
-            <Label Grid.Column="1" Grid.Row="1">
-                <TextBlock Style="{StaticResource RequiredField}">Benennung für die Teilnehmerinfo
+            <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock >Benennung für die Teilnehmerinfo
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            
-            <Label Grid.Column="1" Grid.Row="2">
-                <TextBlock Style="{StaticResource RequiredField}">Interne Benennung
+
+            <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock>Interne Benennung
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            
-            <Label Grid.Column="1" Grid.Row="3">
-                <TextBlock Style="{StaticResource RequiredField}">Sortierer
+
+            <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock >Sortierer
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>

@@ -3,6 +3,8 @@ Imports System.ComponentModel
 Imports DS = Groupies.Services
 Imports Groupies.Commands
 Imports Groupies.Controller
+Imports System.Text
+Imports Groupies.UserControls
 
 Public Class NeuerTeilnehmerDialog
     Public ReadOnly Property Teilnehmer() As Teilnehmer
@@ -25,13 +27,12 @@ Public Class NeuerTeilnehmerDialog
 
     End Sub
 
-
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
 
-        FirstNameField.Focus()
+        VornameText.Focus()
 
     End Sub
 
@@ -40,14 +41,41 @@ Public Class NeuerTeilnehmerDialog
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        MessageBox.Show(Validation.GetValidationAdornerSiteFor(NachnameText).InvalidateProperty).
         BindingGroup.CommitEdit()
-        DialogResult = True
+        MessageBox.Show(GetErrors)
     End Sub
 
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         BindingGroup.CancelEdit()
         DialogResult = False
     End Sub
+    Private Function GetErrors()
+        Dim sb As New StringBuilder
+        sb.AppendLine(GetErrorsVorname)
+        sb.AppendLine(GetErrorsNachname)
+        Return sb.ToString
+    End Function
+    Private Function GetErrorsVorname() As String
+        Dim sb As New StringBuilder
+        For Each [Error] In Validation.GetErrors(VornameText)
+            sb.AppendLine([Error].ErrorContent.ToString)
+        Next
+        Return sb.ToString
+    End Function
 
+    Private Function GetErrorsNachname() As String
+        Dim sb As New StringBuilder
+        For Each [Error] In Validation.GetErrors(NachnameText)
+            sb.AppendLine([Error].ErrorContent.ToString)
+        Next
+        Return sb.ToString
+    End Function
 
+    Private Function ValidateInput() As Boolean
+        If Validation.GetHasError(VornameText) OrElse Validation.GetHasError(NachnameText) Then
+            Return False
+        End If
+        Return True
+    End Function
 End Class

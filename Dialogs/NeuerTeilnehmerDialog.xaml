@@ -8,10 +8,11 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
-        Title="Teilnehmer" SizeToContent="Height" Width="600">
+        Title="Teilnehmer" SizeToContent="Height" Width="600"
+        Validation.ValidationAdornerSite="{Binding ElementName=FehlerInfo}">
 
 
-    <Window.Resources>
+    <!--<Window.Resources>
         <Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type DatePicker}}">
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Template">
@@ -108,10 +109,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Window.Resources>
+    </Window.Resources>-->
 
     <Window.BindingGroup>
-        <BindingGroup x:Name="TeilnehmerBindingGroup">
+        <BindingGroup >
             <BindingGroup.ValidationRules>
                 <rules:TeilnehmerValidationRule/>
             </BindingGroup.ValidationRules>
@@ -123,13 +124,16 @@
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
                    Style="{StaticResource WindowImageCaption}" />
-            <TextBlock Height="Auto" Text="Neuer Teilnehmer"
+            <TextBlock Height="Auto" Text="Neuer Teilnehmer" 
                        Style="{StaticResource WindowCaption}" />
         </DockPanel>
 
-        <!-- OK- und Cancel-Button -->
+         <!--OK- und Cancel-Button--> 
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Name="FehlerInfo" FontSize="6" 
+                       Content="{Binding RelativeSource={RelativeSource Self}, 
+                    Path=(Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent}" />
                 <Button Width="100" Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}"/>
                 <Button Width="100" Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}"/>
             </StackPanel>
@@ -149,6 +153,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
@@ -163,7 +168,11 @@
                 </TextBlock>
             </Label>
             <Label Content="Geburtsdatum" Grid.Column="1" Grid.Row="3" />
-            <Label Content="Persönliches Leistungsstufe" Grid.Column="1" Grid.Row="4"/>
+            <Label Grid.Column="1" Grid.Row="4">
+                <TextBlock>               
+                    Persönliche  Leistungsstufe
+                </TextBlock>
+            </Label>
 
             <TextBox x:Name="VornameText" Grid.Column="2" Grid.Row="1" 
                      Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}"/>
@@ -182,4 +191,5 @@
         </Grid>
 
     </DockPanel>
+
 </Window>

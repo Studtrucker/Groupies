@@ -110,6 +110,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
+    <Compile Include="BaseTypes\BaseModelTest.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Dialogs\NeueFaehigkeitDialog.xaml.vb">
       <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>

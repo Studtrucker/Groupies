@@ -37,18 +37,15 @@ Public Class NeuerTeilnehmerDialog
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Teilnehmer.IsOk
+        e.CanExecute = True
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        MessageBox.Show(Validation.GetValidationAdornerSiteFor(NachnameText).InvalidateProperty).
         BindingGroup.CommitEdit()
-        MessageBox.Show(GetErrors)
     End Sub
 
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         BindingGroup.CancelEdit()
-        DialogResult = False
     End Sub
     Private Function GetErrors()
         Dim sb As New StringBuilder

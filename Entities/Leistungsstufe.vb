@@ -159,9 +159,9 @@ Namespace Entities
             _Faehigkeiten.Remove(Faehigkeit)
         End Sub
 
-        Public Overrides Function ToString() As String
-            Return Benennung
-        End Function
+        'Public Overrides Function ToString() As String
+        '    Return Benennung
+        'End Function
 
 #End Region
 

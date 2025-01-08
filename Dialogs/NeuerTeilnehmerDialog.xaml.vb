@@ -8,7 +8,7 @@ Imports Groupies.UserControls
 
 Public Class NeuerTeilnehmerDialog
     Public ReadOnly Property Teilnehmer() As Teilnehmer
-    Private ReadOnly _instructorListCollectionView As ICollectionView
+    'Private ReadOnly _instructorListCollectionView As ICollectionView
     Private ReadOnly _levelListCollectionView As ICollectionView
 
     Public Sub New()
@@ -20,10 +20,12 @@ Public Class NeuerTeilnehmerDialog
         _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
-        _levelListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste)
-        _instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
+        Dim x = AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung)
 
-        ParticipantLevelComboBox.ItemsSource = _levelListCollectionView
+        _levelListCollectionView = New CollectionView(x)
+        '_instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
+
+        LeistungsstandComboBox.ItemsSource = _levelListCollectionView
 
     End Sub
 
@@ -42,6 +44,14 @@ Public Class NeuerTeilnehmerDialog
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         BindingGroup.CommitEdit()
+        If Validation.GetHasError(Me) Then
+            Dim Fehlertext = String.Empty
+            DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
+
+            MessageBox.Show(Fehlertext.ToString)
+        Else
+            DialogResult = True
+        End If
     End Sub
 
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
@@ -75,4 +85,5 @@ Public Class NeuerTeilnehmerDialog
         End If
         Return True
     End Function
+
 End Class

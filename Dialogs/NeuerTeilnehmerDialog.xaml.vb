@@ -7,9 +7,8 @@ Imports System.Text
 Imports Groupies.UserControls
 
 Public Class NeuerTeilnehmerDialog
-    Public ReadOnly Property Teilnehmer() As Teilnehmer
-    'Private ReadOnly _instructorListCollectionView As ICollectionView
-    Private ReadOnly _levelListCollectionView As ICollectionView
+    Public Property Teilnehmer() As Teilnehmer
+    Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 
     Public Sub New()
 
@@ -20,70 +19,54 @@ Public Class NeuerTeilnehmerDialog
         _Teilnehmer = New Teilnehmer
         DataContext = _Teilnehmer
 
-        Dim x = AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung)
+        ' ListCollectionView für die Combobox erstellen
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
+        LeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
-        _levelListCollectionView = New CollectionView(x)
-        '_instructorListCollectionView = New CollectionView(AppController.CurrentClub.Gruppenliste)
+    End Sub
 
-        LeistungsstandComboBox.ItemsSource = _levelListCollectionView
+    Public Sub New(Teilnehmer As Teilnehmer)
+
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        DataContext = Teilnehmer
+
+        ' ListCollectionView für die Combobox erstellen
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
+        LeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
     End Sub
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
-
-        VornameText.Focus()
-
+        VornameTextBox.Focus()
     End Sub
 
-    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
-    End Sub
-
-    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        BindingGroup.CommitEdit()
-        If Validation.GetHasError(Me) Then
-            Dim Fehlertext = String.Empty
-            DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
-
-            MessageBox.Show(Fehlertext.ToString)
-        Else
-            DialogResult = True
-        End If
-    End Sub
-
-    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        BindingGroup.CancelEdit()
-    End Sub
-    Private Function GetErrors()
-        Dim sb As New StringBuilder
-        sb.AppendLine(GetErrorsVorname)
-        sb.AppendLine(GetErrorsNachname)
-        Return sb.ToString
-    End Function
-    Private Function GetErrorsVorname() As String
-        Dim sb As New StringBuilder
-        For Each [Error] In Validation.GetErrors(VornameText)
-            sb.AppendLine([Error].ErrorContent.ToString)
-        Next
-        Return sb.ToString
-    End Function
-
-    Private Function GetErrorsNachname() As String
-        Dim sb As New StringBuilder
-        For Each [Error] In Validation.GetErrors(NachnameText)
-            sb.AppendLine([Error].ErrorContent.ToString)
-        Next
-        Return sb.ToString
+    Private Function GetErrors() As String
+        Dim Fehlertext = String.Empty
+        DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
+        Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
     End Function
 
     Private Function ValidateInput() As Boolean
-        If Validation.GetHasError(VornameText) OrElse Validation.GetHasError(NachnameText) Then
+        If Validation.GetHasError(Me) Then
             Return False
         End If
         Return True
     End Function
 
+    Private Sub OkButton_Click(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CommitEdit()
+        If Validation.GetHasError(Me) Then
+            MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+        Else
+            DialogResult = True
+        End If
+    End Sub
+
+    Private Sub CancelButton_Click(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CancelEdit()
+        DialogResult = False
+    End Sub
 End Class

@@ -28,12 +28,6 @@
 
             </Style>
 
-            <Style TargetType="Label" x:Key="FehlerinfoLabel" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="FontSize" Value="10"/>
-                <Setter Property="FontStretch" Value="ExtraExpanded"/>
-                <Setter Property="Foreground" Value="Red"/>
-            </Style>
-
             <Style TargetType="Label" x:Key="PflichtangabeLabel" BasedOn="{StaticResource {x:Type Label}}">
                 <Setter Property="ToolTip" Value="Pflichtangabe"/>
             </Style>

@@ -94,10 +94,12 @@
                           IsReadOnly="False" CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}" 
                           SelectionMode="Extended" MouseDoubleClick="Handle_TeilnehmerAusGruppeEntfernen">
+                    
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Teilnehmer aus Gruppe entfernen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 

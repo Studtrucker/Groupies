@@ -476,6 +476,9 @@
   <ItemGroup>
     <Resource Include="Images\icons8-remove-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-person-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

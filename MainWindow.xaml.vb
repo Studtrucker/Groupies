@@ -82,6 +82,10 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerArchivieren,
                                                AddressOf Handle_TeilnehmerArchivieren_Execute,
                                                AddressOf Handle_TeilnehmerArchivieren_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerBearbeiten,
+                                               AddressOf Handle_TeilnehmerBearbeiten_Execute,
+                                               AddressOf Handle_TeilnehmerBearbeiten_CanExecuted))
+
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerlisteImportieren,
                                                AddressOf Handle_TrainerlisteImportieren_Execute,
@@ -365,6 +369,21 @@ Public Class MainWindow
             AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
+
+    Private Sub Handle_TeilnehmerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = GroupView.MitgliederlisteDataGrid.SelectedItems.Count = 1
+    End Sub
+
+    Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New NeuerTeilnehmerDialog(GroupView.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        'If dlg.ShowDialog = True Then
+        '    GroupView.MitgliederlisteDataGrid.CurrentItem = dlg.Teilnehmer
+        'End If
+        dlg.ShowDialog()
+
+    End Sub
+
     Private Sub Handle_TeilnehmerSuchen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = True
     End Sub

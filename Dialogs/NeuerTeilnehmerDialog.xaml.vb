@@ -67,6 +67,5 @@ Public Class NeuerTeilnehmerDialog
 
     Private Sub CancelButton_Click(sender As Object, e As RoutedEventArgs)
         BindingGroup.CancelEdit()
-        DialogResult = False
     End Sub
 End Class

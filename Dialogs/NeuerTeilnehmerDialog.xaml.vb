@@ -61,7 +61,12 @@ Public Class NeuerTeilnehmerDialog
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
         Else
+            VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
+            LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
             DialogResult = True
+
         End If
     End Sub
 

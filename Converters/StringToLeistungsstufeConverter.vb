@@ -6,12 +6,13 @@ Namespace Converters
         Implements IValueConverter
 
         Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-            If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
+            If TypeOf value IsNot Entities.Leistungsstufe Then Return DependencyProperty.UnsetValue
             Return DirectCast(value, Entities.Leistungsstufe).Benennung
         End Function
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-            Return Groupies.Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).First
+            If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
+            Return Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).First
         End Function
     End Class
 End Namespace

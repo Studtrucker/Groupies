@@ -1,11 +1,12 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Commands
+Imports Groupies.Controller
 Imports Groupies.Entities
-Imports PropertyChanged
 Imports CDS = Groupies.Controller.AppController
 Namespace UserControls
 
-    Public Class GroupView
+    Public Class GruppenAnsicht
+        'Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 
         Sub New()
 
@@ -15,6 +16,11 @@ Namespace UserControls
             CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerBearbeiten,
                                        AddressOf Handle_TrainerBearbeiten_Execute,
                                        AddressOf Handle_TrainerBearbeiten_CanExecuted))
+
+            ' ListCollectionView für die Combobox erstellen
+
+            '_LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
+            'GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         End Sub
 

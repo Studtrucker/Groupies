@@ -172,8 +172,8 @@
     <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
-    <Compile Include="UserControls\GroupView.xaml.vb">
-      <DependentUpon>GroupView.xaml</DependentUpon>
+    <Compile Include="UserControls\GruppenAnsicht.xaml.vb">
+      <DependentUpon>GruppenAnsicht.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IPrintableNotice.vb" />
     <Compile Include="UserControls\Trainerliste.xaml.vb">
@@ -262,7 +262,7 @@
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\TeilnehmerCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
-    <Page Include="UserControls\GroupView.xaml">
+    <Page Include="UserControls\GruppenAnsicht.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

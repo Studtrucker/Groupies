@@ -6,6 +6,7 @@ Imports System.Windows.Markup
 Imports System.Windows.Shell
 Imports System.Xml.Serialization
 Imports Groupies.Commands
+Imports Groupies.Controller
 Imports Groupies.Entities
 Imports Groupies.Interfaces
 Imports Groupies.Services
@@ -17,6 +18,7 @@ Public Class MainWindow
 
 #Region "Felder"
 
+    Private _LeistungsstufenListCollectionView As ICollectionView
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
@@ -142,6 +144,10 @@ Public Class MainWindow
 
         RefreshJumpListInWinTaskbar()
 
+
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
+        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _leistungsstufenlisteCollectionView
 
     End Sub
 
@@ -361,21 +367,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = GroupView.MitgliederlisteDataGrid.SelectedItems.Count > 0
+        e.CanExecute = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        For i = GroupView.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GroupView.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+        For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = GroupView.MitgliederlisteDataGrid.SelectedItems.Count = 1
+        e.CanExecute = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count = 1
     End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerTeilnehmerDialog(GroupView.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New NeuerTeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         'If dlg.ShowDialog = True Then
         '    GroupView.MitgliederlisteDataGrid.CurrentItem = dlg.Teilnehmer
@@ -775,7 +781,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub SetGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
-        GroupView.setView(sender, New RoutedEventArgs)
+        GruppeUserControl.setView(sender, New RoutedEventArgs)
     End Sub
 
     Private Sub SetView(Club As Club)
@@ -787,8 +793,8 @@ Public Class MainWindow
         If _leistungsstufenlisteCollectionView.CanSort Then
             _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         End If
-        GroupView.Gruppenleistungsstufe.ItemsSource = _leistungsstufenlisteCollectionView
-        GroupView.TeilnehmerLeistungsstand.ItemsSource = _leistungsstufenlisteCollectionView
+        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _leistungsstufenlisteCollectionView
+        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _leistungsstufenlisteCollectionView
 
         SetView(Club.Gruppenliste)
         SetView(Club.GruppenloseTeilnehmer)

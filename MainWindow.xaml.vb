@@ -22,7 +22,6 @@ Public Class MainWindow
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
-    Private _leistungsstufenlisteCollectionView As ICollectionView
     Private _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
 
@@ -147,7 +146,8 @@ Public Class MainWindow
 
         _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
         GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _leistungsstufenlisteCollectionView
+        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
     End Sub
 
@@ -789,12 +789,13 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
 
         UnsetView()
-        _leistungsstufenlisteCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
-        If _leistungsstufenlisteCollectionView.CanSort Then
-            _leistungsstufenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        _LeistungsstufenListCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
+        If _LeistungsstufenListCollectionView.CanSort Then
+            _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         End If
-        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _leistungsstufenlisteCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _leistungsstufenlisteCollectionView
+        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         SetView(Club.Gruppenliste)
         SetView(Club.GruppenloseTeilnehmer)
@@ -839,7 +840,7 @@ Public Class MainWindow
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
         _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
-        _leistungsstufenlisteCollectionView = New ListCollectionView(New LeistungsstufeCollection)
+        _LeistungsstufenListCollectionView = New ListCollectionView(New LeistungsstufeCollection)
 
     End Sub
 

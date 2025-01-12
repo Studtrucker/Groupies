@@ -122,7 +122,7 @@
                                                 SelectedItemBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"
                                                 SelectedValueBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"/>-->
                         <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
-                                                SelectedValueBinding="{Binding Leistungsstand.Benennung, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

@@ -7,6 +7,7 @@ Public Class TeilnehmerDialog
     Public Property Modus As IModus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
+    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 
     Public Sub New()
 
@@ -65,11 +66,13 @@ Public Class TeilnehmerDialog
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+            Dialog = False
         Else
             VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
             LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
+            Dialog = True
         End If
     End Sub
 

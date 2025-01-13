@@ -16,7 +16,7 @@ Namespace Entities
 
 
 #Region "Fields"
-        Private _Leistungsstand = New Leistungsstufe("Unbekannt", -1)
+        Private _Leistungsstand = New Leistungsstufe("Leistungsstand unbekannt", -1)
         Private _TeilnehmerID = Guid.NewGuid()
 
 #End Region

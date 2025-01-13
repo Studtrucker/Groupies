@@ -24,7 +24,7 @@ Public Class ModusErstellen
     Public Property Titel As String = " erstellen" Implements IModus.Titel
 
     Public Sub HandleClose(Window As IWindowMitModus) Implements IModus.HandleClose
-        DirectCast(Window, Window).DialogResult = True
+        DirectCast(Window, Window).DialogResult = Window.Dialog
     End Sub
 
 End Class

@@ -26,7 +26,7 @@ Namespace ValidationRules
                 If Teilnehmerliste.ToList.Where(Function(Tn) Tn.Vorname = Vorname And Tn.Nachname = Nachname).Any Then
                     ErrorContent.Add("Teilnehmer mit diesem Namen ist bereits vorhanden")
                 End If
-                If String.IsNullOrWhiteSpace(Leistungsstand) Or Leistungsstand.ToLower = "unbekannt" Then
+                If String.IsNullOrWhiteSpace(Leistungsstand) Or Leistungsstand.ToLower = "Leistungsstand unbekannt" Then
                     ErrorContent.Add("Leistungsstand muss angegeben werden")
                 End If
                 If ErrorContent.Count > 0 Then

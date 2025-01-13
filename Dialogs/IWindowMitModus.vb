@@ -1,4 +1,5 @@
 ﻿Public Interface IWindowMitModus
+    Property Dialog As Boolean
     Sub ModusEinstellen()
     Sub HandlerSchliessenButton(sender As Object, e As RoutedEventArgs)
 

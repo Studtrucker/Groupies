@@ -12,10 +12,20 @@
 
 End Class
 
+Public Interface IModus
+    Property Titel As String
+    Sub HandleClose(Window As IWindowMitModus)
+
+End Interface
+
 Public Class ModusErstellen
     Implements IModus
 
     Public Property Titel As String = " erstellen" Implements IModus.Titel
+
+    Public Sub HandleClose(Window As IWindowMitModus) Implements IModus.HandleClose
+        DirectCast(Window, Window).DialogResult = True
+    End Sub
 
 End Class
 
@@ -24,11 +34,11 @@ Public Class ModusBearbeiten
 
     Public Property Titel As String = " bearbeiten" Implements IModus.Titel
 
+    Public Sub HandleClose(Window As IWindowMitModus) Implements IModus.HandleClose
+        DirectCast(Window, Window).Close()
+    End Sub
 End Class
 
-Public Interface IModus
-    Property Titel As String
-End Interface
 
 Public Enum ModusEnum
     Erstellen

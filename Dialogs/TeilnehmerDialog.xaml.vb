@@ -3,6 +3,7 @@ Imports System.ComponentModel
 Imports Groupies.Entities
 
 Public Class TeilnehmerDialog
+    Implements IWindowMitModus
     Public Property Modus As IModus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
@@ -23,9 +24,10 @@ Public Class TeilnehmerDialog
     End Sub
 
 
-    Public Sub ModusEinstellen()
+    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
-        Me.AddHandler()
+        OkButton.AddHandler(Button.ClickEvent, New RoutedEventHandler(AddressOf HandlerOkButton))
+        CancelButton.AddHandler(Button.ClickEvent, New RoutedEventHandler(AddressOf HandlerCancelButton))
     End Sub
 
     Public Sub New(Teilnehmer As Teilnehmer)
@@ -59,22 +61,24 @@ Public Class TeilnehmerDialog
         Return True
     End Function
 
-    Private Sub OkButton_Click(sender As Object, e As RoutedEventArgs)
-        'BindingGroup.CommitEdit()
-        'If Validation.GetHasError(Me) Then
-        '    MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-        'Else
-        VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-        NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-        GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
-        LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
-        DialogResult = True
-
-        'End If
+    Private Sub HandlerOkButton(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CommitEdit()
+        If Validation.GetHasError(Me) Then
+            MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+        Else
+            VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
+            LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
+        End If
     End Sub
 
-    Private Sub CancelButton_Click(sender As Object, e As RoutedEventArgs)
+    Private Sub HandlerCancelButton(sender As Object, e As RoutedEventArgs)
         BindingGroup.CancelEdit()
+    End Sub
+
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandlerSchliessenButton
+        Modus.HandleClose(Me)
     End Sub
 
 End Class

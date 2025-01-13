@@ -122,6 +122,7 @@
     <Compile Include="Dialogs\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\IWindowMitModus.vb" />
     <Compile Include="EntitiesAlt\Group.vb" />
     <Compile Include="EntitiesAlt\GroupCollection.vb" />
     <Compile Include="EntitiesAlt\Instructor.vb" />

@@ -7,7 +7,7 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         xmlns:converters="clr-namespace:Groupies.Converters"
         mc:Ignorable="d"
-        Title="TeilnehmerDialog" SizeToContent="Height" Width="800">
+        Title="Teilnehmerdialog" SizeToContent="Height" Width="600">
 
     <Window.Resources>
         <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
@@ -35,8 +35,9 @@
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                <Button x:Name="OkButton" Width="100" Content="OK"  Click="OkButton_Click" />
-                <Button x:Name="CancelButton" Width="100" Content="Abbruch" Click="CancelButton_Click"/>
+                <Button x:Name="OkButton" Width="110" Content="Übernehmen"/>
+                <Button x:Name="CancelButton" Width="110" Content="Verwerfen"/>
+                <Button x:Name="SchliessenButton" Width="110" Content="Schließen" Click="SchliessenButton_Click"/>
             </StackPanel>
         </Border>
 
@@ -74,7 +75,7 @@
             <TextBox x:Name="NachnameTextBox" Grid.Column="2" Grid.Row="2"
                      Text="{Binding Nachname, UpdateSourceTrigger=Explicit}"/>
 
-            <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="3" Grid.Column="2" 
+            <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="3" Grid.Column="2" Width="200" HorizontalAlignment="Left"
                         SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=Explicit}"/>
 
             <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"

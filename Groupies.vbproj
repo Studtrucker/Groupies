@@ -141,6 +141,7 @@
     <Compile Include="Entities\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\FabrikDataImport.vb" />
+    <Compile Include="Fabriken\ModusFabrik.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>

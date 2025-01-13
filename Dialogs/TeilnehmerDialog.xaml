@@ -27,7 +27,7 @@
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-person-48.png"
                    Style="{StaticResource WindowImageCaption}" />
-            <TextBlock Height="Auto" Text="Neuer Teilnehmer" 
+            <TextBlock Height="Auto" Text="Teilnehmer" x:Name="Titel"
                        Style="{StaticResource WindowCaption}" />
         </DockPanel>
 

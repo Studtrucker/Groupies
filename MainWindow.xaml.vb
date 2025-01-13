@@ -382,11 +382,14 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New TeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'If dlg.ShowDialog = True Then
-        '    GroupView.MitgliederlisteDataGrid.CurrentItem = dlg.Teilnehmer
-        'End If
+        Dim dlg = New TeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {
+            .Owner = Me,
+            .Modus = New ModusBearbeiten,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
+
         dlg.ShowDialog()
 
     End Sub

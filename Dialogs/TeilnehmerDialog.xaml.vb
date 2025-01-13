@@ -3,6 +3,7 @@ Imports System.ComponentModel
 Imports Groupies.Entities
 
 Public Class TeilnehmerDialog
+    Public Property Modus As IModus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 
@@ -19,6 +20,12 @@ Public Class TeilnehmerDialog
         _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
         LeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
+    End Sub
+
+
+    Public Sub ModusEinstellen()
+        Me.Titel.Text &= Modus.Titel
+        Me.AddHandler()
     End Sub
 
     Public Sub New(Teilnehmer As Teilnehmer)

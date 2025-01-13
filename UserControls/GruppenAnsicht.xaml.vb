@@ -52,11 +52,11 @@ Namespace UserControls
         '    Next
         'End Sub
 
-        Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As CanExecuteRoutedEventArgs)
+        Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As CanExecuteRoutedEventArgs)
             e.CanExecute = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing
         End Sub
 
-        Private Sub Handle_TeilnehmerBearbeiten_CanExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
             Dim dlg = New NeuerTrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

@@ -41,7 +41,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="600"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 </Grid.ColumnDefinitions>
@@ -75,14 +75,7 @@
                 <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=Benennung, UpdateSourceTrigger=PropertyChanged}"  />
-                <!--Combobox Level-->
-                <!--<ComboBox Grid.Column="2" Grid.Row="4"     
-                          IsSynchronizedWithCurrentItem="True"
-                          SelectedValuePath="Benennung"
-                          SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
-                          Name="Gruppenleistungsstufe" >
-                </ComboBox>-->
+
                 <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
                       x:Name="GruppenleistungsstufeComboBox"
                       SelectedValue="{Binding Leistungsstufe,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
@@ -117,10 +110,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
-                        <!--<DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstand" Header="Leistungsstand" Width="*" 
-                                                SelectedValuePath="Benennung" 
-                                                SelectedItemBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedValueBinding="{Binding Leistungsstand.Benennung,UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                         <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
                                                 SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                     </DataGrid.Columns>

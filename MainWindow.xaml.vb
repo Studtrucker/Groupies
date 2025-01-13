@@ -143,11 +143,12 @@ Public Class MainWindow
 
         RefreshJumpListInWinTaskbar()
 
-
-        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
-        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        If AppController.CurrentClub IsNot Nothing Then
+            _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
+            GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
+            GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+            TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        End If
 
     End Sub
 
@@ -381,7 +382,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerTeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New TeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         'If dlg.ShowDialog = True Then
         '    GroupView.MitgliederlisteDataGrid.CurrentItem = dlg.Teilnehmer

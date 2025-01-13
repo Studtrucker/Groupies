@@ -92,6 +92,25 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Geburtsdatum As Date
 
+        Public ReadOnly Property Alter As Long
+            Get
+                Dim nMonate As Integer
+                Dim nJahre As Integer
+                If Geburtsdatum = "0001-01-01" Then
+                    nJahre = 0
+                Else
+                    nJahre = Math.Floor(DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12)
+                    nMonate = DatePart(DateInterval.Month, Geburtsdatum)
+                    If nMonate = DatePart(DateInterval.Month, DateTime.Now) Then
+                        If DatePart(DateInterval.Day, Geburtsdatum) > DatePart(DateInterval.Day, DateTime.Now) Then
+                            nJahre += -1
+                        End If
+                    End If
+                End If
+                Return nJahre
+            End Get
+        End Property
+
         ''' <summary>
         ''' Der Vorname des Teilnehmers
         ''' </summary>

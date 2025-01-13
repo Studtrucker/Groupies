@@ -116,6 +116,9 @@
     <Compile Include="Dialogs\NeueFaehigkeitDialog.xaml.vb">
       <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\TeilnehmerDialog.xaml.vb">
+      <DependentUpon>TeilnehmerDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\NeueFaehigkeitDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\TeilnehmerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

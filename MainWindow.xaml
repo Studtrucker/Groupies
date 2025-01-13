@@ -154,7 +154,7 @@
                                     <TextBlock Grid.Column="0" Grid.Row="4" Text="Anzahl Gruppenmitglieder"/>
                                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Leistungsstufe,UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Leistungsstufe,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Trainer.VorUndNachname,UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
@@ -231,6 +231,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                             <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
                                                 SelectedValueBinding="{Binding Leistungsstand,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                         </DataGrid.Columns>
@@ -241,6 +242,7 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
+
                 </Grid>
             </Grid>
 

@@ -79,12 +79,11 @@
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="DataGrid">
+            <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type Control}}">
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="RowBackground" Value="White"/>
                 <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
                 <Setter Property="Margin" Value="4"/>
-                <Setter Property="FontSize" Value="14"/>
             </Style>
 
             <!--Control Template für Fehler -->

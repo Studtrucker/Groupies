@@ -95,7 +95,7 @@ Public Class XlLeser
 
     Private Sub ErhalteBenennungenTabelleUndSpalte(Datentyp As String, Dateityp As String)
 
-        Dim fabrikImport As New FabrikDataImport
+        Dim fabrikImport As New DataImportFabrik
         Try
             Dim importFormat = fabrikImport.ErzeugeImportformat(Datentyp, Dateityp)
             _Tabelle = importFormat.Tabelle

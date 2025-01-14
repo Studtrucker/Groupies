@@ -7,7 +7,7 @@ Public Class XLSchreiber
     Private Benennungen As Importformat
 
     Public Sub ExportDatenAlsXl(Extension As String, Datatyp As String)
-        Dim fab = New Groupies.FabrikDataImport
+        Dim fab = New Groupies.DataImportFabrik
 
         Benennungen = fab.ErzeugeImportformat(Datatyp, Extension)
 

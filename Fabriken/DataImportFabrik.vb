@@ -1,11 +1,12 @@
-﻿Public Class FabrikDataImport
+﻿
+Public Class DataImportFabrik
 
     Public Function ErzeugeImportformat(Datentyp As String, Dateityp As String) As Importformat
 
-        Dim FabrikSpalten = New FabrikSpalten
+        Dim FabrikSpalten = New DataImportSpaltennamenFabrik
         Dim Spalten = FabrikSpalten.erzeugeSpalten(Datentyp)
 
-        Dim FabrikTabellenname = New FabrikTabellenname
+        Dim FabrikTabellenname = New DataImportTabellennameFabrik
         Dim Tabelle = FabrikTabellenname.erzeugeTabellename(Datentyp, Dateityp)
 
         Return New Importformat(Tabelle, Spalten)
@@ -25,7 +26,7 @@ Public Class Importformat
 End Class
 
 
-Public Class FabrikTabellenname
+Public Class DataImportTabellennameFabrik
     Public Function erzeugeTabellename(Datentyp As String, Dateityp As String) As IImportTabellenname
         Select Case Dateityp
             Case ".xls", ".xlsx"
@@ -44,7 +45,7 @@ Public Class FabrikTabellenname
 
 End Class
 
-Public Class FabrikSpalten
+Public Class DataImportSpaltennamenFabrik
     Public Function erzeugeSpalten(Datentyp As String) As IImportSpaltennamen
         Select Case Datentyp
             Case "Teilnehmer"

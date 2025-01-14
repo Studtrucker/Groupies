@@ -352,7 +352,7 @@ Public Class MainWindow
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New TeilnehmerDialog With {
             .Owner = Me,
-            .Modus = New ModusFabrik().ErzeugeModus(ModusEnum.Erstellen),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dlg.ModusEinstellen()
@@ -390,7 +390,7 @@ Public Class MainWindow
 
         Dim dlg = New TeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {
             .Owner = Me,
-            .Modus = New ModusBearbeiten,
+            .Modus = New Fabriken.ModusBearbeiten,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dlg.ModusEinstellen()

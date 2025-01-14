@@ -3,14 +3,14 @@ Imports Groupies.Entities
 Imports System.Text
 
 Public Class LeistungsstufeDialog
-    Implements IWindowMitModus
+    Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As IModus
+    Public Property Modus As Interfaces.IModus
 
 
     Public ReadOnly Property Leistungsstufe() As Leistungsstufe
 
-    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
+    Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
 
     Public Sub New()
 
@@ -67,11 +67,11 @@ Public Class LeistungsstufeDialog
         MessageBox.Show($"{text}", "Aktuelle Leistungsstufen", MessageBoxButton.OK, MessageBoxImage.Information)
     End Sub
 
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandlerSchliessenButton
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandlerSchliessenButton
         Modus.HandleClose(Me)
     End Sub
 
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
     End Sub
 

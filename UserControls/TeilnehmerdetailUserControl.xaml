@@ -4,42 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
-             mc:Ignorable="d" >
+             xmlns:rules="clr-namespace:Groupies.ValidationRules"
+             mc:Ignorable="d" 
+             Width="600" Height="Auto">
 
-    <!-- Detailangaben -->
-    <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+    <UserControl.BindingGroup>
+        <BindingGroup >
+            <BindingGroup.ValidationRules >
+                <rules:TeilnehmerValidationRule/>
+            </BindingGroup.ValidationRules>
+        </BindingGroup>
+    </UserControl.BindingGroup>
 
-    <Grid >
+    
+    <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*" MinWidth="200"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="Vorname" />
-        <Label Grid.Column="0" Grid.Row="1" Content="Name" />
-        <Label Grid.Column="0" Grid.Row="2" Content="Persönliches Level" />
+        <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Vorname <Run Foreground="Red">*</Run></TextBlock>
+        </Label>
+        <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Nachname <Run Foreground="Red">*</Run></TextBlock>
+        </Label>
+        <Label Content="Geburtsdatum" Grid.Column="1" Grid.Row="3"/>
+        <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Leistungsstand <Run Foreground="Red">*</Run></TextBlock>
+        </Label>
 
-        <!-- Binding an den Datacontext des Windows -->
-        <TextBox  Grid.Column="1" Grid.Row="0" 
-                      Text="{Binding Path=ParticipantFirstName, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
-        <TextBox  Grid.Column="1" Grid.Row="1" 
-                      Text="{Binding Path=ParticipantLastName, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" />
-        <ComboBox Grid.Column="1" Grid.Row="2"
-                      SelectedValuePath="LevelNaming" DisplayMemberPath="LevelNaming" IsSynchronizedWithCurrentItem="True"
-                      SelectedValue="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Path=ParticipantLevel.LevelNaming, UpdateSourceTrigger=PropertyChanged}"
-                      x:Name="ParticipantLevelComboBox" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="VornameTextBox" Grid.Column="2" Grid.Row="1" 
+                     Text="{Binding Vorname, UpdateSourceTrigger=Explicit}"/>
+        <TextBox x:Name="NachnameTextBox" Grid.Column="2" Grid.Row="2"
+                     Text="{Binding Nachname, UpdateSourceTrigger=Explicit}"/>
 
+        <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="3" Grid.Column="2" Width="200" HorizontalAlignment="Left"
+                        SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=Explicit}"/>
 
-        <GridSplitter Grid.Column="2" Grid.RowSpan="3" Width="5"
-                          HorizontalAlignment="Right" Background="Transparent"/>
+        <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
+                      x:Name="LeistungsstandComboBox"
+                      SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=Explicit,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+
     </Grid>
-    <!--</ScrollViewer>-->
+    
 </UserControl>

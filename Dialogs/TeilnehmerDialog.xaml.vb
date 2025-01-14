@@ -3,11 +3,11 @@ Imports System.ComponentModel
 Imports Groupies.Entities
 
 Public Class TeilnehmerDialog
-    Implements IWindowMitModus
-    Public Property Modus As IModus
+    Implements Interfaces.IWindowMitModus
+    Public Property Modus As Interfaces.IModus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
-    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
+    Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
 
     Public Sub New()
 
@@ -25,7 +25,7 @@ Public Class TeilnehmerDialog
     End Sub
 
 
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
         OkButton.AddHandler(Button.ClickEvent, New RoutedEventHandler(AddressOf HandlerOkButton))
         CancelButton.AddHandler(Button.ClickEvent, New RoutedEventHandler(AddressOf HandlerCancelButton))
@@ -80,7 +80,7 @@ Public Class TeilnehmerDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandlerSchliessenButton
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandlerSchliessenButton
         Modus.HandleClose(Me)
     End Sub
 

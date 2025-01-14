@@ -113,6 +113,7 @@
     <Compile Include="BaseTypes\BaseModelTest.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
+    <Compile Include="Dialogs\Interfaces\IWindowMitModus.vb" />
     <Compile Include="Dialogs\LeistungsstufeDialog.xaml.vb">
       <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
@@ -125,7 +126,6 @@
     <Compile Include="Dialogs\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\IWindowMitModus.vb" />
     <Compile Include="EntitiesAlt\Group.vb" />
     <Compile Include="EntitiesAlt\GroupCollection.vb" />
     <Compile Include="EntitiesAlt\Instructor.vb" />
@@ -144,7 +144,7 @@
     <Compile Include="Entities\EwigerTeilnehmer.vb" />
     <Compile Include="Entities\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
-    <Compile Include="Fabriken\FabrikDataImport.vb" />
+    <Compile Include="Fabriken\DataImportFabrik.vb" />
     <Compile Include="Fabriken\ModusFabrik.vb" />
     <Compile Include="InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>

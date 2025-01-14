@@ -2,7 +2,7 @@
 Imports Groupies.Entities
 Imports Groupies.Commands
 
-Public Class NeueFaehigkeitDialog
+Public Class FaehigkeitDialog
 
     Public ReadOnly Property Faehigkeit() As Faehigkeit
 

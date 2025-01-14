@@ -21,7 +21,7 @@ Public Class LeistungsstufeDialog
     End Sub
 
     Private Sub HandleFaehigkeitNeuErstellenExecute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueFaehigkeitDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New FaehigkeitDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             _Leistungsstufe.Faehigkeiten.Add(dlg.Faehigkeit)
@@ -59,7 +59,7 @@ Public Class LeistungsstufeDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandlerSchliessenButton
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandleSchliessenButton
         Modus.HandleClose(Me)
     End Sub
 

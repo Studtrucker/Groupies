@@ -449,7 +449,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New TrainerDialog With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Trainer)
@@ -486,7 +491,7 @@ Public Class MainWindow
     Private Sub TrainerBearbeiten(Trainer As Trainer)
 
         If Trainer IsNot Nothing Then
-            Dim dlg = New NeuerTrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New TrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             dlg.Bearbeiten(Trainer)
 

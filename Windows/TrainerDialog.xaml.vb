@@ -3,10 +3,15 @@ Imports System.Text
 Imports Groupies.Entities
 Imports Groupies.Commands
 Imports Microsoft.Win32
+Imports Groupies.Interfaces
 
-Public Class NeuerTrainerDialog
+Public Class TrainerDialog
+    Implements Interfaces.IWindowMitModus
 
     Public ReadOnly Property Trainer() As Trainer
+    Public Property Modus As Interfaces.IModus
+
+    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 
 
     Public Sub New()
@@ -21,10 +26,7 @@ Public Class NeuerTrainerDialog
     End Sub
 
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
-
-        SpitznameFeld.Focus()
+        SpitznameTextBox.Focus()
     End Sub
 
     Public Sub Bearbeiten(Trainer As Trainer)
@@ -32,17 +34,10 @@ Public Class NeuerTrainerDialog
         DataContext = _Trainer
     End Sub
 
-    Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Trainer.IsOk
-    End Sub
-
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = True
     End Sub
 
-    Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        DialogResult = False
-    End Sub
 
     Private Sub HandleDrop(sender As Object, e As DragEventArgs)
 
@@ -99,5 +94,39 @@ Public Class NeuerTrainerDialog
         e.Handled = True
     End Sub
 
+    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+        Me.Titel.Text &= Modus.Titel
+    End Sub
+    Private Function GetErrors() As String
+        Dim Fehlertext = String.Empty
+        DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
+        Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
+    End Function
 
+
+    Private Sub HandleOkButton(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CommitEdit()
+        If Validation.GetHasError(Me) Then
+            MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+            Dialog = False
+        Else
+            SpitznameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            VornameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            NachnameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            eMailTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            Dialog = True
+        End If
+    End Sub
+
+    Private Sub HandleCancelButton(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CancelEdit()
+    End Sub
+
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs)
+        Modus.HandleClose(Me)
+    End Sub
+
+    Public Sub HandleSchliessenButton(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandleSchliessenButton
+        Throw New NotImplementedException()
+    End Sub
 End Class

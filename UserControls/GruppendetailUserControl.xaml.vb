@@ -58,7 +58,7 @@ Namespace UserControls
 
         Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As ExecutedRoutedEventArgs)
 
-            Dim dlg = New NeuerTrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New TrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             ' Trainer aus der Gruppenliste holen
             Dim Trainer = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer
@@ -85,7 +85,7 @@ Namespace UserControls
 
         Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
-            Dim dlg = New NeuerTrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New TrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             ' Trainer aus der Gruppenliste holen
             Dim Trainer = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer

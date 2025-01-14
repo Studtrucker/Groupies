@@ -162,6 +162,12 @@ Namespace Entities
             End Get
         End Property
 
+        ''' <summary>
+        ''' Eine Liste der aller Faehigkeiten
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection
+
 #End Region
 
 #Region "Funktionen und Methoden"

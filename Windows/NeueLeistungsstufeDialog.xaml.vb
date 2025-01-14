@@ -29,7 +29,7 @@ Public Class NeueLeistungsstufeDialog
 
 
     Private Sub HandleFaehigkeitNeuErstellenExecute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueFaehigkeitDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New FaehigkeitDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
             _Leistungsstufe.Faehigkeiten.Add(dlg.Faehigkeit)

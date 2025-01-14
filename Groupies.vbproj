@@ -113,14 +113,16 @@
     <Compile Include="BaseTypes\BaseModelTest.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
+    <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
+    <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="Windows\LeistungsstufeDialog.xaml.vb">
       <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Leistungsstufenuebersicht.xaml.vb">
       <DependentUpon>Leistungsstufenuebersicht.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NeueFaehigkeitDialog.xaml.vb">
-      <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>
+    <Compile Include="Windows\FaehigkeitDialog.xaml.vb">
+      <DependentUpon>FaehigkeitDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TeilnehmerDialog.xaml.vb">
       <DependentUpon>TeilnehmerDialog.xaml</DependentUpon>
@@ -165,8 +167,8 @@
     <Compile Include="Windows\NeueGruppeDialog.xaml.vb">
       <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NeuerTrainerDialog.xaml.vb">
-      <DependentUpon>NeuerTrainerDialog.xaml</DependentUpon>
+    <Compile Include="Windows\TrainerDialog.xaml.vb">
+      <DependentUpon>TrainerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NeuerTeilnehmerDialog.xaml.vb">
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
@@ -244,7 +246,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\NeuerTrainerDialog.xaml">
+    <Page Include="Windows\TrainerDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -252,7 +254,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\NeueFaehigkeitDialog.xaml">
+    <Page Include="Windows\FaehigkeitDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -494,6 +496,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-person-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-trainer-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-trainer-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

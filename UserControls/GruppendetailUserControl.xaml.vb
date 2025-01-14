@@ -5,7 +5,7 @@ Imports Groupies.Entities
 Imports CDS = Groupies.Controller.AppController
 Namespace UserControls
 
-    Public Class GruppenAnsicht
+    Public Class GruppendetailUserControl
         'Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 
         Sub New()

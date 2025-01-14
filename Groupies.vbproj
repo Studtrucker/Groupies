@@ -113,6 +113,9 @@
     <Compile Include="BaseTypes\BaseModelTest.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
+    <Compile Include="Dialogs\LeistungsstufeDialog.xaml.vb">
+      <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NeueFaehigkeitDialog.xaml.vb">
       <DependentUpon>NeueFaehigkeitDialog.xaml</DependentUpon>
     </Compile>
@@ -177,39 +180,39 @@
     <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
-    <Compile Include="UserControls\GruppenAnsicht.xaml.vb">
-      <DependentUpon>GruppenAnsicht.xaml</DependentUpon>
+    <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
+      <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IPrintableNotice.vb" />
-    <Compile Include="UserControls\Trainerliste.xaml.vb">
-      <DependentUpon>Trainerliste.xaml</DependentUpon>
+    <Compile Include="UserControls\TrainerlisteUserControl.xaml.vb">
+      <DependentUpon>TrainerlisteUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Traineruebersicht.xaml.vb">
-      <DependentUpon>Traineruebersicht.xaml</DependentUpon>
+    <Compile Include="UserControls\TraineruebersichtUserControl.xaml.vb">
+      <DependentUpon>TraineruebersichtUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TrainerView.xaml.vb">
-      <DependentUpon>TrainerView.xaml</DependentUpon>
+    <Compile Include="UserControls\TrainerdetailUserControl.xaml.vb">
+      <DependentUpon>TrainerdetailUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Leistungsstufenliste.xaml.vb">
-      <DependentUpon>Leistungsstufenliste.xaml</DependentUpon>
+    <Compile Include="UserControls\LeistungsstufenlisteUserControl.xaml.vb">
+      <DependentUpon>LeistungsstufenlisteUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Leistungsstufenuebersicht.xaml.vb">
-      <DependentUpon>Leistungsstufenuebersicht.xaml</DependentUpon>
+    <Compile Include="UserControls\LeistungsstufenuebersichtUserControl.xaml.vb">
+      <DependentUpon>LeistungsstufenuebersichtUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LeistungsstufeView.xaml.vb">
-      <DependentUpon>LeistungsstufeView.xaml</DependentUpon>
+    <Compile Include="UserControls\LeistungsstufendetailUserControl.xaml.vb">
+      <DependentUpon>LeistungsstufendetailUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ParticipantView.xaml.vb">
-      <DependentUpon>ParticipantView.xaml</DependentUpon>
+    <Compile Include="UserControls\TeilnehmerdetailUserControl.xaml.vb">
+      <DependentUpon>TeilnehmerdetailUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Trainerausdruck.xaml.vb">
-      <DependentUpon>Trainerausdruck.xaml</DependentUpon>
+    <Compile Include="UserControls\TrainerausdruckUserControl.xaml.vb">
+      <DependentUpon>TrainerausdruckUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Teilnehmerausdruck.xaml.vb">
-      <DependentUpon>Teilnehmerausdruck.xaml</DependentUpon>
+    <Compile Include="UserControls\TeilnehmerausdruckUserControl.xaml.vb">
+      <DependentUpon>TeilnehmerausdruckUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\FaehigkeitView.xaml.vb">
-      <DependentUpon>FaehigkeitView.xaml</DependentUpon>
+    <Compile Include="UserControls\FaehigkeitendetailUserControl.xaml.vb">
+      <DependentUpon>FaehigkeitendetailUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\CountFaehigkeitenValidationRule.vb" />
     <Compile Include="ValidationRules\LeistungsstufeValidationRule.vb" />
@@ -222,6 +225,10 @@
     <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
     <Page Include="Dialogs\CountOfGroupsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\LeistungsstufeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,47 +278,47 @@
     <Compile Include="Entities\ParticipantRelationship.vb" />
     <Compile Include="Entities\TeilnehmerCollection.vb" />
     <Compile Include="Entities\ParticipantHistory.vb" />
-    <Page Include="UserControls\GruppenAnsicht.xaml">
+    <Page Include="UserControls\GruppendetailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Trainerliste.xaml">
+    <Page Include="UserControls\TrainerlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Traineruebersicht.xaml">
+    <Page Include="UserControls\TraineruebersichtUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TrainerView.xaml">
+    <Page Include="UserControls\TrainerdetailUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Leistungsstufenliste.xaml">
+    <Page Include="UserControls\LeistungsstufenlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Leistungsstufenuebersicht.xaml">
+    <Page Include="UserControls\LeistungsstufenuebersichtUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LeistungsstufeView.xaml">
+    <Page Include="UserControls\LeistungsstufendetailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ParticipantView.xaml">
+    <Page Include="UserControls\TeilnehmerdetailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Trainerausdruck.xaml">
+    <Page Include="UserControls\TrainerausdruckUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Teilnehmerausdruck.xaml">
+    <Page Include="UserControls\TeilnehmerausdruckUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\FaehigkeitView.xaml">
+    <Page Include="UserControls\FaehigkeitendetailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

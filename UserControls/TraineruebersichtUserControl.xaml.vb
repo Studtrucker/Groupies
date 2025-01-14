@@ -2,7 +2,7 @@
 Imports AppCon = Groupies.Controller.AppController
 
 
-Public Class Traineruebersicht
+Public Class TraineruebersichtUserControl
     Private _TrainerCollectionView As ICollectionView
 
     Private Sub Handle_Traineruebersicht_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded

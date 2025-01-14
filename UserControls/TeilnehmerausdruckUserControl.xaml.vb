@@ -7,7 +7,7 @@ Imports Groupies.Interfaces
 Namespace UserControls
 
     <ContentProperty("Skikursgruppe")>
-    Partial Public Class TeilnehmerAusdruck
+    Partial Public Class TeilnehmerAusdruckUserControl
         Implements IPrintableNotice
 
         Public Sub New()

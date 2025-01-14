@@ -7,7 +7,7 @@ Imports Groupies.Interfaces
 Namespace UserControls
 
     <ContentProperty("Group")>
-    Public Class PrintableNoticeForInstructors
+    Public Class TrainerausdruckUserControl
         Implements IPrintableNotice
 
         Public Sub New()

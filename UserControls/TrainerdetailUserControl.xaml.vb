@@ -1,6 +1,6 @@
 ﻿Namespace UserControls
+    Public Class TrainerdetailUserControl
 
-    Public Class Trainerliste
 
     End Class
 End Namespace

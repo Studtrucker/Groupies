@@ -5,7 +5,7 @@ Imports CDS = Groupies.Controller.AppController
 Namespace UserControls
 
 
-    Public Class ParticipantView
+    Public Class TeilnehmerdetailUserControl
 
         Private _levelListCollectionView As ICollectionView
 

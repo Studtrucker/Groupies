@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports AppCon = Groupies.Controller.AppController
 
-Public Class Leistungsstufenuebersicht
+Public Class LeistungsstufenuebersichtUserControl
 
 #Region "Felder"
 

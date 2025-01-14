@@ -1,4 +1,4 @@
-﻿<Window x:Class="Leistungsstufenuebersicht"
+﻿<Window x:Class="LeistungsstufenuebersichtUserControl"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -36,10 +36,10 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
-            <uc:Leistungsstufenliste x:Name="LeistungsstufenListe" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" />
+            <uc:LeistungsstufenlisteUserControl x:Name="LeistungsstufenListe" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" />
             <GridSplitter  Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
                           Width="5" Background="WhiteSmoke"  />
-            <uc:LeistungsstufeView x:Name="LeistungsstufenView" Grid.Row="1" Grid.Column="3"/>
+            <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufenView" Grid.Row="1" Grid.Column="3"/>
         </Grid>
 
     </DockPanel>

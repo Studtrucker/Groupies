@@ -589,12 +589,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Leistungsstufenuebericht As New Leistungsstufenuebersicht
+        Dim Leistungsstufenuebericht As New LeistungsstufenuebersichtUserControl
         Leistungsstufenuebericht.Show()
     End Sub
 
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Traineruebersicht As New Traineruebersicht
+        Dim Traineruebersicht As New TraineruebersichtUserControl
         Traineruebersicht.Show()
     End Sub
 
@@ -918,9 +918,9 @@ Public Class MainWindow
             ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
             Dim pSkikursgruppe As IPrintableNotice
             If Printversion = Printversion.Participant Then
-                pSkikursgruppe = New TeilnehmerAusdruck
+                pSkikursgruppe = New TeilnehmerAusdruckUserControl
             Else
-                pSkikursgruppe = New PrintableNoticeForInstructors
+                pSkikursgruppe = New TrainerausdruckUserControl
             End If
 
             DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight

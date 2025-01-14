@@ -1,10 +1,9 @@
 ﻿Imports System.ComponentModel
-Imports System.Data
-Imports Groupies.Commands
 Imports Groupies.Entities
+Imports Groupies.Commands
 
 Namespace UserControls
-    Public Class LeistungsstufeView
-
+    Public Class LeistungsstufenlisteUserControl
     End Class
+
 End Namespace

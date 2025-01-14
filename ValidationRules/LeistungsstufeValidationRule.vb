@@ -17,14 +17,18 @@ Namespace ValidationRules
                 If String.IsNullOrWhiteSpace(Sortierung) Then
                     ErrorContent.Add("Sortierung ist eine Pflichtangabe")
                 End If
+                If Not IsNumeric(Sortierung) Then
+                    ErrorContent.Add("Sortierung muß eine Zahl sein")
+                End If
                 If String.IsNullOrWhiteSpace(Benennung) Then
                     ErrorContent.Add("Benennung ist eine Pflichtangabe")
                 End If
 
                 ' Zuerst das Objekt aus dem Value mit Hilfe der ID ermitteln (Rückgabe = IEnumerable(of Object))
                 Dim ValueListe = Controller.AppController.CurrentClub.Leistungsstufenliste.Where(Function(Ls) Ls.LeistungsstufeID = Leistungsstufe.LeistungsstufeID)
-                ' Diese Objekt aus der Gesamt-Objektliste entfernen
+                ' Dieses Objekt aus der Gesamt-Objektliste entfernen
                 Dim Leistungsstufenliste = Controller.AppController.CurrentClub.Leistungsstufenliste.Except(ValueListe)
+                ' Jetzt kann geprüft werden, ob es ein gleich benanntes Objekt in der Restliste gibt
                 If Leistungsstufenliste.ToList.Where(Function(LS) LS.Benennung = Benennung).Any Then
                     ErrorContent.Add("Leistungsstufe mit dieser Benennung ist bereits vorhanden")
                 End If

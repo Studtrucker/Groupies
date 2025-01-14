@@ -1,0 +1,62 @@
+﻿<Window x:Class="LeistungsstufeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Groupies"
+        xmlns:rules="clr-namespace:Groupies.ValidationRules"
+        xmlns:cmd="clr-namespace:Groupies.Commands"
+        xmlns:uc="clr-namespace:Groupies.UserControls" 
+        mc:Ignorable="d"
+        Title="Leistungsstufendialog" Height="Auto" Width="600">
+
+    <Window.BindingGroup>
+        <BindingGroup >
+            <BindingGroup.ValidationRules >
+                <rules:LeistungsstufeValidationRule/>
+            </BindingGroup.ValidationRules>
+        </BindingGroup>
+    </Window.BindingGroup>
+
+    <DockPanel>
+        <!--Menu-->
+        <Menu DockPanel.Dock="Top" Background="White">
+            <MenuItem Header="Fähigkeit">
+                <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitNeuErstellen}"/>
+            </MenuItem>
+            <MenuItem Header="Alle Leistungsstufen zeigen"/>
+        </Menu>
+        <!--Header-->
+        <DockPanel DockPanel.Dock="Top">
+            <Image Source="/Images/icons8-treppe-rauf-48.png" 
+                   Style="{StaticResource WindowImageCaption}" />
+            <TextBlock Height="Auto" Text="Leistungsstufe" x:Name="Titel"
+                       Style="{StaticResource WindowCaption}"/>
+        </DockPanel>
+
+        <!-- OK- und Cancel-Button -->
+        <Border DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
+                <Button x:Name="OkButton" Width="110" Content="Übernehmen" Click="HandlerOkButton"/>
+                <Button x:Name="CancelButton" Width="110" Content="Verwerfen" Click="HandlerCancelButton"/>
+                <Button x:Name="SchliessenButton" Width="110" Content="Schließen" Click="SchliessenButton_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!--Inputfields-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufeView" Grid.Row="1" Grid.Column="1"/>
+
+        </Grid>
+
+    </DockPanel>
+
+</Window>

@@ -10,15 +10,36 @@ Namespace ValidationRules
             Dim bindingGroup = DirectCast(value, BindingGroup)
             If bindingGroup.Items.Count = 1 Then
                 Dim Leistungsstufe = DirectCast(bindingGroup.Items(0), Entities.Leistungsstufe)
-                'Dim Sortierung = CType(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Sortierung)), Integer)
-                'Dim Benennung = DirectCast(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Benennung)), String)
-                Dim r1 = New BenennungValidationRule
-                Return r1.Validate(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Benennung)), cultureInfo)
-                Dim r2 = New SortierungUniqueValidationRule
-                Return r2.Validate(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Sortierung)), cultureInfo)
-                Dim r3 = New IntegerValidationRule
-                Return r3.Validate(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Sortierung)), cultureInfo)
-            End If
+                Dim Sortierung = CType(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Sortierung)), String)
+                Dim Benennung = DirectCast(bindingGroup.GetValue(Leistungsstufe, NameOf(Leistungsstufe.Benennung)), String)
+
+                Dim ErrorContent As New List(Of String)
+                If String.IsNullOrWhiteSpace(Sortierung) Then
+                    ErrorContent.Add("Sortierung ist eine Pflichtangabe")
+                End If
+                If String.IsNullOrWhiteSpace(Benennung) Then
+                    ErrorContent.Add("Benennung ist eine Pflichtangabe")
+                End If
+
+                ' Zuerst das Objekt aus dem Value mit Hilfe der ID ermitteln (Rückgabe = IEnumerable(of Object))
+                Dim ValueListe = Controller.AppController.CurrentClub.Leistungsstufenliste.Where(Function(Ls) Ls.LeistungsstufeID = Leistungsstufe.LeistungsstufeID)
+                ' Diese Objekt aus der Gesamt-Objektliste entfernen
+                Dim Leistungsstufenliste = Controller.AppController.CurrentClub.Leistungsstufenliste.Except(ValueListe)
+                If Leistungsstufenliste.ToList.Where(Function(LS) LS.Benennung = Benennung).Any Then
+                    ErrorContent.Add("Leistungsstufe mit dieser Benennung ist bereits vorhanden")
+                End If
+                If IsNumeric(Sortierung) Then
+                    If Leistungsstufenliste.ToList.Where(Function(LS) LS.Sortierung = Sortierung).Any Then
+                        ErrorContent.Add("Leistungsstufe mit dieser Sortierungszahl ist bereits vorhanden")
+                    End If
+                End If
+                If Leistungsstufe.Faehigkeiten.Count = 0 Then
+                    ErrorContent.Add("Es muß mindestens eine Fähigkeit angegeben werden")
+                End If
+                If ErrorContent.Count > 0 Then
+                        Return New ValidationResult(False, ErrorContent)
+                    End If
+                End If
             Return ValidationResult.ValidResult
         End Function
     End Class

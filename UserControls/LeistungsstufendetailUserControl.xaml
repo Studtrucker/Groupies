@@ -58,12 +58,12 @@
             </Label>
 
             <TextBox x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="1" Width="50" HorizontalAlignment="Left">
-                <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged"/>
+                <Binding Path="Sortierung" UpdateSourceTrigger="Explicit"/>
             </TextBox>
 
-            <TextBox x:Name="BenennungTextBox" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox x:Name="BenennungTextBox" Text="{Binding Benennung, UpdateSourceTrigger=Explicit}" 
                      Grid.Column="2" Grid.Row="2" />
-            <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=Explicit}" 
                      Grid.Column="2" Grid.Row="3" 
                      TextWrapping="Wrap" AcceptsReturn="True" />
             
@@ -72,12 +72,12 @@
                            AutoGenerateColumns="False" ItemsSource="{Binding Faehigkeiten}"
                            CanUserAddRows="True" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
                     <DataGrid.ContextMenu>
-                        
                         <ContextMenu>
                             <!--MenuItem implementiert das Interface 'ICommandSource'-->
                             <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitNeuErstellen}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
+                    
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}" />
                         <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}" >

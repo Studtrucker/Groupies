@@ -122,7 +122,9 @@ Public Class MainWindow
         'CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
         '                                       AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
         '                                       AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
-        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen, AddressOf Handle_LeistungsstufeNeuErstellen_Execute, AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
+                                               AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
+                                               AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
@@ -564,7 +566,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueLeistungsstufeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New LeistungsstufeDialog With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             Try
@@ -589,7 +596,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Leistungsstufenuebericht As New LeistungsstufenuebersichtUserControl
+        Dim Leistungsstufenuebericht As New Leistungsstufenuebersicht
         Leistungsstufenuebericht.Show()
     End Sub
 

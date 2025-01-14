@@ -1,0 +1,89 @@
+﻿<Window x:Class="NeueGruppeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Groupies"
+        xmlns:cmd="clr-namespace:Groupies.Commands"
+        xmlns:rules="clr-namespace:Groupies.ValidationRules"
+        mc:Ignorable="d"
+        Title="Gruppe"  Width="600" SizeToContent="Height">
+    <DockPanel>
+        
+        <!--Header-->
+        <DockPanel DockPanel.Dock="Top">
+            <Image Source="/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"
+                   Style="{StaticResource WindowImageCaption}" />
+            <TextBlock Height="Auto" Text="Neue Gruppe"
+                       Style="{StaticResource SmallCaption}" />
+        </DockPanel>
+
+        <!-- OK- und Cancel-Button -->
+        <Border DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="OK" Command="{x:Static cmd:SkiclubCommands.DialogOk}" IsDefault="True"/>
+                <Button Content="Abbruch" Command="{x:Static cmd:SkiclubCommands.DialogCancel}" IsCancel="True"/>
+            </StackPanel>
+        </Border>
+
+        <!--Inputfields-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+            </Grid.RowDefinitions>
+
+            <!--Labels-->
+            <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock >Benennung für die Teilnehmerinfo
+                    <Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
+
+            <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock>Interne Benennung
+                    <Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
+
+            <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock >Sortierer
+                    <Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
+            
+            <Label Content="Leistungsstufe" 
+                   Grid.Column="1" Grid.Row="4"/>
+            
+            
+            <!--Felder-->
+            <TextBox Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="Ausgabename" Grid.Column="2" Grid.Row="1"/>
+
+            <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     x:Name="Benennung" Grid.Column="2" Grid.Row="2" />
+
+            <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="Sortierung" Grid.Column="2" Grid.Row="3"/>
+
+            <ComboBox Grid.Column="2" Grid.Row="4"     
+                        IsSynchronizedWithCurrentItem="True"
+                        SelectedValuePath="Benennung"
+                        SelectedItem="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding Path=Leistungsstufe, UpdateSourceTrigger=PropertyChanged}"
+                        Name="GroupLevelCombobox"/>
+
+        </Grid>
+    </DockPanel>
+</Window>

@@ -192,9 +192,6 @@
     <Compile Include="UserControls\TrainerlisteUserControl.xaml.vb">
       <DependentUpon>TrainerlisteUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TraineruebersichtUserControl.xaml.vb">
-      <DependentUpon>TraineruebersichtUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\TrainerdetailUserControl.xaml.vb">
       <DependentUpon>TrainerdetailUserControl.xaml</DependentUpon>
     </Compile>
@@ -226,6 +223,9 @@
     <Compile Include="ValidationRules\SortierungUniqueValidationRule.vb" />
     <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
+    <Compile Include="Windows\Traineruebersicht.xaml.vb">
+      <DependentUpon>Traineruebersicht.xaml</DependentUpon>
+    </Compile>
     <Page Include="Windows\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -292,10 +292,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TraineruebersichtUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\TrainerdetailUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -327,6 +323,10 @@
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Traineruebersicht.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

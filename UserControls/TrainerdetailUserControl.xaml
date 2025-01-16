@@ -7,7 +7,7 @@
              xmlns:convert="clr-namespace:Groupies.Converters"
              xmlns:valrules="clr-namespace:Groupies.ValidationRules"
              mc:Ignorable="d"
-             Height="Auto" Width="Auto">
+             Height="Auto" Width="550">
     
     <UserControl.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
@@ -15,21 +15,22 @@
 
         <Grid >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*" MinWidth="200"/>
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+
+        </Grid.RowDefinitions>
 
         <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                 VerticalAlignment="Top" Margin="2" 
@@ -37,14 +38,18 @@
             <Grid>
                 <!--<Rectangle Fill="{StaticResource DefaultImageBrush}"/>-->
                 <Rectangle Fill="Transparent"/>
-                <Image VerticalAlignment="Center" Source="/Images/icons8-ski-goggles-96.png" 
+                <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
                        Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
                 <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
-                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
-                    <LineBreak/> Drag'n'Drop 
-                    <LineBreak/>setzen
+                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">
+                    Bild per
+                    <LineBreak/>
+                    Drag'n'Drop 
+                    <LineBreak/>
+                    setzen
                 </TextBlock>
-                <Image Width="120" Height="180" Source="{Binding Foto}" />
+                <Image Width="120" Height="180" Source="{Binding Foto}" 
+                       Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
             </Grid>
         </Border>
 
@@ -53,28 +58,25 @@
                 MaxHeight="360" MaxWidth="240" >
             <Image Source="{Binding Foto, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
             </Border>-->
-
             <Label Grid.Column="2" Grid.Row="1" Content="Spitzname"/>
-        <Label Grid.Column="2" Grid.Row="2" Content="Vorname"/>
-        <Label Grid.Column="2" Grid.Row="3" Content="Nachname" />
-        <Label Grid.Column="2" Grid.Row="4" Content="e-Mail" />
-
-        <TextBox Grid.Column="3" Grid.Row="1" >
-            <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged">
-                <Binding.ValidationRules>
-                    <!--<valrules:TrainernameValidationRule/>-->
-                </Binding.ValidationRules>
-            </Binding>
-        </TextBox>
+            <Label Grid.Column="2" Grid.Row="2" Content="Vorname"/>
+            <Label Grid.Column="2" Grid.Row="3" Content="Nachname" />
+            <Label Grid.Column="2" Grid.Row="4" Content="e-Mail" />
+            
+            <TextBox Grid.Column="3" Grid.Row="1" >
+                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <!--<valrules:TrainernameValidationRule/>-->
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
             <TextBox Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="3" Grid.Row="2"  />
+                     Grid.Column="3" Grid.Row="2"  />
             <TextBox Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="3" Grid.Row="3"  />
+                     Grid.Column="3" Grid.Row="3"  />
             <TextBox Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Column="3" Grid.Row="4" />
+                     Grid.Column="3" Grid.Row="4" />
 
-            <GridSplitter Grid.Column="2" Grid.RowSpan="4" Width="5"
-                      HorizontalAlignment="Right" Background="Transparent"/>
         </Grid>
 
 </UserControl>

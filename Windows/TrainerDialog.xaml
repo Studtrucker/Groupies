@@ -72,7 +72,7 @@
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
-            <Border AllowDrop="True" Width="96" Height="96" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
+            <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                     VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" Drop="HandleDrop" 
                     BorderBrush="Black" BorderThickness="1">
                 

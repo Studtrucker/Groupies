@@ -57,18 +57,25 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                        <RowDefinition MinHeight="50"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Leistungsstufe" Grid.Column="0" Grid.Row="0" Style="{StaticResource SmallCaption}" />
                     <TextBlock x:Name="GruppenleistungsstufeTextBlock" Grid.Column="1" Grid.Row="0"  Style="{StaticResource SmallCaptionValue}" />
-                <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" Width="Auto"
-                          AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource PrintoutSmall}">
+                    <TextBlock Text="Anzahl Mitglieder" Grid.Column="2" Grid.Row="0" Style="{StaticResource SmallCaption}" />
+                    <TextBlock x:Name="AnzahlGruppenmitgliederTextblock" Grid.Column="3" Grid.Row="0"  Style="{StaticResource SmallCaptionValue}" />
+
+                    <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" Width="Auto"
+                          AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource PrintoutSmall}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Benennung}" Width="Auto" />
-                        <DataGridTextColumn Binding="{Binding Beschreibung}" Width="Auto" MaxWidth="500">
+                            <DataGridTextColumn Width="10" />
+                            <DataGridTextColumn Binding="{Binding Beschreibung}" Width="Auto" MaxWidth="500">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextWrapping" Value="Wrap"/>

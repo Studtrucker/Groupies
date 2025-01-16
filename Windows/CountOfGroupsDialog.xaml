@@ -12,7 +12,7 @@
             <Image Source="/Images/icons8-3-48.png" Height="32" Width="48" Style="{StaticResource WindowImageCaption}"/>
             
             <TextBlock Height="Auto" Style="{StaticResource WindowCaption}">
-                <TextBlock.Text>Anzahl Skikursgruppen</TextBlock.Text>
+                <TextBlock.Text>Anzahl Gruppen</TextBlock.Text>
             </TextBlock>
         </DockPanel>
 
@@ -38,9 +38,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Neuen Skiclub erstellt."  Grid.Column="1" Grid.Row="1"/>
+            <TextBlock Text="Neuen Club erstellen."  Grid.Column="1" Grid.Row="1"/>
             <TextBlock Grid.Column="1" Grid.Row="2">
-                        Wieviele Skikursgruppen
+                        Wieviele Gruppen
                         <LineBreak/>                      
                         sollen angelegt werden?
             </TextBlock>

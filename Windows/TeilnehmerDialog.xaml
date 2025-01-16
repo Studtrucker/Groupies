@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
-        xmlns:converters="clr-namespace:Groupies.Converters"
+        xmlns:convert="clr-namespace:Groupies.Converters"
         mc:Ignorable="d"
         Title="Teilnehmerdialog" SizeToContent="Height" Width="600">
 
     <Window.Resources>
-        <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
     </Window.Resources>
 
 
     <Window.BindingGroup>
-        <BindingGroup >
-            <BindingGroup.ValidationRules >
+        <BindingGroup>
+            <BindingGroup.ValidationRules>
                 <rules:TeilnehmerValidationRule/>
             </BindingGroup.ValidationRules>
         </BindingGroup>

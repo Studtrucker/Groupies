@@ -610,7 +610,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Traineruebersicht As New TraineruebersichtUserControl
+        Dim Traineruebersicht As New Traineruebersicht
         Traineruebersicht.Show()
     End Sub
 

@@ -67,7 +67,7 @@
         <DockPanel Grid.Row="2" Margin="5">
             <TextBlock Text="Teilnehmer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
             <DataGrid x:Name="lstMitgliederliste" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                      GridLinesVisibility="None" DockPanel.Dock="Top" >
+                      GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
                 </DataGrid.Columns>

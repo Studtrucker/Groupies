@@ -112,24 +112,26 @@
                 <Setter Property="FontSize" Value="48"/>
                 <Setter Property="FontStyle" Value="Italic"/>
                 <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
                 <Setter Property="Margin" Value="4"/>
             </Style>
             <Style TargetType="TextBlock" x:Key="SmallCaptionValue">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="FontStyle" Value="Italic"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
                 <Setter Property="Margin" Value="4"/>
             </Style>
 
 
             <Style TargetType="DataGrid" x:Key="PrintoutInfo">
                 <!--Standard-->
-                <Setter Property="FontSize" Value="36"/>
-                <Style.Triggers>
-                    <!--Group with more than 10 participants-->
+                <Setter Property="FontSize" Value="24"/>
+                <!--<Style.Triggers>
+                    --><!--Group with more than 10 participants--><!--
                     <DataTrigger Binding="{Binding}" Value="ZuGross">
                         <Setter Property="FontSize" Value="24"/>
                     </DataTrigger>
-                </Style.Triggers>
+                </Style.Triggers>-->
             </Style>
 
             <Style TargetType="DataGrid" x:Key="PrintoutTrainerInfo">
@@ -150,18 +152,6 @@
                 <TextBlock TextWrapping="WrapWithOverflow"/>
             </DataTemplate>
             
-            <templ:SkikursGroesseStyleSelector x:Key="SkikursGroesseStyleSelector"/>
-
-            <Style x:Key="KleineGruppeStyleSelector" TargetType="DataGrid">
-                <Setter Property="FontSize" Value="48"/>
-            </Style>
-            <Style x:Key="NormaleGruppeStyleSelector" TargetType="DataGrid">
-                <Setter Property="FontSize" Value="36"/>
-            </Style>
-            <Style x:Key="GrosseGruppeStyleSelector" TargetType="DataGrid">
-                <Setter Property="FontSize" Value="24"/>
-            </Style>
-
 
             <templ:GruppenGroesseDataTemplate x:Key="GruppenGroesseDataTemplate"/>
 
@@ -175,11 +165,19 @@
                 <TextBlock Text="{Binding Teilnehmer}" FontSize="24"/>
             </DataTemplate>
 
-
-
-
-
-
+            <Style x:Key="KleineGruppeStyleTemplate" TargetType="{x:Type DataGrid}">
+                <Setter Property="FontSize" Value="36"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            </Style>
+            <Style x:Key="NormaleGruppeStyleTemplate" TargetType="{x:Type DataGrid}">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            </Style>
+            <Style x:Key="GrosseGruppeStyleTemplate" TargetType="{x:Type DataGrid}">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            </Style>
+            
             <Style TargetType="ColumnDefinition" x:Key="RandColumnDefinition">
                 <Setter Property="Width" Value="20"/>
             </Style>

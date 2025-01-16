@@ -491,8 +491,12 @@ Public Class MainWindow
     Private Sub TrainerBearbeiten(Trainer As Trainer)
 
         If Trainer IsNot Nothing Then
-            Dim dlg = New TrainerDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New TrainerDialog With {
+                .Owner = Me,
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
+            dlg.ModusEinstellen()
             dlg.Bearbeiten(Trainer)
 
             If dlg.ShowDialog = True Then

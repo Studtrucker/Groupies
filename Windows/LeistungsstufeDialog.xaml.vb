@@ -5,7 +5,7 @@ Imports System.Text
 Public Class LeistungsstufeDialog
     Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As Interfaces.IModus
+    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
     Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
     Public ReadOnly Property Leistungsstufe() As Leistungsstufe
 

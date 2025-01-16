@@ -9,7 +9,7 @@ Public Class TrainerDialog
     Implements Interfaces.IWindowMitModus
 
     Public ReadOnly Property Trainer() As Trainer
-    Public Property Modus As Interfaces.IModus
+    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 

@@ -1,10 +1,18 @@
 ﻿Imports System.Text
 Imports Groupies.Entities
 Imports Groupies.Commands
+'Imports Microsoft.Office.Interop.Excel
+Imports Groupies.Interfaces
 
 Public Class FaehigkeitDialog
+    Implements Interfaces.IWindowMitModus
 
     Public ReadOnly Property Faehigkeit() As Faehigkeit
+
+    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
+
+    Public Property Modus As IModus Implements IWindowMitModus.Modus
+
 
     Public Sub New()
 
@@ -21,7 +29,7 @@ Public Class FaehigkeitDialog
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogOk, AddressOf HandleButtonOKExecuted, AddressOf HandleButtonOKCanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.DialogCancel, AddressOf HandleButtonCancelExecuted))
-        NamingField.Focus()
+        SortierungTextBox.Focus()
 
     End Sub
 
@@ -35,5 +43,35 @@ Public Class FaehigkeitDialog
 
     Private Sub HandleButtonCancelExecuted(sender As Object, e As ExecutedRoutedEventArgs)
         DialogResult = False
+    End Sub
+
+    Private Function GetErrors() As String
+        Dim Fehlertext = String.Empty
+        DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
+        Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
+    End Function
+
+    Private Sub HandleOkButton(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CommitEdit()
+        If Validation.GetHasError(Me) Then
+            MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+            Dialog = False
+        Else
+            SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            BeschreibungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            BenennungTextBox.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
+            Dialog = True
+        End If
+    End Sub
+
+    Private Sub HandleCancelButton(sender As Object, e As RoutedEventArgs)
+        BindingGroup.CancelEdit()
+    End Sub
+    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandleSchliessenButton
+        Modus.HandleClose(Me)
+    End Sub
+
+    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+        Throw New NotImplementedException()
     End Sub
 End Class

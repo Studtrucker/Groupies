@@ -8,6 +8,8 @@ Namespace DataImport
         Public Property TeilnehmerID As Guid
         Public Property Vorname() As String
         Public Property Nachname() As String
+        Public Property Geburtsdatum() As Date
+
         Public Property IstBekannt As Boolean = False
 
         Public Overloads Function Equals(other As Entities.Teilnehmer) As Boolean Implements IEquatable(Of Entities.Teilnehmer).Equals

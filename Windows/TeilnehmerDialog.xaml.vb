@@ -5,7 +5,7 @@ Imports Groupies.Entities
 Public Class TeilnehmerDialog
     Implements Interfaces.IWindowMitModus
     Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
-    Public Property Modus As Interfaces.IModus
+    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 

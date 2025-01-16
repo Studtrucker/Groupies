@@ -152,11 +152,22 @@ Namespace Services
             Next
 
             ' Alle unbekannten Teilnehmer 
-            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname))
+            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {.Geburtsdatum = Tn.Geburtsdatum})
             ' Alle bekannten Teilnehmer 
             Dim BekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).
                 Select(Function(Tn) AppController.CurrentClub.AlleTeilnehmer.
                 Where(Function(AlterTeilnehmer) Tn.TeilnehmerID = AlterTeilnehmer.TeilnehmerID))
+
+            Dim BekannteTeilnehmerliste = ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt)
+
+            For Each BTn As DataImport.Teilnehmer In BekannteTeilnehmerliste
+                Dim Tn = AppController.CurrentClub.AlleTeilnehmer.Where(Function(ATn) ATn.TeilnehmerID = BTn.TeilnehmerID).Select(Function(Atn) Atn)
+                If Tn.Count = 1 Then
+                    Tn(0).Geburtsdatum = BTn.Geburtsdatum
+                Else
+                    MessageBox.Show(Tn.Count)
+                End If
+            Next
 
             ' Alle zu archivierenden Teilnehmer 
             Dim ZuArchivierende = AppController.CurrentClub.AlleTeilnehmer.ToList.Where(Function(Tn) Tn.Archivieren = True)

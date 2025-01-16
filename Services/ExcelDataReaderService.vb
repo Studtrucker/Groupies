@@ -26,6 +26,7 @@ Public Module ExcelDataReaderService
             End If
 
             Dim Tn = New Teilnehmer With {
+                .Geburtsdatum = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum")),
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
                 .TeilnehmerID = guid}

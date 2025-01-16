@@ -26,7 +26,7 @@ Namespace ValidationRules
                     ErrorContent.Add("Trainer mit diesem Spitzname ist bereits vorhanden")
                 End If
                 If Trainerliste.ToList.Where(Function(Tn) Tn.Vorname = Vorname).Any Then
-                    ErrorContent.Add("Trainer mit diesem Vorname ist bereits vorhanden")
+                    'ErrorContent.Add("Trainer mit diesem Vorname ist bereits vorhanden")
                 End If
                 If ErrorContent.Count > 0 Then
                     Return New ValidationResult(False, ErrorContent)

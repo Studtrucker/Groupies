@@ -8,7 +8,7 @@
         xmlns:usercontrol="clr-namespace:Groupies.UserControls" 
         xmlns:convert="clr-namespace:Groupies.Converters"
         mc:Ignorable="d"
-        Title="Traineruebersicht" Height="450" Width="750">
+        Title="Übersicht Trainer" SizeToContent="Height" Width="800">
     
     <Window.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
@@ -26,21 +26,22 @@
         <Grid DockPanel.Dock="Top" x:Name="SharedGrid" >
             <Grid.RowDefinitions>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-                <RowDefinition />
+                <RowDefinition Height="*"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1*" SharedSizeGroup="ListenExplorerColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn"/>
+                <ColumnDefinition Width="4*" SharedSizeGroup="DetailExplorerColumn"/>
                 <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
+
             <usercontrol:TrainerlisteUserControl Grid.Column="1" Grid.Row="1" x:Name="Trainerliste"/>
-
-            <GridSplitter DockPanel.Dock="Left"  HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="1" Width="5" Background="LightGray" />
-
+            <GridSplitter  Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="5" Background="LightGray"  />
             <usercontrol:TrainerdetailUserControl Grid.Column="3" Grid.Row="1" x:Name="Trainerdetail"/>
+            
         </Grid>
     </DockPanel>
 </Window>

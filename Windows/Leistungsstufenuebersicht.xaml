@@ -26,9 +26,9 @@
         <Grid DockPanel.Dock="Top" x:Name="SharedGrid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-                <ColumnDefinition Width="1*" SharedSizeGroup="LeistungsstufenExplorerColumn"/>
+                <ColumnDefinition Width="1*" SharedSizeGroup="ListenExplorerColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="GridSplitterColumn" />
-                <ColumnDefinition Width="4*" SharedSizeGroup="LeistungsstufedetailExplorerColumn"/>
+                <ColumnDefinition Width="4*" SharedSizeGroup="DetailExplorerColumn"/>
                 <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -36,9 +36,10 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
-            <uc:LeistungsstufenlisteUserControl x:Name="LeistungsstufenListe" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" />
+            
+            <uc:LeistungsstufenlisteUserControl x:Name="LeistungsstufenListe" Grid.Row="1" Grid.Column="1" />
             <GridSplitter  Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                          Width="5" Background="WhiteSmoke"  />
+                          Width="5" Background="LightGray"  />
             <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufenView" Grid.Row="1" Grid.Column="3"/>
         </Grid>
 

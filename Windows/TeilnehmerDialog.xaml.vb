@@ -65,6 +65,7 @@ Public Class TeilnehmerDialog
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
             Dialog = False
         Else
+            TeilnehmerIDTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()

@@ -4,10 +4,10 @@ Public Class DataImportFabrik
     Public Function ErzeugeImportformat(Datentyp As String, Dateityp As String) As Importformat
 
         Dim FabrikSpalten = New DataImportSpaltennamenFabrik
-        Dim Spalten = FabrikSpalten.erzeugeSpalten(Datentyp)
+        Dim Spalten = FabrikSpalten.ErzeugeSpalten(Datentyp)
 
         Dim FabrikTabellenname = New DataImportTabellennameFabrik
-        Dim Tabelle = FabrikTabellenname.erzeugeTabellename(Datentyp, Dateityp)
+        Dim Tabelle = FabrikTabellenname.ErzeugeTabellename(Datentyp, Dateityp)
 
         Return New Importformat(Tabelle, Spalten)
 
@@ -27,7 +27,7 @@ End Class
 
 
 Public Class DataImportTabellennameFabrik
-    Public Function erzeugeTabellename(Datentyp As String, Dateityp As String) As IImportTabellenname
+    Public Function ErzeugeTabellename(Datentyp As String, Dateityp As String) As IImportTabellenname
         Select Case Dateityp
             Case ".xls", ".xlsx"
                 Select Case Datentyp
@@ -46,7 +46,7 @@ Public Class DataImportTabellennameFabrik
 End Class
 
 Public Class DataImportSpaltennamenFabrik
-    Public Function erzeugeSpalten(Datentyp As String) As IImportSpaltennamen
+    Public Function ErzeugeSpalten(Datentyp As String) As IImportSpaltennamen
         Select Case Datentyp
             Case "Teilnehmer"
                 Return New SpaltennamenTeilnehmer
@@ -88,7 +88,7 @@ Public Class SpaltennamenTeilnehmer
     Implements IImportSpaltennamen
 
     Sub New()
-        _Spalten = New List(Of String) From {"TeilnehmerID", "Vorname", "Nachname"}
+        _Spalten = New List(Of String) From {"TeilnehmerID", "Vorname", "Nachname", "Geburtsdatum", "Telefonnummer", "Leistungsstufe"}
     End Sub
 
     Private ReadOnly Property Spalten As List(Of String) Implements IImportSpaltennamen.Spalten

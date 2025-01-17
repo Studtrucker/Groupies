@@ -65,12 +65,9 @@ Public Class TeilnehmerTests
         Dim Lothar As New Teilnehmer("Lothar", "Hötger", New Leistungsstufe("Experte") With {.Sortierung = 2})
         Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = New Leistungsstufe("Anfänger", 0)}
 
-        Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane}
-        tnL.Add(Elke)
-        tnL.Add(Lothar)
-
-
-
+        Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane, Elke, Lothar}
+        'tnL.Add(Elke)
+        'tnL.Add(Lothar)
 
 
         CollectionAssert.AreEqual(New List(Of String) From {
@@ -128,9 +125,9 @@ Public Class TeilnehmerTests
         Dim Lothar As New Teilnehmer("Lothar", "Hötger", Experte)
         Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = Anfaenger}
 
-        Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane}
-        tnL.Add(Elke)
-        tnL.Add(Lothar)
+        Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane, Elke, Lothar}
+        'tnL.Add(Elke)
+        'tnL.Add(Lothar)
 
 
         CollectionAssert.AreEqual(New List(Of String) From {

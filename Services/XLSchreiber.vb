@@ -53,12 +53,15 @@ Public Class XLSchreiber
                                                                         oSheet.Columns(1).Rows(r).value = Tn.TeilnehmerID.ToString
                                                                         oSheet.Columns(2).Rows(r).value = Tn.Vorname
                                                                         oSheet.Columns(3).Rows(r).value = Tn.Nachname
+                                                                        oSheet.Columns(4).Rows(r).value = Tn.Geburtsdatum
+                                                                        oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
+                                                                        oSheet.Columns(6).Rows(r).value = Tn.Leistungsstand.Benennung
                                                                         r += 1
                                                                     End Sub)
         End If
 
-        oSheet.Columns("A:C").EntireColumn.AutoFit
-        oSheet.Columns("A:C").Rows(1).Font.Bold = True
+        oSheet.Columns("A:F").EntireColumn.AutoFit
+        oSheet.Columns("A:F").Rows(1).Font.Bold = True
 
     End Sub
 

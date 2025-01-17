@@ -5,8 +5,8 @@ Imports Groupies.XlLeser
 
 
 Public Module ExcelDataReaderService
-    Private Teilnehmerliste As New List(Of Teilnehmer)
-    Private Trainerliste As New List(Of Trainer)
+    Private ReadOnly Teilnehmerliste As New List(Of Teilnehmer)
+    Private ReadOnly Trainerliste As New List(Of Trainer)
     Private xl As DataSet
 
 
@@ -29,6 +29,7 @@ Public Module ExcelDataReaderService
                 .Geburtsdatum = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum")),
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
+                .Telefonnummer = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Telefonnummer")),
                 .TeilnehmerID = guid}
             Teilnehmerliste.Add(Tn)
         Next

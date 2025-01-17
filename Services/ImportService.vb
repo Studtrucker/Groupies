@@ -152,7 +152,7 @@ Namespace Services
             Next
 
             ' Alle unbekannten Teilnehmer 
-            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {.Geburtsdatum = Tn.Geburtsdatum})
+            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {.Geburtsdatum = Tn.Geburtsdatum, .Telefonnummer = Tn.Telefonnummer})
             ' Alle bekannten Teilnehmer 
             Dim BekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).
                 Select(Function(Tn) AppController.CurrentClub.AlleTeilnehmer.
@@ -164,7 +164,7 @@ Namespace Services
                 Dim Tn = AppController.CurrentClub.AlleTeilnehmer.Where(Function(ATn) ATn.TeilnehmerID = BTn.TeilnehmerID).Select(Function(Atn) Atn)
                 If Tn.Count = 1 Then
                     Tn(0).Geburtsdatum = BTn.Geburtsdatum
-                    Tn(0).Telefonnummer = BTn.Telefon
+                    Tn(0).Telefonnummer = BTn.Telefonnummer
                 Else
                     MessageBox.Show(Tn.Count)
                 End If
@@ -263,7 +263,8 @@ Namespace Services
                 If Not String.IsNullOrEmpty(Excelsheet.UsedRange(CurrentRow, 4).Value) Then
                     Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
                     ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
-                    If Skikursgruppe IsNot Nothing Then
+                    If Skikursgruppe Is Nothing Then
+                    Else
                         Skikursgruppe.Mitgliederliste.Add(Teilnehmer)
                         'Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
                     End If

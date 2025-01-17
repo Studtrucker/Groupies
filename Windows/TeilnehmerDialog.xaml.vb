@@ -69,6 +69,7 @@ Public Class TeilnehmerDialog
             NachnameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
             LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
+            TelefonTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             Dialog = True
         End If
     End Sub

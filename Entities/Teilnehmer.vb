@@ -92,6 +92,12 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Geburtsdatum As Date
 
+        ''' <summary>
+        ''' Berechnet das Alter und  
+        ''' gibt es auf dem Trainerausdruck 
+        ''' und in der Gruppeneinteilung aus
+        ''' </summary>
+        ''' <returns></returns>
         Public ReadOnly Property Alter As Long
             Get
                 Dim nMonate As Integer
@@ -136,6 +142,13 @@ Namespace Entities
 
 
         ''' <summary>
+        ''' Gibt die Telefonnummer 
+        ''' auf dem Trainerausdruck aus
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Telefonnummer As String
+
+        ''' <summary>
         ''' Setzt und liest den Leistungsstand des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
@@ -177,9 +190,9 @@ Namespace Entities
 
         Private Function GetAusgabeTrainerInfo() As String
             If Leistungsstand Is Nothing Then
-                Return $"{VorUndNachname}, Leistungsstand unbekannt"
+                Return $"{VorUndNachname}     {Telefonnummer}     Leistungsstand unbekannt"
             Else
-                Return $"{VorUndNachname}, {Leistungsstand.Benennung}"
+                Return $"{VorUndNachname}     {Telefonnummer}     {Leistungsstand.Benennung}"
             End If
         End Function
 

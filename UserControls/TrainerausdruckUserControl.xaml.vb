@@ -96,15 +96,6 @@ Namespace UserControls
             End Set
         End Property
 
-        'Public Property BeschreibungLeistungsanforderung As String
-        '    Get
-        '        'Return BeschreibungLeistungsanforderungTextblock.Text
-        '    End Get
-        '    Set(value As String)
-        '        'BeschreibungLeistungsanforderungTextblock.Text = value
-        '    End Set
-        'End Property
-
         Public Property Faehigkeitenliste As FaehigkeitCollection
             Get
                 Return FaehigkeitenlisteDataGrid.ItemsSource

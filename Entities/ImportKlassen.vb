@@ -9,6 +9,8 @@ Namespace DataImport
         Public Property Vorname() As String
         Public Property Nachname() As String
         Public Property Geburtsdatum() As Date
+        Public Property Telefon() As String
+
 
         Public Property IstBekannt As Boolean = False
 

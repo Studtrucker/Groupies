@@ -164,6 +164,7 @@ Namespace Services
                 Dim Tn = AppController.CurrentClub.AlleTeilnehmer.Where(Function(ATn) ATn.TeilnehmerID = BTn.TeilnehmerID).Select(Function(Atn) Atn)
                 If Tn.Count = 1 Then
                     Tn(0).Geburtsdatum = BTn.Geburtsdatum
+                    Tn(0).Telefonnummer = BTn.Telefon
                 Else
                     MessageBox.Show(Tn.Count)
                 End If

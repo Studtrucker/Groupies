@@ -145,18 +145,21 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Name für Teilnehmer"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Interne Benennung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Leistungsstufe"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Skilehrer"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Anzahl Gruppenmitglieder"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Leistungsstufe,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Trainer.VorUndNachname,UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Sortierung"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Name für Teilnehmer"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Interne Benennung"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Leistungsstufe"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Skilehrer"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Anzahl Mitglieder"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Trainer.VorUndNachname,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGrid.Resources>
@@ -201,7 +204,15 @@
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
+
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Foto}" Height="25" Width="25"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>

@@ -56,6 +56,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
@@ -66,7 +67,8 @@
                 <TextBlock>Nachname <Run Foreground="Red">*</Run></TextBlock>
             </Label>
             <Label Content="Geburtsdatum" Grid.Column="1" Grid.Row="3"/>
-            <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
+            <Label Content="Telefon" Grid.Column="1" Grid.Row="4"/>
+            <Label Grid.Column="1" Grid.Row="5" Style="{StaticResource PflichtangabeLabel}">
                 <TextBlock>Leistungsstand <Run Foreground="Red">*</Run></TextBlock>
             </Label>
 
@@ -77,8 +79,11 @@
 
             <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="3" Grid.Column="2" Width="200" HorizontalAlignment="Left"
                         SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=Explicit}"/>
-
-            <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
+            
+            <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="4"
+                     Text="{Binding Telefonnummer, UpdateSourceTrigger=Explicit}"/>
+            
+            <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
                       x:Name="LeistungsstandComboBox"
                       SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=Explicit,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 

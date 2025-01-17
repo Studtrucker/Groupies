@@ -94,7 +94,7 @@
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
             <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
                       AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
-                      Style="{StaticResource PrintoutTrainerInfo}">
+                      Style="{StaticResource PrintoutTrainerInfo}" MinHeight="30">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding AusgabeTrainerinfo}" />
                 </DataGrid.Columns>

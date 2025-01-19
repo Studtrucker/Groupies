@@ -151,8 +151,15 @@ Namespace Services
                                                                           .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
             Next
 
+            Dim Converter = New Converters.StringToLeistungsstufeConverter
+
             ' Alle unbekannten Teilnehmer 
-            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {.Geburtsdatum = Tn.Geburtsdatum, .Telefonnummer = Tn.Telefonnummer})
+            Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {
+                                                                                                              .Geburtsdatum = Tn.Geburtsdatum,
+                                                                                                              .Telefonnummer = Tn.Telefonnummer,
+                                                                                                              .Leistungsstand = Converter.ConvertBack(Tn.Leistungsstand, GetType(Entities.Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)})
+
+
             ' Alle bekannten Teilnehmer 
             Dim BekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Tn.IstBekannt).
                 Select(Function(Tn) AppController.CurrentClub.AlleTeilnehmer.
@@ -165,6 +172,7 @@ Namespace Services
                 If Tn.Count = 1 Then
                     Tn(0).Geburtsdatum = BTn.Geburtsdatum
                     Tn(0).Telefonnummer = BTn.Telefonnummer
+                    Tn(0).Leistungsstand = Converter.ConvertBack(BTn.Leistungsstand, GetType(Entities.Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)
                 Else
                     MessageBox.Show(Tn.Count)
                 End If

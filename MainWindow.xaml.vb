@@ -267,6 +267,8 @@ Public Class MainWindow
         Title = "Groupies"
 
         AppCon.NeuenClubErstellen("Club")
+        AppCon.CurrentClub.Leistungsstufenliste = AppCon.StandardLeistungsstufen
+        AppCon.CurrentClub.Gruppenliste = AppCon.StandardGruppen
 
         SetView(AppCon.CurrentClub)
 

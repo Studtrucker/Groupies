@@ -25,11 +25,14 @@ Public Module ExcelDataReaderService
                 Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID")), guid)
             End If
 
+            Dim Stufe = If(IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe"))), String.Empty, zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe")))
+
             Dim Tn = New Teilnehmer With {
                 .Geburtsdatum = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum")),
                 .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
                 .Telefonnummer = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Telefonnummer")),
+                .Leistungsstand = Stufe,
                 .TeilnehmerID = guid}
             Teilnehmerliste.Add(Tn)
         Next

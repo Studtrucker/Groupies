@@ -94,9 +94,11 @@
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
             <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
                       AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
-                      Style="{StaticResource PrintoutTrainerInfo}" MinHeight="30">
+                      Style="{StaticResource PrintoutTrainerInfo}" MinHeight="30" ColumnWidth="">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding AusgabeTrainerinfo}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="Auto"/>
+                    <DataGridTextColumn Header="Telefon" Binding="{Binding Telefonnummer}" Width="Auto" />
+                    <DataGridTextColumn Header="Stufe" Binding="{Binding Leistungsstand.Benennung}" Width="Auto"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

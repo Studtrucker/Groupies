@@ -5,6 +5,19 @@ Namespace Converters
     Public Class StringToLeistungsstufeConverter
         Implements IValueConverter
 
+        Private AktuelleLeistungsstufen As List(Of String)
+
+        Public Sub New()
+            If AktuelleLeistungsstufen Is Nothing Then
+                AktuelleLeistungsstufen = New List(Of String)
+            Else
+                AktuelleLeistungsstufen.Clear()
+            End If
+            If Groupies.Controller.AppController.CurrentClub IsNot Nothing Then
+                Groupies.Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.ForEach(Sub(Ls) AktuelleLeistungsstufen.Add(Ls.Benennung))
+            End If
+        End Sub
+
         Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
             If TypeOf value IsNot Entities.Leistungsstufe Then Return DependencyProperty.UnsetValue
             Return DirectCast(value, Entities.Leistungsstufe).Benennung
@@ -12,7 +25,8 @@ Namespace Converters
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
             If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
-            Return Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).First
+            Dim obj = Controller.AppController.CurrentClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt", -1)).First
+            Return obj
         End Function
     End Class
 End Namespace

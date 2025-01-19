@@ -10,7 +10,7 @@ Namespace DataImport
         Public Property Nachname() As String
         Public Property Geburtsdatum() As Date
         Public Property Telefonnummer() As String
-
+        Public Property Leistungsstand() As String
 
         Public Property IstBekannt As Boolean = False
 

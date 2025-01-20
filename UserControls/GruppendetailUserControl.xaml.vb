@@ -6,7 +6,8 @@ Imports CDS = Groupies.Controller.AppController
 Namespace UserControls
 
     Public Class GruppendetailUserControl
-        'Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
+
+        'Private _LeistungsstufenListCollectionView As ICollectionView
 
         Sub New()
 
@@ -17,9 +18,11 @@ Namespace UserControls
                                        AddressOf Handle_TrainerBearbeiten_Execute,
                                        AddressOf Handle_TrainerBearbeiten_CanExecuted))
 
-            ' ListCollectionView für die Combobox erstellen
 
-            '_LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
+            ' Wird im MainWindow verwendet. Beim Laden dieser Form ist das Objekt CurrentClub noch nicht bereit
+
+            ' ListCollectionView für die Combobox erstellen
+            '_LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
             'GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         End Sub
@@ -85,8 +88,12 @@ Namespace UserControls
 
         Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
-            Dim dlg = New TrainerDialog With {.Owner = Nothing, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            Dim dlg = New TrainerDialog With {
+                .Owner = Nothing,
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
+            dlg.ModusEinstellen()
             ' Trainer aus der Gruppenliste holen
             Dim Trainer = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer
             dlg.Bearbeiten(Trainer)

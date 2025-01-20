@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
-        Title="Leistungsstufendialog" Height="Auto" Width="600">
+        Title="Leistungsstufendialog" Height="Auto" Width="650">
 
     <Window.BindingGroup>
         <BindingGroup >
@@ -53,7 +53,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufeView" Grid.Row="1" Grid.Column="1"/>
+            <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufeView" Grid.Row="1" Grid.Column="1" Margin="4"/>
 
         </Grid>
 

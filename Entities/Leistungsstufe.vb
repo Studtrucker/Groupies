@@ -14,11 +14,11 @@ Namespace Entities
     '''' Beschreibt die Leistungsstufe mit einem Satz von Fähigkeiten
     '''' </summary>
     Public Class Leistungsstufe
-        Inherits BaseModel
+        Inherits BaseModelTest
 
 #Region "Felder"
-        Private _Sortierung As Integer
-        Private _Benennung As String
+        'Private _Sortierung As Integer
+        'Private _Benennung As String
 
 #End Region
 
@@ -76,20 +76,7 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe (Required)")>
         Public Property Sortierung As Integer
-            Get
-                Return _Sortierung
-            End Get
-            Set(value As Integer)
-                _Sortierung = value
-                'Dim errorMessage As String = String.Empty
-                'If SortierungValidation(value, errorMessage) Then
-                '    _Errors.Clear()
-                'Else
-                '    _Errors(NameOf(Sortierung)) = New List(Of String) From {errorMessage}
-                'End If
-                'OnErrorsChanged(NameOf(Sortierung))
-            End Set
-        End Property
+
 
         ''' <summary>
         ''' Die Benennung der Leistungsstufe
@@ -97,20 +84,7 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe (Required)")>
         Public Property Benennung As String
-            Get
-                Return _Benennung
-            End Get
-            Set(value As String)
 
-                'Dim errorMessage As String = ""
-                'If BenennungValidation(value, errorMessage) Then
-                '    _Errors.Clear()
-                'Else
-                '    _Errors(NameOf(Benennung)) = New List(Of String) From {errorMessage}
-                'End If
-                _Benennung = value
-            End Set
-        End Property
 
         Public ReadOnly Property Beschreibungstext As String
             Get

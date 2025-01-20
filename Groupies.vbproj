@@ -114,6 +114,7 @@
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
+    <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="Windows\LeistungsstufeDialog.xaml.vb">
       <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
@@ -164,8 +165,8 @@
     <Compile Include="Windows\NeueLeistungsstufeDialog.xaml.vb">
       <DependentUpon>NeueLeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NeueGruppeDialog.xaml.vb">
-      <DependentUpon>NeueGruppeDialog.xaml</DependentUpon>
+    <Compile Include="Windows\GruppeDialog.xaml.vb">
+      <DependentUpon>GruppeDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TrainerDialog.xaml.vb">
       <DependentUpon>TrainerDialog.xaml</DependentUpon>
@@ -242,7 +243,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\NeueGruppeDialog.xaml">
+    <Page Include="Windows\GruppeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

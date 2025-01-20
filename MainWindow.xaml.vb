@@ -538,7 +538,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New NeueGruppeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dlg = New GruppeDialog With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             AppCon.CurrentClub.Gruppenliste.Add(dlg.Group)

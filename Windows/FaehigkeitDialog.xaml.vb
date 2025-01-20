@@ -10,7 +10,6 @@ Public Class FaehigkeitDialog
     Public ReadOnly Property Faehigkeit() As Faehigkeit
 
     Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
-
     Public Property Modus As IModus Implements IWindowMitModus.Modus
 
 
@@ -34,7 +33,7 @@ Public Class FaehigkeitDialog
     End Sub
 
     Private Sub HandleButtonOKCanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Faehigkeit.IsOk
+        e.CanExecute = True
     End Sub
 
     Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)

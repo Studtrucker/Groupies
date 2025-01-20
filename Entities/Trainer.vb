@@ -29,7 +29,7 @@ Namespace Entities
 #Region "Konstruktor"
 
         ''' <summary>
-        ''' Erstellt einen neuen Teilnehmer
+        ''' Erstellt einen neuen Trainer
         ''' </summary>
         Public Sub New()
         End Sub

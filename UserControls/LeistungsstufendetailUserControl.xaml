@@ -7,7 +7,7 @@
              xmlns:rules="clr-namespace:Groupies.ValidationRules"
              mc:Ignorable="d"
              xmlns:cmd="clr-namespace:Groupies.Commands"
-             Height="Auto" d:DesignWidth="400" Width="Auto">
+             Height="Auto" Width="600">
 
     <UserControl.Resources>
         <Style TargetType="TextBox" x:Key="IntegerValidation">

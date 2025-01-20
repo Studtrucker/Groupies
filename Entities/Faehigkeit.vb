@@ -7,7 +7,7 @@ Namespace Entities
     ''' Fähigkeit zur Beschreibung von Leistungsstufen 
     ''' </summary>
     Public Class Faehigkeit
-        Inherits BaseModel
+        Inherits BaseModelTest
 
 #Region "Felder"
         Private _Faehigkeit = Guid.NewGuid
@@ -66,15 +66,11 @@ Namespace Entities
         ''' Sortierungszahl für die Ausgabeinformationen 
         ''' </summary>
         ''' <returns></returns>
-        Public Property Sortierung As Integer?
+        Public Property Sortierung As Integer
 
         Public ReadOnly Property AusgabeAnTrainerInfo As String
             Get
-                If Sortierung Is Nothing And Beschreibung Is Nothing Then
-                    Return Benennung
-                ElseIf Sortierung Is Nothing Then
-                    Return $"{Benennung}{Environment.NewLine}{Beschreibung}"
-                ElseIf Beschreibung Is Nothing Then
+                If Beschreibung Is Nothing Then
                     Return $"{Sortierung}. {Benennung}"
                 Else
                     Return $"{Sortierung}. {Benennung}{Environment.NewLine}{Beschreibung}"
@@ -92,11 +88,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Private Function LeseAusgabeAnTrainerinfo() As String
-            If Sortierung Is Nothing And Beschreibung Is Nothing Then
-                Return $"{Benennung}"
-            ElseIf Sortierung Is Nothing Then
-                Return $"{Benennung}{Environment.NewLine}{Beschreibung}."
-            ElseIf Beschreibung Is Nothing Then
+            If Beschreibung Is Nothing Then
                 Return $"{Sortierung}. {Benennung}"
             Else
                 Return $"{Sortierung}. {Benennung}{Environment.NewLine}{Beschreibung}."

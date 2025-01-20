@@ -10,7 +10,7 @@ Namespace Entities
     ''' </summary>
     <DefaultProperty("GruppenName")>
     Public Class Gruppe
-        Inherits BaseModel
+        Inherits BaseModelTest
 
 #Region "Felder"
         Private _GruppenID = Guid.NewGuid()
@@ -105,7 +105,7 @@ Namespace Entities
         ''' Sortierungszahl für die Ausgabeinformationen 
         ''' </summary>
         ''' <returns></returns>
-        Public Property Sortierung As Integer?
+        Public Property Sortierung As Integer
 
         ''' <summary>
         ''' Die Leistungsstufe der Gruppe

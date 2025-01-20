@@ -244,7 +244,7 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                             <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
-                                                SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                                                    SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>

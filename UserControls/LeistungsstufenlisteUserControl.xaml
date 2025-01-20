@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Groupies"
              xmlns:uc="clr-namespace:Groupies.UserControls" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="300" Width="Auto">
+             Width="300" Height="Auto">
+    
     <UserControl.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
     </UserControl.Resources>

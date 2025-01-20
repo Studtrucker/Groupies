@@ -10,7 +10,6 @@ Public Class TrainerDialog
 
     Public ReadOnly Property Trainer() As Trainer
     Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
-
     Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 
 
@@ -102,10 +101,6 @@ Public Class TrainerDialog
         Dim Fehlertext = String.Empty
         DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
         Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
-
-        'Dim Fehlertext = String.Empty
-        'DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
-        'Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
     End Function
 
 
@@ -129,11 +124,7 @@ Public Class TrainerDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs)
-        Modus.HandleClose(Me)
-    End Sub
-
     Public Sub HandleSchliessenButton(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandleSchliessenButton
-        Throw New NotImplementedException()
+        Modus.HandleClose(Me)
     End Sub
 End Class

@@ -44,6 +44,9 @@ Public Class XLSchreiber
                                                                      oSheet.Columns(1).Rows(r).value = Tn.TrainerID.ToString
                                                                      oSheet.Columns(2).Rows(r).value = Tn.Vorname
                                                                      oSheet.Columns(3).Rows(r).value = Tn.Nachname
+                                                                     oSheet.Columns(4).Rows(r).value = Tn.Spitzname
+                                                                     oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
+                                                                     oSheet.Columns(6).Rows(r).value = Tn.EMail
                                                                      r += 1
                                                                  End Sub)
 

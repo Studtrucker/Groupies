@@ -9,7 +9,7 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
-        Title="Trainer" SizeToContent="Height" Width="600">
+        Title="Trainer" SizeToContent="Height" Width="700">
 
     <Window.BindingGroup>
         <BindingGroup >
@@ -20,7 +20,6 @@
     </Window.BindingGroup>
 
     <Window.Resources>
-        
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
         <!--<Style TargetType="TextBox">
             <Style.Triggers>
@@ -69,6 +68,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
 
@@ -84,40 +85,52 @@
                                Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
                     </TextBlock>
-                    <Image Width="96" Height="96" Source="{Binding Foto}" />
+                    <Image x:Name="FotoImage" Width="96" Height="96" Source="{Binding Foto}" />
                 </Grid>
 
             </Border>
 
-
             <Label Grid.Column="2" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock>Trainer ID
+				<Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
+            <TextBox x:Name="TrainerIDTextBox" Grid.Column="3" Grid.Row="1" IsReadOnly="True">
+                <Binding Path="TrainerID" />
+            </TextBox>
+            
+            <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
                 <TextBlock>Spitzname
 				<Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="1">
-                <Binding Path="Spitzname" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnDataErrors="True" />
+            <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="2">
+                <Binding Path="Spitzname" UpdateSourceTrigger="Explicit" />
             </TextBox>
                 
-            <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+            <Label Grid.Column="2" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
                 <TextBlock>Vorname
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
-            <TextBox Grid.Column="3" Grid.Row="2"
-                     x:Name="VornameTextbox"
-                     Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"   />
-
-            <Label Content="Name" Grid.Column="2" Grid.Row="3"/>
             <TextBox Grid.Column="3" Grid.Row="3"
-                     x:Name="NachnameTextbox"
-                     Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}" />
+                     x:Name="VornameTextbox"
+                     Text="{Binding Vorname, UpdateSourceTrigger=Explicit}"   />
 
-            <Label Content="e-Mail" Grid.Column="2" Grid.Row="4"/>
+            <Label Content="Nachname" Grid.Column="2" Grid.Row="4"/>
             <TextBox Grid.Column="3" Grid.Row="4"
-                     x:Name="eMailTextbox"
-                     Text="{Binding eMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                     x:Name="NachnameTextbox"
+                     Text="{Binding Nachname, UpdateSourceTrigger=Explicit}" />
 
+            <Label Content="Telefon" Grid.Column="2" Grid.Row="5"/>
+            <TextBox Grid.Column="3" Grid.Row="5"
+                     x:Name="TelefonTextbox"
+                     Text="{Binding Telefonnummer, UpdateSourceTrigger=Explicit}" />
+            
+            <Label Content="e-Mail" Grid.Column="2" Grid.Row="6"/>
+            <TextBox Grid.Column="3" Grid.Row="6"
+                     x:Name="eMailTextbox"
+                     Text="{Binding EMail, UpdateSourceTrigger=Explicit}" />
         </Grid>
 
     </DockPanel>

@@ -242,8 +242,6 @@ Public Class MainWindow
 
 #Region "Allgemein"
 
-
-
     Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
@@ -256,20 +254,9 @@ Public Class MainWindow
             End If
         End If
 
-        ' Skischulobjekt löschen
-        AppCon.CurrentClub = Nothing
-        ' Jeden DataContext löschen
-        DataContext = Nothing
-        GruppenloseTeilnehmerDataGrid.DataContext = Nothing
-        GruppenloseTrainerDataGrid.DataContext = Nothing
-
-        ' Neues Skischulobjekt initialisieren
-        Title = "Groupies"
+        UnsetView()
 
         AppCon.NeuenClubErstellen("Club")
-        AppCon.CurrentClub.Leistungsstufenliste = AppCon.StandardLeistungsstufen
-        AppCon.CurrentClub.Gruppenliste = AppCon.StandardGruppen
-
         SetView(AppCon.CurrentClub)
 
     End Sub
@@ -349,6 +336,7 @@ Public Class MainWindow
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         ExportService.ExportTeilnehmer()
     End Sub
+
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer IsNot Nothing
     End Sub
@@ -420,6 +408,7 @@ Public Class MainWindow
             AppCon.CurrentClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
         Next
     End Sub
+
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
             AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
@@ -816,7 +805,7 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
 
         UnsetView()
-        _LeistungsstufenListCollectionView = New ListCollectionView(Club.Leistungsstufenliste)
+        _LeistungsstufenListCollectionView = New ListCollectionView(Club.LeistungsstufenTextliste.ToList)
         If _LeistungsstufenListCollectionView.CanSort Then
             _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         End If
@@ -860,14 +849,18 @@ Public Class MainWindow
 
     Private Sub UnsetView()
 
-        DataContext = Nothing
-        GruppenloseTeilnehmerDataGrid.DataContext = Nothing
-        GruppenloseTrainerDataGrid.DataContext = Nothing
+        _groupiesFile = Nothing
+        Me.Title = "Groupies"
 
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)
         _gruppenloseTrainerCollectionView = New ListCollectionView(New TrainerCollection)
         _LeistungsstufenListCollectionView = New ListCollectionView(New LeistungsstufeCollection)
+
+        DataContext = Nothing
+        GruppenloseTeilnehmerDataGrid.DataContext = Nothing
+        GruppenloseTrainerDataGrid.DataContext = Nothing
+
 
     End Sub
 

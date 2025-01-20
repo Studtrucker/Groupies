@@ -97,10 +97,15 @@ Public Class TrainerDialog
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
     End Sub
+
     Private Function GetErrors() As String
         Dim Fehlertext = String.Empty
         DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
         Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
+
+        'Dim Fehlertext = String.Empty
+        'DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
+        'Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
     End Function
 
 
@@ -114,6 +119,8 @@ Public Class TrainerDialog
             VornameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             NachnameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             eMailTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            TelefonTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            FotoImage.GetBindingExpression(Image.SourceProperty).UpdateSource()
             Dialog = True
         End If
     End Sub

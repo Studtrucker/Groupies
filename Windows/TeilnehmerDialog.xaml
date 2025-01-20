@@ -7,7 +7,7 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         xmlns:convert="clr-namespace:Groupies.Converters"
         mc:Ignorable="d"
-        Title="Teilnehmerdialog" SizeToContent="Height" Width="600">
+        Title="Teilnehmerdialog" SizeToContent="Height" Width="700">
 
     <Window.Resources>
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>

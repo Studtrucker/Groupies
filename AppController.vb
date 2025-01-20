@@ -32,7 +32,7 @@ Namespace Controller
         ''' versehen werden
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(10)
+        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(15)
 
 #End Region
 
@@ -93,7 +93,10 @@ Namespace Controller
 
 
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
+            CurrentClub = Nothing
             CurrentClub = New Club(Clubname)
+            CurrentClub.Leistungsstufenliste = StandardLeistungsstufen
+            CurrentClub.Gruppenliste = StandardGruppen
             Return $"{Clubname} wurde erfolgreich erstellt."
         End Function
 

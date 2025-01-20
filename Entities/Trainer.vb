@@ -11,7 +11,7 @@ Namespace Entities
     ''' Trainer, verantwortlich für eine Gruppe
     ''' </summary>
     Public Class Trainer
-        Inherits BaseModel
+        Inherits BaseModelTest
 
 #Region "Felder"
         'Todo:Standardfoto festlegen
@@ -108,12 +108,6 @@ Namespace Entities
             End Get
             Set(value As String)
                 _Spitzname = value
-                Dim errorMessage As String = ""
-                If SpitznamenValidation(value, errorMessage) Then
-                    _Errors.Clear()
-                Else
-                    _Errors(NameOf(Spitzname)) = New List(Of String) From {errorMessage}
-                End If
             End Set
         End Property
 
@@ -130,6 +124,13 @@ Namespace Entities
                 _Foto = value
             End Set
         End Property
+
+        ''' <summary>
+        ''' Telefonnummer des Trainers
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Telefonnummer As String
+
 
         ''' <summary>
         '''  Gültige eMailadresse des Trainers

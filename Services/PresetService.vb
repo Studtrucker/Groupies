@@ -14,37 +14,49 @@ Namespace Services
         'C:\Users\studt_era90oc\Source\Repos\Skischule\Services\GroupLevelDistribution.xlsx
         Public Function StandardLeistungsstufenErstellen() As LeistungsstufeCollection
 
-            Dim Anfaenger = New Leistungsstufe("Anfänger") With {
-                .Sortierung = "010",
+            Dim Unbekannt = New Leistungsstufe() With {
+                .Benennung = "Anfänger",
+                .Sortierung = -1,
+                .LeistungsstufeID = Guid.NewGuid,
+                .Faehigkeiten = Nothing,
+                .Beschreibung = DescriptionUnbekannt()}
+
+            Dim Anfaenger = New Leistungsstufe() With {
+                .Benennung = "Anfänger",
+                .Sortierung = 10,
                 .LeistungsstufeID = Guid.NewGuid,
                 .Faehigkeiten = SkillsAnfaenger(),
                 .Beschreibung = DescriptionAnfaenger()}
 
-            Dim Fortgeschrittener = New Leistungsstufe("Fortgeschritten") With {
-                .Sortierung = "020",
+            Dim Fortgeschrittener = New Leistungsstufe() With {
+                .Benennung = "Fortgeschritten",
+                .Sortierung = 20,
                 .Beschreibung = DescriptionFortgeschritten(),
                 .Faehigkeiten = SkillsFortgeschritten(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Geniesser = New Leistungsstufe("Genießer") With {
-                .Sortierung = "030",
+            Dim Geniesser = New Leistungsstufe("") With {
+                .Benennung = "Genießer",
+                .Sortierung = 30,
                 .Beschreibung = DescriptionGeniesser(),
                 .Faehigkeiten = SkillsGeniesser(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Koenner = New Leistungsstufe("Könner") With {
-                .Sortierung = "040",
+            Dim Koenner = New Leistungsstufe("") With {
+                .Benennung = "Könner",
+                .Sortierung = 40,
                 .Beschreibung = DescriptionKoenner(),
                 .Faehigkeiten = SkillsKoenner(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            Dim Experte = New Leistungsstufe("Experte") With {
-                .Sortierung = "050",
+            Dim Experte = New Leistungsstufe("") With {
+                .Benennung = "Experte",
+                .Sortierung = 50,
                 .Beschreibung = DescriptionExperte(),
                 .Faehigkeiten = SkillsExperte(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            _levelCollection = New LeistungsstufeCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            _levelCollection = New LeistungsstufeCollection From {Unbekannt, Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
             Return _levelCollection
 
         End Function
@@ -57,6 +69,7 @@ Namespace Services
             For i = 0 To AnzahlGruppen - 1
                 groupCol.Add(New Gruppe("Genießer", 3) With {
                         .AusgabeTeilnehmerinfo = GroupPrintNames.Item(IndexGruppenName),
+                        .Benennung = GruppenBennungen.Item(IndexGruppenName),
                         .Sortierung = GroupSorting.Item(IndexGruppenName)})
                 IndexGruppenName += 1
             Next
@@ -146,6 +159,15 @@ Namespace Services
 
         End Function
 
+        Private Function DescriptionUnbekannt() As String
+
+            Dim sb = New StringBuilder
+            sb.AppendLine("Der Teilnehmer ist skifahrerisch unbekannt.")
+            sb.AppendLine("Es liegen keine Informationen über die Leistungsstärke vor.")
+            Return sb.ToString
+
+        End Function
+
         Private Function DescriptionAnfaenger() As String
 
             Dim sb = New StringBuilder
@@ -227,14 +249,20 @@ Namespace Services
             Return Namen
         End Function
 
+        Private Function GruppenBennungen() As List(Of String)
+            Return New List(Of String) From {"Skigruppe 1", "Skigruppe 2", "Skigruppe 3", "Skigruppe 4", "Skigruppe 5", "Skigruppe 6",
+                "Skigruppe 7", "Skigruppe 8", "Skigruppe 9", "Skigruppe 10", "Skigruppe 11", "Skigruppe 12", "Skigruppe 13",
+                "Skigruppe 14", "Skigruppe 15"}
+        End Function
+
         Private Function GroupPrintNames() As List(Of String)
             Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2",
                 "Mount Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata",
                 "Monte Viso", "Ortler"}
         End Function
 
-        Private Function GroupSorting() As List(Of String)
-            Return New List(Of String) From {"010", "020", "030", "040", "050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150"}
+        Private Function GroupSorting() As List(Of Integer)
+            Return New List(Of Integer) From {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150}
         End Function
 
 #End Region

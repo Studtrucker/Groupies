@@ -15,11 +15,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
         </Grid.RowDefinitions>
         <!--<Label Content="Suche nach"/>
         <TextBox  Grid.Column="1"/>-->
-        <DataGrid x:Name="SuchergebnisDataGrid" ItemsSource="{Binding}" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False">
+        <DataGrid x:Name="SuchergebnisDataGrid" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Teilnehmer.Vorname}" Width="Auto"/>
                 <DataGridTextColumn Header="Nachname" Binding="{Binding Teilnehmer.Nachname}" Width="Auto"/>

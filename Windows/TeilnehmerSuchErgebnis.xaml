@@ -14,12 +14,32 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
         </Grid.RowDefinitions>
         <!--<Label Content="Suche nach"/>
         <TextBox  Grid.Column="1"/>-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Anzahl Teilnehmer" Grid.Row="0"/>
+            <Label Content="Anzahl Trainer" Grid.Row="1"/>
+            <Label Content="Gruppiert nach Leistungsstufen" Grid.Row="2"/>
+            <Label Content="Gruppiert nach Alter" Grid.Row="3"/>
+            <TextBlock x:Name="TeilnehmerAnzahlTextBlock"  Grid.Row="0" Grid.Column="1"/>
+            <TextBlock x:Name="TrainerAnzahlTextBlock"  Grid.Row="1" Grid.Column="1"/>
+            <TextBlock x:Name="GruppierteLeistungsstufeTextBlock"  Grid.Row="2" Grid.Column="1"/>
+            <TextBlock x:Name="GruppiertesAlterTextBlock" Grid.Row="3" Grid.Column="1"/>
+        </Grid>
         <DataGrid x:Name="SuchergebnisDataGrid" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Teilnehmer.Vorname}" Width="Auto"/>

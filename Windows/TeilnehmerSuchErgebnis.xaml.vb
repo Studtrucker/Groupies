@@ -6,10 +6,64 @@ Public Class TeilnehmerSuchErgebnis
 
     Private _teilnehmerCollectionView As ICollectionView
 
+    Private Property TeilnehmerAnzahl As String
+        Get
+            Return TeilnehmerAnzahlTextBlock.Text
+        End Get
+        Set(value As String)
+            TeilnehmerAnzahlTextBlock.Text = value
+        End Set
+    End Property
+
+    Private Property TrainerAnzahl As String
+        Get
+            Return TrainerAnzahlTextBlock.Text
+        End Get
+        Set(value As String)
+            TrainerAnzahlTextBlock.Text = value
+        End Set
+    End Property
+
+    Private Property GruppiertesAlter As String
+        Get
+            Return GruppiertesAlterTextBlock.Text
+        End Get
+        Set(value As String)
+            GruppiertesAlterTextBlock.Text = value
+        End Set
+    End Property
+
+    Private Property GruppierteLeistungsstufe As String
+        Get
+            Return GruppierteLeistungsstufeTextBlock.Text
+        End Get
+        Set(value As String)
+            GruppierteLeistungsstufeTextBlock.Text = value
+        End Set
+    End Property
+
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
+
+        TeilnehmerAnzahl = CurrentClub.AlleTeilnehmer.Count
+        TrainerAnzahl = CurrentClub.AlleTrainer.Count
+        Dim x = CurrentClub.AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        Dim z = CurrentClub.AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        Dim y As New System.Text.StringBuilder
+
+        For Each Stufengruppe In x
+            y.AppendLine($"{Stufengruppe.Count} Teilnehmer sind {Stufengruppe.Key}")
+        Next
+        GruppierteLeistungsstufe = y.ToString
+        y.Clear()
+
+        For Each Altersgruppe In z
+            y.AppendLine($"{Altersgruppe.Count} Teilnehmer sind {Altersgruppe.Key} Jahre alt")
+        Next
+        GruppiertesAlter = y.ToString
+        y.Clear()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'Dim liste As New List(Of Object)

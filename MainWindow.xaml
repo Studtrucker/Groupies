@@ -128,8 +128,11 @@
                 </Grid.RowDefinitions>    
                     <TextBlock Text="Die Gruppen" Grid.Row="0"/>
                     
+                    <!--<DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
+                              Margin="6"  Foreground="Black"  SelectedCellsChanged="SetGroupView"  
+                              AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">-->
                     <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
-                              Margin="6"  Foreground="Black"  SelectedCellsChanged="SetGroupView"       
+                              Margin="6"  Foreground="Black"  
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                     <DataGrid.Resources>
 

@@ -559,6 +559,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        If _gruppenlisteCollectionView.SortDescriptions.Count = 0 AndAlso _gruppenlisteCollectionView.CanSort Then
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Descending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
+        End If
         _gruppenlisteCollectionView.Refresh()
     End Sub
 
@@ -635,7 +640,7 @@ Public Class MainWindow
             End If
         End If
 
-        _groupiesFile = New FileInfo(fileName)
+        '_groupiesFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
 
         AppCon.CurrentClub = Nothing
@@ -649,6 +654,7 @@ Public Class MainWindow
 
         SetView(AppCon.CurrentClub)
 
+        _groupiesFile = New FileInfo(fileName)
         Title = "Groupies - " & fileName
 
     End Sub
@@ -801,9 +807,9 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub SetGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
-        GruppeUserControl.setView(sender, New RoutedEventArgs)
-    End Sub
+    'Private Sub SetGroupView(sender As Object, e As SelectedCellsChangedEventArgs)
+    '    GruppeUserControl.setView(sender, New RoutedEventArgs)
+    'End Sub
 
     Private Sub SetView(Club As Club)
 
@@ -838,6 +844,8 @@ Public Class MainWindow
         _gruppenlisteCollectionView = New ListCollectionView(Gruppenliste)
         If _gruppenlisteCollectionView.CanSort Then
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Descending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
         DataContext = _gruppenlisteCollectionView
     End Sub
@@ -964,8 +972,6 @@ Public Class MainWindow
         Instructor
         Participant
     End Enum
-
-
 
 #End Region
 

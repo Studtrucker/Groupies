@@ -62,13 +62,13 @@
 
             <!--Labels-->
             <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
-                <TextBlock >Benennung für die Teilnehmerinfo
+                <TextBlock >Ausgabe Teilnehmerinfo
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>
 
             <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
-                <TextBlock>Interne Benennung
+                <TextBlock>Benennung
                     <Run Foreground="Red">*</Run>
                 </TextBlock>
             </Label>

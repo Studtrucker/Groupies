@@ -8,18 +8,25 @@ Namespace ValidationRules
         Public Overrides Function Validate(value As Object, cultureInfo As CultureInfo) As ValidationResult
             Dim bindingGroup = DirectCast(value, BindingGroup)
             If bindingGroup.Items.Count = 1 Then
-                'Dim Teilnehmer = DirectCast(bindingGroup.Items(0), Entities.Teilnehmer)
-                'Dim Vorname = DirectCast(bindingGroup.GetValue(Teilnehmer, NameOf(Teilnehmer.Vorname)), String)
-                'Dim Nachname = DirectCast(bindingGroup.GetValue(Teilnehmer, NameOf(Teilnehmer.Nachname)), String)
-                'Dim Leistungsstand = DirectCast(bindingGroup.GetValue(Teilnehmer, NameOf(Teilnehmer.Leistungsstand)), String)
+                Dim Gruppe = DirectCast(bindingGroup.Items(0), Entities.Gruppe)
+                Dim AusgabeTeilnehmerinfo = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.AusgabeTeilnehmerinfo)), String)
+                Dim Benennung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Benennung)), String)
+                Dim Sortierung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Sortierung)), String)
+                Dim Leistungsstand = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Leistungsstufe)), String)
 
                 Dim ErrorContent As New List(Of String)
-                'If String.IsNullOrWhiteSpace(Vorname) Then
-                '    ErrorContent.Add("Vorname ist eine Pflichtangabe")
-                'End If
-                'If String.IsNullOrWhiteSpace(Nachname) Then
-                '    ErrorContent.Add("Nachname ist eine Pflichtangabe")
-                'End If
+                If String.IsNullOrWhiteSpace(AusgabeTeilnehmerinfo) Then
+                    ErrorContent.Add("Ausgabe Teilnehmerinfo ist eine Pflichtangabe")
+                End If
+                If String.IsNullOrWhiteSpace(Benennung) Then
+                    ErrorContent.Add("Benennung ist eine Pflichtangabe")
+                End If
+
+                If IsNumeric(Sortierung) Then
+                    If Groupies.Controller.AppController.CurrentClub.Gruppenliste.ToList.Where(Function(LS) LS.Sortierung = Sortierung).Any Then
+                        ErrorContent.Add("Gruppe mit dieser Sortierungszahl ist bereits vorhanden")
+                    End If
+                End If
 
                 'Dim ValueListe = Controller.AppController.CurrentClub.AlleTeilnehmer.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID)
                 'Dim Teilnehmerliste = Controller.AppController.CurrentClub.AlleTeilnehmer.Except(ValueListe)

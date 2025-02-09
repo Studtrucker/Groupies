@@ -123,10 +123,34 @@
             
             <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>    
-                    <TextBlock Text="Die Gruppen" Grid.Row="0"/>
+                    <!--Unsichtbare Zeile-->
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+
+                <!--unsichtbares Grid-->
+                <Grid Grid.Row="0" Visibility="Hidden">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Die Einteilungen" Grid.Row="0"/>
+                    <DataGrid x:Name="EinteilungenDataGrid" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Benennung"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+
+                <TextBlock Text="Die Gruppen" Grid.Row="0"/>
                     
                     <!--<DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
                               Margin="6"  Foreground="Black"  SelectedCellsChanged="SetGroupView"  
@@ -135,7 +159,6 @@
                               Margin="6"  Foreground="Black"  
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                     <DataGrid.Resources>
-
                             <DataTemplate x:Key="GruppenlisteDataTemplate">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -178,6 +201,8 @@
                                                     CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
                         </DataGrid.Columns>
                 </DataGrid>
+                </Grid>
+
             </Grid>
 
             <DockPanel Grid.Column="3" Grid.Row="1">
@@ -185,7 +210,6 @@
                     <StackPanel>
                         <TextBlock Text="Gruppe" />
                         <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
-
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -212,7 +236,7 @@
                             <DataGridTemplateColumn Header="">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding Foto}" Height="25" Width="25"/>
+                                        <Image Source="{Binding Foto}" Height="35" Width="35"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

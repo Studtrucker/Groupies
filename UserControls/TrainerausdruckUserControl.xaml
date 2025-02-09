@@ -12,10 +12,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
+        
+         <TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
+                     Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
+                     Style="{StaticResource SmallCaption}" FontWeight="Bold"/>
+         
         <!--Area Group Header-->
-        <DockPanel Grid.Row="0" Margin="5">
+        <DockPanel Grid.Row="1" Margin="5">
             <Grid HorizontalAlignment="Left" DockPanel.Dock="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="380"/>
@@ -39,7 +44,7 @@
         </DockPanel>
 
         <!--Area Instructor Header-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -89,7 +94,7 @@
         </Grid>
 
         <!--Area Teilnehmerliste-->
-        <DockPanel Grid.Row="2" Margin="5">
+        <DockPanel Grid.Row="3" Margin="5">
 
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
             <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 

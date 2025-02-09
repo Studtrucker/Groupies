@@ -950,7 +950,11 @@ Public Class MainWindow
             DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
             DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe)
+            If String.IsNullOrWhiteSpace(AppCon.CurrentClub.Gruppenliste.BenennungGruppeneinteilung) Then
+                AppCon.CurrentClub.Gruppenliste.BenennungGruppeneinteilung = InputBox("Bitte diese Gruppeneinteilung benennen")
+            End If
+
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.CurrentClub.Gruppenliste.BenennungGruppeneinteilung)
             Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 

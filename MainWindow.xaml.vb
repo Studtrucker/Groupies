@@ -804,7 +804,7 @@ Public Class MainWindow
             jumplist.JumpItems.Add(jumpPath)
         Next
 
-        JumpList.SetJumpList(Application.Current, jumplist)
+        jumplist.SetJumpList(Application.Current, jumplist)
 
     End Sub
 

@@ -10,6 +10,7 @@ Namespace Entities
 
         Private _Einteilungsliste = New List(Of Einteilung)
         Private _Gruppenliste = New GruppeCollection
+        Private _Gruppenhistorie = New List(Of GruppeCollection)
 
         Private _GruppenloseTeilnehmer As New TeilnehmerCollection
         Private ReadOnly _EingeteilteTeilnehmer As New TeilnehmerCollection
@@ -57,6 +58,15 @@ Namespace Entities
             End Get
             Set(value As GruppeCollection)
                 _Gruppenliste = value
+            End Set
+        End Property
+
+        Public Property Gruppenhistorie() As List(Of GruppeCollection)
+            Get
+                Return _Gruppenhistorie
+            End Get
+            Set(value As List(Of GruppeCollection))
+                _Gruppenhistorie = value
             End Set
         End Property
 

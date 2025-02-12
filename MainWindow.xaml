@@ -123,6 +123,35 @@
 
             <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.RowDefinitions>
+                    <!--Unsichtbare Zeile-->
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+
+                <!--unsichtbares Grid-->
+                <Grid Grid.Row="0" Visibility="Hidden">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Die Einteilungen" Grid.Row="0"/>
+                    <DataGrid x:Name="EinteilungenDataGrid" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Benennung"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+
+                <TextBlock Text="Die Gruppen" Grid.Row="0"/>
+                    
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="3*"/>
@@ -159,7 +188,8 @@
                     <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
                               Margin="6"  Foreground="Black"  
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
-                        <DataGrid.Resources>
+                    <DataGrid.Resources>
+
                             <DataTemplate x:Key="GruppenlisteDataTemplate">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -201,8 +231,8 @@
                             <DataGridTemplateColumn Header="Gruppen" Width="*"
                                                     CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
                         </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
+                </DataGrid>
+            </Grid>
 
             </Grid>
 

@@ -74,7 +74,6 @@ Namespace Services
                 IndexGruppenName += 1
             Next
 
-
             Return groupCol
 
         End Function

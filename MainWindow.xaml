@@ -105,7 +105,7 @@
         </Menu>
 
 
-        <Grid >
+        <Grid x:Name="Desktop">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 <ColumnDefinition Width="1*" SharedSizeGroup="GroupExplorerColumn" />
@@ -120,75 +120,35 @@
                 <RowDefinition />
                 <RowDefinition Style="{StaticResource RandRowDefinition}"/>
             </Grid.RowDefinitions>
-
-            <Grid Grid.Column="1" Grid.Row="1">
+            
+            <Grid x:Name="GridSpalte1" Grid.Column="1" Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <!--Unsichtbare Zeile-->
-                    <RowDefinition Height="0*"/>
-                    <RowDefinition Height="3*"/>
-                </Grid.RowDefinitions>
-
-                <!--unsichtbares Grid-->
-                <Grid Grid.Row="0" Visibility="Hidden">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Die Einteilungen" Grid.Row="0"/>
-                    <DataGrid x:Name="EinteilungenDataGrid" Grid.Row="1">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Benennung"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-                
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-
-
-                <TextBlock Text="Die Gruppen" Grid.Row="0"/>
-                    
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0" Visibility="Visible">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Die Einteilungen" Grid.Row="0"/>
-                    <DataGrid x:Name="EinteilungenDataGrid" Grid.Row="1"  
+                
+                <DockPanel Grid.Row="0">
+                    <TextBlock Text="Die Einteilungen" DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                               ItemsSource="{Binding}" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </Grid>
-                <Separator Grid.Row="1"/>
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                </DockPanel>
 
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"  Height="5" 
+                              VerticalAlignment="Center"  Background="WhiteSmoke"/>
+                
+                <DockPanel Grid.Row="2">
+                    <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
-
-                    <TextBlock Text="Die Gruppen" Grid.Row="0"/>
-
-                    <!--<DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
-                              Margin="6"  Foreground="Black"  SelectedCellsChanged="SetGroupView"  
-                              AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">-->
-                    <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" Grid.Row="1"
+                    <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black"  
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
-                    <DataGrid.Resources>
+                        <DataGrid.Resources>
 
                             <DataTemplate x:Key="GruppenlisteDataTemplate">
                                 <Grid>
@@ -231,35 +191,38 @@
                             <DataGridTemplateColumn Header="Gruppen" Width="*"
                                                     CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
                         </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+                    </DataGrid>
+
+                </DockPanel>
 
             </Grid>
+            
+            <GridSplitter x:Name="GridSplitterSpalte2" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="5" Background="WhiteSmoke"/>
+            
+            <DockPanel x:Name="DockPanelSpalte3"  Grid.Column="3" Grid.Row="1">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Gruppe" />
+                            <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
 
-            <DockPanel Grid.Column="3" Grid.Row="1">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <TextBlock Text="Gruppe" />
-                        <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </DockPanel>
-
-            <Grid Grid.Column="5" Grid.Row="1" >
+            <GridSplitter x:Name="GridSplitterSpalte4" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                          Width="5" Background="WhiteSmoke"/>
+            
+            <Grid x:Name="GridSpalte5" Grid.Column="5" Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="89*"/>
+                    <RowDefinition Height="1*"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="248*"/>
-                    <RowDefinition Height="19*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="0,0,0,5" Grid.RowSpan="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Gruppenlose Skilehrer" Grid.Row="0"/>
-                    <DataGrid x:Name="GruppenloseTrainerDataGrid" Grid.Row="1"
-                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
+
+                <DockPanel Grid.Row="0">
+                    <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
+                              ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
@@ -284,17 +247,16 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
-                </Grid>
-                <Separator Grid.Row="1" />
-                <Grid Grid.Row="2" Grid.RowSpan="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
 
-                    <TextBlock Text="Gruppenlose Teilnehmer" Grid.Row="0"/>
-                    <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" Grid.Row="1"
-                              DockPanel.Dock="Top"  ItemsSource="{Binding}" 
+                </DockPanel>
+                
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"  Height="5" 
+                              VerticalAlignment="Center"  Background="WhiteSmoke"/>
+
+                <DockPanel Grid.Row="2">
+                    <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
+                    <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
+                              ItemsSource="{Binding}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTeilnehmer_MouseDoubleClick">
@@ -313,15 +275,11 @@
                         </DataGrid.ContextMenu>
                     </DataGrid>
 
+                </DockPanel>
+
                 </Grid>
+
             </Grid>
-
-            <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                          Width="5" Background="WhiteSmoke"/>
-            <GridSplitter Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                          Width="5" Background="WhiteSmoke"/>
-
-        </Grid>
     </DockPanel>
 
 </Window>

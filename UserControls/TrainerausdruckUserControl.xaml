@@ -15,9 +15,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-         <TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
-                     Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
-                     Style="{StaticResource SmallCaption}" FontWeight="Bold"/>
          
         <Border BorderBrush="LightGray" BorderThickness="3" CornerRadius="10,0,10,0" Margin="4">
             <TextBlock x:Name="BenennungGruppeneinteilungTextblock"

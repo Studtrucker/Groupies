@@ -146,7 +146,7 @@
                     <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
                     <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" DockPanel.Dock="Bottom"
-                              Margin="6"  Foreground="Black"  
+                              Margin="6"  Foreground="Black" IsSynchronizedWithCurrentItem="True"
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                         <DataGrid.Resources>
 

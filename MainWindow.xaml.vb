@@ -120,9 +120,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.GruppeSortieren,
                                                AddressOf Handle_GruppeSortieren_Execute))
 
-        'CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
-        '                                       AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
-        '                                       AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.EinteilungNeuErstellen,
+                                               AddressOf Handle_EinteilungNeuErstellen_Execute,
+                                               AddressOf Handle_EinteilungNeuErstellen_CanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
@@ -566,6 +566,30 @@ Public Class MainWindow
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
         _gruppenlisteCollectionView.Refresh()
+    End Sub
+
+#End Region
+
+#Region "Einteilung"
+    Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppCon.AktuellerClub.Einteilungsliste IsNot Nothing
+    End Sub
+
+    Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New EinteilungDialog With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
+
+        If dlg.ShowDialog = True Then
+            Try
+                AppCon.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
+            Catch ex As Exception
+                MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+            End Try
+        End If
     End Sub
 
 #End Region

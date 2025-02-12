@@ -61,6 +61,13 @@
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="_Organisation">
+                <MenuItem Header="Einteilungen">
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungNeuErstellen}"/>
+                </MenuItem>
+                <MenuItem Header="Gruppen"/>
+                <MenuItem Header="Leistungsstufen"/>
+            </MenuItem>
 
             <MenuItem Header="_Personen" >
                 <MenuItem Header="Teilnehmer">

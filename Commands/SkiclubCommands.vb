@@ -5,7 +5,8 @@ Namespace Commands
 
         Private Shared _LeistungsstufeLoeschen As New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))
         Private Shared _LeistungsstufeNeuErstellen As New RoutedUICommand("Leistungsstufe erstellen", NameOf(LeistungsstufeNeuErstellen), GetType(SkiclubCommands))
-
+        Private Shared _EinteilungNeuErstellen As New RoutedUICommand("Einteilung erstellen", NameOf(EinteilungNeuErstellen), GetType(SkiclubCommands))
+        '
 
         ' TeilnehmerCommands
         Public Shared ReadOnly Property TeilnehmerlisteImportieren As New RoutedUICommand("Teilnehmerliste importieren",
@@ -89,6 +90,13 @@ Namespace Commands
         Public Shared ReadOnly Property DialogCancel As New RoutedUICommand("Eingabe abbrechen",
                                                                             NameOf(DialogCancel),
                                                                             GetType(SkiclubCommands))
+
+        Public Shared ReadOnly Property EinteilungNeuErstellen As RoutedUICommand
+            Get
+                _EinteilungNeuErstellen.InputGestures.Add(New KeyGesture(Key.E, ModifierKeys.Alt))
+                Return _EinteilungNeuErstellen
+            End Get
+        End Property
 
         Public Shared ReadOnly Property LeistungsstufeNeuErstellen As RoutedUICommand
             Get

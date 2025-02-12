@@ -116,7 +116,11 @@
     <Compile Include="Entities\Einteilung.vb" />
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
+    <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="Windows\EinteilungDialog.xaml.vb">
+      <DependentUpon>EinteilungDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\LeistungsstufeDialog.xaml.vb">
       <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
@@ -229,6 +233,10 @@
       <DependentUpon>Traineruebersicht.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\CountOfGroupsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EinteilungDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -504,6 +512,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-trainer-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-timeline-48.png" />
+    <Resource Include="Images\icons8-timeline-96.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -41,6 +41,21 @@ Namespace UserControls
 
         End Sub
 
+        Public Sub InitPropsFromGroup(Gruppe As Gruppe, BenennungGruppeneinteilung As String) Implements IPrintableNotice.InitPropsFromGroup
+
+            Me.BenennungGruppeneinteilung = BenennungGruppeneinteilung
+            InitPropsFromGroup(Gruppe)
+
+        End Sub
+
+        Public Property BenennungGruppeneinteilung As String
+            Get
+                Return BenennungGruppeneinteilungTextblock.Text
+            End Get
+            Set(value As String)
+                BenennungGruppeneinteilungTextblock.Text = value
+            End Set
+        End Property
 
         Public Property AusgabeTrainerinfo As String
             Get

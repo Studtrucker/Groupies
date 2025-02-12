@@ -188,7 +188,7 @@ Namespace Entities
 
 #Region "Validation"
         Private Function SpitznamenValidation(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
-            If CurrentClub IsNot Nothing AndAlso CurrentClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
+            If AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
                 ErrorMessage = $"Der Spitzname [{Spitzname}] wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
                 Return False
             End If

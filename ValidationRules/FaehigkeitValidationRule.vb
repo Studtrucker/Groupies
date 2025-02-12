@@ -21,8 +21,8 @@
                     ErrorContent.Add("Benennung ist eine Pflichtangabe")
                 End If
 
-                Dim ValueListe = Controller.AppController.CurrentClub.AlleFaehigkeiten.Where(Function(Fa) Fa.FaehigkeitID = Faehigkeit.FaehigkeitID)
-                Dim Faehigkeitenliste = Controller.AppController.CurrentClub.AlleFaehigkeiten.Except(ValueListe)
+                Dim ValueListe = Controller.AppController.AktuellerClub.AlleFaehigkeiten.Where(Function(Fa) Fa.FaehigkeitID = Faehigkeit.FaehigkeitID)
+                Dim Faehigkeitenliste = Controller.AppController.AktuellerClub.AlleFaehigkeiten.Except(ValueListe)
                 If Faehigkeitenliste.ToList.Where(Function(Fa) Fa.Benennung = Benennung).Any Then
                     ErrorContent.Add("Fähigkeit mit dieser Benennung ist bereits vorhanden")
                 End If

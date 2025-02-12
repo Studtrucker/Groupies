@@ -40,7 +40,7 @@ Public Class XLSchreiber
 
         If Benennungen.Tabelle = "Trainer" Then
 
-            AppController.CurrentClub.AlleTrainer.ToList.ForEach(Sub(Tn)
+            AppController.AktuellerClub.AlleTrainer.ToList.ForEach(Sub(Tn)
                                                                      oSheet.Columns(1).Rows(r).value = Tn.TrainerID.ToString
                                                                      oSheet.Columns(2).Rows(r).value = Tn.Vorname
                                                                      oSheet.Columns(3).Rows(r).value = Tn.Nachname
@@ -52,7 +52,7 @@ Public Class XLSchreiber
 
         Else
 
-            AppController.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn)
+            AppController.AktuellerClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn)
                                                                         oSheet.Columns(1).Rows(r).value = Tn.TeilnehmerID.ToString
                                                                         oSheet.Columns(2).Rows(r).value = Tn.Vorname
                                                                         oSheet.Columns(3).Rows(r).value = Tn.Nachname

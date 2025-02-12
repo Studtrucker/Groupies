@@ -11,24 +11,24 @@ Public Class AppControllerTests
         Sub TestNeuenSkiclubErstellen()
 
             Dim numberOfGroups = 9
-            Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024", numberOfGroups))
-            Assert.AreEqual("Stubaital2024", AppController.CurrentClub.ClubName)
-            Assert.AreEqual(9, AppController.CurrentClub.Gruppenliste.Count)
-            Assert.AreEqual(0, AppController.CurrentClub.GruppenloseTeilnehmer.Count)
-            Assert.AreEqual(5, AppController.StandardLeistungsstufen.Count)
-            Assert.AreEqual(0, AppController.CurrentClub.GruppenloseTrainer.Count)
+        Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024"))
+        Assert.AreEqual("Stubaital2024", AppController.AktuellerClub.ClubName)
+        Assert.AreEqual(15, AppController.AktuellerClub.Gruppenliste.Count)
+        Assert.AreEqual(0, AppController.AktuellerClub.GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(5, AppController.StandardLeistungsstufen.Count)
+        Assert.AreEqual(0, AppController.AktuellerClub.GruppenloseTrainer.Count)
 
-            Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
-            Dim Manuela As New Teilnehmer("Manuela", "Ramm")
+        Dim Studti As New Teilnehmer("Andreas", "Studtrucker")
+        Dim Manuela As New Teilnehmer("Manuela", "Ramm")
 
-            AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection From {Studti, Manuela}
-            Assert.AreEqual(2, AppController.CurrentClub.GruppenloseTeilnehmer.Count)
-            Assert.AreEqual(2, AppController.CurrentClub.AlleTeilnehmer.Count)
-            Assert.AreEqual(0, AppController.CurrentClub.EingeteilteTeilnehmer.Count)
+        AppController.AktuellerClub.GruppenloseTeilnehmer = New TeilnehmerCollection From {Studti, Manuela}
+        Assert.AreEqual(2, AppController.AktuellerClub.GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(2, AppController.AktuellerClub.AlleTeilnehmer.Count)
+        Assert.AreEqual(0, AppController.AktuellerClub.EingeteilteTeilnehmer.Count)
 
-            'Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), AppController.CurrentClub.Teilnehmerliste)
+        'Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), AppController.CurrentClub.Teilnehmerliste)
 
-        End Sub
+    End Sub
 
 
 

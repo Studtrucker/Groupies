@@ -8,6 +8,7 @@ Namespace Entities
 
 #Region "Fields"
 
+        Private _Einteilungsliste = New List(Of Einteilung)
         Private _Gruppenliste = New GruppeCollection
 
         Private _GruppenloseTeilnehmer As New TeilnehmerCollection
@@ -56,6 +57,20 @@ Namespace Entities
             End Get
             Set(value As GruppeCollection)
                 _Gruppenliste = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Die Einteilungen im aktuellen Club
+        ''' Es kann hiermit eine Historie verwaltet werden
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Einteilungsliste() As List(Of Einteilung)
+            Get
+                Return _Einteilungsliste
+            End Get
+            Set(value As List(Of Einteilung))
+                _Einteilungsliste = value
             End Set
         End Property
 

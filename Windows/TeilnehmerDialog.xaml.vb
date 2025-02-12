@@ -19,7 +19,7 @@ Public Class TeilnehmerDialog
         DataContext = _Teilnehmer
 
         ' ListCollectionView für die Combobox erstellen
-        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
         LeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
     End Sub
@@ -33,7 +33,7 @@ Public Class TeilnehmerDialog
         DataContext = Teilnehmer
 
         ' ListCollectionView für die Combobox erstellen
-        _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.Leistungsstufenliste.Select(Function(LS) LS.Benennung))
         LeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
     End Sub

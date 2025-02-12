@@ -36,8 +36,8 @@ Public Class TeilnehmerTests
         Dim Jutta As New Teilnehmer("Jutta", "Meier")
         Dim Andrea As New Teilnehmer("Andrea", "Heintz")
 
-        AppController.CurrentClub.GruppenloseTeilnehmer = New TeilnehmerCollection From {Stephan, Manuela, Manuel, Julia, Jutta, Andrea}
-        For Each appTn In AppController.CurrentClub.AlleTeilnehmer
+        AppController.AktuellerClub.GruppenloseTeilnehmer = New TeilnehmerCollection From {Stephan, Manuela, Manuel, Julia, Jutta, Andrea}
+        For Each appTn In AppController.AktuellerClub.AlleTeilnehmer
             Teilnehmerliste.Where(Function(importTn) appTn.Nachname = importTn.Nachname AndAlso appTn.Vorname = importTn.Vorname).ToList.ForEach(Sub(importTn) importTn.IstBekannt = True)
         Next
         Debug.Print(Teilnehmerliste.Where(Function(Tn) Tn.IstBekannt).Count)

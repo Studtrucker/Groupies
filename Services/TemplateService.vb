@@ -3,7 +3,7 @@ Imports Groupies.Entities
 
 Namespace Services
 
-    Module PresetService
+    Module TemplateService
 
 #Region "Fields"
         Private _levelCollection As LeistungsstufeCollection
@@ -231,21 +231,21 @@ Namespace Services
 
         Private Function GruppenAusgabeNamenUndSortierung() As Dictionary(Of Integer, String)
             Dim Namen = New Dictionary(Of Integer, String)
-            Namen.Add(10, "Zugspitze")
-            Namen.Add(20, "Großglockner")
-            Namen.Add(30, "Wildspitze")
-            Namen.Add(40, "Zuckerhütl")
-            Namen.Add(50, "K2")
-            Namen.Add(60, "Mount Everest")
-            Namen.Add(70, "Fernau")
-            Namen.Add(80, "Finsteraarhorn")
-            Namen.Add(90, "Piz Permina")
-            Namen.Add(100, "Hochkönig")
-            Namen.Add(110, "Hoher Dachstein")
-            Namen.Add(120, "Marmolata")
-            Namen.Add(130, "Monte Viso")
-            Namen.Add(140, "Ortler")
-            Namen.Add(150, "Matterhorn")
+            Namen.Add(10, "Zugspitze 2962")
+            Namen.Add(20, "Watzmann 2712")
+            Namen.Add(30, "Kreuzspitze 2656")
+            Namen.Add(40, "Hochwanner 2744")
+            Namen.Add(50, "Höllentalspitze 2743")
+            Namen.Add(60, "Alpenspitze 2751")
+            Namen.Add(70, "Falknerhorn 2655")
+            Namen.Add(80, "Brettfallspitze 2404")
+            Namen.Add(90, "Mont Blanc 4808")
+            Namen.Add(100, "Dufourspitze 4634")
+            Namen.Add(110, "Dom 4545")
+            Namen.Add(120, "Lyskamm 4527")
+            Namen.Add(130, "Weisshorn 4506")
+            Namen.Add(140, "Täschhorn 4491")
+            Namen.Add(150, "Matterhorn 4478")
             Return Namen
         End Function
 
@@ -256,9 +256,22 @@ Namespace Services
         End Function
 
         Private Function GroupPrintNames() As List(Of String)
-            Return New List(Of String) From {"Zugspitze", "Großglockner", "Wildspitze", "Zuckerhütl", "Matterhorn", "K2",
-                "Mount Everest", "Fernau", "Finsteraarhorn", "Piz Permina", "Hochkönig", "Hoher Dachstein", "Marmolata",
-                "Monte Viso", "Ortler"}
+            Return New List(Of String) From {
+                "Zugspitze 2962",
+                "Watzmann 2712",
+                "Kreuzspitze 2656",
+                "Hochwanner 2744",
+                "Höllentalspitze 2743",
+                "Alpenspitze 2751",
+                "Falknerhorn 2655",
+                "Brettfallspitze 2404",
+                "Mont Blanc 4808",
+                "Dufourspitze 4634",
+                "Dom 4545",
+                "Lyskamm 4527",
+                "Weisshorn 4506",
+                "Täschhorn 4491",
+                "Matterhorn 4478"}
         End Function
 
         Private Function GroupSorting() As List(Of Integer)

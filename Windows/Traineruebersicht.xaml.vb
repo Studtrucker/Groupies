@@ -7,7 +7,7 @@ Public Class Traineruebersicht
 
     Private Sub Handle_Traineruebersicht_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        _TrainerCollectionView = New ListCollectionView(AppCon.CurrentClub.AlleTrainer)
+        _TrainerCollectionView = New ListCollectionView(AppCon.AktuellerClub.AlleTrainer)
         If _TrainerCollectionView.CanSort Then
             _TrainerCollectionView.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
         End If

@@ -15,6 +15,8 @@ Namespace Entities
             Gruppenliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
+        Public Property BenennungGruppeneinteilung As String
+
         Public ReadOnly Property GruppenListeSortierungNachName As ObservableCollection(Of Gruppe)
             Get
                 Return New ObservableCollection(Of Gruppe)(Me.OrderBy(Of String)(Function(x) x.Benennung))

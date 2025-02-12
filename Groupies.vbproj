@@ -113,6 +113,7 @@
     <Compile Include="BaseTypes\BaseModelTest.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
+    <Compile Include="Entities\Einteilung.vb" />
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
@@ -181,7 +182,7 @@
     <Compile Include="Services\ExportService.vb" />
     <Compile Include="Services\XlLeser.vb" />
     <Compile Include="Services\ExcelDataReaderService.vb" />
-    <Compile Include="Services\PresetService.vb" />
+    <Compile Include="Services\TemplateService.vb" />
     <Compile Include="Services\CurrentDataService.vb" />
     <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />

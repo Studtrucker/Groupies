@@ -14,7 +14,7 @@ Namespace Controller
         ''' Der aktuell verwaltete Club
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property CurrentClub As Club
+        Public Shared Property AktuellerClub As Club
 
         ''' <summary>
         ''' Die aktuellen Leistungsstufen
@@ -23,7 +23,7 @@ Namespace Controller
         ''' um der Stufe gerecht zu werden
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property StandardLeistungsstufen = PresetService.StandardLeistungsstufenErstellen
+        Public Shared Property StandardLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
 
         ''' <summary>
         ''' Aktuelle Gruppen
@@ -32,7 +32,7 @@ Namespace Controller
         ''' versehen werden
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property StandardGruppen = PresetService.StandardGruppenErstellen(15)
+        Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
 
 #End Region
 
@@ -68,7 +68,7 @@ Namespace Controller
             Dim loadedSkiclub As Veraltert.Skiclub
             Try
                 loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-                CurrentClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+                AktuellerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
                 Return True
             Catch ex As InvalidDataException
                 Throw ex
@@ -79,7 +79,7 @@ Namespace Controller
         Private Shared Function LeseXMLDateiVersion2(Filestream As FileStream) As Boolean
             Dim serializer = New XmlSerializer(GetType(Club))
             Try
-                CurrentClub = TryCast(serializer.Deserialize(Filestream), Club)
+                AktuellerClub = TryCast(serializer.Deserialize(Filestream), Club)
                 Return True
             Catch ex As InvalidOperationException
                 Return False
@@ -93,22 +93,15 @@ Namespace Controller
 
 
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
-            CurrentClub = Nothing
-            CurrentClub = New Club(Clubname)
-            CurrentClub.Leistungsstufenliste = StandardLeistungsstufen
-            CurrentClub.Gruppenliste = StandardGruppen
-            Return $"{Clubname} wurde erfolgreich erstellt."
-        End Function
+            AktuellerClub = Nothing
+            AktuellerClub = New Club(Clubname)
 
-        Public Shared Function NeuenClubErstellen(Clubname As String, NumberOfGroups As Integer) As String
-            CurrentClub = New Club(Clubname) With {.Gruppenliste = PresetService.StandardGruppenErstellen(NumberOfGroups)}
-            Return $"{Clubname} wurde mit {CurrentClub.Gruppenliste.Count} Gruppen erfolgreich erstellt."
-        End Function
+            AktuellerClub.Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen
+            'AktuellerClub.Gruppenliste = TemplateService.StandardGruppenErstellen(15)
+            AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
+            AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
 
-        Public Function Status() As String
-            Return $"Der aktuelle Club heißt {CurrentClub}." & Environment.NewLine &
-                $"Er hat {CurrentClub.GruppenloseTeilnehmer.Count} Mitglieder" & Environment.NewLine &
-                "{String.Join(Environment.NewLine & " - ", CurrentClub.Participantlist)}" & $"{Environment.NewLine}"
+            Return $"[{Clubname}] wurde erfolgreich erstellt."
         End Function
 
         ''' <summary>

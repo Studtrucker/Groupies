@@ -19,6 +19,7 @@ Public Class MainWindow
 #Region "Felder"
 
     Private _LeistungsstufenListCollectionView As ICollectionView
+    Private _EinteilungenListCollectionView As ICollectionView
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
@@ -145,8 +146,8 @@ Public Class MainWindow
 
         RefreshJumpListInWinTaskbar()
 
-        If AppController.CurrentClub IsNot Nothing Then
-            _LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
+        If AppController.AktuellerClub IsNot Nothing Then
+            _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
             GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
             GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
             TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
@@ -245,8 +246,8 @@ Public Class MainWindow
     Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If AppCon.CurrentClub IsNot Nothing Then
-            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie die aktuelle Skischule noch speichern?", "", MessageBoxButton.YesNoCancel)
+        If AppCon.AktuellerClub IsNot Nothing Then
+            Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie den aktuellen Club noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)
             ElseIf rs = MessageBoxResult.Cancel Then
@@ -256,8 +257,8 @@ Public Class MainWindow
 
         UnsetView()
 
-        AppCon.NeuenClubErstellen("Club")
-        SetView(AppCon.CurrentClub)
+        MessageBox.Show(AppCon.NeuenClubErstellen("Neuer Groupies Club"))
+        SetView(AppCon.AktuellerClub)
 
     End Sub
 
@@ -278,7 +279,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_SaveClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing
     End Sub
 
     Private Sub Handle_ClubSaveAs_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -315,7 +316,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.Gruppenliste.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.Gruppenliste.Count > 0
     End Sub
 
 #End Region
@@ -326,11 +327,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTeilnehmer.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.AlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -338,7 +339,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -350,7 +351,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.CurrentClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
+            AppCon.AktuellerClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
         End If
     End Sub
 
@@ -360,7 +361,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -370,7 +371,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -405,13 +406,13 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
+            AppCon.AktuellerClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
         Next
     End Sub
 
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -420,7 +421,7 @@ Public Class MainWindow
 #Region "Trainer"
 
     Private Sub Handle_TrainerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerlisteImportieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -428,7 +429,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub IsNot Nothing AndAlso AppCon.CurrentClub.AlleTrainer.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.AlleTrainer.Count > 0
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -436,7 +437,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -448,7 +449,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.CurrentClub.GruppenloseTrainer.Add(dlg.Trainer)
+            AppCon.AktuellerClub.GruppenloseTrainer.Add(dlg.Trainer)
         End If
     End Sub
 
@@ -497,7 +498,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.AktuellerClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -509,7 +510,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+        AppCon.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerArchivieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -518,7 +519,7 @@ Public Class MainWindow
 
     Private Sub Handle_TrainerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.CurrentClub.TrainerArchivieren(GruppenloseTrainerDataGrid.SelectedItems.Item(i))
+            AppCon.AktuellerClub.TrainerArchivieren(GruppenloseTrainerDataGrid.SelectedItems.Item(i))
         Next
     End Sub
 
@@ -527,14 +528,14 @@ Public Class MainWindow
             MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
             Exit Sub
         End If
-        AppCon.CurrentClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.AktuellerClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
 #End Region
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.CurrentClub.Gruppenliste IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.Gruppenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -546,7 +547,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.CurrentClub.Gruppenliste.Add(dlg.Group)
+            AppCon.AktuellerClub.Gruppenliste.Add(dlg.Group)
         End If
     End Sub
 
@@ -555,7 +556,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.CurrentClub.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
+        AppCon.AktuellerClub.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -585,7 +586,7 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             Try
-                AppCon.CurrentClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
+                AppCon.AktuellerClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
             Catch ex As Exception
                 MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             End Try
@@ -643,16 +644,16 @@ Public Class MainWindow
         '_groupiesFile = New FileInfo(fileName)
         QueueMostRecentFilename(fileName)
 
-        AppCon.CurrentClub = Nothing
+        AppCon.AktuellerClub = Nothing
 
         ' Eintrag in CurrentDataService
         If loadedClub Is Nothing Then
-            AppCon.CurrentClub = MapSkiClub2Club(loadedSkiclub)
+            AppCon.AktuellerClub = MapSkiClub2Club(loadedSkiclub)
         Else
-            AppCon.CurrentClub = loadedClub
+            AppCon.AktuellerClub = loadedClub
         End If
 
-        SetView(AppCon.CurrentClub)
+        SetView(AppCon.AktuellerClub)
 
         _groupiesFile = New FileInfo(fileName)
         Title = "Groupies - " & fileName
@@ -711,13 +712,13 @@ Public Class MainWindow
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
         Title = "Groupies - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show("Groupies gespeichert!")
+        MessageBox.Show($"Die Datei   [{_groupiesFile.Name}]   wurde gespeichert!")
     End Sub
 
     Private Sub SaveXML(fileName As String)
         Dim serializer = New XmlSerializer(GetType(Entities.Club))
         Using fs = New FileStream(fileName, FileMode.Create)
-            serializer.Serialize(fs, AppCon.CurrentClub)
+            serializer.Serialize(fs, AppCon.AktuellerClub)
         End Using
     End Sub
 
@@ -824,10 +825,16 @@ Public Class MainWindow
         GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
-        SetView(Club.Gruppenliste)
+        SetView(Club.Einteilungsliste)
         SetView(Club.GruppenloseTeilnehmer)
         SetView(Club.GruppenloseTrainer)
+        SetView(Club.Einteilungsliste)
 
+    End Sub
+
+    Private Sub SetView(Einteilungsliste As List(Of Einteilung))
+        _EinteilungenListCollectionView = New ListCollectionView(Einteilungsliste)
+        DataContext = _EinteilungenListCollectionView
     End Sub
 
     Private Sub SetView(GruppenloseTeilnehmer As TeilnehmerCollection)
@@ -843,11 +850,11 @@ Public Class MainWindow
     Private Sub SetView(Gruppenliste As GruppeCollection)
         _gruppenlisteCollectionView = New ListCollectionView(Gruppenliste)
         If _gruppenlisteCollectionView.CanSort Then
-            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
-            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Descending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+            _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Ascending))
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
-        DataContext = _gruppenlisteCollectionView
+        'DataContext = _gruppenlisteCollectionView
     End Sub
 
     Private Sub SetView(GruppenloseTrainer As TrainerCollection)
@@ -918,7 +925,7 @@ Public Class MainWindow
 
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(AppCon.CurrentClub.Gruppenliste)
+        Dim sortedGroupView = New ListCollectionView(AppCon.AktuellerClub.Gruppenliste)
         sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
         Dim skikursgruppe As Gruppe
@@ -950,7 +957,11 @@ Public Class MainWindow
             DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
             DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe)
+            If String.IsNullOrWhiteSpace(AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung) Then
+                AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung = InputBox("Bitte diese Gruppeneinteilung benennen")
+            End If
+
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung)
             Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 

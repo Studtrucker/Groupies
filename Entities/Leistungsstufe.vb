@@ -180,8 +180,8 @@ Namespace Entities
 
         Private Function BenennungValidation(Value As String, <Out> ByRef errorMessage As String) As Boolean
             Dim isValid = True
-            If CurrentClub IsNot Nothing AndAlso CurrentClub.Leistungsstufenliste IsNot Nothing Then
-                If CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
+            If AktuellerClub IsNot Nothing AndAlso AktuellerClub.Leistungsstufenliste IsNot Nothing Then
+                If AktuellerClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
                     errorMessage = $"Die Benennung [{Value}] wird bereits verwendet und darf aber nur für eine Leistungsstufe vergeben werden"
                     isValid = False
                 End If

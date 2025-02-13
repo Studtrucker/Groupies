@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
+        xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Title="EinteilungDialog" Height="450" Width="800">
+    
+    <Window.BindingGroup>
+        <BindingGroup>
+            <BindingGroup.ValidationRules>
+                <rules:EinteilungValidationRule/>
+            </BindingGroup.ValidationRules>
+        </BindingGroup>
+    </Window.BindingGroup>
     
     <DockPanel>
         <!--Header-->

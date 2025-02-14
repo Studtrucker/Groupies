@@ -582,6 +582,7 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dlg.ModusEinstellen()
+        dlg.KopiereAktuelleGruppen(AppCon.AktuellerClub.Gruppenliste)
 
         If dlg.ShowDialog = True Then
             Try

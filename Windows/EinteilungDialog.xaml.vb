@@ -20,6 +20,15 @@ Public Class EinteilungDialog
 
     End Sub
 
+    Public Sub KopiereAktuelleGruppen(Gruppen As GruppeCollection)
+        Dim GruppenArray As Gruppe() = New Gruppe(Gruppen.Count - 1) {}
+        Gruppen.CopyTo(GruppenArray, 0)
+        Gruppen.Add(New Gruppe With {.Benennung = "NeueTestGruppe"})
+        Debug.Print($"Gruppenanzahl Liste {Gruppen.Count}")
+        Debug.Print($"Gruppenanzahl Array {GruppenArray.Count}")
+
+    End Sub
+
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
     End Sub

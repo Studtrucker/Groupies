@@ -552,7 +552,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
+        e.CanExecute = _gruppenlisteCollectionView.CurrentItem IsNot Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -841,6 +841,7 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
 
         UnsetView()
+        ' Dropdown der Leistungsstufen füllen
         _LeistungsstufenListCollectionView = New ListCollectionView(Club.LeistungsstufenTextliste.ToList)
         If _LeistungsstufenListCollectionView.CanSort Then
             _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
@@ -849,17 +850,23 @@ Public Class MainWindow
         GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
-        SetView(Club.Einteilungsliste)
+        SetView(Club.Gruppenliste)
+        'SetView(Club.Einteilungsliste(0).Gruppenliste)
         SetView(Club.GruppenloseTeilnehmer)
         SetView(Club.GruppenloseTrainer)
-        SetView(Club.Einteilungsliste)
 
     End Sub
 
-    Private Sub SetView(Einteilungsliste As List(Of Einteilung))
+    Private Sub SetView(Einteilungsliste As EinteilungCollection)
         _EinteilungenListCollectionView = New ListCollectionView(Einteilungsliste)
         DataContext = _EinteilungenListCollectionView
     End Sub
+
+    Private Sub SetView(Einteilung As Einteilung)
+        _gruppenlisteCollectionView = New ListCollectionView(Einteilung.Gruppenliste)
+        DataContext = _gruppenlisteCollectionView
+    End Sub
+
 
     Private Sub SetView(GruppenloseTeilnehmer As TeilnehmerCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(GruppenloseTeilnehmer)
@@ -878,7 +885,7 @@ Public Class MainWindow
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Ascending))
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
-        'DataContext = _gruppenlisteCollectionView
+        DataContext = _gruppenlisteCollectionView
     End Sub
 
     Private Sub SetView(GruppenloseTrainer As TrainerCollection)

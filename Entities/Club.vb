@@ -8,7 +8,7 @@ Namespace Entities
 
 #Region "Fields"
 
-        Private _Einteilungsliste = New List(Of Einteilung)
+        Private _Einteilungsliste = New EinteilungCollection
         Private _Gruppenliste = New GruppeCollection
         Private _Gruppenhistorie = New List(Of GruppeCollection)
 
@@ -75,11 +75,11 @@ Namespace Entities
         ''' Es kann hiermit eine Historie verwaltet werden
         ''' </summary>
         ''' <returns></returns>
-        Public Property Einteilungsliste() As List(Of Einteilung)
+        Public Property Einteilungsliste() As EinteilungCollection
             Get
                 Return _Einteilungsliste
             End Get
-            Set(value As List(Of Einteilung))
+            Set(value As EinteilungCollection)
                 _Einteilungsliste = value
             End Set
         End Property

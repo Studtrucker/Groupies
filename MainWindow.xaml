@@ -137,8 +137,11 @@
                 
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Die Einteilungen" DockPanel.Dock="Top"/>
-                    <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
+                    <!--<DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                               ItemsSource="{Binding}" AutoGenerateColumns="False"
+                              IsReadOnly="True" CanUserAddRows="False" >-->
+                        <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
+                              AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
@@ -153,7 +156,7 @@
                     <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
                     <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" DockPanel.Dock="Bottom"
-                              Margin="6"  Foreground="Black" IsSynchronizedWithCurrentItem="True"
+                              Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
                         <DataGrid.Resources>
 

@@ -114,6 +114,7 @@
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
     <Compile Include="Entities\Einteilung.vb" />
+    <Compile Include="Entities\EinteilungCollection.vb" />
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />

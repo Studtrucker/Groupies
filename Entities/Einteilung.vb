@@ -19,6 +19,13 @@
         ''' mit den Tagen benannt werden
         ''' </summary>
         ''' <returns></returns>
+        Public Property Sortierung() As Integer
+
+        ''' <summary>
+        ''' Die Einteilungen können beispielsweise
+        ''' mit den Tagen benannt werden
+        ''' </summary>
+        ''' <returns></returns>
         Public Property Benennung() As String
 
         ''' <summary>

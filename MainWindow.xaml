@@ -141,8 +141,8 @@
                               ItemsSource="{Binding}" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" >-->
                         <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True" CanUserAddRows="False" >
+                                  AutoGenerateColumns="False" ItemsSource="{Binding}"
+                                  IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
                         </DataGrid.Columns>

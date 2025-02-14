@@ -851,7 +851,7 @@ Public Class MainWindow
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         SetView(Club.Gruppenliste)
-        'SetView(Club.Einteilungsliste(0).Gruppenliste)
+        SetView(Club.Einteilungsliste)
         SetView(Club.GruppenloseTeilnehmer)
         SetView(Club.GruppenloseTrainer)
 
@@ -859,7 +859,7 @@ Public Class MainWindow
 
     Private Sub SetView(Einteilungsliste As EinteilungCollection)
         _EinteilungenListCollectionView = New ListCollectionView(Einteilungsliste)
-        DataContext = _EinteilungenListCollectionView
+        EinteilungenDataGrid.DataContext = _EinteilungenListCollectionView
     End Sub
 
     Private Sub SetView(Einteilung As Einteilung)

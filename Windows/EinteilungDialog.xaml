@@ -34,8 +34,8 @@
                 <Button x:Name="SchliessenButton" Width="110" Content="Schließen" Click="SchliessenButton_Click"/>
             </StackPanel>
         </Border>
-        
-        <uc:LeistungsstufendetailUserControl x:Name="LeistungsstufeView" Grid.Row="1" Grid.Column="1" Margin="4"/>
+
+        <uc:EinteilungUserControl x:Name="EinteilungUserControl" Grid.Row="1" Grid.Column="1" Margin="4"/>
 
 
     </DockPanel>

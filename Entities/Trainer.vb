@@ -11,7 +11,7 @@ Namespace Entities
     ''' Trainer, verantwortlich für eine Gruppe
     ''' </summary>
     Public Class Trainer
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 #Region "Felder"
         'Todo:Standardfoto festlegen

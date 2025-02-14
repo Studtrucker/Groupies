@@ -10,7 +10,7 @@ Namespace Entities
     ''' </summary>
     <DefaultProperty("GruppenName")>
     Public Class Gruppe
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 #Region "Felder"
         Private _GruppenID = Guid.NewGuid()

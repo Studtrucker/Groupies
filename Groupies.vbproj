@@ -110,11 +110,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
-    <Compile Include="BaseTypes\BaseModelTest.vb" />
+    <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
     <Compile Include="Entities\Einteilung.vb" />
     <Compile Include="Entities\EinteilungCollection.vb" />
+    <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
+      <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
@@ -162,7 +165,6 @@
     </Compile>
     <Compile Include="Interfaces\IWindowMitModus.vb" />
     <Compile Include="My Project\Annotations.vb" />
-    <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
     <Compile Include="Windows\CountOfGroupsDialog.xaml.vb">
@@ -233,6 +235,10 @@
     <Compile Include="Windows\Traineruebersicht.xaml.vb">
       <DependentUpon>Traineruebersicht.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\EinteilungUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\CountOfGroupsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

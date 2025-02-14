@@ -12,7 +12,7 @@ Namespace Entities
     <DefaultBindingProperty("Vorname")>
     <DefaultProperty("VorUndNachname")>
     Public Class Teilnehmer
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 
 #Region "Fields"

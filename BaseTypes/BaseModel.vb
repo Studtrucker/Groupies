@@ -1,35 +1,18 @@
-﻿Imports System.Collections.Generic
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
 Imports System.Reflection
-Imports System.Linq
 Imports System.Runtime.CompilerServices
 Imports Groupies.Annotations
 Imports Microsoft.Office.Interop.Excel
-Imports System.Text
-
-' Erklärungen siehe Video https://codingfreaks.de/wpf-mvvm-03/
 
 ''' <summary>
 ''' Abstrakte Basisklasse für alle Modelle  
 ''' </summary>
 Public MustInherit Class BaseModel
     Implements INotifyPropertyChanged
-    Implements INotifyDataErrorInfo
-    'Implements IDataErrorInfo
 
 
 #Region "Felder"
-
-
-    Friend _Errors As New Dictionary(Of String, List(Of String))
-
-    Private _propertyInfos As List(Of PropertyInfo)
-
-    '''' <summary>
-    '''' Ein Wörterbuch der aktuellen Fehler mit dem Namen des Fehlerfeldes als Schlüssel und 
-    '''' dem Fehlertext als Wert aufnimmt
-    '''' </summary>
 
 #End Region
 
@@ -40,11 +23,6 @@ Public MustInherit Class BaseModel
     ''' Tritt auf, wenn sich ein Eigenschaftswert ändert.
     ''' </summary>
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
-
-    '''' <summary>
-    '''' Tritt auf, wenn sich ein Fehler ändert
-    '''' </summary>
-    Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
 #End Region
 
@@ -59,7 +37,6 @@ Public MustInherit Class BaseModel
 #End Region
 
 #Region "Schnittstellen"
-
 
 #End Region
 
@@ -86,77 +63,14 @@ Public MustInherit Class BaseModel
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
-    '''   Raises the <see cref="PropertyChanged"/> event.
-    '''   The name of the property which value has changed.
-    ''' <summary>
-    ''' Löst das Ereignis <see cref="ErrorsChanged"/> aus.
-    ''' </summary>
-    ''' <param name="propertyName">
-    ''' Der Name der Eigenschaft, deren Fehlerliste sich geändert hat.
-    ''' </param>
-    <NotifyPropertyChangedInvocator>
-    Protected Overridable Sub OnErrorsChanged(<CallerMemberName> Optional propertyName As String = Nothing)
-        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(propertyName))
-    End Sub
-
-
-    ' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein spezielles Feld.
-    ' Da <see cref=„HasErrors“/> vom <see cref=„Errors“/>-Wörterbuch abhängt, 
-    ' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
-    Public Function GetErrors(PropertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-        If String.IsNullOrEmpty(PropertyName) Then Return Nothing
-        If _Errors.ContainsKey(PropertyName) Then
-            Return _Errors(PropertyName)
-        End If
-        Return Nothing
-    End Function
 
 #End Region
 
 #Region "Eigenschaften"
 
-
-    ''' <summary>
-    ''' Zeigt an, ob diese Instanz Fehler aufweist.
-    ''' </summary>
-    Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
-        Get
-            Return _Errors.Any()
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Das Gegenteil von <see cref="HasErrors"/>.
-    ''' </summary>
-    ''' <remarks>
-    ''' Sie dient nur der bequemen Bindung.
-    ''' </remarks>
-    Public ReadOnly Property IsOk As Boolean
-        Get
-            Return Not HasErrors
-        End Get
-    End Property
-
 #End Region
 
 #Region "Property Attribute"
-
-    ''' <summary>
-    ''' Ruft eine Liste aller Eigenschaften mit Attributen ab, 
-    ''' die für die <see cref="IDataErrorInfo"/>-Automatisierung erforderlich sind.
-    ''' </summary>
-    Protected ReadOnly Property PropertyInfos As List(Of PropertyInfo)
-        Get
-            If _propertyInfos Is Nothing Then
-                _propertyInfos = [GetType].GetProperties(BindingFlags.Public Or BindingFlags.Instance).
-                    Where(Function(prop) _
-                              prop.IsDefined(GetType(RequiredAttribute), True) OrElse
-                              prop.IsDefined(GetType(MaxLengthAttribute), True)).ToList()
-            End If
-            Return _propertyInfos
-        End Get
-    End Property
-
 
 #End Region
 
@@ -175,83 +89,6 @@ Public MustInherit Class BaseModel
 
     'Friend _Errors As New Dictionary(Of String, String)
 
-
-
-
-
-    ''' <summary>
-    ''' Ruft eine Fehlermeldung ab, die angibt, was mit diesem Objekt nicht stimmt.
-    ''' </summary>
-    ''' <returns>
-    ''' Eine Fehlermeldung, die angibt, was mit diesem Objekt nicht in Ordnung ist. 
-    ''' Der Standardwert ist eine leere Zeichenkette ("").
-    ''' </returns>
-    Public ReadOnly Property [Error] As String 'Implements IDataErrorInfo.Error
-        Get
-            Return String.Empty
-        End Get
-    End Property
-
-
-
-    ''' <summary>
-    ''' Ruft die Fehlermeldung für die Eigenschaft mit dem angegebenen Namen ab.
-    ''' </summary>
-    ''' <param name="propertyName">
-    ''' Der Name der Eigenschaft, deren Fehlermeldung abgerufen werden soll.
-    ''' Gets an error message indicating what is wrong with this object.
-    ''' An error message indicating what is wrong with this object. The default is an empty string ("").
-    ''' </param>
-    ''' <returns>
-    ''' Die Fehlermeldung für die Eigenschaft. Der Standard ist eine leere Zeichenkette ("").
-    ''' </returns>
-    Default Public ReadOnly Property Item(propertyName As String) As String 'Implements IDataErrorInfo.Item
-        Get
-            CollectErrors()
-            Return If(_Errors.ContainsKey(propertyName), _Errors(propertyName)(0), String.Empty)
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Wird vom Indexer aufgerufen, um alle Fehler zu sammeln und nicht nur die für ein bestimmtes Feld.
-    ''' </summary>
-    ''' <remarks>
-    ''' Da <see cref="HasErrors"/> vom <see cref="Errors"/>-Wörterbuch abhängt, 
-    ''' wird sichergestellt, dass Steuerelemente wie Schaltflächen ihren Zustand entsprechend ändern können.
-    ''' </remarks>
-    Private Sub CollectErrors()
-        _Errors.Clear()
-        PropertyInfos.ForEach(Sub(prop)
-                                  Dim currentValue = prop.GetValue(Me)
-                                  Dim requiredAttr = prop.GetCustomAttribute(Of RequiredAttribute)()
-                                  Dim maxLenAttr = prop.GetCustomAttribute(Of MaxLengthAttribute)()
-                                  If requiredAttr IsNot Nothing Then
-                                      If String.IsNullOrEmpty(If(currentValue?.ToString(), String.Empty)) Then
-                                          '_Errors.Add(prop.Name, requiredAttr.ErrorMessage)
-                                          _Errors.Add(prop.Name, New List(Of String) From {requiredAttr.ErrorMessage})
-                                      End If
-                                  End If
-                                  If maxLenAttr IsNot Nothing Then
-                                      If If(currentValue?.ToString(), String.Empty).Length > maxLenAttr.Length Then
-                                          '_Errors.Add(prop.Name, maxLenAttr.ErrorMessage)
-                                          _Errors.Add(prop.Name, New List(Of String) From {maxLenAttr.ErrorMessage})
-                                      End If
-                                  End If
-                                  ' TODO further attributes
-                              End Sub)
-        ' we have to do this because the Dictionary does not implement INotifyPropertyChanged            
-        OnPropertyChanged(NameOf(BaseModel.HasErrors))
-        OnPropertyChanged(NameOf(BaseModel.IsOk))
-        ' commands do not recognize property changes automatically
-        OnErrorsCollected()
-    End Sub
-
-    ''' <summary>
-    ''' Kann von abgeleiteten Typen überschrieben werden, um auf die Beendigung von Fehlersammlungen zu reagieren.
-    ''' Can be overridden by derived types To react On the finishing Of Error-collections.
-    ''' </summary>
-    Protected Overridable Sub OnErrorsCollected()
-    End Sub
 #End Region
 
 #Region "Dekativiert NotifyDataErrorValidationRule"
@@ -264,3 +101,4 @@ Public MustInherit Class BaseModel
 
 
 End Class
+

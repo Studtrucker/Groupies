@@ -7,7 +7,7 @@ Namespace Entities
     ''' Fähigkeit zur Beschreibung von Leistungsstufen 
     ''' </summary>
     Public Class Faehigkeit
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 #Region "Felder"
         Private _Faehigkeit = Guid.NewGuid

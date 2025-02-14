@@ -5,6 +5,8 @@ Imports Groupies.Services
 Namespace Entities
 
     Public Class Club
+        Inherits BaseModel
+
 
 #Region "Fields"
 

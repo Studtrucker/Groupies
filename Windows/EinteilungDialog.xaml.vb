@@ -30,20 +30,14 @@ Public Class EinteilungDialog
         Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
     End Function
 
-    Private Sub NeueEinteilung()
-        _Einteilung.Benennung = "Tag2"
-        _Einteilung.Gruppenliste = TemplateService.StandardGruppenErstellen(5)
-    End Sub
-
     Private Sub HandlerOkButton(sender As Object, e As RoutedEventArgs)
-        NeueEinteilung()
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
             Dialog = False
         Else
-            LeistungsstufeView.SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            LeistungsstufeView.BenennungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            EinteilungUserControl.SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            EinteilungUserControl.BenennungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             'LeistungsstufeView.FaehigkeitenDataGrid.GetBindingExpression(DataGrid.HasItemsProperty).UpdateSource()
             Dialog = True
         End If

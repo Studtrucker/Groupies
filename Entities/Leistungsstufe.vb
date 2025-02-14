@@ -14,7 +14,7 @@ Namespace Entities
     '''' Beschreibt die Leistungsstufe mit einem Satz von Fähigkeiten
     '''' </summary>
     Public Class Leistungsstufe
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 #Region "Felder"
         'Private _Sortierung As Integer

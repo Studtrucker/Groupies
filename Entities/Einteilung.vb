@@ -2,7 +2,7 @@
 
 
     Public Class Einteilung
-        Inherits BaseModelTest
+        Inherits BaseModel
 
 
 #Region "Felder"

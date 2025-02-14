@@ -14,7 +14,6 @@ Namespace Entities
     Public Class EwigerTeilnehmer
         Inherits Teilnehmer
 
-
 #Region "Fields"
 
 #End Region

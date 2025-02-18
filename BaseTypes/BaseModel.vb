@@ -11,7 +11,6 @@ Imports Microsoft.Office.Interop.Excel
 Public MustInherit Class BaseModel
     Implements INotifyPropertyChanged
 
-
 #Region "Felder"
 
 #End Region
@@ -97,8 +96,6 @@ Public MustInherit Class BaseModel
     ' xaml: ValidatesOnNotifyDataErrors=True oder NotifyDataErrorValidationRule
     ' Seite 713
 #End Region
-
-
 
 End Class
 

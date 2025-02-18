@@ -1016,6 +1016,11 @@ Public Class MainWindow
         Participant
     End Enum
 
+    Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
+        Dim fml = New Testfenster
+        fml.Show()
+    End Sub
+
 #End Region
 
 End Class

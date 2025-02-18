@@ -78,7 +78,7 @@
 
                 <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
                       x:Name="GruppenleistungsstufeComboBox"
-                      SelectedValue="{Binding Leistungsstufe,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                      SelectedValue="{Binding Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  

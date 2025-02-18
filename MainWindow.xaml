@@ -108,6 +108,7 @@
                 </MenuItem>
 
             </MenuItem>
+            <MenuItem Header="Testfenster" Click="MenuItem_Click"/>
 
         </Menu>
 

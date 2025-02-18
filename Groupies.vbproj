@@ -115,6 +115,7 @@
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
     <Compile Include="Entities\Einteilung.vb" />
     <Compile Include="Entities\EinteilungCollection.vb" />
+    <Compile Include="MainViewModel.vb" />
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
     </Compile>
@@ -175,6 +176,9 @@
     </Compile>
     <Compile Include="Windows\GruppeDialog.xaml.vb">
       <DependentUpon>GruppeDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Testfenster.xaml.vb">
+      <DependentUpon>Testfenster.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TrainerDialog.xaml.vb">
       <DependentUpon>TrainerDialog.xaml</DependentUpon>
@@ -260,6 +264,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\GruppeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Testfenster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

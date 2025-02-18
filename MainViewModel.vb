@@ -3,9 +3,11 @@ Imports System.Runtime.CompilerServices
 Imports Groupies.Entities
 
 Public Class MainViewModel
-    Implements INotifyPropertyChanged
+    'Implements INotifyPropertyChanged
+    Inherits BaseModel
 
-    Private Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    'Private Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Public Property ClubName As String
 
@@ -19,7 +21,7 @@ Public Class MainViewModel
         End Get
         Set(value As Einteilung)
             _SelectedEinteilung = value
-            OnPropertyChanged()
+            'OnPropertyChanged()
             SelectedGruppe = Nothing
         End Set
     End Property
@@ -31,12 +33,12 @@ Public Class MainViewModel
         End Get
         Set(value As Gruppe)
             _SelectedGruppe = value
-            OnPropertyChanged()
+            'OnPropertyChanged()
         End Set
     End Property
 
-    Protected Overridable Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
-        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
-    End Sub
+    'Protected Overridable Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
+    '    RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+    'End Sub
 
 End Class

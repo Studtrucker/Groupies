@@ -45,7 +45,7 @@
         </Grid.RowDefinitions>
 
         <!-- Liste der Kategorien -->
-        <ListBox Grid.Row="0" ItemsSource="{Binding Einteilungen}" DisplayMemberPath="Benennung" 
+        <ListBox Grid.Row="0" ItemsSource="{Binding Einteilungsliste}" DisplayMemberPath="Benennung" 
                  SelectedItem="{Binding SelectedEinteilung}" Height="100" />
 
         <!-- Untergeordnete Liste der Subkategorien -->

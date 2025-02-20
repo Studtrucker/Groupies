@@ -9,7 +9,14 @@ Public Class MappingVeraltertAufNeuTest
 
     <TestMethod>
     Public Sub TestClubOeffnen()
-        Dim filename = "\\ds214play\BackupAndreas\GroupiesReisen\Stubaital\20231118Stubai.ski"
+
+        Dim filename = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiClub.ski"
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            filename = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiClub.ski"
+        Else
+            filename = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiClub.ski"
+        End If
+
         If File.Exists(filename) Then
 
             ' Datei deserialisieren

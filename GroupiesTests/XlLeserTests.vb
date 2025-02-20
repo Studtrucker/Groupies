@@ -13,9 +13,9 @@ Public Class XlLeserTests
     Public Sub TestXLSXReaderMitFehler()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\Teilnehmer.xlsx"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Reise_2024_Teilnehmer.xlsx"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\Teilnehmer.xlsx"
         End If
 
         Assert.ThrowsException(Of InvalidDataException)(Sub() XlLeser.LoadDataSet(Pfad, "Teilnehmer"))
@@ -26,9 +26,9 @@ Public Class XlLeserTests
     Public Sub TestXLSXReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xlsx"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TeilnehmerBearbeitet.xlsx"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\2024_TeilnehmerBearbeitet.xlsx"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TeilnehmerBearbeitet.xlsx"
         End If
 
         Dim Typ = "Teilnehmer"
@@ -85,9 +85,9 @@ Public Class XlLeserTests
     Public Sub TestCSVReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\Teilnehmer.csv"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\Teilnehmer.csv"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\Teilnehmer.csv"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\Teilnehmer.csv"
         End If
 
         Try

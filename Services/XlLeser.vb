@@ -39,9 +39,7 @@ Public Class XlLeser
         End Select
 
         Try
-
             xlLeser.PruefeDataset(Dataset)
-
         Catch ex As Exception
             Throw New IO.InvalidDataException("Formatprüfung nicht bestanden", ex)
         End Try

@@ -4,7 +4,7 @@ Imports Groupies.Controller
 Imports System.Windows
 
 <TestClass>
-Public Class DatenladenTests
+Public Class SkiDatenLadenTests
     <TestMethod>
     Public Sub BestimmeEinteilungsbenennungTest()
 
@@ -13,7 +13,7 @@ Public Class DatenladenTests
             New Einteilung With {.Benennung = "Dienstag", .Sortierung = 3},
             New Einteilung With {.Benennung = "Sonntag", .Sortierung = 1}}
 
-        Dim Ben = Controller.DatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag4")
 
     End Sub
@@ -26,7 +26,7 @@ Public Class DatenladenTests
             New Einteilung With {.Benennung = "Tag3", .Sortierung = 3},
             New Einteilung With {.Benennung = "Tag4", .Sortierung = 4}}
 
-        Dim Ben = Controller.DatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag5")
 
     End Sub
@@ -36,7 +36,7 @@ Public Class DatenladenTests
 
         Dim Einteilungen = New Entities.EinteilungCollection
 
-        Dim Ben = Controller.DatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag1")
 
     End Sub
@@ -46,7 +46,7 @@ Public Class DatenladenTests
 
         Dim Einteilungen = Nothing
 
-        Dim Ben = Controller.DatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag1")
 
     End Sub
@@ -54,14 +54,14 @@ Public Class DatenladenTests
     <TestMethod>
     Public Sub XmlGruppenLesenTest()
         Debug.Print($"Version2 Gruppen lesen")
-        Dim Gruppen = Controller.DatenLaden.GruppenLesen()
+        Dim Gruppen = Controller.SkiDatenLaden.GruppenLesen()
         Assert.IsNotNull(Gruppen)
     End Sub
 
     <TestMethod>
     Public Sub XmlTeilnehmerLesenTest()
         Debug.Print($"Version2 Teilnehmer lesen")
-        Dim Teilnehmer = Controller.DatenLaden.TeilnehmerLesen()
+        Dim Teilnehmer = Controller.SkiDatenLaden.TeilnehmerLesen()
         Assert.IsNotNull(Teilnehmer)
     End Sub
 
@@ -69,14 +69,14 @@ Public Class DatenladenTests
     <TestMethod>
     Public Sub XmlTrainerLesenTest()
         Debug.Print($"Version2 Trainer lesen")
-        Dim Trainer = Controller.DatenLaden.TrainerLesen()
+        Dim Trainer = Controller.SkiDatenLaden.TrainerLesen()
         Assert.IsNotNull(Trainer)
     End Sub
 
     <TestMethod>
     Public Sub XmlEinteilungenLesenTest()
         Debug.Print($"Version2 Einteilungen lesen")
-        Dim Einteilungen = Controller.DatenLaden.EinteilungenLesen()
+        Dim Einteilungen = Controller.SkiDatenLaden.EinteilungenLesen()
         Assert.IsNotNull(Einteilungen)
     End Sub
 
@@ -91,7 +91,7 @@ Public Class DatenladenTests
         End If
 
         Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
-        Dim Erfolg = Controller.DatenLaden.LeseXMLDateiVersion2(Filestream)
+        Dim Erfolg = Controller.SkiDatenLaden.LeseXMLDateiVersion2(Filestream)
         Assert.IsTrue(Erfolg)
     End Sub
 
@@ -104,7 +104,7 @@ Public Class DatenladenTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         End If
         Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
-        Dim Erfolg = Controller.DatenLaden.LeseXMLDateiVersion2(Filestream)
+        Dim Erfolg = Controller.SkiDatenLaden.LeseXMLDateiVersion2(Filestream)
         Assert.IsFalse(Erfolg)
     End Sub
 End Class

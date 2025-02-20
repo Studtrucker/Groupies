@@ -11,11 +11,11 @@ Public Class AppControllerTests
         Sub TestNeuenSkiclubErstellen()
 
             Dim numberOfGroups = 9
-        Assert.AreEqual($"Stubaital2024 wurde mit {numberOfGroups} Gruppen erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024"))
+        Assert.AreEqual($"[Stubaital2024] wurde erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024"))
         Assert.AreEqual("Stubaital2024", AppController.AktuellerClub.ClubName)
-        Assert.AreEqual(15, AppController.AktuellerClub.Gruppenliste.Count)
+        Assert.AreEqual(0, AppController.AktuellerClub.Gruppenliste.Count)
         Assert.AreEqual(0, AppController.AktuellerClub.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(5, AppController.StandardLeistungsstufen.Count)
+        Assert.AreEqual(6, AppController.StandardLeistungsstufen.Count)
         Assert.AreEqual(0, AppController.AktuellerClub.GruppenloseTrainer.Count)
 
         Dim Studti As New Teilnehmer("Andreas", "Studtrucker")

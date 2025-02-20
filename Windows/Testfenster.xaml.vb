@@ -11,10 +11,9 @@ Public Class Testfenster
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
         Dim Model As New MainViewModel
-        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        If dlg.ShowDialog = True Then
-            Model.XMLDateiEinlesen(dlg.FileName)
-        End If
+        'Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        Model.DateiLaden()
+        'Model.EinteilungAusDateiLaden()
 
         DataContext = Model
 

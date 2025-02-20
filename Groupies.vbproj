@@ -110,6 +110,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
+    <Compile Include="DatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />

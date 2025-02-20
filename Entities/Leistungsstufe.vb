@@ -133,9 +133,9 @@ Namespace Entities
             _Faehigkeiten.Remove(Faehigkeit)
         End Sub
 
-        'Public Overrides Function ToString() As String
-        '    Return Benennung
-        'End Function
+        Public Overrides Function ToString() As String
+            Return Benennung
+        End Function
 
 #End Region
 
@@ -188,10 +188,6 @@ Namespace Entities
             End If
             Return isValid
         End Function
-
-#End Region
-
-#Region "Funktionen und Methoden"
 
 #End Region
 

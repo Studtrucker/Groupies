@@ -20,8 +20,8 @@ Public Class FaehigkeitenTests
         Dim f1 = New Faehigkeit("Pflug") With {.Beschreibung = "Pflug fahren"}
         Assert.AreEqual("Pflug", f1.Benennung)
         Assert.AreEqual("Pflug fahren", f1.Beschreibung)
-        Assert.AreEqual(Nothing, f1.Sortierung)
-        Assert.AreEqual($"Pflug{Environment.NewLine}Pflug fahren", f1.AusgabeAnTrainerInfo)
+        Assert.AreEqual(0, f1.Sortierung)
+        Assert.AreEqual($"{f1.Sortierung}. Pflug{Environment.NewLine}Pflug fahren", f1.AusgabeAnTrainerInfo)
 
     End Sub
 
@@ -50,7 +50,7 @@ Public Class FaehigkeitenTests
 
         Dim fcol = New FaehigkeitCollection From {f, f1, f2, f3}
         CollectionAssert.AreEqual(New List(Of String) From {
-                                  $"Einfache Kurven{Environment.NewLine}Kann einzelne Kurven mit Hilfe des Pflugbogens fahren",
+                                  $"0. Einfache Kurven{Environment.NewLine}Kann einzelne Kurven mit Hilfe des Pflugbogens fahren",
                                   $"1. Kurven",
                                   $"2. Pflug{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen Kurven fahren",
                                   $"3. Bremsen{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen stoppen"},

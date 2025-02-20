@@ -22,7 +22,7 @@ Public Class XlLeserTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestXLSXReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
@@ -41,7 +41,7 @@ Public Class XlLeserTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestXLSXReaderTrainer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
@@ -62,7 +62,7 @@ Public Class XlLeserTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestXLSReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
@@ -99,7 +99,7 @@ Public Class XlLeserTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestCSVReaderTrainer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then

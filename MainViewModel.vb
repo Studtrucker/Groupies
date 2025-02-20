@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports System.Xml.Serialization
 Imports Groupies.Entities
+Imports Microsoft.Win32
 
 Public Class MainViewModel
     Inherits BaseModel
@@ -40,65 +41,74 @@ Public Class MainViewModel
 #End Region
 
 #Region "Functions"
-    ''' <summary>
-    ''' Eine gespeicherte Datei wird eingelesen 
-    ''' </summary>
-    ''' <param name="Datei"></param>
-    Public Sub XMLDateiEinlesen(Datei As String)
-        If File.Exists(Datei) Then
-            Try
-                Dim DateiGelesen
-                Using fs = New FileStream(Datei, FileMode.Open)
-                    ' Versuche XML mit Struktur Groupies 2 zu lesen
-                    DateiGelesen = LeseXMLDateiVersion2(fs)
-                End Using
-                ' Versuche XML mit Struktur Groupies 1 zu lesen
-                Using fs = New FileStream(Datei, FileMode.Open)
-                    If Not DateiGelesen Then
-                        LeseXMLDateiVersion1(fs)
-                    End If
-                End Using
 
-                Me.Trainerliste = Club.AlleTrainer
+
+    ''' <summary>
+    ''' Lädt eine XML-Datei und erstellt daraus einen Club
+    ''' </summary>
+    Public Sub DateiLaden()
+        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+
+        If dlg.ShowDialog = True Then
+            Club = Controller.DatenLaden.XMLDateiLesen(dlg.FileName)
+
+            If Club IsNot Nothing Then
+                Dim Einteilungsname = BestimmeEinteilungsbenennung(Club.Einteilungsliste)
+                Trainerliste = Club.AlleTrainer
                 If Club.Einteilungsliste IsNot Nothing AndAlso Club.Einteilungsliste.Count > 0 Then
                 Else
-                    Me.Einteilungsliste = New EinteilungCollection From {New Einteilung With {.Benennung = "Tag1", .Gruppenliste = Club.Gruppenliste}}
+                    Einteilungsliste = New EinteilungCollection From {New Einteilung With {.Benennung = Einteilungsname, .Gruppenliste = Club.Gruppenliste}}
                 End If
-
-            Catch ex As InvalidDataException
-                Debug.Print("Datei ungültig: " & ex.Message)
-                Exit Sub
-            End Try
-
-
+            End If
         End If
     End Sub
 
-    Private Function LeseXMLDateiVersion1(Filestream As FileStream) As Boolean
-        Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-        Dim loadedSkiclub As Veraltert.Skiclub
-        Try
-            loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-            Club = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
-            Return True
-        Catch ex As InvalidDataException
-            Throw ex
-            Return False
-        End Try
+    ''' <summary>
+    ''' Lädt aus einer XML-Datei eine Einteilung 
+    ''' </summary>
+    Public Sub EinteilungAusDateiLaden()
+
+        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        If dlg.ShowDialog = True Then
+            Dim lokalerClub = Controller.AppController.XMLDateiLesen(dlg.FileName)
+
+            If lokalerClub IsNot Nothing Then
+                Dim Einteilungsname = BestimmeEinteilungsbenennung()
+                Trainerliste = lokalerClub.AlleTrainer
+                If Club.Einteilungsliste IsNot Nothing AndAlso Club.Einteilungsliste.Count > 0 Then
+                Else
+                    Einteilungsliste = New EinteilungCollection From {New Einteilung With {.Benennung = Einteilungsname, .Gruppenliste = Club.Gruppenliste}}
+                End If
+            End If
+        End If
+    End Sub
+
+    Public Function BestimmeEinteilungsbenennung(Einteilungsliste As EinteilungCollection) As String
+        Dim Einteilungsname = String.Empty
+        Dim Zaehler As Integer
+        If Club.Einteilungsliste.Count > 0 Then
+            Einteilungsname = Club.Einteilungsliste.OrderByDescending(Function(e) e.Sortierung).First.Benennung
+            Zaehler = Val(Einteilungsname.Last) + 1
+            Einteilungsname &= Zaehler
+        Else
+            Einteilungsname = "Tag1"
+        End If
+        Return Einteilungsname
     End Function
 
-    Private Function LeseXMLDateiVersion2(Filestream As FileStream) As Boolean
-        Dim serializer = New XmlSerializer(GetType(Club))
-        Try
-            Club = TryCast(serializer.Deserialize(Filestream), Club)
-            Return True
-        Catch ex As InvalidOperationException
-            Return False
-        Catch ex As InvalidDataException
-            Throw ex
-            Return False
-        End Try
+    Public Function BestimmeEinteilungsbenennung() As String
+        Dim Einteilungsname = String.Empty
+        Dim Zaehler As Integer
+        If Einteilungsliste.Count > 0 Then
+            Einteilungsname = Club.Einteilungsliste.OrderByDescending(Function(e) e.Sortierung).First.Benennung
+            Zaehler = Val(Einteilungsname.Last) + 1
+            Einteilungsname &= Zaehler
+        Else
+            Einteilungsname = "Tag1"
+        End If
+        Return Einteilungsname
     End Function
+
 #End Region
 
 End Class

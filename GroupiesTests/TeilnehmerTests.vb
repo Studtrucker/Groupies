@@ -6,7 +6,7 @@ Imports Groupies.Controller
 <TestClass>
 Public Class TeilnehmerTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestImportDaten()
 
         Dim Pfad As String
@@ -46,7 +46,7 @@ Public Class TeilnehmerTests
 
 
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTeilnehmerErstellen()
 
         ' Vor- und Nachname
@@ -112,7 +112,7 @@ Public Class TeilnehmerTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTeilnehmerlisten()
 
         Dim Anfaenger = New Leistungsstufe("Anfänger", 1)

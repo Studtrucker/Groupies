@@ -38,6 +38,28 @@ Namespace Controller
 
 #Region "Funktionen und Methoden"
 
+        Public Shared Function XMLDateiLesen(Datei As String) As Club
+            If File.Exists(Datei) Then
+                Try
+                    Dim DateiGelesen
+                    Using fs = New FileStream(Datei, FileMode.Open)
+                        ' Versuche XML mit Struktur Groupies 2 zu lesen
+                        DateiGelesen = LeseXMLDateiVersion2(fs)
+                    End Using
+                    ' Versuche XML mit Struktur Groupies 1 zu lesen
+                    Using fs = New FileStream(Datei, FileMode.Open)
+                        If Not DateiGelesen Then
+                            LeseXMLDateiVersion1(fs)
+                        End If
+                    End Using
+                    Return AktuellerClub
+                Catch ex As InvalidDataException
+                    Debug.Print("Datei ungültig: " & ex.Message)
+                    Exit Function
+                End Try
+            End If
+        End Function
+
         ''' <summary>
         ''' Eine gespeicherte Datei wird eingelesen 
         ''' </summary>

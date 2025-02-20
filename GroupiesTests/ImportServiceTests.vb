@@ -13,7 +13,9 @@ Public Class ImportServiceTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\ExcelTestdatei.xlsx"
             Result = StarteOpenFileDialog("C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\", "ExcelTestdatei.xlsx")
         End If
+
         Assert.AreEqual(Pfad, Result)
+
     End Sub
 
 End Class

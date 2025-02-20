@@ -50,7 +50,7 @@ Public Class MainViewModel
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
         If dlg.ShowDialog = True Then
-            Club = Controller.SkiDatenLaden.XMLDateiLesen(dlg.FileName)
+            Club = Controller.SkiDatenLaden.SkiDateiLesen(dlg.FileName)
 
             If Club IsNot Nothing Then
                 Dim Einteilungsname = BestimmeEinteilungsbenennung(Club.Einteilungsliste)
@@ -70,7 +70,7 @@ Public Class MainViewModel
 
         Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
         If dlg.ShowDialog = True Then
-            Dim lokalerClub = Controller.SkiDatenLaden.XMLDateiLesen(dlg.FileName)
+            Dim lokalerClub = Controller.SkiDatenLaden.SkiDateiLesen(dlg.FileName)
 
             If lokalerClub IsNot Nothing Then
                 Dim Einteilungsname = BestimmeEinteilungsbenennung()

@@ -240,6 +240,7 @@
     <Compile Include="Windows\Traineruebersicht.xaml.vb">
       <DependentUpon>Traineruebersicht.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XMLDatenLaden.vb" />
     <Page Include="UserControls\EinteilungUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

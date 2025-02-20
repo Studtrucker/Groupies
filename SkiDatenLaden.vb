@@ -8,7 +8,7 @@ Namespace Controller
     Public Class SkiDatenLaden
 
 #Region "Felder"
-        Private Shared AktuellerClub As Club
+        'Private Shared AktuellerClub As Club
 #End Region
 
 #Region "Komplette Dateien lesen"
@@ -16,31 +16,37 @@ Namespace Controller
         ''' <summary>
         ''' Eine gespeicherte Datei wird eingelesen 
         ''' </summary>
-        Public Shared Function XMLDateiLesen() As Club
+        Public Shared Function SkiDateiLesen() As Club
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
             If dlg.ShowDialog = True Then
                 Dim Datei = dlg.FileName
-                Return XMLDateiLesen(Datei)
+                Return SkiDateiLesen(Datei)
             End If
             Return Nothing
         End Function
 
-        Public Shared Function XMLDateiLesen(Datei As String) As Club
+        Public Shared Function SkiDateiLesen(Datei As String) As Club
             If File.Exists(Datei) Then
                 Try
                     Dim DateiGelesen
+                    Dim aktuellerClub As New Club
                     Using fs = New FileStream(Datei, FileMode.Open)
-                        ' Versuche XML mit Struktur Groupies 2 zu lesen
-                        DateiGelesen = LeseXMLDateiVersion2(fs)
-                    End Using
-                    ' Versuche XML mit Struktur Groupies 1 zu lesen
-                    Using fs = New FileStream(Datei, FileMode.Open)
-                        If Not DateiGelesen Then
-                            LeseXMLDateiVersion1(fs)
+                        ' Versuche Ski (XML) mit Struktur Groupies 2 zu lesen
+                        DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
+                        If DateiGelesen Then
+                            aktuellerClub = PruefeEinteilungen(aktuellerClub)
+                            Return aktuellerClub
                         End If
                     End Using
-                    Return AktuellerClub
+                    ' Versuche Ski (XML) mit Struktur Groupies 1 zu lesen
+                    Using fs = New FileStream(Datei, FileMode.Open)
+                        If Not DateiGelesen Then
+                            aktuellerClub = PruefeEinteilungen(aktuellerClub)
+                            LeseSkiDateiVersion1(fs, aktuellerClub)
+                            Return aktuellerClub
+                        End If
+                    End Using
                 Catch ex As InvalidDataException
                     Debug.Print("Datei ungültig: " & ex.Message)
                     Return Nothing
@@ -50,12 +56,25 @@ Namespace Controller
             Return Nothing
         End Function
 
-        Public Shared Function LeseXMLDateiVersion1(Filestream As FileStream) As Boolean
+        'Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream) As Boolean
+        '    Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
+        '    Dim loadedSkiclub As Veraltert.Skiclub
+        '    Try
+        '        loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
+        '        AktuellerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+        '        Return True
+        '    Catch ex As InvalidDataException
+        '        Throw ex
+        '        Return False
+        '    End Try
+        'End Function
+
+        Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
             Dim loadedSkiclub As Veraltert.Skiclub
             Try
                 loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-                AktuellerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+                Club = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
                 Return True
             Catch ex As InvalidDataException
                 Throw ex
@@ -63,10 +82,23 @@ Namespace Controller
             End Try
         End Function
 
-        Public Shared Function LeseXMLDateiVersion2(Filestream As FileStream) As Boolean
+        'Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream) As Boolean
+        '    Dim serializer = New XmlSerializer(GetType(Club))
+        '    Try
+        '        Dim AktuellerClub = TryCast(serializer.Deserialize(Filestream), Club)
+        '        Return True
+        '    Catch ex As InvalidOperationException
+        '        Return False
+        '    Catch ex As InvalidDataException
+        '        Throw ex
+        '        Return False
+        '    End Try
+        'End Function
+
+        Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Club))
             Try
-                AktuellerClub = TryCast(serializer.Deserialize(Filestream), Club)
+                Club = TryCast(serializer.Deserialize(Filestream), Club)
                 Return True
             Catch ex As InvalidOperationException
                 Return False
@@ -81,58 +113,46 @@ Namespace Controller
 #Region "Teile aus Datei laden"
 
         Public Shared Function TrainerLesen() As TrainerCollection
-            XMLDateiLesen()
+            Dim aktuellerClub = SkiDateiLesen()
             Return AktuellerClub.AlleTrainer
         End Function
 
         Public Shared Function TeilnehmerLesen() As TeilnehmerCollection
-            XMLDateiLesen()
+            Dim aktuellerClub = SkiDateiLesen()
             Return AktuellerClub.AlleTeilnehmer
         End Function
 
         Public Shared Function EinteilungenLesen() As EinteilungCollection
-            XMLDateiLesen()
+            Dim aktuellerClub = SkiDateiLesen()
             Return AktuellerClub.Einteilungsliste
         End Function
 
         Public Shared Function GruppenLesen() As GruppeCollection
-            XMLDateiLesen()
+            Dim aktuellerClub = SkiDateiLesen()
+            Return AktuellerClub.Gruppenliste
+        End Function
+        Public Shared Function TrainerLesen(Datei As String) As TrainerCollection
+            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Return AktuellerClub.AlleTrainer
+        End Function
+
+        Public Shared Function TeilnehmerLesen(Datei As String) As TeilnehmerCollection
+            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Return AktuellerClub.AlleTeilnehmer
+        End Function
+
+        Public Shared Function EinteilungenLesen(Datei As String) As EinteilungCollection
+            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Return AktuellerClub.Einteilungsliste
+        End Function
+
+        Public Shared Function GruppenLesen(Datei As String) As GruppeCollection
+            Dim aktuellerClub = SkiDateiLesen(Datei)
             Return AktuellerClub.Gruppenliste
         End Function
 
 #End Region
 
-#Region "XML-Datei laden"
-
-        ''' <summary>
-        ''' Lädt Daten aus einer XML Datei
-        ''' </summary>
-        ''' <param name="Filename"></param>
-        ''' <returns></returns>
-        Public Shared Function LoadFromXML(Filename As String) As String
-            If Filename.Contains("/") OrElse Filename.Contains("\") OrElse Filename.Contains(" ") Then
-                Return "Bitte geben Sie einen Dateinamen ohne Schrägstriche oder Leerzeichen ein."
-            ElseIf Not File.Exists(String.Format("{0}.xml", Filename)) Then
-                Return String.Format("Die Datei {1} im Ordner {0} existiert nicht.", Environment.CurrentDirectory, String.Format("{0}.xml", Filename))
-            End If
-            Return String.Format("Die Datei {0} wurde geladen.", String.Format("{0}.xml", Filename))
-        End Function
-
-        ''' <summary>
-        ''' Lädt Daten aus einer JSON Datei
-        ''' </summary>
-        ''' <param name="Filename"></param>
-        ''' <returns></returns>
-        Public Shared Function LoadFromJson(Filename As String) As String
-            If Filename.Contains("/") OrElse Filename.Contains(" ") OrElse Filename.Contains("\") Then
-                Return "Bitte geben Sie einen Dateinamen ohne Schrägstriche oder Leerzeichen ein."
-            ElseIf Not File.Exists(String.Format("{0}.json", Filename)) Then
-                Return String.Format("Die Datei {1} im Ordner {0} existiert nicht.", Environment.CurrentDirectory, String.Format("{0}.json", Filename))
-            End If
-            Return String.Format("Die Datei {0} wurde geladen.", String.Format("{0}.json", Filename))
-        End Function
-
-#End Region
 
 #Region "Hilfsfunktionen"
 
@@ -153,6 +173,17 @@ Namespace Controller
                 Return $"Tag{Einteilungsliste.Count + 1}"
             End If
 
+        End Function
+
+        Private Shared Function PruefeEinteilungen(Club As Club) As Club
+            If Club.Einteilungsliste Is Nothing OrElse Club.Einteilungsliste.Count = 0 Then
+                Dim Tag = New Einteilung With {.Benennung = BestimmeEinteilungsbenennung(Club.Einteilungsliste)}
+                Tag.Gruppenliste = Club.Gruppenliste
+                Tag.GruppenloseTrainer = Club.GruppenloseTrainer
+                Tag.GruppenloseTeilnehmer = Club.GruppenloseTeilnehmer
+                Club.Einteilungsliste = New EinteilungCollection From {Tag}
+            End If
+            Return Club
         End Function
 
     End Class

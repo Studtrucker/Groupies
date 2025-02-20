@@ -10,7 +10,7 @@ Public Class MappingVeraltertAufNeuTest
     <TestMethod>
     Public Sub TestClubOeffnen()
 
-        Dim filename = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiClub.ski"
+        Dim filename
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             filename = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiClub.ski"
         Else

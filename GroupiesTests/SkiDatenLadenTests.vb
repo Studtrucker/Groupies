@@ -13,7 +13,7 @@ Public Class SkiDatenLadenTests
             New Einteilung With {.Benennung = "Dienstag", .Sortierung = 3},
             New Einteilung With {.Benennung = "Sonntag", .Sortierung = 1}}
 
-        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag4")
 
     End Sub
@@ -26,7 +26,7 @@ Public Class SkiDatenLadenTests
             New Einteilung With {.Benennung = "Tag3", .Sortierung = 3},
             New Einteilung With {.Benennung = "Tag4", .Sortierung = 4}}
 
-        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag5")
 
     End Sub
@@ -36,7 +36,7 @@ Public Class SkiDatenLadenTests
 
         Dim Einteilungen = New Entities.EinteilungCollection
 
-        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag1")
 
     End Sub
@@ -46,65 +46,45 @@ Public Class SkiDatenLadenTests
 
         Dim Einteilungen = Nothing
 
-        Dim Ben = Controller.SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
+        Dim Ben = SkiDatenLaden.BestimmeEinteilungsbenennung(Einteilungen)
         Assert.AreEqual(Ben, "Tag1")
 
     End Sub
 
     <TestMethod>
-    Public Sub XmlGruppenLesenTest()
+    Public Sub SkiGruppenLesenTest()
         Debug.Print($"Version2 Gruppen lesen")
-        Dim Gruppen = Controller.SkiDatenLaden.GruppenLesen()
+        Dim Gruppen = SkiDatenLaden.GruppenLesen()
         Assert.IsNotNull(Gruppen)
     End Sub
 
     <TestMethod>
-    Public Sub XmlTeilnehmerLesenTest()
+    Public Sub SkiTeilnehmerLesenTest()
         Debug.Print($"Version2 Teilnehmer lesen")
-        Dim Teilnehmer = Controller.SkiDatenLaden.TeilnehmerLesen()
+        Dim Teilnehmer = SkiDatenLaden.TeilnehmerLesen()
         Assert.IsNotNull(Teilnehmer)
     End Sub
 
 
     <TestMethod>
-    Public Sub XmlTrainerLesenTest()
+    Public Sub SkiTrainerLesenTest()
         Debug.Print($"Version2 Trainer lesen")
-        Dim Trainer = Controller.SkiDatenLaden.TrainerLesen()
+        Dim Trainer = SkiDatenLaden.TrainerLesen()
         Assert.IsNotNull(Trainer)
     End Sub
 
     <TestMethod>
-    Public Sub XmlEinteilungenLesenTest()
+    Public Sub SkiEinteilungenLesenTest()
         Debug.Print($"Version2 Einteilungen lesen")
-        Dim Einteilungen = Controller.SkiDatenLaden.EinteilungenLesen()
+        Dim Einteilungen = SkiDatenLaden.EinteilungenLesen()
         Assert.IsNotNull(Einteilungen)
     End Sub
 
-
     <TestMethod>
-    Public Sub LeseXMLDateiVersion2Test()
-        Dim Pfad
-        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
-        Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
-        End If
-
-        Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
-        Dim Erfolg = Controller.SkiDatenLaden.LeseXMLDateiVersion2(Filestream)
-        Assert.IsTrue(Erfolg)
+    Public Sub ZweiEinteilungenLesenTest()
+        Dim Club = SkiDatenLaden.SkiDateiLesen("C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski")
+        Dim Einteilungsliste = (SkiDatenLaden.EinteilungenLesen("C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"))
+        Assert.AreEqual(2, Club.Einteilungsliste.Count)
     End Sub
 
-    <TestMethod>
-    Public Sub LeseXMLDateiVersion2Test2()
-        Dim Pfad
-        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
-        Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
-        End If
-        Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
-        Dim Erfolg = Controller.SkiDatenLaden.LeseXMLDateiVersion2(Filestream)
-        Assert.IsFalse(Erfolg)
-    End Sub
 End Class

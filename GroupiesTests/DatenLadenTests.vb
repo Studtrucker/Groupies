@@ -1,6 +1,7 @@
 ﻿Imports Groupies
 Imports Groupies.Entities
 Imports Groupies.Controller
+Imports System.Windows
 
 <TestClass>
 Public Class DatenladenTests
@@ -53,12 +54,14 @@ Public Class DatenladenTests
     <TestMethod>
     Public Sub XmlGruppenLesenTest()
         Dim Gruppen = Controller.DatenLaden.GruppenLesen()
+        MessageBox.Show($"Version2 Gruppen lesen")
         Assert.IsNotNull(Gruppen)
     End Sub
 
     <TestMethod>
     Public Sub XmlTeilnehmerLesenTest()
         Dim Teilnehmer = Controller.DatenLaden.TeilnehmerLesen()
+        MessageBox.Show($"Version2 Teilnehmer lesen")
         Assert.IsNotNull(Teilnehmer)
     End Sub
 
@@ -66,19 +69,27 @@ Public Class DatenladenTests
     <TestMethod>
     Public Sub XmlTrainerLesenTest()
         Dim Trainer = Controller.DatenLaden.TrainerLesen()
+        MessageBox.Show($"Version2 Trainer lesen")
         Assert.IsNotNull(Trainer)
     End Sub
 
     <TestMethod>
     Public Sub XmlEinteilungenLesenTest()
         Dim Einteilungen = Controller.DatenLaden.EinteilungenLesen()
+        MessageBox.Show($"Version2 Einteilungen lesen")
         Assert.IsNotNull(Einteilungen)
     End Sub
 
 
     <TestMethod>
     Public Sub LeseXMLDateiVersion2Test()
-        Dim Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        Dim Pfad
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        End If
+
         Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
         Dim Erfolg = Controller.DatenLaden.LeseXMLDateiVersion2(Filestream)
         Assert.IsTrue(Erfolg)
@@ -86,7 +97,12 @@ Public Class DatenladenTests
 
     <TestMethod>
     Public Sub LeseXMLDateiVersion2Test2()
-        Dim Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion11.ski"
+        Dim Pfad
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion11.ski"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion11.ski"
+        End If
         Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
         Dim Erfolg = Controller.DatenLaden.LeseXMLDateiVersion2(Filestream)
         Assert.IsFalse(Erfolg)

@@ -53,30 +53,30 @@ Public Class DatenladenTests
 
     <TestMethod>
     Public Sub XmlGruppenLesenTest()
+        Debug.Print($"Version2 Gruppen lesen")
         Dim Gruppen = Controller.DatenLaden.GruppenLesen()
-        MessageBox.Show($"Version2 Gruppen lesen")
         Assert.IsNotNull(Gruppen)
     End Sub
 
     <TestMethod>
     Public Sub XmlTeilnehmerLesenTest()
+        Debug.Print($"Version2 Teilnehmer lesen")
         Dim Teilnehmer = Controller.DatenLaden.TeilnehmerLesen()
-        MessageBox.Show($"Version2 Teilnehmer lesen")
         Assert.IsNotNull(Teilnehmer)
     End Sub
 
 
     <TestMethod>
     Public Sub XmlTrainerLesenTest()
+        Debug.Print($"Version2 Trainer lesen")
         Dim Trainer = Controller.DatenLaden.TrainerLesen()
-        MessageBox.Show($"Version2 Trainer lesen")
         Assert.IsNotNull(Trainer)
     End Sub
 
     <TestMethod>
     Public Sub XmlEinteilungenLesenTest()
+        Debug.Print($"Version2 Einteilungen lesen")
         Dim Einteilungen = Controller.DatenLaden.EinteilungenLesen()
-        MessageBox.Show($"Version2 Einteilungen lesen")
         Assert.IsNotNull(Einteilungen)
     End Sub
 
@@ -99,9 +99,9 @@ Public Class DatenladenTests
     Public Sub LeseXMLDateiVersion2Test2()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion11.ski"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion11.ski"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         End If
         Dim Filestream = New IO.FileStream(Pfad, IO.FileMode.Open)
         Dim Erfolg = Controller.DatenLaden.LeseXMLDateiVersion2(Filestream)

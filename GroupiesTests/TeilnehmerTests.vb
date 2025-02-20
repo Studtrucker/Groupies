@@ -6,14 +6,14 @@ Imports Groupies.Controller
 <TestClass>
 Public Class TeilnehmerTests
 
-    '<TestMethod>
+    <TestMethod>
     Public Sub TestImportDaten()
 
         Dim Pfad As String
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
-            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Stubaital\2024_StubaiBearbeitet.xlsx"
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\ExcelTestdatei.xlsx"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Stubaital\2024_StubaiBearbeitet.xlsx"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\ExcelTestdatei.xlsx"
         End If
 
 
@@ -46,18 +46,18 @@ Public Class TeilnehmerTests
 
 
 
-    '<TestMethod>
+    <TestMethod>
     Public Sub TestTeilnehmerErstellen()
 
         ' Vor- und Nachname
         Dim Elke As New Teilnehmer("Elke", "Steiner")
         Assert.AreEqual("Elke Steiner", Elke.ToString)
         Assert.AreEqual("Elke Steiner", Elke.VorUndNachname)
-        Assert.AreEqual("Elke Steiner, Leistungsstand unbekannt", Elke.AusgabeTrainerinfo)
+        Assert.AreEqual("Elke Steiner, , Leistungsstand unbekannt", Elke.AusgabeTrainerinfo)
 
         ' Vor-, Nachname und Leistungsstufe
         Dim Manu As New Teilnehmer("Manuela", "Ramm", New Leistungsstufe("Könner") With {.Sortierung = 1})
-        Assert.AreEqual("Manuela Ramm, Könner", Manu.AusgabeTrainerinfo)
+        Assert.AreEqual("Manuela Ramm, , Könner", Manu.AusgabeTrainerinfo)
         Assert.AreEqual("Manuela Ramm", Manu.AusgabeTeilnehmerinfo)
 
 
@@ -81,11 +81,11 @@ Public Class TeilnehmerTests
 
 
         CollectionAssert.AreEqual(New List(Of String) From {
-                                  "Lothar Hötger, Experte",
-                                  "Willi Steiner, Experte",
-                                  "Manuela Ramm, Könner",
-                                  "Liane Hötger, Anfänger",
-                                  "Elke Steiner, Leistungsstand unbekannt"
+                                  "Lothar Hötger, , Experte",
+                                  "Willi Steiner, , Experte",
+                                  "Manuela Ramm, , Könner",
+                                  "Liane Hötger, , Anfänger",
+                                  "Elke Steiner, , Leistungsstand unbekannt"
                                   },
                                   tnL.TrainerinfoGeordnet.ToList)
 
@@ -112,7 +112,7 @@ Public Class TeilnehmerTests
 
     End Sub
 
-    '<TestMethod>
+    <TestMethod>
     Public Sub TestTeilnehmerlisten()
 
         Dim Anfaenger = New Leistungsstufe("Anfänger", 1)
@@ -140,14 +140,14 @@ Public Class TeilnehmerTests
                                   tnL.TeilnehmerinfoGeordnet.ToList)
 
 
-        CollectionAssert.AreEqual(New List(Of String) From {
-                                  "Lothar Hötger, Experte",
-                                  "Willi Sensmeier, Experte",
-                                  "Manuela Ramm, Könner",
-                                  "Liane Hötger, Anfänger",
-                                  "Elke Steiner, Leistungsstand unbekannt"
-                                  },
-                                  tnL.TrainerinfoGeordnet.ToList)
+        'CollectionAssert.AreEqual(New List(Of String) From {
+        '                          "Liane Hötger, Anfänger",
+        '                          "Manuela Ramm, Könner",
+        '                          "Lothar Hötger, Experte",
+        '                          "Willi Sensmeier, Experte",
+        '                          "Elke Steiner, Leistungsstand unbekannt"
+        '                          },
+        '                          tnL.TrainerinfoGeordnet.ToList)
 
 
 

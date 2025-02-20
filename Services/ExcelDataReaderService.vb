@@ -25,15 +25,14 @@ Public Module ExcelDataReaderService
                 Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID")), guid)
             End If
 
-            Dim Stufe = If(IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe"))), String.Empty, zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe")))
-
             Dim Tn = New Teilnehmer With {
-                .Geburtsdatum = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum")),
-                .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
-                .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
-                .Telefonnummer = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Telefonnummer")),
-                .Leistungsstand = Stufe,
-                .TeilnehmerID = guid}
+            .Geburtsdatum = If(IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum"))), CDate("01.01.0001"), zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Geburtsdatum"))),
+            .Vorname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Vorname")),
+            .Nachname = zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Nachname")),
+            .Telefonnummer = If(IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Telefonnummer"))), String.Empty, zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Telefonnummer"))),
+            .Leistungsstand = If(IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe"))), String.Empty, zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Leistungsstufe"))),
+            .TeilnehmerID = guid}
+
             Teilnehmerliste.Add(Tn)
         Next
 
@@ -58,6 +57,9 @@ Public Module ExcelDataReaderService
             End If
 
             Dim Tr = New Trainer With {
+                .Spitzname = If(IsDBNull(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Spitzname"))), String.Empty, zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Spitzname"))),
+                .Telefonnummer = If(IsDBNull(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Telefonnummer"))), String.Empty, zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Telefonnummer"))),
+                .eMail = If(IsDBNull(zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("e-Mail"))), String.Empty, zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("e-Mail"))),
                 .Vorname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Vorname")),
                 .Nachname = zeile.ItemArray(xl.Tables("Trainer").Columns.IndexOf("Nachname")),
                 .TrainerID = guid}

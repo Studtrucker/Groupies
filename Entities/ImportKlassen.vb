@@ -24,6 +24,9 @@ Namespace DataImport
         Public Property TrainerID() As Guid
         Public Property Vorname() As String
         Public Property Nachname() As String
+        Public Property Spitzname() As String
+        Public Property Telefonnummer() As String
+        Public Property eMail() As String
         Public Property IstBekannt As Boolean = False
 
         Public Overloads Function Equals(other As Entities.Trainer) As Boolean Implements IEquatable(Of Entities.Trainer).Equals

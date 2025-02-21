@@ -92,10 +92,14 @@ Public Class SkiDatenLadenTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
             Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"
         End If
-        Dim Einteilungsliste = (SkiDatenLaden.EinteilungenLesen(Pfad1))
+        Dim Einteilungsliste1 = (SkiDatenLaden.EinteilungenLesen(Pfad1))
+        Dim Einteilungsliste = (SkiDatenLaden.EinteilungenLesen(Pfad))
 
         Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
-        'Assert.AreEqual(2, Club.Einteilungsliste.Count)
+
+        Einteilungsliste1.ToList.ForEach(Sub(T) Club.Einteilungsliste.Add(T))
+
+        Assert.AreEqual(2, Club.Einteilungsliste.Count)
     End Sub
 
 End Class

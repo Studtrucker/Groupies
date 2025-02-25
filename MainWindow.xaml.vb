@@ -23,8 +23,12 @@ Public Class MainWindow
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
-    Private _groupiesFile As FileInfo
+    Private Shared _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
+
+#End Region
+
+#Region "Properties"
 
 #End Region
 
@@ -219,7 +223,7 @@ Public Class MainWindow
     Private Sub LoadLastSkischule()
         ' Die letzte Skischule aus dem IsolatedStorage holen.
         Try
-            Dim x = ""
+            Dim x = String.Empty
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
                     Using reader = New StreamReader(stream)
@@ -263,11 +267,13 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        If dlg.ShowDialog = True Then
+
+        Dim OpenClub As New Club
+        If SkiDatenLaden.OpenSkiDatei(OpenClub) Then
             UnsetView()
-            OpenSkischule(dlg.FileName)
+            SetView(OpenClub)
         End If
+
     End Sub
 
     Private Sub Handle_SaveClub_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -647,83 +653,24 @@ Public Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        If _groupiesFile IsNot Nothing AndAlso fileName.Equals(_groupiesFile.FullName) Then
-            MessageBox.Show("Groupies " & fileName & " ist bereits geöffnet")
-            Exit Sub
-        End If
+        Dim loadedClub = SkiDatenLaden.OpenSkiDatei(fileName)
 
-        If Not File.Exists(fileName) Then
-            MessageBox.Show("Die Datei existiert nicht")
-            Exit Sub
-        End If
+        If loadedClub IsNot Nothing Then
 
-        Dim loadedClub = OpenXML(fileName)
-        Dim loadedSkiclub = New Veraltert.Skiclub
-        If loadedClub Is Nothing Then
-            loadedSkiclub = OpenAltesXML(fileName)
-            If loadedSkiclub Is Nothing Then
-                Exit Sub
-            End If
-        End If
+            QueueMostRecentFilename(fileName)
+            Title = "Groupies - " & fileName
 
-        '_groupiesFile = New FileInfo(fileName)
-        QueueMostRecentFilename(fileName)
+            AppCon.AktuellerClub = Nothing
+            AppCon.AktuelleDatei = Nothing
 
-        AppCon.AktuellerClub = Nothing
-
-        ' Eintrag in CurrentDataService
-        If loadedClub Is Nothing Then
-            AppCon.AktuellerClub = MapSkiClub2Club(loadedSkiclub)
-        Else
             AppCon.AktuellerClub = loadedClub
+            AppCon.AktuelleDatei = New FileInfo(fileName)
+
+            SetView(AppCon.AktuellerClub)
+
         End If
-
-        SetView(AppCon.AktuellerClub)
-
-        _groupiesFile = New FileInfo(fileName)
-        Title = "Groupies - " & fileName
 
     End Sub
-
-    Private Function OpenAltesXML(fileName As String) As Veraltert.Skiclub
-
-        Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-        Dim loadedSkiclub As Veraltert.Skiclub = Nothing
-
-        ' Datei deserialisieren
-        Using fs = New FileStream(fileName, FileMode.Open)
-            Try
-                loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
-            Catch ex As InvalidOperationException
-                Return Nothing
-            Catch ex As InvalidDataException
-                MessageBox.Show("Datei ungültig: " & ex.Message)
-                Return Nothing
-            End Try
-        End Using
-        Return loadedSkiclub
-
-    End Function
-
-    Private Function OpenXML(fileName As String) As Club
-
-        Dim serializer = New XmlSerializer(GetType(Club))
-        Dim loadedClub As Club = Nothing
-
-        ' Datei deserialisieren
-        Using fs = New FileStream(fileName, FileMode.Open)
-            Try
-                ' Todo: Doppelte Teilnehmer und Skilehrer - siehe Mapping altes Format!
-                loadedClub = TryCast(serializer.Deserialize(fs), Club)
-            Catch ex As InvalidOperationException
-                Return Nothing
-            Catch ex As InvalidDataException
-                MessageBox.Show("Datei ungültig: " & ex.Message)
-                Return Nothing
-            End Try
-        End Using
-        Return loadedClub
-    End Function
 
 
     Private Sub SaveSkischule(fileName As String)
@@ -839,22 +786,24 @@ Public Class MainWindow
 
     Private Sub SetView(Club As Club)
 
-        ' Hier wird der DataContext gesetzt!
+        '' Hier wird der DataContext gesetzt!
 
-        UnsetView()
-        ' Dropdown der Leistungsstufen füllen
-        _LeistungsstufenListCollectionView = New ListCollectionView(Club.LeistungsstufenTextliste.ToList)
-        If _LeistungsstufenListCollectionView.CanSort Then
-            _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
-        End If
-        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        'UnsetView()
+        '' Dropdown der Leistungsstufen füllen
+        '_LeistungsstufenListCollectionView = New ListCollectionView(Club.LeistungsstufenTextliste.ToList)
+        'If _LeistungsstufenListCollectionView.CanSort Then
+        '    _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        'End If
+        'GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        'GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        'TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
-        SetView(Club.Gruppenliste)
-        SetView(Club.Einteilungsliste)
-        SetView(Club.GruppenloseTeilnehmer)
-        SetView(Club.GruppenloseTrainer)
+        'SetView(Club.Gruppenliste)
+        'SetView(Club.Einteilungsliste)
+        'SetView(Club.GruppenloseTeilnehmer)
+        'SetView(Club.GruppenloseTrainer)
+
+        DataContext = Club
 
     End Sub
 

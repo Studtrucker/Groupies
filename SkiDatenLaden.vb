@@ -12,6 +12,37 @@ Namespace Controller
 
 #Region "Komplette Dateien lesen"
 
+        Public Shared Function OpenSkiDatei(ByRef Club As Club) As Boolean
+            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+            If dlg.ShowDialog = True Then
+                Club = OpenSkiDatei(dlg.FileName)
+                If Club IsNot Nothing Then
+                    Return True
+                End If
+            End If
+            Club = Nothing
+            Return False
+        End Function
+
+
+        Public Shared Function OpenSkiDatei(fileName As String) As Club
+
+            If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
+                MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
+                Return Nothing
+                Exit Function
+            End If
+
+            If Not File.Exists(fileName) Then
+                MessageBox.Show("Die Datei existiert nicht")
+                Return Nothing
+                Exit Function
+            End If
+
+            Return SkiDateiLesen(fileName)
+
+        End Function
+
         ''' <summary>
         ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
         ''' Sie wird deserialisiert und als Club zurückgegeben
@@ -21,10 +52,10 @@ Namespace Controller
 
             If dlg.ShowDialog = True Then
                 Dim Club = SkiDateiLesen(dlg.FileName)
-                Club.Einteilungsliste = EinteilungenLesen(Club)
                 Return Club
             End If
             Return Nothing
+
         End Function
 
 
@@ -44,6 +75,7 @@ Namespace Controller
                         ' Versuche Ski (XML) mit Struktur Groupies 2 zu lesen
                         DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
                         If DateiGelesen Then
+                            aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
@@ -51,6 +83,7 @@ Namespace Controller
                     Using fs = New FileStream(Datei, FileMode.Open)
                         If Not DateiGelesen Then
                             LeseSkiDateiVersion1(fs, aktuellerClub)
+                            aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
@@ -181,6 +214,7 @@ Namespace Controller
             If Einteilungen.Count = 0 Then
                 Einteilungen.Add(New Einteilung With {
                                  .Benennung = "Tag1",
+                                 .Sortierung = 1,
                                  .Gruppenliste = Club.Gruppenliste,
                                  .GruppenloseTeilnehmer = Club.GruppenloseTeilnehmer,
                                  .GruppenloseTrainer = Club.GruppenloseTrainer})

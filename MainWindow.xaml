@@ -142,7 +142,10 @@
                               ItemsSource="{Binding}" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" >-->
                         <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
-                                  AutoGenerateColumns="False" ItemsSource="{Binding}"
+                                  AutoGenerateColumns="False" 
+                                  ItemsSource="{Binding Einteilungsliste}"
+                                  SelectedItem="{Binding SelectedEinteilung}"
+                                  DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
@@ -156,9 +159,20 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
-                    <DataGrid x:Name="GruppenlisteDataGrid" ItemsSource="{Binding}"  IsReadOnly="True" DockPanel.Dock="Bottom"
+                    <!--<DataGrid x:Name="GruppenlisteDataGrid" 
+                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
+                              DisplayMemberPath="Benennung" 
+                              SelectedItem="{Binding SelectedGruppe}">
+
+                    </DataGrid>-->
+                    <DataGrid x:Name="GruppenlisteDataGrid" 
+                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
+                              DisplayMemberPath="Benennung" 
+                              SelectedItem="{Binding SelectedGruppe}"
+                              IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
+                        
                         <DataGrid.Resources>
 
                             <DataTemplate x:Key="GruppenlisteDataTemplate">
@@ -233,7 +247,7 @@
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
-                              ItemsSource="{Binding}" 
+                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTrainer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
@@ -267,7 +281,7 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
-                              ItemsSource="{Binding}" 
+                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTeilnehmer}" 
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTeilnehmer_MouseDoubleClick">

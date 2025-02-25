@@ -21,22 +21,10 @@ Namespace UserControls
 
             ' Wird im MainWindow verwendet. Beim Laden dieser Form ist das Objekt CurrentClub noch nicht bereit
 
-            ' ListCollectionView für die Combobox erstellen
-            '_LeistungsstufenListCollectionView = New CollectionView(AppController.CurrentClub.LeistungsstufenTextliste)
-            'GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-
         End Sub
 
-        Public Sub setView(sender As Object, e As RoutedEventArgs)
-            'If DataContext Is Nothing OrElse DirectCast(DataContext, CollectionView).CurrentItem Is Nothing Then Exit Sub
-            'Dim cv As ICollectionView = CollectionViewSource.GetDefaultView(DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Mitgliederliste)
-            'cv.SortDescriptions.Add(New SortDescription("Nachname", ListSortDirection.Ascending))
-            'cv.SortDescriptions.Add(New SortDescription("Vorname", ListSortDirection.Ascending))
-            'cv.SortDescriptions.Add(New SortDescription("Leistungsstufe", ListSortDirection.Ascending))
-        End Sub
 
         Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
-            setView(sender, e)
         End Sub
 
 
@@ -48,12 +36,6 @@ Namespace UserControls
                 CDS.AktuellerClub.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
             Next
         End Sub
-
-        'Private Sub Handle_TeilnehmerBearbeiten(sender As Object, e As RoutedEventArgs)
-        '    For i = MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-        '        CDS.CurrentClub.TeilnehmerBearbeiten(MitgliederlisteDataGrid.SelectedItems.Item(i).CurrentItem)
-        '    Next
-        'End Sub
 
         Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As CanExecuteRoutedEventArgs)
             e.CanExecute = DirectCast(DirectCast(DataContext, CollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing

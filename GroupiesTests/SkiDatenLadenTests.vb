@@ -102,11 +102,49 @@ Public Class SkiDatenLadenTests
 
         Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
 
-        Dim Einteilungsliste As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad)
         Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
 
+        Einteilungsliste1.ToList.ForEach(Sub(T) Club.AddEinteilung(T))
 
-        Einteilungsliste.ToList.ForEach(Sub(T) Club.AddEinteilung(T))
+        Assert.AreEqual(2, Club.Einteilungsliste.Count)
+        Assert.AreEqual(1, Club.Einteilungsliste(0).Sortierung)
+        Assert.AreEqual(2, Club.Einteilungsliste(1).Sortierung)
+        Assert.AreEqual("Tag1", Club.Einteilungsliste(0).Benennung)
+        Assert.AreEqual("Tag2", Club.Einteilungsliste(1).Benennung)
+    End Sub
+
+    <TestMethod>
+    Public Sub LadenDateiVersion1_In_neueStruktur()
+        Dim Pfad
+
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        End If
+
+        Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
+
+        Assert.AreEqual(1, Club.Einteilungsliste.Count)
+        Assert.AreEqual(1, Club.Einteilungsliste(0).Sortierung)
+        Assert.AreEqual("Tag1", Club.Einteilungsliste(0).Benennung)
+    End Sub
+
+    <TestMethod>
+    Public Sub LadenDateiVersion1_In_neueStruktur_ZusaetzlicheEinteilung()
+        Dim Pfad, Pfad1
+
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
+            Pfad1 = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+            Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"
+        End If
+
+        Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
+
+        Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
         Einteilungsliste1.ToList.ForEach(Sub(T) Club.AddEinteilung(T))
 
         Assert.AreEqual(2, Club.Einteilungsliste.Count)
@@ -117,5 +155,21 @@ Public Class SkiDatenLadenTests
     End Sub
 
 
+    <TestMethod>
+    Public Sub OpenSkidateiTest()
+        Dim Pfad, Pfad1
 
+        If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
+            Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
+            Pfad1 = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        Else
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+            Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+        End If
+
+        Dim c1 = SkiDatenLaden.OpenSkiDatei(Pfad)
+        Assert.IsNotNull(c1)
+        Dim c2 = SkiDatenLaden.OpenSkiDatei(Pfad1)
+        Assert.IsNotNull(c2)
+    End Sub
 End Class

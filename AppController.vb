@@ -10,6 +10,14 @@ Namespace Controller
     Public Class AppController
 
 #Region "Eigenschaften"
+
+        ''' <summary>
+        ''' Die aktuelle Datei, die geöffnet ist
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Property AktuelleDatei As FileInfo
+
+
         ''' <summary>
         ''' Der aktuell verwaltete Club
         ''' </summary>

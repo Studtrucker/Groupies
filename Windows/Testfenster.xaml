@@ -45,12 +45,13 @@
         </Grid.RowDefinitions>
 
         <!-- Liste der Kategorien -->
-        <ListBox Grid.Row="0" ItemsSource="{Binding Club.Einteilungsliste}" DisplayMemberPath="Benennung" 
-                 SelectedItem="{Binding Club.SelectedEinteilung}" Height="100" />
+        <ListBox Grid.Row="0" ItemsSource="{Binding Einteilungsliste}" DisplayMemberPath="Benennung" 
+                 SelectedItem="{Binding SelectedEinteilung}" Height="100" />
 
         <!-- Untergeordnete Liste der Subkategorien -->
-        <ListBox Grid.Row="1" ItemsSource="{Binding Club.SelectedEinteilung.Gruppenliste}" 
-                 DisplayMemberPath="Benennung" SelectedItem="{Binding SelectedGruppe}" />
+        <ListBox Grid.Row="1"  DisplayMemberPath="Benennung"
+                 ItemsSource="{Binding SelectedEinteilung.Gruppenliste}" 
+                 SelectedItem="{Binding SelectedGruppe}" />
 
         <!-- Detailansicht -->
         <TextBlock Grid.Row="2" Text="{Binding SelectedGruppe.Trainer.Vorname}" Margin="10" />

@@ -10,10 +10,9 @@ Public Class Testfenster
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        Dim Model As New MainViewModel
-        'Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        Model.DateiLaden()
-        'Model.EinteilungAusDateiLaden()
+        Dim Model As New Entities.Club
+
+        Model = Controller.SkiDatenLaden.SkiDateiLesen()
 
         DataContext = Model
 
@@ -21,8 +20,8 @@ Public Class Testfenster
 
     Private Sub Testfenster_Loaded(sender As Object, e As RoutedEventArgs)
 
-        Dim Model As New MainViewModel
-        Model.Club.ClubName = "Skiclub Meerbusch"
+        Dim Model As New Entities.Club
+        Model.ClubName = "Skiclub Meerbusch"
 
         Dim e1 = New Entities.Einteilung With {.Benennung = "Tag1"}
         Dim e2 = New Entities.Einteilung With {.Benennung = "Tag2"}

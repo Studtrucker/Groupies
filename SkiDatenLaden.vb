@@ -8,24 +8,33 @@ Namespace Controller
     Public Class SkiDatenLaden
 
 #Region "Felder"
-        'Private Shared AktuellerClub As Club
 #End Region
 
 #Region "Komplette Dateien lesen"
 
         ''' <summary>
-        ''' Eine gespeicherte Datei wird eingelesen 
+        ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
+        ''' Sie wird deserialisiert und als Club zurückgegeben
         ''' </summary>
         Public Shared Function SkiDateiLesen() As Club
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
             If dlg.ShowDialog = True Then
-                Dim Datei = dlg.FileName
-                Return SkiDateiLesen(Datei)
+                Dim Club = SkiDateiLesen(dlg.FileName)
+                Club.Einteilungsliste = EinteilungenLesen(Club)
+                Return Club
             End If
             Return Nothing
         End Function
 
+
+        ''' <summary>
+        ''' Eine Dateipfad wird übergeben, 
+        ''' die angebene Datei wird eingelesen,
+        ''' deserialisiert und als Club zurückgegeben
+        ''' </summary>
+        ''' <param name="Datei"></param>
+        ''' <returns></returns>
         Public Shared Function SkiDateiLesen(Datei As String) As Club
             If File.Exists(Datei) Then
                 Try
@@ -35,14 +44,12 @@ Namespace Controller
                         ' Versuche Ski (XML) mit Struktur Groupies 2 zu lesen
                         DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
                         If DateiGelesen Then
-                            aktuellerClub = PruefeEinteilungen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
                     ' Versuche Ski (XML) mit Struktur Groupies 1 zu lesen
                     Using fs = New FileStream(Datei, FileMode.Open)
                         If Not DateiGelesen Then
-                            aktuellerClub = PruefeEinteilungen(aktuellerClub)
                             LeseSkiDateiVersion1(fs, aktuellerClub)
                             Return aktuellerClub
                         End If
@@ -56,19 +63,13 @@ Namespace Controller
             Return Nothing
         End Function
 
-        'Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream) As Boolean
-        '    Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-        '    Dim loadedSkiclub As Veraltert.Skiclub
-        '    Try
-        '        loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
-        '        AktuellerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
-        '        Return True
-        '    Catch ex As InvalidDataException
-        '        Throw ex
-        '        Return False
-        '    End Try
-        'End Function
-
+        ''' <summary>
+        ''' Liest eine Ski-Datei mit der Struktur von Groupies 1
+        ''' (englische Namen für die Klassen)
+        ''' </summary>
+        ''' <param name="Filestream"></param>
+        ''' <param name="Club"></param>
+        ''' <returns></returns>
         Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
             Dim loadedSkiclub As Veraltert.Skiclub
@@ -82,19 +83,13 @@ Namespace Controller
             End Try
         End Function
 
-        'Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream) As Boolean
-        '    Dim serializer = New XmlSerializer(GetType(Club))
-        '    Try
-        '        Dim AktuellerClub = TryCast(serializer.Deserialize(Filestream), Club)
-        '        Return True
-        '    Catch ex As InvalidOperationException
-        '        Return False
-        '    Catch ex As InvalidDataException
-        '        Throw ex
-        '        Return False
-        '    End Try
-        'End Function
-
+        ''' <summary>
+        ''' Liest eine Ski-Datei mit der Struktur von Groupies 2
+        ''' (deutsche Namen für die Klassen)
+        ''' </summary>
+        ''' <param name="Filestream"></param>
+        ''' <param name="Club"></param>
+        ''' <returns></returns>
         Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Club))
             Try
@@ -122,10 +117,7 @@ Namespace Controller
             Return AktuellerClub.AlleTeilnehmer
         End Function
 
-        Public Shared Function EinteilungenLesen() As EinteilungCollection
-            Dim aktuellerClub = SkiDateiLesen()
-            Return AktuellerClub.Einteilungsliste
-        End Function
+
 
         Public Shared Function GruppenLesen() As GruppeCollection
             Dim aktuellerClub = SkiDateiLesen()
@@ -141,9 +133,59 @@ Namespace Controller
             Return AktuellerClub.AlleTeilnehmer
         End Function
 
+        ''' <summary>
+        ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
+        ''' Sie wird deserialisiert und die darin gespeicherten Einteilungen zurückgegeben
+        ''' </summary>
+        ''' <param name="Datei"></param>
+        ''' <param name="Name"></param>
+        ''' <returns></returns>
+        Public Shared Function TeilnehmerLesen(Datei As String, Name As String) As TeilnehmerCollection
+            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim Liste = aktuellerClub.AlleTeilnehmer.Where(Function(tn) tn.Vorname = Name).ToList
+            Liste.AddRange(aktuellerClub.GruppenloseTeilnehmer.Where(Function(tn) tn.Nachname = Name))
+            Return New TeilnehmerCollection(Liste)
+        End Function
+
+        ''' <summary>
+        ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
+        ''' Sie wird deserialisiert und die darin gespeicherten Einteilungen zurückgegeben
+        ''' </summary>
+        ''' <returns>EinteilungCollection</returns>
+        Public Shared Function EinteilungenLesen() As EinteilungCollection
+            Dim aktuellerClub = SkiDateiLesen()
+            Return EinteilungenLesen(aktuellerClub)
+        End Function
+
+        ''' <summary>
+        ''' Eine Dateipfad wird übergeben, 
+        ''' Sie wird deserialisiert und die darin gespeicherten Einteilungen zurückgegeben
+        ''' </summary>
+        ''' <param name="Datei"></param>
+        ''' <returns>EinteilungCollection</returns>
         Public Shared Function EinteilungenLesen(Datei As String) As EinteilungCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
-            Return AktuellerClub.Einteilungsliste
+            Return EinteilungenLesen(aktuellerClub)
+        End Function
+
+        ''' <summary>
+        ''' Ein Club wird übergeben
+        ''' und die darin gespeicherten Einteilungen zurückgegeben
+        ''' </summary>
+        ''' <param name="Club"></param>
+        ''' <returns>EinteilungCollection</returns>
+        Public Shared Function EinteilungenLesen(Club As Club) As EinteilungCollection
+            Dim Einteilungen = Club.Einteilungsliste
+            ' Wenn keine Einteilungen vorhanden sind, wird eine Standard-Einteilung erstellt
+            ' diese wird aus den Gruppen und Gruppenlosen des Clubs erstellt
+            If Einteilungen.Count = 0 Then
+                Einteilungen.Add(New Einteilung With {
+                                 .Benennung = "Tag1",
+                                 .Gruppenliste = Club.Gruppenliste,
+                                 .GruppenloseTeilnehmer = Club.GruppenloseTeilnehmer,
+                                 .GruppenloseTrainer = Club.GruppenloseTrainer})
+            End If
+            Return Einteilungen
         End Function
 
         Public Shared Function GruppenLesen(Datei As String) As GruppeCollection
@@ -154,39 +196,6 @@ Namespace Controller
 #End Region
 
 
-#Region "Hilfsfunktionen"
-
-        ''' <summary>
-        ''' Benennt eine neue Einteilung
-        ''' </summary>
-        ''' <param name="Einteilungsliste"></param>
-        ''' <returns></returns>
-        Public Shared Function BestimmeEinteilungsbenennung(Einteilungsliste As EinteilungCollection) As String
-
-            If Einteilungsliste Is Nothing Then Return "Tag1"
-
-            Dim Tage = Einteilungsliste.ToList.Where(Function(e) e.Benennung.StartsWith("Tag")).OrderByDescending(Function(e) e.Benennung)
-            If Tage.Count > 0 Then
-                Dim z = Val(Tage(0).Benennung.Last)
-                Return $"Tag{z + 1}"
-            Else
-                Return $"Tag{Einteilungsliste.Count + 1}"
-            End If
-
-        End Function
-
-        Private Shared Function PruefeEinteilungen(Club As Club) As Club
-            If Club.Einteilungsliste Is Nothing OrElse Club.Einteilungsliste.Count = 0 Then
-                Dim Tag = New Einteilung With {.Benennung = BestimmeEinteilungsbenennung(Club.Einteilungsliste)}
-                Tag.Gruppenliste = Club.Gruppenliste
-                Tag.GruppenloseTrainer = Club.GruppenloseTrainer
-                Tag.GruppenloseTeilnehmer = Club.GruppenloseTeilnehmer
-                Club.Einteilungsliste = New EinteilungCollection From {Tag}
-            End If
-            Return Club
-        End Function
-
     End Class
-#End Region
 
 End Namespace

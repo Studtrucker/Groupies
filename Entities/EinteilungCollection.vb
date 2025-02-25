@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
+Imports System.Linq
 
 Namespace Entities
 
@@ -17,6 +18,7 @@ Namespace Entities
         End Sub
 
         Public Property BenennungGruppeneinteilung As String
+
 
     End Class
 End Namespace

@@ -21,6 +21,7 @@ Namespace Entities
         Private _GruppenloseTrainer As New TrainerCollection
         Private ReadOnly _EingeteilteTrainer As New TrainerCollection
         Private ReadOnly _AlleTrainer As New TrainerCollection
+
 #End Region
 
 #Region "Konstruktor"
@@ -49,6 +50,29 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property ClubName As String
+
+        Private _SelectedEinteilung As Einteilung
+
+        Public Property SelectedEinteilung As Einteilung
+            Get
+                Return _SelectedEinteilung
+            End Get
+            Set(value As Einteilung)
+                _SelectedEinteilung = value
+                SelectedGruppe = Nothing
+            End Set
+        End Property
+
+        Private _SelectedGruppe As Gruppe
+        Public Property SelectedGruppe As Gruppe
+            Get
+                Return _SelectedGruppe
+            End Get
+            Set(value As Gruppe)
+                _SelectedGruppe = value
+            End Set
+        End Property
+
 
         ''' <summary>
         ''' Eine Liste aller Gruppen
@@ -85,6 +109,36 @@ Namespace Entities
                 _Einteilungsliste = value
             End Set
         End Property
+
+        ''' <summary>
+        ''' Fügt eine neue Einteilung hinzu,
+        ''' erstellt dazu Benennung und Sortierung
+        ''' </summary>
+        ''' <param name="Einteilung"></param>
+        Public Sub AddEinteilung(Einteilung As Einteilung)
+            Einteilung.Benennung = BenenneEinteilung()
+            Einteilung.Sortierung = Einteilungsliste.Count + 1
+            _Einteilungsliste.Add(Einteilung)
+        End Sub
+
+        ''' <summary>
+        ''' Benennt eine neue Einteilung
+        ''' </summary>
+        ''' <returns></returns>
+        Private Function BenenneEinteilung() As String
+
+            If Einteilungsliste Is Nothing OrElse Einteilungsliste.Count = 0 Then Return "Tag1"
+            If Einteilungsliste.Count = 1 AndAlso Einteilungsliste(0).Benennung Is Nothing Then Einteilungsliste(0).Benennung = "Tag1"
+
+            Dim Tage = Einteilungsliste.ToList.Where(Function(e) e.Benennung.StartsWith("Tag")).OrderByDescending(Function(e) e.Benennung)
+            If Tage.Count > 0 Then
+                Dim z = Val(Tage(0).Benennung.Last)
+                Return $"Tag{z + 1}"
+            Else
+                Return $"Tag{Einteilungsliste.Count + 1}"
+            End If
+
+        End Function
 
         ''' <summary>
         ''' Teilnehmer ohne Gruppe

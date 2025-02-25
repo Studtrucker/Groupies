@@ -111,17 +111,6 @@ Namespace Entities
         End Property
 
         ''' <summary>
-        ''' Fügt eine neue Einteilung hinzu,
-        ''' erstellt dazu Benennung und Sortierung
-        ''' </summary>
-        ''' <param name="Einteilung"></param>
-        Public Sub AddEinteilung(Einteilung As Einteilung)
-            Einteilung.Benennung = BenenneEinteilung()
-            Einteilung.Sortierung = Einteilungsliste.Count + 1
-            _Einteilungsliste.Add(Einteilung)
-        End Sub
-
-        ''' <summary>
         ''' Benennt eine neue Einteilung
         ''' </summary>
         ''' <returns></returns>
@@ -252,6 +241,17 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
+
+        ''' <summary>
+        ''' Fügt eine neue Einteilung hinzu,
+        ''' erstellt dazu Benennung und Sortierung
+        ''' </summary>
+        ''' <param name="Einteilung"></param>
+        Public Sub AddEinteilung(Einteilung As Einteilung)
+            Einteilung.Benennung = BenenneEinteilung()
+            Einteilung.Sortierung = Einteilungsliste.Count + 1
+            _Einteilungsliste.Add(Einteilung)
+        End Sub
 
         ''' <summary>
         ''' Prüfung, ob die Leistungsstufe in Gebrauch ist

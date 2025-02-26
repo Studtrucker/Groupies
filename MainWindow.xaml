@@ -49,67 +49,55 @@
                 <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
             </MenuItem>
 
-            <MenuItem  Header="B_earbeiten">
-                <MenuItem Header="Gruppen">
-                    <MenuItem Header="Übersicht" />
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
-                </MenuItem>
 
-                <MenuItem Header="Leistungsstufen">
-                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenuebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
-                </MenuItem>
-            </MenuItem>
             <MenuItem Header="_Organisation">
                 <MenuItem Header="Einteilungen">
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungLoeschen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungEinlesen}"/>
                 </MenuItem>
-                <MenuItem Header="Gruppen"/>
-                <MenuItem Header="Leistungsstufen"/>
+                <MenuItem Header="Gruppen">
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
+                </MenuItem>
+                <MenuItem Header="Leistungsstufen">
+                    <MenuItem Header="Übersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeEinlesen}"/>
+                </MenuItem>
             </MenuItem>
 
             <MenuItem Header="_Personen" >
                 <MenuItem Header="Teilnehmer">
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteExportierenXl}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerEinlesen}"/>
                 </MenuItem>
 
                 <MenuItem Header="Trainer">
                     <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteExportierenXl}">
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerEinlesen}"/>
                         <MenuItem.Icon>
                             <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-            </MenuItem>
 
-            <MenuItem  Header="_Extras" >
-                <MenuItem Header="Daten importieren">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
-                    </MenuItem.Icon>
+                <MenuItem  Header="_Extras" >
+                    <MenuItem Header="Daten aus Excel importieren">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Daten nach Excel exportieren">
+                        <MenuItem.Icon>
+                            <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerlisteImportieren}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerlisteImportieren}">
-                    <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-            </MenuItem>
-            <MenuItem Header="Testfenster" Click="MenuItem_Click"/>
-
         </Menu>
 
 

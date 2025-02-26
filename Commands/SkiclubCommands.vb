@@ -5,8 +5,11 @@ Namespace Commands
 
         Private Shared _LeistungsstufeLoeschen As New RoutedUICommand("Leistungsstufe löschen", NameOf(LeistungsstufeLoeschen), GetType(SkiclubCommands))
         Private Shared _LeistungsstufeNeuErstellen As New RoutedUICommand("Leistungsstufe erstellen", NameOf(LeistungsstufeNeuErstellen), GetType(SkiclubCommands))
+        Private Shared _LeistungsstufeEinlesen As New RoutedUICommand("Leistungsstufe einlesen", NameOf(LeistungsstufeEinlesen), GetType(SkiclubCommands))
         Private Shared _EinteilungNeuErstellen As New RoutedUICommand("Einteilung erstellen", NameOf(EinteilungNeuErstellen), GetType(SkiclubCommands))
-        '
+        Private Shared _EinteilungEinlesen As New RoutedUICommand("Einteilung einlesen", NameOf(EinteilungEinlesen), GetType(SkiclubCommands))
+        Private Shared _EinteilungLoeschen As New RoutedUICommand("Einteilung löschen", NameOf(EinteilungLoeschen), GetType(SkiclubCommands))
+
 
         ' TeilnehmerCommands
         Public Shared ReadOnly Property TeilnehmerlisteImportieren As New RoutedUICommand("Teilnehmerliste importieren",
@@ -30,6 +33,14 @@ Namespace Commands
         Public Shared ReadOnly Property TeilnehmerBearbeiten As New RoutedUICommand("Teilnehmer bearbeiten",
                                                                                      NameOf(TeilnehmerBearbeiten),
                                                                                      GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TeilnehmerLoeschen As New RoutedUICommand("Teilnehmer löschen",
+                                                                                     NameOf(TeilnehmerLoeschen),
+                                                                                     GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TeilnehmerEinlesen As New RoutedUICommand("Teilnehmer einlesen",
+                                                                                     NameOf(TeilnehmerEinlesen),
+                                                                                     GetType(SkiclubCommands))
+
+
 
         Public Shared ReadOnly Property TeilnehmerSuchen As New RoutedUICommand("Teilnehmer suchen",
                                                                                      NameOf(TeilnehmerSuchen),
@@ -57,6 +68,12 @@ Namespace Commands
                                                                                    GetType(SkiclubCommands))
         Public Shared ReadOnly Property TrainerBearbeiten As New RoutedUICommand("Trainer bearbeiten",
                                                                                   NameOf(TrainerBearbeiten),
+                                                                                  GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TrainerLoeschen As New RoutedUICommand("Trainer löschen",
+                                                                                  NameOf(TrainerLoeschen),
+                                                                                  GetType(SkiclubCommands))
+        Public Shared ReadOnly Property TrainerEinlesen As New RoutedUICommand("Trainer einlesen",
+                                                                                  NameOf(TrainerEinlesen),
                                                                                   GetType(SkiclubCommands))
 
         Public Shared ReadOnly Property TrainerArchivieren As New RoutedUICommand("Trainer archivieren",
@@ -98,6 +115,12 @@ Namespace Commands
             End Get
         End Property
 
+        Public Shared ReadOnly Property EinteilungLoeschen As RoutedUICommand
+            Get
+                Return _EinteilungLoeschen
+            End Get
+        End Property
+
         Public Shared ReadOnly Property LeistungsstufeNeuErstellen As RoutedUICommand
             Get
                 _LeistungsstufeNeuErstellen.InputGestures.Add(New KeyGesture(Key.N, ModifierKeys.Alt))
@@ -110,6 +133,17 @@ Namespace Commands
             Get
                 _LeistungsstufeLoeschen.InputGestures.Add(New KeyGesture(Key.Delete, ModifierKeys.Alt))
                 Return _LeistungsstufeLoeschen
+            End Get
+        End Property
+        Public Shared ReadOnly Property LeistungsstufeEinlesen As RoutedUICommand
+            Get
+                Return _LeistungsstufeEinlesen
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property EinteilungEinlesen As RoutedUICommand
+            Get
+                Return _EinteilungEinlesen
             End Get
         End Property
 

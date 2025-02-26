@@ -51,50 +51,6 @@ Namespace Entities
         ''' <returns></returns>
         Public Property ClubName As String
 
-        Private _SelectedEinteilung As Einteilung
-
-        Public Property SelectedEinteilung As Einteilung
-            Get
-                Return _SelectedEinteilung
-            End Get
-            Set(value As Einteilung)
-                _SelectedEinteilung = value
-                SelectedGruppe = Nothing
-            End Set
-        End Property
-
-        Private _SelectedGruppe As Gruppe
-        Public Property SelectedGruppe As Gruppe
-            Get
-                Return _SelectedGruppe
-            End Get
-            Set(value As Gruppe)
-                _SelectedGruppe = value
-            End Set
-        End Property
-
-
-        ''' <summary>
-        ''' Eine Liste aller Gruppen
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Gruppenliste() As GruppeCollection
-            Get
-                Return _Gruppenliste
-            End Get
-            Set(value As GruppeCollection)
-                _Gruppenliste = value
-            End Set
-        End Property
-
-        Public Property Gruppenhistorie() As List(Of GruppeCollection)
-            Get
-                Return _Gruppenhistorie
-            End Get
-            Set(value As List(Of GruppeCollection))
-                _Gruppenhistorie = value
-            End Set
-        End Property
 
         ''' <summary>
         ''' Die Einteilungen im aktuellen Club
@@ -110,24 +66,41 @@ Namespace Entities
             End Set
         End Property
 
+
+        Private _SelectedEinteilung As Einteilung
         ''' <summary>
-        ''' Benennt eine neue Einteilung
+        ''' Die aktuell ausgewählte Einteilung
         ''' </summary>
         ''' <returns></returns>
-        Private Function BenenneEinteilung() As String
+        Public Property SelectedEinteilung As Einteilung
+            Get
+                Return _SelectedEinteilung
+            End Get
+            Set(value As Einteilung)
+                _SelectedEinteilung = value
+                SelectedGruppe = Nothing
+            End Set
+        End Property
 
-            If Einteilungsliste Is Nothing OrElse Einteilungsliste.Count = 0 Then Return "Tag1"
-            If Einteilungsliste.Count = 1 AndAlso Einteilungsliste(0).Benennung Is Nothing Then Einteilungsliste(0).Benennung = "Tag1"
+        ''' <summary>
+        ''' Eine Liste aller Gruppen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Gruppenliste() As GruppeCollection
+            Get
+                Return _Gruppenliste
+            End Get
+            Set(value As GruppeCollection)
+                _Gruppenliste = value
+            End Set
+        End Property
 
-            Dim Tage = Einteilungsliste.ToList.Where(Function(e) e.Benennung.StartsWith("Tag")).OrderByDescending(Function(e) e.Benennung)
-            If Tage.Count > 0 Then
-                Dim z = Val(Tage(0).Benennung.Last)
-                Return $"Tag{z + 1}"
-            Else
-                Return $"Tag{Einteilungsliste.Count + 1}"
-            End If
+        ''' <summary>
+        ''' Die aktuell ausgewählte Gruppe
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property SelectedGruppe As Gruppe
 
-        End Function
 
         ''' <summary>
         ''' Teilnehmer ohne Gruppe
@@ -243,31 +216,6 @@ Namespace Entities
 #Region "Funktionen und Methoden"
 
         ''' <summary>
-        ''' Fügt eine neue Einteilung hinzu,
-        ''' erstellt dazu Benennung und Sortierung
-        ''' </summary>
-        ''' <param name="Einteilung"></param>
-        Public Sub AddEinteilung(Einteilung As Einteilung)
-            Einteilung.Benennung = BenenneEinteilung()
-            Einteilung.Sortierung = Einteilungsliste.Count + 1
-            _Einteilungsliste.Add(Einteilung)
-        End Sub
-
-        ''' <summary>
-        ''' Prüfung, ob die Leistungsstufe in Gebrauch ist
-        ''' </summary>
-        ''' <param name="Leistungsstufe"></param>
-        ''' <returns></returns>
-        Public Function LeistungsstufeWirdNichtGenutzt(Leistungsstufe As Leistungsstufe) As Boolean
-            Dim TnL = AlleTeilnehmer.Where(Function(Tn) Tn.Leistungsstand.Benennung.Equals(Leistungsstufe.Benennung)).ToList
-            Dim GrL = Gruppenliste.Where(Function(Gr) Gr.Leistungsstufe.Benennung.Equals(Leistungsstufe.Benennung)).ToList
-            If TnL.Count = 0 AndAlso GrL.Count = 0 Then
-                Return True
-            End If
-            Return False
-        End Function
-
-        ''' <summary>
         ''' Die angegebene Gruppe bekommt den Teilnehmer als Mitglied
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
@@ -316,14 +264,6 @@ Namespace Entities
             Gruppe.Trainer = Nothing
         End Sub
 
-        '''' <summary>
-        '''' FreieTrainer=AlleTrainer-EingeteilteTrainer 
-        '''' </summary>
-        '''' <param name="Trainer"></param>
-        'Private Sub FreieTrainerLesen(Trainer As Trainer)
-        '    _AlleTrainer.Remove(Trainer)
-        'End Sub
-
         ''' <summary>
         ''' Trainer wird aus dem Club entfernt und 
         ''' in der Ewigen Trainerliste archiviert
@@ -333,7 +273,6 @@ Namespace Entities
             GruppenloseTrainer.Remove(Trainer)
             EwigeTrainerliste.Add(Trainer, Now)
         End Sub
-
 
         Public Overrides Function ToString() As String
             Return ClubName

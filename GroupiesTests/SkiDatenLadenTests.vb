@@ -14,7 +14,7 @@ Public Class SkiDatenLadenTests
             New Einteilung With {.Benennung = "Sonntag", .Sortierung = 1}}
 
         Dim Club = New Club With {.Einteilungsliste = Einteilungen}
-        Club.AddEinteilung(New Einteilung)
+        Club.Einteilungsliste.AddEinteilung(New Einteilung)
         Assert.AreEqual("Sonntag", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung)(0).Benennung)
         Assert.AreEqual("Montag", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung)(1).Benennung)
         Assert.AreEqual("Dienstag", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung)(2).Benennung)
@@ -31,7 +31,7 @@ Public Class SkiDatenLadenTests
             New Einteilung With {.Benennung = "Tag4", .Sortierung = 4}}
 
         Dim Club = New Club With {.Einteilungsliste = Einteilungen}
-        Club.AddEinteilung(New Einteilung)
+        Club.Einteilungsliste.AddEinteilung(New Einteilung)
 
         Assert.AreEqual("Tag5", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung)(3).Benennung)
 
@@ -43,7 +43,7 @@ Public Class SkiDatenLadenTests
         Dim Einteilungen = New Entities.EinteilungCollection
 
         Dim Club = New Club With {.Einteilungsliste = Einteilungen}
-        Club.AddEinteilung(New Einteilung)
+        Club.Einteilungsliste.AddEinteilung(New Einteilung)
 
         Assert.AreEqual("Tag1", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung).ElementAt(0).Benennung)
 
@@ -53,7 +53,7 @@ Public Class SkiDatenLadenTests
     Public Sub BestimmeEinteilungsbenennungTest4()
 
         Dim Club = New Club
-        Club.AddEinteilung(New Einteilung)
+        Club.Einteilungsliste.AddEinteilung(New Einteilung)
 
         Assert.AreEqual("Tag1", Club.Einteilungsliste.OrderBy(Function(e) e.Sortierung)(0).Benennung)
 
@@ -104,7 +104,7 @@ Public Class SkiDatenLadenTests
 
         Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
 
-        Einteilungsliste1.ToList.ForEach(Sub(T) Club.AddEinteilung(T))
+        Einteilungsliste1.ToList.ForEach(Sub(T) Club.Einteilungsliste.AddEinteilung(T))
 
         Assert.AreEqual(2, Club.Einteilungsliste.Count)
         Assert.AreEqual(1, Club.Einteilungsliste(0).Sortierung)
@@ -145,7 +145,7 @@ Public Class SkiDatenLadenTests
         Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
 
         Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
-        Einteilungsliste1.ToList.ForEach(Sub(T) Club.AddEinteilung(T))
+        Einteilungsliste1.ToList.ForEach(Sub(T) Club.Einteilungsliste.AddEinteilung(T))
 
         Assert.AreEqual(2, Club.Einteilungsliste.Count)
         Assert.AreEqual(1, Club.Einteilungsliste(0).Sortierung)

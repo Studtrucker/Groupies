@@ -333,11 +333,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.AlleTeilnehmer.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -345,7 +345,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -357,7 +357,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.AktuellerClub.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
+            AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
         End If
     End Sub
 
@@ -367,7 +367,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.AktuellerClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -377,7 +377,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.AktuellerClub.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -418,7 +418,7 @@ Public Class MainWindow
 
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppCon.AktuellerClub.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+            AppCon.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
         Next
     End Sub
 
@@ -427,7 +427,7 @@ Public Class MainWindow
 #Region "Trainer"
 
     Private Sub Handle_TrainerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerlisteImportieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -435,7 +435,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.AlleTrainer.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.SelectedEinteilung.AlleTrainer.Count > 0
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -443,7 +443,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -455,7 +455,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.AktuellerClub.GruppenloseTrainer.Add(dlg.Trainer)
+            AppCon.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(dlg.Trainer)
         End If
     End Sub
 

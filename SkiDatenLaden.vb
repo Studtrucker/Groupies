@@ -142,12 +142,12 @@ Namespace Controller
 
         Public Shared Function TrainerLesen() As TrainerCollection
             Dim aktuellerClub = SkiDateiLesen()
-            Return AktuellerClub.AlleTrainer
+            Return aktuellerClub.SelectedEinteilung.AlleTrainer
         End Function
 
         Public Shared Function TeilnehmerLesen() As TeilnehmerCollection
             Dim aktuellerClub = SkiDateiLesen()
-            Return AktuellerClub.AlleTeilnehmer
+            Return aktuellerClub.SelectedEinteilung.AlleTeilnehmer
         End Function
 
 
@@ -158,12 +158,12 @@ Namespace Controller
         End Function
         Public Shared Function TrainerLesen(Datei As String) As TrainerCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
-            Return AktuellerClub.AlleTrainer
+            Return aktuellerClub.SelectedEinteilung.AlleTrainer
         End Function
 
         Public Shared Function TeilnehmerLesen(Datei As String) As TeilnehmerCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
-            Return AktuellerClub.AlleTeilnehmer
+            Return aktuellerClub.SelectedEinteilung.AlleTeilnehmer
         End Function
 
         ''' <summary>
@@ -175,8 +175,8 @@ Namespace Controller
         ''' <returns></returns>
         Public Shared Function TeilnehmerLesen(Datei As String, Name As String) As TeilnehmerCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
-            Dim Liste = aktuellerClub.AlleTeilnehmer.Where(Function(tn) tn.Vorname = Name).ToList
-            Liste.AddRange(aktuellerClub.GruppenloseTeilnehmer.Where(Function(tn) tn.Nachname = Name))
+            Dim Liste = aktuellerClub.SelectedEinteilung.AlleTeilnehmer.Where(Function(tn) tn.Vorname = Name).ToList
+            Liste.AddRange(aktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Where(Function(tn) tn.Nachname = Name))
             Return New TeilnehmerCollection(Liste)
         End Function
 
@@ -215,16 +215,16 @@ Namespace Controller
                 Einteilungen.Add(New Einteilung With {
                                  .Benennung = "Tag1",
                                  .Sortierung = 1,
-                                 .Gruppenliste = Club.Gruppenliste,
-                                 .GruppenloseTeilnehmer = Club.GruppenloseTeilnehmer,
-                                 .GruppenloseTrainer = Club.GruppenloseTrainer})
+                                 .Gruppenliste = Club.SelectedEinteilung.Gruppenliste,
+                                 .GruppenloseTeilnehmer = Club.SelectedEinteilung.GruppenloseTeilnehmer,
+                                 .GruppenloseTrainer = Club.SelectedEinteilung.GruppenloseTrainer})
             End If
             Return Einteilungen
         End Function
 
         Public Shared Function GruppenLesen(Datei As String) As GruppeCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
-            Return AktuellerClub.Gruppenliste
+            Return aktuellerClub.SelectedEinteilung.Gruppenliste
         End Function
 
 #End Region

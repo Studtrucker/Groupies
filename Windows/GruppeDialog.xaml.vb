@@ -26,7 +26,7 @@ Public Class GruppeDialog
         DataContext = _Group
 
         _levelListCollectionView = New ListCollectionView(Controller.AppController.AktuellerClub.LeistungsstufenTextliste.ToList)
-        _instructorListCollectionView = New ListCollectionView(Controller.AppController.AktuellerClub.GruppenloseTrainer)
+        _instructorListCollectionView = New ListCollectionView(Controller.AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer)
 
         LeistungsstufeCombobox.ItemsSource = _levelListCollectionView
 

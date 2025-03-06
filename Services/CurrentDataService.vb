@@ -21,7 +21,7 @@ Namespace Services
 
         Private Function InstructorsAvailable() As TrainerCollection
             Dim available = New TrainerCollection
-            Club.GruppenloseTrainer.Where(Function(y) y.IstEinerGruppeZugewiesen = False).ToList.ForEach(Sub(i) available.Add(i))
+            Club.SelectedEinteilung.GruppenloseTrainer.Where(Function(y) y.IstEinerGruppeZugewiesen = False).ToList.ForEach(Sub(i) available.Add(i))
             Return available
         End Function
 

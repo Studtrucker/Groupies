@@ -9,13 +9,13 @@ Public Module VeralterteKlassenMapping
 
         NeuerClub = New Club
         ' Jede Group dem Skiclub mappen und in die Gruppenliste des Clubs hängen
-        NeuerClub.Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+        NeuerClub.SelectedEinteilung.Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
         NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
-        NeuerClub.GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
-        NeuerClub.GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
-        For Each item In NeuerClub.EingeteilteTrainer
+        NeuerClub.SelectedEinteilung.GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
+        NeuerClub.SelectedEinteilung.GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
+        For Each item In NeuerClub.SelectedEinteilung.EingeteilteTrainer
             If item IsNot Nothing Then
-                NeuerClub.GruppenloseTrainer.RemoveByTrainerID(item.TrainerID)
+                NeuerClub.SelectedEinteilung.GruppenloseTrainer.RemoveByTrainerID(item.TrainerID)
             End If
         Next
         Return NeuerClub

@@ -20,8 +20,8 @@ Namespace ValidationRules
                     ErrorContent.Add("Spitzname ist eine Pflichtangabe")
                 End If
 
-                Dim ValueListe = Controller.AppController.AktuellerClub.AlleTrainer.Where(Function(Tr) Tr.TrainerID = Trainer.TrainerID)
-                Dim Trainerliste = Controller.AppController.AktuellerClub.AlleTrainer.Except(ValueListe)
+                Dim ValueListe = Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Where(Function(Tr) Tr.TrainerID = Trainer.TrainerID)
+                Dim Trainerliste = Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Except(ValueListe)
                 If Trainerliste.ToList.Where(Function(Tn) Tn.Spitzname = Spitzname).Any Then
                     ErrorContent.Add("Trainer mit diesem Spitzname ist bereits vorhanden")
                 End If

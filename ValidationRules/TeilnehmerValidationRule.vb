@@ -21,8 +21,8 @@ Namespace ValidationRules
                     ErrorContent.Add("Nachname ist eine Pflichtangabe")
                 End If
 
-                Dim ValueListe = Controller.AppController.AktuellerClub.AlleTeilnehmer.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID)
-                Dim Teilnehmerliste = Controller.AppController.AktuellerClub.AlleTeilnehmer.Except(ValueListe)
+                Dim ValueListe = Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Where(Function(Tn) Tn.TeilnehmerID = Teilnehmer.TeilnehmerID)
+                Dim Teilnehmerliste = Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Except(ValueListe)
                 If Teilnehmerliste.ToList.Where(Function(Tn) Tn.Vorname = Vorname And Tn.Nachname = Nachname).Any Then
                     ErrorContent.Add("Teilnehmer mit diesem Namen ist bereits vorhanden")
                 End If

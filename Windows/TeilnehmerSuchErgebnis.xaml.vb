@@ -47,10 +47,10 @@ Public Class TeilnehmerSuchErgebnis
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        TeilnehmerAnzahl = AktuellerClub.AlleTeilnehmer.Count
-        TrainerAnzahl = AktuellerClub.AlleTrainer.Count
-        Dim x = AktuellerClub.AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
-        Dim z = AktuellerClub.AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        TeilnehmerAnzahl = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.Count
+        TrainerAnzahl = AktuellerClub.Einteilungsliste(0).AlleTrainer.Count
+        Dim x = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        Dim z = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
         Dim y As New System.Text.StringBuilder
 
         For Each Stufengruppe In x
@@ -77,7 +77,7 @@ Public Class TeilnehmerSuchErgebnis
         Next
 
         ' Noch nicht eingeteilte Teilnehmer
-        For Each Tn In AktuellerClub.GruppenloseTeilnehmer
+        For Each Tn In AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer
             Teilnehmerliste.Add(New With {.Teilnehmer = Tn, .Gruppe = Nothing})
         Next
 

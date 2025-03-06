@@ -13,42 +13,42 @@ Public Class ClubTests
         Dim Manuela As New Teilnehmer("Manuela", "Ramm")
         Dim Lina As New Teilnehmer("Lina", "Hötger")
 
-        Stubai2024.GruppenloseTeilnehmer.Add(Studti)
-        Stubai2024.GruppenloseTeilnehmer.Add(Manuela)
-        Stubai2024.GruppenloseTeilnehmer.Add(Lina)
+        Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Studti)
+        Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Manuela)
+        Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Lina)
 
-        Assert.AreEqual(3, Stubai2024.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(0, Stubai2024.EingeteilteTeilnehmer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTeilnehmer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
 
         Stubai2024.Gruppenliste = StandardGruppen
 
-        Stubai2024.TeilnehmerInGruppeEinteilen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(3, Stubai2024.AlleTeilnehmer.Count)
-        Assert.AreEqual(2, Stubai2024.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(1, Stubai2024.EingeteilteTeilnehmer.Count)
+        Stubai2024.SelectedEinteilung.TeilnehmerInGruppeEinteilen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
 
-        Assert.AreEqual("Andreas Studtrucker", Stubai2024.EingeteilteTeilnehmer.ElementAt(0).VorUndNachname)
-        Assert.AreEqual("Manuela Ramm", Stubai2024.AlleTeilnehmer.Geordnet.ElementAt(1).VorUndNachname)
-        Assert.AreEqual("Lina Hötger", Stubai2024.AlleTeilnehmer.Geordnet.ElementAt(0).VorUndNachname)
+        Assert.AreEqual("Andreas Studtrucker", Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.ElementAt(0).VorUndNachname)
+        Assert.AreEqual("Manuela Ramm", Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Geordnet.ElementAt(1).VorUndNachname)
+        Assert.AreEqual("Lina Hötger", Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Geordnet.ElementAt(0).VorUndNachname)
 
-        Stubai2024.TeilnehmerInGruppeEinteilen(Manuela, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(3, Stubai2024.AlleTeilnehmer.Count)
-        Assert.AreEqual(1, Stubai2024.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(2, Stubai2024.EingeteilteTeilnehmer.Count)
+        Stubai2024.SelectedEinteilung.TeilnehmerInGruppeEinteilen(Manuela, Stubai2024.Gruppenliste.ElementAt(0))
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
 
-        Assert.AreEqual(2, Stubai2024.Gruppenliste.ElementAt(0).Mitgliederliste.Count)
-        Assert.AreEqual(0, Stubai2024.Gruppenliste.ElementAt(1).Mitgliederliste.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).Gruppenliste.ElementAt(0).Mitgliederliste.Count)
+        Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).Gruppenliste.ElementAt(1).Mitgliederliste.Count)
 
-        Stubai2024.TeilnehmerAusGruppeEntfernen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(3, Stubai2024.AlleTeilnehmer.Count)
-        Assert.AreEqual(2, Stubai2024.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(1, Stubai2024.EingeteilteTeilnehmer.Count)
+        Stubai2024.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
 
-        Stubai2024.TeilnehmerAusGruppeEntfernen(Manuela, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(3, Stubai2024.AlleTeilnehmer.Count)
-        Assert.AreEqual(3, Stubai2024.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(0, Stubai2024.EingeteilteTeilnehmer.Count)
+        Stubai2024.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(Manuela, Stubai2024.Gruppenliste.ElementAt(0))
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
 
     End Sub
 
@@ -69,37 +69,37 @@ Public Class ClubTests
         Dim Manuela As New Trainer("Manuela", "Ramm")
         Dim Lina As New Trainer("Lina", "Hötger")
 
-        Stubai2024.GruppenloseTrainer.Add(Studti)
-        Stubai2024.GruppenloseTrainer.Add(Manuela)
-        Stubai2024.GruppenloseTrainer.Add(Lina)
+        Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Add(Studti)
+        Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Add(Manuela)
+        Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Add(Lina)
 
-        Assert.AreEqual(3, Stubai2024.GruppenloseTrainer.Count)
-        Assert.AreEqual(0, Stubai2024.EingeteilteTrainer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Count)
+        Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTrainer.Count)
 
         Stubai2024.TrainerEinerGruppeZuweisen(Studti, Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(2, Stubai2024.GruppenloseTrainer.Count)
-        Assert.AreEqual(1, Stubai2024.EingeteilteTrainer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTrainer.Count)
 
         Stubai2024.TrainerEinerGruppeZuweisen(Lina, Stubai2024.Gruppenliste.ElementAt(1))
-        Assert.AreEqual(1, Stubai2024.GruppenloseTrainer.Count)
-        Assert.AreEqual(2, Stubai2024.EingeteilteTrainer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTrainer.Count)
 
         Assert.AreEqual("Andreas Studtrucker", Stubai2024.Gruppenliste.ElementAt(0).Trainer.VorUndNachname)
-        Assert.AreEqual("Lina Hötger", Stubai2024.Gruppenliste.ElementAt(1).Trainer.VorUndNachname)
-        Assert.AreEqual("Manuela Ramm", Stubai2024.GruppenloseTrainer.ElementAt(0).VorUndNachname)
+        Assert.AreEqual("Lina Hötger", Stubai2024.Einteilungsliste(0).Gruppenliste.ElementAt(1).Trainer.VorUndNachname)
+        Assert.AreEqual("Manuela Ramm", Stubai2024.Einteilungsliste(0).GruppenloseTrainer.ElementAt(0).VorUndNachname)
 
         Stubai2024.TrainerAusGruppeEntfernen(Stubai2024.Gruppenliste.ElementAt(0))
-        Assert.AreEqual(2, Stubai2024.GruppenloseTrainer.Count)
-        Assert.AreEqual(1, Stubai2024.EingeteilteTrainer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(2, Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Count)
+        Assert.AreEqual(1, Stubai2024.Einteilungsliste(0).EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTrainer.Count)
 
         Stubai2024.TrainerAusGruppeEntfernen(Stubai2024.Gruppenliste.ElementAt(1))
-        Assert.AreEqual(3, Stubai2024.GruppenloseTrainer.Count)
-        Assert.AreEqual(0, Stubai2024.EingeteilteTrainer.Count)
-        Assert.AreEqual(3, Stubai2024.AlleTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).GruppenloseTrainer.Count)
+        Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTrainer.Count)
+        Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTrainer.Count)
 
     End Sub
 
@@ -107,6 +107,9 @@ Public Class ClubTests
     Public Sub TestEingeteilteTeilnehmer()
         ' Ein Verein wird neu instanziiert
         Dim Testverein = New Club("Testverein09")
+        ' Ein Einteilungstag wird neu instanziiert
+        Dim Tag = New Einteilung()
+        Testverein.Einteilungsliste.Add(Tag)
         ' Eine Gruppe wird neu instanziiert
         Dim Experte = New Gruppe("Experte")
         Dim Racer = New Gruppe("Racer")
@@ -119,20 +122,20 @@ Public Class ClubTests
         Dim Rene = New Teilnehmer("Rene", "van Gansewinkel")
 
         ' Die Gruppe wird der Gruppenliste hinzugefügt 
-        Testverein.Gruppenliste.Add(Experte)
-        Testverein.Gruppenliste.Add(Racer)
+        Testverein.Einteilungsliste(0).Gruppenliste.Add(Experte)
+        Testverein.Einteilungsliste(0).Gruppenliste.Add(Racer)
         ' Vier Teilnehmer werden der Teilnehmerliste hinzugefügt 
-        Testverein.GruppenloseTeilnehmer = New TeilnehmerCollection(New List(Of Teilnehmer) From {Studti, Manu, Ralf, Sandra})
+        Testverein.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(New List(Of Teilnehmer) From {Studti, Manu, Ralf, Sandra})
         ' Teilnehmer fünf wird der Teilnehmerliste hinzugefügt 
-        Testverein.GruppenloseTeilnehmer.Add(Rene)
+        Testverein.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Rene)
         ' 2 Teilnehmer werden der Gruppe als Mitglieder hinzugefügt
-        Testverein.TeilnehmerInGruppeEinteilen(Manu, Experte)
-        Testverein.TeilnehmerInGruppeEinteilen(Studti, Experte)
+        Testverein.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Manu, Experte)
+        Testverein.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Studti, Experte)
 
         ' Test
-        Assert.AreEqual(3, Testverein.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(2, Testverein.EingeteilteTeilnehmer.Count)
-        Assert.AreEqual(5, Testverein.AlleTeilnehmer.Count)
+        Assert.AreEqual(3, Testverein.Einteilungsliste(0).GruppenloseTeilnehmer.Count)
+        Assert.AreEqual(2, Testverein.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
+        Assert.AreEqual(5, Testverein.Einteilungsliste(0).AlleTeilnehmer.Count)
 
 
     End Sub

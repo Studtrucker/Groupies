@@ -33,7 +33,7 @@ Namespace UserControls
 
         Private Sub Handle_TeilnehmerAusGruppeEntfernen(sender As Object, e As RoutedEventArgs)
             For i = MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-                CDS.AktuellerClub.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+                CDS.AktuellerClub.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
             Next
         End Sub
 

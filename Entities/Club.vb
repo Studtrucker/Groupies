@@ -149,16 +149,6 @@ Namespace Entities
         End Sub
 
         ''' <summary>
-        ''' Der Trainer wird der angegebenen Gruppe zugewiesen
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
-            Gruppe.Trainer = Trainer
-            SelectedEinteilung.GruppenloseTrainer.Remove(Trainer)
-        End Sub
-
-        ''' <summary>
         ''' Ein Trainer wird aus der angegebenen Gruppe entfernt
         ''' </summary>
         ''' <param name="Gruppe"></param>

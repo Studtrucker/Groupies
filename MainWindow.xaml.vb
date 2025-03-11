@@ -504,7 +504,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.AktuellerClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -534,7 +534,7 @@ Public Class MainWindow
             MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
             Exit Sub
         End If
-        AppCon.AktuellerClub.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppCon.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
     End Sub
 
 #End Region

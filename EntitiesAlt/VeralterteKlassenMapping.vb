@@ -8,16 +8,17 @@ Public Module VeralterteKlassenMapping
     Public Function MapSkiClub2Club(Skiclub As Veraltert.Skiclub) As Club
 
         NeuerClub = New Club
-        ' Jede Group dem Skiclub mappen und in die Gruppenliste des Clubs hängen
-        NeuerClub.SelectedEinteilung.Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+        ' Neue Einteilung erstellen
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1"})
         NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
-        NeuerClub.SelectedEinteilung.GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
-        NeuerClub.SelectedEinteilung.GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
-        For Each item In NeuerClub.SelectedEinteilung.EingeteilteTrainer
-            If item IsNot Nothing Then
-                NeuerClub.SelectedEinteilung.GruppenloseTrainer.RemoveByTrainerID(item.TrainerID)
-            End If
-        Next
+        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste des Clubs hängen
+        NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+        ' Gruppenlose Teilnehmer und Trainer mappen
+        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
+        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
+        ' Trainer, die bereits in Gruppen eingeteilt wurden, aus den Gruppenlosen entfernen
+        NeuerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(G) NeuerClub.Einteilungsliste(0).GruppenloseTrainer.RemoveByTrainerID(G.Trainer.TrainerID))
+
         Return NeuerClub
 
     End Function

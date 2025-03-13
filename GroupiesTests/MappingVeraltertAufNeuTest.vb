@@ -20,11 +20,11 @@ Public Class MappingVeraltertAufNeuTest
         If File.Exists(filename) Then
 
             ' Datei deserialisieren
-            Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-            Dim loadedSkiclub As Veraltert.Skiclub
+            Dim serializer = New XmlSerializer(GetType(Generation1.Skiclub))
+            Dim loadedSkiclub As Generation1.Skiclub
             Using fs = New FileStream(filename, FileMode.Open)
                 Try
-                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Veraltert.Skiclub)
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation1.Skiclub)
                 Catch ex As InvalidDataException
                     Debug.Print("Datei ungültig: " & ex.Message)
                     Exit Sub

@@ -110,6 +110,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
+    <Compile Include="Entities\ClubGeneration3.vb" />
+    <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
@@ -379,7 +381,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Club.vb" />
+    <Compile Include="Entities\ClubGeneration2.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

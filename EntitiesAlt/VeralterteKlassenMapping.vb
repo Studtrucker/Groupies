@@ -1,15 +1,16 @@
 ﻿Imports Groupies.Entities
-Imports Groupies.Entities.Veraltert
+Imports Groupies.Entities.Generation1
 Public Module VeralterteKlassenMapping
 
     Private NeuerClub As Club
     Private _Gruppenliste As GruppeCollection
 
-    Public Function MapSkiClub2Club(Skiclub As Veraltert.Skiclub) As Club
+    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Club
 
         NeuerClub = New Club
         ' Neue Einteilung erstellen
-        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1"})
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1", .Sortierung = 1})
+
         NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
         ' Jede Group aus dem Skiclub mappen und in die Gruppenliste des Clubs hängen
         NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
@@ -23,7 +24,7 @@ Public Module VeralterteKlassenMapping
 
     End Function
 
-    Private Function MapGroup2Gruppe(Group As Veraltert.Group) As Gruppe
+    Private Function MapGroup2Gruppe(Group As Generation1.Group) As Gruppe
 
         ' Die Gruppe mappen
         Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
@@ -43,7 +44,7 @@ Public Module VeralterteKlassenMapping
 
     End Function
 
-    Private Function MapParticipant2Teilnehmer(Participant As Veraltert.Participant) As Teilnehmer
+    Private Function MapParticipant2Teilnehmer(Participant As Generation1.Participant) As Teilnehmer
 
         If Participant Is Nothing Then
             Return Nothing
@@ -57,7 +58,7 @@ Public Module VeralterteKlassenMapping
 
     End Function
 
-    Private Function MapInstructor2Trainer(Instructor As Veraltert.Instructor) As Trainer
+    Private Function MapInstructor2Trainer(Instructor As Generation1.Instructor) As Trainer
 
         If Instructor Is Nothing Then
             Return Nothing
@@ -74,7 +75,7 @@ Public Module VeralterteKlassenMapping
 
     End Function
 
-    Private Function MapLevel2Leistungsstufe(Level As Veraltert.Level) As Leistungsstufe
+    Private Function MapLevel2Leistungsstufe(Level As Generation1.Level) As Leistungsstufe
 
         If Level Is Nothing Then
             Return Nothing
@@ -98,7 +99,7 @@ Public Module VeralterteKlassenMapping
 
     End Function
 
-    Private Function MapSkill2Faehigkeit(Skill As Veraltert.Skill) As Faehigkeit
+    Private Function MapSkill2Faehigkeit(Skill As Generation1.Skill) As Faehigkeit
 
         If Skill Is Nothing Then
             Return Nothing

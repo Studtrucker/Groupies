@@ -2,7 +2,7 @@
 Imports System.Collections.ObjectModel
 Imports Groupies.Services
 
-Namespace Entities
+Namespace Entities.Generation3
 
     Public Class Club
         Inherits BaseModel

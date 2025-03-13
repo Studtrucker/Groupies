@@ -120,7 +120,7 @@ Public Class SkiDatenLadenTests
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
             Pfad = "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         Else
-            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
+            Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         End If
 
         Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)

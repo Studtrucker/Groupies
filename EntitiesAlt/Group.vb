@@ -2,7 +2,7 @@
 Imports System.ComponentModel
 Imports PropertyChanged
 
-Namespace Entities.Veraltert
+Namespace Entities.Generation1
 
     <DefaultProperty("GroupName")>
     Public Class Group

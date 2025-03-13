@@ -2,7 +2,7 @@
 Imports System.ComponentModel
 Imports CDS = Groupies.Controller.AppController
 
-Namespace Entities.Veraltert
+Namespace Entities.Generation1
 
 
     Public Class Participant

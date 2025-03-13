@@ -72,14 +72,14 @@ Namespace Controller
                     Dim DateiGelesen
                     Dim aktuellerClub As New Club
                     Using fs = New FileStream(Datei, FileMode.Open)
-                        ' Versuche Ski (XML) mit Struktur Groupies 2 zu lesen
+                        ' Versuche Ski (XML) mit Struktur Groupies2 (englische Objektnamen) zu lesen
                         DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
                         If DateiGelesen Then
                             aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
-                    ' Versuche Ski (XML) mit Struktur Groupies 1 zu lesen
+                    ' Versuche Ski (XML) mit Struktur Groupies 1  (deutsche Objektnamen) zu lesen
                     Using fs = New FileStream(Datei, FileMode.Open)
                         If Not DateiGelesen Then
                             LeseSkiDateiVersion1(fs, aktuellerClub)
@@ -104,10 +104,10 @@ Namespace Controller
         ''' <param name="Club"></param>
         ''' <returns></returns>
         Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As Club) As Boolean
-            Dim serializer = New XmlSerializer(GetType(Veraltert.Skiclub))
-            Dim loadedSkiclub As Veraltert.Skiclub
+            Dim serializer = New XmlSerializer(GetType(Generation1.Skiclub))
+            Dim loadedSkiclub As Generation1.Skiclub
             Try
-                loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Veraltert.Skiclub)
+                loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Generation1.Skiclub)
                 Club = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
                 Return True
             Catch ex As InvalidDataException
@@ -126,6 +126,7 @@ Namespace Controller
         Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Club))
             Try
+                Dim x = serializer.Deserialize(Filestream)
                 Club = TryCast(serializer.Deserialize(Filestream), Club)
                 Return True
             Catch ex As InvalidOperationException
@@ -215,7 +216,7 @@ Namespace Controller
                 Einteilungen.Add(New Einteilung With {
                                  .Benennung = "Tag1",
                                  .Sortierung = 1,
-                                 .Gruppenliste = Club.SelectedEinteilung.Gruppenliste,
+                                 .Gruppenliste = Club.Gruppenliste,
                                  .GruppenloseTeilnehmer = Club.SelectedEinteilung.GruppenloseTeilnehmer,
                                  .GruppenloseTrainer = Club.SelectedEinteilung.GruppenloseTrainer})
             End If

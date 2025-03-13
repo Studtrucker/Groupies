@@ -2,7 +2,7 @@
 Imports System.ComponentModel.DataAnnotations
 
 
-Namespace Entities.Veraltert
+Namespace Entities.Generation1
 
     Public Class Level
         Inherits BaseModel

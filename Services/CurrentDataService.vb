@@ -5,13 +5,13 @@ Imports Groupies.Entities
 Namespace Services
 
     ' Hier werden alle Daten der aktuellen Groupies Datei gesammelt
-    <Obsolete>
+
     Public Module CurrentDataService
 
         Public Property Club As Club
 
 
-        Public Property Skiclub As Veraltert.Skiclub
+        Public Property Skiclub As Generation1.Skiclub
 
         Public ReadOnly Property availableInstructors As TrainerCollection
             Get

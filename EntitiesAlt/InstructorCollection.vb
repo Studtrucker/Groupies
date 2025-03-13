@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Data.SqlClient
 
-Namespace Entities.Veraltert
+Namespace Entities.Generation1
 
     Public Class InstructorCollection
         Inherits ObservableCollection(Of Instructor)

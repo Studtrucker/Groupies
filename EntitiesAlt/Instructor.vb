@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
 
-Namespace Entities.Veraltert
+Namespace Entities.Generation1
 
     Public Class Instructor
         Inherits BaseModel

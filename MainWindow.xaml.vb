@@ -8,6 +8,7 @@ Imports System.Xml.Serialization
 Imports Groupies.Commands
 Imports Groupies.Controller
 Imports Groupies.Entities
+Imports Groupies.Entities.AktuelleVersion
 Imports Groupies.Interfaces
 Imports Groupies.Services
 Imports Groupies.UserControls
@@ -688,7 +689,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub SaveXML(fileName As String)
-        Dim serializer = New XmlSerializer(GetType(Entities.Club))
+        Dim serializer = New XmlSerializer(GetType(Club))
         Using fs = New FileStream(fileName, FileMode.Create)
             serializer.Serialize(fs, AppCon.AktuellerClub)
         End Using

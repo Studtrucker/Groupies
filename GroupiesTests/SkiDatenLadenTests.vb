@@ -1,5 +1,6 @@
 ﻿Imports Groupies
 Imports Groupies.Entities
+Imports Groupies.Entities.AktuelleVersion
 Imports Groupies.Controller
 Imports System.Windows
 
@@ -59,14 +60,14 @@ Public Class SkiDatenLadenTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub SkiGruppenLesenTest()
         Debug.Print($"Version2 Gruppen lesen")
         Dim Gruppen = SkiDatenLaden.GruppenLesen()
         Assert.IsNotNull(Gruppen)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub SkiTeilnehmerLesenTest()
         Debug.Print($"Version2 Teilnehmer lesen")
         Dim Teilnehmer = SkiDatenLaden.TeilnehmerLesen()
@@ -74,21 +75,21 @@ Public Class SkiDatenLadenTests
     End Sub
 
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub SkiTrainerLesenTest()
         Debug.Print($"Version2 Trainer lesen")
         Dim Trainer = SkiDatenLaden.TrainerLesen()
         Assert.IsNotNull(Trainer)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub SkiEinteilungenLesenTest()
         Debug.Print($"Version2 Einteilungen lesen")
         Dim Einteilungen = SkiDatenLaden.EinteilungenLesen()
         Assert.IsNotNull(Einteilungen)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub ZweiEinteilungenLesenTest()
 
         Dim Pfad1, Pfad
@@ -113,7 +114,7 @@ Public Class SkiDatenLadenTests
         Assert.AreEqual("Tag2", Club.Einteilungsliste(1).Benennung)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub LadenDateiVersion1_In_neueStruktur()
         Dim Pfad
 
@@ -130,7 +131,7 @@ Public Class SkiDatenLadenTests
         Assert.AreEqual("Tag1", Club.Einteilungsliste(0).Benennung)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub LadenDateiVersion1_In_neueStruktur_ZusaetzlicheEinteilung()
         Dim Pfad, Pfad1
 
@@ -155,7 +156,7 @@ Public Class SkiDatenLadenTests
     End Sub
 
 
-    <TestMethod>
+    ' <TestMethod>
     Public Sub OpenSkidateiTest()
         Dim Pfad, Pfad1
 

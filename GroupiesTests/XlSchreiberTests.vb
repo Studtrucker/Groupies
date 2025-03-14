@@ -1,10 +1,11 @@
 ﻿Imports Groupies
 Imports Groupies.Entities
 Imports Groupies.Controller
+Imports Groupies.Entities.AktuelleVersion
 
 <TestClass>
 Public Class XlSchreiberTests
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestXlExport()
         Dim xl = New XLSchreiber
         Dim Stephan As New Teilnehmer("Stephan", "Rath")

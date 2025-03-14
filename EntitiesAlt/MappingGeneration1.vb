@@ -1,6 +1,6 @@
 ﻿Imports Groupies.Entities
-Imports Groupies.Entities.Generation1
-Public Module VeralterteKlassenMapping
+Imports Groupies.Entities.AktuelleVersion
+Public Module MappingGeneration1
 
     Private NeuerClub As Club
     Private _Gruppenliste As GruppeCollection
@@ -65,7 +65,7 @@ Public Module VeralterteKlassenMapping
         End If
 
         Dim Trainer = New Trainer(Instructor.InstructorFirstName) With {
-            .eMail = Instructor.eMail,
+            .EMail = Instructor.eMail,
             .Foto = Instructor.InstructorPicture,
             .Nachname = Instructor.InstructorLastName,
             .Spitzname = Instructor.InstructorPrintName,

@@ -87,6 +87,7 @@
     <Compile Include="ClubTests.vb" />
     <Compile Include="EwigeTeilnehmerlisteTest.vb" />
     <Compile Include="ImportServiceTests.vb" />
+    <Compile Include="SkiDateienServiceTests.vb" />
     <Compile Include="XmlDatenLadenTests.vb" />
     <Compile Include="XlLeserTests.vb" />
     <Compile Include="FaehigkeitenTests.vb" />

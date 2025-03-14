@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports Groupies.Entities
+Imports Groupies.Entities.AktuelleVersion
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Services
 Imports System.Xml.Serialization

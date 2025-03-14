@@ -110,7 +110,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
-    <Compile Include="Entities\ClubGeneration3.vb" />
+    <Compile Include="EntitiesAlt\MappingGeneration2.vb" />
+    <Compile Include="Entities\ClubAktuelleVersion.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
@@ -150,7 +151,7 @@
     <Compile Include="EntitiesAlt\InstructorCollection.vb" />
     <Compile Include="EntitiesAlt\Level.vb" />
     <Compile Include="EntitiesAlt\LevelCollection.vb" />
-    <Compile Include="EntitiesAlt\VeralterteKlassenMapping.vb" />
+    <Compile Include="EntitiesAlt\MappingGeneration1.vb" />
     <Compile Include="EntitiesAlt\Participant.vb" />
     <Compile Include="EntitiesAlt\ParticipantCollection.vb" />
     <Compile Include="EntitiesAlt\Skiclub.vb" />

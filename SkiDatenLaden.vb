@@ -1,5 +1,8 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
+Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation1
+Imports Groupies.Entities.Generation2
 Imports Groupies.Entities
 Imports Microsoft.Win32
 
@@ -12,7 +15,7 @@ Namespace Controller
 
 #Region "Komplette Dateien lesen"
 
-        Public Shared Function OpenSkiDatei(ByRef Club As Club) As Boolean
+        Public Shared Function OpenSkiDatei(ByRef Club As AktuelleVersion.Club) As Boolean
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
             If dlg.ShowDialog = True Then
                 Club = OpenSkiDatei(dlg.FileName)
@@ -25,7 +28,7 @@ Namespace Controller
         End Function
 
 
-        Public Shared Function OpenSkiDatei(fileName As String) As Club
+        Public Shared Function OpenSkiDatei(fileName As String) As AktuelleVersion.Club
 
             If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
                 MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
@@ -47,7 +50,7 @@ Namespace Controller
         ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
         ''' Sie wird deserialisiert und als Club zurückgegeben
         ''' </summary>
-        Public Shared Function SkiDateiLesen() As Club
+        Public Shared Function SkiDateiLesen() As AktuelleVersion.Club
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
             If dlg.ShowDialog = True Then
@@ -66,16 +69,16 @@ Namespace Controller
         ''' </summary>
         ''' <param name="Datei"></param>
         ''' <returns></returns>
-        Public Shared Function SkiDateiLesen(Datei As String) As Club
+        Public Shared Function SkiDateiLesen(Datei As String) As AktuelleVersion.Club
             If File.Exists(Datei) Then
                 Try
                     Dim DateiGelesen
-                    Dim aktuellerClub As New Club
+                    Dim aktuellerClub As New AktuelleVersion.Club
                     Using fs = New FileStream(Datei, FileMode.Open)
                         ' Versuche Ski (XML) mit Struktur Groupies2 (englische Objektnamen) zu lesen
                         DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
                         If DateiGelesen Then
-                            aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
+                            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
@@ -83,7 +86,7 @@ Namespace Controller
                     Using fs = New FileStream(Datei, FileMode.Open)
                         If Not DateiGelesen Then
                             LeseSkiDateiVersion1(fs, aktuellerClub)
-                            aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
+                            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
                             Return aktuellerClub
                         End If
                     End Using
@@ -103,12 +106,12 @@ Namespace Controller
         ''' <param name="Filestream"></param>
         ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As Club) As Boolean
+        Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As AktuelleVersion.Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Generation1.Skiclub))
             Dim loadedSkiclub As Generation1.Skiclub
             Try
                 loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Generation1.Skiclub)
-                Club = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+                Club = MappingGeneration1.MapSkiClub2Club(loadedSkiclub)
                 Return True
             Catch ex As InvalidDataException
                 Throw ex
@@ -123,11 +126,12 @@ Namespace Controller
         ''' <param name="Filestream"></param>
         ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As Club) As Boolean
-            Dim serializer = New XmlSerializer(GetType(Club))
+        Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As AktuelleVersion.Club) As Boolean
+            Dim serializer = New XmlSerializer(GetType(Generation2.Club))
+            Dim loadedSkiclub As Generation2.Club
             Try
-                Dim x = serializer.Deserialize(Filestream)
-                Club = TryCast(serializer.Deserialize(Filestream), Club)
+                loadedSkiclub = TryCast(serializer.Deserialize(Filestream), Generation2.Club)
+                Club = MappingGeneration2.MapSkiClub2Club(loadedSkiclub)
                 Return True
             Catch ex As InvalidOperationException
                 Return False
@@ -155,7 +159,7 @@ Namespace Controller
 
         Public Shared Function GruppenLesen() As GruppeCollection
             Dim aktuellerClub = SkiDateiLesen()
-            Return AktuellerClub.Gruppenliste
+            Return aktuellerClub.Gruppenliste
         End Function
         Public Shared Function TrainerLesen(Datei As String) As TrainerCollection
             Dim aktuellerClub = SkiDateiLesen(Datei)
@@ -208,7 +212,7 @@ Namespace Controller
         ''' </summary>
         ''' <param name="Club"></param>
         ''' <returns>EinteilungCollection</returns>
-        Public Shared Function EinteilungenLesen(Club As Club) As EinteilungCollection
+        Public Shared Function EinteilungenLesen(Club As AktuelleVersion.Club) As EinteilungCollection
             Dim Einteilungen = Club.Einteilungsliste
             ' Wenn keine Einteilungen vorhanden sind, wird eine Standard-Einteilung erstellt
             ' diese wird aus den Gruppen und Gruppenlosen des Clubs erstellt

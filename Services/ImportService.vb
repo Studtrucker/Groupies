@@ -3,6 +3,7 @@ Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Groupies.Entities
+Imports Groupies.Entities.AktuelleVersion
 Imports System.Text
 Imports Groupies.Controller
 Imports Groupies
@@ -17,7 +18,7 @@ Namespace Services
         Public Workbook As Excel.Workbook
         Private _xlSheet As Excel.Worksheet
         Private ReadOnly _xlCell As Excel.Range
-        Private ReadOnly _skischule = New Entities.Club("Club")
+        Private ReadOnly _skischule = New Club("Club")
 
 #End Region
 
@@ -27,7 +28,7 @@ Namespace Services
 
 #Region "Funktionen und Methoden"
 
-        Public Function ImportSkiclub() As Entities.Club
+        Public Function ImportSkiclub() As Club
 
             Workbook = Nothing
 
@@ -253,7 +254,7 @@ Namespace Services
         End Function
 
 
-        Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Entities.Club
+        Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Club
             Dim CurrentRow = 4
             Dim RowCount = Excelsheet.UsedRange.Rows.Count
             Dim Skikursgruppe As Gruppe

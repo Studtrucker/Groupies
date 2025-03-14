@@ -1,8 +1,9 @@
 ﻿Imports System.ComponentModel
 Imports Microsoft.Win32
+Imports Groupies.Entities.AktuelleVersion
 
 Public Class Testfenster
-    Dim Club As Entities.Club
+    Dim Club As Club
 
     Dim _Einteilungen As ICollectionView
     Dim _Gruppen As ICollectionView
@@ -10,7 +11,7 @@ Public Class Testfenster
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        Dim Model As New Entities.Club
+        Dim Model As New Club
 
         Model = Controller.SkiDatenLaden.SkiDateiLesen()
 
@@ -20,7 +21,7 @@ Public Class Testfenster
 
     Private Sub Testfenster_Loaded(sender As Object, e As RoutedEventArgs)
 
-        Dim Model As New Entities.Club
+        Dim Model As New Club
         Model.ClubName = "Skiclub Meerbusch"
 
         Dim e1 = New Entities.Einteilung With {.Benennung = "Tag1"}

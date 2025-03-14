@@ -31,7 +31,7 @@ Public Class MappingVeraltertAufNeuTest
                 End Try
             End Using
 
-            Dim neuerClub = VeralterteKlassenMapping.MapSkiClub2Club(loadedSkiclub)
+            Dim neuerClub = MappingGeneration1.MapSkiClub2Club(loadedSkiclub)
 
             Assert.AreEqual(loadedSkiclub.Levellist.Count, neuerClub.Leistungsstufenliste.Count)
             Assert.AreEqual(84, neuerClub.Einteilungsliste(0).EingeteilteTeilnehmer.Count)

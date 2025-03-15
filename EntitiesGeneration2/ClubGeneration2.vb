@@ -4,6 +4,8 @@ Imports Groupies.Services
 
 Namespace Entities.Generation2
     Public Class Club
+        Inherits BaseModel
+        Implements IClub
 
 #Region "Fields"
 
@@ -17,6 +19,7 @@ Namespace Entities.Generation2
         Private _GruppenloseTrainer As New TrainerCollection
         Private ReadOnly _EingeteilteTrainer As New TrainerCollection
         Private ReadOnly _AlleTrainer As New TrainerCollection
+
 #End Region
 
 #Region "Konstruktor"
@@ -44,7 +47,7 @@ Namespace Entities.Generation2
         ''' Der Clubname
         ''' </summary>
         ''' <returns></returns>
-        Public Property ClubName As String
+        Public Property ClubName As String Implements IClub.ClubName
 
         ''' <summary>
         ''' Eine Liste aller Gruppen
@@ -147,117 +150,22 @@ Namespace Entities.Generation2
         End Property
 
         ''' <summary>
-        ''' Liste mit allen Trainern, Eingeteilte und die ohne Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AlleTrainer() As TrainerCollection
-            Get
-                _AlleTrainer.Clear()
-                EingeteilteTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
-                GruppenloseTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
-                Return _AlleTrainer
-            End Get
-        End Property
-
-        ''' <summary>
         ''' Eine Liste der verwendeten Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection
+        Public Property Leistungsstufenliste() As LeistungsstufeCollection Implements IClub.LeistungsstufenTemplate
 
-        Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
-            Get
-                Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
-            End Get
-        End Property
 
         ''' <summary>
         ''' Eine Liste der aller Faehigkeiten
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection Implements IClub.FaehigkeitenTemplate
 
 #End Region
 
 #Region "Funktionen und Methoden"
 
-        ''' <summary>
-        ''' Prüfung, ob die Leistungsstufe in Gebrauch ist
-        ''' </summary>
-        ''' <param name="Leistungsstufe"></param>
-        ''' <returns></returns>
-        Public Function LeistungsstufeWirdNichtGenutzt(Leistungsstufe As Leistungsstufe) As Boolean
-            Dim TnL = AlleTeilnehmer.Where(Function(Tn) Tn.Leistungsstand.Benennung.Equals(Leistungsstufe.Benennung)).ToList
-            Dim GrL = Gruppenliste.Where(Function(Gr) Gr.Leistungsstufe.Benennung.Equals(Leistungsstufe.Benennung)).ToList
-            If TnL.Count = 0 AndAlso GrL.Count = 0 Then
-                Return True
-            End If
-            Return False
-        End Function
-
-        ''' <summary>
-        ''' Die angegebene Gruppe bekommt den Teilnehmer als Mitglied
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        ''' <param name="Gruppe"></param>
-        Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
-            Gruppe.Mitgliederliste.Add(Teilnehmer)
-            GruppenloseTeilnehmer.Remove(Teilnehmer)
-        End Sub
-
-        ''' <summary>
-        ''' Der Teilnehmer wird aus der angegebenen Gruppe als Mitglied entfernt
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        ''' <param name="Gruppe"></param>
-        Public Sub TeilnehmerAusGruppeEntfernen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
-            Gruppe.Mitgliederliste.Remove(Teilnehmer)
-            GruppenloseTeilnehmer.Add(Teilnehmer)
-        End Sub
-
-        ''' <summary>
-        ''' Teilnehmer wird aus dem Club entfernt und 
-        ''' in der Ewigen Teilnehmerliste archiviert
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        Public Sub TeilnehmerArchivieren(Teilnehmer As Teilnehmer)
-            GruppenloseTeilnehmer.Remove(Teilnehmer)
-            EwigeTeilnehmerliste.Add(Teilnehmer, Now)
-        End Sub
-
-        ''' <summary>
-        ''' Der Trainer wird der angegebenen Gruppe zugewiesen
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
-            Gruppe.Trainer = Trainer
-            GruppenloseTrainer.Remove(Trainer)
-        End Sub
-
-        ''' <summary>
-        ''' Ein Trainer wird aus der angegebenen Gruppe entfernt
-        ''' </summary>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            GruppenloseTrainer.Add(Gruppe.Trainer)
-            Gruppe.Trainer = Nothing
-        End Sub
-
-        ''' <summary>
-        ''' Trainer wird aus dem Club entfernt und 
-        ''' in der Ewigen Trainerliste archiviert
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        Public Sub TrainerArchivieren(Trainer As Trainer)
-            GruppenloseTrainer.Remove(Trainer)
-            EwigeTrainerliste.Add(Trainer, Now)
-        End Sub
-
-
-        Public Overrides Function ToString() As String
-            Return ClubName
-        End Function
 
 #End Region
 

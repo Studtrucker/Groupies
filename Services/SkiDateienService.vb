@@ -9,12 +9,31 @@ Namespace Services
 
     Public Module SkiDateienService
 
-        Public Function IdentifiziereDateiGeneration(filePath As String)
+#Region "Öffentliche FunKtionen"
+
+        ''' <summary>
+        ''' Identifiziert die Generation der Datei
+        ''' und gibt die passende Generation des Clubs zurück
+        ''' </summary>
+        ''' <param name="filePath"></param>
+        ''' <returns></returns>
+        Public Function IdentifiziereDateiGeneration(filePath As String) As IClub
             Dim ElementListe As List(Of String) = LeseXmlDatei(filePath)
             Return Auswertung(ElementListe)
         End Function
 
-        Private Function Auswertung(ElementListe As List(Of String))
+#End Region
+
+#Region "Private Funktionen"
+
+        ''' <summary>
+        ''' Werte die Elementliste aus und 
+        ''' gib die passende Generation
+        ''' des Clubs zurück
+        ''' </summary>
+        ''' <param name="ElementListe"></param>
+        ''' <returns></returns>
+        Private Function Auswertung(ElementListe As List(Of String)) As IClub
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
             ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
@@ -24,6 +43,13 @@ Namespace Services
             End If
         End Function
 
+        ''' <summary>
+        ''' Liest eine XML Datei und 
+        ''' sammelt die Elemente der 
+        ''' in filepath angegebenen Datei
+        ''' </summary>
+        ''' <param name="filePath"></param>
+        ''' <returns></returns>
         Private Function LeseXmlDatei(filePath As String) As List(Of String)
             Dim ElementListe As New List(Of String)
             ' Erstelle einen FileStream 
@@ -46,20 +72,8 @@ Namespace Services
 
         End Function
 
-        Public Sub SkiDateiEinlesen(filePath As String)
-            Dim ElementListe As List(Of String) = LeseXmlDatei(filePath)
-            If ElementListe.Contains("Skiclub") Then
-                'Dim club As Club = Deserialize(Of Club)(filePath)
-                'Console.WriteLine(club.ClubName)
-                Console.WriteLine("Generation1")
-            ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
-                'Dim club As Club = Deserialize(Of Club)(filePath)
-                'Console.WriteLine(club.ClubName)
-                Console.WriteLine("AktuelleVersion")
-            Else
-                Console.WriteLine("Generation2")
-            End If
-        End Sub
-
     End Module
+
+#End Region
+
 End Namespace

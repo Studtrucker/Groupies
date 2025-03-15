@@ -110,8 +110,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
-    <Compile Include="EntitiesAlt\MappingGeneration2.vb" />
+    <Compile Include="EntitiesGeneration1\MappingGeneration2.vb" />
     <Compile Include="Entities\ClubAktuelleVersion.vb" />
+    <Compile Include="Interfaces\IClub.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
@@ -145,18 +146,18 @@
     <Compile Include="Windows\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntitiesAlt\Group.vb" />
-    <Compile Include="EntitiesAlt\GroupCollection.vb" />
-    <Compile Include="EntitiesAlt\Instructor.vb" />
-    <Compile Include="EntitiesAlt\InstructorCollection.vb" />
-    <Compile Include="EntitiesAlt\Level.vb" />
-    <Compile Include="EntitiesAlt\LevelCollection.vb" />
-    <Compile Include="EntitiesAlt\MappingGeneration1.vb" />
-    <Compile Include="EntitiesAlt\Participant.vb" />
-    <Compile Include="EntitiesAlt\ParticipantCollection.vb" />
-    <Compile Include="EntitiesAlt\Skiclub.vb" />
-    <Compile Include="EntitiesAlt\Skill.vb" />
-    <Compile Include="EntitiesAlt\SkillCollection.vb" />
+    <Compile Include="EntitiesGeneration1\Group.vb" />
+    <Compile Include="EntitiesGeneration1\GroupCollection.vb" />
+    <Compile Include="EntitiesGeneration1\Instructor.vb" />
+    <Compile Include="EntitiesGeneration1\InstructorCollection.vb" />
+    <Compile Include="EntitiesGeneration1\Level.vb" />
+    <Compile Include="EntitiesGeneration1\LevelCollection.vb" />
+    <Compile Include="EntitiesGeneration1\MappingGeneration1.vb" />
+    <Compile Include="EntitiesGeneration1\Participant.vb" />
+    <Compile Include="EntitiesGeneration1\ParticipantCollection.vb" />
+    <Compile Include="EntitiesGeneration1\Skiclub.vb" />
+    <Compile Include="EntitiesGeneration1\Skill.vb" />
+    <Compile Include="EntitiesGeneration1\SkillCollection.vb" />
     <Compile Include="Entities\EwigerTrainer.vb" />
     <Compile Include="Entities\EwigeTrainerCollection.vb" />
     <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
@@ -382,7 +383,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\ClubGeneration2.vb" />
+    <Compile Include="EntitiesGeneration2\ClubGeneration2.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

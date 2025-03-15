@@ -6,15 +6,13 @@ Namespace Entities.AktuelleVersion
 
     Public Class Club
         Inherits BaseModel
+        Implements IClub
 
 
 #Region "Fields"
 
         Private _Einteilungsliste = New EinteilungCollection
         Private _Gruppenliste = New GruppeCollection
-        Private _Gruppenhistorie = New List(Of GruppeCollection)
-
-
 
 #End Region
 
@@ -43,7 +41,7 @@ Namespace Entities.AktuelleVersion
         ''' Der Clubname
         ''' </summary>
         ''' <returns></returns>
-        Public Property ClubName As String
+        Public Property ClubName As String Implements IClub.ClubName
 
 
         ''' <summary>
@@ -109,15 +107,11 @@ Namespace Entities.AktuelleVersion
         ''' <returns></returns>
         Public Property EwigeTrainerliste() As EwigeTrainerCollection
 
-
-
-
-
         ''' <summary>
         ''' Eine Liste der verwendeten Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection
+        Public Property Leistungsstufenliste() As LeistungsstufeCollection Implements IClub.LeistungsstufenTemplate
 
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
@@ -127,9 +121,11 @@ Namespace Entities.AktuelleVersion
 
         ''' <summary>
         ''' Eine Liste der aller Faehigkeiten
+        ''' als Vorlage für die Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection Implements IClub.FaehigkeitenTemplate
+
 
 #End Region
 

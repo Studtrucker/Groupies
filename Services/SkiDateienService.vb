@@ -45,7 +45,7 @@ Namespace Services
 
         ''' <summary>
         ''' Liest eine XML Datei und 
-        ''' sammelt die Elemente der 
+        ''' sammelt die XML-Elemente der 
         ''' in filepath angegebenen Datei
         ''' </summary>
         ''' <param name="filePath"></param>

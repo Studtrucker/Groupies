@@ -58,7 +58,7 @@ Namespace Controller
             AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
             AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
 
-            Return $"[{Clubname}] wurde erfolgreich erstellt."
+            Return $"{Clubname} wurde erfolgreich erstellt."
         End Function
 
 

@@ -262,7 +262,7 @@ Public Class MainWindow
 
         UnsetView()
 
-        MessageBox.Show(AppCon.NeuenClubErstellen("Neuer Groupies Club"))
+        MessageBox.Show(AppCon.NeuenClubErstellen("Groupies Club"))
         SetView(AppCon.AktuellerClub)
 
     End Sub
@@ -270,7 +270,7 @@ Public Class MainWindow
     Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         Dim OpenClub As New Club
-        If SkiDatenLaden.OpenSkiDatei(OpenClub) Then
+        If SkiDateienService.OpenSkiDatei(OpenClub) Then
             UnsetView()
             SetView(OpenClub)
         End If
@@ -654,7 +654,7 @@ Public Class MainWindow
 
     Private Sub OpenSkischule(fileName As String)
 
-        Dim loadedClub = SkiDatenLaden.OpenSkiDatei(fileName)
+        Dim loadedClub = SkiDateienService.OpenSkiDatei(fileName)
 
         If loadedClub IsNot Nothing Then
 

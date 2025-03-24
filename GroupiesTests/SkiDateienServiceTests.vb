@@ -13,7 +13,7 @@ Public Class SkiDateienServiceTests
             "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiGeneration2.ski"}
 
         Dim typen = New List(Of String)
-        filelist.ForEach(Sub(f) typen.Add(IdentifiziereDateiGeneration(f).GetType.FullName))
+        filelist.ForEach(Sub(f) typen.Add(SkiDateienService.IdentifiziereDateiGeneration(f).GetType.FullName))
 
         Assert.AreEqual(3, typen.Count)
         Assert.AreEqual("Groupies.Entities.AktuelleVersion.Club", typen(0))

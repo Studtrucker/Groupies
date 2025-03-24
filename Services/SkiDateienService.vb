@@ -1,4 +1,5 @@
-﻿Imports Groupies.Entities
+﻿Imports Groupies.Controller
+Imports Groupies.Entities
 Imports Microsoft.Win32
 Imports System
 Imports System.IO
@@ -7,9 +8,106 @@ Imports System.Xml.Serialization
 
 Namespace Services
 
-    Public Module SkiDateienService
+    Public Class SkiDateienService
 
 #Region "Öffentliche FunKtionen"
+
+        ''' <summary>
+        ''' Zeigt einen OpenFileDialog
+        ''' und lädt damit eine Ski-Datei
+        ''' </summary>
+        ''' <param name="Club"></param>
+        ''' <returns></returns>
+        Public Shared Function OpenSkiDatei(ByRef Club As AktuelleVersion.Club) As Boolean
+            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+            If dlg.ShowDialog = True Then
+                Club = OpenSkiDatei(dlg.FileName)
+                If Club IsNot Nothing Then
+                    Return True
+                End If
+            End If
+            Club = Nothing
+            Return False
+        End Function
+
+        ''' <summary>
+        ''' Prüft, ob die angegebene Datei die bereits geladene wurde 
+        ''' oder ob die Datei existiert, 
+        ''' und gibt die geladene Ski-Datei als 
+        ''' Club-Objekt zurück
+        ''' </summary>
+        ''' <param name="fileName"></param>
+        ''' <returns></returns>
+        Public Shared Function OpenSkiDatei(fileName As String) As AktuelleVersion.Club
+
+            If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
+                MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
+                Return Nothing
+                Exit Function
+            End If
+
+            If Not File.Exists(fileName) Then
+                MessageBox.Show("Die Datei existiert nicht")
+                Return Nothing
+                Exit Function
+            End If
+
+            Return SkiDateiLesen(fileName)
+
+        End Function
+
+        ''' <summary>
+        ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
+        ''' Sie wird deserialisiert und als Club zurückgegeben
+        ''' </summary>
+        Public Shared Function SkiDateiLesen() As AktuelleVersion.Club
+            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+
+            If dlg.ShowDialog = True Then
+                Dim Club = SkiDateiLesen(dlg.FileName)
+                Return Club
+            End If
+            Return Nothing
+
+        End Function
+
+        ''' <summary>
+        ''' Eine Dateipfad wird übergeben, 
+        ''' die angebene Datei wird eingelesen,
+        ''' deserialisiert und als Club zurückgegeben
+        ''' </summary>
+        ''' <param name="Datei"></param>
+        ''' <returns></returns>
+        Public Shared Function SkiDateiLesen(Datei As String) As AktuelleVersion.Club
+            If File.Exists(Datei) Then
+                'Try
+                '    Dim DateiGelesen
+                '    Dim aktuellerClub As New AktuelleVersion.Club
+                '    Using fs = New FileStream(Datei, FileMode.Open)
+                '        ' Versuche Ski (XML) mit Struktur Groupies2 (englische Objektnamen) zu lesen
+                '        DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
+                '        If DateiGelesen Then
+                '            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
+                '            Return aktuellerClub
+                '        End If
+                '    End Using
+                '    ' Versuche Ski (XML) mit Struktur Groupies 1  (deutsche Objektnamen) zu lesen
+                '    Using fs = New FileStream(Datei, FileMode.Open)
+                '        If Not DateiGelesen Then
+                '            LeseSkiDateiVersion1(fs, aktuellerClub)
+                '            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
+                '            Return aktuellerClub
+                '        End If
+                '    End Using
+                'Catch ex As InvalidDataException
+                '    Debug.Print("Datei ungültig: " & ex.Message)
+                '    Return Nothing
+                '    Exit Function
+                'End Try
+            End If
+            Return Nothing
+        End Function
+
 
         ''' <summary>
         ''' Identifiziert die Generation der Datei
@@ -17,7 +115,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="filePath"></param>
         ''' <returns></returns>
-        Public Function IdentifiziereDateiGeneration(filePath As String) As IClub
+        Public Shared Function IdentifiziereDateiGeneration(filePath As String) As IClub
             Dim ElementListe As List(Of String) = LeseXmlDatei(filePath)
             Return Auswertung(ElementListe)
         End Function
@@ -33,7 +131,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="ElementListe"></param>
         ''' <returns></returns>
-        Private Function Auswertung(ElementListe As List(Of String)) As IClub
+        Private Shared Function Auswertung(ElementListe As List(Of String)) As IClub
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
             ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
@@ -50,7 +148,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="filePath"></param>
         ''' <returns></returns>
-        Private Function LeseXmlDatei(filePath As String) As List(Of String)
+        Private Shared Function LeseXmlDatei(filePath As String) As List(Of String)
             Dim ElementListe As New List(Of String)
             ' Erstelle einen FileStream 
             Using FileStream As FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
@@ -72,7 +170,7 @@ Namespace Services
 
         End Function
 
-    End Module
+    End Class
 
 #End Region
 

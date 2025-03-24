@@ -15,90 +15,6 @@ Namespace Controller
 
 #Region "Komplette Dateien lesen"
 
-        Public Shared Function OpenSkiDatei(ByRef Club As AktuelleVersion.Club) As Boolean
-            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-            If dlg.ShowDialog = True Then
-                Club = OpenSkiDatei(dlg.FileName)
-                If Club IsNot Nothing Then
-                    Return True
-                End If
-            End If
-            Club = Nothing
-            Return False
-        End Function
-
-
-        Public Shared Function OpenSkiDatei(fileName As String) As AktuelleVersion.Club
-
-            If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
-                MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
-                Return Nothing
-                Exit Function
-            End If
-
-            If Not File.Exists(fileName) Then
-                MessageBox.Show("Die Datei existiert nicht")
-                Return Nothing
-                Exit Function
-            End If
-
-            Return SkiDateiLesen(fileName)
-
-        End Function
-
-        ''' <summary>
-        ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
-        ''' Sie wird deserialisiert und als Club zurückgegeben
-        ''' </summary>
-        Public Shared Function SkiDateiLesen() As AktuelleVersion.Club
-            Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-
-            If dlg.ShowDialog = True Then
-                Dim Club = SkiDateiLesen(dlg.FileName)
-                Return Club
-            End If
-            Return Nothing
-
-        End Function
-
-
-        ''' <summary>
-        ''' Eine Dateipfad wird übergeben, 
-        ''' die angebene Datei wird eingelesen,
-        ''' deserialisiert und als Club zurückgegeben
-        ''' </summary>
-        ''' <param name="Datei"></param>
-        ''' <returns></returns>
-        Public Shared Function SkiDateiLesen(Datei As String) As AktuelleVersion.Club
-            If File.Exists(Datei) Then
-                Try
-                    Dim DateiGelesen
-                    Dim aktuellerClub As New AktuelleVersion.Club
-                    Using fs = New FileStream(Datei, FileMode.Open)
-                        ' Versuche Ski (XML) mit Struktur Groupies2 (englische Objektnamen) zu lesen
-                        DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
-                        If DateiGelesen Then
-                            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
-                            Return aktuellerClub
-                        End If
-                    End Using
-                    ' Versuche Ski (XML) mit Struktur Groupies 1  (deutsche Objektnamen) zu lesen
-                    Using fs = New FileStream(Datei, FileMode.Open)
-                        If Not DateiGelesen Then
-                            LeseSkiDateiVersion1(fs, aktuellerClub)
-                            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
-                            Return aktuellerClub
-                        End If
-                    End Using
-                Catch ex As InvalidDataException
-                    Debug.Print("Datei ungültig: " & ex.Message)
-                    Return Nothing
-                    Exit Function
-                End Try
-            End If
-            Return Nothing
-        End Function
-
         ''' <summary>
         ''' Liest eine Ski-Datei mit der Struktur von Groupies 1
         ''' (englische Namen für die Klassen)
@@ -146,28 +62,28 @@ Namespace Controller
 #Region "Teile aus Datei laden"
 
         Public Shared Function TrainerLesen() As TrainerCollection
-            Dim aktuellerClub = SkiDateiLesen()
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.SelectedEinteilung.AlleTrainer
         End Function
 
         Public Shared Function TeilnehmerLesen() As TeilnehmerCollection
-            Dim aktuellerClub = SkiDateiLesen()
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.SelectedEinteilung.AlleTeilnehmer
         End Function
 
 
 
         Public Shared Function GruppenLesen() As GruppeCollection
-            Dim aktuellerClub = SkiDateiLesen()
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.Gruppenliste
         End Function
         Public Shared Function TrainerLesen(Datei As String) As TrainerCollection
-            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.SelectedEinteilung.AlleTrainer
         End Function
 
         Public Shared Function TeilnehmerLesen(Datei As String) As TeilnehmerCollection
-            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.SelectedEinteilung.AlleTeilnehmer
         End Function
 
@@ -179,7 +95,7 @@ Namespace Controller
         ''' <param name="Name"></param>
         ''' <returns></returns>
         Public Shared Function TeilnehmerLesen(Datei As String, Name As String) As TeilnehmerCollection
-            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Dim Liste = aktuellerClub.SelectedEinteilung.AlleTeilnehmer.Where(Function(tn) tn.Vorname = Name).ToList
             Liste.AddRange(aktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Where(Function(tn) tn.Nachname = Name))
             Return New TeilnehmerCollection(Liste)
@@ -191,7 +107,7 @@ Namespace Controller
         ''' </summary>
         ''' <returns>EinteilungCollection</returns>
         Public Shared Function EinteilungenLesen() As EinteilungCollection
-            Dim aktuellerClub = SkiDateiLesen()
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return EinteilungenLesen(aktuellerClub)
         End Function
 
@@ -202,7 +118,7 @@ Namespace Controller
         ''' <param name="Datei"></param>
         ''' <returns>EinteilungCollection</returns>
         Public Shared Function EinteilungenLesen(Datei As String) As EinteilungCollection
-            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return EinteilungenLesen(aktuellerClub)
         End Function
 
@@ -228,7 +144,7 @@ Namespace Controller
         End Function
 
         Public Shared Function GruppenLesen(Datei As String) As GruppeCollection
-            Dim aktuellerClub = SkiDateiLesen(Datei)
+            Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
             Return aktuellerClub.SelectedEinteilung.Gruppenliste
         End Function
 

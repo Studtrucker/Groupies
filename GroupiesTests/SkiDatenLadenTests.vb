@@ -101,7 +101,7 @@ Public Class SkiDatenLadenTests
             Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"
         End If
 
-        Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
+        Dim Club = Services.SkiDateienService.SkiDateiLesen(Pfad)
 
         Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
 
@@ -124,7 +124,7 @@ Public Class SkiDatenLadenTests
             Pfad = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion1.ski"
         End If
 
-        Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
+        Dim Club = Services.SkiDateienService.SkiDateiLesen(Pfad)
 
         Assert.AreEqual(1, Club.Einteilungsliste.Count)
         Assert.AreEqual(1, Club.Einteilungsliste(0).Sortierung)
@@ -143,7 +143,7 @@ Public Class SkiDatenLadenTests
             Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2Tag2.ski"
         End If
 
-        Dim Club = SkiDatenLaden.SkiDateiLesen(Pfad)
+        Dim Club = Services.SkiDateienService.SkiDateiLesen(Pfad)
 
         Dim Einteilungsliste1 As EinteilungCollection = SkiDatenLaden.EinteilungenLesen(Pfad1)
         Einteilungsliste1.ToList.ForEach(Sub(T) Club.Einteilungsliste.AddEinteilung(T))
@@ -168,9 +168,10 @@ Public Class SkiDatenLadenTests
             Pfad1 = "C:\Users\studtan\OneDrive\Dokumente\Reisen\Testdateien\TestdateiVersion2.ski"
         End If
 
-        Dim c1 = SkiDatenLaden.OpenSkiDatei(Pfad)
+        Dim c1 = Services.SkiDateienService.SkiDateiLesen(Pfad)
         Assert.IsNotNull(c1)
-        Dim c2 = SkiDatenLaden.OpenSkiDatei(Pfad1)
+        Dim c2 = Services.SkiDateienService.SkiDateiLesen(Pfad1)
+
         Assert.IsNotNull(c2)
     End Sub
 End Class

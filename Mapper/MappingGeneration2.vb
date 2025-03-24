@@ -2,12 +2,10 @@
 
 Public Module MappingGeneration2
 
-    Private NeuerClub As AktuelleVersion.Club
-    Private _Gruppenliste As GruppeCollection
+    Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation3.Club
 
-    Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As AktuelleVersion.Club
-
-        NeuerClub = New AktuelleVersion.Club
+        Dim NeuerClub = New Generation3.Club
+        NeuerClub.ClubName = If(Skiclub.ClubName, "Club")
         ' Neue Einteilung erstellen
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1", .Sortierung = 1})
 

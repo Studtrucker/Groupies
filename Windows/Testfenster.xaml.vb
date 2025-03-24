@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Microsoft.Win32
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 Imports Groupies.Entities
 
 Public Class Testfenster
@@ -12,7 +12,7 @@ Public Class Testfenster
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        Dim aktuellerClub = New AktuelleVersion.Club
+        Dim aktuellerClub = New Generation3.Club
         Groupies.Services.SkiDateienService.OpenSkiDatei(aktuellerClub)
 
         DataContext = aktuellerClub

@@ -8,7 +8,7 @@ Imports System.Xml.Serialization
 Imports Groupies.Commands
 Imports Groupies.Controller
 Imports Groupies.Entities
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 Imports Groupies.Interfaces
 Imports Groupies.Services
 Imports Groupies.UserControls
@@ -323,7 +323,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.Gruppenliste.Count > 0
+        e.CanExecute = AppCon.AktuellerClub IsNot Nothing AndAlso AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
     End Sub
 
 #End Region
@@ -542,7 +542,7 @@ Public Class MainWindow
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppCon.AktuellerClub.Gruppenliste IsNot Nothing
+        e.CanExecute = AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -554,7 +554,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppCon.AktuellerClub.Gruppenliste.Add(dlg.Group)
+            AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.Add(dlg.Group)
         End If
     End Sub
 
@@ -563,7 +563,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppCon.AktuellerClub.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
+        AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -589,7 +589,7 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dlg.ModusEinstellen()
-        dlg.KopiereAktuelleGruppen(AppCon.AktuellerClub.Gruppenliste)
+        dlg.KopiereAktuelleGruppen(AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste)
 
         If dlg.ShowDialog = True Then
             Try
@@ -907,7 +907,7 @@ Public Class MainWindow
 
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(AppCon.AktuellerClub.Gruppenliste)
+        Dim sortedGroupView = New ListCollectionView(AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste)
         sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
         Dim skikursgruppe As Gruppe
@@ -939,11 +939,11 @@ Public Class MainWindow
             DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
             DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            If String.IsNullOrWhiteSpace(AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung) Then
-                AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung = InputBox("Bitte diese Gruppeneinteilung benennen")
+            If String.IsNullOrWhiteSpace(AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung) Then
+                AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung = InputBox("Bitte diese Gruppeneinteilung benennen")
             End If
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.AktuellerClub.Gruppenliste.BenennungGruppeneinteilung)
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung)
             Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 

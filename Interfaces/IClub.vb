@@ -1,26 +1,13 @@
 ﻿Imports Groupies.Entities
-Public Interface IClub
 
-    ''' <summary>
-    ''' Der Clubname
-    ''' </summary>
-    ''' <returns></returns>
-    Property ClubName As String
-
-    ''' <summary>
-    ''' Leistungsstufen-Vorlage
-    ''' zur Verwendung in den Gruppen 
-    ''' und bei den Teilnehmern
-    ''' </summary>
-    ''' <returns></returns>
-    Property LeistungsstufenTemplate As LeistungsstufeCollection
-
-    ''' <summary>
-    ''' Fähigkeiten-Vorlage 
-    ''' zur Verwendung in den Leistungsstufen
-    ''' </summary>
-    ''' <returns></returns>
-    Property FaehigkeitenTemplate As FaehigkeitCollection
+Namespace Interfaces
 
 
-End Interface
+    Public Interface IClub
+        Function LadeGroupies(Datei As String) As Generation3.Club
+        Function Map2AktuelleGeneration(Skiclub As IClub) As Generation3.Club
+        Property Name As String
+
+    End Interface
+
+End Namespace

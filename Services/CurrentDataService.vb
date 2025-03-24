@@ -1,7 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Windows.Shell
 Imports Groupies.Entities
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 
 Namespace Services
 
@@ -31,7 +31,7 @@ Namespace Services
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Club.Gruppenliste = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
+                    Club.SelectedEinteilung.Gruppenliste = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
                 End If
             End If
         End Sub

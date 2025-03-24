@@ -3,7 +3,7 @@ Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
 Imports Groupies.Entities
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 Imports System.Text
 Imports Groupies.Controller
 Imports Groupies

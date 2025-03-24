@@ -1,7 +1,7 @@
 ﻿Imports Groupies
 Imports Groupies.Entities
 Imports Groupies.Controller
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 
 <TestClass>
 Public Class XlSchreiberTests

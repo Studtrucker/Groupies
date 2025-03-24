@@ -23,7 +23,7 @@ Namespace ValidationRules
                 End If
 
                 If IsNumeric(Sortierung) Then
-                    If Groupies.Controller.AppController.AktuellerClub.Gruppenliste.ToList.Where(Function(LS) LS.Sortierung = Sortierung).Any Then
+                    If Groupies.Controller.AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.ToList.Where(Function(LS) LS.Sortierung = Sortierung).Any Then
                         ErrorContent.Add("Gruppe mit dieser Sortierungszahl ist bereits vorhanden")
                     End If
                 End If

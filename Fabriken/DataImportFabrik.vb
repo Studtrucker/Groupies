@@ -39,7 +39,7 @@ Public Class DataImportTabellennameFabrik
             Case ".csv"
                 Return New TabellennameCsv
             Case Else
-                Throw New IO.FileFormatException($"Der Dateityp [{Dateityp}] ist unbekannt")
+                Throw New IO.FileFormatException($"Der Dateityp {Dateityp} ist unbekannt")
         End Select
     End Function
 

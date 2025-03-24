@@ -110,16 +110,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
-    <Compile Include="EntitiesGeneration1\MappingGeneration2.vb" />
-    <Compile Include="Entities\ClubAktuelleVersion.vb" />
+    <Compile Include="Mapper\MappingGeneration3.vb" />
+    <Compile Include="Mapper\MappingGeneration2.vb" />
+    <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
     <Compile Include="Interfaces\IClub.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
-    <Compile Include="Entities\Einteilung.vb" />
-    <Compile Include="Entities\EinteilungCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Einteilung.vb" />
+    <Compile Include="EntitiesGeneration3\EinteilungCollection.vb" />
     <Compile Include="MainViewModel.vb" />
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
@@ -152,17 +153,17 @@
     <Compile Include="EntitiesGeneration1\InstructorCollection.vb" />
     <Compile Include="EntitiesGeneration1\Level.vb" />
     <Compile Include="EntitiesGeneration1\LevelCollection.vb" />
-    <Compile Include="EntitiesGeneration1\MappingGeneration1.vb" />
+    <Compile Include="Mapper\MappingGeneration1.vb" />
     <Compile Include="EntitiesGeneration1\Participant.vb" />
     <Compile Include="EntitiesGeneration1\ParticipantCollection.vb" />
     <Compile Include="EntitiesGeneration1\Skiclub.vb" />
     <Compile Include="EntitiesGeneration1\Skill.vb" />
     <Compile Include="EntitiesGeneration1\SkillCollection.vb" />
-    <Compile Include="Entities\EwigerTrainer.vb" />
-    <Compile Include="Entities\EwigeTrainerCollection.vb" />
-    <Compile Include="Entities\EwigeTeilnehmerCollection.vb" />
-    <Compile Include="Entities\EwigerTeilnehmer.vb" />
-    <Compile Include="Entities\ImportKlassen.vb" />
+    <Compile Include="EntitiesGeneration3\EwigerTrainer.vb" />
+    <Compile Include="EntitiesGeneration3\EwigeTrainerCollection.vb" />
+    <Compile Include="EntitiesGeneration3\EwigeTeilnehmerCollection.vb" />
+    <Compile Include="EntitiesGeneration3\EwigerTeilnehmer.vb" />
+    <Compile Include="EntitiesGeneration3\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
     <Compile Include="Fabriken\ModusFabrik.vb" />
@@ -191,10 +192,10 @@
     <Compile Include="Windows\NeuerTeilnehmerDialog.xaml.vb">
       <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Faehigkeit.vb" />
-    <Compile Include="Entities\GruppeCollection.vb" />
-    <Compile Include="Entities\FaehigkeitCollection.vb" />
-    <Compile Include="Entities\TrainerCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Faehigkeit.vb" />
+    <Compile Include="EntitiesGeneration3\GruppeCollection.vb" />
+    <Compile Include="EntitiesGeneration3\FaehigkeitCollection.vb" />
+    <Compile Include="EntitiesGeneration3\TrainerCollection.vb" />
     <Compile Include="Services\ExportService.vb" />
     <Compile Include="Services\XlLeser.vb" />
     <Compile Include="Services\ExcelDataReaderService.vb" />
@@ -306,15 +307,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\SkiclubCommands.vb" />
-    <Compile Include="Entities\LeistungsstufeCollection.vb" />
+    <Compile Include="EntitiesGeneration3\LeistungsstufeCollection.vb" />
     <Compile Include="Services\ImportService.vb" />
-    <Compile Include="Entities\Leistungsstufe.vb" />
-    <Compile Include="Entities\Gruppe.vb" />
-    <Compile Include="Entities\Trainer.vb" />
-    <Compile Include="Entities\Teilnehmer.vb" />
-    <Compile Include="Entities\ParticipantRelationship.vb" />
-    <Compile Include="Entities\TeilnehmerCollection.vb" />
-    <Compile Include="Entities\ParticipantHistory.vb" />
+    <Compile Include="EntitiesGeneration3\Leistungsstufe.vb" />
+    <Compile Include="EntitiesGeneration3\Gruppe.vb" />
+    <Compile Include="EntitiesGeneration3\Trainer.vb" />
+    <Compile Include="EntitiesGeneration3\Teilnehmer.vb" />
+    <Compile Include="EntitiesGeneration1\ParticipantRelationship.vb" />
+    <Compile Include="EntitiesGeneration3\TeilnehmerCollection.vb" />
+    <Compile Include="EntitiesGeneration1\ParticipantHistory.vb" />
     <Page Include="UserControls\GruppendetailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,5 +1,6 @@
 ﻿Imports Groupies.Controller
 Imports Groupies.Entities
+Imports Groupies.Interfaces
 Imports Microsoft.Win32
 Imports System
 Imports System.IO
@@ -18,7 +19,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function OpenSkiDatei(ByRef Club As AktuelleVersion.Club) As Boolean
+        Public Shared Function OpenSkiDatei(ByRef Club As Generation3.Club) As Boolean
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
             If dlg.ShowDialog = True Then
                 Club = OpenSkiDatei(dlg.FileName)
@@ -38,7 +39,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="fileName"></param>
         ''' <returns></returns>
-        Public Shared Function OpenSkiDatei(fileName As String) As AktuelleVersion.Club
+        Public Shared Function OpenSkiDatei(fileName As String) As Generation3.Club
 
             If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
                 MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
@@ -60,7 +61,7 @@ Namespace Services
         ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
         ''' Sie wird deserialisiert und als Club zurückgegeben
         ''' </summary>
-        Public Shared Function SkiDateiLesen() As AktuelleVersion.Club
+        Public Shared Function SkiDateiLesen() As Generation3.Club
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
             If dlg.ShowDialog = True Then
@@ -78,8 +79,10 @@ Namespace Services
         ''' </summary>
         ''' <param name="Datei"></param>
         ''' <returns></returns>
-        Public Shared Function SkiDateiLesen(Datei As String) As AktuelleVersion.Club
+        Public Shared Function SkiDateiLesen(Datei As String) As Generation3.Club
             If File.Exists(Datei) Then
+                Dim x = SkiDateienService.IdentifiziereDateiGeneration(Datei).LadeGroupies(Datei)
+                Return x
                 'Try
                 '    Dim DateiGelesen
                 '    Dim aktuellerClub As New AktuelleVersion.Club
@@ -135,7 +138,7 @@ Namespace Services
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
             ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
-                Return New AktuelleVersion.Club
+                Return New Generation3.Club
             Else
                 Return New Generation2.Club
             End If

@@ -3,7 +3,7 @@ Imports Groupies
 Imports Groupies.Controller
 Imports Groupies.Controller.AppController
 Imports Groupies.Entities
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 
 <TestClass>
 Public Class ClubTests

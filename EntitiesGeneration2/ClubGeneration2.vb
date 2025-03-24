@@ -1,6 +1,9 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
 Imports Groupies.Services
+Imports Groupies.Interfaces
+Imports System.IO
+Imports System.Xml.Serialization
 
 Namespace Entities.Generation2
     Public Class Club
@@ -40,6 +43,27 @@ Namespace Entities.Generation2
             _ClubName = Clubname
         End Sub
 
+        Public Function LadeGroupies(Datei As String) As Generation3.Club Implements IClub.LadeGroupies
+            Using fs = New FileStream(Datei, FileMode.Open)
+
+                Dim serializer = New XmlSerializer(GetType(Generation2.Club))
+                Dim loadedSkiclub As Generation2.Club
+                Try
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation2.Club)
+                    'Return MappingGeneration2.MapSkiClub2Club(loadedSkiclub)
+                    Return Map2AktuelleGeneration(loadedSkiclub)
+
+                Catch ex As InvalidDataException
+                    Throw ex
+                End Try
+            End Using
+
+        End Function
+
+        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Generation3.Club Implements IClub.Map2AktuelleGeneration
+            Return MappingGeneration2.MapSkiClub2Club(Skiclub)
+        End Function
+
 #End Region
 
 #Region "Eigenschaften"
@@ -47,7 +71,7 @@ Namespace Entities.Generation2
         ''' Der Clubname
         ''' </summary>
         ''' <returns></returns>
-        Public Property ClubName As String Implements IClub.ClubName
+        Public Property ClubName As String Implements IClub.Name
 
         ''' <summary>
         ''' Eine Liste aller Gruppen
@@ -153,14 +177,14 @@ Namespace Entities.Generation2
         ''' Eine Liste der verwendeten Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection Implements IClub.LeistungsstufenTemplate
+        Public Property Leistungsstufenliste() As LeistungsstufeCollection
 
 
         ''' <summary>
         ''' Eine Liste der aller Faehigkeiten
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection Implements IClub.FaehigkeitenTemplate
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection
 
 #End Region
 

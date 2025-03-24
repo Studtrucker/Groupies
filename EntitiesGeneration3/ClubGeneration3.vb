@@ -2,17 +2,20 @@
 Imports System.Collections.ObjectModel
 Imports Groupies.Services
 
-Namespace Entities.AktuelleVersion
+Imports Groupies.Interfaces
+Imports System.IO
+Imports System.Xml.Serialization
+
+Namespace Entities.Generation3
+
 
     Public Class Club
         Inherits BaseModel
         Implements IClub
 
-
 #Region "Fields"
 
         Private _Einteilungsliste = New EinteilungCollection
-        Private _Gruppenliste = New GruppeCollection
 
 #End Region
 
@@ -41,7 +44,7 @@ Namespace Entities.AktuelleVersion
         ''' Der Clubname
         ''' </summary>
         ''' <returns></returns>
-        Public Property ClubName As String Implements IClub.ClubName
+        Public Property ClubName As String Implements IClub.Name
 
 
         ''' <summary>
@@ -74,18 +77,18 @@ Namespace Entities.AktuelleVersion
             End Set
         End Property
 
-        ''' <summary>
-        ''' Eine Liste aller Gruppen
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Gruppenliste() As GruppeCollection
-            Get
-                Return _Gruppenliste
-            End Get
-            Set(value As GruppeCollection)
-                _Gruppenliste = value
-            End Set
-        End Property
+        '''' <summary>
+        '''' Eine Liste aller Gruppen
+        '''' </summary>
+        '''' <returns></returns>
+        'Public Property Gruppenliste() As GruppeCollection
+        '    Get
+        '        Return _Gruppenliste
+        '    End Get
+        '    Set(value As GruppeCollection)
+        '        _Gruppenliste = value
+        '    End Set
+        'End Property
 
         ''' <summary>
         ''' Die aktuell ausgewählte Gruppe
@@ -95,23 +98,23 @@ Namespace Entities.AktuelleVersion
 
 
 
-        ''' <summary>
-        ''' Ewige Teilnehmerliste
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
+        '''' <summary>
+        '''' Ewige Teilnehmerliste
+        '''' </summary>
+        '''' <returns></returns>
+        'Private Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
 
-        ''' <summary>
-        ''' Ewige Trainerliste
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property EwigeTrainerliste() As EwigeTrainerCollection
+        '''' <summary>
+        '''' Ewige Trainerliste
+        '''' </summary>
+        '''' <returns></returns>
+        'Private Property EwigeTrainerliste() As EwigeTrainerCollection
 
         ''' <summary>
         ''' Eine Liste der verwendeten Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection Implements IClub.LeistungsstufenTemplate
+        Public Property Leistungsstufenliste() As LeistungsstufeCollection
 
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
@@ -124,15 +127,12 @@ Namespace Entities.AktuelleVersion
         ''' als Vorlage für die Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection Implements IClub.FaehigkeitenTemplate
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection
 
 
 #End Region
 
 #Region "Funktionen und Methoden"
-
-
-
 
         ''' <summary>
         ''' Teilnehmer wird aus dem Club entfernt und 
@@ -141,7 +141,8 @@ Namespace Entities.AktuelleVersion
         ''' <param name="Teilnehmer"></param>
         Public Sub TeilnehmerArchivieren(Teilnehmer As Teilnehmer)
             SelectedEinteilung.GruppenloseTeilnehmer.Remove(Teilnehmer)
-            EwigeTeilnehmerliste.Add(Teilnehmer, Now)
+            'EwigeTeilnehmerliste.Add(Teilnehmer, Now)
+            Throw New NotImplementedException
         End Sub
 
         ''' <summary>
@@ -160,11 +161,30 @@ Namespace Entities.AktuelleVersion
         ''' <param name="Trainer"></param>
         Public Sub TrainerArchivieren(Trainer As Trainer)
             SelectedEinteilung.GruppenloseTrainer.Remove(Trainer)
-            EwigeTrainerliste.Add(Trainer, Now)
+            'EwigeTrainerliste.Add(Trainer, Now)
+            Throw New NotImplementedException
         End Sub
 
         Public Overrides Function ToString() As String
             Return ClubName
+        End Function
+
+        Public Function LadeGroupies(Datei As String) As Club Implements IClub.LadeGroupies
+            Using fs = New FileStream(Datei, FileMode.Open)
+                Dim serializer = New XmlSerializer(GetType(Generation3.Club))
+                Dim loadedSkiclub As Generation3.Club
+                Try
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation3.Club)
+                    'Return MappingGeneration3.MapSkiClub2Club(loadedSkiclub)
+                    Return Map2AktuelleGeneration(loadedSkiclub)
+                Catch ex As InvalidDataException
+                    Throw ex
+                End Try
+            End Using
+        End Function
+
+        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Club Implements IClub.Map2AktuelleGeneration
+            Return MappingGeneration3.MapSkiClub2Club(Skiclub)
         End Function
 
 #End Region

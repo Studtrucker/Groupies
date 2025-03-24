@@ -1,19 +1,23 @@
 ﻿Imports Groupies.Entities
-Imports Groupies.Entities.AktuelleVersion
 Public Module MappingGeneration1
 
-    Private NeuerClub As Club
-    Private _Gruppenliste As GruppeCollection
+    ''' <summary>
+    ''' Mapped einen Skiclub aus der ersten Generation in einen Club der aktuellen Version
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Generation3.Club
 
-    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Club
-
-        NeuerClub = New Club
+        Dim NeuerClub = New Generation3.Club
+        NeuerClub.ClubName = If(Skiclub.Name, "Club")
         ' Neue Einteilung erstellen
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1", .Sortierung = 1})
 
-        NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
-        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste des Clubs hängen
+        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste der ersten Einteilung des Clubs hängen
         NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+
+        ' Unabhängige Leistungsstufen 
+        NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
         ' Gruppenlose Teilnehmer und Trainer mappen
         NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
         NeuerClub.Einteilungsliste(0).GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))

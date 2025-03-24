@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
-Imports Groupies.Entities.AktuelleVersion
+Imports Groupies.Entities.Generation3
 Imports Groupies.Entities.Generation1
 Imports Groupies.Entities.Generation2
 Imports Groupies.Entities
@@ -22,7 +22,7 @@ Namespace Controller
         ''' <param name="Filestream"></param>
         ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As AktuelleVersion.Club) As Boolean
+        Public Shared Function LeseSkiDateiVersion1(Filestream As FileStream, ByRef Club As Generation3.Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Generation1.Skiclub))
             Dim loadedSkiclub As Generation1.Skiclub
             Try
@@ -42,7 +42,7 @@ Namespace Controller
         ''' <param name="Filestream"></param>
         ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As AktuelleVersion.Club) As Boolean
+        Public Shared Function LeseSkiDateiVersion2(Filestream As FileStream, ByRef Club As Generation3.Club) As Boolean
             Dim serializer = New XmlSerializer(GetType(Generation2.Club))
             Dim loadedSkiclub As Generation2.Club
             Try
@@ -75,7 +75,7 @@ Namespace Controller
 
         Public Shared Function GruppenLesen() As GruppeCollection
             Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
-            Return aktuellerClub.Gruppenliste
+            Return aktuellerClub.SelectedEinteilung.Gruppenliste
         End Function
         Public Shared Function TrainerLesen(Datei As String) As TrainerCollection
             Dim aktuellerClub = Services.SkiDateienService.SkiDateiLesen()
@@ -128,7 +128,7 @@ Namespace Controller
         ''' </summary>
         ''' <param name="Club"></param>
         ''' <returns>EinteilungCollection</returns>
-        Public Shared Function EinteilungenLesen(Club As AktuelleVersion.Club) As EinteilungCollection
+        Public Shared Function EinteilungenLesen(Club As Generation3.Club) As EinteilungCollection
             Dim Einteilungen = Club.Einteilungsliste
             ' Wenn keine Einteilungen vorhanden sind, wird eine Standard-Einteilung erstellt
             ' diese wird aus den Gruppen und Gruppenlosen des Clubs erstellt
@@ -136,7 +136,7 @@ Namespace Controller
                 Einteilungen.Add(New Einteilung With {
                                  .Benennung = "Tag1",
                                  .Sortierung = 1,
-                                 .Gruppenliste = Club.Gruppenliste,
+                                 .Gruppenliste = Club.SelectedEinteilung.Gruppenliste,
                                  .GruppenloseTeilnehmer = Club.SelectedEinteilung.GruppenloseTeilnehmer,
                                  .GruppenloseTrainer = Club.SelectedEinteilung.GruppenloseTrainer})
             End If

@@ -789,22 +789,9 @@ Public Class MainWindow
 
         '' Hier wird der DataContext gesetzt!
 
-        'UnsetView()
-        '' Dropdown der Leistungsstufen füllen
-        '_LeistungsstufenListCollectionView = New ListCollectionView(Club.LeistungsstufenTextliste.ToList)
-        'If _LeistungsstufenListCollectionView.CanSort Then
-        '    _LeistungsstufenListCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
-        'End If
-        'GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        'GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        'TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-
-        'SetView(Club.Gruppenliste)
-        'SetView(Club.Einteilungsliste)
-        'SetView(Club.GruppenloseTeilnehmer)
-        'SetView(Club.GruppenloseTrainer)
-
         DataContext = Club
+        SetView(Club.SelectedEinteilung.GruppenloseTeilnehmer)
+        SetView(Club.SelectedEinteilung.GruppenloseTrainer)
 
     End Sub
 

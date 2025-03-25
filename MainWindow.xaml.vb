@@ -58,21 +58,7 @@ Public Class MainWindow
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New],
-                                               AddressOf Handle_New_Execute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close,
-                                               AddressOf Handle_Close_Execute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open,
-                                               AddressOf Handle_Open_Execute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save,
-                                               AddressOf Handle_SaveClub_Execute,
-                                               AddressOf Handle_SaveClub_CanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs,
-                                               AddressOf Handle_ClubSaveAs_Execute,
-                                               AddressOf Handle_SaveClub_CanExecute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print,
-                                               AddressOf Handle_PrintClub_Execute,
-                                               AddressOf Handle_PrintClub_CanExecute))
+
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerlisteImportieren,
                                                AddressOf Handle_TeilnehmerlisteImportieren_Execute,
@@ -140,6 +126,21 @@ Public Class MainWindow
 
         '1. CommandBindings, die geprüft sind und funktionieren
 
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New],
+                                               AddressOf Handle_New_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close,
+                                               AddressOf Handle_Close_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open,
+                                               AddressOf Handle_Open_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Save,
+                                               AddressOf Handle_SaveClub_Execute,
+                                               AddressOf Handle_SaveClub_CanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs,
+                                               AddressOf Handle_ClubSaveAs_Execute,
+                                               AddressOf Handle_SaveClub_CanExecute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Print,
+                                               AddressOf Handle_PrintClub_Execute,
+                                               AddressOf Handle_PrintClub_CanExecute))
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
         _mRuSortedList = New SortedList(Of Integer, String)
@@ -286,10 +287,10 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_SaveClub_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        If _groupiesFile Is Nothing Then
+        If AppCon.AktuelleDatei Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(_groupiesFile.FullName)
+            SaveSkischule(AppCon.AktuelleDatei.FullName)
         End If
     End Sub
 
@@ -669,8 +670,8 @@ Public Class MainWindow
             QueueMostRecentFilename(fileName)
             Title = "Groupies - " & fileName
 
-            AppCon.AktuellerClub = Nothing
-            AppCon.AktuelleDatei = Nothing
+            'AppCon.AktuellerClub = Nothing
+            'AppCon.AktuelleDatei = Nothing
 
             AppCon.AktuellerClub = loadedClub
             AppCon.AktuelleDatei = New FileInfo(fileName)
@@ -693,7 +694,7 @@ Public Class MainWindow
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
         Title = "Groupies - " & fileName
         QueueMostRecentFilename(fileName)
-        MessageBox.Show($"Die Datei   [{_groupiesFile.Name}]   wurde gespeichert!")
+        MessageBox.Show($"Die Datei {fileName} wurde gespeichert!")
     End Sub
 
     Private Sub SaveXML(fileName As String)
@@ -798,8 +799,8 @@ Public Class MainWindow
         '' Hier wird der DataContext gesetzt!
 
         DataContext = Club
-        SetView(Club.SelectedEinteilung.GruppenloseTeilnehmer)
-        SetView(Club.SelectedEinteilung.GruppenloseTrainer)
+        SetView(Club.Einteilungsliste(0).GruppenloseTeilnehmer)
+        SetView(Club.Einteilungsliste(0).GruppenloseTrainer)
 
     End Sub
 
@@ -934,11 +935,11 @@ Public Class MainWindow
             DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
             DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            If String.IsNullOrWhiteSpace(AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung) Then
-                AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung = InputBox("Bitte diese Gruppeneinteilung benennen")
+            If String.IsNullOrWhiteSpace(AppCon.AktuellerClub.SelectedEinteilung.Benennung) Then
+                AppCon.AktuellerClub.SelectedEinteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
             End If
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.AktuellerClub.SelectedEinteilung.Gruppenliste.BenennungGruppeneinteilung)
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppCon.AktuellerClub.SelectedEinteilung.Benennung)
             Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
             Dim currentColumn As Integer = i Mod columnsPerPage
 

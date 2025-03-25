@@ -235,7 +235,7 @@
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
-                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTrainer}"
+                              ItemsSource="{Binding}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">

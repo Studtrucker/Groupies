@@ -83,6 +83,7 @@ Namespace Services
             If File.Exists(Datei) Then
                 Dim x = SkiDateienService.IdentifiziereDateiGeneration(Datei).LadeGroupies(Datei)
                 Return x
+
                 'Try
                 '    Dim DateiGelesen
                 '    Dim aktuellerClub As New AktuelleVersion.Club

@@ -60,8 +60,12 @@ Namespace UserControls
         Private Sub Handle_TrainerAusGruppeEntfernen(sender As Object, e As MouseButtonEventArgs)
 
             If CDS.AktuellerClub.SelectedGruppe.Trainer IsNot Nothing Then
-                CDS.AktuellerClub.SelectedEinteilung.TrainerAusGruppeEntfernen(CDS.AktuellerClub.SelectedGruppe)
+                CDS.AktuellerClub.SelectedEinteilung.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
             End If
+
+            'If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+            '    CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            'End If
         End Sub
 
 

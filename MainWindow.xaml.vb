@@ -58,15 +58,21 @@ Public Class MainWindow
         ' 1. CommandBindings zur CommandBindings-Property des Window
         '    hinzufügen, um die Commands mit den entsprechenden Eventhandler zu verbinden
 
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New], AddressOf Handle_New_Execute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
-        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open, AddressOf Handle_Open_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.[New],
+                                               AddressOf Handle_New_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Close,
+                                               AddressOf Handle_Close_Execute))
+        CommandBindings.Add(New CommandBinding(ApplicationCommands.Open,
+                                               AddressOf Handle_Open_Execute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Save,
-                                               AddressOf Handle_SaveClub_Execute, AddressOf Handle_SaveClub_CanExecute))
+                                               AddressOf Handle_SaveClub_Execute,
+                                               AddressOf Handle_SaveClub_CanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.SaveAs,
-                                               AddressOf Handle_ClubSaveAs_Execute, AddressOf Handle_SaveClub_CanExecute))
+                                               AddressOf Handle_ClubSaveAs_Execute,
+                                               AddressOf Handle_SaveClub_CanExecute))
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Print,
-                                               AddressOf Handle_PrintClub_Execute, AddressOf Handle_PrintClub_CanExecute))
+                                               AddressOf Handle_PrintClub_Execute,
+                                               AddressOf Handle_PrintClub_CanExecute))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerlisteImportieren,
                                                AddressOf Handle_TeilnehmerlisteImportieren_Execute,
@@ -131,6 +137,8 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+
+        '1. CommandBindings, die geprüft sind und funktionieren
 
 
         ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren

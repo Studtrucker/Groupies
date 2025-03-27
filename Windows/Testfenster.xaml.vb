@@ -2,6 +2,7 @@
 Imports Microsoft.Win32
 Imports Groupies.Entities.Generation3
 Imports Groupies.Entities
+Imports Groupies.Controller
 
 Public Class Testfenster
     Dim Club As Club
@@ -12,10 +13,9 @@ Public Class Testfenster
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-        Dim aktuellerClub = New Generation3.Club
-        Groupies.Services.SkiDateienService.OpenSkiDatei(aktuellerClub)
+        Groupies.Services.SkiDateienService.OpenSkiDatei()
 
-        DataContext = aktuellerClub
+        DataContext = AppController.AktuellerClub
 
     End Sub
 

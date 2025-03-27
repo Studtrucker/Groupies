@@ -167,7 +167,7 @@
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
     <Compile Include="Fabriken\ModusFabrik.vb" />
-    <Compile Include="InstructorsWindow.xaml.vb">
+    <Compile Include="Windows\InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IWindowMitModus.vb" />
@@ -298,7 +298,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InstructorsWindow.xaml">
+    <Page Include="Windows\InstructorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,21 +13,37 @@ Namespace Services
 
 #Region "Öffentliche FunKtionen"
 
+
+        'Public Shared Function OpenSkiDatei(ByRef Club As Generation3.Club) As Boolean
+        '    Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
+        '    If dlg.ShowDialog = True Then
+        '        Club = OpenSkiDatei(dlg.FileName)
+        '        If Club IsNot Nothing Then
+        '            AppController.AktuellerClub = Club
+        '            AppController.AktuelleDatei = New FileInfo(dlg.FileName)
+        '            Return True
+        '        End If
+        '    End If
+        '    Club = Nothing
+        '    Return False
+        'End Function
+
         ''' <summary>
         ''' Zeigt einen OpenFileDialog
         ''' und lädt damit eine Ski-Datei
+        ''' in den AppController.AktuellerClub
         ''' </summary>
-        ''' <param name="Club"></param>
         ''' <returns></returns>
-        Public Shared Function OpenSkiDatei(ByRef Club As Generation3.Club) As Boolean
+        Public Shared Function OpenSkiDatei() As Boolean
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
             If dlg.ShowDialog = True Then
-                Club = OpenSkiDatei(dlg.FileName)
+                Dim Club = OpenSkiDatei(dlg.FileName)
                 If Club IsNot Nothing Then
+                    AppController.AktuellerClub = Club
+                    AppController.AktuelleDatei = New FileInfo(dlg.FileName)
                     Return True
                 End If
             End If
-            Club = Nothing
             Return False
         End Function
 
@@ -53,7 +69,10 @@ Namespace Services
                 Exit Function
             End If
 
-            Return SkiDateiLesen(fileName)
+            AppController.AktuelleDatei=New FileInfo(fileName)
+            AppController.AktuellerClub = SkiDateiLesen(fileName)
+
+            Return club
 
         End Function
 
@@ -84,30 +103,6 @@ Namespace Services
                 Dim x = SkiDateienService.IdentifiziereDateiGeneration(Datei).LadeGroupies(Datei)
                 Return x
 
-                'Try
-                '    Dim DateiGelesen
-                '    Dim aktuellerClub As New AktuelleVersion.Club
-                '    Using fs = New FileStream(Datei, FileMode.Open)
-                '        ' Versuche Ski (XML) mit Struktur Groupies2 (englische Objektnamen) zu lesen
-                '        DateiGelesen = LeseSkiDateiVersion2(fs, aktuellerClub)
-                '        If DateiGelesen Then
-                '            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
-                '            Return aktuellerClub
-                '        End If
-                '    End Using
-                '    ' Versuche Ski (XML) mit Struktur Groupies 1  (deutsche Objektnamen) zu lesen
-                '    Using fs = New FileStream(Datei, FileMode.Open)
-                '        If Not DateiGelesen Then
-                '            LeseSkiDateiVersion1(fs, aktuellerClub)
-                '            'aktuellerClub.Einteilungsliste = EinteilungenLesen(aktuellerClub)
-                '            Return aktuellerClub
-                '        End If
-                '    End Using
-                'Catch ex As InvalidDataException
-                '    Debug.Print("Datei ungültig: " & ex.Message)
-                '    Return Nothing
-                '    Exit Function
-                'End Try
             End If
             Return Nothing
         End Function

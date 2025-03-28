@@ -20,11 +20,10 @@ Public Class MainWindow
 #Region "Felder"
 
     Private _LeistungsstufenListCollectionView As ICollectionView
-    Private _EinteilungenListCollectionView As ICollectionView
+    Private _einteilungslisteCollectionView As ICollectionView
     Private _gruppenloseTeilnehmerCollectionView As ICollectionView
     Private _gruppenloseTrainerCollectionView As ICollectionView
     Private _gruppenlisteCollectionView As ICollectionView
-    Private Shared _groupiesFile As FileInfo
     Private _mRuSortedList As SortedList(Of Integer, String)
 
 #End Region
@@ -160,13 +159,6 @@ Public Class MainWindow
 
         RefreshJumpListInWinTaskbar()
 
-        If AppController.AktuellerClub IsNot Nothing Then
-            _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
-            GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-            GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-            TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        End If
-
     End Sub
 
 
@@ -178,11 +170,11 @@ Public Class MainWindow
     Private Sub HandleMainWindowClosed(sender As Object, e As EventArgs)
 
         ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
-        If _groupiesFile IsNot Nothing Then
+        If AppController.GroupiesFile IsNot Nothing Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                 Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
-                        writer.WriteLine(_groupiesFile.FullName)
+                        writer.WriteLine(AppController.GroupiesFile.FullName)
                     End Using
                 End Using
             End Using
@@ -229,24 +221,6 @@ Public Class MainWindow
             Throw ex
         End Try
     End Sub
-
-    Private Sub LoadLastSkischule()
-        ' Die letzte Skischule aus dem IsolatedStorage holen.
-        Try
-            Dim x = String.Empty
-            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
-                    Using reader = New StreamReader(stream)
-                        x = reader.ReadLine
-                    End Using
-                End Using
-
-            End Using
-            If File.Exists(x) Then OpenSkischule(x)
-        Catch ex As FileNotFoundException
-        End Try
-    End Sub
-
 #End Region
 
 #Region "Methoden zum Pinnen und Ein-/Ausblenden der Explorer"
@@ -270,27 +244,23 @@ Public Class MainWindow
         End If
 
         UnsetView()
-
-        MessageBox.Show(AppController.NeuenClubErstellen("Groupies Club"))
+        AppController.NeuenClubErstellen()
         SetView()
 
     End Sub
 
     Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-
-        ' Öffnet eine Datei und gibt den OpenClub zurück
         If SkiDateienService.OpenSkiDatei() Then
             UnsetView()
             SetView()
         End If
-
     End Sub
 
     Private Sub Handle_SaveClub_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        If AppController.AktuelleDatei Is Nothing Then
+        If AppController.GroupiesFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(AppController.AktuelleDatei.FullName)
+            SaveSkischule(AppController.GroupiesFile.FullName)
         End If
     End Sub
 
@@ -300,13 +270,13 @@ Public Class MainWindow
 
     Private Sub Handle_ClubSaveAs_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-        If _groupiesFile IsNot Nothing Then
-            dlg.FileName = _groupiesFile.Name
+        If AppController.GroupiesFile IsNot Nothing Then
+            dlg.FileName = AppController.GroupiesFile.Name
         End If
 
         If dlg.ShowDialog = True Then
             SaveSkischule(dlg.FileName)
-            _groupiesFile = New FileInfo(dlg.FileName)
+            AppController.GroupiesFile = New FileInfo(dlg.FileName)
         End If
     End Sub
 
@@ -661,19 +631,30 @@ Public Class MainWindow
 
 #Region "Helper-Methoden"
 
+
+    Private Sub LoadLastSkischule()
+        ' Die letzte Skischule aus dem IsolatedStorage holen.
+        Try
+            Dim x = String.Empty
+            Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
+                    Using reader = New StreamReader(stream)
+                        x = reader.ReadLine
+                    End Using
+                End Using
+
+            End Using
+
+            'If File.Exists(x) Then OpenSkischule(x)
+            OpenSkischule(x)
+        Catch ex As FileNotFoundException
+        End Try
+    End Sub
+
     Private Sub OpenSkischule(fileName As String)
-
-        Dim loadedClub = SkiDateienService.OpenSkiDatei(fileName)
-
-        If loadedClub IsNot Nothing Then
-
-            'AppController.AktuellerClub = loadedClub
-            'AppController.AktuelleDatei = New FileInfo(fileName)
-
+        If SkiDateienService.OpenSkiDatei(fileName) Then
             SetView()
-
         End If
-
     End Sub
 
 
@@ -780,7 +761,7 @@ Public Class MainWindow
             jumplist.JumpItems.Add(jumpPath)
         Next
 
-        jumplist.SetJumpList(Application.Current, jumplist)
+        JumpList.SetJumpList(Application.Current, jumplist)
 
     End Sub
 
@@ -790,26 +771,32 @@ Public Class MainWindow
 
     Private Sub SetView()
 
-        QueueMostRecentFilename(AppController.AktuelleDatei.FullName)
-        Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.AktuelleDatei.Name
+        QueueMostRecentFilename(AppController.GroupiesFile.FullName)
+        Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.GroupiesFile.Name
 
-        '' Hier wird der DataContext gesetzt!
+        ' Die allgemeinen Leistungsstufen füllen
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
+        GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+
+        ' Hier wird der DataContext gesetzt!
         DataContext = AppController.AktuellerClub
+        SetView(AppController.AktuellerClub.Einteilungsliste)
         SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer)
         SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer)
 
     End Sub
 
     Private Sub SetView(Einteilungsliste As EinteilungCollection)
-        _EinteilungenListCollectionView = New ListCollectionView(Einteilungsliste)
-        EinteilungenDataGrid.DataContext = _EinteilungenListCollectionView
+        _einteilungslisteCollectionView = New ListCollectionView(Einteilungsliste)
+        If _einteilungslisteCollectionView.CanSort Then
+            '_gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+            '_gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Ascending))
+            '_gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
+        End If
+        DataContext = _einteilungslisteCollectionView
     End Sub
-
-    Private Sub SetView(Einteilung As Einteilung)
-        _gruppenlisteCollectionView = New ListCollectionView(Einteilung.Gruppenliste)
-        DataContext = _gruppenlisteCollectionView
-    End Sub
-
 
     Private Sub SetView(GruppenloseTeilnehmer As TeilnehmerCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(GruppenloseTeilnehmer)
@@ -843,7 +830,7 @@ Public Class MainWindow
 
     Private Sub UnsetView()
 
-        _groupiesFile = Nothing
+        AppController.GroupiesFile = Nothing
         Me.Title = "Groupies"
 
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)

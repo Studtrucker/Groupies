@@ -131,8 +131,8 @@
                               IsReadOnly="True" CanUserAddRows="False" >-->
                         <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                                   AutoGenerateColumns="False" 
-                                  ItemsSource="{Binding Einteilungsliste}"
-                                  SelectedItem="{Binding SelectedEinteilung}"
+                                  ItemsSource="{Binding}"
+                                  SelectedItem="SelectedEinteilung"
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
@@ -154,9 +154,9 @@
 
                     </DataGrid>-->
                     <DataGrid x:Name="GruppenlisteDataGrid" 
-                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
+                              ItemsSource="{Binding Gruppenliste}"  
                               DisplayMemberPath="Benennung" 
-                              SelectedItem="{Binding SelectedGruppe}"
+                              IsSynchronizedWithCurrentItem="True"
                               IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">

@@ -3,6 +3,7 @@ Imports Groupies.Commands
 Imports Groupies.Controller
 Imports Groupies.Entities
 Imports CDS = Groupies.Controller.AppController
+
 Namespace UserControls
 
     Public Class GruppendetailUserControl
@@ -22,12 +23,6 @@ Namespace UserControls
             ' Wird im MainWindow verwendet. Beim Laden dieser Form ist das Objekt CurrentClub noch nicht bereit
 
         End Sub
-
-
-        Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
-        End Sub
-
-
 
 #Region "Teilnehmer"
 
@@ -59,13 +54,12 @@ Namespace UserControls
 
         Private Sub Handle_TrainerAusGruppeEntfernen(sender As Object, e As MouseButtonEventArgs)
 
-            If CDS.AktuellerClub.SelectedGruppe.Trainer IsNot Nothing Then
-                CDS.AktuellerClub.SelectedEinteilung.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
-            End If
-
             'If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
-            '    CDS.CurrentClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            '    AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
             'End If
+            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+                AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            End If
         End Sub
 
 

@@ -13,66 +13,51 @@ Namespace Services
 
 #Region "Öffentliche FunKtionen"
 
-
-        'Public Shared Function OpenSkiDatei(ByRef Club As Generation3.Club) As Boolean
-        '    Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        '    If dlg.ShowDialog = True Then
-        '        Club = OpenSkiDatei(dlg.FileName)
-        '        If Club IsNot Nothing Then
-        '            AppController.AktuellerClub = Club
-        '            AppController.AktuelleDatei = New FileInfo(dlg.FileName)
-        '            Return True
-        '        End If
-        '    End If
-        '    Club = Nothing
-        '    Return False
-        'End Function
-
         ''' <summary>
-        ''' Zeigt einen OpenFileDialog
-        ''' und lädt damit eine Ski-Datei
-        ''' in den AppController.AktuellerClub
+        ''' Zeigt einen OpenFileDialog.
+        ''' Prüft, ob der Dialog auf eine existierende Datei führt und
+        ''' das diese Datei noch nicht geladen ist.
+        ''' Wenn die Prüfung erfolgreich war,
+        ''' dann wird das geladene Objekt im 
+        ''' AppController.AktuellerClub gespeichert 
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>True or False</returns>
         Public Shared Function OpenSkiDatei() As Boolean
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
             If dlg.ShowDialog = True Then
-                Dim Club = OpenSkiDatei(dlg.FileName)
-                If Club IsNot Nothing Then
-                    AppController.AktuellerClub = Club
-                    AppController.AktuelleDatei = New FileInfo(dlg.FileName)
-                    Return True
-                End If
+                Return OpenSkiDatei(dlg.FileName)
             End If
             Return False
         End Function
 
         ''' <summary>
-        ''' Prüft, ob die angegebene Datei die bereits geladene wurde 
-        ''' oder ob die Datei existiert, 
-        ''' und gibt die geladene Ski-Datei als 
-        ''' Club-Objekt zurück
+        ''' Prüft den angegebenen String,
+        ''' ob er auf eine existierende Datei führt und
+        ''' das diese Datei noch nicht geladen ist.
+        ''' Wenn die Prüfung erfolgreich war,
+        ''' dann wird das geladene Objekt im 
+        ''' AppController.AktuellerClub gespeichert 
         ''' </summary>
         ''' <param name="fileName"></param>
-        ''' <returns></returns>
-        Public Shared Function OpenSkiDatei(fileName As String) As Generation3.Club
-
-            If AppController.AktuelleDatei IsNot Nothing AndAlso fileName.Equals(AppController.AktuelleDatei.FullName) Then
-                MessageBox.Show("Groupies " & AppController.AktuelleDatei.Name & " ist bereits geöffnet")
-                Return Nothing
-                Exit Function
-            End If
+        ''' <returns>True or False</returns>
+        Public Shared Function OpenSkiDatei(fileName As String) As Boolean
 
             If Not File.Exists(fileName) Then
                 MessageBox.Show("Die Datei existiert nicht")
-                Return Nothing
+                Return False
                 Exit Function
             End If
 
-            AppController.AktuelleDatei=New FileInfo(fileName)
+            If AppController.GroupiesFile IsNot Nothing AndAlso fileName.Equals(AppController.GroupiesFile.FullName) Then
+                MessageBox.Show("Groupies " & AppController.GroupiesFile.Name & " ist bereits geöffnet")
+                Return False
+                Exit Function
+            End If
+
+            AppController.GroupiesFile = New FileInfo(fileName)
             AppController.AktuellerClub = SkiDateiLesen(fileName)
 
-            Return club
+            Return True
 
         End Function
 

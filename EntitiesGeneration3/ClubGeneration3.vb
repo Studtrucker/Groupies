@@ -40,6 +40,8 @@ Namespace Entities.Generation3
 #End Region
 
 #Region "Eigenschaften"
+
+
         ''' <summary>
         ''' Der Clubname
         ''' </summary>
@@ -90,12 +92,19 @@ Namespace Entities.Generation3
         '    End Set
         'End Property
 
+        Private _SelectedGruppe As Gruppe
         ''' <summary>
         ''' Die aktuell ausgewählte Gruppe
         ''' </summary>
         ''' <returns></returns>
         Public Property SelectedGruppe As Gruppe
-
+            Get
+                Return _SelectedGruppe
+            End Get
+            Set(value As Gruppe)
+                _SelectedGruppe = value
+            End Set
+        End Property
 
 
         '''' <summary>

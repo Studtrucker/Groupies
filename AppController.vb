@@ -16,8 +16,7 @@ Namespace Controller
         ''' Die aktuelle Datei, die geöffnet ist
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property AktuelleDatei As FileInfo
-
+        Public Shared Property GroupiesFile As FileInfo
 
         ''' <summary>
         ''' Der aktuell verwaltete Club
@@ -49,16 +48,28 @@ Namespace Controller
 
 #End Region
 
+        Public Shared Sub NeuenClubErstellen()
+            Dim dlg = InputBox("Bitte geben Sie den Namen des neuen Clubs ein", "Neuen Club erstellen", "Groupies Club")
+            If dlg = "" Then
+                MessageBox.Show("Der Clubname darf nicht leer sein.")
+                Exit Sub
+            End If
+            NeuenClubErstellen(dlg)
+        End Sub
+
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
-            AktuellerClub = Nothing
+            'AktuellerClub = Nothing
             AktuellerClub = New Club(Clubname)
 
             AktuellerClub.Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen
-            'AktuellerClub.Gruppenliste = TemplateService.StandardGruppenErstellen(15)
             AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
             AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
 
-            Return $"{Clubname} wurde erfolgreich erstellt."
+            Dim Meldung = $"{Clubname} wurde erfolgreich erstellt."
+
+            MessageBox.Show(Meldung)
+            Return Meldung
+
         End Function
 
 

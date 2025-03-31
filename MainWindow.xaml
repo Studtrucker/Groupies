@@ -217,8 +217,8 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Text="Gruppe" />
-                            <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
-                        </StackPanel>
+                        <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
+                    </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
 

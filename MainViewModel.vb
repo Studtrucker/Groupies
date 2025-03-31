@@ -8,6 +8,13 @@ Imports Microsoft.Win32
 Public Class MainViewModel
     Inherits BaseModel
 
+#Region "Konstruktor"
+
+    Public Sub New()
+        'Einteilungen = New EinteilungCollection
+    End Sub
+#End Region
+
 
 #Region "Properties"
 
@@ -16,27 +23,29 @@ Public Class MainViewModel
     'Public Property Trainerliste As TrainerCollection
     'Public Property Teilnehmerliste As TeilnehmerCollection
 
-    'Private _SelectedEinteilung As Einteilung
 
-    'Public Property SelectedEinteilung As Einteilung
-    '    Get
-    '        Return _SelectedEinteilung
-    '    End Get
-    '    Set(value As Einteilung)
-    '        _SelectedEinteilung = value
-    '        SelectedGruppe = Nothing
-    '    End Set
-    'End Property
+    Private _SelectedEinteilung As Einteilung
 
-    'Private _SelectedGruppe As Gruppe
-    'Public Property SelectedGruppe As Gruppe
-    '    Get
-    '        Return _SelectedGruppe
-    '    End Get
-    '    Set(value As Gruppe)
-    '        _SelectedGruppe = value
-    '    End Set
-    'End Property
+    Public Property SelectedEinteilung As Einteilung
+        Get
+            Return _SelectedEinteilung
+        End Get
+        Set(value As Einteilung)
+            _SelectedEinteilung = value
+            SelectedGruppe = Nothing
+        End Set
+    End Property
+
+
+    Private _SelectedGruppe As Gruppe
+    Public Property SelectedGruppe As Gruppe
+        Get
+            Return _SelectedGruppe
+        End Get
+        Set(value As Gruppe)
+            _SelectedGruppe = value
+        End Set
+    End Property
 
 #End Region
 

@@ -781,7 +781,7 @@ Public Class MainWindow
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         ' Hier wird der DataContext gesetzt!
-        DataContext = AppController.AktuellerClub
+        'DataContext = AppController.AktuellerClub
         SetView(AppController.AktuellerClub.Einteilungsliste)
         SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer)
         SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer)

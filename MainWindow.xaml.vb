@@ -783,8 +783,9 @@ Public Class MainWindow
         ' Hier wird der DataContext gesetzt!
         'DataContext = AppController.AktuellerClub
         SetView(AppController.AktuellerClub.Einteilungsliste)
-        SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer)
-        SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer)
+        SetView(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
+        'SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer)
+        'SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer)
 
     End Sub
 
@@ -795,6 +796,7 @@ Public Class MainWindow
             '_gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Ascending))
             '_gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
+        _einteilungslisteCollectionView.MoveCurrentToFirst()
         DataContext = _einteilungslisteCollectionView
     End Sub
 
@@ -815,7 +817,7 @@ Public Class MainWindow
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Leistungsstufe.Sortierung", ListSortDirection.Ascending))
             _gruppenlisteCollectionView.SortDescriptions.Add(New SortDescription("Benennung", ListSortDirection.Ascending))
         End If
-        DataContext = _gruppenlisteCollectionView
+        GruppenlisteDataGrid.DataContext = _gruppenlisteCollectionView
     End Sub
 
     Private Sub SetView(GruppenloseTrainer As TrainerCollection)

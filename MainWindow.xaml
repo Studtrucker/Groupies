@@ -154,7 +154,7 @@
 
                     </DataGrid>-->
                     <DataGrid x:Name="GruppenlisteDataGrid" 
-                              ItemsSource="{Binding Gruppenliste}"  
+                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
                               DisplayMemberPath="Benennung" 
                               IsSynchronizedWithCurrentItem="True"
                               IsReadOnly="True" DockPanel.Dock="Bottom"

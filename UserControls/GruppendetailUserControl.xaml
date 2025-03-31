@@ -71,9 +71,9 @@
                     </Grid>
                 </StackPanel>
 
-                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding SelectedGruppe.Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding SelectedGruppe.AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding SelectedGruppe.Benennung, UpdateSourceTrigger=PropertyChanged}"  />
 
                 <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
                       x:Name="GruppenleistungsstufeComboBox"

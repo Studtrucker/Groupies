@@ -11,7 +11,8 @@ Public Class MainViewModel
 #Region "Konstruktor"
 
     Public Sub New()
-        'Einteilungen = New EinteilungCollection
+        'Einteilungsliste = New EinteilungCollection
+
     End Sub
 #End Region
 
@@ -19,7 +20,7 @@ Public Class MainViewModel
 #Region "Properties"
 
     'Public Property Club As Club
-    'Public Property Einteilungsliste As EinteilungCollection
+    Public Property Einteilungsliste As EinteilungCollection
     'Public Property Trainerliste As TrainerCollection
     'Public Property Teilnehmerliste As TeilnehmerCollection
 

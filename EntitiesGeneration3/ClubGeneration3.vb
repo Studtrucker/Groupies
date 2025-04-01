@@ -79,19 +79,6 @@ Namespace Entities.Generation3
             End Set
         End Property
 
-        '''' <summary>
-        '''' Eine Liste aller Gruppen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property Gruppenliste() As GruppeCollection
-        '    Get
-        '        Return _Gruppenliste
-        '    End Get
-        '    Set(value As GruppeCollection)
-        '        _Gruppenliste = value
-        '    End Set
-        'End Property
-
         Private _SelectedGruppe As Gruppe
         ''' <summary>
         ''' Die aktuell ausgewählte Gruppe
@@ -105,19 +92,6 @@ Namespace Entities.Generation3
                 _SelectedGruppe = value
             End Set
         End Property
-
-
-        '''' <summary>
-        '''' Ewige Teilnehmerliste
-        '''' </summary>
-        '''' <returns></returns>
-        'Private Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
-
-        '''' <summary>
-        '''' Ewige Trainerliste
-        '''' </summary>
-        '''' <returns></returns>
-        'Private Property EwigeTrainerliste() As EwigeTrainerCollection
 
         ''' <summary>
         ''' Eine Liste der verwendeten Leistungsstufen

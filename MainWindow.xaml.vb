@@ -782,13 +782,18 @@ Public Class MainWindow
 
         ' Hier wird der DataContext gesetzt!
         'DataContext = AppController.AktuellerClub
-        SetView(AppController.AktuellerClub.Einteilungsliste)
-        SetView(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
+        SetView(AppController.AktuellerClub)
+        'SetView(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
         'SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer)
         'SetView(AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer)
 
     End Sub
 
+
+
+    Private Sub SetView(Club As Generation3.Club)
+        DataContext = Club
+    End Sub
     Private Sub SetView(Einteilungsliste As EinteilungCollection)
         _einteilungslisteCollectionView = New ListCollectionView(Einteilungsliste)
         If _einteilungslisteCollectionView.CanSort Then

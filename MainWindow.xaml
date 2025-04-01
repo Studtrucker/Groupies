@@ -131,8 +131,8 @@
                               IsReadOnly="True" CanUserAddRows="False" >-->
                         <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                                   AutoGenerateColumns="False" 
-                                  ItemsSource="{Binding}"
-                                  SelectedItem="SelectedEinteilung"
+                                  ItemsSource="{Binding Einteilungsliste}"
+                                  SelectedItem="{Binding SelectedEinteilung}"
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
@@ -154,7 +154,8 @@
 
                     </DataGrid>-->
                     <DataGrid x:Name="GruppenlisteDataGrid" 
-                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
+                              ItemsSource="{Binding  SelectedEinteilung.Gruppenliste}"  
+                              SelectedItem="{Binding SelectedGruppe}"
                               DisplayMemberPath="Benennung" 
                               IsSynchronizedWithCurrentItem="True"
                               IsReadOnly="True" DockPanel.Dock="Bottom"
@@ -235,7 +236,7 @@
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
-                              ItemsSource="{Binding}"
+                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTrainer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">

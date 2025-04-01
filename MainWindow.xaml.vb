@@ -260,7 +260,7 @@ Public Class MainWindow
         If AppController.GroupiesFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(AppController.GroupiesFile.FullName)
+            SaveSkischule(AppController.GroupiesFile.Name)
         End If
     End Sub
 
@@ -357,7 +357,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
 
@@ -398,7 +398,7 @@ Public Class MainWindow
 
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+            DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
 
@@ -510,11 +510,15 @@ Public Class MainWindow
     End Sub
 
     Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        If DirectCast(DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
+        If DirectCast(DataContext, Generation3.Club).SelectedGruppe Is Nothing Then
+            MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden")
+            Exit Sub
+        End If
+        If DirectCast(DataContext, Generation3.Club).SelectedGruppe.Trainer IsNot Nothing Then
             MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
             Exit Sub
         End If
-        AppController.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation3.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation3.Club).SelectedGruppe)
     End Sub
 
 #End Region

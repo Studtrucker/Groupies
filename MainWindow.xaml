@@ -237,6 +237,7 @@
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.GruppenloseTrainer}"
+                              SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTrainer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
@@ -271,6 +272,7 @@
                     <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
                               ItemsSource="{Binding SelectedEinteilung.GruppenloseTeilnehmer}" 
+                              SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTeilnehmer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               CanUserAddRows="False" 
                               MouseDoubleClick="GruppenloseTeilnehmer_MouseDoubleClick">

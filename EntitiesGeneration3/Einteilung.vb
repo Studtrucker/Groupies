@@ -62,6 +62,20 @@
             End Set
         End Property
 
+        Private _SelectedGruppenloserTeilnehmer As Teilnehmer
+        ''' <summary>
+        ''' Der aktuell ausgewählte gruppenlose Teilnehmer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property SelectedGruppenloserTeilnehmer As Teilnehmer
+            Get
+                Return _SelectedGruppenloserTeilnehmer
+            End Get
+            Set(value As Teilnehmer)
+                _SelectedGruppenloserTeilnehmer = value
+            End Set
+        End Property
+
         ''' <summary>
         ''' Trainer ohne Gruppe
         ''' Alle neuen Trainer werden hier eingetragen
@@ -76,6 +90,19 @@
             End Set
         End Property
 
+        Private _SelectedGruppenloserTrainer As Trainer
+        ''' <summary>
+        ''' Der aktuell ausgewählte Trainer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property SelectedGruppenloserTrainer As Trainer
+            Get
+                Return _SelectedGruppenloserTrainer
+            End Get
+            Set(value As Trainer)
+                _SelectedGruppenloserTrainer = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Trainer, die bereits in Gruppen eingeteilt wurden

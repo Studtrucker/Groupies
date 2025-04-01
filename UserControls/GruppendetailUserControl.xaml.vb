@@ -28,7 +28,7 @@ Namespace UserControls
 
         Private Sub Handle_TeilnehmerAusGruppeEntfernen(sender As Object, e As RoutedEventArgs)
             For i = MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-                CDS.AktuellerClub.SelectedEinteilung.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+                DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Generation3.Club).SelectedGruppe)
             Next
         End Sub
 
@@ -57,8 +57,8 @@ Namespace UserControls
             'If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
             '    AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
             'End If
-            If DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing Then
-                AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+            If DirectCast(DataContext, Generation3.Club).SelectedGruppe.Trainer IsNot Nothing Then
+                AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, Generation3.Club).SelectedGruppe)
             End If
         End Sub
 

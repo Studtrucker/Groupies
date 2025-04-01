@@ -841,8 +841,8 @@ Public Class MainWindow
 
     Private Sub UnsetView()
 
-        AppController.GroupiesFile = Nothing
-        Me.Title = "Groupies"
+        'AppController.GroupiesFile = Nothing
+        'Me.Title = "Groupies"
 
         _gruppenlisteCollectionView = New ListCollectionView(New GruppeCollection)
         _gruppenloseTeilnehmerCollectionView = New ListCollectionView(New TeilnehmerCollection)

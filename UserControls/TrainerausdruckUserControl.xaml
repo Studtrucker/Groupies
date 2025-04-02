@@ -14,16 +14,23 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-         
+
+        <!--Area Einteilungskopf-->
         <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="10,0,10,0" Margin="4">
-            <TextBlock x:Name="BenennungGruppeneinteilungTextblock"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="AusgabeEinteilungsinfoTextBlock" Text="Einteilung" Grid.Column="0" Grid.Row="0" 
+                           Style="{StaticResource SmallCaption}" />
+                <TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
                      Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
                      Style="{StaticResource SmallCaption}" FontWeight="Bold"/>
+            </Grid>
         </Border>
-         
-        
-                 
+
         <!--Area Group Header-->
         <DockPanel Grid.Row="1" Margin="5">
             <Grid HorizontalAlignment="Left" DockPanel.Dock="Right">

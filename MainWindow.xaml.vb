@@ -151,7 +151,7 @@ Public Class MainWindow
         If (Environment.GetCommandLineArgs().Length = 2) Then
             Dim args = Environment.GetCommandLineArgs
             Dim filename = args(1)
-            OpenSkischule(filename)
+            OpenGroupies(filename)
         Else
             LoadLastSkischule()
         End If
@@ -251,7 +251,7 @@ Public Class MainWindow
 
     Private Sub Handle_Open_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         If SkiDateienService.OpenSkiDatei() Then
-            UnsetView()
+            'UnsetView()
             SetView()
         End If
     End Sub
@@ -260,7 +260,7 @@ Public Class MainWindow
         If AppController.GroupiesFile Is Nothing Then
             ApplicationCommands.SaveAs.Execute(Nothing, Me)
         Else
-            SaveSkischule(AppController.GroupiesFile.Name)
+            SaveGroupies(AppController.GroupiesFile)
         End If
     End Sub
 
@@ -275,7 +275,7 @@ Public Class MainWindow
         End If
 
         If dlg.ShowDialog = True Then
-            SaveSkischule(dlg.FileName)
+            SaveGroupies(dlg.FileName)
             AppController.GroupiesFile = New FileInfo(dlg.FileName)
         End If
     End Sub
@@ -618,7 +618,7 @@ Public Class MainWindow
     ' Handles für Drag and Drop
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-        OpenSkischule(TryCast(sender, MenuItem).Header.ToString())
+        OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
     End Sub
 
     Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
@@ -650,30 +650,29 @@ Public Class MainWindow
             End Using
 
             'If File.Exists(x) Then OpenSkischule(x)
-            OpenSkischule(x)
+            OpenGroupies(x)
         Catch ex As FileNotFoundException
         End Try
     End Sub
 
-    Private Sub OpenSkischule(fileName As String)
+    Private Sub OpenGroupies(fileName As String)
         If SkiDateienService.OpenSkiDatei(fileName) Then
             SetView()
         End If
     End Sub
 
 
-    Private Sub SaveSkischule(fileName As String)
-        ' Ewige Liste schreiben
+    Private Sub SaveGroupies(fileName As String)
+        SaveGroupies(New FileInfo(fileName))
+    End Sub
 
-        'AppCon.CurrentClub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) AppCon.CurrentClub.EwigeTeilnehmerliste.Add(Tn, Now.Date))
-
+    Private Sub SaveGroupies(fileInfo As FileInfo)
         ' 1. Skischule serialisieren und gezippt abspeichern
-        SaveXML(fileName)
-        'SaveZIP(fileName)
+        SaveXML(fileInfo.FullName)
         ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-        Title = "Groupies - " & fileName
-        QueueMostRecentFilename(fileName)
-        MessageBox.Show($"Die Datei {fileName} wurde gespeichert!")
+        Title = $"Groupies - {AppController.AktuellerClub.ClubName} - {fileInfo.Name}"
+        QueueMostRecentFilename(fileInfo.FullName)
+        MessageBox.Show($"Die Datei {fileInfo.Name} wurde gespeichert!", AppController.AktuellerClub.ClubName, MessageBoxButton.OK, MessageBoxImage.Information)
     End Sub
 
     Private Sub SaveXML(fileName As String)

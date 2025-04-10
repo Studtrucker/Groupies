@@ -136,6 +136,11 @@ Namespace Entities
 
 #Region "Funktionen und Methoden"
 
+        Public Sub CopyFrom(Gruppe As Gruppe)
+            Me.GruppenID = Gruppe.GruppenID
+            Me.Benennung = Gruppe.Benennung
+        End Sub
+
         Public Overrides Function ToString() As String
             Return AusgabeTeilnehmerinfo
         End Function

@@ -119,6 +119,10 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.EinteilungNeuErstellen,
                                                AddressOf Handle_EinteilungNeuErstellen_Execute,
                                                AddressOf Handle_EinteilungNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.EinteilungKopieren,
+                                               AddressOf Handle_EinteilungKopieren_Execute,
+                                               AddressOf Handle_EinteilungKopieren_CanExecuted))
+
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
@@ -511,11 +515,11 @@ Public Class MainWindow
 
     Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         If DirectCast(DataContext, Generation3.Club).SelectedGruppe Is Nothing Then
-            MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden")
+            MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             Exit Sub
         End If
         If DirectCast(DataContext, Generation3.Club).SelectedGruppe.Trainer IsNot Nothing Then
-            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden")
+            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             Exit Sub
         End If
         DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation3.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation3.Club).SelectedGruppe)
@@ -562,10 +566,32 @@ Public Class MainWindow
 
 #Region "Einteilung"
     Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.Einteilungsliste IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Dim dlg = New EinteilungDialog With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dlg.ModusEinstellen()
+
+        If dlg.ShowDialog = True Then
+            Try
+                AppController.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
+                dlg.KopiereAktuelleGruppen(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
+            Catch ex As Exception
+                MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+            End Try
+        End If
+    End Sub
+
+    Private Sub Handle_EinteilungKopieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing
+    End Sub
+
+    Private Sub Handle_EinteilungKopieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New EinteilungDialog With {
             .Owner = Me,
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
@@ -576,7 +602,10 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             Try
+                'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub() )
+                'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Co(neueGruppen)
                 AppController.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
+
             Catch ex As Exception
                 MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             End Try

@@ -9,6 +9,7 @@ Namespace Commands
         Private Shared _EinteilungNeuErstellen As New RoutedUICommand("Einteilung erstellen", NameOf(EinteilungNeuErstellen), GetType(SkiclubCommands))
         Private Shared _EinteilungEinlesen As New RoutedUICommand("Einteilung einlesen", NameOf(EinteilungEinlesen), GetType(SkiclubCommands))
         Private Shared _EinteilungLoeschen As New RoutedUICommand("Einteilung löschen", NameOf(EinteilungLoeschen), GetType(SkiclubCommands))
+        Private Shared _EinteilungKopieren As New RoutedUICommand("Einteilung Kopieren", NameOf(EinteilungKopieren), GetType(SkiclubCommands))
 
 
         ' TeilnehmerCommands
@@ -120,6 +121,12 @@ Namespace Commands
                 Return _EinteilungLoeschen
             End Get
         End Property
+        Public Shared ReadOnly Property EinteilungKopieren As RoutedUICommand
+            Get
+                Return _EinteilungKopieren
+            End Get
+        End Property
+
 
         Public Shared ReadOnly Property LeistungsstufeNeuErstellen As RoutedUICommand
             Get

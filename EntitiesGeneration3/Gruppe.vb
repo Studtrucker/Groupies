@@ -63,6 +63,24 @@ Namespace Entities
             Mitgliederliste = New TeilnehmerCollection
         End Sub
 
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="OriginGruppe"></param>
+        Public Sub New(OriginGruppe As Gruppe)
+            GruppenID = OriginGruppe.GruppenID
+            Benennung = OriginGruppe.Benennung
+            Leistungsstufe = OriginGruppe.Leistungsstufe
+            AusgabeTeilnehmerinfo = OriginGruppe.AusgabeTeilnehmerinfo
+            Sortierung = OriginGruppe.Sortierung
+            Trainer = OriginGruppe.Trainer
+
+            Dim KopierteListe = New TeilnehmerCollection
+            KopierteListe.AddRange(Controller.AppController.KopiereListeMitNeuenObjekten(Of Teilnehmer)(OriginGruppe.Mitgliederliste.ToList, Function(t) New Teilnehmer(t)))
+            Mitgliederliste = KopierteListe
+
+        End Sub
+
 #End Region
 
 #Region "Eigenschaft"
@@ -135,11 +153,6 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
-
-        Public Sub CopyFrom(Gruppe As Gruppe)
-            Me.GruppenID = Gruppe.GruppenID
-            Me.Benennung = Gruppe.Benennung
-        End Sub
 
         Public Overrides Function ToString() As String
             Return AusgabeTeilnehmerinfo

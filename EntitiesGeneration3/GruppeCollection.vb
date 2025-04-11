@@ -32,5 +32,17 @@ Namespace Entities
             OrderBy(Function(G) G.Sortierung) _
             .ThenBy(Function(G) G.Benennung)
 
+#Region "Funktionen und Methoden"
+        Public Overloads Sub AddRange(Gruppenliste As IEnumerable(Of Gruppe))
+            For Each Gruppe As Gruppe In Gruppenliste
+                Add(Gruppe)
+            Next
+        End Sub
+
+#End Region
+
     End Class
+
+
+
 End Namespace

@@ -64,6 +64,19 @@ Namespace Entities
             _Vorname = Vorname
         End Sub
 
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="Origin"></param>
+        Public Sub New(Origin As Teilnehmer)
+            TeilnehmerID = Origin.TeilnehmerID
+            Nachname = Origin.Nachname
+            Vorname = Origin.Vorname
+            Geburtsdatum = Origin.Geburtsdatum
+            Telefonnummer = Origin.Telefonnummer
+            Leistungsstand = Origin.Leistungsstand
+        End Sub
+
 #End Region
 
 #Region "Eigenschaften"

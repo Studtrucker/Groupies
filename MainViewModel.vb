@@ -52,6 +52,14 @@ Public Class MainViewModel
 
 #Region "Functions"
 
+    Public Function KopiereListeMitNeuenObjekten(Of T)(originalList As List(Of T), copyConstructor As Func(Of T, T)) As List(Of T)
+        Dim copiedList As New List(Of T)
+        For Each item In originalList
+            copiedList.Add(copyConstructor(item))
+        Next
+        Return copiedList
+    End Function
+
 
     '''' <summary>
     '''' Lädt eine XML-Datei und erstellt daraus einen Club

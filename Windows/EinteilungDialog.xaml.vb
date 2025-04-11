@@ -21,13 +21,9 @@ Public Class EinteilungDialog
     End Sub
 
     Public Sub KopiereAktuelleGruppen(OriginGruppen As GruppeCollection)
-        Dim KopierteGruppen As New GruppeCollection()
-        OriginGruppen.ToList.ForEach(Sub(G As Gruppe)
-                                         Dim KopierteGruppe = New Gruppe()
-                                         KopierteGruppe.CopyFrom(G)
-                                         KopierteGruppen.Add(KopierteGruppe)
-                                     End Sub)
-        Einteilung.Gruppenliste = KopierteGruppen
+        Dim KopierteListe As New GruppeCollection
+        KopierteListe.AddRange(Controller.AppController.KopiereListeMitNeuenObjekten(Of Gruppe)(OriginGruppen.ToList, Function(t) New Gruppe(t)))
+        Einteilung.Gruppenliste = KopierteListe
     End Sub
 
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen

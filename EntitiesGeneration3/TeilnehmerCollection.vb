@@ -91,6 +91,12 @@ Namespace Entities
 
 #Region "Funktionen und Methoden"
 
+        Public Overloads Sub AddRange(Teilnehmerliste As IEnumerable(Of Teilnehmer))
+            For Each Teilnehmer As Teilnehmer In Teilnehmerliste
+                Add(Teilnehmer)
+            Next
+        End Sub
+
         'Public Overloads Sub Add(Teilnehmer As Teilnehmer)
         '    Add(Teilnehmer)
         'End Sub

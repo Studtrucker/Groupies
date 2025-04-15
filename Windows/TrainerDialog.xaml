@@ -9,6 +9,7 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
+        Closing="Window_Closing"
         Title="Trainer" SizeToContent="Height" Width="700">
 
     <Window.BindingGroup>
@@ -48,9 +49,8 @@
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                <Button x:Name="OkButton" Width="110" Content="Übernehmen" Click="HandleOkButton"/>
-                <Button x:Name="CancelButton" Width="110" Content="Verwerfen" Click="HandleCancelButton"/>
-                <Button x:Name="SchliessenButton" Width="110" Content="Schließen" Click="HandleSchliessenButton"/>
+                <Button x:Name="OkButton" Width="110" Content="Ok" Click="HandleButtonOKExecuted"/>
+                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Click="HandleCancelButtonExecuted"/>
             </StackPanel>
         </Border>
         <!--Inputfields-->
@@ -78,10 +78,16 @@
                     BorderBrush="Black" BorderThickness="1">
                 
                 <Grid>
+                    <!--<Grid.RowDefinitions>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>-->
                     <Rectangle Fill="Transparent"/>
                     <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
-                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"/>
-                    <TextBlock TextAlignment="Center" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"  
+                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"
+                           Grid.Row="0"/>
+                    <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"  
+                               Grid.Row="1"
                                Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
                     </TextBlock>

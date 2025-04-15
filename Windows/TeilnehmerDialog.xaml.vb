@@ -4,7 +4,6 @@ Imports Groupies.Entities
 
 Public Class TeilnehmerDialog
     Implements Interfaces.IWindowMitModus
-    Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
     Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
     Public Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
@@ -63,7 +62,7 @@ Public Class TeilnehmerDialog
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-            Dialog = False
+            DialogResult = False
         Else
             TeilnehmerIDTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             VornameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
@@ -71,7 +70,7 @@ Public Class TeilnehmerDialog
             GeburtstagDatePicker.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
             LeistungsstandComboBox.GetBindingExpression(ComboBox.SelectedValueProperty).UpdateSource()
             TelefonTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            Dialog = True
+            DialogResult = True
         End If
     End Sub
 
@@ -79,8 +78,5 @@ Public Class TeilnehmerDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandleSchliessenButton
-        Modus.HandleClose(Me)
-    End Sub
 
 End Class

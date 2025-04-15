@@ -37,7 +37,6 @@
                 <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
                 <Button x:Name="OkButton" Width="110" Content="Übernehmen" Click="HandleOkButton"/>
                 <Button x:Name="CancelButton" Width="110" Content="Verwerfen" Click="HandleCancelButton"/>
-                <Button x:Name="SchliessenButton" Width="110" Content="Schließen" Click="SchliessenButton_Click"/>
             </StackPanel>
         </Border>
 

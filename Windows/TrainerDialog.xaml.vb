@@ -10,9 +10,8 @@ Public Class TrainerDialog
 
     Public ReadOnly Property Trainer() As Trainer
     Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
-    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 
-
+#Region "Konstruktor"
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -22,21 +21,47 @@ Public Class TrainerDialog
         _Trainer = New Trainer(String.Empty)
         DataContext = _Trainer
 
+
+
     End Sub
 
+#End Region
+
+#Region "Events"
     Private Sub HandleWindowLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         SpitznameTextBox.Focus()
     End Sub
 
-    Public Sub Bearbeiten(Trainer As Trainer)
-        _Trainer = Trainer
-        DataContext = _Trainer
+    Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
+        If DialogResult = True Then
+            BindingGroup.CommitEdit()
+            If Validation.GetHasError(Me) Then
+                MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
+                e.Cancel = True
+            Else
+                SpitznameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+                VornameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+                NachnameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+                eMailTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+                TelefonTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+                FotoImage.GetBindingExpression(Image.SourceProperty).UpdateSource()
+            End If
+        Else
+            BindingGroup.CancelEdit()
+        End If
     End Sub
 
-    Private Sub HandleButtonOKExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+    Private Sub HandleCancelButtonExecuted(sender As Object, e As RoutedEventArgs)
+        DialogResult = False
+    End Sub
+
+    Private Sub HandleButtonOKExecuted(sender As Object, e As RoutedEventArgs)
         DialogResult = True
     End Sub
 
+#End Region
+
+#Region "Formular-spezifische Handler"
 
     Private Sub HandleDrop(sender As Object, e As DragEventArgs)
 
@@ -93,9 +118,8 @@ Public Class TrainerDialog
         e.Handled = True
     End Sub
 
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+#End Region
+
 
     Private Function GetErrors() As String
         Dim Fehlertext = String.Empty
@@ -104,27 +128,18 @@ Public Class TrainerDialog
     End Function
 
 
-    Private Sub HandleOkButton(sender As Object, e As RoutedEventArgs)
-        BindingGroup.CommitEdit()
-        If Validation.GetHasError(Me) Then
-            MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-            Dialog = False
-        Else
-            SpitznameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            VornameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            NachnameTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            eMailTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            TelefonTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            FotoImage.GetBindingExpression(Image.SourceProperty).UpdateSource()
-            Dialog = True
-        End If
+
+#Region "Modus-Handler"
+    Public Sub Bearbeiten(Trainer As Trainer)
+        _Trainer = Trainer
+        DataContext = _Trainer
     End Sub
 
-    Private Sub HandleCancelButton(sender As Object, e As RoutedEventArgs)
-        BindingGroup.CancelEdit()
+    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+        Me.Titel.Text &= Modus.Titel
     End Sub
 
-    Public Sub HandleSchliessenButton(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandleSchliessenButton
-        Modus.HandleClose(Me)
-    End Sub
+#End Region
+
+
 End Class

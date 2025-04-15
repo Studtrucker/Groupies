@@ -9,7 +9,6 @@ Public Class FaehigkeitDialog
 
     Public ReadOnly Property Faehigkeit() As Faehigkeit
 
-    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
     Public Property Modus As IModus Implements IWindowMitModus.Modus
 
 
@@ -54,20 +53,17 @@ Public Class FaehigkeitDialog
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-            Dialog = False
+            DialogResult = False
         Else
             SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             BeschreibungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             BenennungTextBox.GetBindingExpression(DatePicker.SelectedDateProperty).UpdateSource()
-            Dialog = True
+            DialogResult = True
         End If
     End Sub
 
     Private Sub HandleCancelButton(sender As Object, e As RoutedEventArgs)
         BindingGroup.CancelEdit()
-    End Sub
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandleSchliessenButton
-        Modus.HandleClose(Me)
     End Sub
 
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen

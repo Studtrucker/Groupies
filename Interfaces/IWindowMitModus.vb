@@ -3,10 +3,20 @@ Namespace Interfaces
 
 
     Public Interface IWindowMitModus
+
+        ''' <summary>
+        ''' Der aktuelle, eingestellte Modus
+        ''' </summary>
+        ''' <returns></returns>
         Property Modus As Interfaces.IModus
-        Property Dialog As Boolean
+
+
+        ''' <summary>
+        ''' Die Methode, um das Formular auf den aktuellen Modus einzustellen
+        ''' </summary>
         Sub ModusEinstellen()
-        Sub HandleSchliessenButton(sender As Object, e As RoutedEventArgs)
+
+
     End Interface
 
 End Namespace

@@ -10,7 +10,6 @@ Public Class GruppeDialog
     Public ReadOnly Property Group() As Gruppe
 
     Public Property Modus As IModus Implements IWindowMitModus.Modus
-    Public Property Dialog As Boolean Implements IWindowMitModus.Dialog
 
 
     Private ReadOnly _levelListCollectionView As ICollectionView
@@ -57,12 +56,12 @@ Public Class GruppeDialog
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-            Dialog = False
+            DialogResult = False
         Else
             AusgabenameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             BenennungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
-            Dialog = True
+            DialogResult = True
         End If
     End Sub
 
@@ -74,7 +73,4 @@ Public Class GruppeDialog
         'Me.Titel.Text &= Modus.Titel
     End Sub
 
-    Public Sub HandleSchliessenButton(sender As Object, e As RoutedEventArgs) Implements IWindowMitModus.HandleSchliessenButton
-        Modus.HandleClose(Me)
-    End Sub
 End Class

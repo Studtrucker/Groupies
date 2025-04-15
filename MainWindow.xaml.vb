@@ -306,7 +306,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
     End Sub
 
 #End Region
@@ -329,7 +329,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -427,7 +427,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -492,11 +492,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        Dim HatKeinTrainer = DirectCast(DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem, Gruppe).Trainer Is Nothing
+        Dim HatKeinTrainer = AppController.AktuellerClub.SelectedGruppe.Trainer Is Nothing
         e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
     Private Sub Handle_TrainerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = DirectCast(DirectCast(DataContext, ICollectionView).CurrentItem, Gruppe).Trainer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)

@@ -6,7 +6,6 @@ Public Class LeistungsstufeDialog
     Implements Interfaces.IWindowMitModus
 
     Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
-    Public Property Dialog As Boolean Implements Interfaces.IWindowMitModus.Dialog
     Public ReadOnly Property Leistungsstufe() As Leistungsstufe
 
     Public Sub New()
@@ -46,21 +45,17 @@ Public Class LeistungsstufeDialog
         BindingGroup.CommitEdit()
         If Validation.GetHasError(Me) Then
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
-            Dialog = False
+            DialogResult = False
         Else
             LeistungsstufeView.SortierungTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             LeistungsstufeView.BenennungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             'LeistungsstufeView.FaehigkeitenDataGrid.GetBindingExpression(DataGrid.HasItemsProperty).UpdateSource()
-            Dialog = True
+            DialogResult = True
         End If
     End Sub
 
     Private Sub HandlerCancelButton(sender As Object, e As RoutedEventArgs)
         BindingGroup.CancelEdit()
-    End Sub
-
-    Private Sub SchliessenButton_Click(sender As Object, e As RoutedEventArgs) Implements Interfaces.IWindowMitModus.HandleSchliessenButton
-        Modus.HandleClose(Me)
     End Sub
 
     Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen

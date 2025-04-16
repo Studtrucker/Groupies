@@ -83,6 +83,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerBearbeiten,
                                                AddressOf Handle_TeilnehmerBearbeiten_Execute,
                                                AddressOf Handle_TeilnehmerBearbeiten_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerLoeschen,
+                                               AddressOf Handle_TeilnehmerLoeschen_Execute,
+                                               AddressOf Handle_TeilnehmerLoeschen_CanExecuted))
 
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerlisteImportieren,
@@ -100,6 +103,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerBearbeiten,
                                                AddressOf Handle_TrainerBearbeiten_Execute,
                                                AddressOf Handle_TrainerBearbeiten_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerLoeschen,
+                                               AddressOf Handle_TrainerLoeschen_Execute,
+                                               AddressOf Handle_TrainerLoeschen_CanExecuted))
 
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerAusGruppeEntfernen,
                                                AddressOf Handle_TrainerAusGruppeEntfernen_Execute,
@@ -351,7 +357,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, ICollectionView).CurrentItem)
+            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), AppController.AktuellerClub.SelectedGruppe)
         Next
     End Sub
 
@@ -364,6 +370,16 @@ Public Class MainWindow
             DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
+    Private Sub Handle_TeilnehmerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count > 1
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+
+    End Sub
+    Private Sub Handle_TeilnehmerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerLoeschen(GruppenloseTeilnehmerDataGrid.SelectedItems(i))
+        Next
+    End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count = 1
@@ -371,12 +387,31 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
-        Dim dlg = New TeilnehmerDialog(GruppeUserControl.MitgliederlisteDataGrid.CurrentItem) With {
+        Dim dlg = New TeilnehmerDialog() With {
             .Owner = Me,
             .Modus = New Fabriken.ModusBearbeiten,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dlg.ModusEinstellen()
+
+
+        ' Teilnehmer ermitteln
+        Dim Teilnehmer As Teilnehmer
+        If e.OriginalSource.GetType.Equals(GetType(DataGridCell)) Then
+            If e.Source.Name.ToString.Equals("GruppenloseTeilnehmerDataGrid") Then
+                Teilnehmer = DirectCast(GruppenloseTeilnehmerDataGrid.SelectedItem, Teilnehmer)
+            Else
+                Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
+            End If
+        ElseIf e.OriginalSource.GetType.Equals(GetType(MenuItem)) Then
+            Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
+        ElseIf e.OriginalSource.GetType.Equals(GetType(ContextMenu)) Then
+            Teilnehmer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Teilnehmer)
+        Else
+            Teilnehmer = Nothing
+        End If
+
+        If Teilnehmer IsNot Nothing Then dlg.Bearbeiten(Teilnehmer)
 
         dlg.ShowDialog()
 
@@ -443,8 +478,16 @@ Public Class MainWindow
         End If
     End Sub
 
+    Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+    End Sub
+    Private Sub Handle_TrainerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
+            AppController.AktuellerClub.SelectedEinteilung.TrainerLoeschen(GruppenloseTrainerDataGrid.SelectedItems(i))
+        Next
+    End Sub
+
     Private Sub Handle_TrainerBearbeiten_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        'e.CanExecute = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Trainer) IsNot Nothing
         e.CanExecute = e.OriginalSource.DataContext IsNot Nothing
     End Sub
 
@@ -488,11 +531,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppController.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), DirectCast(GruppenlisteDataGrid.DataContext, ICollectionView).CurrentItem)
+        AppController.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), AppController.AktuellerClub.SelectedGruppe)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        Dim HatKeinTrainer = AppController.AktuellerClub.SelectedGruppe.Trainer Is Nothing
+        Dim HatKeinTrainer = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer Is Nothing
         e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
     End Sub
     Private Sub Handle_TrainerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)

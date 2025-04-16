@@ -15,6 +15,7 @@ Namespace Interfaces
         ''' Die Methode, um das Formular auf den aktuellen Modus einzustellen
         ''' </summary>
         Sub ModusEinstellen()
+        Sub Bearbeiten(Of T)(Original As T)
 
 
     End Interface

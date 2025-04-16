@@ -69,4 +69,8 @@ Public Class FaehigkeitDialog
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
         Throw New NotImplementedException()
     End Sub
+
+    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
+        Throw New NotImplementedException()
+    End Sub
 End Class

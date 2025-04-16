@@ -1,5 +1,6 @@
 ﻿Imports Groupies.Commands
 Imports Groupies.Entities
+Imports Groupies.Interfaces
 Imports System.Text
 
 Public Class LeistungsstufeDialog
@@ -47,7 +48,7 @@ Public Class LeistungsstufeDialog
             MessageBox.Show(GetErrors, "Ungültige Eingabe", MessageBoxButton.OK, MessageBoxImage.Error)
             DialogResult = False
         Else
-            LeistungsstufeView.SortierungTextbox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
+            LeistungsstufeView.SortierungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             LeistungsstufeView.BenennungTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource()
             'LeistungsstufeView.FaehigkeitenDataGrid.GetBindingExpression(DataGrid.HasItemsProperty).UpdateSource()
             DialogResult = True
@@ -62,4 +63,7 @@ Public Class LeistungsstufeDialog
         Me.Titel.Text &= Modus.Titel
     End Sub
 
+    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
+        Throw New NotImplementedException()
+    End Sub
 End Class

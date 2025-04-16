@@ -58,13 +58,13 @@ Namespace Commands
         Public Shared ReadOnly Property TrainerlisteExportierenXl As New RoutedUICommand("Trainer exportieren",
                                                                                         NameOf(TrainerlisteExportierenXl),
                                                                                         GetType(SkiclubCommands))
-        Public Shared ReadOnly Property TrainerInGruppeEinteilen As New RoutedUICommand("Gruppe einen Trainer zuweisen",
+        Public Shared ReadOnly Property TrainerInGruppeEinteilen As New RoutedUICommand("Trainer der Gruppe zuweisen",
                                                                                        NameOf(TrainerInGruppeEinteilen),
                                                                                        GetType(SkiclubCommands))
         Public Shared ReadOnly Property TrainerAusGruppeEntfernen As New RoutedUICommand("Trainer aus Gruppe entfernen",
                                                                                         NameOf(TrainerAusGruppeEntfernen),
                                                                                         GetType(SkiclubCommands))
-        Public Shared ReadOnly Property TrainerNeuErstellen As New RoutedUICommand("Trainer hinzufügen",
+        Public Shared ReadOnly Property TrainerNeuErstellen As New RoutedUICommand("Trainer erstellen",
                                                                                    NameOf(TrainerNeuErstellen),
                                                                                    GetType(SkiclubCommands))
         Public Shared ReadOnly Property TrainerBearbeiten As New RoutedUICommand("Trainer bearbeiten",

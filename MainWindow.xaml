@@ -267,7 +267,7 @@
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerArchivieren}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -294,8 +294,10 @@
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Teilnehmer in Gruppe einteilen" Command="{x:Static cmd:SkiclubCommands.TeilnehmerInGruppeEinteilen}"/>
-                                <MenuItem Header="Teilnehmer archivieren" Command="{x:Static cmd:SkiclubCommands.TeilnehmerArchivieren}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerInGruppeEinteilen}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}"/>
+                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

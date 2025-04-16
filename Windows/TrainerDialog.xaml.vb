@@ -6,10 +6,12 @@ Imports Microsoft.Win32
 Imports Groupies.Interfaces
 
 Public Class TrainerDialog
+
     Implements Interfaces.IWindowMitModus
 
-    Public ReadOnly Property Trainer() As Trainer
     Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+
+    Public ReadOnly Property Trainer() As Trainer
 
 #Region "Konstruktor"
     Public Sub New()
@@ -120,24 +122,32 @@ Public Class TrainerDialog
 
 #End Region
 
+#Region "Fehlerbehandlung"
 
     Private Function GetErrors() As String
         Dim Fehlertext = String.Empty
         DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
         Return Fehlertext.Remove(Fehlertext.Count - 2, Len(vbNewLine))
     End Function
+#End Region
 
 
 
 #Region "Modus-Handler"
-    Public Sub Bearbeiten(Trainer As Trainer)
+    Public Sub Bearbeiten(Of T)(Trainer As Trainer)
         _Trainer = Trainer
         DataContext = _Trainer
     End Sub
+    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
+        Throw New NotImplementedException
+    End Sub
+
 
     Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
     End Sub
+
+
 
 #End Region
 

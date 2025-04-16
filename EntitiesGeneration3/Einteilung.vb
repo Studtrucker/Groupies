@@ -172,7 +172,7 @@
         ''' Trainer aus dieser Einteilung entfernen
         ''' </summary>
         ''' <param name="Trainer"></param>
-        Public Sub TrainerEntfernen(Trainer As Trainer)
+        Public Sub TrainerLoeschen(Trainer As Trainer)
             GruppenloseTrainer.Remove(Trainer)
         End Sub
 
@@ -186,10 +186,29 @@
         End Sub
 
         ''' <summary>
+        ''' Der Trainer wird der angegebenen Gruppe zugewiesen
+        ''' </summary>
+        ''' <param name="Trainer"></param>
+        ''' <param name="Gruppe"></param>
+        Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
+            Gruppe.Trainer = Trainer
+            GruppenloseTrainer.Remove(Trainer)
+        End Sub
+
+        ''' <summary>
+        ''' Der Trainer wird aus der angegebenen Gruppe entfernt
+        ''' </summary>
+        ''' <param name="Gruppe"></param>
+        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
+            GruppenloseTrainer.Add(Gruppe.Trainer)
+            Gruppe.Trainer = Nothing
+        End Sub
+
+        ''' <summary>
         ''' Teilnehmer aus dieser Einteilung entfernen
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
-        Public Sub TeilnehmerEntfernen(Teilnehmer As Teilnehmer)
+        Public Sub TeilnehmerLoeschen(Teilnehmer As Teilnehmer)
             GruppenloseTeilnehmer.Remove(Teilnehmer)
         End Sub
 
@@ -216,24 +235,7 @@
             GruppenloseTeilnehmer.Remove(Teilnehmer)
         End Sub
 
-        ''' <summary>
-        ''' Der Trainer wird der angegebenen Gruppe zugewiesen
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
-            Gruppe.Trainer = Trainer
-            GruppenloseTrainer.Remove(Trainer)
-        End Sub
 
-        ''' <summary>
-        ''' Der Trainer wird aus der angegebenen Gruppe entfernt
-        ''' </summary>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            GruppenloseTrainer.Add(Gruppe.Trainer)
-            Gruppe.Trainer = Nothing
-        End Sub
 
 #End Region
 

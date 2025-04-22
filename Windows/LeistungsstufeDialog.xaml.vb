@@ -63,7 +63,8 @@ Public Class LeistungsstufeDialog
         Me.Titel.Text &= Modus.Titel
     End Sub
 
-    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
-        Throw New NotImplementedException()
+    Public Sub Bearbeiten(Leistungsstufe As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
+        _Leistungsstufe = Leistungsstufe
+        DataContext = _Leistungsstufe
     End Sub
 End Class

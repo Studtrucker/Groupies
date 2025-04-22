@@ -25,10 +25,6 @@ Public Class EinteilungDialog
         Einteilung.Gruppenliste = KopierteListe
     End Sub
 
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
-
     Private Function GetErrors()
         Dim Fehlertext = String.Empty
         DirectCast(Validation.GetErrors(Me)(0).ErrorContent, List(Of String)).ForEach(Sub(Ft As String) Fehlertext &= Ft & vbNewLine)
@@ -52,7 +48,12 @@ Public Class EinteilungDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
+    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+        Me.Titel.Text &= Modus.Titel
+    End Sub
+
+    Private Sub Bearbeiten(Einteilung As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
         Throw New NotImplementedException()
     End Sub
+
 End Class

@@ -466,16 +466,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New TrainerDialog With {
+        'Dim dlg = New TrainerDialog With {
+        '    .Owner = Me,
+        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        'dlg.ModusEinstellen()
+
+        'If dlg.ShowDialog = True Then
+        '    AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(dlg.Trainer)
+        'End If
+
+        Dim dialog = New DialogBasis(Of Trainer) With {
             .Owner = Me,
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        dlg.ModusEinstellen()
-
-        If dlg.ShowDialog = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(dlg.Trainer)
-        End If
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -584,7 +589,7 @@ Public Class MainWindow
         dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
-            AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Add(dlg.Group)
+            AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Add(dlg.Gruppe)
         End If
     End Sub
 

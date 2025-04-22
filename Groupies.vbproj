@@ -110,6 +110,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
+    <Compile Include="Interfaces\IWindowMitModus.vb" />
+    <Compile Include="IWindowMitModus\ModusEinstellen.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
@@ -129,6 +131,9 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="Windows\DialogBasis.xaml.vb">
+      <DependentUpon>DialogBasis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EinteilungDialog.xaml.vb">
       <DependentUpon>EinteilungDialog.xaml</DependentUpon>
     </Compile>
@@ -170,7 +175,7 @@
     <Compile Include="Windows\InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IWindowMitModus.vb" />
+    <Compile Include="Interfaces\IGenericWindowMitModus.vb" />
     <Compile Include="My Project\Annotations.vb" />
     <Compile Include="Constants\ImageTypes.vb" />
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
@@ -251,6 +256,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\CountOfGroupsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DialogBasis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

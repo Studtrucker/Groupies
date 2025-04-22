@@ -9,7 +9,7 @@
         xmlns:rules="clr-namespace:Groupies.ValidationRules"
         mc:Ignorable="d"
         Loaded="HandleWindowLoaded"
-        Closing="Window_Closing"
+        Closing="HandleWindowClosing"
         Title="Trainer" SizeToContent="Height" Width="700">
 
     <Window.BindingGroup>
@@ -34,7 +34,21 @@
         </Style>-->
     </Window.Resources>
     
-    <DockPanel>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="1" Grid.Column="1">
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
             <Image Source="/Images/icons8-trainer-48.png"
@@ -44,15 +58,15 @@
                        Style="{StaticResource WindowCaption}"/>
         </DockPanel>
 
-
         <!--OK- und Cancel-Button-->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                <Button x:Name="OkButton" Width="110" Content="Ok" Click="HandleButtonOKExecuted"/>
-                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Click="HandleCancelButtonExecuted"/>
+                <!--<Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />-->
+                <Button x:Name="OkButton" Width="110" Content="Ok" Click="HandleButtonOKExecuted" IsDefault="True"/>
+                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Click="HandleCancelButtonExecuted" IsCancel="True"/>
             </StackPanel>
         </Border>
+        
         <!--Inputfields-->
         <Grid>
             <Grid.ColumnDefinitions>
@@ -140,4 +154,5 @@
         </Grid>
 
     </DockPanel>
+    </Grid>
 </Window>

@@ -1,9 +1,7 @@
 ﻿Imports System.IO
 Imports System.Text
 Imports Groupies.Entities
-Imports Groupies.Commands
-Imports Microsoft.Win32
-Imports Groupies.Interfaces
+
 
 Public Class TrainerDialog
 
@@ -14,6 +12,7 @@ Public Class TrainerDialog
     Public ReadOnly Property Trainer() As Trainer
 
 #Region "Konstruktor"
+
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -22,8 +21,6 @@ Public Class TrainerDialog
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         _Trainer = New Trainer(String.Empty)
         DataContext = _Trainer
-
-
 
     End Sub
 
@@ -34,7 +31,7 @@ Public Class TrainerDialog
         SpitznameTextBox.Focus()
     End Sub
 
-    Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
+    Private Sub HandleWindowClosing(sender As Object, e As ComponentModel.CancelEventArgs)
         If DialogResult = True Then
             BindingGroup.CommitEdit()
             If Validation.GetHasError(Me) Then
@@ -131,23 +128,21 @@ Public Class TrainerDialog
     End Function
 #End Region
 
-
-
 #Region "Modus-Handler"
-    Public Sub Bearbeiten(Of T)(Trainer As Trainer)
-        _Trainer = Trainer
-        DataContext = _Trainer
-    End Sub
-    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
-        Throw New NotImplementedException
-    End Sub
 
-
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
         Me.Titel.Text &= Modus.Titel
     End Sub
 
+    Public Sub Bearbeiten(Trainer As Trainer)
+        _Trainer = Trainer
+        DataContext = _Trainer
+    End Sub
 
+    Public Sub Bearbeiten(Trainer As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
+        _Trainer = Trainer
+        DataContext = _Trainer
+    End Sub
 
 #End Region
 

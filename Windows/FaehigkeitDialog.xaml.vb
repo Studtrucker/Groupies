@@ -9,8 +9,7 @@ Public Class FaehigkeitDialog
 
     Public ReadOnly Property Faehigkeit() As Faehigkeit
 
-    Public Property Modus As IModus Implements IWindowMitModus.Modus
-
+    Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public Sub New()
 
@@ -66,11 +65,13 @@ Public Class FaehigkeitDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Public Sub ModusEinstellen() Implements IWindowMitModus.ModusEinstellen
+
+    Private Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+        'Me.Titel.Text &= Modus.Titel
+    End Sub
+
+    Private Sub Bearbeiten(Faehigkeit As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
         Throw New NotImplementedException()
     End Sub
 
-    Public Sub Bearbeiten(Of T)(Original As T) Implements IWindowMitModus.Bearbeiten
-        Throw New NotImplementedException()
-    End Sub
 End Class

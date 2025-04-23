@@ -30,8 +30,8 @@
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                <Button x:Name="OkButton" Width="110" Content="Ok"/>
-                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" />
+                <Button x:Name="OkButton" Width="110" Content="Ok" IsDefault="True"/>
+                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" IsCancel="True"/>
             </StackPanel>
         </Border>
         

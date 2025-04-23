@@ -101,6 +101,12 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
+            <MenuItem Header="_Hilfe">
+                <MenuItem Header="Über Groupies" Click="HandleAboutButtonExecuted"/>
+                <MenuItem Header="Hilfe" Click="HandleHelpButtonExecuted"/>
+                <MenuItem Header="Erste Hilfe" Click="HandleFirstHelpButtonExecuted"/>
+            </MenuItem>
+            
         </Menu>
 
 

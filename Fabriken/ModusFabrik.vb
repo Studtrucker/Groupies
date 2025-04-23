@@ -9,10 +9,21 @@ Namespace Fabriken
                 Return New ModusBearbeiten
             ElseIf Modus = Enums.ModusEnum.Erstellen Then
                 Return New ModusErstellen
+            ElseIf Modus = Enums.ModusEnum.Ansehen Then
+                Return New ModusAnsehen
             Else
                 Return New Exception("Unbekannter Modus")
             End If
         End Function
+
+    End Class
+
+    Public Class ModusAnsehen
+        Implements Interfaces.IModus
+
+        Public Property Titel As String = " ansehen" Implements Interfaces.IModus.Titel
+
+        Public Property IconString As String = "pack://application:,,,/Images/icons8-view-48.png" Implements IModus.IconString
 
     End Class
 
@@ -21,12 +32,18 @@ Namespace Fabriken
 
         Public Property Titel As String = " erstellen" Implements Interfaces.IModus.Titel
 
+
+        Public Property IconString As String = "pack://application:,,,/Images/icons8-create-48.png" Implements IModus.IconString
+
     End Class
 
     Public Class ModusBearbeiten
         Implements Interfaces.IModus
 
         Public Property Titel As String = " bearbeiten" Implements Interfaces.IModus.Titel
+
+        Public Property IconString As String = "pack://application:,,,/Images/icons8-pencil-48.png" Implements IModus.IconString
+
 
     End Class
 
@@ -36,7 +53,11 @@ Namespace Interfaces
 
     Public Interface IModus
         Property Titel As String
+        Property IconString As String
+
     End Interface
+
+
 End Namespace
 
 
@@ -45,6 +66,7 @@ Namespace Enums
     Public Enum ModusEnum
         Erstellen
         Bearbeiten
+        Ansehen
     End Enum
 
 End Namespace

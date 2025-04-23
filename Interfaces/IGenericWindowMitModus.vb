@@ -17,6 +17,8 @@ Namespace Interfaces
         Sub ModusEinstellen()
         Sub Bearbeiten(Original As T)
 
+        Sub Erstellen()
+        Sub Ansehen(Original As T)
 
     End Interface
 

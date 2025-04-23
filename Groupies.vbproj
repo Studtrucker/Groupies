@@ -131,6 +131,7 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="Windows\Dialog.vb" />
     <Compile Include="Windows\DialogBasis.xaml.vb">
       <DependentUpon>DialogBasis.xaml</DependentUpon>
     </Compile>
@@ -547,6 +548,15 @@
   <ItemGroup>
     <Resource Include="Images\icons8-timeline-48.png" />
     <Resource Include="Images\icons8-timeline-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-create-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-view-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-pencil-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

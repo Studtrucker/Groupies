@@ -1037,6 +1037,36 @@ Public Class MainWindow
         fml.Show()
     End Sub
 
+    Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
+        Dim dialog = New DialogBasis(Of Trainer) With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dialog.ModusEinstellen()
+        dialog.ShowDialog()
+    End Sub
+
+    Private Sub HandleHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
+        Dim dialog = New DialogBasis(Of Trainer) With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dialog.ModusEinstellen()
+        dialog.ShowDialog()
+    End Sub
+
+    Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
+        Dim dialog = New DialogBasis(Of Trainer) With {
+            .Owner = Me,
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dialog.ModusEinstellen()
+        dialog.ShowDialog()
+    End Sub
+
 #End Region
 
 End Class

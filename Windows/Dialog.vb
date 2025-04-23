@@ -1,12 +1,11 @@
-﻿Imports System.ComponentModel
-Imports System.IO
-Imports System.Text
-Imports Groupies.Entities
-Imports Groupies.Interfaces
+﻿Imports Groupies.Interfaces
+Imports System.ComponentModel
+Imports System.Windows.Markup
 
-Public Class DialogBasis(Of T)
+Public MustInherit Class Dialog(Of T)
     Inherits Window
     Implements Interfaces.IGenericWindowMitModus(Of T)
+
 
     Private _Objekt As T
 
@@ -22,7 +21,7 @@ Public Class DialogBasis(Of T)
 #Region "Konstruktor"
 
     Public Sub New()
-        'InitializeComponent()
+        InitializeComponent()
     End Sub
 
 
@@ -86,6 +85,15 @@ Public Class DialogBasis(Of T)
         DialogResult = False
     End Sub
 
+    Public Sub Connect(connectionId As Integer, target As Object) Implements IComponentConnector.Connect
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub InitializeComponent() Implements IComponentConnector.InitializeComponent
+        Throw New NotImplementedException()
+    End Sub
+
 #End Region
+
 
 End Class

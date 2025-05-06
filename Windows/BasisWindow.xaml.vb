@@ -2,8 +2,10 @@
 Imports Groupies.Interfaces
 
 Public Class BasisWindow
-    'Implements Interfaces.IWindowMitModus
+    Implements Interfaces.IWindowMitModus
+
     Private ViewModel As DialogViewModelBase
+
 
     Public Sub New()
 
@@ -31,6 +33,21 @@ Public Class BasisWindow
         ' Reagiere auf das Close-Signal aus dem ViewModel
         AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
 
+    End Sub
+
+    Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
+
+
+    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+        Title &= Modus.Titel
+        Icon = New BitmapImage(New Uri(Modus.IconString))
+        CancelButton.Visibility = Modus.CancelButtonVisibility
+        OkButton.Visibility = Modus.OkButtonVisibility
+        CloseButton.Visibility = Modus.CloseButtonVisibility
+    End Sub
+
+    Public Sub Bearbeiten(Objekt As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
+        Throw New NotImplementedException()
     End Sub
 
     Private Sub HandleCloseRequest(sender As Object, result As Boolean)

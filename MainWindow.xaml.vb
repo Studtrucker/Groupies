@@ -1038,15 +1038,13 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
-        Dim dialog = New BasisWindow(New DialogViewModelBase)
-        'With {
-        '    .Owner = Me,
-        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        '    dialog.ModusEinstellen()
-        'dialog'.ShowDialog()
-        Dim result As Boolean = dialog.ShowDialog()
+        dialog.ModusEinstellen()
+            'dialog'.ShowDialog()
+            Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
             MessageBox.Show("Benutzer hat OK gedrückt")
@@ -1057,23 +1055,35 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
-        'Dim dialog = New BasisWindow(New Trainer) With {
-        '    .Owner = Me,
-        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'dialog.ModusEinstellen()
-        'dialog.ShowDialog()
+        dialog.ModusEinstellen()
+        'dialog'.ShowDialog()
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            MessageBox.Show("Benutzer hat OK gedrückt")
+        Else
+            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
+        End If
     End Sub
 
     Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
-        'Dim dialog = New BasisWindow(New Trainer) With {
-        '    .Owner = Me,
-        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
-        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'dialog.ModusEinstellen()
-        'dialog.Show()
+        dialog.ModusEinstellen()
+        'dialog'.ShowDialog()
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            MessageBox.Show("Benutzer hat OK gedrückt")
+        Else
+            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
+        End If
     End Sub
 
 #End Region

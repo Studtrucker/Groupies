@@ -28,8 +28,9 @@
                     <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
                     <!--<Button x:Name="OkButton" Width="110" Content="Ok"  IsDefault="True" Command="{Binding OkCommand}"/>
                     <Button x:Name="CancelButton" Width="110" Content="Abbrechen" IsCancel="True" Command="{Binding CancelCommand}"/>-->
-                    <Button Width="110" Content="Ok"  Command="{Binding OkCommand}"/>
-                    <Button Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"/>
+                    <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}"/>
+                    <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"/>
+                    <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"/>
 
                 </StackPanel>
             </Border>

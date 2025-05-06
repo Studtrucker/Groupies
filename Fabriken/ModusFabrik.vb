@@ -25,7 +25,11 @@ Namespace Fabriken
 
         Public Property IconString As String = "pack://application:,,,/Images/icons8-view-48.png" Implements IModus.IconString
 
-        Public Property CancelButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.CancelButtonVisible
+        Public Property CancelButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.CancelButtonVisibility
+
+        Public Property CloseButtonVisibility As Visibility = Visibility.Visible Implements IModus.CloseButtonVisibility
+
+        Public Property OkButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.OkButtonVisibility
 
     End Class
 
@@ -37,7 +41,11 @@ Namespace Fabriken
 
         Public Property IconString As String = "pack://application:,,,/Images/icons8-create-48.png" Implements IModus.IconString
 
-        Public Property CancelButtonVisible As Visibility = Visibility.Visible Implements IModus.CancelButtonVisible
+        Public Property CancelButtonVisibility As Visibility = Visibility.Visible Implements IModus.CancelButtonVisibility
+
+        Public Property CloseButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.CloseButtonVisibility
+
+        Public Property OkButtonVisibility As Visibility = Visibility.Visible Implements IModus.OkButtonVisibility
 
     End Class
 
@@ -48,9 +56,11 @@ Namespace Fabriken
 
         Public Property IconString As String = "pack://application:,,,/Images/icons8-pencil-48.png" Implements IModus.IconString
 
-        Public Property CancelButtonVisible As Visibility = Visibility.Visible Implements IModus.CancelButtonVisible
+        Public Property CancelButtonVisibility As Visibility = Visibility.Visible Implements IModus.CancelButtonVisibility
 
+        Public Property CloseButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.CloseButtonVisibility
 
+        Public Property OkButtonVisibility As Visibility = Visibility.Visible Implements IModus.OkButtonVisibility
 
     End Class
 
@@ -61,7 +71,9 @@ Namespace Interfaces
     Public Interface IModus
         Property Titel As String
         Property IconString As String
-        Property CancelButtonVisible As Visibility
+        Property CloseButtonVisibility As Visibility
+        Property OkButtonVisibility As Visibility
+        Property CancelButtonVisibility As Visibility
 
 
 

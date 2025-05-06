@@ -3,9 +3,11 @@ Imports Groupies.Interfaces
 
 Public Class BasisWindow
     'Implements Interfaces.IWindowMitModus
-    Private ViewModel As New DialogViewModelBase()
+    Private ViewModel As DialogViewModelBase
 
     Public Sub New()
+
+        ViewModel = New DialogViewModelBase
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -17,19 +19,19 @@ Public Class BasisWindow
 
     End Sub
 
-    'Public Sub New(ViewModel As DialogViewModelBase)
+    Public Sub New(ViewModel As DialogViewModelBase)
 
-    '    ' Dieser Aufruf ist für den Designer erforderlich.
-    '    InitializeComponent()
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
 
-    '    ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-    '    DataContext = ViewModel
+        DataContext = ViewModel
 
-    '    ' Reagiere auf das Close-Signal aus dem ViewModel
-    '    AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
+        ' Reagiere auf das Close-Signal aus dem ViewModel
+        AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
 
-    'End Sub
+    End Sub
 
     Private Sub HandleCloseRequest(sender As Object, result As Boolean)
         Me.DialogResult = result

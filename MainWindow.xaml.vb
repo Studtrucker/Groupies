@@ -1038,7 +1038,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
-        Dim dialog = New BasisWindow()
+        Dim dialog = New BasisWindow(New DialogViewModelBase)
         'With {
         '    .Owner = Me,
         '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),

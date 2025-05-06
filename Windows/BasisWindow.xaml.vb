@@ -32,6 +32,7 @@ Public Class BasisWindow
 
         ' Reagiere auf das Close-Signal aus dem ViewModel
         AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
+        AddHandler ViewModel.Close, AddressOf HandleClose
 
     End Sub
 
@@ -51,12 +52,11 @@ Public Class BasisWindow
     End Sub
 
     Private Sub HandleCloseRequest(sender As Object, result As Boolean)
-        Me.DialogResult = result
-        Me.Close()
+        DialogResult = result
+        Close()
     End Sub
-
-    'Private Sub HandleButtonOKExecuted(sender As Object, e As RoutedEventArgs)
-    '    Close()
-    'End Sub
+    Private Sub HandleClose(sender As Object, e As EventArgs)
+        Close()
+    End Sub
 
 End Class

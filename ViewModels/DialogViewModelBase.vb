@@ -9,6 +9,7 @@ Public Class DialogViewModelBase
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Public Event RequestClose As EventHandler(Of Boolean)
+    Public Event Close As EventHandler
 
     Public Property OkCommand As ICommand
     Public Property CancelCommand As ICommand
@@ -30,7 +31,7 @@ Public Class DialogViewModelBase
     End Sub
     Private Sub OnClose(obj As Object)
         ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
-        RaiseEvent RequestClose(Me, False)
+        RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
 
     Sub OnPropertyChanged(propertyName As String)

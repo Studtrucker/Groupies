@@ -1043,8 +1043,8 @@ Public Class MainWindow
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dialog.ModusEinstellen()
-            'dialog'.ShowDialog()
-            Dim result As Boolean = dialog.ShowDialog()
+
+        Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
             MessageBox.Show("Benutzer hat OK gedrückt")
@@ -1061,13 +1061,10 @@ Public Class MainWindow
 
         dialog.ModusEinstellen()
         'dialog'.ShowDialog()
-        Dim result As Boolean = dialog.ShowDialog()
+        dialog.Show()
 
-        If result = True Then
-            MessageBox.Show("Benutzer hat OK gedrückt")
-        Else
-            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
-        End If
+        'MessageBox.Show("Benutzer hat schliessen gedrückt")
+
     End Sub
 
     Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
@@ -1076,7 +1073,6 @@ Public Class MainWindow
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dialog.ModusEinstellen()
-        'dialog'.ShowDialog()
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then

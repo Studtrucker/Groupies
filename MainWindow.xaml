@@ -102,9 +102,9 @@
                     </MenuItem>
                 </MenuItem>
             <MenuItem Header="_Hilfe">
-                <MenuItem Header="Über Groupies Dialogbase" Click="HandleAboutButtonExecuted"/>
-                <MenuItem Header="Hilfe" Click="HandleHelpButtonExecuted"/>
-                <MenuItem Header="Erste Hilfe" Click="HandleFirstHelpButtonExecuted"/>
+                <MenuItem Header="Dialogbase erstellen" Click="HandleAboutButtonExecuted"/>
+                <MenuItem Header="Dialogbase ansehen" Click="HandleHelpButtonExecuted"/>
+                <MenuItem Header="Dialogbase bearbeiten" Click="HandleFirstHelpButtonExecuted"/>
             </MenuItem>
             
         </Menu>

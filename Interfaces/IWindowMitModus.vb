@@ -18,6 +18,8 @@ Namespace Interfaces
 
         Sub Bearbeiten(Objekt As BaseModel)
 
+
+
     End Interface
 
 End Namespace

@@ -1,0 +1,44 @@
+﻿<Window x:Class="BasisWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Groupies"
+        mc:Ignorable="d"
+        Title="Objekt" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="1" Grid.Row="1">
+
+
+            <!--OK- und Cancel-Button-->
+            <Border DockPanel.Dock="Bottom">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
+                    <!--<Button x:Name="OkButton" Width="110" Content="Ok"  IsDefault="True" Command="{Binding OkCommand}"/>
+                    <Button x:Name="CancelButton" Width="110" Content="Abbrechen" IsCancel="True" Command="{Binding CancelCommand}"/>-->
+                    <Button Width="110" Content="Ok"  Command="{Binding OkCommand}"/>
+                    <Button Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"/>
+
+                </StackPanel>
+            </Border>
+
+            <!--Inputfields-->
+            <Grid>
+            </Grid>
+
+
+        </DockPanel>
+    </Grid>
+</Window>

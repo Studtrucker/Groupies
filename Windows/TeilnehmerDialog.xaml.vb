@@ -52,6 +52,7 @@ Public Class TeilnehmerDialog
             BindingGroup.CancelEdit()
         End If
     End Sub
+
     Private Sub HandleCancelButtonExecuted(sender As Object, e As RoutedEventArgs)
         DialogResult = False
     End Sub

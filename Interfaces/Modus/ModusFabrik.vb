@@ -23,7 +23,7 @@ Namespace Fabriken
 
         Public Property Titel As String = " ansehen" Implements Interfaces.IModus.Titel
 
-        Public Property IconString As String = "pack://application:,,,/Images/icons8-view-48.png" Implements IModus.IconString
+        Public Property WindowIcon As String = "pack://application:,,,/Images/icons8-view-48.png" Implements IModus.WindowIcon
 
         Public Property CancelButtonVisibility As Visibility = Visibility.Collapsed Implements IModus.CancelButtonVisibility
 
@@ -39,7 +39,7 @@ Namespace Fabriken
         Public Property Titel As String = " erstellen" Implements Interfaces.IModus.Titel
 
 
-        Public Property IconString As String = "pack://application:,,,/Images/icons8-create-48.png" Implements IModus.IconString
+        Public Property WindowIcon As String = "pack://application:,,,/Images/icons8-create-48.png" Implements IModus.WindowIcon
 
         Public Property CancelButtonVisibility As Visibility = Visibility.Visible Implements IModus.CancelButtonVisibility
 
@@ -54,7 +54,7 @@ Namespace Fabriken
 
         Public Property Titel As String = " bearbeiten" Implements Interfaces.IModus.Titel
 
-        Public Property IconString As String = "pack://application:,,,/Images/icons8-pencil-48.png" Implements IModus.IconString
+        Public Property WindowIcon As String = "pack://application:,,,/Images/icons8-pencil-48.png" Implements IModus.WindowIcon
 
         Public Property CancelButtonVisibility As Visibility = Visibility.Visible Implements IModus.CancelButtonVisibility
 

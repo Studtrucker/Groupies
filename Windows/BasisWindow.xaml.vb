@@ -2,8 +2,6 @@
 Imports Groupies.Interfaces
 
 Public Class BasisWindow
-    Implements Interfaces.IWindowMitModus
-    Implements Interfaces.IWindowMitDatentyp
 
     Private ViewModel As DialogViewModelBase
 
@@ -22,7 +20,7 @@ Public Class BasisWindow
 
     End Sub
 
-    Public Sub New(ViewModel As DialogViewModelBase)
+    Public Sub New(ViewModel As IViewModel)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -37,26 +35,11 @@ Public Class BasisWindow
 
     End Sub
 
-    Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
-
-    Public Property Datentyp As IDatentyp Implements IWindowMitDatentyp.Datentyp
-
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Title &= Modus.Titel
-        Icon = New BitmapImage(New Uri(Modus.IconString))
-        CancelButton.Visibility = Modus.CancelButtonVisibility
-        OkButton.Visibility = Modus.OkButtonVisibility
-        CloseButton.Visibility = Modus.CloseButtonVisibility
-    End Sub
-
-    Public Sub DatentypEinstellen() Implements IWindowMitDatentyp.DatentypEinstellen
-        Title &= Datentyp.Titel
-    End Sub
-
     Private Sub HandleCloseRequest(sender As Object, result As Boolean)
         DialogResult = result
         Close()
     End Sub
+
     Private Sub HandleClose(sender As Object, e As EventArgs)
         Close()
     End Sub

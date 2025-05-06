@@ -1,7 +1,7 @@
 ﻿Namespace Interfaces
 
     Public Interface IDatentyp
-        Property Titel As String
+        Property Caption As String
         Property CaptionbildString As String
 
         ReadOnly Property DatentypControl As UserControl

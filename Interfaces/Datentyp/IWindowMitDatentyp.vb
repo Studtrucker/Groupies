@@ -1,12 +1,12 @@
 ﻿Namespace Interfaces
 
 
-    Public Interface IWindowMitDatentyp
+    'Public Interface IWindowMitDatentyp
 
-        Property Datentyp As IDatentyp
+    '    Property Datentyp As IDatentyp
 
-        Sub DatentypEinstellen()
+    '    Sub DatentypEinstellen()
 
 
-    End Interface
+    'End Interface
 End Namespace

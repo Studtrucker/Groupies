@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
+        xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
-        Title="Objekt" Height="450" Width="800">
+        Title="{Binding WindowTitle}" Icon="{Binding WindowIcon}"
+        Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
@@ -20,8 +22,7 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="1" Grid.Row="1">
-
-
+              
             <!--OK- und Cancel-Button-->
             <Border DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -35,11 +36,20 @@
                 </StackPanel>
             </Border>
 
+            <!--Überschrift-->
+            <DockPanel DockPanel.Dock="Top">
+                <Image Source="{Binding WindowImage}"
+                   Style="{StaticResource WindowImageCaption}" />
+                <TextBlock Height="Auto" Text="{Binding WindowCaption}"
+                       Style="{StaticResource WindowCaption}" />
+            </DockPanel>
+            
             <!--Inputfields-->
-            <Grid>
-            </Grid>
-
-
+            <DockPanel LastChildFill="True">
+                <!--<uc:TeilnehmerUserControl x:Name="TeilnehmerUserControl"/>
+                <uc:TrainerUserControl x:Name="TrainerUserControl"/>-->
+            </DockPanel>
+            
         </DockPanel>
     </Grid>
 </Window>

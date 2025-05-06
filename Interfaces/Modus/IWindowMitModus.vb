@@ -16,7 +16,7 @@ Namespace Interfaces
         ''' </summary>
         Sub ModusEinstellen()
 
-        Sub Bearbeiten(Objekt As BaseModel)
+        'Sub Bearbeiten(Objekt As BaseModel)
 
 
 

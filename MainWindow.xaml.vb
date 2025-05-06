@@ -1040,9 +1040,11 @@ Public Class MainWindow
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
         Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         dialog.ModusEinstellen()
+        dialog.DatentypEinstellen()
 
         Dim result As Boolean = dialog.ShowDialog()
 

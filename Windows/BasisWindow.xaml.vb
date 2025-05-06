@@ -3,6 +3,7 @@ Imports Groupies.Interfaces
 
 Public Class BasisWindow
     Implements Interfaces.IWindowMitModus
+    Implements Interfaces.IWindowMitDatentyp
 
     Private ViewModel As DialogViewModelBase
 
@@ -38,6 +39,7 @@ Public Class BasisWindow
 
     Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
 
+    Public Property Datentyp As IDatentyp Implements IWindowMitDatentyp.Datentyp
 
     Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
         Title &= Modus.Titel
@@ -47,8 +49,8 @@ Public Class BasisWindow
         CloseButton.Visibility = Modus.CloseButtonVisibility
     End Sub
 
-    Public Sub Bearbeiten(Objekt As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
-        Throw New NotImplementedException()
+    Public Sub DatentypEinstellen() Implements IWindowMitDatentyp.DatentypEinstellen
+        Title &= Datentyp.Titel
     End Sub
 
     Private Sub HandleCloseRequest(sender As Object, result As Boolean)

@@ -52,8 +52,5 @@ Public Class EinteilungDialog
         Me.Titel.Text &= Modus.Titel
     End Sub
 
-    Private Sub Bearbeiten(Einteilung As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
-        Throw New NotImplementedException()
-    End Sub
 
 End Class

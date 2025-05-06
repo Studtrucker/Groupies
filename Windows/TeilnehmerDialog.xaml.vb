@@ -88,11 +88,6 @@ Public Class TeilnehmerDialog
         DataContext = _Teilnehmer
     End Sub
 
-    Public Sub Bearbeiten(Teilnehmer As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
-        _Teilnehmer = Teilnehmer
-        DataContext = _Teilnehmer
-    End Sub
-
 #End Region
 
 End Class

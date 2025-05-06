@@ -85,11 +85,6 @@ Public Class GruppeDialog
         Me.Titel.Text &= Modus.Titel
     End Sub
 
-    Public Sub Bearbeiten(Gruppe As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
-        _Gruppe = Gruppe
-        DataContext = _Gruppe
-    End Sub
-
 #End Region
 
 

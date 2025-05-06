@@ -139,11 +139,6 @@ Public Class TrainerDialog
         DataContext = _Trainer
     End Sub
 
-    Public Sub Bearbeiten(Trainer As BaseModel) Implements Interfaces.IWindowMitModus.Bearbeiten
-        _Trainer = Trainer
-        DataContext = _Trainer
-    End Sub
-
 #End Region
 
 

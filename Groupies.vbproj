@@ -111,9 +111,14 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
+    <Compile Include="Interfaces\Datentyp\DatentypEnum.vb" />
+    <Compile Include="Interfaces\Datentyp\DatentypFabrik.vb" />
+    <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
+    <Compile Include="Interfaces\Datentyp\IWindowMitDatentyp.vb" />
     <Compile Include="Interfaces\IViewModel.vb" />
-    <Compile Include="Interfaces\IWindowMitModus.vb" />
-    <Compile Include="IWindowMitModus\ModusEinstellen.vb" />
+    <Compile Include="Interfaces\Modus\IModus.vb" />
+    <Compile Include="Interfaces\Modus\IWindowMitModus.vb" />
+    <Compile Include="Interfaces\Modus\ModusEnum.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
@@ -128,6 +133,12 @@
     <Compile Include="MainViewModel.vb" />
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TeilnehmerUserControl.xaml.vb">
+      <DependentUpon>TeilnehmerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TrainerUserControl.xaml.vb">
+      <DependentUpon>TrainerUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
@@ -175,7 +186,7 @@
     <Compile Include="EntitiesGeneration3\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
-    <Compile Include="Fabriken\ModusFabrik.vb" />
+    <Compile Include="Interfaces\Modus\ModusFabrik.vb" />
     <Compile Include="Windows\InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
@@ -257,6 +268,14 @@
     <Page Include="UserControls\EinteilungUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\TeilnehmerUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\TrainerUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\BasisWindow.xaml">
       <SubType>Designer</SubType>
@@ -563,6 +582,7 @@
   <ItemGroup>
     <Resource Include="Images\icons8-winter-landscape-48.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

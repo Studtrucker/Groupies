@@ -111,18 +111,16 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
-    <Compile Include="Interfaces\Datentyp\DatentypEnum.vb" />
-    <Compile Include="Interfaces\Datentyp\DatentypFabrik.vb" />
+    <Compile Include="Enums\DatentypEnum.vb" />
+    <Compile Include="Fabriken\DatentypFabrik.vb" />
     <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
-    <Compile Include="Interfaces\Datentyp\IWindowMitDatentyp.vb" />
     <Compile Include="Interfaces\IViewModel.vb" />
     <Compile Include="Interfaces\Modus\IModus.vb" />
-    <Compile Include="Interfaces\Modus\IWindowMitModus.vb" />
-    <Compile Include="Interfaces\Modus\ModusEnum.vb" />
+    <Compile Include="Enums\ModusEnum.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
-    <Compile Include="Interfaces\IClub.vb" />
+    <Compile Include="Interfaces\Refactoring\IClub.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
@@ -144,7 +142,7 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
-    <Compile Include="ViewModels\DialogViewModelBase.vb" />
+    <Compile Include="ViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\ViewModelTrainer.vb" />
     <Compile Include="Windows\BasisWindow.xaml.vb">
       <DependentUpon>BasisWindow.xaml</DependentUpon>
@@ -186,7 +184,7 @@
     <Compile Include="EntitiesGeneration3\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
-    <Compile Include="Interfaces\Modus\ModusFabrik.vb" />
+    <Compile Include="Fabriken\ModusFabrik.vb" />
     <Compile Include="Windows\InstructorsWindow.xaml.vb">
       <DependentUpon>InstructorsWindow.xaml</DependentUpon>
     </Compile>
@@ -226,7 +224,7 @@
     <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
       <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IPrintableNotice.vb" />
+    <Compile Include="Interfaces\Refactoring\IPrintableNotice.vb" />
     <Compile Include="UserControls\TrainerlisteUserControl.xaml.vb">
       <DependentUpon>TrainerlisteUserControl.xaml</DependentUpon>
     </Compile>

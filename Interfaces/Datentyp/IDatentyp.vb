@@ -1,10 +1,24 @@
 ﻿Namespace Interfaces
 
     Public Interface IDatentyp
-        Property Caption As String
-        Property CaptionbildString As String
 
-        ReadOnly Property DatentypControl As UserControl
+        ''' <summary>
+        ''' Text für den Datentyp
+        ''' </summary>
+        ''' <returns></returns>
+        Property Datentyptext As String
+
+        ''' <summary>
+        ''' Bild für den Datentyp
+        ''' </summary>
+        ''' <returns></returns>
+        Property DatentypIcon As String
+
+        ''' <summary>
+        ''' Das Usercontrol von dem Datentyp
+        ''' </summary>
+        ''' <returns></returns>
+        ReadOnly Property DatentypUserControl As UserControl
 
     End Interface
 

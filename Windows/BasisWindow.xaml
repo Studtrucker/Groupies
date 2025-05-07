@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Groupies"
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Icon="{Binding WindowIcon}"
+        Title="{Binding WindowTitleText}" Icon="{Binding WindowTitelIcon}"
         Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -38,9 +38,9 @@
 
             <!--Überschrift-->
             <DockPanel DockPanel.Dock="Top">
-                <Image Source="{Binding WindowImage}"
+                <Image Source="{Binding WindowHeaderImage}"
                    Style="{StaticResource WindowImageCaption}" />
-                <TextBlock Height="Auto" Text="{Binding WindowCaption}"
+                <TextBlock Height="Auto" Text="{Binding WindowHeaderText}"
                        Style="{StaticResource WindowCaption}" />
             </DockPanel>
             

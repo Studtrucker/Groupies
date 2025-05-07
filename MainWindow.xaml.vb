@@ -341,10 +341,10 @@ Public Class MainWindow
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New TeilnehmerDialog With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        dlg.ModusEinstellen()
+        'dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
@@ -389,10 +389,10 @@ Public Class MainWindow
 
         Dim dlg = New TeilnehmerDialog() With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusBearbeiten,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '.Modus = New Fabriken.ModusBearbeiten,
 
-        dlg.ModusEinstellen()
+        'dlg.ModusEinstellen()
 
 
         ' Teilnehmer ermitteln
@@ -523,10 +523,10 @@ Public Class MainWindow
         If Trainer IsNot Nothing Then
             Dim dlg = New TrainerDialog With {
                 .Owner = Me,
-                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
-            dlg.ModusEinstellen()
+            'dlg.ModusEinstellen()
             dlg.Bearbeiten(Trainer)
 
             If dlg.ShowDialog = True Then
@@ -583,10 +583,10 @@ Public Class MainWindow
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New GruppeDialog With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        dlg.ModusEinstellen()
+        'dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Add(dlg.Gruppe)
@@ -620,10 +620,10 @@ Public Class MainWindow
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New EinteilungDialog With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        dlg.ModusEinstellen()
+        'dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             Try
@@ -642,10 +642,10 @@ Public Class MainWindow
     Private Sub Handle_EinteilungKopieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New EinteilungDialog With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        dlg.ModusEinstellen()
+        'dlg.ModusEinstellen()
         dlg.KopiereAktuelleGruppen(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
 
         If dlg.ShowDialog = True Then
@@ -671,10 +671,10 @@ Public Class MainWindow
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim dlg = New LeistungsstufeDialog With {
             .Owner = Me,
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        dlg.ModusEinstellen()
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        'dlg.ModusEinstellen()
 
         If dlg.ShowDialog = True Then
             Try
@@ -1038,12 +1038,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
-        Dim dialog = New BasisWindow(New ViewModelTrainer With {
-                                     .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-                                     .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}) _
-                                     With {
-                                     .Owner = Me,
-                                     .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisWindow(
+            New ViewModelBase With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}) _
+            With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 

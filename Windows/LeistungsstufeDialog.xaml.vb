@@ -4,9 +4,9 @@ Imports Groupies.Interfaces
 Imports System.Text
 
 Public Class LeistungsstufeDialog
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
     Public ReadOnly Property Leistungsstufe() As Leistungsstufe
 
     Public Sub New()
@@ -59,8 +59,8 @@ Public Class LeistungsstufeDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    Me.Titel.Text &= Modus.Titel
+    'End Sub
 
 End Class

@@ -51,10 +51,10 @@ Namespace UserControls
 
             Dim dlg = New TrainerDialog With {
                 .Owner = Nothing,
-                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-            dlg.ModusEinstellen()
+            '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            'dlg.ModusEinstellen()
             ' Trainer aus der Gruppenliste holen
             Dim Trainer = AppController.AktuellerClub.SelectedGruppe.Trainer
             dlg.Bearbeiten(Trainer)

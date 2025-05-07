@@ -5,11 +5,11 @@ Imports Groupies.Commands
 Imports Groupies.Interfaces
 
 Public Class FaehigkeitDialog
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
     Public ReadOnly Property Faehigkeit() As Faehigkeit
 
-    Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public Sub New()
 
@@ -66,8 +66,8 @@ Public Class FaehigkeitDialog
     End Sub
 
 
-    Private Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        'Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Private Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    'Me.Titel.Text &= Modus.Titel
+    'End Sub
 
 End Class

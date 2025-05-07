@@ -3,10 +3,10 @@ Imports Groupies.Entities
 Imports Groupies.Services
 
 Public Class EinteilungDialog
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
     Property Einteilung As Einteilung
-    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public Sub New()
 
@@ -48,9 +48,9 @@ Public Class EinteilungDialog
         BindingGroup.CancelEdit()
     End Sub
 
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    Me.Titel.Text &= Modus.Titel
+    'End Sub
 
 
 End Class

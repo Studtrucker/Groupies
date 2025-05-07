@@ -5,9 +5,9 @@ Imports Groupies.Entities
 
 Public Class TrainerDialog
 
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public ReadOnly Property Trainer() As Trainer
 
@@ -130,9 +130,9 @@ Public Class TrainerDialog
 
 #Region "Modus-Handler"
 
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    Me.Titel.Text &= Modus.Titel
+    'End Sub
 
     Public Sub Bearbeiten(Trainer As Trainer)
         _Trainer = Trainer

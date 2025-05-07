@@ -36,7 +36,7 @@ Namespace Fabriken
     Public Class ModusErstellen
         Implements Interfaces.IModus
 
-        Public Property Titel As String = " erstellen" Implements Interfaces.IModus.Titel
+        Public Property Titel As String = "erstellen" Implements Interfaces.IModus.Titel
 
 
         Public Property WindowIcon As String = "pack://application:,,,/Images/icons8-create-48.png" Implements IModus.WindowIcon

@@ -3,12 +3,12 @@ Imports Groupies.Interfaces
 
 Public Class BasisWindow
 
-    Private ViewModel As DialogViewModelBase
+    Private ViewModel As ViewModelBase
 
 
     Public Sub New()
 
-        ViewModel = New DialogViewModelBase
+        ViewModel = New ViewModelBase
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()

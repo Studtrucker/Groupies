@@ -19,10 +19,10 @@ Namespace Fabriken
     Public Class DatentypTrainer
         Implements Interfaces.IDatentyp
 
-        Public Property Caption As String = "Trainer" Implements Interfaces.IDatentyp.Caption
-        Public Property IconString As String = "pack://application:,,,/Images/icons8-trainer-48.png" Implements IDatentyp.CaptionbildString
+        Public Property Datentyptext As String = "Trainer" Implements Interfaces.IDatentyp.Datentyptext
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trainer-48.png" Implements IDatentyp.DatentypIcon
 
-        Public ReadOnly Property DatentypControl As UserControl Implements IDatentyp.DatentypControl
+        Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.TrainerUserControl
             End Get
@@ -32,9 +32,9 @@ Namespace Fabriken
 
     Public Class DatentypTeilnehmer
         Implements Interfaces.IDatentyp
-        Public Property Caption As String = "Teilnehmer" Implements Interfaces.IDatentyp.Caption
-        Public Property IconString As String = "pack://application:,,,/Images/icons8-participant-48.png" Implements IDatentyp.CaptionbildString
-        Public ReadOnly Property DatentypControl As UserControl Implements IDatentyp.DatentypControl
+        Public Property Datentyptext As String = "Teilnehmer" Implements Interfaces.IDatentyp.Datentyptext
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-participant-48.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.TeilnehmerUserControl
             End Get

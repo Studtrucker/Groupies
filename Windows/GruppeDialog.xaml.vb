@@ -5,9 +5,9 @@ Imports Groupies.Commands
 
 Public Class GruppeDialog
 
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
 
     Public ReadOnly Property Gruppe() As Gruppe
 
@@ -81,9 +81,9 @@ Public Class GruppeDialog
 
 #Region "Modus-Handler"
 
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    Me.Titel.Text &= Modus.Titel
+    'End Sub
 
 #End Region
 

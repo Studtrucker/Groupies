@@ -4,20 +4,19 @@ Imports Groupies.Entities
 Imports Groupies.Interfaces
 
 Public Class ViewModelTrainer
-    'Inherits DialogViewModelBase
     Implements IViewModel
+
     Implements IModus
 
-    Property Modus As IModus
-    Property Datentyp As IDatentyp
+    Public Property Modus As IModus
 
     Public Property DatenObjekt As Object Implements IViewModel.DatenObjekt
 
-    Public Property WindowCaption As String = "Trainercaption" Implements IViewModel.WindowCaption
+    Public Property WindowHeaderText As String = "Trainer" Implements IViewModel.WindowHeaderText
 
-    Public Property WindowImage As String = "/Images/icons8-trainer-48.png" Implements IViewModel.WindowImage
+    Public Property WindowHeaderImage As String = "/Images/icons8-trainer-48.png" Implements IViewModel.WindowHeaderImage
 
-    Public ReadOnly Property WindowTitle As String Implements IViewModel.WindowTitle
+    Public ReadOnly Property WindowTitleText As String Implements IViewModel.WindowTitleText
         Get
             Return $"Trainer {Modus.Titel}"
         End Get
@@ -66,6 +65,12 @@ Public Class ViewModelTrainer
     Public ReadOnly Property WindowIcon As String Implements IModus.WindowIcon
         Get
             Return Modus.WindowIcon
+        End Get
+    End Property
+
+    Private ReadOnly Property IViewModel_WindowIcon As String Implements IViewModel.WindowTitelIcon
+        Get
+            Return WindowIcon
         End Get
     End Property
 

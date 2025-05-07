@@ -4,9 +4,9 @@ Imports Groupies.Entities
 
 
 Public Class TeilnehmerDialog
-    Implements Interfaces.IWindowMitModus
+    'Implements Interfaces.IWindowMitModus
 
-    Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
+    'Public Property Modus As Interfaces.IModus Implements Interfaces.IWindowMitModus.Modus
     Public ReadOnly Property Teilnehmer() As Teilnehmer
     Private ReadOnly _LeistungsstufenListCollectionView As ICollectionView
 
@@ -79,9 +79,9 @@ Public Class TeilnehmerDialog
 
 #Region "Modus-Handler"
 
-    Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
-        Me.Titel.Text &= Modus.Titel
-    End Sub
+    'Public Sub ModusEinstellen() Implements Interfaces.IWindowMitModus.ModusEinstellen
+    '    Me.Titel.Text &= Modus.Titel
+    'End Sub
 
     Public Sub Bearbeiten(Teilnehmer As Teilnehmer)
         _Teilnehmer = Teilnehmer

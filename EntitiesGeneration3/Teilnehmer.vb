@@ -13,6 +13,7 @@ Namespace Entities
     <DefaultProperty("VorUndNachname")>
     Public Class Teilnehmer
         Inherits BaseModel
+        Implements IModel
 
 
 #Region "Fields"
@@ -84,7 +85,7 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung des Teilnehmers 
         ''' </summary>
         ''' <returns></returns>
-        Public Property TeilnehmerID As Guid
+        Public Property TeilnehmerID As Guid Implements IModel.Ident
             Get
                 Return _TeilnehmerID
             End Get

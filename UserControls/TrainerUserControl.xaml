@@ -4,9 +4,97 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
+             xmlns:convert="clr-namespace:Groupies.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Height="Auto" Width="Auto">
+    <!--Inputfields-->
+    <UserControl.Resources>
+        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
+    </UserControl.Resources>
+    
     <Grid>
-        <TextBlock Text="Trainer"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+        </Grid.RowDefinitions>
+
+        <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
+                    VerticalAlignment="Top" Margin="2" DragOver="HandleDragOver" Drop="HandleDrop" 
+                    BorderBrush="Black" BorderThickness="1">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+                <Rectangle Fill="Transparent"/>
+                <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
+                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"
+                           Grid.Row="0"/>
+                <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"  
+                               Grid.Row="1"
+                               Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
+							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
+                </TextBlock>
+                <Image x:Name="FotoImage" Width="96" Height="96" Source="{Binding Foto}" />
+            </Grid>
+
+        </Border>
+
+        <Label Grid.Column="2" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Trainer ID
+				<Run Foreground="Red">*</Run>
+            </TextBlock>
+        </Label>
+        <TextBox x:Name="TrainerIDTextBox" Grid.Column="3" Grid.Row="1" IsReadOnly="True">
+            <Binding Path="DatenObjekt.TrainerID" />
+        </TextBox>
+
+        <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Spitzname
+				<Run Foreground="Red">*</Run>
+            </TextBlock>
+        </Label>
+        <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="2">
+            <Binding Path="DatenObjekt.Spitzname" UpdateSourceTrigger="Explicit" />
+        </TextBox>
+
+        <Label Grid.Column="2" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock>Vorname
+                    <Run Foreground="Red">*</Run>
+            </TextBlock>
+        </Label>
+        <TextBox Grid.Column="3" Grid.Row="3"
+                     x:Name="VornameTextbox"
+                     Text="{Binding DatenObjekt.Vorname, UpdateSourceTrigger=Explicit}"   />
+
+        <Label Content="Nachname" Grid.Column="2" Grid.Row="4"/>
+        <TextBox Grid.Column="3" Grid.Row="4"
+                     x:Name="NachnameTextbox"
+                     Text="{Binding DatenObjekt.Nachname, UpdateSourceTrigger=Explicit}" />
+
+        <Label Content="Telefon" Grid.Column="2" Grid.Row="5"/>
+        <TextBox Grid.Column="3" Grid.Row="5"
+                     x:Name="TelefonTextbox"
+                     Text="{Binding DatenObjekt.Telefonnummer, UpdateSourceTrigger=Explicit}" />
+
+        <Label Content="e-Mail" Grid.Column="2" Grid.Row="6"/>
+        <TextBox Grid.Column="3" Grid.Row="6"
+                     x:Name="eMailTextbox"
+                     Text="{Binding DatenObjekt.EMail, UpdateSourceTrigger=Explicit}" />
     </Grid>
+
 </UserControl>

@@ -1038,10 +1038,13 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
+        Dim Tr = New Trainer With {.Nachname = "Mustermann", .Vorname = "Max", .Spitzname = "Musti"}
         Dim dialog = New BasisWindow(
             New ViewModelBase With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}) _
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Tr),
+            .DatenObjekt = Tr,
+            .CurrentUserControl = New TrainerUserControl}) _
             With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
@@ -1055,15 +1058,19 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
-        'Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
-        '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
-        '        .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
-        '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'dialog.DatentypEinstellen()
-        'dialog.ModusEinstellen()
-        ''dialog'.ShowDialog()
-        'dialog.Show()
+        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max", .Leistungsstand = New Leistungsstufe With {.Benennung = "Anfänger"}}
+
+        Dim dialog = New BasisWindow(
+            New ViewModelBase With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
+            .DatenObjekt = tn,
+            .CurrentUserControl = New TeilnehmerUserControl}) With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        dialog.Show()
 
         'MessageBox.Show("Benutzer hat schliessen gedrückt")
 

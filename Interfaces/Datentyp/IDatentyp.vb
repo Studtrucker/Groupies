@@ -6,7 +6,7 @@
         ''' Text für den Datentyp
         ''' </summary>
         ''' <returns></returns>
-        Property Datentyptext As String
+        Property DatentypText As String
 
         ''' <summary>
         ''' Bild für den Datentyp

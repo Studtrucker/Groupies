@@ -111,6 +111,7 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
+    <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />
     <Compile Include="Fabriken\DatentypFabrik.vb" />
     <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
@@ -143,7 +144,6 @@
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="ViewModels\ViewModelBase.vb" />
-    <Compile Include="ViewModels\ViewModelTrainer.vb" />
     <Compile Include="Windows\BasisWindow.xaml.vb">
       <DependentUpon>BasisWindow.xaml</DependentUpon>
     </Compile>

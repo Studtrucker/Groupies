@@ -5,18 +5,17 @@ Imports Groupies.Interfaces
 
 
 Public Class ViewModelBase
-    Implements INotifyPropertyChanged
+    'Implements INotifyPropertyChanged
     Implements IViewModel
 
 #Region "Events"
 
-    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+    'Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
-    Public Event RequestClose As EventHandler(Of Boolean)
+    Public Event RequestClose As EventHandler(Of Boolean) Implements IViewModel.RequestClose
 
-    Public Event Close As EventHandler
-    Private Event IViewModel_RequestClose As EventHandler(Of Boolean) Implements IViewModel.RequestClose
-    Private Event IViewModel_Close As EventHandler Implements IViewModel.Close
+    Public Event Close As EventHandler Implements IViewModel.Close
+
 #End Region
 
 #Region "Commands"
@@ -40,12 +39,14 @@ Public Class ViewModelBase
     Public Property Modus As IModus
     Public Property Datentyp As IDatentyp
 
-    Public Property DatenObjekt As Object Implements IViewModel.DatenObjekt
+    Private _DatenObjekt As Object
+
+    Public Property DatenObjekt As IModel Implements IViewModel.DatenObjekt
         Get
-            Throw New NotImplementedException()
+            Return _DatenObjekt
         End Get
-        Set(value As Object)
-            Throw New NotImplementedException()
+        Set(value As IModel)
+            _DatenObjekt = value
         End Set
     End Property
 
@@ -55,7 +56,7 @@ Public Class ViewModelBase
         End Get
     End Property
 
-    Public ReadOnly Property WindowTitelIcon As String Implements IViewModel.WindowTitelIcon
+    Public ReadOnly Property WindowTitleIcon As String Implements IViewModel.WindowTitleIcon
         Get
             Return Modus.WindowIcon
         End Get
@@ -67,11 +68,26 @@ Public Class ViewModelBase
         End Get
     End Property
 
-    Private ReadOnly Property WindowHeaderText As String Implements IViewModel.WindowHeaderText
+    Public ReadOnly Property CloseButtonVisibility As Visibility Implements IViewModel.CloseButtonVisibility
         Get
-            Return $"{Datentyp.Datentyptext} {Modus.Titel}"
+            Return Modus.CloseButtonVisibility
         End Get
     End Property
+
+    Public ReadOnly Property OkButtonVisibility As Visibility Implements IViewModel.OkButtonVisibility
+        Get
+            Return Modus.OkButtonVisibility
+        End Get
+    End Property
+
+    Public ReadOnly Property CancelButtonVisibility As Visibility Implements IViewModel.CancelButtonVisibility
+        Get
+            Return Modus.CancelButtonVisibility
+        End Get
+    End Property
+
+    Public Property CurrentUserControl As UserControl
+
 
 #End Region
 
@@ -90,9 +106,9 @@ Public Class ViewModelBase
         RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
 
-    Sub OnPropertyChanged(propertyName As String)
-        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
-    End Sub
+    'Sub OnPropertyChanged(propertyName As String)
+    '    RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+    'End Sub
 
 #End Region
 

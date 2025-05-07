@@ -5,13 +5,24 @@ Namespace Fabriken
     Public Class DatentypFabrik
 
         Public Function ErzeugeDatentyp(Datentyp As Enums.DatentypEnum) As Interfaces.IDatentyp
-            If Datentyp = Enums.DatentypEnum.Teilnehmer Then
-                Return New DatentypTeilnehmer
-            ElseIf Datentyp = Enums.DatentypEnum.Trainer Then
-                Return New DatentypTrainer
-            Else
-                Return New Exception("Unbekannter Datentyp")
-            End If
+            Select Case Datentyp
+                Case Enums.DatentypEnum.Teilnehmer
+                    Return New DatentypTeilnehmer
+                Case Enums.DatentypEnum.Trainer
+                    Return New DatentypTrainer
+                Case Else
+                    Return New Exception("Unbekannter Datentyp")
+            End Select
+        End Function
+        Public Function ErzeugeDatentyp(Datenobjekt As IModel) As Interfaces.IDatentyp
+            Select Case Datenobjekt.GetType
+                Case GetType(Entities.Trainer)
+                    Return New DatentypTrainer
+                Case GetType(Entities.Teilnehmer)
+                    Return New DatentypTeilnehmer
+                Case Else
+                    Return New Exception("Unbekannter Datentyp")
+            End Select
         End Function
 
     End Class
@@ -19,7 +30,7 @@ Namespace Fabriken
     Public Class DatentypTrainer
         Implements Interfaces.IDatentyp
 
-        Public Property Datentyptext As String = "Trainer" Implements Interfaces.IDatentyp.Datentyptext
+        Public Property DatentypText As String = "Trainer" Implements Interfaces.IDatentyp.DatentypText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trainer-48.png" Implements IDatentyp.DatentypIcon
 
         Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
@@ -32,8 +43,8 @@ Namespace Fabriken
 
     Public Class DatentypTeilnehmer
         Implements Interfaces.IDatentyp
-        Public Property Datentyptext As String = "Teilnehmer" Implements Interfaces.IDatentyp.Datentyptext
-        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-participant-48.png" Implements IDatentyp.DatentypIcon
+        Public Property DatentypText As String = "Teilnehmer" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-person-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.TeilnehmerUserControl

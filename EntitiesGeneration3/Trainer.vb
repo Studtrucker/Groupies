@@ -12,6 +12,7 @@ Namespace Entities
     ''' </summary>
     Public Class Trainer
         Inherits BaseModel
+        Implements IModel
 
 #Region "Felder"
         'Todo:Standardfoto festlegen
@@ -72,7 +73,7 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung
         ''' </summary>
         ''' <returns></returns>
-        Public Property TrainerID As Guid
+        Public Property TrainerID As Guid Implements IModel.Ident
             Get
                 Return _TrainerID
             End Get
@@ -186,6 +187,14 @@ Namespace Entities
 
 #End Region
 
+#Region "Funktionen und Methoden"
+
+        Public Overrides Function ToString() As String
+            Return VorUndNachname
+        End Function
+
+#End Region
+
 #Region "Validation"
         Private Function SpitznamenValidation(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
             If AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
@@ -193,14 +202,6 @@ Namespace Entities
                 Return False
             End If
             Return True
-        End Function
-
-#End Region
-
-#Region "Funktionen und Methoden"
-
-        Public Overrides Function ToString() As String
-            Return VorUndNachname
         End Function
 
 #End Region

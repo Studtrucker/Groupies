@@ -14,7 +14,7 @@
     ''' Das Usercontrol, das angezeigt werden soll
     ''' </summary>
     ''' <returns></returns>
-    Property DatenObjekt As Object
+    Property DatenObjekt As IModel
 
     ''' <summary>
     ''' Der Titel für das Window
@@ -26,7 +26,7 @@
     ''' Das Icon für das Window
     ''' </summary>
     ''' <returns></returns>
-    ReadOnly Property WindowTitelIcon As String
+    ReadOnly Property WindowTitleIcon As String
 
     ''' <summary>
     ''' Das Bild in der Überschrift für das Window
@@ -35,10 +35,22 @@
     ReadOnly Property WindowHeaderImage As String
 
     ''' <summary>
-    ''' Der Text in der Überschrift für das Window
+    ''' Die Sichtbarkeit des Cancel-Buttons
     ''' </summary>
     ''' <returns></returns>
-    ReadOnly Property WindowHeaderText As String
+    ReadOnly Property CancelButtonVisibility As Visibility
+
+    ''' <summary>
+    ''' Die Sichtbarkeit des Ok-Buttons
+    ''' </summary>
+    ''' <returns></returns>
+    ReadOnly Property OkButtonVisibility As Visibility
+
+    ''' <summary>
+    ''' Die Sichtbarkeit des Close-Buttons
+    ''' </summary>
+    ''' <returns></returns>
+    ReadOnly Property CloseButtonVisibility As Visibility
 
 #End Region
 

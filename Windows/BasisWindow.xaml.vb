@@ -21,7 +21,7 @@ Public Class BasisWindow
 
     End Sub
 
-    Public Sub New(ViewModel As IViewModel)
+    Public Sub New(ViewModel As ViewModelBase)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()

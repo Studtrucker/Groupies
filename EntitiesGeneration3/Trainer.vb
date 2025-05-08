@@ -13,6 +13,8 @@ Namespace Entities
     Public Class Trainer
         Inherits BaseModel
         Implements IModel
+        Implements INotifyPropertyChanged
+        Implements IDataErrorInfo
 
 #Region "Felder"
         'Todo:Standardfoto festlegen
@@ -184,6 +186,21 @@ Namespace Entities
         End Property
 
         Public Property Archivieren As Boolean
+
+        Default Public ReadOnly Property Item(columnName As String) As String Implements IDataErrorInfo.Item
+            Get
+                If columnName = NameOf(Vorname) AndAlso String.IsNullOrWhiteSpace(Vorname) Then
+                    Return "Vorname darf nicht leer sein."
+                End If
+                Return Nothing
+            End Get
+        End Property
+
+        Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
+            Get
+                Return Nothing
+            End Get
+        End Property
 
 #End Region
 

@@ -10,11 +10,11 @@
 
 #Region "Properties"
 
-    ''' <summary>
-    ''' Das Usercontrol, das angezeigt werden soll
-    ''' </summary>
-    ''' <returns></returns>
-    Property DatenObjekt As IModel
+    '''' <summary>
+    '''' Das Usercontrol, das angezeigt werden soll
+    '''' </summary>
+    '''' <returns></returns>
+    'Property DatenObjekt As IModel
 
     ''' <summary>
     ''' Der Titel für das Window

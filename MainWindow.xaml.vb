@@ -1039,13 +1039,13 @@ Public Class MainWindow
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
         Dim Tr = New Trainer With {.Nachname = "Mustermann", .Vorname = "Max", .Spitzname = "Musti"}
-        Dim dialog = New BasisWindow(
-            New ViewModelBase With {
+        Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Tr),
             .DatenObjekt = Tr,
-            .CurrentUserControl = New TrainerUserControl}) _
-            With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            .CurrentUserControl = New TrainerUserControl}
+
+        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 
@@ -1064,11 +1064,11 @@ Public Class MainWindow
         Dim dialog = New BasisWindow(
             New ViewModelBase With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
-            .DatenObjekt = tn,
-            .CurrentUserControl = New TeilnehmerUserControl}) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn)}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '            .DatenObjekt = tn,
+        '            .CurrentUserControl = New TeilnehmerUserControl}) With {
 
         dialog.Show()
 

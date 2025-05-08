@@ -1,9 +1,11 @@
 ﻿Imports System.ComponentModel
 Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Entities
+Imports Groupies.UserControls
 
-Public Class ViewModelTrainer
+Public Class TrainerViewModel
     Inherits ViewModelBase
+    'Implements IViewModel
     Implements IDataErrorInfo
 
     Sub New()
@@ -12,10 +14,11 @@ Public Class ViewModelTrainer
 
     End Sub
 
-    Public Property Vorname As String
+    Public Property DatenObjekt As Trainer 'Implements IViewModel.DatenObjekt
+
     Default Public ReadOnly Property Item(columnName As String) As String Implements IDataErrorInfo.Item
         Get
-            If columnName = NameOf(Trainer.Vorname) AndAlso String.IsNullOrWhiteSpace(Vorname) Then
+            If columnName = NameOf(DatenObjekt.Vorname) AndAlso String.IsNullOrWhiteSpace(DatenObjekt.Vorname) Then
                 Return "Vorname darf nicht leer sein."
             End If
             Return Nothing

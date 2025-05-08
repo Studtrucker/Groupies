@@ -8,18 +8,18 @@ Namespace UserControls
             InitializeComponent()
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-            DataContext = New ViewModelTrainer()
+            'DataContext = New ViewModelTrainer()
 
         End Sub
 
-        Public Sub New(ViewModel As ViewModelTrainer)
+        Public Sub New(ViewModel As TrainerViewModel)
 
             ' Dieser Aufruf ist für den Designer erforderlich.
             InitializeComponent()
 
             ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-            DataContext = ViewModel
+            ' DataContext = ViewModel
 
         End Sub
 

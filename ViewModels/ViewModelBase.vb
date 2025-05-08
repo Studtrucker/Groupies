@@ -5,7 +5,6 @@ Imports Groupies.Interfaces
 
 
 Public Class ViewModelBase
-    'Implements INotifyPropertyChanged
     Implements IViewModel
 
 #Region "Events"
@@ -50,9 +49,12 @@ Public Class ViewModelBase
         End Set
     End Property
 
+    Public Property CurrentUserControl As UserControl
+
+
     Public ReadOnly Property WindowTitleText As String Implements IViewModel.WindowTitleText
         Get
-            Return $"{Datentyp.Datentyptext} {Modus.Titel}"
+            Return $"{Datentyp.DatentypText} {Modus.Titel}"
         End Get
     End Property
 
@@ -85,9 +87,6 @@ Public Class ViewModelBase
             Return Modus.CancelButtonVisibility
         End Get
     End Property
-
-    Public Property CurrentUserControl As UserControl
-
 
 #End Region
 

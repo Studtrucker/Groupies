@@ -17,6 +17,7 @@ Public Class BasisWindow
         DataContext = ViewModel
 
         AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
+        AddHandler ViewModel.Close, AddressOf HandleClose
 
     End Sub
 

@@ -13,9 +13,7 @@ Namespace Entities
     Public Class Trainer
         Inherits BaseModel
         Implements IModel
-        Implements INotifyPropertyChanged
-        Implements IDataErrorInfo
-        Implements INotifyDataErrorInfo
+
 
 #Region "Felder"
         'Todo:Standardfoto festlegen
@@ -23,7 +21,6 @@ Namespace Entities
         Private _TrainerID = Guid.NewGuid()
         Private _Spitzname As String
         Private _Vorname As String
-        Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
 #End Region
 
@@ -99,7 +96,6 @@ Namespace Entities
             End Get
             Set(value As String)
                 _Vorname = value
-                ValidateProperty(NameOf(Vorname), value)
             End Set
         End Property
 
@@ -188,6 +184,7 @@ Namespace Entities
             End Get
         End Property
 
+        'todo: Hier muss die Property ins ViewModel verlagert werden 
         Public ReadOnly Property IstEinerGruppeZugewiesen As Boolean
 
         Public ReadOnly Property HatFoto As Boolean
@@ -196,28 +193,8 @@ Namespace Entities
             End Get
         End Property
 
+        'todo: Hier muss die Property ins ViewModel verlagert werden 
         Public Property Archivieren As Boolean
-
-        Default Public ReadOnly Property Item(columnName As String) As String Implements IDataErrorInfo.Item
-            Get
-                If columnName = NameOf(Vorname) AndAlso String.IsNullOrWhiteSpace(Vorname) Then
-                    Return "Vorname darf nicht leer sein."
-                End If
-                Return Nothing
-            End Get
-        End Property
-
-        Public ReadOnly Property [Error] As String Implements IDataErrorInfo.Error
-            Get
-                Return Nothing
-            End Get
-        End Property
-
-        Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
-            Get
-                Throw New NotImplementedException()
-            End Get
-        End Property
 
 #End Region
 
@@ -225,36 +202,6 @@ Namespace Entities
 
         Public Overrides Function ToString() As String
             Return VorUndNachname
-        End Function
-
-#End Region
-
-#Region "Validation"
-        Private Function SpitznamenValidation(Spitzname As String, <Out> ByRef ErrorMessage As String) As Boolean
-            If AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.AlleTrainer.Select(Function(Tr) Tr.Spitzname.ToUpper).Contains(Spitzname.ToString.ToUpper) Then
-                ErrorMessage = $"Der Spitzname [{Spitzname}] wird bereits verwendet und darf aber nur für einen Trainer vergeben werden"
-                Return False
-            End If
-            Return True
-        End Function
-
-        Private Function ValidateProperty(propertyName As String, value As Object) As Boolean
-            Dim validationContext As New ValidationContext(Me) With {
-                .MemberName = propertyName
-            }
-            Dim validationResults As New List(Of ValidationResult)()
-            Dim isValid As Boolean = Validator.TryValidateProperty(value, validationContext, validationResults)
-            If Not isValid Then
-                For Each result In validationResults
-                    Dim errorMessage As String = result.ErrorMessage
-                    RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(propertyName))
-                Next
-            End If
-            Return isValid
-        End Function
-
-        Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-            Throw New NotImplementedException()
         End Function
 
 #End Region

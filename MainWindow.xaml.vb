@@ -1042,7 +1042,7 @@ Public Class MainWindow
         Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Tr),
-            .DatenObjekt = Tr,
+            .Trainer = Tr,
             .CurrentUserControl = New TrainerUserControl}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}

@@ -15,12 +15,15 @@ Namespace Entities
         Implements IModel
         Implements INotifyPropertyChanged
         Implements IDataErrorInfo
+        Implements INotifyDataErrorInfo
 
 #Region "Felder"
         'Todo:Standardfoto festlegen
         Private _Foto As Byte()
         Private _TrainerID = Guid.NewGuid()
         Private _Spitzname As String
+        Private _Vorname As String
+        Public Event ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
 
 #End Region
 
@@ -91,6 +94,14 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Vorname As String
+            Get
+                Return _Vorname
+            End Get
+            Set(value As String)
+                _Vorname = value
+                ValidateProperty(NameOf(Vorname), value)
+            End Set
+        End Property
 
 
         ''' <summary>
@@ -202,6 +213,12 @@ Namespace Entities
             End Get
         End Property
 
+        Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
+
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -219,6 +236,25 @@ Namespace Entities
                 Return False
             End If
             Return True
+        End Function
+
+        Private Function ValidateProperty(propertyName As String, value As Object) As Boolean
+            Dim validationContext As New ValidationContext(Me) With {
+                .MemberName = propertyName
+            }
+            Dim validationResults As New List(Of ValidationResult)()
+            Dim isValid As Boolean = Validator.TryValidateProperty(value, validationContext, validationResults)
+            If Not isValid Then
+                For Each result In validationResults
+                    Dim errorMessage As String = result.ErrorMessage
+                    RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(propertyName))
+                Next
+            End If
+            Return isValid
+        End Function
+
+        Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+            Throw New NotImplementedException()
         End Function
 
 #End Region

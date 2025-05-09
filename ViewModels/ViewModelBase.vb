@@ -6,12 +6,8 @@ Imports Groupies.UserControls
 
 
 Public Class ViewModelBase
-    'Implements IViewModel
-    'Implements IDataErrorInfo
 
 #Region "Events"
-
-    'Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Public Event RequestClose As EventHandler(Of Boolean) 'Implements IViewModel.RequestClose
 
@@ -42,8 +38,6 @@ Public Class ViewModelBase
     Public Property Datentyp As IDatentyp
 
     Public Property CurrentUserControl As UserControl
-
-
 
     Public ReadOnly Property WindowTitleText As String 'Implements IViewModel.WindowTitleText
         Get
@@ -99,10 +93,6 @@ Public Class ViewModelBase
         ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
         RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
-
-    'Sub OnPropertyChanged(propertyName As String)
-    '    RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
-    'End Sub
 
 #End Region
 

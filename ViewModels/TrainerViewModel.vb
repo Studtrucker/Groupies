@@ -55,6 +55,7 @@ Public Class TrainerViewModel
         Set(value As String)
             Trainer.Spitzname = value
             OnPropertyChanged()
+            ValidateSpitzname()
         End Set
     End Property
 
@@ -92,14 +93,26 @@ Public Class TrainerViewModel
 #End Region
 
 
-
 #Region "Gültigkeitsprüfung"
     Private Sub ValidateVorname()
-        _fehler("Vorname") = New List(Of String)
+        _fehler(NameOf(Trainer.Vorname)) = New List(Of String)
         If String.IsNullOrWhiteSpace(Trainer.Vorname) Then
-            _fehler("Vorname").Add("Vorname darf nicht leer sein.")
+            _fehler(NameOf(Trainer.Vorname)).Add("Vorname darf nicht leer sein.")
         End If
-        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs("Vorname"))
+        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Trainer.Vorname)))
+    End Sub
+
+    Private Sub ValidateSpitzname()
+        _fehler(NameOf(Trainer.Spitzname)) = New List(Of String)
+        If String.IsNullOrWhiteSpace(Trainer.Vorname) Then
+            _fehler(NameOf(Trainer.Spitzname)).Add("Spitzname darf nicht leer sein.")
+        End If
+        'todo: Hier muss die Function geprüft werden!
+        'todo: Es muss eine Liste mit allen Trainern aus dieser Datei geben! Diese wird auf alle Einteilungen verteilt!
+        If Groupies.Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Where(Function(tr) Not tr.TrainerID = Trainer.TrainerID).Where(Function(tr) tr.Spitzname = Trainer.Spitzname).Count = 1 Then
+            _fehler(NameOf(Trainer.Spitzname)).Add($"Der Spitzname {Trainer.Spitzname} ist bereits vergeben und darf nicht doppelt vergeben werden.")
+        End If
+        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Trainer.Spitzname)))
     End Sub
 
 #End Region

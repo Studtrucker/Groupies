@@ -11,10 +11,18 @@ Public Class TrainerViewModel
     Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-
+        OkCommand = New RelayCommand(AddressOf OnOK, Function() IstEingabeGueltig)
     End Sub
 
 #Region "Properties"
+
+    Public ReadOnly Property IstEingabeGueltig As Boolean
+        Get
+            Return Not HasErrors
+        End Get
+    End Property
+
+
     Public Property Trainer As Trainer 'Implements IViewModel.DatenObjekt
 
     Public Property TrainerID As Guid
@@ -95,24 +103,23 @@ Public Class TrainerViewModel
 
 #Region "Gültigkeitsprüfung"
     Private Sub ValidateVorname()
-        _fehler(NameOf(Trainer.Vorname)) = New List(Of String)
+        ClearErrors(NameOf(Trainer.Vorname))
         If String.IsNullOrWhiteSpace(Trainer.Vorname) Then
-            _fehler(NameOf(Trainer.Vorname)).Add("Vorname darf nicht leer sein.")
+            AddError(NameOf(Trainer.Vorname), "Name darf nicht leer sein.")
         End If
-        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Trainer.Vorname)))
     End Sub
 
     Private Sub ValidateSpitzname()
-        _fehler(NameOf(Trainer.Spitzname)) = New List(Of String)
-        If String.IsNullOrWhiteSpace(Trainer.Vorname) Then
-            _fehler(NameOf(Trainer.Spitzname)).Add("Spitzname darf nicht leer sein.")
+        ClearErrors(NameOf(Trainer.Spitzname))
+        If String.IsNullOrWhiteSpace(Trainer.Spitzname) Then
+            AddError(NameOf(Trainer.Spitzname), "Spitzname darf nicht leer sein.")
         End If
-        'todo: Hier muss die Function geprüft werden!
+        'todo: Hier muss die Function geprüft werden! -> vorhandenen Trainer bearbeiten
+        'Funktionsprüfung erledigt: Neuen Trainer anlegen 
         'todo: Es muss eine Liste mit allen Trainern aus dieser Datei geben! Diese wird auf alle Einteilungen verteilt!
         If Groupies.Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Where(Function(tr) Not tr.TrainerID = Trainer.TrainerID).Where(Function(tr) tr.Spitzname = Trainer.Spitzname).Count = 1 Then
-            _fehler(NameOf(Trainer.Spitzname)).Add($"Der Spitzname {Trainer.Spitzname} ist bereits vergeben und darf nicht doppelt vergeben werden.")
+            AddError(NameOf(Trainer.Spitzname), $"Der Spitzname {Trainer.Spitzname} ist bereits vergeben und darf nicht doppelt vergeben werden.")
         End If
-        RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(NameOf(Trainer.Spitzname)))
     End Sub
 
 #End Region
@@ -137,6 +144,7 @@ Public Class TrainerViewModel
             _fehler(prop).Add(fehlertext)
             RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(prop))
         End If
+        OnPropertyChanged(NameOf(IstEingabeGueltig))
     End Sub
 
     Private Sub ClearErrors(prop As String)
@@ -144,6 +152,7 @@ Public Class TrainerViewModel
             _fehler.Remove(prop)
             RaiseEvent ErrorsChanged(Me, New DataErrorsChangedEventArgs(prop))
         End If
+        OnPropertyChanged(NameOf(IstEingabeGueltig))
     End Sub
 
     Public Function GetErrors(propertyName As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors

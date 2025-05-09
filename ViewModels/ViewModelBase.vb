@@ -81,7 +81,7 @@ Public Class ViewModelBase
 
 #Region "Methoden"
 
-    Private Sub OnOK(obj As Object)
+    Public Sub OnOK(obj As Object)
         ' Businesslogik erfolgreich → Dialog schließen mit OK
         RaiseEvent RequestClose(Me, True)
     End Sub

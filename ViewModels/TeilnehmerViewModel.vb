@@ -129,7 +129,6 @@ Public Class TeilnehmerViewModel
         If _Teilnehmer.Leistungsstand Is Nothing Then
             AddError(NameOf(_Teilnehmer.Leistungsstand), "Leistungsstand muss ausgewählt werden.")
         End If
-        'OrElse _Teilnehmer.Leistungsstand =
     End Sub
 #End Region
 

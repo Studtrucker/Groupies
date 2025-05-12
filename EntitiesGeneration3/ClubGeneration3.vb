@@ -99,9 +99,10 @@ Namespace Entities.Generation3
         ''' <returns></returns>
         Public Property Leistungsstufenliste() As LeistungsstufeCollection
 
-        Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
+        Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of Leistungsstufe)
             Get
                 Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
+                'Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS)
             End Get
         End Property
 

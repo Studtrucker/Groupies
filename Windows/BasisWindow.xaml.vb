@@ -6,18 +6,10 @@ Public Class BasisWindow
     Private ViewModel As ViewModelBase
 
 
-    Public Sub New()
-
-        ViewModel = New ViewModelBase
+    Private Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        DataContext = ViewModel
-
-        'AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
-        AddHandler ViewModel.Close, AddressOf HandleClose
 
     End Sub
 

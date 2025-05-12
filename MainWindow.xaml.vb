@@ -1060,36 +1060,50 @@ Public Class MainWindow
 
     Private Sub HandleHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
 
-        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max", .Leistungsstand = New Leistungsstufe With {.Benennung = "Anfänger"}}
+        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max"}
 
         Dim dialog = New BasisWindow(
-            New ViewModelBase With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Ansehen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn)}) With {
+            New TeilnehmerViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
+            .Teilnehmer = tn,
+            .CurrentUserControl = New TeilnehmerUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
         '            .DatenObjekt = tn,
         '            .CurrentUserControl = New TeilnehmerUserControl}) With {
 
-        dialog.Show()
+        'dialog.ShowDialog()
+        Dim result As Boolean = dialog.ShowDialog()
 
-        'MessageBox.Show("Benutzer hat schliessen gedrückt")
+        If result = True Then
+            MessageBox.Show("Benutzer hat OK gedrückt")
+        Else
+            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
+        End If
 
     End Sub
 
     Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
-        'Dim dialog = New BasisWindow(New DialogViewModelBase) With {.Owner = Me,
-        '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-        '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max", .Leistungsstand = New Leistungsstufe With {.Benennung = "Anfänger"}}
+        Dim tn = New Teilnehmer With {.Nachname = "Mustermann"}
 
-        'dialog.ModusEinstellen()
-        'Dim result As Boolean = dialog.ShowDialog()
+        Dim dialog = New BasisWindow(
+            New TeilnehmerViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
+            .Teilnehmer = tn,
+            .CurrentUserControl = New TeilnehmerUserControl}) With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'If result = True Then
-        '    MessageBox.Show("Benutzer hat OK gedrückt")
-        'Else
-        '    MessageBox.Show("Benutzer hat Abbrechen gedrückt")
-        'End If
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            MessageBox.Show("Benutzer hat OK gedrückt")
+        Else
+            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
+        End If
     End Sub
 
 #End Region

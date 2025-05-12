@@ -115,7 +115,8 @@
     <Compile Include="Enums\DatentypEnum.vb" />
     <Compile Include="Fabriken\DatentypFabrik.vb" />
     <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
-    <Compile Include="Interfaces\IViewModel.vb" />
+    <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
+    <Compile Include="Interfaces\ViewModel\IViewModelBase.vb" />
     <Compile Include="Interfaces\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
@@ -143,6 +144,7 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
     <Compile Include="Windows\BasisWindow.xaml.vb">

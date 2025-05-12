@@ -17,7 +17,8 @@ Namespace Entities
 
 
 #Region "Fields"
-        Private _Leistungsstand = New Leistungsstufe("Leistungsstand unbekannt", -1)
+        Private _Leistungsstand As Leistungsstufe
+
         Private _TeilnehmerID = Guid.NewGuid()
 
 #End Region
@@ -215,7 +216,7 @@ Namespace Entities
         End Function
 
         Public Sub speichern() Implements IModel.speichern
-            Throw New NotImplementedException()
+            MessageBox.Show("Teilnehmer speichern")
         End Sub
 
 #End Region

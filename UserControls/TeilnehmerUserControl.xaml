@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
-            <TextBlock>Teilnehmer ID <Run Foreground="Red">*</Run></TextBlock>
+            <TextBlock>Teilnehmer ID </TextBlock>
         </Label>
         <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock>Vorname <Run Foreground="Red">*</Run></TextBlock>
@@ -48,21 +48,22 @@
         </Label>
 
         <TextBox x:Name="TeilnehmerIDTextBox" Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
-         Text="{Binding DatenObjekt.TeilnehmerID, UpdateSourceTrigger=Explicit}"/>
+         Text="{Binding TeilnehmerID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         <TextBox x:Name="VornameTextBox" Grid.Column="2" Grid.Row="2" 
-         Text="{Binding DatenObjekt.Vorname, UpdateSourceTrigger=Explicit}"/>
+         Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
         <TextBox x:Name="NachnameTextBox" Grid.Column="2" Grid.Row="3"
-         Text="{Binding DatenObjekt.Nachname, UpdateSourceTrigger=Explicit}"/>
+         Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
         <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="4" Grid.Column="2" Width="200" HorizontalAlignment="Left"
-            SelectedDate="{Binding DatenObjekt.Geburtsdatum, UpdateSourceTrigger=Explicit}"/>
+            SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
 
         <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="5"
-         Text="{Binding DatenObjekt.Telefonnummer, UpdateSourceTrigger=Explicit}"/>
+         Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
 
         <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
           x:Name="LeistungsstandComboBox"
-          SelectedValue="{Binding DatenObjekt.Leistungsstand, UpdateSourceTrigger=Explicit,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                  ItemsSource="{Binding LeistungsstufenListCollectionView}"
+          SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToLeistungsstufeConverter},ValidatesOnNotifyDataErrors=True}"/>
 
     </Grid>
 

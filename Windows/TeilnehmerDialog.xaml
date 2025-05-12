@@ -77,7 +77,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
-                    <TextBlock>Teilnehmer ID <Run Foreground="Red">*</Run></TextBlock>
+                    <TextBlock>Teilnehmer ID </TextBlock>
                 </Label>
                 <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
                     <TextBlock>Vorname <Run Foreground="Red">*</Run></TextBlock>

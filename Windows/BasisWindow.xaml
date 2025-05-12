@@ -31,7 +31,7 @@
                     <!--<Button x:Name="OkButton" Width="110" Content="Ok"  IsDefault="True" Command="{Binding OkCommand}"/>
                     <Button x:Name="CancelButton" Width="110" Content="Abbrechen" IsCancel="True" Command="{Binding CancelCommand}"/>-->
                     <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
-                    <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"  Visibility="{Binding OkButtonVisibility}"/>
+                    <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"  IsEnabled="{Binding IstEingabeGueltig}" Visibility="{Binding OkButtonVisibility}"/>
                     <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"  Visibility="{Binding CancelButtonVisibility}"/>
 
                 </StackPanel>

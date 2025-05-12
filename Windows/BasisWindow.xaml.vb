@@ -16,7 +16,7 @@ Public Class BasisWindow
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         DataContext = ViewModel
 
-        AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
+        'AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
         AddHandler ViewModel.Close, AddressOf HandleClose
 
     End Sub

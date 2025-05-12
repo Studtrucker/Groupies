@@ -6,17 +6,15 @@
     ''' <returns></returns>
     Property Ident As Guid
 
-    '''' <summary>
-    '''' Speichert das Model
-    '''' </summary>
-    '''' <remarks>
-    '''' Das Model wird in der Datenbank gespeichert.
-    '''' </remarks>
-    '''' <exception cref="NotImplementedException">Wenn die Methode nicht implementiert ist</exception>
-    '''' <exception cref="InvalidOperationException">Wenn das Model nicht gespeichert werden kann</exception>
-    'Sub save()
-    '    ' Implement the logic to save the model
-    'End Sub
+    ''' <summary>
+    ''' Speichert das Model
+    ''' </summary>
+    ''' <remarks>
+    ''' Das Model wird in der Datenbank gespeichert.
+    ''' </remarks>
+    ''' <exception cref="NotImplementedException">Wenn die Methode nicht implementiert ist</exception>
+    ''' <exception cref="InvalidOperationException">Wenn das Model nicht gespeichert werden kann</exception>
+    Sub speichern()
 
     '''' <summary>
     '''' Löscht das Model

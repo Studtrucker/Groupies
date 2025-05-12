@@ -204,6 +204,10 @@ Namespace Entities
             Return VorUndNachname
         End Function
 
+        Public Sub speichern() Implements IModel.speichern
+            MessageBox.Show("Speichern")
+        End Sub
+
 #End Region
 
     End Class

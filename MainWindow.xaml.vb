@@ -1039,6 +1039,7 @@ Public Class MainWindow
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
         Dim Tr = New Trainer With {.Nachname = "Mustermann", .Vorname = "Max", .Spitzname = "Musti"}
+
         Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Tr),

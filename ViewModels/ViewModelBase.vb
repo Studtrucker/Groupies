@@ -25,7 +25,8 @@ Public Class ViewModelBase
 #Region "Konstruktor"
 
     Public Sub New()
-        OkCommand = New RelayCommand(AddressOf OnOK)
+        'OkCommand = New RelayCommand(AddressOf OnOK)
+        'CancelCommand = New RelayCommand(AddressOf OnCancel)
         CancelCommand = New RelayCommand(AddressOf OnCancel)
         CloseCommand = New RelayCommand(AddressOf OnClose)
     End Sub
@@ -38,6 +39,7 @@ Public Class ViewModelBase
     Public Property Datentyp As IDatentyp
 
     Public Property CurrentUserControl As UserControl
+
 
     Public ReadOnly Property WindowTitleText As String 'Implements IViewModel.WindowTitleText
         Get
@@ -85,10 +87,12 @@ Public Class ViewModelBase
         ' Businesslogik erfolgreich → Dialog schließen mit OK
         RaiseEvent RequestClose(Me, True)
     End Sub
-    Private Sub OnCancel(obj As Object)
+
+    Public Sub OnCancel(obj As Object)
         ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
         RaiseEvent RequestClose(Me, False)
     End Sub
+
     Private Sub OnClose(obj As Object)
         ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
         RaiseEvent Close(Me, EventArgs.Empty)

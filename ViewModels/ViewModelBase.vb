@@ -25,8 +25,6 @@ Public Class ViewModelBase
 #Region "Konstruktor"
 
     Public Sub New()
-        'OkCommand = New RelayCommand(AddressOf OnOK)
-        'CancelCommand = New RelayCommand(AddressOf OnCancel)
         CancelCommand = New RelayCommand(AddressOf OnCancel)
         CloseCommand = New RelayCommand(AddressOf OnClose)
     End Sub

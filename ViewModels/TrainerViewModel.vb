@@ -15,15 +15,13 @@ Public Class TrainerViewModel
     Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-
-        OkCommand = New RelayCommand(AddressOf OnOK, Function() IstEingabeGueltig)
-
+        OkCommand = New RelayCommand(AddressOf OnTrainerOK, Function() IstEingabeGueltig)
     End Sub
 
 #End Region
 
 #Region "Methoden"
-    Public Overloads Sub OnOK()
+    Public Sub OnTrainerOK()
         ' Hier können Sie die Logik für den OK-Button implementieren
         Trainer.speichern()
 

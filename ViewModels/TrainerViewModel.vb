@@ -17,7 +17,6 @@ Public Class TrainerViewModel
         ' Hier können Sie den Konstruktor anpassen
 
         OkCommand = New RelayCommand(AddressOf OnOK, Function() IstEingabeGueltig)
-        'AddHandler RequestClose, AddressOf HandleCloseRequest
 
     End Sub
 
@@ -40,9 +39,6 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Properties"
-
-    'Public Property OkCommand As ICommand
-    'Public Property CancelCommand As ICommand 'Implements IViewModel.CancelCommand
 
     Public Property Trainer As Trainer 'Implements IViewModel.DatenObjekt
 

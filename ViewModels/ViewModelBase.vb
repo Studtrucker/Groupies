@@ -77,8 +77,6 @@ Public Class ViewModelBase
         End Get
     End Property
 
-
-
 #End Region
 
 #Region "Methoden"

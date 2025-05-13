@@ -5,10 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
              xmlns:convert="clr-namespace:Groupies.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              
              Height="Auto" Width="Auto">
     <!--Loaded="{Binding UserControl_Loaded}"-->
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding UserControl_Loaded}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <UserControl.Resources>
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>

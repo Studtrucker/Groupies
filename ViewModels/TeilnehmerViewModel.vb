@@ -13,6 +13,7 @@ Public Class TeilnehmerViewModel
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
 
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControl_Loaded = New RelayCommand(AddressOf BeimLaden)
 
     End Sub
 
@@ -28,6 +29,11 @@ Public Class TeilnehmerViewModel
         MyBase.OnOk(Me)
 
     End Sub
+    Private Sub BeimLaden()
+        ValidateVorname()
+        ValidateNachname()
+        ValidateLeistungsstand()
+    End Sub
 
 #End Region
 
@@ -39,11 +45,7 @@ Public Class TeilnehmerViewModel
             Return _Teilnehmer
         End Get
         Set(value As IModel)
-            '_Teilnehmer = DirectCast(value, Teilnehmer)
             _Teilnehmer = value
-            'ValidateLeistungsstand()
-            'AddError(NameOf(_Teilnehmer.Vorname), "Muss Name haben")
-            'ValidateVorname()
         End Set
     End Property
 
@@ -120,6 +122,8 @@ Public Class TeilnehmerViewModel
 #End Region
 
 #Region "Gültigkeitsprüfung"
+
+
     Private Sub ValidateVorname()
         ClearErrors(NameOf(_Teilnehmer.Vorname))
         If String.IsNullOrWhiteSpace(_Teilnehmer.Vorname) Then

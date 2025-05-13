@@ -1084,8 +1084,8 @@ Public Class MainWindow
 
     Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
         '        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max", .Leistungsstand = New Leistungsstufe With {.Benennung = "Anfänger"}}
-        Dim tn = New Teilnehmer With {.Nachname = "Mustermann"}
-
+        'Dim tn = New Teilnehmer With {.Nachname = "Mustermann"}
+        Dim tn = New Teilnehmer
         Dim dialog = New BasisWindow(
             New TeilnehmerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),

@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:Groupies"
              xmlns:convert="clr-namespace:Groupies.Converters"
              mc:Ignorable="d" 
+             
              Height="Auto" Width="Auto">
-    
+    <!--Loaded="{Binding UserControl_Loaded}"-->
+
     <UserControl.Resources>
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
     </UserControl.Resources>

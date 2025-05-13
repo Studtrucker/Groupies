@@ -47,6 +47,9 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
+    Public Property UserControl_Loaded As ICommand
+
+
     Public Property TeilnehmerID As Guid
         Get
             Return _Teilnehmer.TeilnehmerID

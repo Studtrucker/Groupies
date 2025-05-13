@@ -1070,8 +1070,6 @@ Public Class MainWindow
             .CurrentUserControl = New TeilnehmerUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '            .DatenObjekt = tn,
-        '            .CurrentUserControl = New TeilnehmerUserControl}) With {
 
         'dialog.ShowDialog()
         Dim result As Boolean = dialog.ShowDialog()

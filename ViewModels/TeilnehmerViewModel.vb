@@ -19,6 +19,7 @@ Public Class TeilnehmerViewModel
 #End Region
 
 #Region "Methoden"
+
     Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
@@ -38,7 +39,11 @@ Public Class TeilnehmerViewModel
             Return _Teilnehmer
         End Get
         Set(value As IModel)
-            _Teilnehmer = DirectCast(value, Teilnehmer)
+            '_Teilnehmer = DirectCast(value, Teilnehmer)
+            _Teilnehmer = value
+            'ValidateLeistungsstand()
+            'AddError(NameOf(_Teilnehmer.Vorname), "Muss Name haben")
+            'ValidateVorname()
         End Set
     End Property
 
@@ -106,6 +111,8 @@ Public Class TeilnehmerViewModel
     End Property
 
     Public Property LeistungsstufenListCollectionView As ICollectionView
+
+    Public Property HandleUserControlLoaded As RelayCommand
 
 #End Region
 

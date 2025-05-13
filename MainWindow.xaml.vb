@@ -339,16 +339,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New TeilnehmerDialog With {
-            .Owner = Me,
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        Dim Vm = New TeilnehmerViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .Teilnehmer = New Teilnehmer}
 
-        'dlg.ModusEinstellen()
+        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        If dlg.ShowDialog = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(dlg.Teilnehmer)
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(Vm.Teilnehmer)
+            MessageBox.Show("Neuer Teilnehmer wurde gespeichert")
+        Else
+            MessageBox.Show("Eingabe abgebrochen")
         End If
+
     End Sub
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -466,21 +471,20 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        'Dim dlg = New TrainerDialog With {
-        '    .Owner = Me,
-        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim Vm = New TrainerViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+            .Trainer = New Trainer}
 
-        'dlg.ModusEinstellen()
+        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        'If dlg.ShowDialog = True Then
-        '    AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(dlg.Trainer)
-        'End If
+        Dim result As Boolean = dialog.ShowDialog()
 
-        'Dim dialog = New BasisWindow(New Trainer) With {
-        '    .Owner = Me,
-        '    .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        If result = True Then
+            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Trainer)
+            MessageBox.Show("Neuer Trainer wurde gespeichert")
+        Else
+            MessageBox.Show("Eingabe abgebrochen")
+        End If
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -514,7 +518,23 @@ Public Class MainWindow
             Trainer = Nothing
         End If
 
-        If Trainer IsNot Nothing Then TrainerBearbeiten(Trainer)
+        If Trainer IsNot Nothing Then
+
+
+            Dim Vm = New TrainerViewModel With {
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+                .Trainer = Trainer}
+
+            Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                MessageBox.Show("Trainer wurde gespeichert")
+            Else
+                MessageBox.Show("Eingabe abgebrochen")
+            End If
+        End If
 
     End Sub
 
@@ -1038,13 +1058,10 @@ Public Class MainWindow
     End Sub
 
     Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
-        Dim Tr = New Trainer With {.Nachname = "Mustermann", .Vorname = "Max", .Spitzname = "Musti"}
 
         Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Tr),
-            .Trainer = Tr,
-            .CurrentUserControl = New TrainerUserControl}
+            .Trainer = New Trainer}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

@@ -9,11 +9,10 @@
              mc:Ignorable="d" 
              
              Height="Auto" Width="Auto">
-    <!--Loaded="{Binding UserControl_Loaded}"-->
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding UserControl_Loaded}"/>
+            <i:InvokeCommandAction Command="{Binding UserControlLoaded}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

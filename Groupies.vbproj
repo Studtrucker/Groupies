@@ -137,6 +137,9 @@
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
+      <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\TeilnehmerUserControl.xaml.vb">
       <DependentUpon>TeilnehmerUserControl.xaml</DependentUpon>
     </Compile>
@@ -227,9 +230,6 @@
     <Compile Include="Services\XLSchreiber.vb" />
     <Compile Include="Templates\GruppenGroesseDataTemplate.vb" />
     <Compile Include="Templates\SkikursGroesseStyleSelector.vb" />
-    <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
-      <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\Refactoring\IPrintableNotice.vb" />
     <Compile Include="UserControls\TrainerlisteUserControl.xaml.vb">
       <DependentUpon>TrainerlisteUserControl.xaml</DependentUpon>
@@ -270,6 +270,10 @@
     </Compile>
     <Compile Include="XMLDatenLaden.vb" />
     <Page Include="UserControls\EinteilungUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\GruppendetailUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -351,10 +355,6 @@
     <Compile Include="EntitiesGeneration1\ParticipantRelationship.vb" />
     <Compile Include="EntitiesGeneration3\TeilnehmerCollection.vb" />
     <Compile Include="EntitiesGeneration1\ParticipantHistory.vb" />
-    <Page Include="UserControls\GruppendetailUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\TrainerlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

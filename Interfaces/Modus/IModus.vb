@@ -32,6 +32,7 @@
         ''' <returns></returns>
         Property CancelButtonVisibility As Visibility
 
+
     End Interface
 
 

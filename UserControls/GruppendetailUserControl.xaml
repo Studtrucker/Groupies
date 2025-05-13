@@ -10,6 +10,7 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:cmd="clr-namespace:Groupies.Commands"
              mc:Ignorable="d"
+             Loaded="UserControl_Loaded"
              Width="Auto" Height="Auto">
 
 
@@ -67,21 +68,21 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Anzahl Mitglieder"/>
-                        <Label Grid.Column="1" Content="{Binding SelectedGruppe.Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
+                        <Label Grid.Column="1" Content="{Binding Path=Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
                     </Grid>
                 </StackPanel>
-
-                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding SelectedGruppe.Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding SelectedGruppe.AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding SelectedGruppe.Benennung, UpdateSourceTrigger=PropertyChanged}"  />
+                
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Path=Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Path=AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Path=Benennung, UpdateSourceTrigger=PropertyChanged}"  />
 
                 <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
                       x:Name="GruppenleistungsstufeComboBox"
-                      SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                      SelectedValue="{Binding Leistungsstufe,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
-                          Text="{Binding SelectedGruppe.Trainer.VorUndNachname}"                         
+                          Text="{Binding Path=Trainer.VorUndNachname}"                         
                           MouseDoubleClick="Handle_TrainerAusGruppeEntfernen">
 
                         <TextBox.ContextMenu>
@@ -95,7 +96,7 @@
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
-                          ItemsSource="{Binding SelectedGruppe.Mitgliederliste}" 
+                          ItemsSource="{Binding Mitgliederliste}" 
                           SelectionMode="Extended" MouseDoubleClick="Handle_TeilnehmerAusGruppeEntfernen">
                     
 

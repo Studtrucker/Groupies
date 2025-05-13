@@ -37,10 +37,24 @@ Public MustInherit Class ViewModelBase
 #End Region
 
 #Region "Properties"
+
+    ''' <summary>
+    ''' Der Modus (Erstellen, Bearbeiten, Löschen)
+    ''' stellt die Erscheinung und die Funktionalität des Dialogs dar.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Property Modus As IModus
 
+    ''' <summary>
+    ''' Der Datentyp (Trainer, Teilnehmer, Gruppe)
+    ''' stellt die Datenstruktur des Dialogs dar.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Property Datentyp As IDatentyp
 
+    ''' <summary>
+    ''' Der aktuelle UserControl, der im Dialog angezeigt wird.
+    ''' </summary>
     Public Property CurrentUserControl As UserControl
 
 

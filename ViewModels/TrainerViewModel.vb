@@ -1,16 +1,27 @@
 ﻿Imports System.ComponentModel
-Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Entities
+Imports Groupies.UserControls
+Imports Microsoft.Office.Interop.Excel
 
 Public Class TrainerViewModel
     Inherits ViewModelBase
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
-    Sub New()
+
+    ''' <summary>
+    ''' Parameterloser Konstruktor für den TrainerViewModel.
+    ''' Die Instanz benötigt den Modus und ein Trainer-Objekt.
+    ''' Der Datentyp und das UserControl werden automatisch gesetzt.
+    ''' </summary>
+    Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
+        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        CurrentUserControl = New TrainerUserControl
+        Trainer = New Trainer
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
     End Sub
 
 #End Region
@@ -25,9 +36,16 @@ Public Class TrainerViewModel
 
     End Sub
 
+    Public Sub OnLoaded() Implements IViewModelSpecial.OnLoaded
+        ValidateVorname()
+        ValidateSpitzname()
+        ValidateEMail()
+    End Sub
+
 #End Region
 
 #Region "Properties"
+    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Private _Trainer As Trainer
 
@@ -140,21 +158,24 @@ Public Class TrainerViewModel
     Private Sub ValidateEMail()
         ClearErrors(NameOf(_Trainer.EMail))
 
-        Dim TextVorhanden = _Trainer.EMail.Count() > 0
-        Dim KeinAtVorhanden = _Trainer.EMail.IndexOf("@") < 0
-        Dim KeinDotVorhanden = _Trainer.EMail.LastIndexOf(".") < 0
-        Dim DotNichtNachAt = _Trainer.EMail.IndexOf("@") > _Trainer.EMail.LastIndexOf(".")
-        Dim AnzahlExtensionKleiner2 = _Trainer.EMail.Count() - _Trainer.EMail.LastIndexOf(".") - 1 < 2
+        If _Trainer.EMail IsNot Nothing Then
 
-        If TextVorhanden AndAlso
+            Dim TextVorhanden = _Trainer.EMail.Count() > 0
+            Dim KeinAtVorhanden = _Trainer.EMail.IndexOf("@") < 0
+            Dim KeinDotVorhanden = _Trainer.EMail.LastIndexOf(".") < 0
+            Dim DotNichtNachAt = _Trainer.EMail.IndexOf("@") > _Trainer.EMail.LastIndexOf(".")
+            Dim AnzahlExtensionKleiner2 = _Trainer.EMail.Count() - _Trainer.EMail.LastIndexOf(".") - 1 < 2
+
+            If TextVorhanden AndAlso
             (KeinAtVorhanden Or
             KeinDotVorhanden Or
             DotNichtNachAt Or
             AnzahlExtensionKleiner2) Then
 
-            AddError(NameOf(_Trainer.EMail), "Eine gültige eMail Adresse eingeben oder leer lassen")
-        End If
+                AddError(NameOf(_Trainer.EMail), "Eine gültige eMail Adresse eingeben oder leer lassen")
+            End If
 
+        End If
 
     End Sub
 

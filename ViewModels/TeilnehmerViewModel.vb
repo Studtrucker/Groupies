@@ -1,19 +1,30 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Controller.AppController
 Imports Groupies.Entities
+Imports Groupies.UserControls
 
 Public Class TeilnehmerViewModel
     Inherits ViewModelBase
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
+
+
+    ''' <summary>
+    ''' Parameterloser Konstruktor für den TeilnehmerViewModel.
+    ''' Die Instanz benötigt den Modus und ein Teilnehmer-Objekt.
+    ''' Der Datentyp und das UserControl werden automatisch gesetzt.
+    ''' </summary>
     Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
+
+        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        CurrentUserControl = New TeilnehmerUserControl
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
 
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControl_Loaded = New RelayCommand(AddressOf BeimLaden)
+        UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
 
     End Sub
 
@@ -29,7 +40,8 @@ Public Class TeilnehmerViewModel
         MyBase.OnOk(Me)
 
     End Sub
-    Private Sub BeimLaden()
+
+    Private Sub OnLoaded() Implements IViewModelSpecial.OnLoaded
         ValidateVorname()
         ValidateNachname()
         ValidateLeistungsstand()
@@ -38,6 +50,7 @@ Public Class TeilnehmerViewModel
 #End Region
 
 #Region "Properties"
+    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Private _Teilnehmer As Teilnehmer
     Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
@@ -49,7 +62,6 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
-    Public Property UserControl_Loaded As ICommand
 
 
     Public Property TeilnehmerID As Guid

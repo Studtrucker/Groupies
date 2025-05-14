@@ -473,14 +473,14 @@ Public Class MainWindow
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Trainer = New Trainer}
+            .Gruppe = New Trainer}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Trainer)
+            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Gruppe)
             MessageBox.Show("Neuer Trainer wurde gespeichert")
         Else
             MessageBox.Show("Eingabe abgebrochen")
@@ -523,7 +523,7 @@ Public Class MainWindow
 
             Dim Vm = New TrainerViewModel With {
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-                .Trainer = Trainer}
+                .Gruppe = Trainer}
 
             Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1061,7 +1061,7 @@ Public Class MainWindow
 
         Dim Vm = New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Trainer = New Gruppe}
+            .Gruppe = New Gruppe}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1083,7 +1083,7 @@ Public Class MainWindow
             New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
-            .Trainer = O,
+            .Gruppe = O,
             .CurrentUserControl = New GruppeUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
@@ -1106,7 +1106,7 @@ Public Class MainWindow
             New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen),
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
-            .Trainer = O,
+            .Gruppe = O,
             .CurrentUserControl = New GruppeUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}

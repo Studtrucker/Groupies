@@ -61,7 +61,7 @@ Namespace Fabriken
     Public Class DatentypGruppe
         Implements Interfaces.IDatentyp
         Public Property DatentypText As String = "Gruppe" Implements Interfaces.IDatentyp.DatentypText
-        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png.png" Implements IDatentyp.DatentypIcon
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.GruppeUserControl

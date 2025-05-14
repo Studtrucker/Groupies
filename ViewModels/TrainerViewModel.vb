@@ -19,7 +19,7 @@ Public Class TrainerViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
         CurrentUserControl = Datentyp.DatentypUserControl
-        Trainer = New Trainer
+        Gruppe = New Trainer
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
     End Sub
@@ -49,7 +49,7 @@ Public Class TrainerViewModel
 
     Private _Trainer As Trainer
 
-    Public Property Trainer As IModel Implements IViewModelSpecial.Model
+    Public Property Gruppe As IModel Implements IViewModelSpecial.Model
         Get
             Return _Trainer
         End Get

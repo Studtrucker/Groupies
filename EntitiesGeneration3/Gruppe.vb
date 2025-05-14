@@ -11,6 +11,7 @@ Namespace Entities
     <DefaultProperty("GruppenName")>
     Public Class Gruppe
         Inherits BaseModel
+        Implements IModel
 
 #Region "Felder"
         Private _GruppenID = Guid.NewGuid()
@@ -150,6 +151,15 @@ Namespace Entities
             End Set
         End Property
 
+        Public Property Ident As Guid Implements IModel.Ident
+            Get
+                Throw New NotImplementedException()
+            End Get
+            Set(value As Guid)
+                Throw New NotImplementedException()
+            End Set
+        End Property
+
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -157,6 +167,10 @@ Namespace Entities
         Public Overrides Function ToString() As String
             Return AusgabeTeilnehmerinfo
         End Function
+
+        Public Sub speichern() Implements IModel.speichern
+            MessageBox.Show("Gruppe speichern")
+        End Sub
 #End Region
 
     End Class

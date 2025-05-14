@@ -72,7 +72,6 @@
                   x:Name="LeistungsstandComboBox"
                   ItemsSource="{Binding LeistungsstufenListCollectionView}"
                   SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-          <!--SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToLeistungsstufeConverter},ValidatesOnNotifyDataErrors=True}"/>-->
 
     </Grid>
 

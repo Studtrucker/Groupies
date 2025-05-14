@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              xmlns:convert="clr-namespace:Groupies.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cmd="clr-namespace:Groupies.Commands"
              Height="Auto" Width="Auto">
 
     <i:Interaction.Triggers>
@@ -32,58 +33,88 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="200"/>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
         </Grid.RowDefinitions>
 
         <!--Labels-->
-        <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+            <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                <TextBlock >Gruppen ID
+                    <Run Foreground="Red">*</Run>
+                </TextBlock>
+            </Label>
+            
+            <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock >Ausgabe Teilnehmerinfo
                     <Run Foreground="Red">*</Run>
             </TextBlock>
         </Label>
 
-        <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+        <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock>Benennung
                     <Run Foreground="Red">*</Run>
             </TextBlock>
         </Label>
 
-        <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+        <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock >Sortierer
                     <Run Foreground="Red">*</Run>
             </TextBlock>
         </Label>
 
-        <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
+        <Label Grid.Column="1" Grid.Row="5" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock >Leistungsstufe
                     <Run Foreground="Red">*</Run>
             </TextBlock>
         </Label>
-        <Label Grid.Column="1" Grid.Row="5" Style="{StaticResource PflichtangabeLabel}">
-            <TextBlock >Fähigkeiten
-                    <Run Foreground="Red">*</Run>
+        <Label Grid.Column="1" Grid.Row="6" Style="{StaticResource PflichtangabeLabel}">
+            <TextBlock >Mitglieder
+                    <!--<Run Foreground="Red">*</Run>-->
             </TextBlock>
         </Label>
 
         <!--Felder-->
+        <TextBox Text="{Binding GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="1"/>
         <TextBox Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="AusgabenameTextBox" Grid.Column="2" Grid.Row="1"/>
+                     x:Name="AusgabenameTextBox" Grid.Column="2" Grid.Row="2"/>
 
         <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                     x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="2" />
+                     x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="3" />
 
         <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="3"/>
+                     x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="4"/>
 
-        <ComboBox Grid.Column="2" Grid.Row="4"     
-                      IsSynchronizedWithCurrentItem="True"
-                      SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToLeistungsstufeConverter}}"
-                      Name="LeistungsstufeCombobox"/>
+        <ComboBox Grid.Column="2" Grid.Row="5"     
+                  IsSynchronizedWithCurrentItem="True"
+                  SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToLeistungsstufeConverter}}"
+                  ItemsSource="{Binding LeistungsstufenListCollectionView}"    
+                  Name="LeistungsstufeCombobox"/>
 
 
-        <DataGrid Grid.Column="2" Grid.Row="5" d:ItemsSource="{Binding Faehigkeiten}">
+        <!--<DataGrid Grid.Column="2" Grid.Row="6" d:ItemsSource="{Binding Mitgliederliste}">-->
+            <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
+                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
+                          IsReadOnly="False" CanUserAddRows="False" 
+                          ItemsSource="{Binding Mitgliederliste}" 
+                          SelectionMode="Extended" MouseDoubleClick="{Binding TeilnehmerAusGruppeEntfernen}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
+                <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
+                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+            </DataGrid.Columns>
 
+                
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+                
         </DataGrid>
 
     </Grid>

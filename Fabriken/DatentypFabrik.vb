@@ -10,16 +10,21 @@ Namespace Fabriken
                     Return New DatentypTeilnehmer
                 Case Enums.DatentypEnum.Trainer
                     Return New DatentypTrainer
+                Case Enums.DatentypEnum.Gruppe
+                    Return New DatentypGruppe
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
         End Function
+
         Public Function ErzeugeDatentyp(Datenobjekt As IModel) As Interfaces.IDatentyp
             Select Case Datenobjekt.GetType
                 Case GetType(Entities.Trainer)
                     Return New DatentypTrainer
                 Case GetType(Entities.Teilnehmer)
                     Return New DatentypTeilnehmer
+                Case GetType(Entities.Gruppe)
+                    Return New DatentypGruppe
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
@@ -48,6 +53,18 @@ Namespace Fabriken
         Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.TeilnehmerUserControl
+            End Get
+        End Property
+
+    End Class
+
+    Public Class DatentypGruppe
+        Implements Interfaces.IDatentyp
+        Public Property DatentypText As String = "Gruppe" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
+            Get
+                Return New UserControls.GruppeUserControl
             End Get
         End Property
 

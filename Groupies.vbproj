@@ -140,6 +140,9 @@
     <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
       <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\GruppeUserControl.xaml.vb">
+      <DependentUpon>GruppeUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\TeilnehmerUserControl.xaml.vb">
       <DependentUpon>TeilnehmerUserControl.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,7 @@
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
+    <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
     <Compile Include="Windows\BasisWindow.xaml.vb">
@@ -276,6 +280,10 @@
     <Page Include="UserControls\GruppendetailUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\GruppeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\TeilnehmerUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>

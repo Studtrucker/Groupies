@@ -3,7 +3,7 @@
     Public Enum ModusEnum
         Erstellen
         Bearbeiten
-        Ansehen
+        Anzeigen
     End Enum
 
 End Namespace

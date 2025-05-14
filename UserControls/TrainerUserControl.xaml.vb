@@ -12,17 +12,6 @@ Namespace UserControls
 
         End Sub
 
-        Public Sub New(ViewModel As TrainerViewModel)
-
-            ' Dieser Aufruf ist für den Designer erforderlich.
-            InitializeComponent()
-
-            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-
-            ' DataContext = ViewModel
-
-        End Sub
-
         Private Sub HandleDrop(sender As Object, e As DragEventArgs)
             Throw New NotImplementedException()
         End Sub

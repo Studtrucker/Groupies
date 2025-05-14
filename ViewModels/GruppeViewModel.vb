@@ -3,23 +3,22 @@ Imports Groupies.Entities
 Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
 
-Public Class TrainerViewModel
+Public Class GruppeViewModel
     Inherits ViewModelBase
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
 
     ''' <summary>
-    ''' Parameterloser Konstruktor für den TrainerViewModel.
-    ''' Die Instanz benötigt den Modus und ein Trainer-Objekt.
+    ''' Parameterloser Konstruktor für den GruppeViewModel.
+    ''' Die Instanz benötigt den Modus und ein Gruppen-Objekt.
     ''' Der Datentyp und das UserControl werden automatisch gesetzt.
     ''' </summary>
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         CurrentUserControl = Datentyp.DatentypUserControl
-        Trainer = New Trainer
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
     End Sub

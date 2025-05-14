@@ -1057,11 +1057,11 @@ Public Class MainWindow
         fml.Show()
     End Sub
 
-    Private Sub HandleAboutButtonExecuted(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Vm = New TrainerViewModel With {
+        Dim Vm = New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Trainer = New Trainer}
+            .Trainer = New Gruppe}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1075,16 +1075,16 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub HandleHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
+    Private Sub HandleTestBearbeiten(sender As Object, e As RoutedEventArgs)
 
-        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max"}
+        Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
 
         Dim dialog = New BasisWindow(
-            New TeilnehmerViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
-            .Teilnehmer = tn,
-            .CurrentUserControl = New TeilnehmerUserControl}) With {
+            New GruppeViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
+            .Trainer = O,
+            .CurrentUserControl = New GruppeUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1099,16 +1099,15 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub HandleFirstHelpButtonExecuted(sender As Object, e As RoutedEventArgs)
-        '        Dim tn = New Teilnehmer With {.Nachname = "Mustermann", .Vorname = "Max", .Leistungsstand = New Leistungsstufe With {.Benennung = "Anfänger"}}
-        'Dim tn = New Teilnehmer With {.Nachname = "Mustermann"}
-        Dim tn = New Teilnehmer
+    Private Sub HandleTestAnzeigen(sender As Object, e As RoutedEventArgs)
+
+        Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
         Dim dialog = New BasisWindow(
-            New TeilnehmerViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(tn),
-            .Teilnehmer = tn,
-            .CurrentUserControl = New TeilnehmerUserControl}) With {
+            New GruppeViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen),
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
+            .Trainer = O,
+            .CurrentUserControl = New GruppeUserControl}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

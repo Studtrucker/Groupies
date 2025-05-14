@@ -20,7 +20,7 @@ Public Class TeilnehmerViewModel
         ' Hier können Sie den Konstruktor anpassen
 
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        CurrentUserControl = New TeilnehmerUserControl
+        CurrentUserControl = Datentyp.DatentypUserControl
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
 
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)

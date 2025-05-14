@@ -10,7 +10,7 @@ Namespace Fabriken
                     Return New ModusBearbeiten
                 Case Enums.ModusEnum.Erstellen
                     Return New ModusErstellen
-                Case Enums.ModusEnum.Ansehen
+                Case Enums.ModusEnum.Anzeigen
                     Return New ModusAnsehen
                 Case Else
                     Return New Exception("Unbekannter Modus")

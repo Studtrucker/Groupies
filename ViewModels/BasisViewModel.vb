@@ -5,7 +5,7 @@ Imports Groupies.Interfaces
 Imports Groupies.UserControls
 
 
-Public MustInherit Class ViewModelBase
+Public MustInherit Class BasisViewModel
     Implements INotifyDataErrorInfo, INotifyPropertyChanged, IViewModelBase
 
 #Region "Konstruktor"

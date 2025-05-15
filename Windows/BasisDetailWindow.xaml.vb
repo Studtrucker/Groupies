@@ -3,7 +3,7 @@ Imports Groupies.Interfaces
 
 Public Class BasisWindow
 
-    Private ViewModel As ViewModelBase
+    Private ViewModel As BasisViewModel
 
 
     Private Sub New()
@@ -13,7 +13,7 @@ Public Class BasisWindow
 
     End Sub
 
-    Public Sub New(ViewModel As ViewModelBase)
+    Public Sub New(ViewModel As BasisViewModel)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()

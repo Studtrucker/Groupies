@@ -2,7 +2,7 @@
 Imports Groupies.Entities
 
 Public Class LeistungsstufeViewModel
-    Inherits ViewModelBase
+    Inherits BasisViewModel
     Implements IViewModelSpecial
 
 #Region "Konstruktor"

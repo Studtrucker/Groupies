@@ -1059,6 +1059,9 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
+        Dim Fenster As New BasisUebersichtWindow
+        Fenster.Show()
+
         Dim Vm = New LeistungsstufeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Leistungsstufe = New Leistungsstufe}

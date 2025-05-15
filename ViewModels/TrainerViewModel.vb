@@ -4,7 +4,7 @@ Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
 
 Public Class TrainerViewModel
-    Inherits ViewModelBase
+    Inherits BasisViewModel
     Implements IViewModelSpecial
 
 #Region "Konstruktor"

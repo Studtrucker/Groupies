@@ -4,7 +4,7 @@ Imports Groupies.Entities
 Imports Groupies.UserControls
 
 Public Class TeilnehmerViewModel
-    Inherits ViewModelBase
+    Inherits BasisViewModel
     Implements IViewModelSpecial
 
 #Region "Konstruktor"

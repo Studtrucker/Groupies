@@ -1,7 +1,7 @@
 ﻿Imports Groupies.Entities
 
 Public Class FaehigkeitViewModel
-    Inherits ViewModelBase
+    Inherits BasisViewModel
     Implements IViewModelSpecial
 
 #Region "Konstruktor"

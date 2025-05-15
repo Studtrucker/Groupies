@@ -3,7 +3,7 @@ Imports Groupies.Entities
 Imports Groupies.Controller.AppController
 
 Public Class GruppeViewModel
-    Inherits ViewModelBase
+    Inherits BasisViewModel
     Implements IViewModelSpecial
 
 #Region "Konstruktor"

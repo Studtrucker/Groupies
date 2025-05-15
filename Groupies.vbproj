@@ -160,10 +160,14 @@
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
-    <Compile Include="ViewModels\ViewModelBase.vb" />
+    <Compile Include="ViewModels\UebersichtViewModel.vb" />
+    <Compile Include="ViewModels\BasisViewModel.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
-    <Compile Include="Windows\BasisWindow.xaml.vb">
-      <DependentUpon>BasisWindow.xaml</DependentUpon>
+    <Compile Include="Windows\BasisDetailWindow.xaml.vb">
+      <DependentUpon>BasisDetailWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\BasisUebersichtWindow.xaml.vb">
+      <DependentUpon>BasisUebersichtWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EinteilungDialog.xaml.vb">
       <DependentUpon>EinteilungDialog.xaml</DependentUpon>
@@ -305,7 +309,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\BasisWindow.xaml">
+    <Page Include="Windows\BasisDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\BasisUebersichtWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -610,7 +618,9 @@
   <ItemGroup>
     <Resource Include="Images\icons8-winter-landscape-48.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\icons8-remove-96.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -137,6 +137,9 @@
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\FaehigkeitUserControl.xaml.vb">
+      <DependentUpon>FaehigkeitUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
       <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
     </Compile>
@@ -153,6 +156,8 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="ViewModels\FaehigkeitViewModel.vb" />
+    <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\ViewModelBase.vb" />
@@ -171,6 +176,9 @@
     </Compile>
     <Compile Include="Windows\FaehigkeitDialog.xaml.vb">
       <DependentUpon>FaehigkeitDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\LeistungsstufeUserControl.xaml.vb">
+      <DependentUpon>LeistungsstufeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TeilnehmerDialog.xaml.vb">
       <DependentUpon>TeilnehmerDialog.xaml</DependentUpon>
@@ -277,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\FaehigkeitUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\GruppendetailUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -312,6 +324,10 @@
     <Page Include="Windows\Leistungsstufenuebersicht.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\LeistungsstufeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\NeueLeistungsstufeDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -561,7 +577,7 @@
     <Resource Include="Images\QRWebsiteSkisportMeerbusch.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\icons8-trophäe-48.png" />
+    <Resource Include="Images\icons8-trophaee-48.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\QRKontaktSkisportMeerbusch.png" />

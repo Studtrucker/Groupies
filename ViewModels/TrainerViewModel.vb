@@ -19,7 +19,6 @@ Public Class TrainerViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
         CurrentUserControl = Datentyp.DatentypUserControl
-        Gruppe = New Trainer
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
     End Sub

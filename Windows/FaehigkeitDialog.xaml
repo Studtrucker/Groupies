@@ -20,7 +20,7 @@
     <DockPanel>
         <!--Header-->
         <DockPanel DockPanel.Dock="Top">
-            <Image Source="/Images/icons8-trophäe-48.png" 
+            <Image Source="/Images/icons8-trophaee-48.png" 
                    Style="{StaticResource WindowImageCaption}" />
             <TextBlock Height="Auto" Text="Fähigkeit"
                        Style="{StaticResource WindowCaption}"/>

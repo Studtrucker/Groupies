@@ -21,6 +21,7 @@ Public Class GruppeViewModel
         CurrentUserControl = Datentyp.DatentypUserControl
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
+        TeilnehmerAusGruppeEntfernen = New RelayCommand(AddressOf OnTeilnehmerAusGruppeEntfernen)
     End Sub
 
 #End Region
@@ -42,10 +43,16 @@ Public Class GruppeViewModel
         ValidateLeistungsstufe()
     End Sub
 
+    Private Sub OnTeilnehmerAusGruppeEntfernen()
+        MessageBox.Show("Teilnehmer raus")
+    End Sub
+
 #End Region
 
 #Region "Properties"
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+    Public Property TeilnehmerAusGruppeEntfernen As ICommand
+
 
     Private _Gruppe As Gruppe
 

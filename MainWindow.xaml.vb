@@ -1059,9 +1059,9 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Vm = New GruppeViewModel With {
+        Dim Vm = New LeistungsstufeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Gruppe = New Gruppe}
+            .Leistungsstufe = New Leistungsstufe}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

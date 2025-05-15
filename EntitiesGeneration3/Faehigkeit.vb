@@ -8,6 +8,7 @@ Namespace Entities
     ''' </summary>
     Public Class Faehigkeit
         Inherits BaseModel
+        Implements IModel
 
 #Region "Felder"
         Private _Faehigkeit = Guid.NewGuid
@@ -78,6 +79,15 @@ Namespace Entities
             End Get
         End Property
 
+        Public Property Ident As Guid Implements IModel.Ident
+            Get
+                Throw New NotImplementedException()
+            End Get
+            Set(value As Guid)
+                Throw New NotImplementedException()
+            End Set
+        End Property
+
 
 #End Region
 
@@ -98,6 +108,10 @@ Namespace Entities
         Public Overrides Function ToString() As String
             Return Benennung
         End Function
+
+        Public Sub speichern() Implements IModel.speichern
+            Throw New NotImplementedException()
+        End Sub
 #End Region
 
     End Class

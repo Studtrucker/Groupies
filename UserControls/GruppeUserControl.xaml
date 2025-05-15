@@ -98,7 +98,8 @@
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}" 
-                          SelectionMode="Extended" MouseDoubleClick="{Binding TeilnehmerAusGruppeEntfernen}">
+                          SelectionMode="Extended" >
+            <!--MouseDoubleClick="{Binding TeilnehmerAusGruppeEntfernen}"-->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>

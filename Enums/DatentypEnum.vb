@@ -4,6 +4,8 @@
         Trainer
         Teilnehmer
         Gruppe
+        Faehigkeit
+        Leistungsstufe
     End Enum
 
 End Namespace

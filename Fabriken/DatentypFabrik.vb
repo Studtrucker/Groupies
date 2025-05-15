@@ -12,6 +12,10 @@ Namespace Fabriken
                     Return New DatentypTrainer
                 Case Enums.DatentypEnum.Gruppe
                     Return New DatentypGruppe
+                Case Enums.DatentypEnum.Faehigkeit
+                    Return New DatentypFaehigkeit
+                Case Enums.DatentypEnum.Leistungsstufe
+                    Return New DatentypLeistungsstufe
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
@@ -25,6 +29,10 @@ Namespace Fabriken
                     Return New DatentypTeilnehmer
                 Case GetType(Entities.Gruppe)
                     Return New DatentypGruppe
+                Case GetType(Entities.Faehigkeit)
+                    Return New DatentypFaehigkeit
+                Case GetType(Entities.Leistungsstufe)
+                    Return New DatentypLeistungsstufe
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
@@ -65,6 +73,30 @@ Namespace Fabriken
         Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
             Get
                 Return New UserControls.GruppeUserControl
+            End Get
+        End Property
+
+    End Class
+
+    Public Class DatentypFaehigkeit
+        Implements Interfaces.IDatentyp
+        Public Property DatentypText As String = "Fähigkeit" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trophaee-48.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
+            Get
+                Return New UserControls.FaehigkeitUserControl
+            End Get
+        End Property
+
+    End Class
+
+    Public Class DatentypLeistungsstufe
+        Implements Interfaces.IDatentyp
+        Public Property DatentypText As String = "Leistungsstufe" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-treppe-rauf-48.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypUserControl As UserControl Implements IDatentyp.DatentypUserControl
+            Get
+                Return New UserControls.LeistungsstufeUserControl
             End Get
         End Property
 

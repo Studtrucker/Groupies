@@ -15,6 +15,7 @@ Namespace Entities
     '''' </summary>
     Public Class Leistungsstufe
         Inherits BaseModel
+        Implements IModel
 
 #Region "Felder"
         'Private _Sortierung As Integer
@@ -113,6 +114,15 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Faehigkeiten As FaehigkeitCollection
 
+        Public Property Ident As Guid Implements IModel.Ident
+            Get
+                Throw New NotImplementedException()
+            End Get
+            Set(value As Guid)
+                Throw New NotImplementedException()
+            End Set
+        End Property
+
 #End Region
 
 #Region "Funktionen und Methoden"
@@ -188,6 +198,10 @@ Namespace Entities
             End If
             Return isValid
         End Function
+
+        Public Sub speichern() Implements IModel.speichern
+            Throw New NotImplementedException()
+        End Sub
 
 #End Region
 

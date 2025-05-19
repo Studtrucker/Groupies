@@ -64,6 +64,7 @@ Public Class TrainerViewModel
             If validFiles.Any() Then
                 MessageBox.Show("Zulässige Dateien: " & Environment.NewLine & String.Join(Environment.NewLine, validFiles))
             Else
+                'todo: Hier muss eine Fehlermeldung kommen, dass nur jpg, gif und png Dateien erlaubt sind.Also die Variable zulaessigeEndungen verwenden.
                 MessageBox.Show("Nur .txt oder .pdf Dateien sind erlaubt.")
             End If
         End If

@@ -5,13 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="300">
+             d:DesignHeight="450" 
+             Height="Auto" Width="300">
     <UserControl.Resources>
         <Style x:Key="groupiesDataGridRowStyle" TargetType="{x:Type DataGridRow}"/>
     </UserControl.Resources>
 
-    <DockPanel >
-        <TextBlock Text="Trainerliste" Grid.Row="0" Foreground="DarkGray" Margin="4" DockPanel.Dock="Top"/>
 
         <Grid>
             <DataGrid x:Name="TrainerDataGrid" ItemsSource="{Binding}"
@@ -27,5 +26,4 @@
                </DataGrid.Columns>
             </DataGrid>
         </Grid>
-    </DockPanel>
 </UserControl>

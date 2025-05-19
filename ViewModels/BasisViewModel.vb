@@ -121,7 +121,7 @@ Public MustInherit Class BasisViewModel
     End Sub
 
     Private Sub OnClose(obj As Object)
-        ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
+        ' Fenster schließen mit Close
         RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
 

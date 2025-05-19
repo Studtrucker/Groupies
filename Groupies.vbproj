@@ -137,14 +137,23 @@
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\FaehigkeitenlisteUserControl.xaml.vb">
+      <DependentUpon>FaehigkeitenlisteUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\FaehigkeitUserControl.xaml.vb">
       <DependentUpon>FaehigkeitUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\GruppendetailUserControl.xaml.vb">
       <DependentUpon>GruppendetailUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\GruppenlisteUserControl.xaml.vb">
+      <DependentUpon>GruppenlisteUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GruppeUserControl.xaml.vb">
       <DependentUpon>GruppeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TeilnehmerlisteUserControl.xaml.vb">
+      <DependentUpon>TeilnehmerlisteUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\TeilnehmerUserControl.xaml.vb">
       <DependentUpon>TeilnehmerUserControl.xaml</DependentUpon>
@@ -289,6 +298,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\FaehigkeitenlisteUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\FaehigkeitUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -297,7 +310,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\GruppenlisteUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\GruppeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TeilnehmerlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -620,6 +641,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-remove-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-next.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-next-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-back-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

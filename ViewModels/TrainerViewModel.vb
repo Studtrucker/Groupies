@@ -18,10 +18,18 @@ Public Class TrainerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        CurrentUserControl = Datentyp.DatentypUserControl
-        OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
+        CurrentUserControl = Datentyp.DatentypDetailUserControl
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
+        DropCommand = New RelayCommand(AddressOf OnDrop, Function() IstEingabeGueltig)
+        DragOverCommand = New RelayCommand(AddressOf OnDragOver, Function() IstEingabeGueltig)
     End Sub
+
+#End Region
+
+#Region "Commands"
+    Public Property DropCommand As ICommand
+    Public Property DragOverCommand As ICommand
 
 #End Region
 
@@ -33,6 +41,13 @@ Public Class TrainerViewModel
 
         MyBase.OnOk(Me)
 
+    End Sub
+
+    Public Sub OnDrop()
+        Throw New NotImplementedException()
+    End Sub
+    Public Sub OnDragOver()
+        Throw New NotImplementedException()
     End Sub
 
     Public Sub OnLoaded() Implements IViewModelSpecial.OnLoaded

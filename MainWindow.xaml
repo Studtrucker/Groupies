@@ -105,6 +105,10 @@
                 <MenuItem Header="Test erstellen" Click="HandleTestErstellen"/>
                 <MenuItem Header="Test bearbeiten " Click="HandleTestBearbeiten"/>
                 <MenuItem Header="Test anzeigen" Click="HandleTestAnzeigen"/>
+                <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >
+                    <!--Für das Viewitem siehe WhatsApp ChatGPT vom 15.05.2025-->
+                    
+                </MenuItem>
             </MenuItem>
 
         </Menu>

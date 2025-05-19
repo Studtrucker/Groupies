@@ -18,7 +18,7 @@ Public Class GruppeViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
-        CurrentUserControl = Datentyp.DatentypUserControl
+        CurrentUserControl = Datentyp.DatentypDetailUserControl
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
         TeilnehmerAusGruppeEntfernen = New RelayCommand(AddressOf OnTeilnehmerAusGruppeEntfernen)

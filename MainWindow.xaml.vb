@@ -1059,22 +1059,8 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Fenster As New BasisUebersichtWindow
+        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel)
         Fenster.Show()
-
-        Dim Vm = New LeistungsstufeViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Leistungsstufe = New Leistungsstufe}
-
-        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            MessageBox.Show("Benutzer hat OK gedrückt")
-        Else
-            MessageBox.Show("Benutzer hat Abbrechen gedrückt")
-        End If
 
     End Sub
 

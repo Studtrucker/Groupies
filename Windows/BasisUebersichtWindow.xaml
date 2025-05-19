@@ -13,66 +13,78 @@
         <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightSlateGray">
 
             <MenuItem  Header="Aktionen">
-                <MenuItem Header="Ansehen" >
+                <MenuItem Header="Ansehen" Command="{Binding AnsehenCommand}" >
                     <MenuItem.Icon>
                         <Image Source= "pack://application:,,,/Images/icons8-view-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Neu" >
+                <MenuItem Header="Neu"  Command="{Binding NeuCommand}">
                     <MenuItem.Icon>
                         <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Bearbeiten" >
+                <MenuItem Header="Bearbeiten"  Command="{Binding BearbeitenCommand}">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Löschen" >
+                <MenuItem Header="Löschen"  Command="{Binding LoeschenCommand}">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Schliessen"  />
+                <MenuItem Header="Schliessen" Command="{Binding CloseCommand}" />
             </MenuItem>
 
         </Menu>
-
-
-    <Grid >
-        <Grid.RowDefinitions>
-            <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-        </Grid.ColumnDefinitions>
-
-        <DockPanel Grid.Column="1" Grid.Row="1">
+        
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+            </Grid.RowDefinitions>
             
-            <!--Schliessen-Button-->
-            <Border DockPanel.Dock="Bottom">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                    <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
-                </StackPanel>
-            </Border>
-            
-            <DockPanel LastChildFill="True" Width="Auto" Height="Auto">
-                <ContentControl Content="{Binding CurrentListUserControl}"/>
-            </DockPanel>
-            <DockPanel LastChildFill="True" Width="Auto" Height="Auto">
-                <ContentControl Content="{Binding CurrentDetailUserControl}"/>
-            </DockPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+            </Grid.ColumnDefinitions>
 
+            <DockPanel Grid.Column="1" Grid.Row="1">
+                
+                <!--Schliessen-Button-->
+                <Border DockPanel.Dock="Bottom">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
+                        <Button x:Name="ZurueckButton" Width="35" Command="{Binding ZurueckCommand}">
+                            <Image Source="/Images/icons8-back-48.png"/>
+                        </Button>
+                        <Button x:Name="VorButton" Width="35" Command="{Binding VorCommand}">
+                            <Image Source="/Images/icons8-next-48.png"/>
+                        </Button>
+                        <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
+                    </StackPanel>
+                </Border>
+
+                <!--Überschrift-->
+                <DockPanel DockPanel.Dock="Top">
+                    <Image Source="{Binding WindowHeaderImage}"
+                   Style="{StaticResource WindowImageCaption}" />
+                    <TextBlock Text="{Binding WindowTitleText}"
+                       Style="{StaticResource WindowCaption}" />
+                </DockPanel>
+
+                <!--Liste und Detailfeld-->
+
+                <ContentControl Content="{Binding CurrentListUserControl}" Width="300"/>
+                <ContentControl Content="{Binding CurrentDetailUserControl}" Width="Auto"/>
+                
             </DockPanel>
-    </Grid>
+        </Grid>
+        
     </DockPanel>
 </Window>

@@ -18,7 +18,13 @@
         ''' Das Usercontrol von dem Datentyp
         ''' </summary>
         ''' <returns></returns>
-        ReadOnly Property DatentypUserControl As UserControl
+        ReadOnly Property DatentypDetailUserControl As UserControl
+
+        ''' <summary>
+        ''' Das Usercontrol von dem Datentyp
+        ''' </summary>
+        ''' <returns></returns>
+        ReadOnly Property DatentypListUserControl As UserControl
 
     End Interface
 

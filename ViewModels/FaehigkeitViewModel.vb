@@ -14,7 +14,7 @@ Public Class FaehigkeitViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
-        CurrentUserControl = Datentyp.DatentypUserControl
+        CurrentUserControl = Datentyp.DatentypDetailUserControl
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
     End Sub

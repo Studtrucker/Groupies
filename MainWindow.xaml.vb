@@ -1059,7 +1059,7 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel)
+        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
         Fenster.Show()
 
     End Sub

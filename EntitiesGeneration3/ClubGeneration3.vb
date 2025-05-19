@@ -113,8 +113,33 @@ Namespace Entities.Generation3
         ''' <returns></returns>
         Public Property AlleFaehigkeiten() As FaehigkeitCollection
 
+        ''' <summary>
+        ''' Eine Liste der aller Trainer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleTrainer() As TrainerCollection
+
+        ''' <summary>
+        ''' Eine Liste der aller Teilnehmer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleTeilnehmer() As TeilnehmerCollection
+
+
+        ''' <summary>
+        ''' Eine Liste der aller Gruppen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleGruppen() As GruppeCollection
+
+        ''' <summary>
+        ''' Eine Liste der aller Einteilungen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleEinteilungen() As EinteilungCollection
 
 #End Region
+
 
 #Region "Funktionen und Methoden"
 

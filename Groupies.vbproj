@@ -66,6 +66,9 @@
     <Reference Include="ExcelDataReader.DataSet, Version=3.7.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>packages\ExcelDataReader.DataSet.3.7.0\lib\net462\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\MicrosoftExpressionInteractions.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -134,6 +137,9 @@
     <Compile Include="EntitiesGeneration3\Einteilung.vb" />
     <Compile Include="EntitiesGeneration3\EinteilungCollection.vb" />
     <Compile Include="MainViewModel.vb" />
+    <Compile Include="UserControls\EinteilungenlisteUserControl.xaml.vb">
+      <DependentUpon>EinteilungenlisteUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\EinteilungUserControl.xaml.vb">
       <DependentUpon>EinteilungUserControl.xaml</DependentUpon>
     </Compile>
@@ -294,6 +300,10 @@
       <DependentUpon>Traineruebersicht.xaml</DependentUpon>
     </Compile>
     <Compile Include="XMLDatenLaden.vb" />
+    <Page Include="UserControls\EinteilungenlisteUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\EinteilungUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -650,6 +660,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-back-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-diversity-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -16,6 +16,8 @@ Namespace Fabriken
                     Return New FaehigkeitDatentyp
                 Case Enums.DatentypEnum.Leistungsstufe
                     Return New LeistungsstufeDatentyp
+                Case Enums.DatentypEnum.Einteilung
+                    Return New EinteilungDatentyp
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
@@ -33,6 +35,8 @@ Namespace Fabriken
                     Return New FaehigkeitDatentyp
                 Case GetType(Entities.Leistungsstufe)
                     Return New LeistungsstufeDatentyp
+                Case GetType(Entities.Einteilung)
+                    Return New EinteilungDatentyp
                 Case Else
                     Return New Exception("Unbekannter Datentyp")
             End Select
@@ -121,6 +125,22 @@ Namespace Fabriken
         Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
             Get
                 Return New UserControls.LeistungsstufenlisteUserControl
+            End Get
+        End Property
+    End Class
+
+    Public Class EinteilungDatentyp
+        Implements Interfaces.IDatentyp
+        Public Property DatentypText As String = "Einteilung" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-diversity-48.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
+            Get
+                Return New UserControls.EinteilungUserControl
+            End Get
+        End Property
+        Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
+            Get
+                Return New UserControls.EinteilungenlisteUserControl
             End Get
         End Property
     End Class

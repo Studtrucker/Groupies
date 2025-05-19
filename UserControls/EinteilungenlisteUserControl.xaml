@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UserControls.FaehigkeitenlisteUserControl"
+﻿<UserControl x:Class="UserControls.EinteilungenlisteUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -20,7 +20,7 @@
                       ScrollViewer.CanContentScroll="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nr" Width="Auto" Binding="{Binding Sortierung}"/>
-                <DataGridTextColumn Header="Fähigkeit" Width="Auto" Binding="{Binding Benennung}"/>
+                <DataGridTextColumn Header="Einteilung" Width="Auto" Binding="{Binding Benennung}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

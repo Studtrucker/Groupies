@@ -34,19 +34,19 @@
                    Content="Sortierung" />
             
             <TextBox Grid.Column="2" Grid.Row="1" 
-                     Text="{Binding SortNumber, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" 
                      Width="50" HorizontalAlignment="Left"
                      x:Name="NamingField"/>
             
             <Label Grid.Column="1" Grid.Row="2"
                    Content="Fähigkeit"/>
             <TextBox Grid.Column="2" Grid.Row="2"
-                     Text="{Binding SkillNaming, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                     Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             
             <Label Grid.Column="1" Grid.Row="3"
                    Content="Beschreibung"/>
             <TextBox Grid.Column="2" Grid.Row="3" 
-                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      TextWrapping="Wrap"/>
 
         </Grid>

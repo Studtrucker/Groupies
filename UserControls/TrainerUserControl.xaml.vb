@@ -18,6 +18,7 @@ Namespace UserControls
         Private Sub HandleDrop(sender As Object, e As DragEventArgs)
 
         End Sub
+
     End Class
 
 End Namespace

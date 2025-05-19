@@ -6,6 +6,7 @@
         Gruppe
         Faehigkeit
         Leistungsstufe
+        Einteilung
     End Enum
 
 End Namespace

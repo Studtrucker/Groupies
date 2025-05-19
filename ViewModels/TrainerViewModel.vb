@@ -21,9 +21,17 @@ Public Class TrainerViewModel
         CurrentUserControl = Datentyp.DatentypDetailUserControl
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
-        DropCommand = New RelayCommand(AddressOf OnDrop, Function() IstEingabeGueltig)
-        DragOverCommand = New RelayCommand(AddressOf OnDragOver, Function() IstEingabeGueltig)
+        DropCommand = New RelayCommand(AddressOf OnDrop, Function() IstObjektGueltig)
+        DragOverCommand = New RelayCommand(AddressOf OnDragOver, Function() IstObjektGueltig)
     End Sub
+
+#End Region
+
+#Region "Events"
+
+    Public Event DragOver As EventHandler
+
+    Public Event Drop As EventHandler
 
 #End Region
 
@@ -143,6 +151,13 @@ Public Class TrainerViewModel
             _Trainer.Telefonnummer = value
             OnPropertyChanged()
         End Set
+    End Property
+
+
+    Public ReadOnly Property IstObjektGueltig As Boolean
+        Get
+            Return True
+        End Get
     End Property
 
 

@@ -14,8 +14,6 @@ Public Class UebersichtViewModel
         VorCommand = New RelayCommand(AddressOf OnVor)
         ZurueckCommand = New RelayCommand(AddressOf OnZurueck)
 
-        Datentyp = New TrainerDatentyp
-
     End Sub
 
 #Region "Events"

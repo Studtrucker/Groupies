@@ -117,6 +117,7 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
+    <Compile Include="DragDropBehavior.vb" />
     <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />
     <Compile Include="Fabriken\DatentypFabrik.vb" />

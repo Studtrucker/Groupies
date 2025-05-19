@@ -473,14 +473,14 @@ Public Class MainWindow
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim Vm = New TrainerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-            .Gruppe = New Trainer}
+            .Trainer = New Trainer}
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Gruppe)
+            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Trainer)
             MessageBox.Show("Neuer Trainer wurde gespeichert")
         Else
             MessageBox.Show("Eingabe abgebrochen")
@@ -523,7 +523,7 @@ Public Class MainWindow
 
             Dim Vm = New TrainerViewModel With {
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-                .Gruppe = Trainer}
+                .Trainer = Trainer}
 
             Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1059,8 +1059,13 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
-        Fenster.Show()
+        'Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
+        'Fenster.Show()
+
+        Dim dlg = New BasisWindow(New TrainerViewModel With {
+                                  .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+                                  .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+                                  .Trainer = New Trainer}) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
     End Sub
 

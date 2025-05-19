@@ -7,7 +7,6 @@
              xmlns:convert="clr-namespace:Groupies.Converters"
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              Height="Auto" Width="Auto">
 
     <i:Interaction.Triggers>
@@ -44,8 +43,12 @@
         <Border AllowDrop="True" Width="120" Height="180" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
                     VerticalAlignment="Top" Margin="2"  
                     BorderBrush="Black" BorderThickness="1">
-            <!--DragOver="{Binding HandleDragOver}" Drop="{Binding HandleDrop}"-->
-            
+            <i:Interaction.Behaviors>
+                <local:DragDropBehavior 
+                DragOverCommand="{Binding DragOverCommand}" 
+                DropCommand="{Binding DropCommand}" />
+            </i:Interaction.Behaviors>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="6*"/>

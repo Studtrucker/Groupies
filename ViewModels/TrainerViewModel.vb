@@ -2,10 +2,15 @@
 Imports Groupies.Entities
 Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
+Imports System.IO
 
 Public Class TrainerViewModel
     Inherits BasisViewModel
     Implements IViewModelSpecial
+
+#Region "Variablen"
+    Private ReadOnly zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
+#End Region
 
 #Region "Konstruktor"
 
@@ -21,8 +26,8 @@ Public Class TrainerViewModel
         CurrentUserControl = Datentyp.DatentypDetailUserControl
         UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
         OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
-        DropCommand = New RelayCommand(AddressOf OnDrop, Function() IstObjektGueltig)
-        DragOverCommand = New RelayCommand(AddressOf OnDragOver, Function() IstObjektGueltig)
+        DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
+        DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
     End Sub
 
 #End Region
@@ -36,8 +41,8 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Commands"
-    Public Property DropCommand As ICommand
-    Public Property DragOverCommand As ICommand
+    Public ReadOnly Property DropCommand As ICommand
+    Public ReadOnly Property DragOverCommand As ICommand
 
 #End Region
 
@@ -51,12 +56,34 @@ Public Class TrainerViewModel
 
     End Sub
 
-    Public Sub OnDrop()
-        Throw New NotImplementedException()
+    Private Sub OnDrop(e As DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Dim validFiles = files.Where(Function(f) zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower())).ToArray()
+
+            If validFiles.Any() Then
+                MessageBox.Show("Zulässige Dateien: " & Environment.NewLine & String.Join(Environment.NewLine, validFiles))
+            Else
+                MessageBox.Show("Nur .txt oder .pdf Dateien sind erlaubt.")
+            End If
+        End If
+        e.Handled = True
     End Sub
-    Public Sub OnDragOver()
-        Throw New NotImplementedException()
+
+    Private Sub OnDragOver(e As DragEventArgs)
+
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Dim allValid = files.All(Function(f) zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower()))
+
+            e.Effects = If(allValid, DragDropEffects.Copy, DragDropEffects.None)
+        Else
+            e.Effects = DragDropEffects.None
+        End If
+        e.Handled = True
+
     End Sub
+
 
     Public Sub OnLoaded() Implements IViewModelSpecial.OnLoaded
         ValidateVorname()
@@ -71,7 +98,7 @@ Public Class TrainerViewModel
 
     Private _Trainer As Trainer
 
-    Public Property Gruppe As IModel Implements IViewModelSpecial.Model
+    Public Property Trainer As IModel Implements IViewModelSpecial.Model
         Get
             Return _Trainer
         End Get

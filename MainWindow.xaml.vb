@@ -1073,10 +1073,11 @@ Public Class MainWindow
 
         Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
 
-        Dim dialog = New BasisWindow(
-            New GruppeViewModel With {
+        Dim vm = New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-            .Gruppe = O}) With {
+            .Gruppe = O}
+
+        Dim dialog = New BasisWindow(vm) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1094,10 +1095,10 @@ Public Class MainWindow
     Private Sub HandleTestAnzeigen(sender As Object, e As RoutedEventArgs)
 
         Dim O = New Teilnehmer With {.Nachname = "Gruppe1"}
-        Dim dialog = New BasisWindow(
-            New TeilnehmerViewModel With {
+        Dim vm = New TeilnehmerViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-            .Teilnehmer = O}) With {
+            .Teilnehmer = O}
+        Dim dialog = New BasisWindow(vm) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

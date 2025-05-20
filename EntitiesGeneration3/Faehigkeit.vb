@@ -46,7 +46,7 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung der Fähigkeit
         ''' </summary>
         ''' <returns></returns>
-        Public Property FaehigkeitID As Guid
+        Public Property FaehigkeitID As Guid Implements IModel.Ident
 
         ''' <summary>
         ''' Benennung der Fähigkeit
@@ -78,16 +78,6 @@ Namespace Entities
                 End If
             End Get
         End Property
-
-        Public Property Ident As Guid Implements IModel.Ident
-            Get
-                Throw New NotImplementedException()
-            End Get
-            Set(value As Guid)
-                Throw New NotImplementedException()
-            End Set
-        End Property
-
 
 #End Region
 

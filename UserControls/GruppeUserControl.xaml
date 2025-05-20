@@ -86,11 +86,11 @@
         <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                      x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="4"/>
 
-        <ComboBox Grid.Column="2" Grid.Row="5"     
-                  IsSynchronizedWithCurrentItem="True"
-                  SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"
-                  ItemsSource="{Binding LeistungsstufenListCollectionView}"    
-                  Name="LeistungsstufeCombobox"/>
+        <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
+                  x:Name="LeistungsstufeCombobox"
+                  ItemsSource="{Binding LeistungsstufenListCollectionView}"
+                  SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
 
         <!--<DataGrid Grid.Column="2" Grid.Row="6" d:ItemsSource="{Binding Mitgliederliste}">-->

@@ -71,7 +71,8 @@
         <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
                   x:Name="LeistungsstandComboBox"
                   ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                  SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                  SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnNotifyDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
     </Grid>
 

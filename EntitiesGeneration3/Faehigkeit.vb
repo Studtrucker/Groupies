@@ -11,7 +11,7 @@ Namespace Entities
         Implements IModel
 
 #Region "Felder"
-        Private _Faehigkeit = Guid.NewGuid
+        'Private _Faehigkeit = Guid.NewGuid
 #End Region
 
 #Region "Konstruktor"

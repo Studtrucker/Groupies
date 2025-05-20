@@ -19,7 +19,7 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
         CurrentUserControl = Datentyp.DatentypDetailUserControl
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
 

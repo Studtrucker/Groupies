@@ -1093,13 +1093,11 @@ Public Class MainWindow
 
     Private Sub HandleTestAnzeigen(sender As Object, e As RoutedEventArgs)
 
-        Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
+        Dim O = New Teilnehmer With {.Nachname = "Gruppe1"}
         Dim dialog = New BasisWindow(
-            New GruppeViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
-            .Gruppe = O,
-            .CurrentUserControl = New GruppeUserControl}) With {
+            New TeilnehmerViewModel With {
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            .Teilnehmer = O}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

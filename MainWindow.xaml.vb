@@ -1059,14 +1059,14 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        'Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
-        'Fenster.Show()
+        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
+        Fenster.Show()
 
-        Dim dlg = New BasisWindow(New TrainerViewModel With {
-                                  .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-                                  .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-                                  .Trainer = New Trainer}) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
+        'Dim dlg = New BasisWindow(New TrainerViewModel With {
+        '                          .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        '                          .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+        '                          .Trainer = New Trainer}) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        'dlg.ShowDialog()
     End Sub
 
     Private Sub HandleTestBearbeiten(sender As Object, e As RoutedEventArgs)
@@ -1076,9 +1076,7 @@ Public Class MainWindow
         Dim dialog = New BasisWindow(
             New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(O),
-            .Gruppe = O,
-            .CurrentUserControl = New GruppeUserControl}) With {
+            .Gruppe = O}) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 

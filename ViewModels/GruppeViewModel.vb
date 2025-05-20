@@ -19,9 +19,9 @@ Public Class GruppeViewModel
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
         CurrentUserControl = Datentyp.DatentypDetailUserControl
-        OkCommand = New RelayCommand(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(AddressOf OnLoaded)
-        TeilnehmerAusGruppeEntfernen = New RelayCommand(AddressOf OnTeilnehmerAusGruppeEntfernen)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        TeilnehmerAusGruppeEntfernen = New RelayCommand(Of Teilnehmer)(AddressOf OnTeilnehmerAusGruppeEntfernen)
     End Sub
 
 #End Region
@@ -36,7 +36,7 @@ Public Class GruppeViewModel
 
     End Sub
 
-    Public Sub OnLoaded() Implements IViewModelSpecial.OnLoaded
+    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateBenennung()
         ValidateTeilnehmerinfo()
         ValidateSortierung()

@@ -6,13 +6,13 @@ Imports Groupies.Interfaces
 Public Class UebersichtViewModel
 
     Public Sub New()
-        CloseCommand = New RelayCommand(AddressOf OnClose)
-        AnsehenCommand = New RelayCommand(AddressOf OnAnsehen)
-        NeuCommand = New RelayCommand(AddressOf OnNeu)
-        BearbeitenCommand = New RelayCommand(AddressOf OnBearbeiten)
-        LoeschenCommand = New RelayCommand(AddressOf OnLoeschen)
-        VorCommand = New RelayCommand(AddressOf OnVor)
-        ZurueckCommand = New RelayCommand(AddressOf OnZurueck)
+        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        AnsehenCommand = New RelayCommand(Of Object)(AddressOf OnAnsehen)
+        NeuCommand = New RelayCommand(Of Object)(AddressOf OnNeu)
+        BearbeitenCommand = New RelayCommand(Of Object)(AddressOf OnBearbeiten)
+        LoeschenCommand = New RelayCommand(Of Object)(AddressOf OnLoeschen)
+        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor)
+        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck)
 
     End Sub
 

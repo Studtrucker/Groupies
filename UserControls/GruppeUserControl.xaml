@@ -88,7 +88,7 @@
 
         <ComboBox Grid.Column="2" Grid.Row="5"     
                   IsSynchronizedWithCurrentItem="True"
-                  SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToLeistungsstufeConverter}}"
+                  SelectedValuePath="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"
                   ItemsSource="{Binding LeistungsstufenListCollectionView}"    
                   Name="LeistungsstufeCombobox"/>
 

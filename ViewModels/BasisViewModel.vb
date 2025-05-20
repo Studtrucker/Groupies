@@ -11,8 +11,8 @@ Public MustInherit Class BasisViewModel
 #Region "Konstruktor"
 
     Public Sub New()
-        CancelCommand = New RelayCommand(AddressOf OnCancel)
-        CloseCommand = New RelayCommand(AddressOf OnClose)
+        CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
+        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
     End Sub
 
 #End Region

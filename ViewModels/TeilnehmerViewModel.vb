@@ -4,7 +4,7 @@ Imports Groupies.Entities
 Imports Groupies.UserControls
 
 Public Class TeilnehmerViewModel
-    Inherits BasisViewModel
+    Inherits MasterDetailViewModel(Of Teilnehmer)
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
@@ -70,7 +70,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As Guid)
             _Teilnehmer.TeilnehmerID = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(TeilnehmerID))
         End Set
     End Property
 
@@ -80,7 +80,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As String)
             _Teilnehmer.Vorname = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Vorname))
             ValidateVorname()
         End Set
     End Property
@@ -91,7 +91,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As String)
             _Teilnehmer.Nachname = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Nachname))
             ValidateNachname()
         End Set
     End Property
@@ -102,7 +102,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As Date)
             _Teilnehmer.Geburtsdatum = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Geburtsdatum))
         End Set
     End Property
 
@@ -112,7 +112,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As String)
             _Teilnehmer.Telefonnummer = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Telefonnummer))
         End Set
     End Property
 
@@ -122,7 +122,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As Leistungsstufe)
             _Teilnehmer.Leistungsstand = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Leistungsstand))
             ValidateLeistungsstand()
         End Set
     End Property

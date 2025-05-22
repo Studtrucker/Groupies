@@ -2,7 +2,7 @@
 Imports Groupies.Entities
 
 Public Class LeistungsstufeViewModel
-    Inherits BasisViewModel
+    Inherits MasterDetailViewModel(Of Leistungsstufe)
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
@@ -59,7 +59,7 @@ Public Class LeistungsstufeViewModel
         End Get
         Set(ByVal value As Integer)
             _Leistungsstufe.Sortierung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
         End Set
     End Property
@@ -70,7 +70,7 @@ Public Class LeistungsstufeViewModel
         End Get
         Set(ByVal value As String)
             _Leistungsstufe.Beschreibung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Beschreibung))
             ValidateBeschreibung()
         End Set
     End Property
@@ -81,7 +81,7 @@ Public Class LeistungsstufeViewModel
         End Get
         Set(ByVal value As String)
             _Leistungsstufe.Benennung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
         End Set
     End Property
@@ -92,7 +92,7 @@ Public Class LeistungsstufeViewModel
         End Get
         Set(ByVal value As FaehigkeitCollection)
             _Leistungsstufe.Faehigkeiten = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Faehigkeiten))
             ValidateFaehigkeiten()
         End Set
     End Property

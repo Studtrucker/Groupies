@@ -1,7 +1,7 @@
 ﻿Imports Groupies.Entities
 
 Public Class FaehigkeitViewModel
-    Inherits BasisViewModel
+    Inherits MasterDetailViewModel(Of Faehigkeit)
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
@@ -59,7 +59,7 @@ Public Class FaehigkeitViewModel
         End Get
         Set(value As Integer)
             _Faehigkeit.Sortierung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
         End Set
     End Property
@@ -70,7 +70,7 @@ Public Class FaehigkeitViewModel
         End Get
         Set(ByVal value As String)
             _Faehigkeit.Beschreibung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Beschreibung))
             ValidateBeschreibung()
         End Set
     End Property
@@ -81,7 +81,7 @@ Public Class FaehigkeitViewModel
         End Get
         Set(value As String)
             _Faehigkeit.Benennung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
         End Set
     End Property

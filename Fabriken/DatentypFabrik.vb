@@ -61,6 +61,10 @@ Namespace Fabriken
                 Return New UserControls.TrainerlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Return Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList
+        End Function
     End Class
 
     Public Class TeilnehmerDatentyp
@@ -79,10 +83,15 @@ Namespace Fabriken
                 Return New UserControls.TeilnehmerlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Throw New NotImplementedException()
+        End Function
     End Class
 
     Public Class GruppeDatentyp
         Implements Interfaces.IDatentyp
+
         Public Property DatentypText As String = "Gruppe" Implements Interfaces.IDatentyp.DatentypText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
@@ -95,10 +104,15 @@ Namespace Fabriken
                 Return New UserControls.GruppenlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Throw New NotImplementedException()
+        End Function
     End Class
 
     Public Class FaehigkeitDatentyp
         Implements Interfaces.IDatentyp
+
         Public Property DatentypText As String = "Fähigkeit" Implements Interfaces.IDatentyp.DatentypText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trophaee-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
@@ -111,10 +125,15 @@ Namespace Fabriken
                 Return New UserControls.FaehigkeitenlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Throw New NotImplementedException()
+        End Function
     End Class
 
     Public Class LeistungsstufeDatentyp
         Implements Interfaces.IDatentyp
+
         Public Property DatentypText As String = "Leistungsstufe" Implements Interfaces.IDatentyp.DatentypText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-treppe-rauf-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
@@ -127,10 +146,15 @@ Namespace Fabriken
                 Return New UserControls.LeistungsstufenlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Throw New NotImplementedException()
+        End Function
     End Class
 
     Public Class EinteilungDatentyp
         Implements Interfaces.IDatentyp
+
         Public Property DatentypText As String = "Einteilung" Implements Interfaces.IDatentyp.DatentypText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-diversity-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
@@ -143,6 +167,10 @@ Namespace Fabriken
                 Return New UserControls.EinteilungenlisteUserControl
             End Get
         End Property
+
+        Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
+            Throw New NotImplementedException()
+        End Function
     End Class
 
 End Namespace

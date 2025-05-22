@@ -724,8 +724,20 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Traineruebersicht As New Traineruebersicht
-        Traineruebersicht.Show()
+        'Dim Traineruebersicht As New Traineruebersicht
+        'Traineruebersicht.Show()
+        Dim vm = New UebersichtViewModel With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
+        vm.AktualisiereViewModel()
+        vm.AktuellesViewModel.items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
+
+        Dim fenster = New BasisUebersichtWindow() With {
+            .DataContext = vm,
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        fenster.Show()
+
     End Sub
 
 #End Region
@@ -1059,8 +1071,8 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
-        Fenster.Show()
+        'Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
+        'Fenster.Show()
 
         'Dim dlg = New BasisWindow(New TrainerViewModel With {
         '                          .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
@@ -1109,6 +1121,10 @@ Public Class MainWindow
         Else
             MessageBox.Show("Benutzer hat Abbrechen gedrückt")
         End If
+    End Sub
+
+    Private Sub ZeigeTeilnehmerUebersicht(sender As Object, e As RoutedEventArgs)
+
     End Sub
 
 #End Region

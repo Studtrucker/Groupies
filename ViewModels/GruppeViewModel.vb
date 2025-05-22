@@ -3,7 +3,7 @@ Imports Groupies.Entities
 Imports Groupies.Controller.AppController
 
 Public Class GruppeViewModel
-    Inherits BasisViewModel
+    Inherits MasterDetailViewModel(Of Gruppe)
     Implements IViewModelSpecial
 
 #Region "Konstruktor"
@@ -71,7 +71,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As Guid)
             _Gruppe.GruppenID = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(GruppenID))
         End Set
     End Property
 
@@ -81,7 +81,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As String)
             _Gruppe.Benennung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
         End Set
     End Property
@@ -92,7 +92,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As String)
             _Gruppe.AusgabeTeilnehmerinfo = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(AusgabeTeilnehmerinfo))
             ValidateTeilnehmerinfo()
         End Set
     End Property
@@ -103,7 +103,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As String)
             _Gruppe.Sortierung = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
         End Set
     End Property
@@ -114,7 +114,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As Leistungsstufe)
             _Gruppe.Leistungsstufe = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Leistungsstufe))
             ValidateLeistungsstufe()
         End Set
     End Property
@@ -125,7 +125,7 @@ Public Class GruppeViewModel
         End Get
         Set(value As TeilnehmerCollection)
             _Gruppe.Mitgliederliste = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Mitgliederliste))
         End Set
     End Property
 

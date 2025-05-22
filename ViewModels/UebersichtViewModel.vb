@@ -1,20 +1,68 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports Groupies.Fabriken
 Imports Groupies.Interfaces
 
 Public Class UebersichtViewModel
+    Inherits ViewModelBase
+
+    Public Property ObjektTypen = New ObservableCollection(Of String) From {"Trainer", "Teilnehmer", "Gruppe"}
+    Private _ausgewaehlterTyp As String
+    Public Property AusgewaehlterTyp() As String
+        Get
+            Return _ausgewaehlterTyp
+        End Get
+        Set(ByVal value As String)
+            If _ausgewaehlterTyp <> value Then
+                _ausgewaehlterTyp = value
+                OnPropertyChanged(NameOf(AusgewaehlterTyp))
+                AktualisiereViewModel()
+            End If
+            _ausgewaehlterTyp = value
+        End Set
+    End Property
+
+    Private _AktuellesViewModel As Object
+    Public Property AktuellesViewModel As Object
+        Get
+            Return _AktuellesViewModel
+        End Get
+        Set(value As Object)
+            _AktuellesViewModel = value
+            OnPropertyChanged(NameOf(AktuellesViewModel))
+        End Set
+    End Property
+
+    Public Sub AktualisiereViewModel()
+        Select Case AusgewaehlterTyp
+            Case "Teilnehmer"
+                AktuellesViewModel = New TeilnehmerViewModel()
+            Case "Gruppe"
+                AktuellesViewModel = New GruppeViewModel()
+            Case "Trainer"
+                AktuellesViewModel = New TrainerViewModel()
+        End Select
+    End Sub
+
+    Public Property _dataCV As ICollectionView
 
     Public Sub New()
+
+        AusgewaehlterTyp = ObjektTypen(0)
+
+        ' Die Commands werden hier initialisiert
+        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor, AddressOf OnVorCanExecuted)
+        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck, AddressOf OnZurueckCanExecuted)
+
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         AnsehenCommand = New RelayCommand(Of Object)(AddressOf OnAnsehen)
         NeuCommand = New RelayCommand(Of Object)(AddressOf OnNeu)
         BearbeitenCommand = New RelayCommand(Of Object)(AddressOf OnBearbeiten)
         LoeschenCommand = New RelayCommand(Of Object)(AddressOf OnLoeschen)
-        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor)
-        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck)
 
     End Sub
+
 
 #Region "Events"
 
@@ -25,6 +73,7 @@ Public Class UebersichtViewModel
     Public Event Loeschen As EventHandler
     Public Event Zurueck As EventHandler
     Public Event Vor As EventHandler
+
 #End Region
 
 #Region "Commands"
@@ -69,12 +118,56 @@ Public Class UebersichtViewModel
             Return Datentyp.DatentypDetailUserControl
         End Get
     End Property
+
     Public Property Datentyp As IDatentyp
+
+    Private _Datenliste As IEnumerable(Of IModel)
+    Property Datenliste As IEnumerable(Of IModel)
+        Get
+            Return _Datenliste
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            _Datenliste = value
+            _dataCV = CollectionViewSource.GetDefaultView(_Datenliste)
+        End Set
+    End Property
+
+
 
 #End Region
 
 
 #Region "Methoden"
+
+    Private Function OnZurueckCanExecuted(obj As Object) As Boolean
+        If Datenliste Is Nothing Then
+            Return False
+        End If
+
+        Return _dataCV.CurrentPosition > 0
+    End Function
+
+    Private Sub OnZurueck(parameter As Object)
+        _dataCV.MoveCurrentToPrevious()
+    End Sub
+
+    Private Function OnVorCanExecuted(obj As Object) As Boolean
+        If Datenliste Is Nothing Then
+            Return False
+        End If
+        Return _dataCV.CurrentPosition < Datenliste.Count - 1
+    End Function
+
+    Private Sub OnVor(parameter As Object)
+        _dataCV.MoveCurrentToNext()
+    End Sub
+
+    'Public Sub loadData()
+    '    _Datenliste = Datentyp.getAll()
+    '    _dataCV = CollectionViewSource.GetDefaultView(_Datenliste)
+    '    _dataCV.MoveCurrentToFirst()
+    'End Sub
+
     Private Sub OnClose()
         RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
@@ -95,13 +188,6 @@ Public Class UebersichtViewModel
         RaiseEvent Loeschen(Me, EventArgs.Empty)
     End Sub
 
-    Private Sub OnVor()
-        RaiseEvent Vor(Me, EventArgs.Empty)
-    End Sub
-
-    Private Sub OnZurueck()
-        RaiseEvent Zurueck(Me, EventArgs.Empty)
-    End Sub
 
 #End Region
 

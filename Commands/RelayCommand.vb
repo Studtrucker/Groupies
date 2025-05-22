@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Input
+﻿Imports System
+Imports System.Windows.Input
 
 Public Class RelayCommand(Of T)
     Implements ICommand
@@ -26,6 +27,7 @@ Public Class RelayCommand(Of T)
     ''' <example>RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)</example>
     ''' <example>RaiseEvent CanExecuteChanged(Me, New EventArgs())</example>
     Public Event CanExecuteChanged As EventHandler Implements ICommand.CanExecuteChanged
+
 
     ''' <summary>
     ''' Diese Methode wird aufgerufen, um zu prüfen, ob der Befehl ausgeführt werden kann.

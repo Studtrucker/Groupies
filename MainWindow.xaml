@@ -70,6 +70,7 @@
 
             <MenuItem Header="_Personen" >
                 <MenuItem Header="Teilnehmer">
+                    <MenuItem Header="Übersicht" Click="ZeigeTeilnehmerUebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerEinlesen}"/>

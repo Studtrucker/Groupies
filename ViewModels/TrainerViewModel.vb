@@ -5,7 +5,7 @@ Imports Microsoft.Office.Interop.Excel
 Imports System.IO
 
 Public Class TrainerViewModel
-    Inherits BasisViewModel
+    Inherits MasterDetailViewModel(Of Trainer)
     Implements IViewModelSpecial
 
 #Region "Variablen"
@@ -114,7 +114,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As Guid)
             _Trainer.TrainerID = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(TrainerID))
         End Set
     End Property
 
@@ -124,7 +124,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As String)
             _Trainer.Vorname = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Vorname))
             ValidateVorname()
         End Set
     End Property
@@ -135,7 +135,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As String)
             _Trainer.Nachname = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Nachname))
         End Set
     End Property
 
@@ -145,7 +145,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As String)
             _Trainer.Spitzname = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Spitzname))
             ValidateSpitzname()
         End Set
     End Property
@@ -156,7 +156,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As Byte())
             _Trainer.Foto = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Foto))
         End Set
     End Property
 
@@ -166,7 +166,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As String)
             _Trainer.EMail = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(EMail))
             ValidateEMail()
         End Set
     End Property
@@ -177,7 +177,7 @@ Public Class TrainerViewModel
         End Get
         Set(value As String)
             _Trainer.Telefonnummer = value
-            OnPropertyChanged()
+            OnPropertyChanged(NameOf(Telefonnummer))
         End Set
     End Property
 

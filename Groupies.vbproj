@@ -123,7 +123,6 @@
     <Compile Include="Fabriken\DatentypFabrik.vb" />
     <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
     <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
-    <Compile Include="Interfaces\ViewModel\IViewModelBase.vb" />
     <Compile Include="Interfaces\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
@@ -172,12 +171,14 @@
     <Compile Include="ValidationRules\GruppeValidationRule.vb" />
     <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
+    <Compile Include="ViewModels\AbstrakteViewModels\MasterDetailViewModel.vb" />
+    <Compile Include="ViewModels\AbstrakteViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\FaehigkeitViewModel.vb" />
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\UebersichtViewModel.vb" />
-    <Compile Include="ViewModels\BasisViewModel.vb" />
+    <Compile Include="ViewModels\AbstrakteViewModels\ViewModelWindow.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
     <Compile Include="Windows\BasisDetailWindow.xaml.vb">
       <DependentUpon>BasisDetailWindow.xaml</DependentUpon>

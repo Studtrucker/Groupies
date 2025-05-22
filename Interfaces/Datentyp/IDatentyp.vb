@@ -26,6 +26,8 @@
         ''' <returns></returns>
         ReadOnly Property DatentypListUserControl As UserControl
 
+        Function getAll() As IEnumerable(Of IModel)
+
     End Interface
 
 

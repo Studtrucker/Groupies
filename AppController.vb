@@ -64,6 +64,8 @@ Namespace Controller
             NeuenClubErstellen(dlg)
         End Sub
 
+        'Todo: Bei neuen Clubs  den Standard- Speicherort und Dateiname festlegen
+
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
             'AktuellerClub = Nothing
             AktuellerClub = New Club(Clubname)
@@ -71,6 +73,8 @@ Namespace Controller
             AktuellerClub.Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen
             AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
             AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
+
+            AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")
 
             Dim Meldung = $"{Clubname} wurde erfolgreich erstellt."
 

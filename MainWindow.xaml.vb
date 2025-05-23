@@ -312,7 +312,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
     End Sub
 
 #End Region
@@ -323,11 +323,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -335,7 +335,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -467,7 +467,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -488,7 +488,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
     End Sub
     Private Sub Handle_TrainerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
@@ -883,8 +883,8 @@ Public Class MainWindow
 
     Private Sub SetView()
 
-        QueueMostRecentFilename(AppController.GroupiesFile.FullName)
-        Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.GroupiesFile.Name
+        QueueMostRecentFilename(GroupiesFile.FullName)
+        Title = "Groupies - " & AktuellerClub.ClubName & " - " & GroupiesFile.Name
 
         ' Die allgemeinen Leistungsstufen füllen
         _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)

@@ -180,6 +180,7 @@
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
+    <Compile Include="ViewModels\DetailViewModel.vb" />
     <Compile Include="ViewModels\UebersichtViewModel.vb" />
     <Compile Include="ViewModels\AbstrakteViewModels\ViewModelWindow.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />

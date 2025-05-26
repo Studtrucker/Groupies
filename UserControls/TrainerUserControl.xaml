@@ -56,14 +56,15 @@
                 </Grid.RowDefinitions>
                 <Rectangle Fill="Transparent"/>
                 <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
-                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"
+                           Visibility="{Binding Path=HatKeinFoto,Converter={StaticResource BooleanToVisibilityInverted}}"
                            Grid.Row="0"/>
                 <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"  
                                Grid.Row="1"
-                               Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
+                               Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
                 </TextBlock>
-                <Image x:Name="FotoImage" Width="96" Height="96" Source="{Binding _dataCV.CurrentItem.Foto}" />
+                <Image x:Name="FotoImage" Height="180" StretchDirection="Both"  Source="{Binding Foto}"
+                       Grid.RowSpan="2"/>
             </Grid>
 
         </Border>
@@ -74,7 +75,7 @@
             </TextBlock>-->
         </Label>
         <TextBox x:Name="TrainerIDTextBox" Grid.Column="3" Grid.Row="1" IsReadOnly="True" 
-                 Text="{Binding _dataCV.CurrentItem.TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                 Text="{Binding TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
 
 
         <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
@@ -83,7 +84,7 @@
             </TextBlock>
         </Label>
         <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="2"           
-            Text="{Binding _dataCV.CurrentItem.Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+            Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
       
         <Label Grid.Column="2" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock>Vorname
@@ -92,22 +93,22 @@
         </Label>
         <TextBox Grid.Column="3" Grid.Row="3"
                  x:Name="VornameTextbox"
-                 Text="{Binding _dataCV.CurrentItem.Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   />
+                 Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   />
 
         <Label Content="Nachname" Grid.Column="2" Grid.Row="4"/>
         <TextBox Grid.Column="3" Grid.Row="4"
                      x:Name="NachnameTextbox"
-                     Text="{Binding _dataCV.CurrentItem.Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                     Text="{Binding Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
 
         <Label Content="Telefon" Grid.Column="2" Grid.Row="5"/>
         <TextBox Grid.Column="3" Grid.Row="5"
                      x:Name="TelefonTextbox"
-                     Text="{Binding _dataCV.CurrentItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                     Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
 
         <Label Content="e-Mail" Grid.Column="2" Grid.Row="6"/>
         <TextBox Grid.Column="3" Grid.Row="6"
                      x:Name="eMailTextbox"
-                     Text="{Binding _dataCV.CurrentItem.EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                     Text="{Binding EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
     </Grid>
 
 </UserControl>

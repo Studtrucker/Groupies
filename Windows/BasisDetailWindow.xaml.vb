@@ -3,7 +3,7 @@ Imports Groupies.Interfaces
 
 Public Class BasisWindow
 
-    Private ViewModel As ViewModelWindow
+    Private ViewModel As IViewModelSpecial
 
 
     Private Sub New()
@@ -13,7 +13,7 @@ Public Class BasisWindow
 
     End Sub
 
-    Public Sub New(ViewModel As ViewModelWindow)
+    Public Sub New(ViewModel As IViewModelSpecial)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -23,8 +23,8 @@ Public Class BasisWindow
         DataContext = ViewModel
 
         ' Reagiere auf das Close-Signal aus dem ViewModel
-        AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
-        AddHandler ViewModel.Close, AddressOf HandleClose
+        'AddHandler ViewModel.RequestClose, AddressOf HandleCloseRequest
+        'AddHandler ViewModel.Close, AddressOf HandleClose
 
     End Sub
 

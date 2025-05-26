@@ -1071,8 +1071,14 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        'Dim Fenster As New BasisUebersichtWindow(New UebersichtViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)})
-        'Fenster.Show()
+        Dim vm = New TrainerViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
+        Dim Trainer = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
+        vm.Trainer = Trainer
+        vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim Fenster As New BasisWindow(vm)
+
+        Fenster.Show()
+
 
         'Dim dlg = New BasisWindow(New TrainerViewModel With {
         '                          .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),

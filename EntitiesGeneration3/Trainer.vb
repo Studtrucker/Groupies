@@ -193,6 +193,11 @@ Namespace Entities
             End Get
         End Property
 
+        Public ReadOnly Property HatKeinFoto As Boolean
+            Get
+                Return _Foto Is Nothing AndAlso Foto.Length = 0
+            End Get
+        End Property
         'todo: Hier muss die Property ins ViewModel verlagert werden 
         Public Property Archivieren As Boolean
 

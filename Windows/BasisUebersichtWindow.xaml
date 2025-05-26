@@ -8,7 +8,7 @@
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        Width="800" Height="450" >
+        Width="1350" Height="750" >
     <!--SizeToContent="WidthAndHeight"-->
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
@@ -70,14 +70,14 @@
                         </Grid.RowDefinitions>
                         <Rectangle Fill="Transparent"/>
                         <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
-                           Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}"
+                           Visibility="{Binding Path=SelectedItem.HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}"
                            Grid.Row="0"/>
                         <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"  
                                Grid.Row="1"
-                               Visibility="{Binding Path=HasPicture,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
+                               Visibility="{Binding Path=SelectedItem.HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
 							<LineBreak/> Drag'n'Drop<LineBreak/>setzen
                         </TextBlock>
-                            <Image x:Name="FotoImage" Width="96" Height="96" Source="{Binding SelectedItem.Foto}" />
+                        <Image x:Name="FotoImage" Width="120" Height="180" Source="{Binding SelectedItem.Foto}" Grid.RowSpan="2" />
                     </Grid>
 
                 </Border>

@@ -28,6 +28,8 @@ Public Class TrainerViewModel
         OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
+        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor, AddressOf OnVorCanExecuted)
+        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck, AddressOf OnZurueckCanExecuted)
     End Sub
 
 #End Region
@@ -47,6 +49,24 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Methoden"
+    Private Function OnZurueckCanExecuted(obj As Object) As Boolean
+        Return ItemsView.IsCurrentBeforeFirst
+    End Function
+
+    Private Function OnVorCanExecuted(obj As Object) As Boolean
+        Return ItemsView.IsCurrentAfterLast
+    End Function
+
+    Private Sub OnZurueck(obj As Object)
+        'MessageBox.Show("Zurück")
+        ItemsView.MoveCurrentToPrevious()
+    End Sub
+
+    Private Sub OnVor(obj As Object)
+        'MessageBox.Show("Vor")
+        ItemsView.MoveCurrentToNext()
+    End Sub
+
     Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
@@ -115,6 +135,8 @@ Public Class TrainerViewModel
         Set(value As Guid)
             _Trainer.TrainerID = value
             OnPropertyChanged(NameOf(TrainerID))
+            OnVorCanExecuted(Items)
+            OnZurueckCanExecuted(Items)
         End Set
     End Property
 

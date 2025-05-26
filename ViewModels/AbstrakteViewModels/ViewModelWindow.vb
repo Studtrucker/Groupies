@@ -31,6 +31,7 @@ Public MustInherit Class ViewModelWindow
 
     Private Sub OnVor(obj As Object)
         MessageBox.Show("Vor")
+
     End Sub
 
 #End Region

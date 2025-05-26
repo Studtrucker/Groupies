@@ -729,7 +729,7 @@ Public Class MainWindow
         Dim vm = New UebersichtViewModel With {
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
         vm.AktualisiereViewModel()
-        vm.AktuellesViewModel.items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
+        vm.AktuellesViewModel.itemsView = New ListCollectionView(Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer)
 
         Dim fenster = New BasisUebersichtWindow() With {
             .DataContext = vm,

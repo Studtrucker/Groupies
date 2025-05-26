@@ -13,7 +13,7 @@
 
 
         <Grid>
-            <DataGrid x:Name="TrainerDataGrid" ItemsSource="{Binding}"
+            <DataGrid x:Name="TrainerDataGrid" ItemsSource="{Binding }"
                       SelectionMode="Extended"     AutoGenerateColumns="False"
                       Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
                       HeadersVisibility="Column" 

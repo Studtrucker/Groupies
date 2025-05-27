@@ -23,8 +23,8 @@ Public Class TeilnehmerViewModel
         CurrentUserControl = Datentyp.DatentypDetailUserControl
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
 
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
 
     End Sub
 
@@ -50,6 +50,9 @@ Public Class TeilnehmerViewModel
 #End Region
 
 #Region "Properties"
+
+    Public ReadOnly Property OkCommand As ICommand
+
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Private _Teilnehmer As Teilnehmer

@@ -4,35 +4,30 @@ Imports System.Windows.Input
 Imports Groupies.Interfaces
 Imports Groupies.UserControls
 
-
-Public MustInherit Class ViewModelWindow
+''' <summary>
+''' Abstrakte Basisklasse für ViewModels, die in einem Fenster angezeigt werden.
+''' Sie implementiert grundlegende Funktionalitäten wie Befehle und Ereignisse für das Schließen des Fensters.
+''' </summary>
+Public Class ViewModelWindow
     Inherits ViewModelBase
+
+#Region "Variablen"
+    Private ReadOnly _windowService As IWindowService
+#End Region
 
 #Region "Konstruktor"
 
     Public Sub New()
+        MyBase.New()
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor, AddressOf OnVorCanExecuted)
-        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck, AddressOf OnZurueckCanExecuted)
+    End Sub
+    Public Sub New(windowService As IWindowService)
+        _windowService = windowService
+        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
     End Sub
 
-    Private Function OnZurueckCanExecuted(obj As Object) As Boolean
-        Return True
-    End Function
-
-    Private Function OnVorCanExecuted(obj As Object) As Boolean
-        Return True
-    End Function
-
-    Private Sub OnZurueck(obj As Object)
-        MessageBox.Show("Zurück")
-    End Sub
-
-    Private Sub OnVor(obj As Object)
-        MessageBox.Show("Vor")
-
-    End Sub
 
 #End Region
 
@@ -45,11 +40,8 @@ Public MustInherit Class ViewModelWindow
 #End Region
 
 #Region "Commands"
-    Public Property OkCommand As ICommand
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
-    Public Property VorCommand As ICommand
-    Public Property ZurueckCommand As ICommand
 
 #End Region
 
@@ -77,36 +69,54 @@ Public MustInherit Class ViewModelWindow
 
     Public ReadOnly Property WindowTitleText As String
         Get
+            If Datentyp Is Nothing OrElse Modus Is Nothing Then
+                Return "Unbekannter Dialog"
+            End If
             Return $"{Datentyp.DatentypText} {Modus.Titel}"
         End Get
     End Property
 
     Public ReadOnly Property WindowTitleIcon As String
         Get
+            If Modus Is Nothing Then
+                Return "Unbekannter Modus"
+            End If
             Return Modus.WindowIcon
         End Get
     End Property
 
     Public ReadOnly Property WindowHeaderImage As String
         Get
+            If Datentyp Is Nothing Then
+                Return Nothing
+            End If
             Return Datentyp.DatentypIcon
         End Get
     End Property
 
     Public ReadOnly Property CloseButtonVisibility As Visibility
         Get
+            If Modus Is Nothing Then
+                Return Visibility.Visible
+            End If
             Return Modus.CloseButtonVisibility
         End Get
     End Property
 
     Public ReadOnly Property OkButtonVisibility As Visibility
         Get
+            If Modus Is Nothing Then
+                Return Visibility.Visible
+            End If
             Return Modus.OkButtonVisibility
         End Get
     End Property
 
     Public ReadOnly Property CancelButtonVisibility As Visibility
         Get
+            If Modus Is Nothing Then
+                Return Visibility.Visible
+            End If
             Return Modus.CancelButtonVisibility
         End Get
     End Property
@@ -125,9 +135,10 @@ Public MustInherit Class ViewModelWindow
         RaiseEvent RequestClose(Me, False)
     End Sub
 
-    Private Sub OnClose(obj As Object)
+    Protected Sub OnClose(obj As Object)
         ' Fenster schließen mit Close
-        RaiseEvent Close(Me, EventArgs.Empty)
+        'RaiseEvent Close(Me, EventArgs.Empty)
+        _windowService.CloseWindow()
     End Sub
 
 #End Region

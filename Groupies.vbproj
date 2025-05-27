@@ -121,6 +121,7 @@
     <Compile Include="AppController.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
     <Compile Include="DragDropBehavior.vb" />
+    <Compile Include="Interfaces\Windows\IWindowService.vb" />
     <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />
     <Compile Include="Fabriken\DatentypFabrik.vb" />
@@ -133,6 +134,7 @@
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
     <Compile Include="Interfaces\Refactoring\IClub.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
+    <Compile Include="Services\WindowService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />
     <Compile Include="Constants\StandardLeistungsstufen.vb" />

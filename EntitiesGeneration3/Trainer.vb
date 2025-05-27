@@ -11,7 +11,7 @@ Namespace Entities
     ''' Trainer, verantwortlich für eine Gruppe
     ''' </summary>
     Public Class Trainer
-        Inherits BaseModel
+        'Inherits BaseModel
         Implements IModel
 
 
@@ -198,6 +198,7 @@ Namespace Entities
                 Return _Foto Is Nothing AndAlso Foto.Length = 0
             End Get
         End Property
+
         'todo: Hier muss die Property ins ViewModel verlagert werden 
         Public Property Archivieren As Boolean
 

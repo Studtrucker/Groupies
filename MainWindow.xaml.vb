@@ -726,15 +726,17 @@ Public Class MainWindow
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
         'Dim Traineruebersicht As New Traineruebersicht
         'Traineruebersicht.Show()
-        Dim vm = New UebersichtViewModel With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        vm.AktualisiereViewModel()
-        vm.AktuellesViewModel.itemsView = New ListCollectionView(Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer)
+        'Dim vm = New UebersichtViewModel With {
+        '    .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
+        Dim vm = New UebersichtViewModel()
+        'Dim mvw = New ViewModelWindow(New WindowService())
+        'vm.AktualisiereViewModel()
+        'vm.AktuellesViewModel.items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
 
         Dim fenster = New BasisUebersichtWindow() With {
-            .DataContext = vm,
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        fenster.DataContext = New ViewModelWindow(New WindowService(fenster))
 
         fenster.Show()
 

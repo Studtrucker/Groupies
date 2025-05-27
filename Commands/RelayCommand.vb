@@ -46,4 +46,15 @@ Public Class RelayCommand(Of T)
     Public Sub Execute(parameter As Object) Implements ICommand.Execute
         _execute(CType(parameter, T))
     End Sub
+
+    ''' <summary>
+    ''' Diese Methode wird aufgerufen, um das CanExecuteChanged-Event auszulösen.
+    ''' </summary>
+    ''' <remarks>
+    ''' Diese Methode sollte in der ViewModel-Klasse aufgerufen werden, 
+    ''' wenn sich die Ausführbarkeit des Befehls ändert.
+    ''' </remarks>
+    Public Sub RaiseCanExecuteChanged()
+        RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)
+    End Sub
 End Class

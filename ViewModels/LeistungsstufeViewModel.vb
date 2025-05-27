@@ -17,8 +17,8 @@ Public Class LeistungsstufeViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
         CurrentUserControl = Datentyp.DatentypDetailUserControl
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoaded)
     End Sub
 
 #End Region
@@ -40,6 +40,10 @@ Public Class LeistungsstufeViewModel
 #End Region
 
 #Region "Properties"
+
+    Public ReadOnly Property OkCommand As ICommand
+
+
     Private _Leistungsstufe As Entities.Leistungsstufe
 
     Public Property Leistungsstufe As IModel Implements IViewModelSpecial.Model

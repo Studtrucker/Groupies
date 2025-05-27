@@ -15,13 +15,16 @@ Public Class FaehigkeitViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
         CurrentUserControl = Datentyp.DatentypDetailUserControl
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(Of Faehigkeit)(AddressOf OnLoaded)
     End Sub
 
 #End Region
 
 #Region "Methoden"
+
+    Public ReadOnly Property OkCommand As ICommand
+
 
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         Validate()

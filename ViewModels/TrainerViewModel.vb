@@ -10,6 +10,7 @@ Public Class TrainerViewModel
 
 #Region "Variablen"
     Private ReadOnly zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
+    Private _Trainer As Trainer
 #End Region
 
 #Region "Konstruktor"
@@ -24,12 +25,10 @@ Public Class TrainerViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
         CurrentUserControl = Datentyp.DatentypDetailUserControl
-        UserControlLoaded = New RelayCommand(Of Object)(AddressOf OnLoaded)
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() IstEingabeGueltig)
+        UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
-        VorCommand = New RelayCommand(Of Object)(AddressOf OnVor, AddressOf OnVorCanExecuted)
-        ZurueckCommand = New RelayCommand(Of Object)(AddressOf OnZurueck, AddressOf OnZurueckCanExecuted)
     End Sub
 
 #End Region
@@ -43,29 +42,10 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Commands"
-    Public ReadOnly Property DropCommand As ICommand
-    Public ReadOnly Property DragOverCommand As ICommand
 
 #End Region
 
 #Region "Methoden"
-    Private Function OnZurueckCanExecuted(obj As Object) As Boolean
-        Return ItemsView.IsCurrentBeforeFirst
-    End Function
-
-    Private Function OnVorCanExecuted(obj As Object) As Boolean
-        Return ItemsView.IsCurrentAfterLast
-    End Function
-
-    Private Sub OnZurueck(obj As Object)
-        'MessageBox.Show("Zurück")
-        ItemsView.MoveCurrentToPrevious()
-    End Sub
-
-    Private Sub OnVor(obj As Object)
-        'MessageBox.Show("Vor")
-        ItemsView.MoveCurrentToNext()
-    End Sub
 
     Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
@@ -115,9 +95,15 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Properties"
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
-    Private _Trainer As Trainer
+
+    Public ReadOnly Property OkCommand As ICommand
+
+    Public ReadOnly Property DropCommand As ICommand
+
+    Public ReadOnly Property DragOverCommand As ICommand
+
+    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Public Property Trainer As IModel Implements IViewModelSpecial.Model
         Get
@@ -135,8 +121,6 @@ Public Class TrainerViewModel
         Set(value As Guid)
             _Trainer.TrainerID = value
             OnPropertyChanged(NameOf(TrainerID))
-            OnVorCanExecuted(Items)
-            OnZurueckCanExecuted(Items)
         End Set
     End Property
 
@@ -202,14 +186,6 @@ Public Class TrainerViewModel
             OnPropertyChanged(NameOf(Telefonnummer))
         End Set
     End Property
-
-
-    Public ReadOnly Property IstObjektGueltig As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-
 
 #End Region
 

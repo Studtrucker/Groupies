@@ -127,7 +127,7 @@
     <Compile Include="Fabriken\DatentypFabrik.vb" />
     <Compile Include="Interfaces\Datentyp\IDatentyp.vb" />
     <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
-    <Compile Include="Interfaces\Modus\IModus.vb" />
+    <Compile Include="Interfaces\Windows\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />

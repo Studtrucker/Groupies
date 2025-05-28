@@ -728,15 +728,20 @@ Public Class MainWindow
         'Traineruebersicht.Show()
         'Dim vm = New UebersichtViewModel With {
         '    .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        Dim vm = New UebersichtViewModel()
-        'Dim mvw = New ViewModelWindow(New WindowService())
+        'Dim vm = New UebersichtViewModel()
+
         'vm.AktualisiereViewModel()
         'vm.AktuellesViewModel.items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
 
         Dim fenster = New BasisUebersichtWindow() With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        fenster.DataContext = New ViewModelWindow(New WindowService(fenster))
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+
+        fenster.DataContext = mvw
 
         fenster.Show()
 

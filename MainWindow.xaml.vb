@@ -740,6 +740,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        mvw.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
 
         fenster.DataContext = mvw
 

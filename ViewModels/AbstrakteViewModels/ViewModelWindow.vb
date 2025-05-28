@@ -66,7 +66,7 @@ Public Class ViewModelWindow
         End Get
         Set(value As IDatentyp)
             _Datentyp = value
-            AktuellesViewModel = _Datentyp.AktuellesViewModel
+            AktuellesViewModel = _Datentyp.AktuellesUebersichtViewModel
         End Set
     End Property
 
@@ -79,7 +79,17 @@ Public Class ViewModelWindow
     ''' Das aktuelle ViewModel, das verwendet wird
     ''' </summary>
     ''' <returns></returns>
-    Public Property AktuellesViewModel As Object
+    Public Property AktuellesViewModel As IViewModelSpecial
+
+    Public Property Datenliste As IEnumerable(Of IModel)
+        Get
+            Return AktuellesViewModel.items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            AktuellesViewModel.items = value
+        End Set
+    End Property
+    Public Property Detaildaten As IModel
 
     Public ReadOnly Property WindowTitleText As String
         Get

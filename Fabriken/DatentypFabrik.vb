@@ -62,9 +62,15 @@ Namespace Fabriken
             End Get
         End Property
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New TrainerViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
             End Get
         End Property
 
@@ -90,12 +96,17 @@ Namespace Fabriken
             End Get
         End Property
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New TeilnehmerViewModel
             End Get
         End Property
 
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
 
         Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
             Throw New NotImplementedException()
@@ -118,9 +129,15 @@ Namespace Fabriken
             End Get
         End Property
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New GruppeViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
             End Get
         End Property
 
@@ -146,9 +163,15 @@ Namespace Fabriken
         End Property
 
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New FaehigkeitViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
             End Get
         End Property
 
@@ -173,9 +196,15 @@ Namespace Fabriken
             End Get
         End Property
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New LeistungsstufeViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
             End Get
         End Property
 
@@ -200,9 +229,15 @@ Namespace Fabriken
             End Get
         End Property
 
-        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
-                Return New einteilungviewmodel
+                Return New EinteilungViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Return New EinteilungViewModel
             End Get
         End Property
 

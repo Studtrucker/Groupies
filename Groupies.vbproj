@@ -178,6 +178,7 @@
     <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="ViewModels\AbstrakteViewModels\MasterDetailViewModel.vb" />
     <Compile Include="ViewModels\AbstrakteViewModels\ViewModelBase.vb" />
+    <Compile Include="ViewModels\EinteilungViewModel.vb" />
     <Compile Include="ViewModels\FaehigkeitViewModel.vb" />
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />

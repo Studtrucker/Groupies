@@ -28,6 +28,9 @@
 
         Function getAll() As IEnumerable(Of IModel)
 
+        ReadOnly Property AktuellesViewModel As Object
+
+
     End Interface
 
 

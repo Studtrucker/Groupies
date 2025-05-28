@@ -13,6 +13,7 @@ Public Class ViewModelWindow
 
 #Region "Variablen"
     Private ReadOnly _windowService As IWindowService
+    Private _Datentyp As IDatentyp
 #End Region
 
 #Region "Konstruktor"
@@ -60,12 +61,25 @@ Public Class ViewModelWindow
     ''' </summary>
     ''' <remarks></remarks>
     Public Property Datentyp As IDatentyp
+        Get
+            Return _Datentyp
+        End Get
+        Set(value As IDatentyp)
+            _Datentyp = value
+            AktuellesViewModel = _Datentyp.AktuellesViewModel
+        End Set
+    End Property
 
     ''' <summary>
     ''' Der aktuelle UserControl, der im Dialog angezeigt wird.
     ''' </summary>
     Public Property CurrentUserControl As UserControl
 
+    ''' <summary>
+    ''' Das aktuelle ViewModel, das verwendet wird
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property AktuellesViewModel As Object
 
     Public ReadOnly Property WindowTitleText As String
         Get

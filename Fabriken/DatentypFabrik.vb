@@ -62,6 +62,12 @@ Namespace Fabriken
             End Get
         End Property
 
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New TrainerViewModel
+            End Get
+        End Property
+
         Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
             Return Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList
         End Function
@@ -84,6 +90,13 @@ Namespace Fabriken
             End Get
         End Property
 
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New TeilnehmerViewModel
+            End Get
+        End Property
+
+
         Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
             Throw New NotImplementedException()
         End Function
@@ -102,6 +115,12 @@ Namespace Fabriken
         Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
             Get
                 Return New UserControls.GruppenlisteUserControl
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New GruppeViewModel
             End Get
         End Property
 
@@ -126,6 +145,13 @@ Namespace Fabriken
             End Get
         End Property
 
+
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New FaehigkeitViewModel
+            End Get
+        End Property
+
         Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
             Throw New NotImplementedException()
         End Function
@@ -147,6 +173,12 @@ Namespace Fabriken
             End Get
         End Property
 
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New LeistungsstufeViewModel
+            End Get
+        End Property
+
         Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
             Throw New NotImplementedException()
         End Function
@@ -165,6 +197,12 @@ Namespace Fabriken
         Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
             Get
                 Return New UserControls.EinteilungenlisteUserControl
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesViewModel As Object Implements IDatentyp.AktuellesViewModel
+            Get
+                Return New einteilungviewmodel
             End Get
         End Property
 

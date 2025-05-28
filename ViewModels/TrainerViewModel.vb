@@ -23,8 +23,8 @@ Public Class TrainerViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        CurrentUserControl = Datentyp.DatentypDetailUserControl
+        'Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        'CurrentUserControl = Datentyp.DatentypDetailUserControl
         UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)

@@ -19,12 +19,8 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
-        CurrentUserControl = Datentyp.DatentypDetailUserControl
-        LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
-
-        OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
 
     End Sub
 
@@ -55,6 +51,9 @@ Public Class TeilnehmerViewModel
 
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
+    Public Property LeistungsstufenListCollectionView As ICollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
+
+
     Private _Teilnehmer As Teilnehmer
     Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
         Get
@@ -64,8 +63,6 @@ Public Class TeilnehmerViewModel
             _Teilnehmer = value
         End Set
     End Property
-
-
 
     Public Property TeilnehmerID As Guid
         Get
@@ -130,9 +127,17 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
-    Public Property LeistungsstufenListCollectionView As ICollectionView
 
     Public Property HandleUserControlLoaded As RelayCommand(Of Object)
+
+    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
+        End Set
+    End Property
 
 #End Region
 

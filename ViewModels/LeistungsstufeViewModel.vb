@@ -16,7 +16,7 @@ Public Class LeistungsstufeViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
-        CurrentUserControl = Datentyp.DatentypDetailUserControl
+        'CurrentUserControl = Datentyp.DatentypDetailUserControl
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoaded)
     End Sub
@@ -98,6 +98,15 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe.Faehigkeiten = value
             OnPropertyChanged(NameOf(Faehigkeiten))
             ValidateFaehigkeiten()
+        End Set
+    End Property
+
+    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
         End Set
     End Property
 

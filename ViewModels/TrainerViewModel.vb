@@ -23,12 +23,12 @@ Public Class TrainerViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        'Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        'CurrentUserControl = Datentyp.DatentypDetailUserControl
+
         UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
+
     End Sub
 
 #End Region
@@ -184,6 +184,15 @@ Public Class TrainerViewModel
         Set(value As String)
             _Trainer.Telefonnummer = value
             OnPropertyChanged(NameOf(Telefonnummer))
+        End Set
+    End Property
+
+    Private Property IViewModelSpecial_Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
         End Set
     End Property
 

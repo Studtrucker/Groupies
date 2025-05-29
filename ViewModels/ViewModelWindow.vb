@@ -70,10 +70,10 @@ Public Class ViewModelWindow
         End Set
     End Property
 
-    ''' <summary>
-    ''' Der aktuelle UserControl, der im Dialog angezeigt wird.
-    ''' </summary>
-    Public Property CurrentUserControl As UserControl
+    '''' <summary>
+    '''' Der aktuelle UserControl, der im Dialog angezeigt wird.
+    '''' </summary>
+    'Public Property CurrentUserControl As UserControl
 
     ''' <summary>
     ''' Das aktuelle ViewModel, das verwendet wird
@@ -81,14 +81,6 @@ Public Class ViewModelWindow
     ''' <returns></returns>
     Public Property AktuellesViewModel As IViewModelSpecial
 
-    Public Property Datenliste As IEnumerable(Of IModel)
-        Get
-            Return AktuellesViewModel.items
-        End Get
-        Set(value As IEnumerable(Of IModel))
-            AktuellesViewModel.items = value
-        End Set
-    End Property
     Public Property Detaildaten As IModel
 
     Public ReadOnly Property WindowTitleText As String

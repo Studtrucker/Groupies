@@ -18,7 +18,7 @@ Public Class GruppeViewModel
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         LeistungsstufenListCollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
-        CurrentUserControl = Datentyp.DatentypDetailUserControl
+        'CurrentUserControl = Datentyp.DatentypDetailUserControl
         OkCommand = New RelayCommand(Of Gruppe)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Gruppe)(AddressOf OnLoaded)
         TeilnehmerAusGruppeEntfernen = New RelayCommand(Of Teilnehmer)(AddressOf OnTeilnehmerAusGruppeEntfernen)
@@ -132,6 +132,15 @@ Public Class GruppeViewModel
     End Property
 
     Public Property LeistungsstufenListCollectionView As ICollectionView
+
+    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
+        End Set
+    End Property
 
 #End Region
 

@@ -22,6 +22,15 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
+    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
+        End Set
+    End Property
+
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         Throw New NotImplementedException()
     End Sub

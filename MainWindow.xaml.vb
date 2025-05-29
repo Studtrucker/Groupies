@@ -724,14 +724,6 @@ Public Class MainWindow
     End Sub
 
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
-        'Dim Traineruebersicht As New Traineruebersicht
-        'Traineruebersicht.Show()
-        'Dim vm = New UebersichtViewModel With {
-        '    .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        'Dim vm = New UebersichtViewModel()
-
-        'vm.AktualisiereViewModel()
-        'vm.AktuellesViewModel.items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
 
         Dim fenster = New BasisUebersichtWindow() With {
             .Owner = Me,
@@ -740,7 +732,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        mvw.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
+        mvw.AktuellesViewModel.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
 
         fenster.DataContext = mvw
 
@@ -1139,6 +1131,18 @@ Public Class MainWindow
 
     Private Sub ZeigeTeilnehmerUebersicht(sender As Object, e As RoutedEventArgs)
 
+        Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
+        mvw.AktuellesViewModel.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer
+
+        fenster.DataContext = mvw
+
+        fenster.Show()
     End Sub
 
 #End Region

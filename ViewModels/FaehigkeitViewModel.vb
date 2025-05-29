@@ -14,7 +14,7 @@ Public Class FaehigkeitViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
-        CurrentUserControl = Datentyp.DatentypDetailUserControl
+        'CurrentUserControl = Datentyp.DatentypDetailUserControl
         OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Faehigkeit)(AddressOf OnLoaded)
     End Sub
@@ -86,6 +86,15 @@ Public Class FaehigkeitViewModel
             _Faehigkeit.Benennung = value
             OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
+        End Set
+    End Property
+
+    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+        Get
+            Return Items
+        End Get
+        Set(value As IEnumerable(Of IModel))
+            Items = value
         End Set
     End Property
 

@@ -10,9 +10,17 @@
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
         Width="1350" Height="750" >
     <!--SizeToContent="WidthAndHeight"-->
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding UserControlLoaded}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
-
+        <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        
         <!--Data Template Trainer-->
         <DataTemplate DataType="{x:Type local:TrainerViewModel}">
             <Grid>
@@ -128,11 +136,95 @@
             </Grid>
 
         </DataTemplate>
+
+        <!--Data Template Teilnehmer-->
+        <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Objektliste-->
+                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Items}"
+                          SelectedItem="{Binding SelectedItem}"
+                          DisplayMemberPath="Spitzname">
+                    <!--SelectedItem="{Binding ItemsView.CurrentItem}"-->
+
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="*"/>
+                        <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" Width="*"/>
+                        <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="*"/>
+                        <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Detailansicht-->
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                        <ColumnDefinition x:Name="CaptionColumn" Width="Auto"/>
+                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock>Teilnehmer ID</TextBlock>
+                    </Label>
+                    <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock>Vorname <Run Foreground="Red">*</Run></TextBlock>
+                    </Label>
+                    <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock>Nachname <Run Foreground="Red">*</Run></TextBlock>
+                    </Label>
+                    <Label Content="Geburtsdatum" Grid.Column="1" Grid.Row="4"/>
+                    <Label Content="Telefon" Grid.Column="1" Grid.Row="5"/>
+                    <Label Grid.Column="1" Grid.Row="6" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock>Leistungsstand <Run Foreground="Red">*</Run></TextBlock>
+                    </Label>
+
+                    <TextBox x:Name="TeilnehmerIDTextBox" Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
+                             Text="{Binding SelectedItem.TeilnehmerID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                    <TextBox x:Name="VornameTextBox" Grid.Column="2" Grid.Row="2" 
+                             Text="{Binding SelectedItem.Vorname, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                    <TextBox x:Name="NachnameTextBox" Grid.Column="2" Grid.Row="3"
+                             Text="{Binding SelectedItem.Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                    
+                    <DatePicker x:Name="GeburtstagDatePicker" Grid.Row="4" Grid.Column="2" Width="200" HorizontalAlignment="Left"
+                                SelectedDate="{Binding SelectedItem.Geburtsdatum, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                    
+                    <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="5"
+                             Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                    
+                    <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
+                              x:Name="LeistungsstandComboBox"
+                              SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                    <!--ItemsSource="{Binding LeistungsstufenListCollectionView}"-->
+
+                </Grid>
+            </Grid>
+
+        </DataTemplate>
         
         <!--Data Template Gruppe-->
         <DataTemplate DataType="{x:Type local:GruppeViewModel}">
 
         </DataTemplate>
+        
     </Window.Resources>
     
     <DockPanel>
@@ -168,6 +260,7 @@
 
         </Menu>
         
+        
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
@@ -183,7 +276,7 @@
 
             <DockPanel Grid.Column="1" Grid.Row="1">
                 
-                <!--Schliessen-Button-->
+                <!--Buttons-->
                 <Border DockPanel.Dock="Bottom">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />

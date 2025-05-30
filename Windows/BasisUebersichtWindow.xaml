@@ -34,7 +34,9 @@
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
-                          DisplayMemberPath="Spitzname">
+                          DisplayMemberPath="Spitzname"
+                          local:DataGridScrollBehavior.AutoScrollIntoView="True">
+
                     <!--SelectedItem="{Binding ItemsView.CurrentItem}"-->
 
                     <DataGrid.Columns >

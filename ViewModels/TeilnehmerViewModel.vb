@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Groupies.Controller
 Imports Groupies.Controller.AppController
 Imports Groupies.Entities
 Imports Groupies.UserControls
@@ -51,8 +52,7 @@ Public Class TeilnehmerViewModel
 
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
-    Public Property LeistungsstufenListCollectionView As ICollectionView = New CollectionView(AktuellerClub.LeistungsstufenTextliste)
-
+    '= New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
 
     Private _Teilnehmer As Teilnehmer
     Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
@@ -136,6 +136,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As IEnumerable(Of IModel))
             Items = value
+            SelectedItem = If(value?.FirstOrDefault(), Nothing)
         End Set
     End Property
 

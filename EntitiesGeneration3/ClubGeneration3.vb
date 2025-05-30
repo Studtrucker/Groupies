@@ -5,6 +5,8 @@ Imports Groupies.Services
 Imports Groupies.Interfaces
 Imports System.IO
 Imports System.Xml.Serialization
+Imports System.ComponentModel
+Imports Groupies.Controller
 
 Namespace Entities.Generation3
 
@@ -101,10 +103,14 @@ Namespace Entities.Generation3
 
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
-                Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
-                'Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS)
+                If Leistungsstufenliste Is Nothing OrElse Leistungsstufenliste.Count = 0 Then
+                    Return New List(Of String) From {"Keine Leistungsstufen definiert"}
+                Else
+                    Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
+                End If
             End Get
         End Property
+
 
         ''' <summary>
         ''' Eine Liste der aller Faehigkeiten

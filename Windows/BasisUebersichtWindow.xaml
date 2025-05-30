@@ -20,7 +20,7 @@
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
-        
+
         <!--Data Template Trainer-->
         <DataTemplate DataType="{x:Type local:TrainerViewModel}">
             <Grid>
@@ -150,7 +150,8 @@
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
-                          DisplayMemberPath="Spitzname">
+                          DisplayMemberPath="Spitzname"
+                          local:DataGridScrollBehavior.AutoScrollIntoView="True">
                     <!--SelectedItem="{Binding ItemsView.CurrentItem}"-->
 
                     <DataGrid.Columns >
@@ -209,11 +210,13 @@
                     
                     <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="5"
                              Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
-                    
+
                     <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
                               x:Name="LeistungsstandComboBox"
-                              SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                              ItemsSource="{Binding LeistungsstufenListCollectionView}"
+                              SelectedValue="{Binding SelectedItem.Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                     <!--ItemsSource="{Binding LeistungsstufenListCollectionView}"-->
+                    <!--, Converter={StaticResource StringToLeistungsstufeConverter}-->
 
                 </Grid>
             </Grid>

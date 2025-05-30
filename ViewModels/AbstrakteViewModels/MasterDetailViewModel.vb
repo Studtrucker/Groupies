@@ -26,6 +26,9 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
 #End Region
 
+#Region "Events"
+#End Region
+
 #Region "Properties"
     Public Property Items As ObservableCollection(Of T)
     Public Property MoveNextCommand As RelayCommand(Of T)
@@ -72,7 +75,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #Region "Methoden"
     Private Sub OnMovePrevious()
         SelectedItem = Items(Items.IndexOf(SelectedItem) - 1)
-
     End Sub
     Private Sub OnMoveNext()
         SelectedItem = Items(Items.IndexOf(SelectedItem) + 1)

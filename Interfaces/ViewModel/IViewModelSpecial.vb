@@ -5,7 +5,7 @@
 
     Property Model As IModel
 
-    Property Datenliste As IEnumerable(Of IModel)
+    Overloads Property Items As IEnumerable(Of IModel)
 
     Property UserControlLoaded As ICommand
 

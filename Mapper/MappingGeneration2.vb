@@ -18,6 +18,18 @@ Public Module MappingGeneration2
         ' Trainer, die bereits in Gruppen eingeteilt wurden, aus den Gruppenlosen entfernen
         'NeuerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(G) NeuerClub.Einteilungsliste(0).GruppenloseTrainer.RemoveByTrainerID(G.Trainer.TrainerID))
 
+
+        NeuerClub.AlleTrainer = New TrainerCollection
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) NeuerClub.AlleTrainer.Add(g.Trainer))
+        Skiclub.GruppenloseTrainer.ToList.ForEach(Sub(T) NeuerClub.AlleTrainer.Add(T))
+
+        NeuerClub.AlleTeilnehmer = New TeilnehmerCollection
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) NeuerClub.AlleTeilnehmer.Add(T)))
+        Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) NeuerClub.AlleTeilnehmer.Add(T))
+
+        NeuerClub.AlleGruppen = New GruppeCollection
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) NeuerClub.AlleGruppen.Add(g))
+
         Return NeuerClub
 
     End Function

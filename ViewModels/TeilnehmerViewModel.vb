@@ -52,8 +52,6 @@ Public Class TeilnehmerViewModel
 
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
-    '= New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
-
     Private _Teilnehmer As Teilnehmer
     Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
         Get
@@ -130,13 +128,12 @@ Public Class TeilnehmerViewModel
 
     Public Property HandleUserControlLoaded As RelayCommand(Of Object)
 
-    Private Property Datenliste As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
         Get
-            Return Items
+            Return MyBase.Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            Items = value
-            SelectedItem = If(value?.FirstOrDefault(), Nothing)
+            MyBase.Items = value
         End Set
     End Property
 

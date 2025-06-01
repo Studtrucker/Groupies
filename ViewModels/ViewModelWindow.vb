@@ -4,6 +4,7 @@ Imports System.Windows.Input
 Imports Groupies.Controller
 Imports Groupies.Interfaces
 Imports Groupies.UserControls
+Imports Microsoft.Office.Interop.Excel
 
 ''' <summary>
 ''' Abstrakte Basisklasse für ViewModels, die in einem Fenster angezeigt werden.
@@ -23,14 +24,16 @@ Public Class ViewModelWindow
         MyBase.New()
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        DataGridSortingCommand = New RelayCommand(Of Object)(AddressOf OnDataGridSorting)
         LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
     End Sub
+
     Public Sub New(windowService As IWindowService)
         _windowService = windowService
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
+        DataGridSortingCommand = New RelayCommand(Of Object)(AddressOf OnDataGridSorting)
         LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
-
     End Sub
 
 
@@ -47,10 +50,12 @@ Public Class ViewModelWindow
 #Region "Commands"
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
+    Public Property DataGridSortingCommand As ICommand
 
 #End Region
 
 #Region "Properties"
+
 
     ''' <summary>
     ''' Der Modus (Erstellen, Bearbeiten, Löschen)
@@ -143,13 +148,12 @@ Public Class ViewModelWindow
 
     Public ReadOnly Property LeistungsstufenListCollectionView As IEnumerable(Of String)
 
-    '        Return AppController.AktuellerClub.LeistungsstufenTextliste
-    '    End Get
-    'End Property
-
 #End Region
 
 #Region "Methoden"
+    Private Sub OnDataGridSorting(obj As Object)
+        MessageBox.Show("Sortieren der Liste ist noch nicht implementiert.")
+    End Sub
 
     Public Overridable Sub OnOk(obj As Object)
         ' Businesslogik erfolgreich → Dialog schließen mit OK

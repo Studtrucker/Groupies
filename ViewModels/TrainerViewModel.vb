@@ -187,12 +187,12 @@ Public Class TrainerViewModel
         End Set
     End Property
 
-    Private Property IViewModelSpecial_Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Datenliste
+    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
         Get
-            Return Items
+            Return MyBase.Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            Items = value
+            MyBase.Items = value
         End Set
     End Property
 

@@ -52,19 +52,24 @@
 
             <MenuItem Header="_Organisation">
                 <MenuItem Header="Einteilungen">
+                    <MenuItem Header="Übersicht" Click="ZeigeEinteilungenUebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungLoeschen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungEinlesen}"/>
                 </MenuItem>
                 <MenuItem Header="Gruppen">
+                    <MenuItem Header="Übersicht" Click="ZeigeGruppenUebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
                 </MenuItem>
                 <MenuItem Header="Leistungsstufen">
                     <MenuItem Header="Übersicht"/>
+                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenUebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeLoeschen}"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeEinlesen}"/>
+                </MenuItem>
+                <MenuItem Header="Fähigkeiten">
+                    <MenuItem Header="Übersicht"/>
+                    <MenuItem Header="Übersicht" Click="ZeigeFaehigkeitenUebersicht"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitNeuErstellen}"/>
+                    <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitEinlesen}"/>
                 </MenuItem>
             </MenuItem>
 
@@ -72,7 +77,6 @@
                 <MenuItem Header="Teilnehmer">
                     <MenuItem Header="Übersicht" Click="ZeigeTeilnehmerUebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerEinlesen}"/>
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-person-48.png"/>
@@ -82,7 +86,6 @@
                 <MenuItem Header="Trainer">
                     <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
                     <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerEinlesen}"/>
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-trainer-48.png"/>
@@ -209,7 +212,7 @@
                                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Trainer.VorUndNachname,UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
@@ -278,7 +281,6 @@
                             <ContextMenu>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}"/>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>

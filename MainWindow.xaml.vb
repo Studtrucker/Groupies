@@ -71,6 +71,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerNeuErstellen,
                                                AddressOf Handle_TeilnehmerNeuErstellen_Execute,
                                                AddressOf Handle_TeilnehmerNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerEinlesen,
+                                               AddressOf Handle_TeilnehmerEinlesen_Execute,
+                                               AddressOf Handle_TeilnehmerEinlesen_CanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TeilnehmerAusGruppeEntfernen,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_Execute,
                                                AddressOf Handle_TeilnehmerAusGruppeEntfernen_CanExecuted))
@@ -100,6 +103,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerNeuErstellen,
                                                AddressOf Handle_TrainerNeuErstellen_Execute,
                                                AddressOf Handle_TrainerNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerEinlesen,
+                                               AddressOf Handle_TrainerEinlesen_Execute,
+                                               AddressOf Handle_TrainerEinlesen_CanExecuted))
         CommandBindings.Add(New CommandBinding(SkiclubCommands.TrainerBearbeiten,
                                                AddressOf Handle_TrainerBearbeiten_Execute,
                                                AddressOf Handle_TrainerBearbeiten_CanExecuted))
@@ -132,6 +138,9 @@ Public Class MainWindow
         CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeNeuErstellen,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_Execute,
                                                AddressOf Handle_LeistungsstufeNeuErstellen_CanExecuted))
+        CommandBindings.Add(New CommandBinding(SkiclubCommands.LeistungsstufeEinlesen,
+                                               AddressOf Handle_LeistungsstufeEinlesen_Execute,
+                                               AddressOf Handle_LeistungsstufeEinlesen_CanExecuted))
 
         '1. CommandBindings, die geprüft sind und funktionieren
 
@@ -171,6 +180,29 @@ Public Class MainWindow
 
     End Sub
 
+    Private Sub Handle_TrainerEinlesen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TrainerEinlesen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException()
+    End Sub
+
+    Private Sub Handle_TeilnehmerEinlesen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_TeilnehmerEinlesen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException()
+    End Sub
+
+    Private Sub Handle_LeistungsstufeEinlesen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
+        e.CanExecute = True
+    End Sub
+
+    Private Sub Handle_LeistungsstufeEinlesen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException()
+    End Sub
 
     Private Sub HandleMainWindowClosing(sender As Object, e As CancelEventArgs)
         Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
@@ -597,7 +629,7 @@ Public Class MainWindow
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung.Gruppenliste IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -732,7 +764,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        mvw.AktuellesViewModel.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTrainer
 
         fenster.DataContext = mvw
 
@@ -1138,12 +1170,60 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
-        mvw.AktuellesViewModel.Datenliste = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
+
+        fenster.DataContext = mvw
+
+        fenster.Show()
+
+    End Sub
+
+    Private Sub ZeigeFaehigkeitenUebersicht(sender As Object, e As RoutedEventArgs)
+        Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleFaehigkeiten
 
         fenster.DataContext = mvw
 
         fenster.Show()
     End Sub
+
+    Private Sub ZeigeEinteilungenUebersicht(sender As Object, e As RoutedEventArgs)
+        Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleEinteilungen
+
+        fenster.DataContext = mvw
+
+        fenster.Show()
+    End Sub
+
+    Private Sub ZeigeGruppenUebersicht(sender As Object, e As RoutedEventArgs)
+        Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
+
+        fenster.DataContext = mvw
+
+        fenster.Show()
+
+    End Sub
+
 
 #End Region
 

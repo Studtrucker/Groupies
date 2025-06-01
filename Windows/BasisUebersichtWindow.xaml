@@ -34,10 +34,8 @@
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
-                          DisplayMemberPath="Spitzname"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
-                    <!--SelectedItem="{Binding ItemsView.CurrentItem}"-->
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" Width="*"/>
@@ -152,15 +150,14 @@
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
-                          DisplayMemberPath="Spitzname"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--SelectedItem="{Binding ItemsView.CurrentItem}"-->
+                    <!--DisplayMemberPath="Spitzname"-->
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="*"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" Width="*"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="*"/>
-                        <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}" Width="*"/>
+                        <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstand.Sortierung" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -217,9 +214,6 @@
                               x:Name="LeistungsstandComboBox"
                               ItemsSource="{Binding LeistungsstufenListCollectionView}"
                               SelectedValue="{Binding SelectedItem.Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                    <!--ItemsSource="{Binding LeistungsstufenListCollectionView}"-->
-                    <!--, Converter={StaticResource StringToLeistungsstufeConverter}-->
-
                 </Grid>
             </Grid>
 
@@ -227,7 +221,101 @@
         
         <!--Data Template Gruppe-->
         <DataTemplate DataType="{x:Type local:GruppeViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Sorting">
+                        <i:InvokeCommandAction Command="{Binding DataGridSorting}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
+                <!--Objektliste-->
+                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Items}"
+                          SelectedItem="{Binding SelectedItem}"
+                          local:DataGridScrollBehavior.AutoScrollIntoView="True">
+                    <!--                          Sorting="{Binding DataGridSortingCommand}"-->
+
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Benennung" Binding="{Binding AusgabeTeilnehmerinfo}" SortMemberPath="AusgabeTeilnehmerinfo" Width="*"/>
+                        <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Sortierung" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Detailansicht-->
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Style="{StaticResource RandRowDefinition}"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Labels-->
+                    <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock >Gruppen ID
+                    <Run Foreground="Red">*</Run>
+                        </TextBlock>
+                    </Label>
+
+                    <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock >Ausgabe Teilnehmerinfo
+                    <Run Foreground="Red">*</Run>
+                        </TextBlock>
+                    </Label>
+
+                    <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock>Benennung
+                    <Run Foreground="Red">*</Run>
+                        </TextBlock>
+                    </Label>
+
+                    <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock >Sortierer
+                    <Run Foreground="Red">*</Run>
+                        </TextBlock>
+                    </Label>
+
+                    <Label Grid.Column="1" Grid.Row="5" Style="{StaticResource PflichtangabeLabel}">
+                        <TextBlock >Leistungsstufe
+                    <Run Foreground="Red">*</Run>
+                        </TextBlock>
+                    </Label>
+
+                    <!--Felder-->
+                    <TextBox Text="{Binding SelectedItem.GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="1"/>
+                    <TextBox Text="{Binding SelectedItem.AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="AusgabenameTextBox" Grid.Column="2" Grid.Row="2"/>
+
+                    <TextBox Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                     x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="3" />
+
+                    <TextBox Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="4"/>
+
+                    <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
+                  x:Name="LeistungsstufeCombobox"
+                  ItemsSource="{Binding LeistungsstufenListCollectionView}"
+                  SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                </Grid>
+            </Grid>
         </DataTemplate>
         
     </Window.Resources>

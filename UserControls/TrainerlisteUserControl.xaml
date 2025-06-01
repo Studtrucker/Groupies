@@ -16,7 +16,7 @@
             <DataGrid x:Name="TrainerDataGrid" ItemsSource="{Binding }"
                       SelectionMode="Extended"     AutoGenerateColumns="False"
                       Margin="4" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
-                      HeadersVisibility="Column" 
+                      HeadersVisibility="Column"
                       RowStyle="{StaticResource groupiesDataGridRowStyle}"   
                       ScrollViewer.CanContentScroll="True">
                 <DataGrid.Columns>

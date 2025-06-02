@@ -120,6 +120,7 @@
     </ApplicationDefinition>
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
+    <Compile Include="Behaviors\DataGridSortBehavior.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
     <Compile Include="DragDropBehavior.vb" />
     <Compile Include="Interfaces\Windows\IWindowService.vb" />

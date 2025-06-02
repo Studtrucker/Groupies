@@ -1,6 +1,6 @@
-﻿Imports System.Windows.Controls
-Imports System.Windows
+﻿
 Public Class DataGridScrollBehavior
+
     Public Shared ReadOnly AutoScrollIntoViewProperty As DependencyProperty = DependencyProperty.RegisterAttached(
         "AutoScroll", GetType(Boolean), GetType(DataGridScrollBehavior), New PropertyMetadata(False, AddressOf OnAutoScrollChanged))
 

@@ -21,14 +21,14 @@ Public Class TrainerViewModel
     ''' Der Datentyp und das UserControl werden automatisch gesetzt.
     ''' </summary>
     Public Sub New()
-        MyBase.New()
+        'MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
         UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
-
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf OnDataGridSorting)
     End Sub
 
 #End Region
@@ -42,12 +42,14 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Commands"
+    Public Property DataGridSortingCommand As ICommand
 
     Public ReadOnly Property OkCommand As ICommand
 
     Public ReadOnly Property DropCommand As ICommand
 
     Public ReadOnly Property DragOverCommand As ICommand
+
 
 #End Region
 
@@ -96,6 +98,21 @@ Public Class TrainerViewModel
         ValidateVorname()
         ValidateSpitzname()
         ValidateEMail()
+    End Sub
+
+    Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+        MyBase.OnDataGridSorting(e)
+        Dim View = CollectionViewSource.GetDefaultView(Items)
+        If View IsNot Nothing Then
+            Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+            View.SortDescriptions.Clear()
+            View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+            e.Column.SortDirection = direction
+            e.Handled = True
+            ItemsView = View
+            ItemsView.Refresh()
+        End If
+
     End Sub
 
 #End Region

@@ -15,6 +15,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #Region "Felder"
     Private _selectedItem As T
     Private _items As ObservableCollection(Of T)
+    Private _ItemsView As ICollectionView
 #End Region
 
 #Region "Konstruktoren"
@@ -50,7 +51,16 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         End Set
     End Property
 
+
     Public Property ItemsView As ICollectionView
+        Get
+            Return _ItemsView
+        End Get
+        Set(value As ICollectionView)
+            _ItemsView = value
+            OnPropertyChanged(NameOf(ItemsView))
+        End Set
+    End Property
 
 
 

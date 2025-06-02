@@ -16,6 +16,7 @@ Public Class ViewModelWindow
 #Region "Variablen"
     Private ReadOnly _windowService As IWindowService
     Private _Datentyp As IDatentyp
+    Private _AktuellesViewModel As IViewModelSpecial
 #End Region
 
 #Region "Konstruktor"
@@ -24,7 +25,7 @@ Public Class ViewModelWindow
         MyBase.New()
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        DataGridSortingCommand = New RelayCommand(Of Object)(AddressOf OnDataGridSorting)
+        'DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf OnDataGridSorting)
         LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
     End Sub
 
@@ -32,7 +33,6 @@ Public Class ViewModelWindow
         _windowService = windowService
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
-        DataGridSortingCommand = New RelayCommand(Of Object)(AddressOf OnDataGridSorting)
         LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
     End Sub
 
@@ -50,7 +50,6 @@ Public Class ViewModelWindow
 #Region "Commands"
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
-    Public Property DataGridSortingCommand As ICommand
 
 #End Region
 
@@ -89,6 +88,13 @@ Public Class ViewModelWindow
     ''' </summary>
     ''' <returns></returns>
     Public Property AktuellesViewModel As IViewModelSpecial
+        Get
+            Return _aktuellesViewModel
+        End Get
+        Set(value As IViewModelSpecial)
+            _aktuellesViewModel = value
+        End Set
+    End Property
 
     Public Property Detaildaten As IModel
 
@@ -151,8 +157,15 @@ Public Class ViewModelWindow
 #End Region
 
 #Region "Methoden"
-    Private Sub OnDataGridSorting(obj As Object)
-        MessageBox.Show("Sortieren der Liste ist noch nicht implementiert.")
+    Public Overridable Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+        'Dim view = CollectionViewSource.GetDefaultView(_AktuellesViewModel.Items)
+        'If view IsNot Nothing Then
+        '    Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+        '    view.SortDescriptions.Clear()
+        '    view.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+        '    e.Column.SortDirection = direction
+        '    e.Handled = True
+        'End If
     End Sub
 
     Public Overridable Sub OnOk(obj As Object)

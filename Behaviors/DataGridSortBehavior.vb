@@ -1,32 +1,37 @@
-﻿Public Class DataGridSortBehavior
+﻿Imports System.Windows
+Imports System.Windows.Controls
+Imports System.Windows.Input
+Imports Microsoft.Xaml.Behaviors
 
-    Public Shared ReadOnly SortCommandProperty As DependencyProperty = DependencyProperty.RegisterAttached(
-        "SortCommand", GetType(ICommand), GetType(DataGridSortBehavior), New PropertyMetadata(Nothing, AddressOf OnSortCommandChanged))
+Public Class DataGridSortBehavior
+    Inherits Behavior(Of DataGrid)
 
-    Public Shared Sub SetSortCommand(element As DependencyObject, value As ICommand)
-        element.SetValue(SortCommandProperty, value)
+    Public Shared ReadOnly SortCommandProperty As DependencyProperty =
+        DependencyProperty.Register("SortCommand", GetType(ICommand), GetType(DataGridSortBehavior), New PropertyMetadata(Nothing))
+
+    Public Property SortCommand As ICommand
+        Get
+            Return CType(GetValue(SortCommandProperty), ICommand)
+        End Get
+        Set(value As ICommand)
+            SetValue(SortCommandProperty, value)
+        End Set
+    End Property
+
+    Protected Overrides Sub OnAttached()
+        MyBase.OnAttached()
+        AddHandler AssociatedObject.Sorting, AddressOf OnSorting
     End Sub
 
-    Public Shared Function GetSortCommand(element As DependencyObject) As ICommand
-        Return CType(element.GetValue(SortCommandProperty), ICommand)
-    End Function
-
-    Private Shared Sub OnSortCommandChanged(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-        Dim dataGrid As DataGrid = TryCast(d, DataGrid)
-        If dataGrid IsNot Nothing Then Return
-        If e.NewValue IsNot Nothing Then
-            AddHandler dataGrid.Sorting, AddressOf OnDataGridSorting
-        Else
-            RemoveHandler dataGrid.Sorting, AddressOf OnDataGridSorting
-        End If
+    Protected Overrides Sub OnDetaching()
+        RemoveHandler AssociatedObject.Sorting, AddressOf OnSorting
+        MyBase.OnDetaching()
     End Sub
 
-    Private Shared Sub OnDataGridSorting(sender As Object, e As DataGridSortingEventArgs)
-        e.Handled = True
-        Dim dataGrid = CType(sender, DataGrid)
-        Dim command = GetSortCommand(dataGrid)
-        If command IsNot Nothing AndAlso command.CanExecute(e.Column.SortMemberPath) Then
-            command.Execute(e.Column.SortMemberPath)
+    Private Sub OnSorting(sender As Object, e As DataGridSortingEventArgs)
+        If SortCommand IsNot Nothing AndAlso SortCommand.CanExecute(e) Then
+            SortCommand.Execute(e)
+            e.Handled = True
         End If
     End Sub
 End Class

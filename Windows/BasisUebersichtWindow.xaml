@@ -28,13 +28,19 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                
+
+
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserSortColumns="True"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ItemsView}"
-                          SelectedItem="{Binding SelectedItem}"
+                          SelectedItem="{Binding SelectedItem}" 
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
+
+                    <i:Interaction.Behaviors>
+                        <local:DataGridSortBehavior
+                            SortCommand="{Binding DataGridSortingCommand}" />
+                    </i:Interaction.Behaviors>
 
 
                     <DataGrid.Columns >

@@ -43,6 +43,12 @@ Public Class TrainerViewModel
 
 #Region "Commands"
 
+    Public ReadOnly Property OkCommand As ICommand
+
+    Public ReadOnly Property DropCommand As ICommand
+
+    Public ReadOnly Property DragOverCommand As ICommand
+
 #End Region
 
 #Region "Methoden"
@@ -95,13 +101,6 @@ Public Class TrainerViewModel
 #End Region
 
 #Region "Properties"
-
-
-    Public ReadOnly Property OkCommand As ICommand
-
-    Public ReadOnly Property DropCommand As ICommand
-
-    Public ReadOnly Property DragOverCommand As ICommand
 
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 

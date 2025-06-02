@@ -21,7 +21,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Sub New()
         MyBase.New
         Items = New ObservableCollection(Of T)()
-        'ItemsView = New CollectionView(Items)
+        ItemsView = New CollectionView(Items)
+
         MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext())
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
     End Sub
@@ -29,6 +30,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #End Region
 
 #Region "Events"
+
 #End Region
 
 #Region "Properties"
@@ -39,20 +41,22 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         Set(value As ObservableCollection(Of T))
             If Not Equals(_items, value) Then
                 _items = value
-                SelectedItem = If(value.FirstOrDefault(), Nothing)
-                'ItemsView = New CollectionView(_items)
+                'SelectedItem = If(value.FirstOrDefault(), Nothing)
+                ItemsView = New CollectionView(_items)
+                ItemsView.MoveCurrentToLast()
+                '                Debug.Print("ItemsView.CurrentItem: " & ItemsView.CurrentItem.ToString & " Items.SelectedItem " & SelectedItem.ToString)
                 OnPropertyChanged(NameOf(Items))
             End If
         End Set
     End Property
 
-    'Public Property ItemsView As ICollectionView
-    Public Property MoveNextCommand As RelayCommand(Of T)
-    Public Property MovePreviousCommand As RelayCommand(Of T)
+    Public Property ItemsView As ICollectionView
+
+
 
     Public Property CanMoveNext() As Boolean
         Get
-            'Return ItemsView.CurrentPosition < Items.Count - 1
+            'Return ItemsView.CurrentPosition + 1 < Items.Count
             Return Items.IndexOf(SelectedItem) < Items.Count - 1
         End Get
         Set(value As Boolean)
@@ -76,9 +80,15 @@ Public MustInherit Class MasterDetailViewModel(Of T)
             Return _selectedItem
         End Get
         Set(value As T)
+            'If Not Equals(ItemsView.CurrentItem, value) Then
+            '    ItemsView.MoveCurrentTo(value)
+            '    _selectedItem = value
+            '    OnPropertyChanged(NameOf(SelectedItem))
+            '    MoveNextCommand.RaiseCanExecuteChanged()
+            '    MovePreviousCommand.RaiseCanExecuteChanged()
+            'End If
             If Not Equals(_selectedItem, value) Then
                 _selectedItem = value
-                'ItemsView.MoveCurrentTo(value)
                 OnPropertyChanged(NameOf(SelectedItem))
                 MoveNextCommand.RaiseCanExecuteChanged()
                 MovePreviousCommand.RaiseCanExecuteChanged()
@@ -89,25 +99,26 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #End Region
 
 #Region "Commands"
+    Public Property MoveNextCommand As RelayCommand(Of T)
+    Public Property MovePreviousCommand As RelayCommand(Of T)
 
 #End Region
 
 #Region "Methoden"
     Private Sub OnMovePrevious()
         'ItemsView.MoveCurrentToPrevious()
-        'SelectedItem = ItemsView.CurrentItem
         SelectedItem = Items(Items.IndexOf(SelectedItem) - 1)
     End Sub
     Private Sub OnMoveNext()
         'ItemsView.MoveCurrentToNext()
-        'SelectedItem = ItemsView.CurrentItem
+        'Debug.Print(_selectedItem.ToString)
         SelectedItem = Items(Items.IndexOf(SelectedItem) + 1)
     End Sub
 
     Public Sub SortBy(propertyName As String, direction As ListSortDirection)
-        'ItemsView.SortDescriptions.Clear()
-        'ItemsView.SortDescriptions.Add(New SortDescription(propertyName, direction))
-        'ItemsView.Refresh()
+        ItemsView.SortDescriptions.Clear()
+        ItemsView.SortDescriptions.Add(New SortDescription(propertyName, direction))
+        ItemsView.Refresh()
     End Sub
 #End Region
 

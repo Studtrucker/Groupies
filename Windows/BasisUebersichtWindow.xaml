@@ -30,17 +30,17 @@
                 </Grid.ColumnDefinitions>
                 
                 <!--Objektliste-->
-                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
+                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserSortColumns="True"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" Width="*"/>
-                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="*"/>
-                        <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" Width="*"/>
+                        <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" SortMemberPath="Spitzname" Width="*"/>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="*"/>
+                        <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 
@@ -373,14 +373,13 @@
                 <Border DockPanel.Dock="Bottom">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                        <Button x:Name="ZurueckButton" Width="35" Command="{Binding AktuellesViewModel.MovePreviousCommand}" IsEnabled="{Binding AktuellesViewModel.CanMovePrevious}">
+                        <Button x:Name="ZurueckButton" Width="35" Command="{Binding AktuellesViewModel.MovePreviousCommand}" >
                             <Image Source="/Images/icons8-back-48.png"/>
                         </Button>
-                        <Button x:Name="VorButton" Width="35" Command="{Binding AktuellesViewModel.MoveNextCommand}" IsEnabled="{Binding AktuellesViewModel.CanMoveNext}">
+                        <Button x:Name="VorButton" Width="35" Command="{Binding AktuellesViewModel.MoveNextCommand}" >
                             <Image Source="/Images/icons8-next-48.png"/>
                         </Button>
                         <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
-                        <!--<Button x:Name="CloseButton" Width="110" Content="Schliessen"  Click="CloseButton_Click" Visibility="{Binding CloseButtonVisibility}"/>-->
                     </StackPanel>
                 </Border>
 

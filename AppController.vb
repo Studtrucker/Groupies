@@ -70,7 +70,7 @@ Namespace Controller
             'AktuellerClub = Nothing
             AktuellerClub = New Club(Clubname)
 
-            AktuellerClub.Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen
+            AktuellerClub.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
             AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
             AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
 

@@ -43,7 +43,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         Set(value As ObservableCollection(Of T))
             If Not Equals(_items, value) Then
                 _items = value
-                'SelectedItem = If(value.FirstOrDefault(), Nothing)
                 ItemsView = New CollectionView(_items)
                 ItemsView.MoveCurrentToFirst()
                 OnPropertyChanged(NameOf(Items))

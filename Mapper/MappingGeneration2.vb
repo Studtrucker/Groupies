@@ -9,7 +9,7 @@ Public Module MappingGeneration2
         ' Neue Einteilung erstellen
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1", .Sortierung = 1})
 
-        NeuerClub.Leistungsstufenliste = Skiclub.Leistungsstufenliste
+        NeuerClub.AlleLeistungsstufen = Skiclub.Leistungsstufenliste
         '' Jede Group aus dem Skiclub mappen und in die Gruppenliste des Clubs hängen
         NeuerClub.Einteilungsliste(0).Gruppenliste = Skiclub.Gruppenliste
         '' Gruppenlose Teilnehmer und Trainer mappen

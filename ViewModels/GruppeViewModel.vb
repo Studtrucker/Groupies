@@ -75,10 +75,10 @@ Public Class GruppeViewModel
 
     Public Property Benennung As String
         Get
-            Return _Gruppe.Benennung
+            Return _Gruppe.Alias
         End Get
         Set(value As String)
-            _Gruppe.Benennung = value
+            _Gruppe.Alias = value
             OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
         End Set
@@ -86,10 +86,10 @@ Public Class GruppeViewModel
 
     Public Property AusgabeTeilnehmerinfo As String
         Get
-            Return _Gruppe.AusgabeTeilnehmerinfo
+            Return _Gruppe.Benennung
         End Get
         Set(value As String)
-            _Gruppe.AusgabeTeilnehmerinfo = value
+            _Gruppe.Benennung = value
             OnPropertyChanged(NameOf(AusgabeTeilnehmerinfo))
             ValidateTeilnehmerinfo()
         End Set
@@ -141,9 +141,9 @@ Public Class GruppeViewModel
 #Region "Gültigkeitsprüfung"
 
     Private Sub ValidateTeilnehmerinfo()
-        ClearErrors(NameOf(_Gruppe.AusgabeTeilnehmerinfo))
-        If String.IsNullOrWhiteSpace(_Gruppe.AusgabeTeilnehmerinfo) Then
-            AddError(NameOf(_Gruppe.AusgabeTeilnehmerinfo), "Ausgabe für die Teilnehmerinfo darf nicht leer sein.")
+        ClearErrors(NameOf(_Gruppe.Benennung))
+        If String.IsNullOrWhiteSpace(_Gruppe.Benennung) Then
+            AddError(NameOf(_Gruppe.Benennung), "Ausgabe für die Teilnehmerinfo darf nicht leer sein.")
         End If
     End Sub
 
@@ -162,9 +162,9 @@ Public Class GruppeViewModel
     End Sub
 
     Private Sub ValidateBenennung()
-        ClearErrors(NameOf(_Gruppe.Benennung))
-        If String.IsNullOrWhiteSpace(_Gruppe.Benennung) Then
-            AddError(NameOf(_Gruppe.Benennung), "Benennung darf nicht leer sein.")
+        ClearErrors(NameOf(_Gruppe.Alias))
+        If String.IsNullOrWhiteSpace(_Gruppe.Alias) Then
+            AddError(NameOf(_Gruppe.Alias), "Benennung darf nicht leer sein.")
         End If
     End Sub
 

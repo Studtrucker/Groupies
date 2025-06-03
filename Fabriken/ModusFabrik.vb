@@ -11,7 +11,7 @@ Namespace Fabriken
                 Case Enums.ModusEnum.Erstellen
                     Return New ModusErstellen
                 Case Enums.ModusEnum.Anzeigen
-                    Return New ModusAnsehen
+                    Return New ModusAnzeigen
                 Case Else
                     Return New Exception("Unbekannter Modus")
             End Select
@@ -19,7 +19,7 @@ Namespace Fabriken
 
     End Class
 
-    Public Class ModusAnsehen
+    Public Class ModusAnzeigen
         Implements Interfaces.IModus
 
         Public Property Titel As String = "ansehen" Implements Interfaces.IModus.Titel

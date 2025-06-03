@@ -19,18 +19,18 @@ Namespace Entities
 
         Public ReadOnly Property GruppenListeSortierungNachName As ObservableCollection(Of Gruppe)
             Get
-                Return New ObservableCollection(Of Gruppe)(Me.OrderBy(Of String)(Function(x) x.Benennung))
+                Return New ObservableCollection(Of Gruppe)(Me.OrderBy(Of String)(Function(x) x.Alias))
             End Get
         End Property
 
         Public ReadOnly Property BenennungGeordnet As IEnumerable(Of String) =
             OrderBy(Function(G) G.Sortierung) _
-            .ThenBy(Function(G) G.Benennung) _
-            .Select(Function(G) G.Benennung)
+            .ThenBy(Function(G) G.Alias) _
+            .Select(Function(G) G.Alias)
 
         Public ReadOnly Property GruppeGeordnet As IEnumerable(Of Gruppe) =
             OrderBy(Function(G) G.Sortierung) _
-            .ThenBy(Function(G) G.Benennung)
+            .ThenBy(Function(G) G.Alias)
 
 #Region "Funktionen und Methoden"
         Public Overloads Sub AddRange(Gruppenliste As IEnumerable(Of Gruppe))

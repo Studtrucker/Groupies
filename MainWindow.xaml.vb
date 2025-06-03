@@ -730,7 +730,7 @@ Public Class MainWindow
 
         If dlg.ShowDialog = True Then
             Try
-                AppController.AktuellerClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
+                AppController.AktuellerClub.AlleLeistungsstufen.Add(dlg.Leistungsstufe)
             Catch ex As Exception
                 MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             End Try
@@ -748,11 +748,6 @@ Public Class MainWindow
 
     Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
         OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
-    End Sub
-
-    Private Sub ZeigeLeistungsstufenuebersicht(sender As Object, e As RoutedEventArgs)
-        Dim Leistungsstufenuebericht As New Leistungsstufenuebersicht
-        Leistungsstufenuebericht.Show()
     End Sub
 
     Private Sub ZeigeTraineruebersicht(sender As Object, e As RoutedEventArgs)
@@ -1097,8 +1092,7 @@ Public Class MainWindow
     End Enum
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        Dim fml = New Testfenster
-        fml.Show()
+
     End Sub
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
@@ -1121,7 +1115,7 @@ Public Class MainWindow
 
     Private Sub HandleTestBearbeiten(sender As Object, e As RoutedEventArgs)
 
-        Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
+        Dim O = New Gruppe With {.[Alias] = "Gruppe1", .Sortierung = 1}
 
         Dim vm = New GruppeViewModel With {
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
@@ -1173,7 +1167,6 @@ Public Class MainWindow
         mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
 
         fenster.DataContext = mvw
-
         fenster.Show()
 
     End Sub
@@ -1184,8 +1177,8 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleFaehigkeiten
 
         fenster.DataContext = mvw
@@ -1199,13 +1192,13 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleEinteilungen
 
         fenster.DataContext = mvw
-
         fenster.Show()
+
     End Sub
 
     Private Sub ZeigeGruppenUebersicht(sender As Object, e As RoutedEventArgs)
@@ -1214,14 +1207,29 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
 
         fenster.DataContext = mvw
 
         fenster.Show()
 
+    End Sub
+
+    Private Sub ZeigeLeistungsstufenUebersicht(sender As Object, e As RoutedEventArgs)
+        Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(fenster))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen
+
+        fenster.DataContext = mvw
+
+        fenster.Show()
     End Sub
 
 

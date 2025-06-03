@@ -19,7 +19,7 @@ Namespace UserControls
         End Sub
 
         Private Sub ParticipantView_Loaded(sender As Object, e As RoutedEventArgs)
-            _levelListCollectionView = New ListCollectionView(CDS.AktuellerClub.Leistungsstufenliste)
+            _levelListCollectionView = New ListCollectionView(CDS.AktuellerClub.AlleLeistungsstufen)
             _levelListCollectionView.SortDescriptions.Add(New SortDescription("SortNumber", ListSortDirection.Ascending))
             LeistungsstandComboBox.ItemsSource = _levelListCollectionView
         End Sub

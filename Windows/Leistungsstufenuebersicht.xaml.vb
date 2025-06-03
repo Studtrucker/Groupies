@@ -22,7 +22,7 @@ Public Class Leistungsstufenuebersicht
         CommandBindings.Add(New CommandBinding(ApplicationCommands.Close, AddressOf Handle_Close_Execute))
 
 
-        _LeistungsstufenCollectionView = New ListCollectionView(AppCon.AktuellerClub.Leistungsstufenliste)
+        _LeistungsstufenCollectionView = New ListCollectionView(AppCon.AktuellerClub.AlleLeistungsstufen)
         If _LeistungsstufenCollectionView.CanSort Then
             _LeistungsstufenCollectionView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         End If
@@ -60,7 +60,7 @@ Public Class Leistungsstufenuebersicht
         Dim dlg = New NeueLeistungsstufeDialog With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         If dlg.ShowDialog = True Then
-            AppCon.AktuellerClub.Leistungsstufenliste.Add(dlg.Leistungsstufe)
+            AppCon.AktuellerClub.AlleLeistungsstufen.Add(dlg.Leistungsstufe)
         End If
     End Sub
 

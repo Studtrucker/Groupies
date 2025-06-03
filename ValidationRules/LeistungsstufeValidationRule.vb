@@ -25,9 +25,9 @@ Namespace ValidationRules
                 End If
 
                 ' Zuerst das Objekt aus dem Value mit Hilfe der ID ermitteln (Rückgabe = IEnumerable(of Object))
-                Dim ValueListe = Controller.AppController.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.LeistungsstufeID = Leistungsstufe.LeistungsstufeID)
+                Dim ValueListe = Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.LeistungsstufeID = Leistungsstufe.LeistungsstufeID)
                 ' Dieses Objekt aus der Gesamt-Objektliste entfernen
-                Dim Leistungsstufenliste = Controller.AppController.AktuellerClub.Leistungsstufenliste.Except(ValueListe)
+                Dim Leistungsstufenliste = Controller.AppController.AktuellerClub.AlleLeistungsstufen.Except(ValueListe)
                 ' Jetzt kann geprüft werden, ob es ein gleich benanntes Objekt in der Restliste gibt
                 If Leistungsstufenliste.ToList.Where(Function(LS) LS.Benennung = Benennung).Any Then
                     ErrorContent.Add("Leistungsstufe mit dieser Benennung ist bereits vorhanden")

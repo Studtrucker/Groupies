@@ -3,6 +3,7 @@
 
     Public Class Einteilung
         Inherits BaseModel
+        Implements IModel
 
 
 #Region "Felder"
@@ -156,6 +157,15 @@
                 Return _AlleTeilnehmer
             End Get
         End Property
+
+        Public Property Ident As Guid Implements IModel.Ident
+            Get
+                Throw New NotImplementedException()
+            End Get
+            Set(value As Guid)
+                Throw New NotImplementedException()
+            End Set
+        End Property
 #End Region
 
 #Region "Methoden und Funktionen"
@@ -233,6 +243,10 @@
         Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Add(Teilnehmer)
             GruppenloseTeilnehmer.Remove(Teilnehmer)
+        End Sub
+
+        Public Sub speichern() Implements IModel.speichern
+            Throw New NotImplementedException()
         End Sub
 
 

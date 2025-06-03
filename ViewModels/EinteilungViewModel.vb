@@ -1,24 +1,66 @@
-﻿Imports Groupies.Entities
+﻿Imports System.Data.Common
+Imports Groupies.Entities
 
 Public Class EinteilungViewModel
-    Inherits MasterDetailViewModel(Of Faehigkeit)
+    Inherits MasterDetailViewModel(Of Einteilung)
     Implements IViewModelSpecial
 
-    Public Property Model As IModel Implements IViewModelSpecial.Model
+
+#Region "Konstruktor"
+    ''' <summary>
+    ''' Parameterloser Konstruktor für den EinteilungViewModel.
+    ''' Die Instanz benötigt den Modus und ein Einteilungs-Objekt.
+    ''' Der Datentyp und das UserControl werden automatisch gesetzt.
+    ''' </summary>
+    Public Sub New()
+        MyBase.New()
+        ' Hier können Sie den Konstruktor anpassen
+        UserControlLoaded = New RelayCommand(Of Einteilung)(AddressOf OnLoaded)
+        OkCommand = New RelayCommand(Of Einteilung)(AddressOf OnOk, Function() IstEingabeGueltig)
+    End Sub
+
+#End Region
+
+
+#Region "Properties"
+    Public ReadOnly Property OkCommand As ICommand
+    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+
+    Private _Einteilung As Einteilung
+
+    Public Property Einteilung As IModel Implements IViewModelSpecial.Model
         Get
-            Throw New NotImplementedException()
+            Return _Einteilung
         End Get
         Set(value As IModel)
-            Throw New NotImplementedException()
+            _Einteilung = value
         End Set
     End Property
 
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+    Public Property ID As Guid
         Get
-            Throw New NotImplementedException()
+            Return _Einteilung.Ident
         End Get
-        Set(value As ICommand)
-            Throw New NotImplementedException()
+        Set(value As Guid)
+            _Einteilung.Ident = value
+        End Set
+    End Property
+
+    Public Property Benennung As String
+        Get
+            Return _Einteilung.Benennung
+        End Get
+        Set(value As String)
+            _Einteilung.Benennung = value
+        End Set
+    End Property
+
+    Public Property Sortierung As String
+        Get
+            Return _Einteilung.Sortierung
+        End Get
+        Set(value As String)
+            _Einteilung.Sortierung = value
         End Set
     End Property
 
@@ -31,8 +73,11 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
+#End Region
+
+
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        Throw New NotImplementedException()
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IViewModelSpecial_OnOk(obj As Object) Implements IViewModelSpecial.OnOk

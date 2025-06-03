@@ -14,7 +14,7 @@ Namespace Converters
                 AktuelleLeistungsstufen.Clear()
             End If
             If Groupies.Controller.AppController.AktuellerClub IsNot Nothing Then
-                Groupies.Controller.AppController.AktuellerClub.Leistungsstufenliste.ToList.ForEach(Sub(Ls) AktuelleLeistungsstufen.Add(Ls.Benennung))
+                Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.ToList.ForEach(Sub(Ls) AktuelleLeistungsstufen.Add(Ls.Benennung))
             End If
         End Sub
 
@@ -25,7 +25,7 @@ Namespace Converters
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
             If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
-            Dim obj = Controller.AppController.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt", -1)).First
+            Dim obj = Controller.AppController.AktuellerClub.AlleLeistungsstufen.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt", -1)).First
             Return obj
         End Function
     End Class

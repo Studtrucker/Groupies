@@ -96,24 +96,24 @@ Namespace Entities.Generation3
         End Property
 
         ''' <summary>
-        ''' Eine Liste der verwendeten Leistungsstufen
+        ''' Eine Liste aller Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection
+        Public Property AlleLeistungsstufen() As LeistungsstufeCollection = New LeistungsstufeCollection
 
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
-                If Leistungsstufenliste Is Nothing OrElse Leistungsstufenliste.Count = 0 Then
+                If AlleLeistungsstufen Is Nothing OrElse AlleLeistungsstufen.Count = 0 Then
                     Return New List(Of String) From {"Keine Leistungsstufen definiert"}
                 Else
-                    Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
+                    Return AlleLeistungsstufen.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
                 End If
             End Get
         End Property
 
 
         ''' <summary>
-        ''' Eine Liste der aller Faehigkeiten
+        ''' Eine Liste aller Faehigkeiten
         ''' als Vorlage für die Leistungsstufen
         ''' </summary>
         ''' <returns></returns>

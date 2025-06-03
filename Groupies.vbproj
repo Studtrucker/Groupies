@@ -251,9 +251,6 @@
     <Compile Include="Windows\GruppeDialog.xaml.vb">
       <DependentUpon>GruppeDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Testfenster.xaml.vb">
-      <DependentUpon>Testfenster.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\TrainerDialog.xaml.vb">
       <DependentUpon>TrainerDialog.xaml</DependentUpon>
     </Compile>
@@ -384,10 +381,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\GruppeDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Testfenster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

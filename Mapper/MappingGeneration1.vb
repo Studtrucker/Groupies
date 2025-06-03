@@ -17,7 +17,7 @@ Public Module MappingGeneration1
         NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
 
         ' Unabhängige Leistungsstufen 
-        NeuerClub.Leistungsstufenliste = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
+        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
         ' Gruppenlose Teilnehmer und Trainer mappen
         NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
         NeuerClub.Einteilungsliste(0).GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
@@ -32,7 +32,7 @@ Public Module MappingGeneration1
 
         ' Die Gruppe mappen
         Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
-            .Benennung = Group.GroupNaming,
+            .[Alias] = Group.GroupNaming,
             .Sortierung = Group.GroupSort,
             .GruppenID = Group.GroupID,
             .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel)}

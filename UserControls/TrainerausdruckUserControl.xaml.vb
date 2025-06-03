@@ -20,8 +20,8 @@ Namespace UserControls
         End Sub
 
         Public Sub InitPropsFromGroup(Gruppe As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
-            AusgabeTeilnehmerinfo = Gruppe.AusgabeTeilnehmerinfo
-            AusgabeTrainerinfo = Gruppe.Benennung
+            Benennung = Gruppe.Benennung
+            'AusgabeTrainerinfo = Gruppe.Alias
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
             Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
@@ -56,12 +56,12 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property AusgabeTrainerinfo As String
+        Public Property Benennung As String
             Get
-                Return AusgabeTrainerinfoTextBlock.Text
+                Return BenennungTextBlock.Text
             End Get
             Set(value As String)
-                AusgabeTrainerinfoTextBlock.Text = value
+                BenennungTextBlock.Text = value
             End Set
         End Property
 
@@ -83,14 +83,14 @@ Namespace UserControls
             End Set
         End Property
 
-        Public Property AusgabeTeilnehmerinfo As String
-            Get
-                Return AusgabeTeilnehmerinfoTextBlock.Text
-            End Get
-            Set(value As String)
-                AusgabeTeilnehmerinfoTextBlock.Text = value
-            End Set
-        End Property
+        'Public Property AusgabeTeilnehmerinfo As String
+        '    Get
+        '        Return AliasTextBlock.Text
+        '    End Get
+        '    Set(value As String)
+        '        AliasTextBlock.Text = value
+        '    End Set
+        'End Property
 
         Public Property TrainerSpitzname As String
             Get

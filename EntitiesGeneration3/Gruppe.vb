@@ -28,7 +28,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String)
-            _AusgabeTeilnehmerinfo = Ausgabename
+            _Benennung = Ausgabename
         End Sub
 
         ''' <summary>
@@ -37,7 +37,7 @@ Namespace Entities
         ''' <param name="Ausgabename"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Sortierung As Integer)
-            _AusgabeTeilnehmerinfo = Ausgabename
+            _Benennung = Ausgabename
             _Sortierung = Sortierung
         End Sub
 
@@ -47,8 +47,8 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         ''' <param name="Ausgabename"></param>
         Public Sub New(Ausgabename As String, Benennung As String)
-            _Benennung = Benennung
-            _AusgabeTeilnehmerinfo = Ausgabename
+            _Alias = Benennung
+            _Benennung = Ausgabename
         End Sub
 
         ''' <summary>
@@ -58,8 +58,8 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Benennung As String, Sortierung As Integer)
-            _Benennung = Benennung
-            _AusgabeTeilnehmerinfo = Ausgabename
+            _Alias = Benennung
+            _Benennung = Ausgabename
             _Sortierung = Sortierung
             Mitgliederliste = New TeilnehmerCollection
         End Sub
@@ -70,9 +70,9 @@ Namespace Entities
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
             GruppenID = OriginGruppe.GruppenID
-            Benennung = OriginGruppe.Benennung
+            [Alias] = OriginGruppe.Alias
             Leistungsstufe = OriginGruppe.Leistungsstufe
-            AusgabeTeilnehmerinfo = OriginGruppe.AusgabeTeilnehmerinfo
+            Benennung = OriginGruppe.Benennung
             Sortierung = OriginGruppe.Sortierung
             Trainer = OriginGruppe.Trainer
 
@@ -99,25 +99,25 @@ Namespace Entities
         End Property
 
         ''' <summary>
-        ''' Die interne Benennung der Gruppe
+        ''' Die interne Alias-Benennung der Gruppe
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Gruppenbennung ist ein Pflichtfeld")>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Alias ist ein Pflichtfeld")>
+        Public Property [Alias] As String
+
+        ''' <summary>
+        ''' Die globale Benennung der Gruppe
+        ''' </summary>
+        ''' <returns></returns>
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist ein Pflichtfeld")>
         Public Property Benennung As String
 
-        ''' <summary>
-        ''' Der Ausgabename für die Teilnehmerinformation
-        ''' </summary>
-        ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Ausgabename ist ein Pflichtfeld")>
-        Public Property AusgabeTeilnehmerinfo As String
-
-        ''' <summary>
-        ''' Der Ausgabename für die Trainerinformation
-        ''' TeilnehmerinfoName und die Benennung
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AusgabeTrainerinfo As String = $"{AusgabeTeilnehmerinfo} {Benennung}"
+        '''' <summary>
+        '''' Der Ausgabename für die Trainerinformation
+        '''' TeilnehmerinfoName und die Benennung
+        '''' </summary>
+        '''' <returns></returns>
+        'Public ReadOnly Property AusgabeTrainerinfo As String = $"{Benennung} {[Alias]}"
 
 
         ''' <summary>
@@ -165,7 +165,7 @@ Namespace Entities
 #Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
-            Return AusgabeTeilnehmerinfo
+            Return Benennung
         End Function
 
         Public Sub speichern() Implements IModel.speichern

@@ -8,7 +8,7 @@ Namespace ValidationRules
 
         Public Overrides Function Validate(value As Object, cultureInfo As CultureInfo) As ValidationResult
 
-            For Each item In AktuellerClub.Leistungsstufenliste
+            For Each item In AktuellerClub.AlleLeistungsstufen
                 If item.Sortierung = value Then
                     Return New ValidationResult(False, $"Die Sortierung {value} wird bereits verwendet")
                 End If

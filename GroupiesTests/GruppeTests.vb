@@ -10,10 +10,10 @@ Public Class GruppeTests
         Dim g1 = New Gruppe("Enzian", "Anfänger", 1)
         Dim g2 = New Gruppe("K2", 2)
         Dim g3 = New Gruppe("Wildspitze", "Experten")
-        Assert.AreEqual("Enzian", g1.AusgabeTeilnehmerinfo)
-        Assert.AreEqual("K2", g2.AusgabeTeilnehmerinfo)
-        Assert.AreEqual("Wildspitze", g3.AusgabeTeilnehmerinfo)
-        Assert.AreEqual("Experten", g3.Benennung)
+        Assert.AreEqual("Enzian", g1.Benennung)
+        Assert.AreEqual("K2", g2.Benennung)
+        Assert.AreEqual("Wildspitze", g3.Benennung)
+        Assert.AreEqual("Experten", g3.Alias)
         Assert.AreEqual(2, g2.Sortierung)
     End Sub
 

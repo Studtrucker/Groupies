@@ -46,12 +46,12 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Gruppenname" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                            Style="{StaticResource BigCaption}"/>
-                <TextBlock x:Name="AusgabeTeilnehmerinfoTextBlock" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
+                <TextBlock x:Name="BenennungTextBlock" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
                            Style="{StaticResource BigCaptionValue}" />
-                <TextBlock Text="Benennung" Grid.Column="1" 
-                           Style="{StaticResource SmallCaption}"/>
-                <TextBlock x:Name="AusgabeTrainerinfoTextBlock" Grid.Column="2" 
-                           Style="{StaticResource SmallCaptionValue}" />
+                <!--<TextBlock Text="Benennung" Grid.Column="1" 
+                           Style="{StaticResource SmallCaption}"/>-->
+                <!--<TextBlock x:Name="AusgabeTrainerinfoTextBlock" Grid.Column="2" 
+                           Style="{StaticResource SmallCaptionValue}" />-->
             </Grid>
         </DockPanel>
 

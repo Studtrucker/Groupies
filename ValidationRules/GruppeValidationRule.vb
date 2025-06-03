@@ -9,8 +9,8 @@ Namespace ValidationRules
             Dim bindingGroup = DirectCast(value, BindingGroup)
             If bindingGroup.Items.Count = 1 Then
                 Dim Gruppe = DirectCast(bindingGroup.Items(0), Entities.Gruppe)
-                Dim AusgabeTeilnehmerinfo = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.AusgabeTeilnehmerinfo)), String)
-                Dim Benennung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Benennung)), String)
+                Dim AusgabeTeilnehmerinfo = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Benennung)), String)
+                Dim Benennung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Alias)), String)
                 Dim Sortierung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Sortierung)), String)
                 Dim Leistungsstand = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Leistungsstufe)), String)
 

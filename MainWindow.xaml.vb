@@ -1168,8 +1168,8 @@ Public Class MainWindow
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
 
         fenster.DataContext = mvw

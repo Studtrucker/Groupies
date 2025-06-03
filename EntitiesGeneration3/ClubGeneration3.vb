@@ -117,32 +117,32 @@ Namespace Entities.Generation3
         ''' als Vorlage für die Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
 
         ''' <summary>
         ''' Eine Liste der aller Trainer
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleTrainer() As TrainerCollection
+        Public Property AlleTrainer() As TrainerCollection = New TrainerCollection
 
         ''' <summary>
         ''' Eine Liste der aller Teilnehmer
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleTeilnehmer() As TeilnehmerCollection
+        Public Property AlleTeilnehmer() As TeilnehmerCollection = New TeilnehmerCollection
 
 
         ''' <summary>
         ''' Eine Liste der aller Gruppen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleGruppen() As GruppeCollection
+        Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
 
         ''' <summary>
         ''' Eine Liste der aller Einteilungen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleEinteilungen() As EinteilungCollection
+        Public Property AlleEinteilungen() As EinteilungCollection = New EinteilungCollection
 
 #End Region
 

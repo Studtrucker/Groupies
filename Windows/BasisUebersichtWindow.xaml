@@ -218,8 +218,9 @@
 
                     <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
                               x:Name="LeistungsstandComboBox"
-                              ItemsSource="{Binding LeistungsstufenListCollectionView}"
                               SelectedValue="{Binding SelectedItem.Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                    <!--ItemsSource="{Binding LeistungsstufenListCollectionView}"-->
+
                 </Grid>
             </Grid>
 
@@ -244,7 +245,8 @@
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--                          Sorting="{Binding DataGridSortingCommand}"-->
+                    <!--   
+                    Sorting="{Binding DataGridSortingCommand}"-->
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Benennung" Binding="{Binding AusgabeTeilnehmerinfo}" SortMemberPath="AusgabeTeilnehmerinfo" Width="*"/>
@@ -317,9 +319,9 @@
 
                     <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
                   x:Name="LeistungsstufeCombobox"
-                  ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                  SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
-                    ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                  ItemsSource="{Binding LeistungsstufenListCollectionView}"/>
+                  <!--SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"-->
                 </Grid>
             </Grid>
         </DataTemplate>

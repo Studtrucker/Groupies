@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
+Imports Groupies.Entities
 
 
 ''' <summary>
@@ -44,8 +45,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
                 _items = value
                 'SelectedItem = If(value.FirstOrDefault(), Nothing)
                 ItemsView = New CollectionView(_items)
-                ItemsView.MoveCurrentToLast()
-                '                Debug.Print("ItemsView.CurrentItem: " & ItemsView.CurrentItem.ToString & " Items.SelectedItem " & SelectedItem.ToString)
+                ItemsView.MoveCurrentToFirst()
                 OnPropertyChanged(NameOf(Items))
             End If
         End Set
@@ -120,16 +120,16 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         SelectedItem = Items(Items.IndexOf(SelectedItem) - 1)
     End Sub
     Private Sub OnMoveNext()
-        'ItemsView.MoveCurrentToNext()
-        'Debug.Print(_selectedItem.ToString)
-        SelectedItem = Items(Items.IndexOf(SelectedItem) + 1)
+        Debug.Print(SelectedItem.ToString)
+        ItemsView.MoveCurrentToNext()
+        Debug.Print(SelectedItem.ToString)
     End Sub
 
-    Public Sub SortBy(propertyName As String, direction As ListSortDirection)
-        ItemsView.SortDescriptions.Clear()
-        ItemsView.SortDescriptions.Add(New SortDescription(propertyName, direction))
-        ItemsView.Refresh()
-    End Sub
+    'Public Sub SortBy(propertyName As String, direction As ListSortDirection)
+    '    ItemsView.SortDescriptions.Clear()
+    '    ItemsView.SortDescriptions.Add(New SortDescription(propertyName, direction))
+    '    ItemsView.Refresh()
+    'End Sub
 #End Region
 
 End Class

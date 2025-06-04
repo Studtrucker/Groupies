@@ -1179,7 +1179,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleFaehigkeiten
+        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten
 
         fenster.DataContext = mvw
 

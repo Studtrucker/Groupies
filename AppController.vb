@@ -57,7 +57,7 @@ Namespace Controller
 
         Public Shared Sub NeuenClubErstellen()
             Dim dlg = InputBox("Bitte geben Sie den Namen des neuen Clubs ein", "Neuen Club erstellen", "Groupies Club")
-            If dlg = "" Then
+            If String.IsNullOrEmpty(dlg) OrElse String.IsNullOrWhiteSpace(dlg) Then
                 MessageBox.Show("Der Clubname darf nicht leer sein.")
                 Exit Sub
             End If
@@ -71,6 +71,7 @@ Namespace Controller
             AktuellerClub = New Club(Clubname)
 
             AktuellerClub.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
+            AktuellerClub.AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen
             AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
             AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
 

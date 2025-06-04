@@ -120,6 +120,17 @@ Namespace Entities.Generation3
         Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
 
         ''' <summary>
+        ''' Eine Liste aller Faehigkeiten
+        ''' als Vorlage für die Leistungsstufen
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
+            Get
+                Return New FaehigkeitCollection(AlleFaehigkeiten.Where(Function(f) f.Sortierung > -1))
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Eine Liste der aller Trainer
         ''' </summary>
         ''' <returns></returns>

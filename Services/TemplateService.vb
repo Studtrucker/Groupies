@@ -14,12 +14,12 @@ Namespace Services
         'C:\Users\studt_era90oc\Source\Repos\Skischule\Services\GroupLevelDistribution.xlsx
         Public Function StandardLeistungsstufenErstellen() As LeistungsstufeCollection
 
-            Dim Unbekannt = New Leistungsstufe() With {
-                .Benennung = "Anfänger",
+            Dim Empty = New Leistungsstufe() With {
+                .Benennung = String.Empty,
                 .Sortierung = -1,
-                .LeistungsstufeID = Guid.NewGuid,
+                .LeistungsstufeID = Guid.Empty,
                 .Faehigkeiten = Nothing,
-                .Beschreibung = DescriptionUnbekannt()}
+                .Beschreibung = String.Empty}
 
             Dim Anfaenger = New Leistungsstufe() With {
                 .Benennung = "Anfänger",
@@ -56,9 +56,54 @@ Namespace Services
                 .Faehigkeiten = SkillsExperte(),
                 .LeistungsstufeID = Guid.NewGuid}
 
-            _levelCollection = New LeistungsstufeCollection From {Unbekannt, Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            _levelCollection = New LeistungsstufeCollection From {Empty, Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
             Return _levelCollection
 
+        End Function
+
+        Public Function StandardFaehigkeitenErstellen() As FaehigkeitCollection
+            Dim faehigkeiten = New FaehigkeitCollection From {
+                New Faehigkeit(String.Empty, -1) With {
+                    .Beschreibung = String.Empty},
+                New Faehigkeit("Technik: Kurvensteuerung", 100) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Technik: Belastung", 110) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Technik: Stockeinsatz", 120) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Technik: Carving", 130) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Technik: Gedriftet", 140) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Technik: Position", 150) With {
+                    .Beschreibung = DescriptionAnfaenger()},
+                New Faehigkeit("Koordination: Gleichgewicht", 200) With {
+                    .Beschreibung = DescriptionFortgeschritten()},
+                New Faehigkeit("Koordination: Rhythmusgefühl", 210) With {
+                    .Beschreibung = DescriptionFortgeschritten()},
+                New Faehigkeit("Koordination: Reaktionsfähigkeit", 220) With {
+                    .Beschreibung = DescriptionFortgeschritten()},
+                New Faehigkeit("Koordination: Bewegungskopplung", 230) With {
+                    .Beschreibung = DescriptionFortgeschritten()},
+                New Faehigkeit("Koordination: Umstellungsfähigkeit", 240) With {
+                    .Beschreibung = DescriptionFortgeschritten()},
+                New Faehigkeit("Physisch: Bein- und Rumpfkraft", 300) With {
+                    .Beschreibung = DescriptionGeniesser()},
+                New Faehigkeit("Physisch: Schnelligkeit und Explosivität", 310) With {
+                    .Beschreibung = DescriptionGeniesser()},
+                New Faehigkeit("Physisch: Ausdauer", 320) With {
+                    .Beschreibung = DescriptionGeniesser()},
+                New Faehigkeit("Physisch: Beweglichkeit", 330) With {
+                    .Beschreibung = DescriptionGeniesser()},
+                New Faehigkeit("Taktisch-Analytisch: Linienwahl", 400) With {
+                    .Beschreibung = DescriptionKoenner()},
+                New Faehigkeit("Taktisch-analytische: Anpassung an Schneebedingungen", 410) With {
+                    .Beschreibung = DescriptionExperte()},
+                New Faehigkeit("Taktisch-analytische: Geländeeinschätzung", 420) With {
+                    .Beschreibung = DescriptionExperte()},
+                New Faehigkeit("Taktisch-analytische: Tempodosierung", 430) With {
+                    .Beschreibung = DescriptionExperte()}}
+            Return faehigkeiten
         End Function
 
         Public Function StandardGruppenErstellen(AnzahlGruppen As Integer) As GruppeCollection

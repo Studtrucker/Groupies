@@ -126,6 +126,7 @@ Namespace Services
                         .[Alias] = GruppenBennungen.Item(IndexGruppenName),
                         .Sortierung = GroupSorting.Item(IndexGruppenName),
                         .Leistungsstufe = Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(L) L.Sortierung = -1).Single})
+
                 IndexGruppenName += 1
             Next
 

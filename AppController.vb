@@ -72,8 +72,10 @@ Namespace Controller
 
             AktuellerClub.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
             AktuellerClub.AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen
-            AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
-            AktuellerClub.Einteilungsliste.Item(0).Gruppenliste = TemplateService.StandardGruppenErstellen(15)
+            AktuellerClub.AlleEinteilungen = TemplateService.StandardEinteilungenErstellen()
+            AktuellerClub.AlleGruppen = TemplateService.StandardGruppenErstellen(15)
+
+            'AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")
 

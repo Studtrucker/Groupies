@@ -249,8 +249,9 @@
                     Sorting="{Binding DataGridSortingCommand}"-->
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Benennung" Binding="{Binding AusgabeTeilnehmerinfo}" SortMemberPath="AusgabeTeilnehmerinfo" Width="*"/>
-                        <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Sortierung" Width="*"/>
+                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
+                        <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="AusgabeTeilnehmerinfo" Width="Auto"/>
+                        <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -281,12 +282,6 @@
                         </TextBlock>
                     </Label>
 
-                    <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock >Ausgabe Teilnehmerinfo
-                    <Run Foreground="Red">*</Run>
-                        </TextBlock>
-                    </Label>
-
                     <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
                         <TextBlock>Benennung
                     <Run Foreground="Red">*</Run>
@@ -307,19 +302,17 @@
 
                     <!--Felder-->
                     <TextBox Text="{Binding SelectedItem.GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="1"/>
-                    <TextBox Text="{Binding SelectedItem.AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="AusgabenameTextBox" Grid.Column="2" Grid.Row="2"/>
+                             x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="1"/>
 
                     <TextBox Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                     x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="3" />
+                             x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="3" />
 
                     <TextBox Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="4"/>
+                             x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="4"/>
 
                     <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
-                  x:Name="LeistungsstufeCombobox"
-                  ItemsSource="{Binding LeistungsstufenListCollectionView}"/>
+                              x:Name="LeistungsstufeCombobox"
+                              ItemsSource="{Binding LeistungsstufenListCollectionView}"/>
                   <!--SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
                     ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"-->
                 </Grid>
@@ -349,7 +342,7 @@
                     Sorting="{Binding DataGridSortingCommand}"-->
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="*"/>
+                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -417,7 +410,7 @@
                     Sorting="{Binding DataGridSortingCommand}"-->
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="*"/>
+                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -503,7 +496,7 @@
                     Sorting="{Binding DataGridSortingCommand}"-->
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="*"/>
+                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>

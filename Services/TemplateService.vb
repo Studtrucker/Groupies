@@ -61,6 +61,15 @@ Namespace Services
 
         End Function
 
+        Public Function StandardEinteilungenErstellen() As EinteilungCollection
+            Dim einteilungen = New EinteilungCollection From {
+                New Einteilung With {
+                    .Benennung = "Tag 1",
+                    .Sortierung = 10,
+                    .Gruppenliste = Nothing}}
+            Return einteilungen
+        End Function
+
         Public Function StandardFaehigkeitenErstellen() As FaehigkeitCollection
             Dim faehigkeiten = New FaehigkeitCollection From {
                 New Faehigkeit(String.Empty, -1) With {
@@ -115,7 +124,8 @@ Namespace Services
                 groupCol.Add(New Gruppe("Genießer", 3) With {
                         .Benennung = GroupPrintNames.Item(IndexGruppenName),
                         .[Alias] = GruppenBennungen.Item(IndexGruppenName),
-                        .Sortierung = GroupSorting.Item(IndexGruppenName)})
+                        .Sortierung = GroupSorting.Item(IndexGruppenName),
+                        .Leistungsstufe = Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(L) L.Sortierung = -1).Single})
                 IndexGruppenName += 1
             Next
 

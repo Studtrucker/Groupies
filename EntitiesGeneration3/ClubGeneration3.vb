@@ -101,6 +101,17 @@ Namespace Entities.Generation3
         ''' <returns></returns>
         Public Property AlleLeistungsstufen() As LeistungsstufeCollection = New LeistungsstufeCollection
 
+
+        ''' <summary>
+        ''' Eine Liste aller  Leistungsstufen
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property AlleValidenLeistungsstufen() As LeistungsstufeCollection
+            Get
+                Return New LeistungsstufeCollection(AlleLeistungsstufen.ToList.Where(Function(l) l.Sortierung > 0))
+            End Get
+        End Property
+
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
                 If AlleLeistungsstufen Is Nothing OrElse AlleLeistungsstufen.Count = 0 Then

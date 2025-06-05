@@ -23,14 +23,22 @@ Public Class GruppeViewModel
 #End Region
 
 #Region "Methoden"
-    Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Gruppe.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Gruppe.speichern()
 
-        MyBase.OnOk(Me)
-
     End Sub
+
 
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateBenennung()

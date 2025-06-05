@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel.DataAnnotations
+Imports Groupies.DataImport
 Imports Groupies.Entities
 
 Public Class LeistungsstufeViewModel
@@ -27,12 +28,19 @@ Public Class LeistungsstufeViewModel
         Validate()
     End Sub
 
-    Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Leistungsstufe.speichern()
+
+    '    MyBase.OnOk(Me)
+    'End Sub
+
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Leistungsstufe.speichern()
 
-        MyBase.OnOk(Me)
     End Sub
 
 #End Region

@@ -80,7 +80,11 @@ Public Class EinteilungViewModel
         'Throw New NotImplementedException()
     End Sub
 
-    Private Sub IViewModelSpecial_OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-        OnOk(obj)
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+        ' Hier können Sie die Logik für den OK-Button implementieren
+        _Einteilung.speichern()
+
     End Sub
+
 End Class

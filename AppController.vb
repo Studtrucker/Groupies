@@ -33,14 +33,14 @@ Namespace Controller
         ''' <returns></returns>
         Public Shared Property StandardLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
 
-        ''' <summary>
-        ''' Aktuelle Gruppen
-        ''' Es können bis zu 15 verschiedene Gruppen
-        ''' angelegt werden, die mit verschiedenen Namen
-        ''' versehen werden
-        ''' </summary>
-        ''' <returns></returns>
-        Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
+        '''' <summary>
+        '''' Aktuelle Gruppen
+        '''' Es können bis zu 15 verschiedene Gruppen
+        '''' angelegt werden, die mit verschiedenen Namen
+        '''' versehen werden
+        '''' </summary>
+        '''' <returns></returns>
+        'Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
 
 #End Region
 

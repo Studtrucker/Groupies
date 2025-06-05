@@ -372,8 +372,8 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim Vm = New TeilnehmerViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Teilnehmer = New Teilnehmer}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -504,8 +504,8 @@ Public Class MainWindow
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         Dim Vm = New TrainerViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
             .Trainer = New Trainer}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
         Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -554,8 +554,8 @@ Public Class MainWindow
 
 
             Dim Vm = New TrainerViewModel With {
-                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
                 .Trainer = Trainer}
+            '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
             Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
@@ -1097,10 +1097,10 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
-        Dim vm = New TrainerViewModel With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
+        Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
         Dim Trainer = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
         vm.Trainer = Trainer
-        vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         Dim Fenster As New BasisWindow(vm)
 
         Fenster.Show()
@@ -1118,8 +1118,8 @@ Public Class MainWindow
         Dim O = New Gruppe With {.[Alias] = "Gruppe1", .Sortierung = 1}
 
         Dim vm = New GruppeViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
             .Gruppe = O}
+        ''.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
         Dim dialog = New BasisWindow(vm) With {
             .Owner = Me,
@@ -1140,8 +1140,8 @@ Public Class MainWindow
 
         Dim O = New Teilnehmer With {.Nachname = "Gruppe1"}
         Dim vm = New TeilnehmerViewModel With {
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
             .Teilnehmer = O}
+        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
         Dim dialog = New BasisWindow(vm) With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}

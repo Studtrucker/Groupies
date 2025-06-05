@@ -30,8 +30,21 @@ Public Module MappingGeneration2
         NeuerClub.AlleGruppen = New GruppeCollection
         Skiclub.Gruppenliste.ToList.ForEach(Sub(g) NeuerClub.AlleGruppen.Add(g))
 
+        GetAlleLeistungsstufen(NeuerClub, Skiclub)
+
         Return NeuerClub
 
     End Function
+
+    Private Sub GetAlleLeistungsstufen(NeuerClub As Generation3.Club, Skiclub As Generation2.Club)
+        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) NeuerClub.AlleLeistungsstufen.Add(g.Leistungsstufe))
+        ' Entferne doppelte Leistungsstufen
+        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(NeuerClub.AlleLeistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+        ' Prüfen, ob es die Leistungsstufe mit der ID Guid.Empty gibt, und ggf. hinzufügen
+        If Not NeuerClub.AlleLeistungsstufen.Contains(New Leistungsstufe(String.Empty, -1) With {.LeistungsstufeID = Guid.Empty}) Then
+            NeuerClub.AlleLeistungsstufen.Add(New Leistungsstufe(String.Empty, -1) With {.LeistungsstufeID = Guid.Empty})
+        End If
+    End Sub
 
 End Module

@@ -24,7 +24,7 @@ Public Class ClubTests
         Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
 
-        Stubai2024.Einteilungsliste(0).Gruppenliste = StandardGruppen
+        Stubai2024.Einteilungsliste(0).Gruppenliste = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
 
         Stubai2024.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Studti, Stubai2024.Einteilungsliste(0).Gruppenliste.ElementAt(0))
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)

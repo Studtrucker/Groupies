@@ -21,19 +21,17 @@ Public Class ViewModelWindow
 
 #Region "Konstruktor"
 
-    Public Sub New()
+    Private Sub New()
         MyBase.New()
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         'DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf OnDataGridSorting)
-        LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
     End Sub
 
     Public Sub New(windowService As IWindowService)
         _windowService = windowService
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
-        LeistungsstufenListCollectionView = AppController.AktuellerClub.LeistungsstufenTextliste
     End Sub
 
 
@@ -152,7 +150,7 @@ Public Class ViewModelWindow
         End Get
     End Property
 
-    Public ReadOnly Property LeistungsstufenListCollectionView As IEnumerable(Of String)
+
 
 #End Region
 

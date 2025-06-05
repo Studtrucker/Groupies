@@ -10,7 +10,7 @@ Imports Groupies.Entities
 ''' </summary>
 ''' <typeparam name="T"></typeparam>
 Public MustInherit Class MasterDetailViewModel(Of T)
-    Inherits ViewModelWindow
+    Inherits ViewModelBase
 
 
 #Region "Felder"
@@ -44,7 +44,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
             If Not Equals(_items, value) Then
                 _items = value
                 ItemsView = New CollectionView(_items)
-                ItemsView.MoveCurrentToFirst()
+                'ItemsView.MoveCurrentToFirst()
                 OnPropertyChanged(NameOf(Items))
             End If
         End Set

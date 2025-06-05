@@ -1,8 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Controller
-Imports Groupies.Controller.AppController
 Imports Groupies.Entities
-Imports Groupies.UserControls
 
 Public Class TeilnehmerViewModel
     Inherits MasterDetailViewModel(Of Teilnehmer)
@@ -22,19 +20,31 @@ Public Class TeilnehmerViewModel
 
         UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
+        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
+        DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        DropDown.MoveCurrentToFirst()
+        LeistungsstufenListCollectionView = DropDown
 
     End Sub
+    Public Property LeistungsstufenListCollectionView As ICollectionView
+
 
 #End Region
 
 #Region "Methoden"
 
-    Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Teilnehmer.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Teilnehmer.speichern()
-
-        MyBase.OnOk(Me)
 
     End Sub
 

@@ -55,12 +55,18 @@ Public Class TrainerViewModel
 
 #Region "Methoden"
 
-    Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Trainer.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Trainer.speichern()
-
-        MyBase.OnOk(Me)
 
     End Sub
 
@@ -100,8 +106,21 @@ Public Class TrainerViewModel
         ValidateEMail()
     End Sub
 
-    Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-        MyBase.OnDataGridSorting(e)
+    'Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+    '    MyBase.OnDataGridSorting(e)
+    '    Dim View = CollectionViewSource.GetDefaultView(Items)
+    '    If View IsNot Nothing Then
+    '        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+    '        View.SortDescriptions.Clear()
+    '        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+    '        e.Column.SortDirection = direction
+    '        e.Handled = True
+    '        ItemsView = View
+    '        ItemsView.Refresh()
+    '    End If
+
+    'End Sub
+    Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
         Dim View = CollectionViewSource.GetDefaultView(Items)
         If View IsNot Nothing Then
             Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)

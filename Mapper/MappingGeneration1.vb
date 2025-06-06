@@ -24,9 +24,31 @@ Public Module MappingGeneration1
         ' Trainer, die bereits in Gruppen eingeteilt wurden, aus den Gruppenlosen entfernen
         NeuerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(G) NeuerClub.Einteilungsliste(0).GruppenloseTrainer.RemoveByTrainerID(G.Trainer.TrainerID))
 
+
+        ' Leistungsstufe mit ID Guid.Empty hinzufügen
+        ' Todo: warum hat der der neue Club hier bereits Leistungsstufen?
+        NeuerClub.AlleLeistungsstufen.Add(New Leistungsstufe(String.Empty, -1) With {.LeistungsstufeID = Guid.Empty})
+        GetAlleLeistungsstufenVonGruppen(NeuerClub, Skiclub)
+        GetAlleLeistungsstufenTeilnehmer(NeuerClub, Skiclub)
+
         Return NeuerClub
 
     End Function
+
+    ' Leistungsstufe aus den Gruppen entnehmen, nicht sinnvoll
+    Private Sub GetAlleLeistungsstufenVonGruppen(NeuerClub As Generation3.Club, Skiclub As Generation1.Skiclub)
+        'Skiclub.Grouplist.ToList.ForEach(Sub(g) NeuerClub.AlleLeistungsstufen.Add(MapLevel2Leistungsstufe(g.GroupLevel)))
+        ' Entferne doppelte Leistungsstufen
+        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(NeuerClub.AlleLeistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+    End Sub
+
+    ' Leistungsstufe aus den Teilnehmern entnehmen
+    ' Leistungsstufen hier entnehmen, weil es wichtig ist, dass die Teilnehmer ein gültiges Level haben und zugeordnet werden.
+    Private Sub GetAlleLeistungsstufenTeilnehmer(NeuerClub As Generation3.Club, Skiclub As Generation1.Skiclub)
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(Tn) NeuerClub.AlleLeistungsstufen.Add(MapLevel2Leistungsstufe(Tn.ParticipantLevel))))
+        ' Entferne doppelte Leistungsstufen
+        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(NeuerClub.AlleLeistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+    End Sub
 
     Private Function MapGroup2Gruppe(Group As Generation1.Group) As Gruppe
 

@@ -89,7 +89,7 @@ Namespace Entities
         ''' Eindeutige Gruppenkennung
         ''' </summary>
         ''' <returns></returns>
-        Public Property GruppenID As Guid
+        Public Property GruppenID As Guid Implements IModel.Ident
             Get
                 Return _GruppenID
             End Get
@@ -151,14 +151,6 @@ Namespace Entities
             End Set
         End Property
 
-        Public Property Ident As Guid Implements IModel.Ident
-            Get
-                Throw New NotImplementedException()
-            End Get
-            Set(value As Guid)
-                Throw New NotImplementedException()
-            End Set
-        End Property
 
 #End Region
 

@@ -8,7 +8,7 @@ Imports System.Xml.Serialization
 Imports System.ComponentModel
 Imports Groupies.Controller
 
-Namespace Entities.Generation3
+Namespace Entities.Generation4
 
 
     Public Class Club
@@ -99,7 +99,7 @@ Namespace Entities.Generation3
         ''' Eine Liste aller Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstufenliste() As LeistungsstufeCollection = New LeistungsstufeCollection
+        Public Property AlleLeistungsstufen() As LeistungsstufeCollection = New LeistungsstufeCollection
 
 
         ''' <summary>
@@ -108,59 +108,59 @@ Namespace Entities.Generation3
         ''' <returns></returns>
         Public ReadOnly Property AlleValidenLeistungsstufen() As LeistungsstufeCollection
             Get
-                Return New LeistungsstufeCollection(Leistungsstufenliste.ToList.Where(Function(l) l.Sortierung > 0))
+                Return New LeistungsstufeCollection(AlleLeistungsstufen.ToList.Where(Function(l) l.Sortierung > 0))
             End Get
         End Property
 
         Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
             Get
-                Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
+                Return AlleLeistungsstufen.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
             End Get
         End Property
 
 
-        '''' <summary>
-        '''' Eine Liste aller Faehigkeiten
-        '''' als Vorlage für die Leistungsstufen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
+        ''' <summary>
+        ''' Eine Liste aller Faehigkeiten
+        ''' als Vorlage für die Leistungsstufen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
 
-        '''' <summary>
-        '''' Eine Liste aller Faehigkeiten
-        '''' als Vorlage für die Leistungsstufen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
-        '    Get
-        '        Return New FaehigkeitCollection(AlleFaehigkeiten.Where(Function(f) f.Sortierung > -1))
-        '    End Get
-        'End Property
+        ''' <summary>
+        ''' Eine Liste aller Faehigkeiten
+        ''' als Vorlage für die Leistungsstufen
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
+            Get
+                Return New FaehigkeitCollection(AlleFaehigkeiten.Where(Function(f) f.Sortierung > -1))
+            End Get
+        End Property
 
-        '''' <summary>
-        '''' Eine Liste der aller Trainer
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleTrainer() As TrainerCollection = New TrainerCollection
+        ''' <summary>
+        ''' Eine Liste der aller Trainer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleTrainer() As TrainerCollection = New TrainerCollection
 
-        '''' <summary>
-        '''' Eine Liste der aller Teilnehmer
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleTeilnehmer() As TeilnehmerCollection = New TeilnehmerCollection
+        ''' <summary>
+        ''' Eine Liste der aller Teilnehmer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleTeilnehmer() As TeilnehmerCollection = New TeilnehmerCollection
 
 
-        '''' <summary>
-        '''' Eine Liste der aller Gruppen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
+        ''' <summary>
+        ''' Eine Liste der aller Gruppen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
 
-        '''' <summary>
-        '''' Eine Liste der aller Einteilungen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleEinteilungen() As EinteilungCollection = New EinteilungCollection
+        ''' <summary>
+        ''' Eine Liste der aller Einteilungen
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleEinteilungen() As EinteilungCollection = New EinteilungCollection
 
 #End Region
 
@@ -201,12 +201,12 @@ Namespace Entities.Generation3
             Return ClubName
         End Function
 
-        Public Function LadeGroupies(Datei As String) As Generation4.Club Implements IClub.LadeGroupies
+        Public Function LadeGroupies(Datei As String) As Club Implements IClub.LadeGroupies
             Using fs = New FileStream(Datei, FileMode.Open)
-                Dim serializer = New XmlSerializer(GetType(Club))
-                Dim loadedSkiclub As Club
+                Dim serializer = New XmlSerializer(GetType(Generation4.Club))
+                Dim loadedSkiclub As Generation4.Club
                 Try
-                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Club)
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation4.Club)
                     'Return MappingGeneration3.MapSkiClub2Club(loadedSkiclub)
                     Return Map2AktuelleGeneration(loadedSkiclub)
                 Catch ex As InvalidDataException
@@ -215,9 +215,11 @@ Namespace Entities.Generation3
             End Using
         End Function
 
-        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Generation4.Club Implements IClub.Map2AktuelleGeneration
-            Return MappingGeneration3.MapSkiClub2Club(Skiclub)
+        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Club Implements IClub.Map2AktuelleGeneration
+            Return MappingGeneration4.MapSkiClub2Club(Skiclub)
         End Function
+
+
 
 #End Region
 

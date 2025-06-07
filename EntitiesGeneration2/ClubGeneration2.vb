@@ -43,7 +43,7 @@ Namespace Entities.Generation2
             _ClubName = Clubname
         End Sub
 
-        Public Function LadeGroupies(Datei As String) As Generation3.Club Implements IClub.LadeGroupies
+        Public Function LadeGroupies(Datei As String) As Generation4.Club Implements IClub.LadeGroupies
             Using fs = New FileStream(Datei, FileMode.Open)
 
                 Dim serializer = New XmlSerializer(GetType(Generation2.Club))
@@ -60,7 +60,7 @@ Namespace Entities.Generation2
 
         End Function
 
-        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Generation3.Club Implements IClub.Map2AktuelleGeneration
+        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Generation4.Club Implements IClub.Map2AktuelleGeneration
             Return MappingGeneration2.MapSkiClub2Club(Skiclub)
         End Function
 

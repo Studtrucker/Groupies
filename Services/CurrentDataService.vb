@@ -1,7 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Windows.Shell
 Imports Groupies.Entities
-Imports Groupies.Entities.Generation3
+Imports Groupies.Entities.Generation4
 
 Namespace Services
 

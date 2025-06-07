@@ -65,7 +65,7 @@ Namespace Services
         ''' Der Benutzer muss eine Datei auswählen, die eingelesen wird.
         ''' Sie wird deserialisiert und als Club zurückgegeben
         ''' </summary>
-        Public Shared Function SkiDateiLesen() As Generation3.Club
+        Public Shared Function SkiDateiLesen() As Generation4.Club
             Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
 
             If dlg.ShowDialog = True Then
@@ -83,7 +83,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="Datei"></param>
         ''' <returns></returns>
-        Public Shared Function SkiDateiLesen(Datei As String) As Generation3.Club
+        Public Shared Function SkiDateiLesen(Datei As String) As Generation4.Club
             If File.Exists(Datei) Then
                 Dim x = SkiDateienService.IdentifiziereDateiGeneration(Datei).LadeGroupies(Datei)
                 Return x
@@ -101,7 +101,7 @@ Namespace Services
         ''' <returns></returns>
         Public Shared Function IdentifiziereDateiGeneration(filePath As String) As IClub
             Dim ElementListe As List(Of String) = LeseXmlDatei(filePath)
-            Return Auswertung(ElementListe)
+            Return Erkennen(ElementListe)
         End Function
 
 #End Region
@@ -115,13 +115,19 @@ Namespace Services
         ''' </summary>
         ''' <param name="ElementListe"></param>
         ''' <returns></returns>
-        Private Shared Function Auswertung(ElementListe As List(Of String)) As IClub
+        Private Shared Function Erkennen(ElementListe As List(Of String)) As IClub
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
+            ElseIf ElementListe.Contains("AlleEinteilungen") AndAlso ElementListe.Contains("AlleTrainer") _
+                AndAlso ElementListe.Contains("AlleTeilnehmer") AndAlso ElementListe.Contains("AlleFaehigkeiten") _
+                AndAlso ElementListe.Contains("AlleGruppen") AndAlso ElementListe.Contains("AlleLeistungsstufen") Then
+                Return New Generation4.Club
             ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
                 Return New Generation3.Club
-            Else
+            ElseIf ElementListe.Contains("Club") Then
                 Return New Generation2.Club
+            Else
+                Throw New InvalidDataException("Die Datei ist nicht lesbar oder nicht kompatibel.")
             End If
         End Function
 

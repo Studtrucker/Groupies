@@ -37,12 +37,12 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
-    Public Property ID As Guid
+    Public Property EinteilungID As Guid
         Get
-            Return _Einteilung.Ident
+            Return _Einteilung.EinteilungID
         End Get
         Set(value As Guid)
-            _Einteilung.Ident = value
+            _Einteilung.EinteilungID = value
         End Set
     End Property
 

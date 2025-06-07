@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
 Imports Groupies.Interfaces
-Imports Groupies.Entities.Generation3
+Imports Groupies.Entities.Generation4
 Imports System.IO
 Imports System.Xml.Serialization
 
@@ -45,7 +45,6 @@ Namespace Entities.Generation1
         Public Function Map2AktuelleGeneration(Skiclub As IClub) As Club Implements IClub.Map2AktuelleGeneration
             Return MappingGeneration1.MapSkiClub2Club(Skiclub)
         End Function
-
 
 #End Region
 

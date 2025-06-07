@@ -8,7 +8,7 @@ Imports System.Xml.Serialization
 Imports Groupies.Commands
 Imports Groupies.Controller
 Imports Groupies.Entities
-Imports Groupies.Entities.Generation3
+Imports Groupies.Entities.Generation4
 Imports Groupies.Interfaces
 Imports Groupies.Services
 Imports Groupies.UserControls
@@ -404,7 +404,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
+            DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
     Private Sub Handle_TeilnehmerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -474,7 +474,7 @@ Public Class MainWindow
 
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
+            DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
 
@@ -614,15 +614,15 @@ Public Class MainWindow
     End Sub
 
     Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        If DirectCast(DataContext, Generation3.Club).SelectedGruppe Is Nothing Then
+        If DirectCast(DataContext, Generation4.Club).SelectedGruppe Is Nothing Then
             MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             Exit Sub
         End If
-        If DirectCast(DataContext, Generation3.Club).SelectedGruppe.Trainer IsNot Nothing Then
+        If DirectCast(DataContext, Generation4.Club).SelectedGruppe.Trainer IsNot Nothing Then
             MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
             Exit Sub
         End If
-        DirectCast(DataContext, Generation3.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation3.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation3.Club).SelectedGruppe)
+        DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation4.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation4.Club).SelectedGruppe)
     End Sub
 
 #End Region
@@ -930,7 +930,7 @@ Public Class MainWindow
 
 
 
-    Private Sub SetView(Club As Generation3.Club)
+    Private Sub SetView(Club As Generation4.Club)
         DataContext = Club
     End Sub
     Private Sub SetView(Einteilungsliste As EinteilungCollection)

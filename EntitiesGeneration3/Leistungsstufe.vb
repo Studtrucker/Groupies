@@ -69,7 +69,7 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        Public Property LeistungsstufeID As Guid
+        Public Property LeistungsstufeID As Guid Implements IModel.Ident
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen
@@ -114,14 +114,6 @@ Namespace Entities
         ''' <returns></returns>
         Public Property Faehigkeiten As FaehigkeitCollection
 
-        Public Property Ident As Guid Implements IModel.Ident
-            Get
-                Throw New NotImplementedException()
-            End Get
-            Set(value As Guid)
-                Throw New NotImplementedException()
-            End Set
-        End Property
 
 #End Region
 

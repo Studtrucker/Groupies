@@ -5,6 +5,19 @@
         Inherits BaseModel
         Implements IModel
 
+#Region "Konstruktor"
+        ''' <summary>
+        ''' Erstellt eine Einteilung mit einer eindeutigen ID
+        ''' </summary>
+        Public Sub New()
+            EinteilungID = Guid.NewGuid()
+            'Gruppenliste = New GruppeCollection
+            'GruppenloseTeilnehmer = New TeilnehmerCollection
+            'GruppenloseTrainer = New TrainerCollection
+
+        End Sub
+
+#End Region
 
 #Region "Felder"
 
@@ -158,14 +171,8 @@
             End Get
         End Property
 
-        Public Property Ident As Guid Implements IModel.Ident
-            Get
-                Throw New NotImplementedException()
-            End Get
-            Set(value As Guid)
-                Throw New NotImplementedException()
-            End Set
-        End Property
+        Public Property EinteilungID As Guid Implements IModel.Ident
+
 #End Region
 
 #Region "Methoden und Funktionen"

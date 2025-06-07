@@ -6,49 +6,139 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Generation3.Club
+    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Generation4.Club
 
-        Dim NeuerClub = New Generation3.Club
+        Dim NeuerClub = New Generation4.Club
         NeuerClub.ClubName = If(Skiclub.Name, "Club")
-        ' Neue Einteilung erstellen
-        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag1", .Sortierung = 1})
 
-        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste der ersten Einteilung des Clubs hängen
-        NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+        ' Trainer laden
+        NeuerClub.AlleTrainer = GetAlleTrainer(Skiclub)
 
-        ' Unabhängige Leistungsstufen 
-        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(Skiclub.Levellist.Select(AddressOf MapLevel2Leistungsstufe).ToList)
-        ' Gruppenlose Teilnehmer und Trainer mappen
-        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(Skiclub.ParticipantsNotInGroup.Select(AddressOf MapParticipant2Teilnehmer))
-        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = New TrainerCollection(Skiclub.Instructorlist.Select(AddressOf MapInstructor2Trainer))
-        ' Trainer, die bereits in Gruppen eingeteilt wurden, aus den Gruppenlosen entfernen
-        NeuerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(G) NeuerClub.Einteilungsliste(0).GruppenloseTrainer.RemoveByTrainerID(G.Trainer.TrainerID))
+        ' Teilnehmer laden
+        NeuerClub.AlleTeilnehmer = GetAlleTeilnehmer(Skiclub)
 
+        ' Leistungsstufen laden
+        NeuerClub.AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub)
 
-        ' Leistungsstufe mit ID Guid.Empty hinzufügen
-        ' Todo: warum hat der der neue Club hier bereits Leistungsstufen?
-        NeuerClub.AlleLeistungsstufen.Add(New Leistungsstufe(String.Empty, -1) With {.LeistungsstufeID = Guid.Empty})
-        GetAlleLeistungsstufenVonGruppen(NeuerClub, Skiclub)
-        GetAlleLeistungsstufenTeilnehmer(NeuerClub, Skiclub)
+        ' Fähigkeiten laden
+        NeuerClub.AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub)
+
+        ' Gruppen laden
+        NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
+
+        ' Einteilung wird neu erstellt
+        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         Return NeuerClub
 
     End Function
 
-    ' Leistungsstufe aus den Gruppen entnehmen, nicht sinnvoll
-    Private Sub GetAlleLeistungsstufenVonGruppen(NeuerClub As Generation3.Club, Skiclub As Generation1.Skiclub)
-        'Skiclub.Grouplist.ToList.ForEach(Sub(g) NeuerClub.AlleLeistungsstufen.Add(MapLevel2Leistungsstufe(g.GroupLevel)))
-        ' Entferne doppelte Leistungsstufen
-        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(NeuerClub.AlleLeistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
-    End Sub
 
-    ' Leistungsstufe aus den Teilnehmern entnehmen
-    ' Leistungsstufen hier entnehmen, weil es wichtig ist, dass die Teilnehmer ein gültiges Level haben und zugeordnet werden.
-    Private Sub GetAlleLeistungsstufenTeilnehmer(NeuerClub As Generation3.Club, Skiclub As Generation1.Skiclub)
-        Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(Tn) NeuerClub.AlleLeistungsstufen.Add(MapLevel2Leistungsstufe(Tn.ParticipantLevel))))
+    ''' <summary>
+    ''' Gruppen werden aus dem Skiclub extrahiert
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleGruppen(Skiclub As Generation1.Skiclub) As GruppeCollection
+        Dim Gruppen = New GruppeCollection
+        ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) Gruppen.Add(MapGroup2Gruppe(g)))
+
+        Return Gruppen
+
+        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste der ersten Einteilung des Clubs hängen
+        'NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
+
+    End Function
+
+    ''' <summary>
+    ''' Faehigkeiten werden aus den Teilnehmern extrahiert
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleFaehigkeiten(Skiclub As Generation1.Skiclub) As FaehigkeitCollection
+
+        Dim Faehigkeiten = New FaehigkeitCollection
+        ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(M) M.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f)))))
+        Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) T.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f))))
+        ' Leere Fähigkeit hinzufügen für Dropdowns
+        Faehigkeiten.Add(New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+        ' Entferne doppelte Fähigkeiten
+        Faehigkeiten = New FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
+
+        Return Faehigkeiten
+
+    End Function
+
+    ''' <summary>
+    ''' Teilnehmer werden aus den Gruppen und der gruppenlose Teilnehmer-Liste extrahiert
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleTeilnehmer(Skiclub As Generation1.Skiclub) As TeilnehmerCollection
+
+        Dim Teilnehmer = New TeilnehmerCollection
+
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T))))
+        Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T)))
+
+        Return Teilnehmer
+
+    End Function
+
+    ''' <summary>
+    ''' Trainer werden aus den Gruppen extrahiert
+    ''' Die gruppenlose Trainer-Liste gibt es in der ersten Generation nicht, daher wird diese nicht berücksichtigt.
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    Private Function GetAlleTrainer(Skiclub As Generation1.Skiclub) As TrainerCollection
+
+        Dim Trainer = New TrainerCollection
+
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) Trainer.Add(MapInstructor2Trainer(g.GroupLeader)))
+
+        Return Trainer
+
+    End Function
+
+    ''' <summary>
+    ''' Leistungsstufen werden aus den Gruppen extrahiert
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    <Obsolete>
+    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
+        ' Eigene Collection initialisieren
+        Dim Leistungsstufen = New LeistungsstufeCollection
+        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) Leistungsstufen.Add(MapLevel2Leistungsstufe(g.GroupLevel)))
         ' Entferne doppelte Leistungsstufen
-        NeuerClub.AlleLeistungsstufen = New LeistungsstufeCollection(NeuerClub.AlleLeistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
-    End Sub
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+
+        Return Leistungsstufen
+
+    End Function
+
+    ''' <summary>
+    ''' Leistungsstufen werden aus den Teilnehmern extrahiert
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
+        ' Eigene Collection initialisieren
+        Dim Leistungsstufen = New LeistungsstufeCollection
+        ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
+        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) Gl.GroupMembers.ToList.ForEach(Sub(M) Leistungsstufen.Add(MapLevel2Leistungsstufe(M.ParticipantLevel))))
+        Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Leistungsstufen.Add(MapLevel2Leistungsstufe(T.ParticipantLevel)))
+        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
+        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+        ' Entferne doppelte Leistungsstufen
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+
+        Return Leistungsstufen
+
+    End Function
 
     Private Function MapGroup2Gruppe(Group As Generation1.Group) As Gruppe
 

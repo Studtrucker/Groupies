@@ -66,7 +66,7 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(1, Club.Einteilungsliste(0).GruppenloseTrainer.Count)
         Assert.AreEqual(9, Club.Einteilungsliste(0).EingeteilteTrainer.Count)
         Assert.AreEqual(10, Club.Einteilungsliste(0).AlleTrainer.Count)
-        Assert.AreEqual(5, Club.AlleLeistungsstufen.Count)
+        Assert.AreEqual(5, Club.AlleEinteilungen.Count)
     End Sub
 
     <TestMethod>
@@ -92,7 +92,7 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(2, Club.Einteilungsliste(0).GruppenloseTrainer.Count)
         Assert.AreEqual(8, Club.Einteilungsliste(0).EingeteilteTrainer.Count)
         Assert.AreEqual(10, Club.Einteilungsliste(0).AlleTrainer.Count)
-        Assert.AreEqual(5, Club.AlleLeistungsstufen.Count)
+        Assert.AreEqual(5, Club.AlleEinteilungen.Count)
     End Sub
 
 End Class

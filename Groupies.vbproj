@@ -123,6 +123,7 @@
     <Compile Include="Behaviors\DataGridSortBehavior.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
     <Compile Include="Behaviors\DragDropBehavior.vb" />
+    <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
     <Compile Include="Interfaces\Windows\IWindowService.vb" />
     <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />
@@ -131,6 +132,7 @@
     <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
     <Compile Include="Interfaces\Windows\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
+    <Compile Include="Mapper\MappingGeneration4.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />

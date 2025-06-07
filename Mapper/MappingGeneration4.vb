@@ -24,8 +24,8 @@ Public Module MappingGeneration4
         '' Gruppen laden
         'NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
 
-        ''Einteilungen laden
-        'NeuerClub.AlleEinteilungen = GetAlleEinteilungen(Skiclub)
+        'Einteilungen laden
+        'NeuerClub.Einteilungsliste = GetAlleEinteilungen(Skiclub)
 
         'NeuerClub = Skiclub
         Return NeuerClub

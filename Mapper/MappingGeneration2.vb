@@ -23,7 +23,7 @@ Public Module MappingGeneration2
         NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
 
         ' Einteilung wird neu erstellt
-        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         Return NeuerClub
 

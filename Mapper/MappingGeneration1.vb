@@ -27,12 +27,20 @@ Public Module MappingGeneration1
         NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
 
         ' Einteilung wird neu erstellt
-        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+
+        ' Erste Einteilung füllen
+        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).Gruppenliste.Add(MapGroup2Gruppe(Gl)))
+        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = GetGruppenloseTrainer(Skiclub)
+        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = GetGruppenloseTeilnehmer(Skiclub)
 
         Return NeuerClub
 
     End Function
 
+    Private Function EinteilungPflegen(Club As Generation1.Skiclub) As Generation4.Club
+        Return Nothing
+    End Function
 
     ''' <summary>
     ''' Gruppen werden aus dem Skiclub extrahiert
@@ -88,8 +96,24 @@ Public Module MappingGeneration1
     End Function
 
     ''' <summary>
+    ''' Die gruppenlose Teilnehmer-Liste wird erstellt
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' 
+    Private Function GetGruppenloseTeilnehmer(Skiclub As Generation1.Skiclub) As TeilnehmerCollection
+
+        Dim Teilnehmer = New TeilnehmerCollection
+
+        Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T)))
+
+        Return Teilnehmer
+
+    End Function
+
+
+    ''' <summary>
     ''' Trainer werden aus den Gruppen extrahiert
-    ''' Die gruppenlose Trainer-Liste gibt es in der ersten Generation nicht, daher wird diese nicht berücksichtigt.
+    ''' Die gruppenlose Trainer-Liste wird extrahiert: alle Trainer ausser die eingeteilten Trainer.
     ''' </summary>
     ''' <param name="Skiclub"></param>
     Private Function GetAlleTrainer(Skiclub As Generation1.Skiclub) As TrainerCollection
@@ -99,6 +123,28 @@ Public Module MappingGeneration1
         Skiclub.Grouplist.ToList.ForEach(Sub(g) Trainer.Add(MapInstructor2Trainer(g.GroupLeader)))
 
         Return Trainer
+
+    End Function
+
+    ''' <summary>
+    ''' Die gruppenlose Trainer-Liste wird extrahiert: alle Trainer ausser die eingeteilten Trainer.
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetGruppenloseTrainer(Skiclub As Generation1.Skiclub) As TrainerCollection
+
+        Dim AlleTrainer = New Generation1.InstructorCollection
+        Dim EingeteilteTrainer = New Generation1.InstructorCollection
+
+        Skiclub.Instructorlist.ToList.ForEach(Sub(T) AlleTrainer.Add(T))
+        Skiclub.Grouplist.ToList.ForEach(Sub(g) EingeteilteTrainer.Add(g.GroupLeader))
+
+        Dim GefilterteTrainer = AlleTrainer.Where(Function(T) Not EingeteilteTrainer.Any(Function(ET) ET.InstructorID = T.InstructorID))
+
+        Dim NeueTrainer = New TrainerCollection
+        GefilterteTrainer.ToList.ForEach(Sub(T) NeueTrainer.Add(MapInstructor2Trainer(T)))
+
+        Return NeueTrainer
 
     End Function
 

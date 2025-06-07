@@ -156,12 +156,6 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
 
-        ''' <summary>
-        ''' Eine Liste der aller Einteilungen
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property AlleEinteilungen() As EinteilungCollection = New EinteilungCollection
-
 #End Region
 
 #Region "Funktionen und Methoden"

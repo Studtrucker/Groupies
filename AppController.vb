@@ -72,7 +72,7 @@ Namespace Controller
 
             AktuellerClub.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
             AktuellerClub.AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen
-            AktuellerClub.AlleEinteilungen = TemplateService.StandardEinteilungenErstellen()
+            AktuellerClub.Einteilungsliste = TemplateService.StandardEinteilungenErstellen()
             AktuellerClub.AlleGruppen = TemplateService.StandardGruppenErstellen(15)
 
             'AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})

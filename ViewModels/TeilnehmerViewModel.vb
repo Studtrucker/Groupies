@@ -118,6 +118,12 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
+    Public ReadOnly Property AktuelleAnzahlObjekte As String
+        Get
+            Return $"Aktuelle Anzahl der Teilnehmer: {Items.ToList.Count}"
+        End Get
+    End Property
+
 #End Region
 
 #Region "Command-Properties"

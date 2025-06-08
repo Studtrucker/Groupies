@@ -167,9 +167,6 @@
     <Compile Include="UserControls\GruppeUserControl.xaml.vb">
       <DependentUpon>GruppeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TeilnehmerlisteUserControl.xaml.vb">
-      <DependentUpon>TeilnehmerlisteUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\TeilnehmerUserControl.xaml.vb">
       <DependentUpon>TeilnehmerUserControl.xaml</DependentUpon>
     </Compile>
@@ -334,10 +331,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\GruppeUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\TeilnehmerlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

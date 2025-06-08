@@ -26,14 +26,6 @@
         ''' <returns></returns>
         ReadOnly Property DatentypDetailUserControl As UserControl
 
-        ''' <summary>
-        ''' Das Usercontrol von dem Datentyp
-        ''' </summary>
-        ''' <returns></returns>
-        ReadOnly Property DatentypListUserControl As UserControl
-
-        Function getAll() As IEnumerable(Of IModel)
-
         ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial
         ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial
 

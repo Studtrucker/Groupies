@@ -72,7 +72,7 @@ Public Class ViewModelWindow
         End Get
         Set(value As IDatentyp)
             _Datentyp = value
-            AktuellesViewModel = _Datentyp.AktuellesUebersichtViewModel
+            _AktuellesViewModel = _Datentyp.AktuellesUebersichtViewModel
         End Set
     End Property
 
@@ -110,7 +110,7 @@ Public Class ViewModelWindow
     Public ReadOnly Property WindowHeaderText As String
         Get
             If Datentyp IsNot Nothing Then
-                Return $"{Datentyp.DatentypenText}übersicht"
+                Return $"Übersicht {Datentyp.DatentypenText}"
             Else
                 Return "Übersicht"
             End If
@@ -121,13 +121,10 @@ Public Class ViewModelWindow
     ''' Das aktuelle ViewModel, das verwendet wird
     ''' </summary>
     ''' <returns></returns>
-    Public Property AktuellesViewModel As IViewModelSpecial
+    Public ReadOnly Property AktuellesViewModel As IViewModelSpecial
         Get
-            Return _aktuellesViewModel
+            Return _AktuellesViewModel
         End Get
-        Set(value As IViewModelSpecial)
-            _aktuellesViewModel = value
-        End Set
     End Property
 
     'Public Property Detaildaten As IModel

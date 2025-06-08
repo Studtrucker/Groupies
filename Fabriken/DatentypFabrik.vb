@@ -48,6 +48,8 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Trainer" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Trainer" Implements Interfaces.IDatentyp.DatentypenText
+
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trainer-48.png" Implements IDatentyp.DatentypIcon
 
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
@@ -83,6 +85,7 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Teilnehmer" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Teilnehmer" Implements Interfaces.IDatentyp.DatentypenText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-person-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get
@@ -117,6 +120,7 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Gruppe" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Gruppen" Implements Interfaces.IDatentyp.DatentypenText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get
@@ -150,6 +154,7 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Fähigkeit" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Fähigkeiten" Implements Interfaces.IDatentyp.DatentypenText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-trophaee-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get
@@ -184,6 +189,7 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Leistungsstufe" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Leistungsstufen" Implements Interfaces.IDatentyp.DatentypenText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-treppe-rauf-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get
@@ -217,6 +223,7 @@ Namespace Fabriken
         Implements Interfaces.IDatentyp
 
         Public Property DatentypText As String = "Einteilung" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Einteilungen" Implements Interfaces.IDatentyp.DatentypenText
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-diversity-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get

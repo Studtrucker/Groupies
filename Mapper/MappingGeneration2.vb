@@ -102,24 +102,6 @@ Public Module MappingGeneration2
     End Function
 
     ''' <summary>
-    ''' Leistungsstufen werden aus den Gruppen extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
-    <Obsolete>
-    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Generation2.Club) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) Leistungsstufen.Add(g.Leistungsstufe))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
-
-    End Function
-
-    ''' <summary>
     ''' Leistungsstufen werden aus den Teilnehmern extrahiert
     ''' </summary>
     ''' <param name="Skiclub"></param>

@@ -76,10 +76,46 @@ Public Class ViewModelWindow
         End Set
     End Property
 
-    '''' <summary>
-    '''' Der aktuelle UserControl, der im Dialog angezeigt wird.
-    '''' </summary>
-    'Public Property CurrentUserControl As UserControl
+    Public ReadOnly Property WindowTitleIcon As String
+        Get
+            If Modus IsNot Nothing Then
+                Return Modus.WindowIcon
+            Else
+                Return "Unbekannter Modus"
+            End If
+        End Get
+    End Property
+
+
+    Public ReadOnly Property WindowTitleText As String
+        Get
+            If Datentyp IsNot Nothing Then
+                Return Datentyp.DatentypenText
+            Else
+                Return "Übersicht"
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property WindowHeaderImage As String
+        Get
+            If Datentyp IsNot Nothing Then
+                Return Datentyp.DatentypIcon
+            Else
+                Return Nothing
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property WindowHeaderText As String
+        Get
+            If Datentyp IsNot Nothing Then
+                Return $"{Datentyp.DatentypenText}übersicht"
+            Else
+                Return "Übersicht"
+            End If
+        End Get
+    End Property
 
     ''' <summary>
     ''' Das aktuelle ViewModel, das verwendet wird
@@ -94,34 +130,7 @@ Public Class ViewModelWindow
         End Set
     End Property
 
-    Public Property Detaildaten As IModel
-
-    Public ReadOnly Property WindowTitleText As String
-        Get
-            If Datentyp Is Nothing OrElse Modus Is Nothing Then
-                Return "Unbekannter Dialog"
-            End If
-            Return $"{Datentyp.DatentypText} {Modus.Titel}"
-        End Get
-    End Property
-
-    Public ReadOnly Property WindowTitleIcon As String
-        Get
-            If Modus Is Nothing Then
-                Return "Unbekannter Modus"
-            End If
-            Return Modus.WindowIcon
-        End Get
-    End Property
-
-    Public ReadOnly Property WindowHeaderImage As String
-        Get
-            If Datentyp Is Nothing Then
-                Return Nothing
-            End If
-            Return Datentyp.DatentypIcon
-        End Get
-    End Property
+    'Public Property Detaildaten As IModel
 
     Public ReadOnly Property CloseButtonVisibility As Visibility
         Get
@@ -155,16 +164,6 @@ Public Class ViewModelWindow
 #End Region
 
 #Region "Methoden"
-    Public Overridable Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-        'Dim view = CollectionViewSource.GetDefaultView(_AktuellesViewModel.Items)
-        'If view IsNot Nothing Then
-        '    Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-        '    view.SortDescriptions.Clear()
-        '    view.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-        '    e.Column.SortDirection = direction
-        '    e.Handled = True
-        'End If
-    End Sub
 
     Public Overridable Sub OnOk(obj As Object)
         ' Businesslogik erfolgreich → Dialog schließen mit OK

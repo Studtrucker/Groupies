@@ -54,13 +54,10 @@ Public Module MappingGeneration1
 
         Return Gruppen
 
-        ' Jede Group aus dem Skiclub mappen und in die Gruppenliste der ersten Einteilung des Clubs hängen
-        'NeuerClub.Einteilungsliste(0).Gruppenliste = New GruppeCollection(Skiclub.Grouplist.ToList.Select(AddressOf MapGroup2Gruppe))
-
     End Function
 
     ''' <summary>
-    ''' Faehigkeiten werden aus den Teilnehmern extrahiert
+    ''' Faehigkeiten werden aus den Leistungsstufen der Teilnehmern extrahiert
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
@@ -145,24 +142,6 @@ Public Module MappingGeneration1
         GefilterteTrainer.ToList.ForEach(Sub(T) NeueTrainer.Add(MapInstructor2Trainer(T)))
 
         Return NeueTrainer
-
-    End Function
-
-    ''' <summary>
-    ''' Leistungsstufen werden aus den Gruppen extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
-    <Obsolete>
-    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
-        Skiclub.Grouplist.ToList.ForEach(Sub(g) Leistungsstufen.Add(MapLevel2Leistungsstufe(g.GroupLevel)))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
 
     End Function
 

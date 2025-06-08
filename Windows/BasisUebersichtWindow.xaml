@@ -635,7 +635,7 @@
                 <DockPanel DockPanel.Dock="Top">
                     <Image Source="{Binding WindowHeaderImage}"
                    Style="{StaticResource WindowImageCaption}" />
-                    <TextBlock Text="{Binding WindowTitleText}"
+                    <TextBlock Text="{Binding WindowHeaderText}"
                        Style="{StaticResource WindowCaption}" />
                 </DockPanel>
 

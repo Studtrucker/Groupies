@@ -95,6 +95,9 @@ Public Module MappingGeneration3
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
 
+        ' Entferne doppelte Teilnehmer
+        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(f) f.TeilnehmerID).Select(Function(Gruppe) Gruppe.First).ToList)
+
         Return Teilnehmer
 
     End Function
@@ -121,24 +124,6 @@ Public Module MappingGeneration3
     End Function
 
     ''' <summary>
-    ''' Leistungsstufen werden aus den Gruppen extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
-    <Obsolete>
-    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Generation3.Club) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Leistungsstufen.Add(g.Leistungsstufe)))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
-
-    End Function
-
-    ''' <summary>
     ''' Leistungsstufen werden aus den Teilnehmern extrahiert
     ''' </summary>
     ''' <param name="Skiclub"></param>
@@ -157,6 +142,5 @@ Public Module MappingGeneration3
         Return Leistungsstufen
 
     End Function
-
 
 End Module

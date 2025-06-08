@@ -759,7 +759,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTrainer
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTrainer
 
         fenster.DataContext = mvw
 
@@ -1164,7 +1164,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1179,7 +1179,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten
 
         fenster.DataContext = mvw
 
@@ -1194,7 +1194,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1209,7 +1209,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
 
         fenster.DataContext = mvw
 
@@ -1225,7 +1225,7 @@ Public Class MainWindow
         Dim mvw = New ViewModelWindow(New WindowService(fenster))
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        mvw.AktuellesViewModel.Items = Groupies.Controller.AppController.AktuellerClub.AlleValidenLeistungsstufen
+        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenLeistungsstufen
 
         fenster.DataContext = mvw
 

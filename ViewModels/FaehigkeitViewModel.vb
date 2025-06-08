@@ -4,6 +4,10 @@ Public Class FaehigkeitViewModel
     Inherits MasterDetailViewModel(Of Faehigkeit)
     Implements IViewModelSpecial
 
+#Region "Felder"
+    Private _Faehigkeit As Entities.Faehigkeit
+#End Region
+
 #Region "Konstruktor"
     ''' <summary>
     ''' Parameterloser Konstruktor für den FaehigkeitViewModel.
@@ -16,40 +20,12 @@ Public Class FaehigkeitViewModel
 
         OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Faehigkeit)(AddressOf OnLoaded)
-    End Sub
-
-#End Region
-
-#Region "Methoden"
-
-    Public ReadOnly Property OkCommand As ICommand
-
-
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        Validate()
-    End Sub
-
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Faehigkeit.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
-
-    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-        ' Hier können Sie die Logik für den OK-Button implementieren
-        _Faehigkeit.speichern()
-
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
 #End Region
 
 #Region "Properties"
-
-    Private _Faehigkeit As Entities.Faehigkeit
 
     Public Property Faehigkeit As IModel Implements IViewModelSpecial.Model
         Get
@@ -59,8 +35,6 @@ Public Class FaehigkeitViewModel
             _Faehigkeit = value
         End Set
     End Property
-
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Public Property Sortierung As Integer
         Get
@@ -95,14 +69,38 @@ Public Class FaehigkeitViewModel
         End Set
     End Property
 
-    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
+    Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
-            Return MyBase.Items
+            Return Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            MyBase.Items = value
+            Items = value
         End Set
     End Property
+
+#End Region
+
+#Region "Command-Properties"
+
+    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
+
+#End Region
+
+#Region "Methoden"
+
+    Public ReadOnly Property OkCommand As ICommand
+
+    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        Validate()
+    End Sub
+
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+        ' Hier können Sie die Logik für den OK-Button implementieren
+        _Faehigkeit.speichern()
+
+    End Sub
 
 #End Region
 

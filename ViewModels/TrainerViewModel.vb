@@ -1,16 +1,14 @@
 ﻿Imports System.ComponentModel
-Imports Groupies.Entities
-Imports Groupies.UserControls
-Imports Microsoft.Office.Interop.Excel
 Imports System.IO
+Imports Groupies.Entities
 
 Public Class TrainerViewModel
     Inherits MasterDetailViewModel(Of Trainer)
     Implements IViewModelSpecial
 
-#Region "Variablen"
-    Private ReadOnly zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
+#Region "Felder"
     Private _Trainer As Trainer
+    Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
 #End Region
 
 #Region "Konstruktor"
@@ -28,7 +26,7 @@ Public Class TrainerViewModel
         OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
-        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf OnDataGridSorting)
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
 #End Region
@@ -38,101 +36,6 @@ Public Class TrainerViewModel
     Public Event DragOver As EventHandler
 
     Public Event Drop As EventHandler
-
-#End Region
-
-#Region "Commands"
-    Public Property DataGridSortingCommand As ICommand
-
-    Public ReadOnly Property OkCommand As ICommand
-
-    Public ReadOnly Property DropCommand As ICommand
-
-    Public ReadOnly Property DragOverCommand As ICommand
-
-
-#End Region
-
-#Region "Methoden"
-
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Trainer.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
-    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-        ' Hier können Sie die Logik für den OK-Button implementieren
-        _Trainer.speichern()
-
-    End Sub
-
-    Private Sub OnDrop(e As DragEventArgs)
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
-            Dim validFiles = files.Where(Function(f) zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower())).ToArray()
-
-            If validFiles.Any() Then
-                MessageBox.Show("Zulässige Dateien: " & Environment.NewLine & String.Join(Environment.NewLine, validFiles))
-            Else
-                'todo: Hier muss eine Fehlermeldung kommen, dass nur jpg, gif und png Dateien erlaubt sind.Also die Variable zulaessigeEndungen verwenden.
-                MessageBox.Show("Nur .txt oder .pdf Dateien sind erlaubt.")
-            End If
-        End If
-        e.Handled = True
-    End Sub
-
-    Private Sub OnDragOver(e As DragEventArgs)
-
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
-            Dim allValid = files.All(Function(f) zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower()))
-
-            e.Effects = If(allValid, DragDropEffects.Copy, DragDropEffects.None)
-        Else
-            e.Effects = DragDropEffects.None
-        End If
-        e.Handled = True
-
-    End Sub
-
-
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        ValidateVorname()
-        ValidateSpitzname()
-        ValidateEMail()
-    End Sub
-
-    'Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-    '    MyBase.OnDataGridSorting(e)
-    '    Dim View = CollectionViewSource.GetDefaultView(Items)
-    '    If View IsNot Nothing Then
-    '        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-    '        View.SortDescriptions.Clear()
-    '        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-    '        e.Column.SortDirection = direction
-    '        e.Handled = True
-    '        ItemsView = View
-    '        ItemsView.Refresh()
-    '    End If
-
-    'End Sub
-    Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-        Dim View = CollectionViewSource.GetDefaultView(Items)
-        If View IsNot Nothing Then
-            Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-            View.SortDescriptions.Clear()
-            View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-            e.Column.SortDirection = direction
-            e.Handled = True
-            ItemsView = View
-            ItemsView.Refresh()
-        End If
-
-    End Sub
 
 #End Region
 
@@ -222,14 +125,109 @@ Public Class TrainerViewModel
         End Set
     End Property
 
-    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
+    Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
-            Return MyBase.Items
+            Return Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            MyBase.Items = value
+            Items = value
         End Set
     End Property
+
+#End Region
+
+#Region "Command-Properties"
+    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
+
+    Public ReadOnly Property OkCommand As ICommand
+
+    Public ReadOnly Property DropCommand As ICommand
+
+    Public ReadOnly Property DragOverCommand As ICommand
+
+
+#End Region
+
+#Region "Methoden"
+
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Trainer.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+        ' Hier können Sie die Logik für den OK-Button implementieren
+        _Trainer.speichern()
+
+    End Sub
+
+    Private Sub OnDrop(e As DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Dim validFiles = files.Where(Function(f) _zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower())).ToArray()
+
+            If validFiles.Any() Then
+                MessageBox.Show("Zulässige Dateien: " & Environment.NewLine & String.Join(Environment.NewLine, validFiles))
+            Else
+                'todo: Hier muss eine Fehlermeldung kommen, dass nur jpg, gif und png Dateien erlaubt sind.Also die Variable zulaessigeEndungen verwenden.
+                MessageBox.Show("Nur .txt oder .pdf Dateien sind erlaubt.")
+            End If
+        End If
+        e.Handled = True
+    End Sub
+
+    Private Sub OnDragOver(e As DragEventArgs)
+
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim files = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Dim allValid = files.All(Function(f) _zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower()))
+
+            e.Effects = If(allValid, DragDropEffects.Copy, DragDropEffects.None)
+        Else
+            e.Effects = DragDropEffects.None
+        End If
+        e.Handled = True
+
+    End Sub
+
+
+    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        ValidateVorname()
+        ValidateSpitzname()
+        ValidateEMail()
+    End Sub
+
+    'Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+    '    MyBase.OnDataGridSorting(e)
+    '    Dim View = CollectionViewSource.GetDefaultView(Items)
+    '    If View IsNot Nothing Then
+    '        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+    '        View.SortDescriptions.Clear()
+    '        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+    '        e.Column.SortDirection = direction
+    '        e.Handled = True
+    '        ItemsView = View
+    '        ItemsView.Refresh()
+    '    End If
+
+    'End Sub
+    Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+        Dim View = CollectionViewSource.GetDefaultView(Items)
+        If View IsNot Nothing Then
+            Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+            View.SortDescriptions.Clear()
+            View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+            e.Column.SortDirection = direction
+            e.Handled = True
+            ItemsView = View
+            ItemsView.Refresh()
+        End If
+
+    End Sub
 
 #End Region
 

@@ -6,6 +6,10 @@ Public Class TeilnehmerViewModel
     Inherits MasterDetailViewModel(Of Teilnehmer)
     Implements IViewModelSpecial
 
+#Region "Felder"
+    Private _Teilnehmer As Teilnehmer
+#End Region
+
 #Region "Konstruktor"
 
 
@@ -24,45 +28,14 @@ Public Class TeilnehmerViewModel
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         DropDown.MoveCurrentToFirst()
         LeistungsstufenListCollectionView = DropDown
-
-    End Sub
-    Public Property LeistungsstufenListCollectionView As ICollectionView
-
-
-#End Region
-
-#Region "Methoden"
-
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Teilnehmer.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
-    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-        ' Hier können Sie die Logik für den OK-Button implementieren
-        _Teilnehmer.speichern()
-
-    End Sub
-
-    Private Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        ValidateVorname()
-        ValidateNachname()
-        ValidateLeistungsstand()
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
 #End Region
 
 #Region "Properties"
+    Public Property LeistungsstufenListCollectionView As ICollectionView
 
-    Public ReadOnly Property OkCommand As ICommand
-
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
-
-    Private _Teilnehmer As Teilnehmer
     Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
         Get
             Return _Teilnehmer
@@ -135,17 +108,49 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
-
-    Public Property HandleUserControlLoaded As RelayCommand(Of Object)
-
-    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
+    Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
-            Return MyBase.Items
+            Return Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            MyBase.Items = value
+            Items = value
+            OnPropertyChanged(NameOf(Daten))
         End Set
     End Property
+
+#End Region
+
+#Region "Command-Properties"
+    Public ReadOnly Property OkCommand As ICommand
+
+    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
+
+    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+
+#End Region
+
+#Region "Methoden"
+
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Teilnehmer.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+        ' Hier können Sie die Logik für den OK-Button implementieren
+        _Teilnehmer.speichern()
+
+    End Sub
+
+    Private Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        ValidateVorname()
+        ValidateNachname()
+        ValidateLeistungsstand()
+    End Sub
 
 #End Region
 

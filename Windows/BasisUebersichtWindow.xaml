@@ -19,6 +19,7 @@
     
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
+        <!-- Todo: Kann Converter weg? -->
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
 
         <!--Data Template Trainer-->
@@ -36,14 +37,14 @@
                           ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}" 
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-
-                    <i:Interaction.Behaviors>
-                        <local:DataGridSortBehavior
-                            SortCommand="{Binding DataGridSortingCommand}" />
-                    </i:Interaction.Behaviors>
-
-
-                    <DataGrid.Columns >
+ 
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    
+                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" SortMemberPath="Spitzname" Width="Auto"/>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="*"/>
@@ -154,16 +155,22 @@
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          IsSynchronizedWithCurrentItem="True"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--DisplayMemberPath="Spitzname"-->
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="Auto"/>
-                        <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" Width="Auto"/>
-                        <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="Auto"/>
-                        <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstand.Sortierung" Width="*"/>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" Width="Auto" SortMemberPath="Vorname"/>
+                        <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" Width="Auto" SortMemberPath="Nachname"/>
+                        <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="Auto" SortMemberPath="Alter"/>
+                        <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}"  Width="*" SortMemberPath="Leistungsstand.Sortierung"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -234,20 +241,19 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Sorting">
-                        <i:InvokeCommandAction Command="{Binding DataGridSorting}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
 
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--   
-                    Sorting="{Binding DataGridSortingCommand}"-->
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
@@ -327,20 +333,19 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Sorting">
-                        <i:InvokeCommandAction Command="{Binding DataGridSorting}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
+                               
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--   
-                    Sorting="{Binding DataGridSortingCommand}"-->
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
@@ -403,21 +408,21 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Sorting">
-                        <i:InvokeCommandAction Command="{Binding DataGridSorting}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                
 
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--   
-                    Sorting="{Binding DataGridSortingCommand}"-->
-
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="*"/>
@@ -489,20 +494,19 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Sorting">
-                        <i:InvokeCommandAction Command="{Binding DataGridSorting}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
 
                 <!--Objektliste-->
                 <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Items}"
+                          ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    <!--   
-                    Sorting="{Binding DataGridSortingCommand}"-->
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Sorting">
+                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>

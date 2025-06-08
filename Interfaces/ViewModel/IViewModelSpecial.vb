@@ -1,12 +1,10 @@
 ﻿Public Interface IViewModelSpecial
 
+    Property Model As IModel
+    Property Daten As IEnumerable(Of IModel)
+    ReadOnly Property UserControlLoaded As ICommand
+    ReadOnly Property DataGridSortingCommand As ICommand
     Sub OnOk(obj As Object)
     Sub OnLoaded(obj As Object)
-
-    Property Model As IModel
-
-    Overloads Property Items As IEnumerable(Of IModel)
-
-    Property UserControlLoaded As ICommand
 
 End Interface

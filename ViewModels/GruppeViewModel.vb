@@ -1,10 +1,12 @@
-﻿Imports System.ComponentModel
-Imports Groupies.Entities
-Imports Groupies.Controller.AppController
+﻿Imports Groupies.Entities
 
 Public Class GruppeViewModel
     Inherits MasterDetailViewModel(Of Gruppe)
     Implements IViewModelSpecial
+
+#Region "Felder"
+    Private _Gruppe As Gruppe
+#End Region
 
 #Region "Konstruktor"
 
@@ -18,49 +20,19 @@ Public Class GruppeViewModel
         ' Hier können Sie den Konstruktor anpassen
         UserControlLoaded = New RelayCommand(Of Gruppe)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Gruppe)(AddressOf OnOk, Function() IstEingabeGueltig)
-    End Sub
-
-#End Region
-
-#Region "Methoden"
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Gruppe.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
-
-    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-        ' Hier können Sie die Logik für den OK-Button implementieren
-        _Gruppe.speichern()
-
-    End Sub
-
-
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        ValidateBenennung()
-        ValidateTeilnehmerinfo()
-        ValidateSortierung()
-        ValidateLeistungsstufe()
-    End Sub
-
-    Private Sub OnTeilnehmerAusGruppeEntfernen()
-        MessageBox.Show("Teilnehmer raus")
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
 #End Region
 
 #Region "Properties"
 
+    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
     Public ReadOnly Property OkCommand As ICommand
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
     Public Property TeilnehmerAusGruppeEntfernen As ICommand
 
 
-    Private _Gruppe As Gruppe
 
     Public Property Gruppe As IModel Implements IViewModelSpecial.Model
         Get
@@ -135,14 +107,49 @@ Public Class GruppeViewModel
         End Set
     End Property
 
-    Private Overloads Property Items As IEnumerable(Of IModel) Implements IViewModelSpecial.Items
+    Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
-            Return MyBase.Items
+            Return Items
         End Get
         Set(value As IEnumerable(Of IModel))
-            MyBase.Items = value
+            Items = value
         End Set
     End Property
+
+#End Region
+
+#Region "Command-Properties"
+
+#End Region
+
+#Region "Methoden"
+    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+    '    ' Hier können Sie die Logik für den OK-Button implementieren
+    '    _Gruppe.speichern()
+
+    '    MyBase.OnOk(Me)
+
+    'End Sub
+
+    Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
+
+        ' Hier können Sie die Logik für den OK-Button implementieren
+        _Gruppe.speichern()
+
+    End Sub
+
+
+    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        ValidateBenennung()
+        ValidateTeilnehmerinfo()
+        ValidateSortierung()
+        ValidateLeistungsstufe()
+    End Sub
+
+    Private Sub OnTeilnehmerAusGruppeEntfernen()
+        MessageBox.Show("Teilnehmer raus")
+    End Sub
 
 #End Region
 

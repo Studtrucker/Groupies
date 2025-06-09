@@ -26,7 +26,6 @@ Public Class TeilnehmerViewModel
         OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
         Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
-        DropDown.MoveCurrentToFirst()
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub

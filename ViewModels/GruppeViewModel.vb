@@ -1,4 +1,6 @@
-﻿Imports Groupies.Entities
+﻿Imports System.ComponentModel
+Imports Groupies.Controller
+Imports Groupies.Entities
 
 Public Class GruppeViewModel
     Inherits MasterDetailViewModel(Of Gruppe)
@@ -21,18 +23,16 @@ Public Class GruppeViewModel
         UserControlLoaded = New RelayCommand(Of Gruppe)(AddressOf OnLoaded)
         OkCommand = New RelayCommand(Of Gruppe)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
+        DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        LeistungsstufenListCollectionView = DropDown
     End Sub
 
 #End Region
 
 #Region "Properties"
 
-    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
-    Public ReadOnly Property OkCommand As ICommand
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
-    Public Property TeilnehmerAusGruppeEntfernen As ICommand
-
-
+    Public Property LeistungsstufenListCollectionView As ICollectionView
 
     Public Property Gruppe As IModel Implements IViewModelSpecial.Model
         Get
@@ -119,6 +119,10 @@ Public Class GruppeViewModel
 #End Region
 
 #Region "Command-Properties"
+    Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
+    Public ReadOnly Property OkCommand As ICommand
+    Public Property TeilnehmerAusGruppeEntfernen As ICommand
+    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
 #End Region
 

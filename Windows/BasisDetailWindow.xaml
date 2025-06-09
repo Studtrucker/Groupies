@@ -7,24 +7,32 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         mc:Ignorable="d"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        SizeToContent="WidthAndHeight">
+        Width="1000" Height="600">
     
-    <Grid >
-        <Grid.RowDefinitions>
-            <RowDefinition  Style="{StaticResource RandRowDefinition}"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-        </Grid.RowDefinitions>
+    <DockPanel >
+        <!--Menuleiste-->
+        <!--Überschrift-->
+        <DockPanel DockPanel.Dock="Top" Margin="10">
+            <Image Source="{Binding WindowHeaderImage}" Style="{StaticResource WindowImageCaption}" />
+            <TextBlock Text="{Binding WindowHeaderText}" Style="{StaticResource WindowCaption}" />
+        </DockPanel>
+        
+        <!--Buttons-->
+        <Border DockPanel.Dock="Bottom" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
+                <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
+                <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"  IsEnabled="{Binding IstEingabeGueltig}" Visibility="{Binding OkButtonVisibility}"/>
+                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"  Visibility="{Binding CancelButtonVisibility}"/>
+            </StackPanel>
+        </Border>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-        </Grid.ColumnDefinitions>
-
-        <DockPanel Grid.Column="1" Grid.Row="1">
+        <!--Liste und Detailfeld-->
+        <ContentControl x:Name="ContontControl" Content="{Binding AktuellesViewModel}" Margin="20,10" />
+        
+        <!--<DockPanel Grid.Column="1" Grid.Row="1">
               
-            <!--OK- und Cancel-Button-->
+            --><!--OK- und Cancel-Button--><!--
             <Border DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
@@ -34,7 +42,7 @@
                 </StackPanel>
             </Border>
 
-            <!--Überschrift-->
+            --><!--Überschrift--><!--
             <DockPanel DockPanel.Dock="Top">
                 <Image Source="{Binding WindowHeaderImage}"
                    Style="{StaticResource WindowImageCaption}" />
@@ -42,11 +50,11 @@
                        Style="{StaticResource WindowCaption}" />
             </DockPanel>
             
-            <!--Inputfields-->
+            --><!--Inputfields--><!--
             <DockPanel LastChildFill="True" Width="Auto" Height="Auto">
                 <ContentControl Content="{Binding CurrentUserControl}"/>
             </DockPanel>
 
-        </DockPanel>
-    </Grid>
+        </DockPanel>-->
+    </DockPanel>
 </Window>

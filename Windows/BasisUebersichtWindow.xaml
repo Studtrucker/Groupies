@@ -18,8 +18,6 @@
     
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
-        <!-- Todo: Kann Converter weg?
-        Nein, muss bleiben -->
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
 
         <!--Data Template Trainer-->

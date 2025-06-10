@@ -367,20 +367,25 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim Vm = New TeilnehmerViewModel With {
-            .Teilnehmer = New Teilnehmer}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisDetailWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        mvw.AktuellesViewModel.Model = New Teilnehmer
 
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(Vm.Teilnehmer)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show("Neuer Teilnehmer wurde gespeichert")
         Else
             MessageBox.Show("Eingabe abgebrochen")
@@ -499,15 +504,16 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+
+        Dim dialog = New BasisDetailWindow() With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
         Dim Vm = New TrainerViewModel With {
             .Trainer = New Trainer}
         '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
-
-        Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 
@@ -553,11 +559,11 @@ Public Class MainWindow
         If Trainer IsNot Nothing Then
 
 
+            Dim dialog = New BasisDetailWindow() With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
             Dim Vm = New TrainerViewModel With {
                 .Trainer = Trainer}
             '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
-            Dim dialog = New BasisWindow(Vm) With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             Dim result As Boolean = dialog.ShowDialog()
 
@@ -666,7 +672,7 @@ Public Class MainWindow
 
 #Region "Einteilung"
     Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.Einteilungsliste IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -716,8 +722,7 @@ Public Class MainWindow
 
 #Region "Leistungsstufe"
     Private Sub Handle_LeistungsstufeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = True
-        ' e.CanExecute = AppCon.CurrentClub.Leistungsstufenliste IsNot Nothing
+        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleLeistungsstufen IsNot Nothing
     End Sub
 
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -1097,11 +1102,11 @@ Public Class MainWindow
 
     Private Sub HandleTestErstellen(sender As Object, e As RoutedEventArgs)
 
+        Dim Fenster As New BasisDetailWindow()
         Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
         Dim Trainer = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
         vm.Trainer = Trainer
         'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        Dim Fenster As New BasisWindow(vm)
 
         Fenster.Show()
 
@@ -1117,13 +1122,15 @@ Public Class MainWindow
 
         Dim O = New Gruppe With {.[Alias] = "Gruppe1", .Sortierung = 1}
 
+
+        Dim dialog = New BasisDetailWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+
         Dim vm = New GruppeViewModel With {
             .Gruppe = O}
         ''.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-
-        Dim dialog = New BasisWindow(vm) With {
-            .Owner = Me,
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         'dialog.ShowDialog()
         Dim result As Boolean = dialog.ShowDialog()
@@ -1138,13 +1145,15 @@ Public Class MainWindow
 
     Private Sub HandleTestAnzeigen(sender As Object, e As RoutedEventArgs)
 
+        Dim dialog = New BasisDetailWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+
         Dim O = New Teilnehmer With {.Nachname = "Gruppe1"}
         Dim vm = New TeilnehmerViewModel With {
             .Teilnehmer = O}
         '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-        Dim dialog = New BasisWindow(vm) With {
-            .Owner = Me,
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
         Dim result As Boolean = dialog.ShowDialog()
 

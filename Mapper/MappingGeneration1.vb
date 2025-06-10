@@ -119,6 +119,12 @@ Public Module MappingGeneration1
 
         Skiclub.Grouplist.ToList.ForEach(Sub(g) Trainer.Add(MapInstructor2Trainer(g.GroupLeader)))
 
+        'Entferne leere Trainer-Objekte 
+        Trainer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Trainer.Remove(O))
+
+        ' Entferne doppelte Trainer
+        Trainer = New TrainerCollection(Trainer.GroupBy(Of Guid)(Function(LS) LS.TrainerID).Select(Function(T) T.First).ToList)
+
         Return Trainer
 
     End Function

@@ -1,4 +1,5 @@
-﻿Imports Groupies.Entities
+﻿Imports System.ComponentModel
+Imports Groupies.Entities
 
 Public Class LeistungsstufeViewModel
     Inherits MasterDetailViewModel(Of Leistungsstufe)
@@ -21,11 +22,14 @@ Public Class LeistungsstufeViewModel
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         UserControlLoaded = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoaded)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        AuswahlFaehigkeiten = New ListCollectionView(Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten)
     End Sub
 
 #End Region
 
 #Region "Properties"
+
+    Public Property AuswahlFaehigkeiten As ICollectionView
 
     Public Property Leistungsstufe As IModel Implements IViewModelSpecial.Model
         Get

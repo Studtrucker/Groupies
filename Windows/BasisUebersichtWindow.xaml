@@ -439,7 +439,7 @@
 
                     <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
                         <TextBlock>Beschreibung
-                    <Run Foreground="Red">*</Run>
+                            <!--<Run Foreground="Red">*</Run>-->
                         </TextBlock>
                     </Label>
 
@@ -460,8 +460,34 @@
                     <TextBox Text="{Binding SelectedItem.Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                      Grid.Column="2" Grid.Row="3" />
 
-                    <TextBox Text="{Binding SelectedItem.Faehigkeiten, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="4"/>
+                    
+                    <DataGrid  x:Name="FaehigkeitenDataGrid"
+                               AutoGenerateColumns="False" 
+                               ItemsSource="{Binding SelectedItem.Faehigkeiten,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                               CanUserAddRows="False" 
+                               SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                               Grid.Column="2" Grid.Row="4">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
 
                 </Grid>
             </DockPanel>

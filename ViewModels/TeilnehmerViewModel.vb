@@ -83,6 +83,7 @@ Public Class TeilnehmerViewModel
         Set(value As Date)
             _Teilnehmer.Geburtsdatum = value
             OnPropertyChanged(NameOf(Geburtsdatum))
+            OnPropertyChanged(NameOf(Alter))
         End Set
     End Property
 
@@ -94,6 +95,12 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Telefonnummer = value
             OnPropertyChanged(NameOf(Telefonnummer))
         End Set
+    End Property
+
+    Public ReadOnly Property Alter As String
+        Get
+            Return $"Alter: {_Teilnehmer.Alter} Jahre"
+        End Get
     End Property
 
     Public Property Leistungsstand As Leistungsstufe

@@ -107,7 +107,17 @@ Public Class ViewModelWindow
         End Get
     End Property
 
-    Public ReadOnly Property WindowHeaderText As String
+    Public ReadOnly Property DetailWindowHeaderText As String
+        Get
+            If Datentyp IsNot Nothing Then
+                Return $"{Datentyp.DatentypText} {Modus.Titel}"
+            Else
+                Return "Detail"
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property UebersichtWindowHeaderText As String
         Get
             If Datentyp IsNot Nothing Then
                 Return $"Übersicht {Datentyp.DatentypenText}"
@@ -126,8 +136,6 @@ Public Class ViewModelWindow
             Return _AktuellesViewModel
         End Get
     End Property
-
-    'Public Property Detaildaten As IModel
 
     Public ReadOnly Property CloseButtonVisibility As Visibility
         Get

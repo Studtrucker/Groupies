@@ -380,6 +380,7 @@ Public Class MainWindow
         mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
         mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
         mvw.AktuellesViewModel.Model = New Teilnehmer
+        dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
 

@@ -18,6 +18,7 @@ Namespace Entities.Generation4
 #Region "Fields"
 
         Private _Einteilungsliste = New EinteilungCollection
+        Private _AlleLeistungsstufen = New LeistungsstufeCollection
 
 #End Region
 
@@ -99,7 +100,14 @@ Namespace Entities.Generation4
         ''' Eine Liste aller Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleLeistungsstufen() As LeistungsstufeCollection = New LeistungsstufeCollection
+        Public Property AlleLeistungsstufen() As LeistungsstufeCollection
+            Get
+                Return _AlleLeistungsstufen
+            End Get
+            Set(value As LeistungsstufeCollection)
+                _AlleLeistungsstufen = value
+            End Set
+        End Property
 
 
         ''' <summary>

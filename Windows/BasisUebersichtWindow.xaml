@@ -632,7 +632,7 @@
         <!--Überschrift-->
         <DockPanel DockPanel.Dock="Top" Margin="10">
             <Image Source="{Binding WindowHeaderImage}" Style="{StaticResource WindowImageCaption}" />
-            <TextBlock Text="{Binding WindowHeaderText}" Style="{StaticResource WindowCaption}" />
+            <TextBlock Text="{Binding UebersichtWindowHeaderText}" Style="{StaticResource WindowCaption}" />
         </DockPanel>
         
         <!--Buttons-->

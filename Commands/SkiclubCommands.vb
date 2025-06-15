@@ -28,7 +28,7 @@ Namespace Commands
         Public Shared ReadOnly Property TeilnehmerLeistungsbeurteilung As New RoutedUICommand("Teilnehmer beurteilen",
                                                                                              NameOf(TeilnehmerLeistungsbeurteilung),
                                                                                              GetType(SkiclubCommands))
-        Public Shared ReadOnly Property TeilnehmerNeuErstellen As New RoutedUICommand("Teilnehmer hinzufügen",
+        Public Shared ReadOnly Property TeilnehmerNeuErstellen As New RoutedUICommand("Teilnehmer erstellen",
                                                                                      NameOf(TeilnehmerNeuErstellen),
                                                                                      GetType(SkiclubCommands))
         Public Shared ReadOnly Property TeilnehmerBearbeiten As New RoutedUICommand("Teilnehmer bearbeiten",

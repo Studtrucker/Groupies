@@ -70,11 +70,11 @@ Public Module MappingGeneration3
     Private Function GetAlleFaehigkeiten(Skiclub As Generation3.Club) As FaehigkeitCollection
 
         Dim Faehigkeiten = New FaehigkeitCollection
+        ' Leere Fähigkeit hinzufügen für Dropdowns
+        Faehigkeiten.Add(New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
         ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(M) M.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f)))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(e) e.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) T.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f))))
-        ' Leere Fähigkeit hinzufügen für Dropdowns
-        Faehigkeiten.Add(New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
 
         ' Entferne doppelte Fähigkeiten
         Faehigkeiten = New FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
@@ -131,11 +131,12 @@ Public Module MappingGeneration3
     Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation3.Club) As LeistungsstufeCollection
         ' Eigene Collection initialisieren
         Dim Leistungsstufen = New LeistungsstufeCollection
+        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
+        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand)))
-        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
-        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+
         ' Entferne doppelte Leistungsstufen
         Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
 

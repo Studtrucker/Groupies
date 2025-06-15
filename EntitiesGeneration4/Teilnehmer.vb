@@ -34,6 +34,9 @@ Namespace Entities
         ''' </summary>
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
+            If AktuellerClub IsNot Nothing Then
+                Leistungsstand = AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
+            End If
         End Sub
 
         ''' <summary>
@@ -113,7 +116,7 @@ Namespace Entities
         ''' und in der Gruppeneinteilung aus
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property Alter As Long
+        Public ReadOnly Property Alter As Single
             Get
                 Dim nMonate As Integer
                 Dim nJahre As Integer
@@ -128,7 +131,11 @@ Namespace Entities
                         End If
                     End If
                 End If
-                Return nJahre
+                If nJahre < 7 Then
+                    Return (DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12).ToString("0.00")
+                Else
+                    Return nJahre
+                End If
             End Get
         End Property
 

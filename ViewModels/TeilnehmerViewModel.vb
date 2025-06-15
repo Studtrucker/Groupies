@@ -23,7 +23,7 @@ Public Class TeilnehmerViewModel
         ' Hier können Sie den Konstruktor anpassen
 
         UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
-        OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
+        'OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
         Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
@@ -35,7 +35,7 @@ Public Class TeilnehmerViewModel
 #Region "Properties"
     Public Property LeistungsstufenListCollectionView As ICollectionView
 
-    Public Property Teilnehmer As IModel Implements IViewModelSpecial.Model
+    Public Property Model As IModel Implements IViewModelSpecial.Model
         Get
             Return _Teilnehmer
         End Get
@@ -155,6 +155,7 @@ Public Class TeilnehmerViewModel
 
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Teilnehmer.speichern()
+
 
     End Sub
 

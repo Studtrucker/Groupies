@@ -23,15 +23,16 @@ Public Class ViewModelWindow
 
     Private Sub New()
         MyBase.New()
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        'DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf OnDataGridSorting)
     End Sub
 
     Public Sub New(windowService As IWindowService)
         _windowService = windowService
-        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
+        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
     End Sub
 
 
@@ -48,6 +49,7 @@ Public Class ViewModelWindow
 #Region "Commands"
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
+    Public Property OkCommand As ICommand
 
 #End Region
 
@@ -172,17 +174,17 @@ Public Class ViewModelWindow
 
     Public Overridable Sub OnOk(obj As Object)
         ' Businesslogik erfolgreich → Dialog schließen mit OK
-        RaiseEvent RequestClose(Me, True)
+        'RaiseEvent RequestClose(Me, True)
+        _windowService.DialogResult = True
     End Sub
 
     Public Sub OnCancel(obj As Object)
-        ' Businesslogik nicht erfolgreich → Dialog schließen mit Cancel
-        RaiseEvent RequestClose(Me, False)
+        ' Businesslogik nicht erfolgreich 
+        _windowService.DialogResult = False
     End Sub
 
     Protected Sub OnClose(obj As Object)
         ' Fenster schließen mit Close
-        'RaiseEvent Close(Me, EventArgs.Empty)
         _windowService.CloseWindow()
     End Sub
 

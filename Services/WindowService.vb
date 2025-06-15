@@ -4,9 +4,17 @@
     Private ReadOnly _window As Window
 
     Public Sub New(window As Window)
-        Me._window = window
+        _window = window
     End Sub
 
+    Public Property DialogResult As Nullable(Of Boolean) Implements IWindowService.DialogResult
+        Get
+            Return _window.DialogResult
+        End Get
+        Set(value As Nullable(Of Boolean))
+            _window.DialogResult = value
+        End Set
+    End Property
 
     Public Sub ShowWindow() Implements IWindowService.ShowWindow
         If _window IsNot Nothing Then
@@ -24,4 +32,5 @@
         End If
         Return False
     End Function
+
 End Class

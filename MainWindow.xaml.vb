@@ -386,7 +386,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show("Neuer Teilnehmer wurde gespeichert")
         Else
             MessageBox.Show("Eingabe abgebrochen")
@@ -1153,7 +1153,7 @@ Public Class MainWindow
 
         Dim O = New Teilnehmer With {.Nachname = "Gruppe1"}
         Dim vm = New TeilnehmerViewModel With {
-            .Teilnehmer = O}
+            .Model = O}
         '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
         Dim result As Boolean = dialog.ShowDialog()

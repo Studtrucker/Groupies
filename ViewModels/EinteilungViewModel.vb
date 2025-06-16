@@ -8,6 +8,10 @@ Public Class EinteilungViewModel
     Private _Einteilung As Einteilung
 #End Region
 
+#Region "Events"
+    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+#End Region
+
 #Region "Konstruktor"
     ''' <summary>
     ''' Parameterloser Konstruktor für den EinteilungViewModel.
@@ -71,6 +75,11 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
+    Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
+        Get
+            Return MyBase.IstEingabeGueltig
+        End Get
+    End Property
 #End Region
 
 #Region "Command-Properties"

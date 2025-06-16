@@ -10,6 +10,10 @@ Public Class GruppeViewModel
     Private _Gruppe As Gruppe
 #End Region
 
+#Region "Events"
+    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+#End Region
+
 #Region "Konstruktor"
 
     ''' <summary>
@@ -116,6 +120,11 @@ Public Class GruppeViewModel
         End Set
     End Property
 
+    Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
+        Get
+            Return MyBase.IstEingabeGueltig
+        End Get
+    End Property
 #End Region
 
 #Region "Command-Properties"

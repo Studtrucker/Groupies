@@ -4,20 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Groupies"
-        xmlns:uc="clr-namespace:Groupies.UserControls" 
         xmlns:convert="clr-namespace:Groupies.Converters"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        SizeToContent="WidthAndHeight">
+        Height="100" Width="100">
+    <!--SizeToContent="WidthAndHeight"-->
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Window.Resources>
 
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
         <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
 
+        <!--Data Template Teilnehmer-->
         <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">
 
-        <!--Data Template Teilnehmer-->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
@@ -76,7 +83,6 @@
 
     </Window.Resources>
 
-
     <DockPanel >
         <!--Menuleiste-->
         <!--Überschrift-->
@@ -95,34 +101,8 @@
             </StackPanel>
         </Border>
 
-        <!--Liste und Detailfeld-->
+        <!--Detailfeld-->
         <ContentControl  Content="{Binding AktuellesViewModel}" Margin="20,10" />
         
-        <!--<DockPanel Grid.Column="1" Grid.Row="1">
-              
-            --><!--OK- und Cancel-Button--><!--
-            <Border DockPanel.Dock="Bottom">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
-                    <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
-                    <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"  IsEnabled="{Binding IstEingabeGueltig}" Visibility="{Binding OkButtonVisibility}"/>
-                    <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"  Visibility="{Binding CancelButtonVisibility}"/>
-                </StackPanel>
-            </Border>
-
-            --><!--Überschrift--><!--
-            <DockPanel DockPanel.Dock="Top">
-                <Image Source="{Binding WindowHeaderImage}"
-                   Style="{StaticResource WindowImageCaption}" />
-                <TextBlock Text="{Binding WindowTitleText}"
-                       Style="{StaticResource WindowCaption}" />
-            </DockPanel>
-            
-            --><!--Inputfields--><!--
-            <DockPanel LastChildFill="True" Width="Auto" Height="Auto">
-                <ContentControl Content="{Binding CurrentUserControl}"/>
-            </DockPanel>
-
-        </DockPanel>-->
     </DockPanel>
 </Window>

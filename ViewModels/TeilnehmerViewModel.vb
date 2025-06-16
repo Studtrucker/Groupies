@@ -10,6 +10,10 @@ Public Class TeilnehmerViewModel
     Private _Teilnehmer As Teilnehmer
 #End Region
 
+#Region "Events"
+    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+#End Region
+
 #Region "Konstruktor"
 
 
@@ -22,7 +26,7 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
+        'UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
         'OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
         Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
@@ -51,6 +55,8 @@ Public Class TeilnehmerViewModel
         Set(value As Guid)
             _Teilnehmer.TeilnehmerID = value
             OnPropertyChanged(NameOf(TeilnehmerID))
+            ValidateTeilnehmerID()
+            RaiseEvent ObjektChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -62,6 +68,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Vorname = value
             OnPropertyChanged(NameOf(Vorname))
             ValidateVorname()
+            RaiseEvent ObjektChangedEvent(Me, Not HasErrors)
         End Set
     End Property
 
@@ -73,6 +80,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Nachname = value
             OnPropertyChanged(NameOf(Nachname))
             ValidateNachname()
+            RaiseEvent ObjektChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -84,6 +92,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Geburtsdatum = value
             OnPropertyChanged(NameOf(Geburtsdatum))
             OnPropertyChanged(NameOf(Alter))
+            RaiseEvent ObjektChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -94,6 +103,7 @@ Public Class TeilnehmerViewModel
         Set(value As String)
             _Teilnehmer.Telefonnummer = value
             OnPropertyChanged(NameOf(Telefonnummer))
+            RaiseEvent ObjektChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -111,6 +121,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Leistungsstand = value
             OnPropertyChanged(NameOf(Leistungsstand))
             ValidateLeistungsstand()
+            RaiseEvent ObjektChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -130,10 +141,17 @@ Public Class TeilnehmerViewModel
         End Get
     End Property
 
+
+    Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
+        Get
+            Return MyBase.IstEingabeGueltig
+        End Get
+    End Property
 #End Region
 
 #Region "Command-Properties"
-    Public ReadOnly Property OkCommand As ICommand
+
+    'Public ReadOnly Property OkCommand As ICommand
 
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
 
@@ -143,14 +161,6 @@ Public Class TeilnehmerViewModel
 
 #Region "Methoden"
 
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Teilnehmer.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
@@ -167,8 +177,7 @@ Public Class TeilnehmerViewModel
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
-
+#Region "Validation"
 
     Private Sub ValidateVorname()
         ClearErrors(NameOf(_Teilnehmer.Vorname))
@@ -186,8 +195,14 @@ Public Class TeilnehmerViewModel
 
     Private Sub ValidateLeistungsstand()
         ClearErrors(NameOf(_Teilnehmer.Leistungsstand))
-        If _Teilnehmer.Leistungsstand Is Nothing Then
+        If _Teilnehmer.Leistungsstand Is Nothing OrElse _Teilnehmer.Leistungsstand.Sortierung = -1 Then
             AddError(NameOf(_Teilnehmer.Leistungsstand), "Leistungsstand muss ausgewählt werden.")
+        End If
+    End Sub
+    Private Sub ValidateTeilnehmerID()
+        ClearErrors(NameOf(_Teilnehmer.TeilnehmerID))
+        If _Teilnehmer.TeilnehmerID = Nothing Then
+            AddError(NameOf(_Teilnehmer.TeilnehmerID), "Eine TeilnehmerID muss eingetragen werden.")
         End If
     End Sub
 #End Region

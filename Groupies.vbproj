@@ -64,10 +64,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExcelDataReader, Version=3.8.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
-      <HintPath>packages\ExcelDataReader.3.8.0-develop00474\lib\net462\ExcelDataReader.dll</HintPath>
+      <HintPath>packages\ExcelDataReader.3.8.0-develop00488\lib\net462\ExcelDataReader.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader.DataSet, Version=3.8.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
-      <HintPath>packages\ExcelDataReader.DataSet.3.8.0-develop00474\lib\net462\ExcelDataReader.DataSet.dll</HintPath>
+      <HintPath>packages\ExcelDataReader.DataSet.3.8.0-develop00488\lib\net462\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MicrosoftExpressionInteractions.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
@@ -96,7 +96,7 @@
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding.CodePages, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Text.Encoding.CodePages.10.0.0-preview.4.25258.110\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+      <HintPath>packages\System.Text.Encoding.CodePages.10.0.0-preview.5.25277.114\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Presentation" />
@@ -207,6 +207,9 @@
     </Compile>
     <Compile Include="UserControls\LeistungsstufeUserControl.xaml.vb">
       <DependentUpon>LeistungsstufeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LoadedTest.xaml.vb">
+      <DependentUpon>LoadedTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TeilnehmerDialog.xaml.vb">
       <DependentUpon>TeilnehmerDialog.xaml</DependentUpon>
@@ -367,6 +370,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\LeistungsstufeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LoadedTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

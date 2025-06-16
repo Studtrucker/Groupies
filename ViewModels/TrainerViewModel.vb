@@ -37,6 +37,8 @@ Public Class TrainerViewModel
 
     Public Event Drop As EventHandler
 
+    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+
 #End Region
 
 #Region "Properties"
@@ -134,6 +136,11 @@ Public Class TrainerViewModel
         End Set
     End Property
 
+    Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
+        Get
+            Return MyBase.IstEingabeGueltig
+        End Get
+    End Property
 #End Region
 
 #Region "Command-Properties"
@@ -150,14 +157,6 @@ Public Class TrainerViewModel
 
 #Region "Methoden"
 
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Trainer.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
         ' Hier können Sie die Logik für den OK-Button implementieren
@@ -215,19 +214,19 @@ Public Class TrainerViewModel
     '    End If
 
     'End Sub
-    Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-        Dim View = CollectionViewSource.GetDefaultView(Items)
-        If View IsNot Nothing Then
-            Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-            View.SortDescriptions.Clear()
-            View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-            e.Column.SortDirection = direction
-            e.Handled = True
-            ItemsView = View
-            ItemsView.Refresh()
-        End If
+    ''Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
+    ''    Dim View = CollectionViewSource.GetDefaultView(Items)
+    ''    If View IsNot Nothing Then
+    ''        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+    ''        View.SortDescriptions.Clear()
+    ''        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
+    ''        e.Column.SortDirection = direction
+    ''        e.Handled = True
+    ''        ItemsView = View
+    ''        ItemsView.Refresh()
+    ''    End If
 
-    End Sub
+    ''End Sub
 
 #End Region
 

@@ -9,6 +9,10 @@ Public Class LeistungsstufeViewModel
     Private _Leistungsstufe As Leistungsstufe
 #End Region
 
+#Region "Events"
+    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+#End Region
+
 #Region "Konstruktor"
 
     ''' <summary>
@@ -91,6 +95,12 @@ Public Class LeistungsstufeViewModel
         Set(value As IEnumerable(Of IModel))
             Items = value
         End Set
+    End Property
+
+    Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
+        Get
+            Return MyBase.IstEingabeGueltig
+        End Get
     End Property
 
 #End Region

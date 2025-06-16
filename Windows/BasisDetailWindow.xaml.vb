@@ -1,4 +1,3 @@
-﻿
-Public Class BasisDetailWindow
+﻿Public Class BasisDetailWindow
 
 End Class

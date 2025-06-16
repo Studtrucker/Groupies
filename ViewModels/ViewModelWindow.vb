@@ -21,18 +21,21 @@ Public Class ViewModelWindow
 
 #Region "Konstruktor"
 
-    Private Sub New()
+    Public Sub New()
         MyBase.New()
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOK)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        LoadedCommand = New RelayCommand(Of Object)(AddressOf OnLoaded)
     End Sub
 
     Public Sub New(windowService As IWindowService)
+        MyBase.New()
         _windowService = windowService
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOk)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+        LoadedCommand = New RelayCommand(Of Object)(AddressOf OnLoaded)
     End Sub
 
 
@@ -50,6 +53,7 @@ Public Class ViewModelWindow
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
     Public Property OkCommand As ICommand
+    Public Property LoadedCommand As ICommand
 
 #End Region
 
@@ -172,9 +176,12 @@ Public Class ViewModelWindow
 
 #Region "Methoden"
 
+    Private Function CanOk(param As Object) As Boolean
+        Return AktuellesViewModel.IstEingabeGueltig
+    End Function
+
     Public Overridable Sub OnOk(obj As Object)
         ' Businesslogik erfolgreich → Dialog schließen mit OK
-        'RaiseEvent RequestClose(Me, True)
         _windowService.DialogResult = True
     End Sub
 
@@ -186,6 +193,21 @@ Public Class ViewModelWindow
     Protected Sub OnClose(obj As Object)
         ' Fenster schließen mit Close
         _windowService.CloseWindow()
+    End Sub
+
+    Protected Sub OnLoaded(obj As Object)
+        AddHandler _AktuellesViewModel.ObjektChangedEvent, AddressOf OnObjectChanged
+
+        ' Fenster wurde geladen
+        _windowService.SizeToContent = SizeToContent.WidthAndHeight
+        AktuellesViewModel.OnLoaded(obj)
+        CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+    End Sub
+
+    Public Sub OnObjectChanged() 'sender As Object, e As EventArgs)
+        ' Objekt wurde geändert, hier können Sie Logik hinzufügen, die auf Änderungen reagiert
+        ' Zum Beispiel: Aktualisieren der Ansicht oder Validierung
+        CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
     End Sub
 
 #End Region

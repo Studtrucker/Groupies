@@ -11,6 +11,7 @@
         ''' </summary>
         Public Sub New()
             EinteilungID = Guid.NewGuid()
+            Sortierung = -1
             'Gruppenliste = New GruppeCollection
             'GruppenloseTeilnehmer = New TeilnehmerCollection
             'GruppenloseTrainer = New TrainerCollection
@@ -33,6 +34,8 @@
 #End Region
 
 #Region "Properties"
+
+        Public Property EinteilungID As Guid Implements IModel.Ident
 
         ''' <summary>
         ''' Die Einteilungen können beispielsweise
@@ -171,7 +174,6 @@
             End Get
         End Property
 
-        Public Property EinteilungID As Guid Implements IModel.Ident
 
 #End Region
 

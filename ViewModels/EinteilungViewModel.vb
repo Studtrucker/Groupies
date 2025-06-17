@@ -1,4 +1,5 @@
-﻿Imports Groupies.Entities
+﻿Imports Groupies.DataImport
+Imports Groupies.Entities
 
 Public Class EinteilungViewModel
     Inherits MasterDetailViewModel(Of Einteilung)
@@ -22,7 +23,6 @@ Public Class EinteilungViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         UserControlLoaded = New RelayCommand(Of Einteilung)(AddressOf OnLoaded)
-        OkCommand = New RelayCommand(Of Einteilung)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
@@ -45,8 +45,12 @@ Public Class EinteilungViewModel
         End Get
         Set(value As Guid)
             _Einteilung.EinteilungID = value
+            OnPropertyChanged(NameOf(EinteilungID))
+            ValidateEinteilungID()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
+
 
     Public Property Benennung As String
         Get
@@ -54,17 +58,25 @@ Public Class EinteilungViewModel
         End Get
         Set(value As String)
             _Einteilung.Benennung = value
+            OnPropertyChanged(NameOf(Benennung))
+            ValidateBenennung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
-    Public Property Sortierung As String
+
+    Public Property Sortierung As Integer
         Get
             Return _Einteilung.Sortierung
         End Get
-        Set(value As String)
+        Set(value As Integer)
             _Einteilung.Sortierung = value
+            OnPropertyChanged(NameOf(Sortierung))
+            ValidateSortierung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
+
 
     Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
@@ -80,12 +92,12 @@ Public Class EinteilungViewModel
             Return MyBase.IstEingabeGueltig
         End Get
     End Property
+
 #End Region
 
 #Region "Command-Properties"
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
     Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
-    Public ReadOnly Property OkCommand As ICommand
 
 #End Region
 
@@ -98,7 +110,9 @@ Public Class EinteilungViewModel
     ''' <param name="obj">Das geladene Objekt.</param>
     ''' <remarks>Implementierung der IViewModelSpecial-Schnittstelle.</remarks>
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        'Throw New NotImplementedException()
+        ValidateBenennung()
+        ValidateEinteilungID()
+        ValidateSortierung()
     End Sub
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
@@ -108,8 +122,31 @@ Public Class EinteilungViewModel
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
+#Region "Validation"
 
+    Private Sub ValidateSortierung()
+        ClearErrors(NameOf(_Einteilung.Sortierung))
+        If _Einteilung.Sortierung < 0 Then
+            AddError(NameOf(_Einteilung.Sortierung), "Sortierung darf nicht negativ sein.")
+        End If
+        If String.IsNullOrWhiteSpace(_Einteilung.Sortierung) Then
+            AddError(NameOf(_Einteilung.Sortierung), "Sortierung darf nicht negativ sein.")
+        End If
+    End Sub
+
+    Private Sub ValidateEinteilungID()
+        ClearErrors(NameOf(_Einteilung.EinteilungID))
+        If _Einteilung.EinteilungID = Nothing Then
+            AddError(NameOf(_Einteilung.EinteilungID), "Eine EinteilungID muss eingetragen werden.")
+        End If
+    End Sub
+
+    Private Sub ValidateBenennung()
+        ClearErrors(NameOf(_Einteilung.Benennung))
+        If String.IsNullOrWhiteSpace(_Einteilung.Benennung) Then
+            AddError(NameOf(_Einteilung.Benennung), "Benennung darf nicht leer sein.")
+        End If
+    End Sub
 #End Region
 
 End Class

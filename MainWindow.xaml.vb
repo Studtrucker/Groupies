@@ -679,20 +679,23 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New EinteilungDialog With {
+
+        Dim dialog = New BasisDetailWindow() With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        'dlg.ModusEinstellen()
+        Dim mvw = New ViewModelWindow(New WindowService(dialog))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        mvw.AktuellesViewModel.Model = New Einteilung
+        dialog.DataContext = mvw
 
-        If dlg.ShowDialog = True Then
-            Try
-                AppController.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
-                dlg.KopiereAktuelleGruppen(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
-            Catch ex As Exception
-                MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
-            End Try
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
     End Sub
 

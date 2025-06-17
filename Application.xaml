@@ -52,6 +52,7 @@
             <Style TargetType="TextBox">
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Padding" Value="5"/>
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
                         <Setter Property="ToolTip" Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, 

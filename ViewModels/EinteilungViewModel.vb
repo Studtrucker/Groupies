@@ -130,7 +130,10 @@ Public Class EinteilungViewModel
             AddError(NameOf(_Einteilung.Sortierung), "Sortierung darf nicht negativ sein.")
         End If
         If String.IsNullOrWhiteSpace(_Einteilung.Sortierung) Then
-            AddError(NameOf(_Einteilung.Sortierung), "Sortierung darf nicht negativ sein.")
+            AddError(NameOf(_Einteilung.Sortierung), "Sortierung muss eingetragen sein.")
+        End If
+        If Controller.AppController.AktuellerClub.Einteilungsliste.Where(Function(El) El.Sortierung = _Einteilung.Sortierung AndAlso El.EinteilungID <> _Einteilung.EinteilungID).Any() Then
+            AddError(NameOf(_Einteilung.Sortierung), "Die Sortierung muss eindeutig sein.")
         End If
     End Sub
 

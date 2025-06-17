@@ -387,9 +387,7 @@ Public Class MainWindow
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
             AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show("Neuer Teilnehmer wurde gespeichert")
-        Else
-            MessageBox.Show("Eingabe abgebrochen")
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
         End If
 
     End Sub
@@ -510,20 +508,24 @@ Public Class MainWindow
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
-        Dim dialog = New BasisDetailWindow() With {.Owner = Me, .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim dialog = New BasisDetailWindow() With {
+            .Owner = Me,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim Vm = New TrainerViewModel With {
-            .Trainer = New Trainer}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        Dim mvw = New ViewModelWindow(New WindowService(dialog))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        mvw.AktuellesViewModel.Model = New Trainer
+        dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Vm.Trainer)
-            MessageBox.Show("Neuer Trainer wurde gespeichert")
-        Else
-            MessageBox.Show("Eingabe abgebrochen")
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
         End If
+
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)

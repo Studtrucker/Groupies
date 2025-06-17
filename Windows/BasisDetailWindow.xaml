@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
         Height="100" Width="100">
-    <!--SizeToContent="WidthAndHeight"-->
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -64,9 +63,9 @@
                          Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
                 <StackPanel Grid.Row="3" Grid.Column="2" FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <DatePicker x:Name="GeburtstagDatePicker" Width="200" HorizontalAlignment="Left"
-                            SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
-                    <TextBlock Text="{Binding Alter}"/>
+                    <DatePicker x:Name="GeburtstagDatePicker" Width="200" HorizontalAlignment="Left" FontSize="16"
+                                SelectedDate="{Binding Geburtsdatum, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                    <TextBlock Text="{Binding Alter}" FontSize="16"/>
                 </StackPanel>
 
                 <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="4"
@@ -79,6 +78,98 @@
             
             </Grid>
             
+        </DataTemplate>
+
+        <!--Data Template Trainer-->
+        <DataTemplate DataType="{x:Type local:TrainerViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border AllowDrop="True" Width="120" Height="180" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" 
+                        VerticalAlignment="Top" Margin="2"  
+                        BorderBrush="Black" BorderThickness="1">
+                    <i:Interaction.Behaviors>
+                        <local:DragDropBehavior 
+                            DragOverCommand="{Binding DragOverCommand}" 
+                            DropCommand="{Binding DropCommand}" />
+                    </i:Interaction.Behaviors>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="6*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Fill="Transparent"/>
+                        <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
+                               Visibility="{Binding Path=HatKeinFoto,Converter={StaticResource BooleanToVisibilityInverted}}"
+                               Grid.Row="0"/>
+                        <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"  Grid.Row="1"
+                                   Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
+                            <LineBreak/> Drag'n'Drop<LineBreak/>setzen
+                        </TextBlock>
+                        <Image x:Name="FotoImage" Height="180" StretchDirection="Both"  Source="{Binding Foto}"
+                               Grid.RowSpan="2"/>
+                    </Grid>
+
+                </Border>
+
+                <Label Grid.Column="2" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Trainer ID
+                        <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+                <Label Grid.Column="2" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Spitzname
+                        <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+                <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Vorname
+                    <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+                <Label Content="Nachname" Grid.Column="2" Grid.Row="3"/>
+                <Label Content="Telefon" Grid.Column="2" Grid.Row="4"/>
+                <Label Content="e-Mail" Grid.Column="2" Grid.Row="5"/>
+
+                <TextBox x:Name="TrainerIDTextBox" Grid.Column="3" Grid.Row="0" IsReadOnly="True" 
+                         Text="{Binding TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                
+                <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="1"           
+                         Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                
+                <TextBox Grid.Column="3" Grid.Row="2"
+                         x:Name="VornameTextbox"
+                         Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   />
+                
+                <TextBox Grid.Column="3" Grid.Row="3"
+                         x:Name="NachnameTextbox"
+                         Text="{Binding Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+
+                <TextBox Grid.Column="3" Grid.Row="4"
+                         x:Name="TelefonTextbox"
+                         Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+
+                <TextBox Grid.Column="3" Grid.Row="5"
+                         x:Name="eMailTextbox"
+                         Text="{Binding EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            </Grid>
+
         </DataTemplate>
 
     </Window.Resources>

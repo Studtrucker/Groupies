@@ -9,7 +9,7 @@ Public Class EinteilungViewModel
 #End Region
 
 #Region "Events"
-    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+    Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
 #End Region
 
 #Region "Konstruktor"

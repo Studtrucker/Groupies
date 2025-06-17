@@ -121,7 +121,7 @@ Namespace Entities
                 Dim nMonate As Integer
                 Dim nJahre As Integer
                 If Geburtsdatum = "0001-01-01" Then
-                    nJahre = 0
+                    nJahre = -1
                 Else
                     nJahre = Math.Floor(DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12)
                     nMonate = DatePart(DateInterval.Month, Geburtsdatum)
@@ -131,7 +131,7 @@ Namespace Entities
                         End If
                     End If
                 End If
-                If nJahre < 7 Then
+                If nJahre < 7 And nJahre > 0 Then
                     Return (DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12).ToString("0.00")
                 Else
                     Return nJahre

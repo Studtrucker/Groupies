@@ -196,7 +196,7 @@ Public Class ViewModelWindow
     End Sub
 
     Protected Sub OnLoaded(obj As Object)
-        AddHandler _AktuellesViewModel.ObjektChangedEvent, AddressOf OnObjectChanged
+        AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnObjectChanged
 
         ' Fenster wurde geladen
         _windowService.SizeToContent = SizeToContent.WidthAndHeight

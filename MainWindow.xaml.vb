@@ -522,7 +522,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
         End If
 

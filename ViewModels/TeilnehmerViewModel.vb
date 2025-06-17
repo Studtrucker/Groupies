@@ -11,7 +11,7 @@ Public Class TeilnehmerViewModel
 #End Region
 
 #Region "Events"
-    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
+    Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
 #End Region
 
 #Region "Konstruktor"
@@ -56,7 +56,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.TeilnehmerID = value
             OnPropertyChanged(NameOf(TeilnehmerID))
             ValidateTeilnehmerID()
-            RaiseEvent ObjektChangedEvent(Me, HasErrors)
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -68,7 +68,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Vorname = value
             OnPropertyChanged(NameOf(Vorname))
             ValidateVorname()
-            RaiseEvent ObjektChangedEvent(Me, Not HasErrors)
+            RaiseEvent ModelChangedEvent(Me, Not HasErrors)
         End Set
     End Property
 
@@ -80,7 +80,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Nachname = value
             OnPropertyChanged(NameOf(Nachname))
             ValidateNachname()
-            RaiseEvent ObjektChangedEvent(Me, HasErrors)
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -92,7 +92,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Geburtsdatum = value
             OnPropertyChanged(NameOf(Geburtsdatum))
             OnPropertyChanged(NameOf(Alter))
-            RaiseEvent ObjektChangedEvent(Me, HasErrors)
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -103,7 +103,7 @@ Public Class TeilnehmerViewModel
         Set(value As String)
             _Teilnehmer.Telefonnummer = value
             OnPropertyChanged(NameOf(Telefonnummer))
-            RaiseEvent ObjektChangedEvent(Me, HasErrors)
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -121,7 +121,7 @@ Public Class TeilnehmerViewModel
             _Teilnehmer.Leistungsstand = value
             OnPropertyChanged(NameOf(Leistungsstand))
             ValidateLeistungsstand()
-            RaiseEvent ObjektChangedEvent(Me, HasErrors)
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -151,8 +151,6 @@ Public Class TeilnehmerViewModel
 
 #Region "Command-Properties"
 
-    'Public ReadOnly Property OkCommand As ICommand
-
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
 
     Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
@@ -162,17 +160,15 @@ Public Class TeilnehmerViewModel
 #Region "Methoden"
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Teilnehmer.speichern()
-
-
     End Sub
 
     Private Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateVorname()
         ValidateNachname()
         ValidateLeistungsstand()
+        ValidateTeilnehmerID()
     End Sub
 
 #End Region

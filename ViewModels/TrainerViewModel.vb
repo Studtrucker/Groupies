@@ -11,6 +11,16 @@ Public Class TrainerViewModel
     Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
 #End Region
 
+#Region "Events"
+
+    Public Event DragOver As EventHandler
+
+    Public Event Drop As EventHandler
+
+    Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
+
+#End Region
+
 #Region "Konstruktor"
 
     ''' <summary>
@@ -23,7 +33,6 @@ Public Class TrainerViewModel
         ' Hier können Sie den Konstruktor anpassen
 
         UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
-        OkCommand = New RelayCommand(Of Trainer)(AddressOf OnOk, Function() IstEingabeGueltig)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
@@ -31,19 +40,7 @@ Public Class TrainerViewModel
 
 #End Region
 
-#Region "Events"
-
-    Public Event DragOver As EventHandler
-
-    Public Event Drop As EventHandler
-
-    Public Event ObjektChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ObjektChangedEvent
-
-#End Region
-
 #Region "Properties"
-
-    Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Public Property Trainer As IModel Implements IViewModelSpecial.Model
         Get
@@ -61,6 +58,8 @@ Public Class TrainerViewModel
         Set(value As Guid)
             _Trainer.TrainerID = value
             OnPropertyChanged(NameOf(TrainerID))
+            ValidateTrainerID()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -72,6 +71,7 @@ Public Class TrainerViewModel
             _Trainer.Vorname = value
             OnPropertyChanged(NameOf(Vorname))
             ValidateVorname()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -82,6 +82,7 @@ Public Class TrainerViewModel
         Set(value As String)
             _Trainer.Nachname = value
             OnPropertyChanged(NameOf(Nachname))
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -93,6 +94,7 @@ Public Class TrainerViewModel
             _Trainer.Spitzname = value
             OnPropertyChanged(NameOf(Spitzname))
             ValidateSpitzname()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -103,6 +105,7 @@ Public Class TrainerViewModel
         Set(value As Byte())
             _Trainer.Foto = value
             OnPropertyChanged(NameOf(Foto))
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -114,6 +117,7 @@ Public Class TrainerViewModel
             _Trainer.EMail = value
             OnPropertyChanged(NameOf(EMail))
             ValidateEMail()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -124,6 +128,7 @@ Public Class TrainerViewModel
         Set(value As String)
             _Trainer.Telefonnummer = value
             OnPropertyChanged(NameOf(Telefonnummer))
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -145,12 +150,12 @@ Public Class TrainerViewModel
 
 #Region "Command-Properties"
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
-
-    Public ReadOnly Property OkCommand As ICommand
+    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Public ReadOnly Property DropCommand As ICommand
 
     Public ReadOnly Property DragOverCommand As ICommand
+
 
 
 #End Region
@@ -198,6 +203,7 @@ Public Class TrainerViewModel
         ValidateVorname()
         ValidateSpitzname()
         ValidateEMail()
+        ValidateTrainerID()
     End Sub
 
     'Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
@@ -230,7 +236,7 @@ Public Class TrainerViewModel
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
+#Region "Validation"
     Private Sub ValidateVorname()
         ClearErrors(NameOf(_Trainer.Vorname))
         If String.IsNullOrWhiteSpace(_Trainer.Vorname) Then
@@ -275,6 +281,12 @@ Public Class TrainerViewModel
 
     End Sub
 
+    Private Sub ValidateTrainerID()
+        ClearErrors(NameOf(_Trainer.TrainerID))
+        If _Trainer.TrainerID = Guid.Empty Then
+            AddError(NameOf(_Trainer.TrainerID), "TrainerID muss eingetragen werden.")
+        End If
+    End Sub
 #End Region
 
 End Class

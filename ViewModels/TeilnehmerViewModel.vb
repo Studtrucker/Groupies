@@ -26,8 +26,6 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        'UserControlLoaded = New RelayCommand(Of Teilnehmer)(AddressOf OnLoaded)
-        'OkCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnOk, Function() IstEingabeGueltig)
         Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown

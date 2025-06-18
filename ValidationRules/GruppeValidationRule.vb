@@ -9,15 +9,11 @@ Namespace ValidationRules
             Dim bindingGroup = DirectCast(value, BindingGroup)
             If bindingGroup.Items.Count = 1 Then
                 Dim Gruppe = DirectCast(bindingGroup.Items(0), Entities.Gruppe)
-                Dim AusgabeTeilnehmerinfo = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Benennung)), String)
-                Dim Benennung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Alias)), String)
+                Dim Benennung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Benennung)), String)
                 Dim Sortierung = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Sortierung)), String)
                 Dim Leistungsstand = DirectCast(bindingGroup.GetValue(Gruppe, NameOf(Gruppe.Leistungsstufe)), String)
 
                 Dim ErrorContent As New List(Of String)
-                If String.IsNullOrWhiteSpace(AusgabeTeilnehmerinfo) Then
-                    ErrorContent.Add("Ausgabe Teilnehmerinfo ist eine Pflichtangabe")
-                End If
                 If String.IsNullOrWhiteSpace(Benennung) Then
                     ErrorContent.Add("Benennung ist eine Pflichtangabe")
                 End If

@@ -123,7 +123,6 @@ Namespace Services
             For i = 0 To AnzahlGruppen - 1
                 groupCol.Add(New Gruppe("Genießer", 3) With {
                         .Benennung = GroupPrintNames.Item(IndexGruppenName),
-                        .[Alias] = GruppenBennungen.Item(IndexGruppenName),
                         .Sortierung = GroupSorting.Item(IndexGruppenName),
                         .Leistungsstufe = Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(L) L.Sortierung = -1).Single})
 

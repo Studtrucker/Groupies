@@ -302,7 +302,7 @@ Namespace Services
         Private Function FindSkikursgruppe(Naming As String) As Gruppe
             Dim Group = _skischule.Grouplist.FirstOrDefault(Function(s) s.GroupNaming = Naming)
             If Group Is Nothing Then
-                Group = New Gruppe With {.[Alias] = Naming}
+                Group = New Gruppe With {.Benennung = Naming}
                 _skischule.Grouplist.Add(Group)
             End If
             Return Group

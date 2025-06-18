@@ -376,9 +376,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
         mvw.AktuellesViewModel.Model = New Teilnehmer
         dialog.DataContext = mvw
 
@@ -638,24 +639,33 @@ Public Class MainWindow
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste IsNot Nothing
+        e.CanExecute = Groupies.Controller.AppController.AktuellerClub.AlleGruppen IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New GruppeDialog With {
+
+        Dim dialog = New BasisDetailWindow() With {
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        'dlg.ModusEinstellen()
+        Dim mvw = New ViewModelWindow(New WindowService(dialog))
+        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
+        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        mvw.AktuellesViewModel.Model = New Gruppe
+        dialog.DataContext = mvw
 
-        If dlg.ShowDialog = True Then
-            AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Add(dlg.Gruppe)
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
     End Sub
 
     Private Sub Handle_GruppeLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = _gruppenlisteCollectionView.CurrentItem IsNot Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Trainer Is Nothing AndAlso DirectCast(_gruppenlisteCollectionView.CurrentItem, Gruppe).Mitgliederliste.Count = 0
+        e.CanExecute = False
+        'e.CanExecute = Groupies.Controller.AppController.AktuellerClub.AlleGruppen Is Nothing
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -1126,7 +1136,7 @@ Public Class MainWindow
 
     Private Sub HandleTestBearbeiten(sender As Object, e As RoutedEventArgs)
 
-        Dim O = New Gruppe With {.[Alias] = "Gruppe1", .Sortierung = 1}
+        Dim O = New Gruppe With {.Benennung = "Gruppe1", .Sortierung = 1}
 
 
         Dim dialog = New BasisDetailWindow() With {

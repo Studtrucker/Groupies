@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Controller
+Imports Groupies.DataImport
 Imports Groupies.Entities
 
 Public Class GruppeViewModel
@@ -24,12 +25,10 @@ Public Class GruppeViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        UserControlLoaded = New RelayCommand(Of Gruppe)(AddressOf OnLoaded)
-        OkCommand = New RelayCommand(Of Gruppe)(AddressOf OnOk, Function() IstEingabeGueltig)
-        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
+        DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
 #End Region
@@ -54,30 +53,23 @@ Public Class GruppeViewModel
         Set(value As Guid)
             _Gruppe.GruppenID = value
             OnPropertyChanged(NameOf(GruppenID))
+            ValidateGruppenID()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
     Public Property Benennung As String
         Get
-            Return _Gruppe.Alias
-        End Get
-        Set(value As String)
-            _Gruppe.Alias = value
-            OnPropertyChanged(NameOf(Benennung))
-            ValidateBenennung()
-        End Set
-    End Property
-
-    Public Property AusgabeTeilnehmerinfo As String
-        Get
             Return _Gruppe.Benennung
         End Get
         Set(value As String)
             _Gruppe.Benennung = value
-            OnPropertyChanged(NameOf(AusgabeTeilnehmerinfo))
-            ValidateTeilnehmerinfo()
+            OnPropertyChanged(NameOf(Benennung))
+            ValidateBenennung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
+
 
     Public Property Sortierung As String
         Get
@@ -87,6 +79,7 @@ Public Class GruppeViewModel
             _Gruppe.Sortierung = value
             OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -98,6 +91,7 @@ Public Class GruppeViewModel
             _Gruppe.Leistungsstufe = value
             OnPropertyChanged(NameOf(Leistungsstufe))
             ValidateLeistungsstufe()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -136,14 +130,6 @@ Public Class GruppeViewModel
 #End Region
 
 #Region "Methoden"
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Gruppe.speichern()
-
-    '    MyBase.OnOk(Me)
-
-    'End Sub
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 
@@ -154,45 +140,49 @@ Public Class GruppeViewModel
 
 
     Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        ValidateGruppenID()
         ValidateBenennung()
-        ValidateTeilnehmerinfo()
         ValidateSortierung()
         ValidateLeistungsstufe()
     End Sub
 
-    Private Sub OnTeilnehmerAusGruppeEntfernen()
-        MessageBox.Show("Teilnehmer raus")
-    End Sub
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
-
-    Private Sub ValidateTeilnehmerinfo()
-        ClearErrors(NameOf(_Gruppe.Benennung))
-        If String.IsNullOrWhiteSpace(_Gruppe.Benennung) Then
-            AddError(NameOf(_Gruppe.Benennung), "Ausgabe für die Teilnehmerinfo darf nicht leer sein.")
+#Region "Validation"
+    Private Sub ValidateGruppenID()
+        ClearErrors(NameOf(_Gruppe.GruppenID))
+        If _Gruppe.GruppenID = Nothing Then
+            AddError(NameOf(_Gruppe.GruppenID), "Eine GruppenID muss eingetragen werden.")
         End If
     End Sub
 
+
     Private Sub ValidateLeistungsstufe()
         ClearErrors(NameOf(_Gruppe.Leistungsstufe))
-        If _Gruppe.Leistungsstufe Is Nothing Then
+        If _Gruppe.Leistungsstufe Is Nothing OrElse _Gruppe.Leistungsstufe.Sortierung = -1 Then
             AddError(NameOf(_Gruppe.Leistungsstufe), "Leistungsstufe muss ausgewählt werden.")
         End If
     End Sub
 
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Gruppe.Sortierung))
-        'If _Gruppe.Sortierung = 0 Then
-        '    AddError(NameOf(_Gruppe.Sortierung), "Sortierung darf 0 sein.")
-        'End If
+
+        If _Gruppe.Sortierung < 0 Then
+            AddError(NameOf(_Gruppe.Sortierung), "Sortierung darf nicht negativ sein.")
+        End If
+        If String.IsNullOrWhiteSpace(_Gruppe.Sortierung) Then
+            AddError(NameOf(_Gruppe.Sortierung), "Sortierung muss eingetragen sein.")
+        End If
+        If Controller.AppController.AktuellerClub.AlleGruppen.Where(Function(Gr) Gr.Sortierung = _Gruppe.Sortierung AndAlso Gr.GruppenID <> _Gruppe.GruppenID).Any() Then
+            AddError(NameOf(_Gruppe.Sortierung), "Die Sortierung muss eindeutig sein.")
+        End If
     End Sub
 
     Private Sub ValidateBenennung()
-        ClearErrors(NameOf(_Gruppe.Alias))
-        If String.IsNullOrWhiteSpace(_Gruppe.Alias) Then
-            AddError(NameOf(_Gruppe.Alias), "Benennung darf nicht leer sein.")
+        ClearErrors(NameOf(_Gruppe.Benennung))
+        If String.IsNullOrWhiteSpace(_Gruppe.Benennung) Then
+            AddError(NameOf(_Gruppe.Benennung), "Benennung darf nicht leer sein.")
         End If
     End Sub
 

@@ -103,6 +103,12 @@ Public Module MappingGeneration1
 
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T)))
 
+        'Entferne leere Trainer-Objekte 
+        Teilnehmer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Teilnehmer.Remove(O))
+
+        ' Entferne doppelte Trainer
+        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(LS) LS.TeilnehmerID).Select(Function(T) T.First).ToList)
+
         Return Teilnehmer
 
     End Function
@@ -159,12 +165,14 @@ Public Module MappingGeneration1
     Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
         ' Eigene Collection initialisieren
         Dim Leistungsstufen = New LeistungsstufeCollection
+        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
+        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(Gl) Gl.GroupMembers.ToList.ForEach(Sub(M) Leistungsstufen.Add(MapLevel2Leistungsstufe(M.ParticipantLevel))))
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Leistungsstufen.Add(MapLevel2Leistungsstufe(T.ParticipantLevel)))
-        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
-        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
-        ' Entferne doppelte Leistungsstufen
+
+        ' Entferne doppelte Leistungsstufen über ID
         Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
@@ -175,7 +183,7 @@ Public Module MappingGeneration1
 
         ' Die Gruppe mappen
         Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
-            .[Alias] = Group.GroupNaming,
+            .Benennung = Group.GroupNaming,
             .Sortierung = Group.GroupSort,
             .GruppenID = Group.GroupID,
             .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel)}

@@ -21,14 +21,7 @@ Namespace Entities
 #Region "Konstruktor"
 
         Public Sub New()
-        End Sub
-
-        ''' <summary>
-        ''' Erstellt eine Gruppe unter Angabe des Namens für die Information
-        ''' </summary>
-        ''' <param name="Ausgabename"></param>
-        Public Sub New(Ausgabename As String)
-            _Benennung = Ausgabename
+            Sortierung = -1
         End Sub
 
         ''' <summary>
@@ -45,23 +38,8 @@ Namespace Entities
         ''' Erstellt eine Gruppe unter Angabe des Namens für die Information und der Benennung
         ''' </summary>
         ''' <param name="Benennung"></param>
-        ''' <param name="Ausgabename"></param>
-        Public Sub New(Ausgabename As String, Benennung As String)
-            _Alias = Benennung
-            _Benennung = Ausgabename
-        End Sub
-
-        ''' <summary>
-        ''' Erstellt eine Gruppe unter Angabe des Namens für die Information, der Benennung und einer Sortierungszahl
-        ''' </summary>
-        ''' <param name="Ausgabename"></param>
-        ''' <param name="Benennung"></param>
-        ''' <param name="Sortierung"></param>
-        Public Sub New(Ausgabename As String, Benennung As String, Sortierung As Integer)
-            _Alias = Benennung
-            _Benennung = Ausgabename
-            _Sortierung = Sortierung
-            Mitgliederliste = New TeilnehmerCollection
+        Public Sub New(Benennung As String)
+            _Benennung = Benennung
         End Sub
 
         ''' <summary>
@@ -70,7 +48,6 @@ Namespace Entities
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
             GruppenID = OriginGruppe.GruppenID
-            [Alias] = OriginGruppe.Alias
             Leistungsstufe = OriginGruppe.Leistungsstufe
             Benennung = OriginGruppe.Benennung
             Sortierung = OriginGruppe.Sortierung
@@ -98,12 +75,6 @@ Namespace Entities
             End Set
         End Property
 
-        ''' <summary>
-        ''' Die interne Alias-Benennung der Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Alias ist ein Pflichtfeld")>
-        Public Property [Alias] As String
 
         ''' <summary>
         ''' Die globale Benennung der Gruppe

@@ -48,20 +48,21 @@ Namespace UserControls
         End Sub
 
         Private Sub Handle_TrainerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+            Throw New NotImplementedException("Die Funktion zum Erstellen einer neuen Trainers ist noch nicht implementiert.")
 
-            Dim dlg = New TrainerDialog With {
-                .Owner = Nothing,
-                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+            'Dim dlg = New TrainerDialog With {
+            '    .Owner = Nothing,
+            '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-            '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
-            'dlg.ModusEinstellen()
-            ' Trainer aus der Gruppenliste holen
-            Dim Trainer = AppController.AktuellerClub.SelectedGruppe.Trainer
-            dlg.Bearbeiten(Trainer)
+            ''.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+            ''dlg.ModusEinstellen()
+            '' Trainer aus der Gruppenliste holen
+            'Dim Trainer = AppController.AktuellerClub.SelectedGruppe.Trainer
+            'dlg.Bearbeiten(Trainer)
 
-            If dlg.ShowDialog = True Then
-                Trainer = dlg.Trainer
-            End If
+            'If dlg.ShowDialog = True Then
+            '    Trainer = dlg.Trainer
+            'End If
         End Sub
 
 #End Region

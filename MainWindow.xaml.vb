@@ -192,9 +192,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        }
         mvw.AktuellesViewModel.Model = New Faehigkeit
         dialog.DataContext = mvw
 
@@ -455,34 +456,35 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerBearbeiten_Execute(sender As Object, e As ExecutedRoutedEventArgs)
+        Throw New NotImplementedException("Die Funktion zum Erstellen einer neuen Teilnherm ist noch nicht implementiert.")
 
-        Dim dlg = New TeilnehmerDialog() With {
-            .Owner = Me,
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '.Modus = New Fabriken.ModusBearbeiten,
+        'Dim dlg = New TeilnehmerDialog() With {
+        '    .Owner = Me,
+        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        ''.Modus = New Fabriken.ModusBearbeiten,
 
-        'dlg.ModusEinstellen()
+        ''dlg.ModusEinstellen()
 
 
-        ' Teilnehmer ermitteln
-        Dim Teilnehmer As Teilnehmer
-        If e.OriginalSource.GetType.Equals(GetType(DataGridCell)) Then
-            If e.Source.Name.ToString.Equals("GruppenloseTeilnehmerDataGrid") Then
-                Teilnehmer = DirectCast(GruppenloseTeilnehmerDataGrid.SelectedItem, Teilnehmer)
-            Else
-                Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
-            End If
-        ElseIf e.OriginalSource.GetType.Equals(GetType(MenuItem)) Then
-            Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
-        ElseIf e.OriginalSource.GetType.Equals(GetType(ContextMenu)) Then
-            Teilnehmer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Teilnehmer)
-        Else
-            Teilnehmer = Nothing
-        End If
+        '' Teilnehmer ermitteln
+        'Dim Teilnehmer As Teilnehmer
+        'If e.OriginalSource.GetType.Equals(GetType(DataGridCell)) Then
+        '    If e.Source.Name.ToString.Equals("GruppenloseTeilnehmerDataGrid") Then
+        '        Teilnehmer = DirectCast(GruppenloseTeilnehmerDataGrid.SelectedItem, Teilnehmer)
+        '    Else
+        '        Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
+        '    End If
+        'ElseIf e.OriginalSource.GetType.Equals(GetType(MenuItem)) Then
+        '    Teilnehmer = DirectCast(GruppeUserControl.MitgliederlisteDataGrid.SelectedItem, Teilnehmer)
+        'ElseIf e.OriginalSource.GetType.Equals(GetType(ContextMenu)) Then
+        '    Teilnehmer = DirectCast(GruppenloseTrainerDataGrid.SelectedItem, Teilnehmer)
+        'Else
+        '    Teilnehmer = Nothing
+        'End If
 
-        If Teilnehmer IsNot Nothing Then dlg.Bearbeiten(Teilnehmer)
+        'If Teilnehmer IsNot Nothing Then dlg.Bearbeiten(Teilnehmer)
 
-        dlg.ShowDialog()
+        'dlg.ShowDialog()
 
     End Sub
 
@@ -540,9 +542,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        }
         mvw.AktuellesViewModel.Model = New Trainer
         dialog.DataContext = mvw
 
@@ -608,20 +611,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub TrainerBearbeiten(Trainer As Trainer)
+        Throw New NotImplementedException("Die Funktion zum Erstellen einer neuen Trainers ist noch nicht implementiert.")
 
-        If Trainer IsNot Nothing Then
-            Dim dlg = New TrainerDialog With {
-                .Owner = Me,
-                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-            '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
+        'If Trainer IsNot Nothing Then
+        '    Dim dlg = New TrainerDialog With {
+        '        .Owner = Me,
+        '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        '    '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten),
 
-            'dlg.ModusEinstellen()
-            dlg.Bearbeiten(Trainer)
+        '    'dlg.ModusEinstellen()
+        '    dlg.Bearbeiten(Trainer)
 
-            If dlg.ShowDialog = True Then
-                Dim unused As Trainer = dlg.Trainer
-            End If
-        End If
+        '    If dlg.ShowDialog = True Then
+        '        Dim unused As Trainer = dlg.Trainer
+        '    End If
+        'End If
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -675,9 +679,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        }
         mvw.AktuellesViewModel.Model = New Gruppe
         dialog.DataContext = mvw
 
@@ -721,9 +726,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        }
         mvw.AktuellesViewModel.Model = New Einteilung
         dialog.DataContext = mvw
 
@@ -741,24 +747,24 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_EinteilungKopieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim dlg = New EinteilungDialog With {
-            .Owner = Me,
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-        '.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
+        'Dim dlg = New EinteilungDialog With {
+        '    .Owner = Me,
+        '    .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        ''.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen),
 
-        'dlg.ModusEinstellen()
-        dlg.KopiereAktuelleGruppen(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
+        ''dlg.ModusEinstellen()
+        'dlg.KopiereAktuelleGruppen(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
 
-        If dlg.ShowDialog = True Then
-            Try
-                'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub() )
-                'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Co(neueGruppen)
-                AppController.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
+        'If dlg.ShowDialog = True Then
+        '    Try
+        '        'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub() )
+        '        'AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Co(neueGruppen)
+        '        AppController.AktuellerClub.Einteilungsliste.Add(dlg.Einteilung)
 
-            Catch ex As Exception
-                MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
-            End Try
-        End If
+        '    Catch ex As Exception
+        '        MessageBox.Show($"{ex.InnerException}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+        '    End Try
+        'End If
     End Sub
 
 #End Region
@@ -773,9 +779,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+        }
         mvw.AktuellesViewModel.Model = New Leistungsstufe
         dialog.DataContext = mvw
 
@@ -807,9 +814,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTrainer
 
         fenster.DataContext = mvw
@@ -1216,9 +1224,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
 
         fenster.DataContext = mvw
@@ -1231,9 +1240,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten
 
         fenster.DataContext = mvw
@@ -1246,9 +1256,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste
 
         fenster.DataContext = mvw
@@ -1261,9 +1272,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
 
         fenster.DataContext = mvw
@@ -1277,9 +1289,10 @@ Public Class MainWindow
             .Owner = Me,
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(fenster))
-        mvw.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe)
-        mvw.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
         mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenLeistungsstufen
 
         fenster.DataContext = mvw

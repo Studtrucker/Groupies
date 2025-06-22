@@ -151,11 +151,11 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
                         </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
+                        <!--<DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungKopieren}"/>
                             </ContextMenu>
-                        </DataGrid.ContextMenu>
+                        </DataGrid.ContextMenu>-->
 
                     </DataGrid>
                 </DockPanel>

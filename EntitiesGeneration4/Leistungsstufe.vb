@@ -160,13 +160,13 @@ Namespace Entities
             '    End If
             'End If
             If String.IsNullOrWhiteSpace(Value) Then
-                errorMessage = $"Die Eingabe ist eine Pflichtangabe{vbNewLine}({Me.ToString})"
+                errorMessage = $"Die Eingabe ist eine Pflichtangabe{vbNewLine}({ToString()})"
                 Return False
             End If
 
             Dim result As Integer
             If Not Int32.TryParse(Value, result) Then
-                errorMessage = $"Die Eingabe muss eine Zahl sein{vbNewLine}({Me.ToString})"
+                errorMessage = $"Die Eingabe muss eine Zahl sein{vbNewLine}({ToString()})"
                 Return False
             End If
 

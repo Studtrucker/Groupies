@@ -193,24 +193,8 @@
     <Compile Include="Windows\BasisUebersichtWindow.xaml.vb">
       <DependentUpon>BasisUebersichtWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EinteilungDialog.xaml.vb" />
-    <Compile Include="Windows\LeistungsstufeDialog.xaml.vb">
-      <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Leistungsstufenuebersicht.xaml.vb">
-      <DependentUpon>Leistungsstufenuebersicht.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\FaehigkeitDialog.xaml.vb">
-      <DependentUpon>FaehigkeitDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\LeistungsstufeUserControl.xaml.vb">
       <DependentUpon>LeistungsstufeUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LoadedTest.xaml.vb">
-      <DependentUpon>LoadedTest.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\TeilnehmerDialog.xaml.vb">
-      <DependentUpon>TeilnehmerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TeilnehmerSuchErgebnis.xaml.vb">
       <DependentUpon>TeilnehmerSuchErgebnis.xaml</DependentUpon>
@@ -243,18 +227,6 @@
     <Compile Include="Converters\InvertableBoolToVisibleConverter.vb" />
     <Compile Include="Windows\CountOfGroupsDialog.xaml.vb">
       <DependentUpon>CountOfGroupsDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\NeueLeistungsstufeDialog.xaml.vb">
-      <DependentUpon>NeueLeistungsstufeDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\GruppeDialog.xaml.vb">
-      <DependentUpon>GruppeDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\TrainerDialog.xaml.vb">
-      <DependentUpon>TrainerDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\NeuerTeilnehmerDialog.xaml.vb">
-      <DependentUpon>NeuerTeilnehmerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="EntitiesGeneration4\Faehigkeit.vb" />
     <Compile Include="EntitiesGeneration4\GruppeCollection.vb" />
@@ -303,9 +275,6 @@
     <Compile Include="ValidationRules\SortierungUniqueValidationRule.vb" />
     <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
-    <Compile Include="Windows\Traineruebersicht.xaml.vb">
-      <DependentUpon>Traineruebersicht.xaml</DependentUpon>
-    </Compile>
     <Compile Include="XMLDatenLaden.vb" />
     <Page Include="UserControls\EinteilungenlisteUserControl.xaml">
       <SubType>Designer</SubType>
@@ -355,47 +324,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\EinteilungDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\LeistungsstufeDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Leistungsstufenuebersicht.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\LeistungsstufeUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\LoadedTest.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\NeueLeistungsstufeDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\GruppeDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\TrainerDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\NeuerTeilnehmerDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\FaehigkeitDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\TeilnehmerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -456,10 +385,6 @@
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Traineruebersicht.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

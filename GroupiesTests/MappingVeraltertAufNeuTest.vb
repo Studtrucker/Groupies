@@ -40,7 +40,7 @@ Public Class MappingVeraltertAufNeuTest
             Assert.AreEqual(0, neuerClub.Einteilungsliste(0).GruppenloseTrainer.Count)
             Assert.AreEqual(loadedSkiclub.Participantlist.OrderBy(Function(p) p.ParticipantID)(0).ParticipantID, neuerClub.Einteilungsliste(0).AlleTeilnehmer.OrderBy(Function(T) T.TeilnehmerID)(0).TeilnehmerID)
             Assert.AreEqual(loadedSkiclub.Levellist.Count, neuerClub.AlleLeistungsstufen.Count)
-            Assert.AreEqual(loadedSkiclub.Grouplist.OrderBy(Function(GL) GL.GroupNaming)(7).GroupLeader.InstructorFullName, neuerClub.Einteilungsliste(0).Gruppenliste.OrderBy(Function(Gl) Gl.Alias)(7).Trainer.VorUndNachname)
+            Assert.AreEqual(loadedSkiclub.Grouplist.OrderBy(Function(GL) GL.GroupNaming)(7).GroupLeader.InstructorFullName, neuerClub.Einteilungsliste(0).Gruppenliste.OrderBy(Function(Gl) Gl.Benennung)(7).Trainer.VorUndNachname)
         End If
 
     End Sub

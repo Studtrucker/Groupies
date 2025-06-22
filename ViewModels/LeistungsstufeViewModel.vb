@@ -43,6 +43,16 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe = DirectCast(value, Entities.Leistungsstufe)
         End Set
     End Property
+    Public Property LeistungsstufeID() As Guid
+        Get
+            Return _Leistungsstufe.LeistungsstufeID
+        End Get
+        Set(ByVal value As Guid)
+            _Leistungsstufe.LeistungsstufeID = value
+            OnPropertyChanged(NameOf(LeistungsstufeID))
+            ValidateSortierung()
+        End Set
+    End Property
 
     Public Property Sortierung() As Integer
         Get

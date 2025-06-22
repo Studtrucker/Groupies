@@ -193,9 +193,7 @@
     <Compile Include="Windows\BasisUebersichtWindow.xaml.vb">
       <DependentUpon>BasisUebersichtWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EinteilungDialog.xaml.vb">
-      <DependentUpon>EinteilungDialog.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\EinteilungDialog.xaml.vb" />
     <Compile Include="Windows\LeistungsstufeDialog.xaml.vb">
       <DependentUpon>LeistungsstufeDialog.xaml</DependentUpon>
     </Compile>
@@ -358,8 +356,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EinteilungDialog.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\LeistungsstufeDialog.xaml">
       <SubType>Designer</SubType>

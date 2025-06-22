@@ -280,6 +280,135 @@
 
         </DataTemplate>
 
+        <!--Date Template Leistungsstufe-->
+        <DataTemplate DataType="{x:Type local:LeistungsstufeViewModel}">
+            
+            <Grid>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--<RowDefinition Height="Auto"/>-->
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Leistungsstufe ID <Run Foreground="Red" >*</Run></TextBlock>
+                </Label>
+                <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Sortierung <Run Foreground="Red" >*</Run></TextBlock>
+                </Label>
+                <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Benennung <Run Foreground="Red" >*</Run></TextBlock>
+                </Label>
+                <Label Grid.Column="1" Grid.Row="3" Content="Beschreibung"/>
+                <!--<Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Fähigkeiten <Run Foreground="Red" >*</Run></TextBlock>
+                </Label>-->
+
+                <TextBox Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" 
+                         Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+
+                <TextBox Grid.Column="2" Grid.Row="1" Width="50" HorizontalAlignment="Left">
+                    <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged"/>
+                </TextBox>
+                
+                <TextBox x:Name="BenennungTextBox" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
+                         Grid.Column="2" Grid.Row="2" />
+                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Column="2" Grid.Row="3" 
+                         TextWrapping="Wrap" AcceptsReturn="True" />
+
+
+                <!--<DataGrid  x:Name="FaehigkeitenDataGrid" Width="400"
+                           AutoGenerateColumns="False" 
+                           ItemsSource="{Binding SelectedItem.Faehigkeiten,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                           CanUserAddRows="False" 
+                           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                           Grid.Column="2" Grid.Row="4">
+                    
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                        <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>-->
+                
+            </Grid>
+            
+        </DataTemplate>
+
+        <!--Date Template Leistungsstufe-->
+        <DataTemplate DataType="{x:Type local:FaehigkeitViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Faehigkeit ID
+                        <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Sortierung
+                        <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+                <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Benennung
+                        <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>                
+                <Label Content="Beschreibung" Grid.Column="1" Grid.Row="3"/>
+                
+                <TextBox Text="{Binding FaehigkeitID, UpdateSourceTrigger=PropertyChanged}" 
+                         Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left"/>
+                
+                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="2" Grid.Row="1" Width="75" HorizontalAlignment="Left"/>
+
+                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="2" Grid.Row="2" x:Name="BenennungTextBox"/>
+                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="2" Grid.Row="3" TextWrapping="Wrap" x:Name="BeschreibungTextBox"/>
+            </Grid>
+
+        </DataTemplate>
+
     </Window.Resources>
 
     <DockPanel >

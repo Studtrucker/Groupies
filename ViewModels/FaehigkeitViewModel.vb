@@ -40,6 +40,17 @@ Public Class FaehigkeitViewModel
         End Set
     End Property
 
+    Public Property FaehigkeitID As Guid
+        Get
+            Return _Faehigkeit.FaehigkeitID
+        End Get
+        Set(value As Guid)
+            _Faehigkeit.FaehigkeitID = value
+            OnPropertyChanged(NameOf(FaehigkeitID))
+            ValidateSortierung()
+        End Set
+    End Property
+
     Public Property Sortierung As Integer
         Get
             Return _Faehigkeit.Sortierung

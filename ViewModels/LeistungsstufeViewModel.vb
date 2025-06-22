@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Groupies.DataImport
 Imports Groupies.Entities
 
 Public Class LeistungsstufeViewModel
@@ -50,7 +51,8 @@ Public Class LeistungsstufeViewModel
         Set(ByVal value As Guid)
             _Leistungsstufe.LeistungsstufeID = value
             OnPropertyChanged(NameOf(LeistungsstufeID))
-            ValidateSortierung()
+            ValidateLeitungsstufeID()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -62,6 +64,7 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe.Sortierung = value
             OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -73,6 +76,7 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe.Beschreibung = value
             OnPropertyChanged(NameOf(Beschreibung))
             ValidateBeschreibung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -84,6 +88,7 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe.Benennung = value
             OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -95,6 +100,7 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe.Faehigkeiten = value
             OnPropertyChanged(NameOf(Faehigkeiten))
             ValidateFaehigkeiten()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -145,12 +151,20 @@ Public Class LeistungsstufeViewModel
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
+#Region "Validation"
     Private Sub Validate()
-        ValidateSortierung
-        ValidateBeschreibung
-        ValidateFaehigkeiten
-        ValidateBenennung
+        ValidateLeitungsstufeID()
+        ValidateSortierung()
+        ValidateBeschreibung()
+        ValidateFaehigkeiten()
+        ValidateBenennung()
+    End Sub
+
+    Private Sub ValidateLeitungsstufeID()
+        ClearErrors(NameOf(_Leistungsstufe.LeistungsstufeID))
+        If _Leistungsstufe.LeistungsstufeID = Guid.Empty Then
+            AddError(NameOf(_Leistungsstufe.LeistungsstufeID), "Leistungsstufe ID darf nicht leer sein.")
+        End If
     End Sub
 
     Private Sub ValidateBenennung()

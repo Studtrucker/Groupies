@@ -71,11 +71,11 @@ Public Class GruppeViewModel
     End Property
 
 
-    Public Property Sortierung As String
+    Public Property Sortierung As Integer
         Get
             Return _Gruppe.Sortierung
         End Get
-        Set(value As String)
+        Set(value As Integer)
             _Gruppe.Sortierung = value
             OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()

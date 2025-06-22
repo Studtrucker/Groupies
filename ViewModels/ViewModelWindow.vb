@@ -196,7 +196,7 @@ Public Class ViewModelWindow
     End Sub
 
     Protected Sub OnLoaded(obj As Object)
-        AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnObjectChanged
+        AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnModelChanged
 
         ' Fenster wurde geladen
         _windowService.SizeToContent = SizeToContent.WidthAndHeight
@@ -204,7 +204,7 @@ Public Class ViewModelWindow
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
     End Sub
 
-    Public Sub OnObjectChanged() 'sender As Object, e As EventArgs)
+    Private Sub OnModelChanged(sender As Object, e As Boolean)
         ' Objekt wurde geändert, hier können Sie Logik hinzufügen, die auf Änderungen reagiert
         ' Zum Beispiel: Aktualisieren der Ansicht oder Validierung
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()

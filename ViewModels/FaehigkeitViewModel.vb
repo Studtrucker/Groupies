@@ -48,6 +48,7 @@ Public Class FaehigkeitViewModel
             _Faehigkeit.FaehigkeitID = value
             OnPropertyChanged(NameOf(FaehigkeitID))
             ValidateSortierung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -59,6 +60,7 @@ Public Class FaehigkeitViewModel
             _Faehigkeit.Sortierung = value
             OnPropertyChanged(NameOf(Sortierung))
             ValidateSortierung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -70,6 +72,7 @@ Public Class FaehigkeitViewModel
             _Faehigkeit.Beschreibung = value
             OnPropertyChanged(NameOf(Beschreibung))
             ValidateBeschreibung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -81,6 +84,7 @@ Public Class FaehigkeitViewModel
             _Faehigkeit.Benennung = value
             OnPropertyChanged(NameOf(Benennung))
             ValidateBenennung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
 
@@ -125,11 +129,19 @@ Public Class FaehigkeitViewModel
 
 #End Region
 
-#Region "Gültigkeitsprüfung"
+#Region "Validation"
     Private Sub Validate()
+        ValidateFaehigkeitID()
         ValidateBenennung()
         ValidateBeschreibung()
         ValidateSortierung()
+    End Sub
+
+    Private Sub ValidateFaehigkeitID()
+        ClearErrors(NameOf(_Faehigkeit.FaehigkeitID))
+        If _Faehigkeit.FaehigkeitID = Guid.Empty Then
+            AddError(NameOf(_Faehigkeit.FaehigkeitID), "FaehigkeitID darf nicht leer sein.")
+        End If
     End Sub
 
     Private Sub ValidateBenennung()
@@ -141,21 +153,24 @@ Public Class FaehigkeitViewModel
 
     Private Sub ValidateBeschreibung()
         ClearErrors(NameOf(_Faehigkeit.Beschreibung))
-        If String.IsNullOrEmpty(_Faehigkeit.Beschreibung) Then
-            ' Fehlerbehandlung für ungültige Beschreibung
-            ' Beispiel: MessageBox.Show("Beschreibung ist erforderlich.")
-        End If
+        'If String.IsNullOrEmpty(_Faehigkeit.Beschreibung) Then
+        '    'Fehlerbehandlung für ungültige Beschreibung
+        '    MessageBox.Show("Beschreibung ist erforderlich.")
+        'End If
     End Sub
 
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Faehigkeit.Sortierung))
-        If _Faehigkeit.Sortierung = 0 Then
-            ' Fehlerbehandlung für ungültige Sortierung
-            AddError(NameOf(_Faehigkeit.Sortierung), "Sortierung darf nicht 0 sein.")
-            ' Beispiel: MessageBox.Show("Sortierung muss größer oder gleich 0 sein.")
-        End If
 
-        'todo: Es geprüft werden, ob die Sortierung bereits vorhanden ist!
+        If _Faehigkeit.Sortierung < 0 Then
+            AddError(NameOf(_Faehigkeit.Sortierung), "Sortierung darf nicht negativ sein.")
+        End If
+        If String.IsNullOrWhiteSpace(_Faehigkeit.Sortierung) Then
+            AddError(NameOf(_Faehigkeit.Sortierung), "Sortierung muss eingetragen sein.")
+        End If
+        If Controller.AppController.AktuellerClub.AlleFaehigkeiten.Where(Function(Fa) Fa.Sortierung = _Faehigkeit.Sortierung AndAlso Fa.FaehigkeitID <> _Faehigkeit.FaehigkeitID).Any() Then
+            AddError(NameOf(_Faehigkeit.Sortierung), "Die Sortierung muss eindeutig sein.")
+        End If
     End Sub
 
 #End Region

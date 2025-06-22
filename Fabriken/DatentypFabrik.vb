@@ -124,6 +124,7 @@ Namespace Fabriken
         Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Implements IDatentyp.DatentypIcon
         Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
             Get
+
                 Return New UserControls.GruppeUserControl
             End Get
         End Property

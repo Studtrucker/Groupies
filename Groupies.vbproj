@@ -170,10 +170,6 @@
     <Compile Include="UserControls\TrainerUserControl.xaml.vb">
       <DependentUpon>TrainerUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidationRules\FaehigkeitValidationRule.vb" />
-    <Compile Include="ValidationRules\GruppeValidationRule.vb" />
-    <Compile Include="ValidationRules\EinteilungValidationRule.vb" />
-    <Compile Include="ValidationRules\TrainerValidationRule.vb" />
     <Compile Include="ViewModels\AbstrakteViewModels\MasterDetailViewModel.vb" />
     <Compile Include="ViewModels\AbstrakteViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\EinteilungViewModel.vb" />
@@ -244,16 +240,11 @@
     <Compile Include="UserControls\TeilnehmerausdruckUserControl.xaml.vb">
       <DependentUpon>TeilnehmerausdruckUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidationRules\CountFaehigkeitenValidationRule.vb" />
-    <Compile Include="ValidationRules\LeistungsstufeValidationRule.vb" />
-    <Compile Include="ValidationRules\IntegerValidationRule.vb" />
     <Compile Include="ValidationRules\BenennungValidationRule.vb" />
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\SortierungValidationRule.vb" />
-    <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
-    <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
     <Compile Include="XMLDatenLaden.vb" />
     <Page Include="UserControls\EinteilungenlisteUserControl.xaml">
       <SubType>Designer</SubType>

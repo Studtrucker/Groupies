@@ -120,7 +120,7 @@ Namespace Entities
             Get
                 Dim nMonate As Integer
                 Dim nJahre As Integer
-                If Geburtsdatum = "0001-01-01" Then
+                If Geburtsdatum = "0001-01-01" OrElse Geburtsdatum = Now.ToLongDateString Then
                     nJahre = -1
                 Else
                     nJahre = Math.Floor(DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12)

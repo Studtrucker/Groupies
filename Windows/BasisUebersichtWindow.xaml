@@ -597,31 +597,27 @@
         <!--Menuleiste-->
         <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightSlateGray">
 
-            <MenuItem  Header="Aktionen">
-                <MenuItem Header="Ansehen" Command="{Binding AnsehenCommand}" >
-                    <MenuItem.Icon>
-                        <Image Source= "pack://application:,,,/Images/icons8-view-48.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="Neu"  Command="{Binding NeuCommand}">
+            <MenuItem  Header="Fenster">
+                <MenuItem Header="Schliessen" Command="{Binding CloseCommand}" />
+            </MenuItem>
+
+            <MenuItem  Header="{Binding ModelMenuItemText}">
+                <MenuItem Header="Neu"  Command="{Binding AktuellesViewModel.NeuCommand}">
                     <MenuItem.Icon>
                         <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Bearbeiten"  Command="{Binding BearbeitenCommand}">
+                <MenuItem Header="Bearbeiten"  Command="{Binding AktuellesViewModel.BearbeitenCommand}">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Löschen"  Command="{Binding LoeschenCommand}">
+                <MenuItem Header="Löschen"  Command="{Binding AktuellesViewModel.LoeschenCommand}">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <Separator/>
-                <MenuItem Header="Schliessen" Command="{Binding CloseCommand}" />
             </MenuItem>
 
         </Menu>

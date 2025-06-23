@@ -37,7 +37,38 @@ Public Class TrainerViewModel
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+
+        NeuCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnNeu(), Function() CanNeu())
+        LoeschenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnLoeschen(), Function() CanLoeschen())
+        BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnBearbeiten(), Function() CanBearbeiten())
     End Sub
+
+    Private Property CanBearbeiten() As Boolean
+        Get
+            Return True ' ItemsView.CurrentPosition + 1 < Items.Count
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanBearbeiten))
+        End Set
+    End Property
+
+    Private Property CanLoeschen() As Boolean
+        Get
+            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanLoeschen))
+        End Set
+    End Property
+
+    Private Property CanNeu() As Boolean
+        Get
+            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanNeu))
+        End Set
+    End Property
 
 #End Region
 
@@ -157,7 +188,9 @@ Public Class TrainerViewModel
 
     Public ReadOnly Property DragOverCommand As ICommand
 
-
+    Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
+    Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
+    Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
 #End Region
 
@@ -207,34 +240,34 @@ Public Class TrainerViewModel
         ValidateTrainerID()
     End Sub
 
-    'Public Overrides Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-    '    MyBase.OnDataGridSorting(e)
-    '    Dim View = CollectionViewSource.GetDefaultView(Items)
-    '    If View IsNot Nothing Then
-    '        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-    '        View.SortDescriptions.Clear()
-    '        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-    '        e.Column.SortDirection = direction
-    '        e.Handled = True
-    '        ItemsView = View
-    '        ItemsView.Refresh()
-    '    End If
+    Public Sub OnNeu() 'Implements IViewModelSpecial.NeuCommand
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        '_Trainer = New Entities.Trainer()
+        'OnPropertyChanged(NameOf(Trainer))
+        'RaiseEvent ModelChangedEvent(Me, HasErrors)
+    End Sub
+    Public Sub OnLoeschen() 'Implements IViewModelSpecial.LoeschenCommand
+        ' Hier können Sie die Logik für den Löschen-Button implementieren
+        'If _Trainer IsNot Nothing Then
+        '    _Trainer.loeschen()
+        '    _Trainer = Nothing
+        '    OnPropertyChanged(NameOf(Trainer))
+        '    RaiseEvent ModelChangedEvent(Me, HasErrors)
+        'End If
+    End Sub
 
-    'End Sub
-    ''Public Sub OnDataGridSorting(e As DataGridSortingEventArgs)
-    ''    Dim View = CollectionViewSource.GetDefaultView(Items)
-    ''    If View IsNot Nothing Then
-    ''        Dim direction = If(e.Column.SortDirection = ListSortDirection.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-    ''        View.SortDescriptions.Clear()
-    ''        View.SortDescriptions.Add(New SortDescription(e.Column.SortMemberPath, direction))
-    ''        e.Column.SortDirection = direction
-    ''        e.Handled = True
-    ''        ItemsView = View
-    ''        ItemsView.Refresh()
-    ''    End If
-
-    ''End Sub
-
+    Public Sub OnBearbeiten() ' Implements IViewModelSpecial.BearbeitenCommand
+        ' Hier können Sie die Logik für den Bearbeiten-Button implementieren
+        'If _Trainer IsNot Nothing Then
+        '    ' Beispiel: Öffnen eines Dialogs zur Bearbeitung des Trainers
+        '    Dim dialog = New TrainerEditDialog(_Trainer)
+        '    If dialog.ShowDialog() = True Then
+        '        _Trainer.speichern()
+        '        OnPropertyChanged(NameOf(Trainer))
+        '        RaiseEvent ModelChangedEvent(Me, HasErrors)
+        '    End If
+        'End If
+    End Sub
 #End Region
 
 #Region "Validation"

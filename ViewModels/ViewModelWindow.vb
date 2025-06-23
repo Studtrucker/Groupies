@@ -132,6 +132,16 @@ Public Class ViewModelWindow
         End Get
     End Property
 
+    Public ReadOnly Property ModelMenuItemText As String
+        Get
+            If Datentyp IsNot Nothing Then
+                Return $"{Datentyp.DatentypenText}"
+            Else
+                Return "Modell"
+            End If
+        End Get
+    End Property
+
     ''' <summary>
     ''' Das aktuelle ViewModel, das verwendet wird
     ''' </summary>

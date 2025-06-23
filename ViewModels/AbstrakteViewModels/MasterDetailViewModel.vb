@@ -65,7 +65,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Property CanMoveNext() As Boolean
         Get
             Return ItemsView.CurrentPosition + 1 < Items.Count
-            'Return Items.IndexOf(SelectedItem) < Items.Count - 1
         End Get
         Set(value As Boolean)
             OnPropertyChanged(NameOf(CanMoveNext))

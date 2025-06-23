@@ -126,6 +126,9 @@ Public Class GruppeViewModel
     Public ReadOnly Property OkCommand As ICommand
     Public Property TeilnehmerAusGruppeEntfernen As ICommand
     Public Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
+    Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
+    Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
+    Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
 #End Region
 

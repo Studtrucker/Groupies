@@ -619,7 +619,11 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-
+            <MenuItem  Header="Transfer">
+                <MenuItem Header="Tag 1" Command="{Binding TransferToCommand}"  CommandParameter="{Binding EinteilungID}"/>
+                <MenuItem Header="Mittwoch" Command="{Binding TransferToCommand}"  CommandParameter="{Binding EinteilungID}"/>
+                <MenuItem Header="Donnerstag" Command="{Binding TransferToCommand}" CommandParameter="{Binding EinteilungID}"/>
+            </MenuItem>
         </Menu>
 
         <!--Überschrift-->

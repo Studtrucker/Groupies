@@ -105,32 +105,29 @@
                     <Label Content="e-Mail" Grid.Column="1" Grid.Row="6"/>
 
 
-
-
                     <TextBox x:Name="TrainerIDTextBox" Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
-                 Text="{Binding SelectedItem.TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                             Text="{Binding SelectedItem.TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
                     
-
-
                     <TextBox x:Name="SpitznameTextBox" Grid.Column="2" Grid.Row="2"      
-                         Text="{Binding SelectedItem.Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
-
-                <TextBox Grid.Column="2" Grid.Row="3"
-                 x:Name="VornameTextbox"
-                 Text="{Binding SelectedItem.Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"   />
-
-                <TextBox Grid.Column="2" Grid.Row="4"
-                     x:Name="NachnameTextbox"
-                     Text="{Binding SelectedItem.Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
-
-                <TextBox Grid.Column="2" Grid.Row="5"
-                     x:Name="TelefonTextbox"
-                     Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
-
-                <TextBox Grid.Column="2" Grid.Row="6"
-                     x:Name="eMailTextbox"
-                     Text="{Binding SelectedItem.EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
-            </Grid>
+                             Text="{Binding SelectedItem.Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                    
+                    <TextBox Grid.Column="2" Grid.Row="3"
+                             x:Name="VornameTextbox"
+                             Text="{Binding SelectedItem.Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                    
+                    <TextBox Grid.Column="2" Grid.Row="4"
+                             x:Name="NachnameTextbox"
+                             Text="{Binding SelectedItem.Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                    
+                    <TextBox Grid.Column="2" Grid.Row="5"
+                             x:Name="TelefonTextbox"
+                             Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                    
+                    <TextBox Grid.Column="2" Grid.Row="6"
+                             x:Name="eMailTextbox"
+                             Text="{Binding SelectedItem.EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                
+                </Grid>
             </DockPanel>
 
         </DataTemplate>
@@ -292,7 +289,7 @@
                     </Label>
 
                     <!--Felder-->
-                    <TextBox IsReadOnly="True" Grid.Column="2" Grid.Row="0"
+                    <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True" 
                              Text="{Binding SelectedItem.GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                              x:Name="GruppenIDTextBox" />
                     
@@ -369,11 +366,11 @@
 
                        <!--Felder-->
                     <TextBox Text="{Binding SelectedItem.EinteilungID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
+                             Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
                     <TextBox Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="1"/>
+                             Grid.Column="2" Grid.Row="1"/>
                     <TextBox Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="2"/>
+                             Grid.Column="2" Grid.Row="2"/>
 
                 </Grid>
             </DockPanel>
@@ -472,14 +469,14 @@
 
                         <!--Felder-->
                         <TextBox Text="{Binding SelectedItem.LeistungsstufeID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
+                                 Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
                         <TextBox Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="2" Grid.Row="1"/>
+                                 Grid.Column="2" Grid.Row="1"/>
                         <TextBox Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="2" Grid.Row="2"/>
-
+                                 Grid.Column="2" Grid.Row="2"/>
+                        
                         <TextBox Text="{Binding SelectedItem.Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Grid.Column="2" Grid.Row="3" />
+                                 Grid.Column="2" Grid.Row="3" />
 
 
                         <DataGrid  x:Name="FaehigkeitenDataGrid"
@@ -580,15 +577,15 @@
 
                     <!--Felder-->
                     <TextBox Text="{Binding SelectedItem.FaehigkeitID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
+                             Grid.Column="2" Grid.Row="0" IsReadOnly="True"/>
                     <TextBox Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="1"/>
+                             Grid.Column="2" Grid.Row="1"/>
                     <TextBox Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                     Grid.Column="2" Grid.Row="2"/>
-
+                             Grid.Column="2" Grid.Row="2"/>
+                    
                     <TextBox Text="{Binding SelectedItem.Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                    Grid.Column="2" Grid.Row="3" />
-
+                             Grid.Column="2" Grid.Row="3" />
+                    
                 </Grid>
                 
             </DockPanel>

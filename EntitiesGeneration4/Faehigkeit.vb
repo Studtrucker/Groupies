@@ -11,7 +11,7 @@ Namespace Entities
         Implements IModel
 
 #Region "Felder"
-        'Private _Faehigkeit = Guid.NewGuid
+        Private _FaehigkeitID = Guid.NewGuid
 #End Region
 
 #Region "Konstruktor"
@@ -21,6 +21,7 @@ Namespace Entities
         ''' Erstellt eine neue Fähigkeit
         ''' </summary>
         Public Sub New()
+            _Sortierung = -1
         End Sub
 
         ''' <summary>
@@ -28,6 +29,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Benennung"></param>
         Sub New(Benennung As String)
+            _Sortierung = -1
             _Benennung = Benennung
         End Sub
 
@@ -47,6 +49,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property FaehigkeitID As Guid Implements IModel.Ident
+            Get
+                Return _FaehigkeitId
+            End Get
+            Set(value As Guid)
+                _FaehigkeitID = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Benennung der Fähigkeit

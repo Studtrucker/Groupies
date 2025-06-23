@@ -18,8 +18,8 @@ Namespace Entities
         Implements IModel
 
 #Region "Felder"
-        'Private _Sortierung As Integer
-        'Private _Benennung As String
+
+        Private _LeistungsstufeID = Guid.NewGuid()
 
 #End Region
 
@@ -34,9 +34,9 @@ Namespace Entities
         ''' Erstellt eine Leistungsstufe
         ''' </summary>
         Public Sub New()
-            _LeistungsstufeID = Guid.NewGuid()
             _Faehigkeiten = New FaehigkeitCollection
             Benennung = String.Empty
+            Sortierung = -1
         End Sub
 
         ''' <summary>
@@ -44,32 +44,27 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Benennung"></param>
         Public Sub New(Benennung As String)
-            _LeistungsstufeID = Guid.NewGuid()
             _Benennung = Benennung
             _Faehigkeiten = New FaehigkeitCollection
         End Sub
 
-        ''' <summary>
-        ''' Erstellt eine Leistungsstufe mit Angabe Benennung und Sortierung
-        ''' </summary>
-        ''' <param name="Benennung"></param>
-        ''' <param name="Sortierung"></param>
-        Public Sub New(Benennung As String, Sortierung As Integer)
-            _LeistungsstufeID = Guid.NewGuid()
-            _Benennung = Benennung
-            _Sortierung = Sortierung
-            _Faehigkeiten = New FaehigkeitCollection
-        End Sub
 
 #End Region
 
-#Region "Eigenschaften"
+#Region "Properties"
 
         ''' <summary>
         ''' Eindeutige Kennzeichnung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
         Public Property LeistungsstufeID As Guid Implements IModel.Ident
+            Get
+                Return _LeistungsstufeID
+            End Get
+            Set(value As Guid)
+                _LeistungsstufeID = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen
@@ -135,68 +130,16 @@ Namespace Entities
             _Faehigkeiten.Remove(Faehigkeit)
         End Sub
 
-        Public Overrides Function ToString() As String
-            Return Benennung
-        End Function
-
-#End Region
-
-#Region "Validation"
-        Private Function SortierungValidation(Value As Integer, <Out> ByRef errorMessage As String) As Boolean
-            Dim isValid = True
-            'If Not IsNumeric(Value) Then
-            '    Throw New Exception("Die Sortierung muss numerisch sein")
-            '    isValid = False
-            'End If
-
-            ''If Value <= 0 Then
-            ''    Throw New ArgumentOutOfRangeException("Die Sortierung muss eine positive Zahl größer als Null sein")
-            ''    isValid = False
-            ''End If
-            'If CurrentClub IsNot Nothing AndAlso CurrentClub.Leistungsstufenliste IsNot Nothing Then
-            '    If CurrentClub.Leistungsstufenliste.ToList.Select(Function(Ls) $"{Ls.Sortierung}").Contains(Value) Then
-            '        errorMessage = $"Die Sortierung [{Value}] wird bereits verwendet und darf aber nur für eine Leistungsstufe vergeben werden"
-            '        isValid = False
-            '    End If
-            'End If
-            If String.IsNullOrWhiteSpace(Value) Then
-                errorMessage = $"Die Eingabe ist eine Pflichtangabe{vbNewLine}({ToString()})"
-                Return False
-            End If
-
-            Dim result As Integer
-            If Not Int32.TryParse(Value, result) Then
-                errorMessage = $"Die Eingabe muss eine Zahl sein{vbNewLine}({ToString()})"
-                Return False
-            End If
-
-            'For Each Ls In CurrentClub.Leistungsstufenliste
-            '    If Ls.Sortierung = Value Then
-            '        errorMessage = $"Die Sortierung {Value} wird bereits verwendet {vbNewLine}({Me.ToString})"
-            '        Return False
-            '    End If
-            'Next
-
-            Return isValid
-        End Function
-
-        Private Function BenennungValidation(Value As String, <Out> ByRef errorMessage As String) As Boolean
-            Dim isValid = True
-            If AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
-                If AktuellerClub.AlleLeistungsstufen.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Value.ToLower) Then
-                    errorMessage = $"Die Benennung [{Value}] wird bereits verwendet und darf aber nur für eine Leistungsstufe vergeben werden"
-                    isValid = False
-                End If
-            End If
-            Return isValid
-        End Function
 
         Public Sub speichern() Implements IModel.speichern
             Throw New NotImplementedException()
         End Sub
 
-#End Region
+        Public Overrides Function ToString() As String
+            Return Benennung
+        End Function
 
+#End Region
 
     End Class
 End Namespace

@@ -44,6 +44,7 @@ Public Class LeistungsstufeViewModel
             _Leistungsstufe = DirectCast(value, Entities.Leistungsstufe)
         End Set
     End Property
+
     Public Property LeistungsstufeID() As Guid
         Get
             Return _Leistungsstufe.LeistungsstufeID
@@ -172,6 +173,11 @@ Public Class LeistungsstufeViewModel
         If String.IsNullOrWhiteSpace(_Leistungsstufe.Benennung) Then
             AddError(NameOf(_Leistungsstufe.Benennung), "Benennung darf nicht leer sein.")
         End If
+
+        If Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(_Leistungsstufe.Benennung.ToLower) Then
+            AddError(NameOf(_Leistungsstufe.Benennung), $"{_Leistungsstufe.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
+        End If
+
     End Sub
 
     Private Sub ValidateFaehigkeiten()
@@ -190,9 +196,17 @@ Public Class LeistungsstufeViewModel
 
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Leistungsstufe.Sortierung))
-        If _Leistungsstufe.Sortierung = 0 Then
-            AddError(NameOf(_Leistungsstufe.Sortierung), "Sortierung darf nicht 0 sein.")
+
+        If _Leistungsstufe.Sortierung < 0 Then
+            AddError(NameOf(_Leistungsstufe.Sortierung), "Sortierung darf nicht negativ sein.")
         End If
+        If String.IsNullOrWhiteSpace(_Leistungsstufe.Sortierung) Then
+            AddError(NameOf(_Leistungsstufe.Sortierung), "Sortierung muss eingetragen sein.")
+        End If
+        If Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Sortierung = _Leistungsstufe.Sortierung AndAlso Ls.LeistungsstufeID <> _Leistungsstufe.LeistungsstufeID).Any() Then
+            AddError(NameOf(_Leistungsstufe.Sortierung), "Die Sortierung muss eindeutig sein.")
+        End If
+
     End Sub
 
 

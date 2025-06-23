@@ -203,7 +203,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
         End If
     End Sub
@@ -790,7 +790,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
     End Sub

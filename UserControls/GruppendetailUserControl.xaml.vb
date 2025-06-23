@@ -2,7 +2,6 @@
 Imports Groupies.Commands
 Imports Groupies.Controller
 Imports Groupies.Entities
-Imports CDS = Groupies.Controller.AppController
 
 Namespace UserControls
 

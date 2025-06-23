@@ -7,7 +7,7 @@ Public Class SkiDateienServiceTests
 
     <TestMethod>
     Public Sub IdentifiziereDateiGenerationTest()
-        Dim filelist As List(Of String) = New List(Of String) From {
+        Dim filelist = New List(Of String) From {
             "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiGeneration3.ski",
             "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiGeneration1.ski",
             "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiGeneration2.ski"}

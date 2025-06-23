@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports Groupies.Controller.AppController
+Imports Groupies.Controller
 
 
 Namespace Entities
@@ -34,8 +34,8 @@ Namespace Entities
         ''' </summary>
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
-            If AktuellerClub IsNot Nothing Then
-                Leistungsstand = AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
+            If AppController.AktuellerClub IsNot Nothing Then
+                Leistungsstand = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
             End If
         End Sub
 

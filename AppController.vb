@@ -1,10 +1,6 @@
 ﻿Imports System.IO
-Imports Groupies.Entities
 Imports Groupies.Entities.Generation4
-Imports Microsoft.Office.Interop.Excel
 Imports Groupies.Services
-Imports System.Xml.Serialization
-Imports System.Security.Cryptography
 
 Namespace Controller
 
@@ -40,7 +36,7 @@ Namespace Controller
         '''' versehen werden
         '''' </summary>
         '''' <returns></returns>
-        'Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
+        Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
 
 #End Region
 
@@ -53,7 +49,6 @@ Namespace Controller
             Return copiedList
         End Function
 
-#End Region
 
         Public Shared Sub NeuenClubErstellen()
             Dim dlg = InputBox("Bitte geben Sie den Namen des neuen Clubs ein", "Neuen Club erstellen", "Groupies Club")
@@ -64,18 +59,14 @@ Namespace Controller
             NeuenClubErstellen(dlg)
         End Sub
 
-        'Todo: Bei neuen Clubs  den Standard- Speicherort und Dateiname festlegen
-
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
             'AktuellerClub = Nothing
-            AktuellerClub = New Club(Clubname)
-
-            AktuellerClub.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
-            AktuellerClub.AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen
-            AktuellerClub.Einteilungsliste = TemplateService.StandardEinteilungenErstellen()
-            AktuellerClub.AlleGruppen = TemplateService.StandardGruppenErstellen(15)
-
-            'AktuellerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1"})
+            AktuellerClub = New Club(Clubname) With {
+                .ClubName = Clubname,
+                .AlleGruppen = TemplateService.StandardGruppenErstellen(15),
+                .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
+                .AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen,
+                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")
 
@@ -92,6 +83,7 @@ Namespace Controller
             Dim dlg As New TeilnehmerSuchErgebnis
             dlg.ShowDialog()
         End Sub
+#End Region
 
     End Class
 End Namespace

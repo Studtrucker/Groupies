@@ -13,7 +13,6 @@ Imports Groupies.Interfaces
 Imports Groupies.Services
 Imports Groupies.UserControls
 Imports Microsoft.Win32
-Imports Groupies.Controller.AppController
 
 Public Class MainWindow
 
@@ -184,7 +183,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_FaehigkeitNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleFaehigkeiten IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleFaehigkeiten IsNot Nothing
     End Sub
 
     Private Sub Handle_FaehigkeitNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -372,7 +371,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
     End Sub
 
 #End Region
@@ -383,11 +382,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -395,7 +394,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleTeilnehmer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -533,7 +532,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleTrainer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -560,7 +559,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
     End Sub
     Private Sub Handle_TrainerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
@@ -670,7 +669,7 @@ Public Class MainWindow
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = Groupies.Controller.AppController.AktuellerClub.AlleGruppen IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.AlleGruppen IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -717,7 +716,7 @@ Public Class MainWindow
 
 #Region "Einteilung"
     Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.Einteilungsliste IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Einteilungsliste IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -771,7 +770,7 @@ Public Class MainWindow
 
 #Region "Leistungsstufe"
     Private Sub Handle_LeistungsstufeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AktuellerClub IsNot Nothing AndAlso AktuellerClub.AlleLeistungsstufen IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing
     End Sub
 
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -818,7 +817,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTrainer
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleTrainer
 
         fenster.DataContext = mvw
 
@@ -969,8 +968,8 @@ Public Class MainWindow
 
     Private Sub SetView()
 
-        QueueMostRecentFilename(GroupiesFile.FullName)
-        Title = "Groupies - " & AktuellerClub.ClubName & " - " & GroupiesFile.Name
+        QueueMostRecentFilename(AppController.GroupiesFile.FullName)
+        Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.GroupiesFile.Name
 
         ' Die allgemeinen Leistungsstufen füllen
         _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
@@ -1158,7 +1157,7 @@ Public Class MainWindow
 
         Dim Fenster As New BasisDetailWindow()
         Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        Dim Trainer = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
+        Dim Trainer = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
         vm.Trainer = Trainer
         'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
 
@@ -1228,7 +1227,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleTeilnehmer
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleTeilnehmer
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1244,7 +1243,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenFaehigkeiten
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleValidenFaehigkeiten
 
         fenster.DataContext = mvw
 
@@ -1260,7 +1259,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.Einteilungsliste
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Einteilungsliste
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1276,7 +1275,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleGruppen
 
         fenster.DataContext = mvw
 
@@ -1293,7 +1292,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = Groupies.Controller.AppController.AktuellerClub.AlleValidenLeistungsstufen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleValidenLeistungsstufen
 
         fenster.DataContext = mvw
 

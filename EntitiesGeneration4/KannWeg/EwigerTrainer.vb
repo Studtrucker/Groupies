@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports Groupies.Controller.AppController
 
 
 Namespace Entities

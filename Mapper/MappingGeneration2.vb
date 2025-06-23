@@ -4,23 +4,14 @@ Public Module MappingGeneration2
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation4.Club
 
-        Dim NeuerClub = New Generation4.Club
-        NeuerClub.ClubName = If(Skiclub.ClubName, "Club")
-
-        ' Trainer laden
-        NeuerClub.AlleTrainer = GetAlleTrainer(Skiclub)
-
-        ' Teilnehmer laden
-        NeuerClub.AlleTeilnehmer = GetAlleTeilnehmer(Skiclub)
-
-        ' Leistungsstufen laden
-        NeuerClub.AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub)
-
-        ' Fähigkeiten laden
-        NeuerClub.AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub)
-
-        ' Gruppen laden
-        NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
+        Dim NeuerClub = New Generation4.Club With {
+            .Einteilungsliste = New EinteilungCollection,
+            .ClubName = If(Skiclub.ClubName, "Club"),
+            .AlleTrainer = GetAlleTrainer(Skiclub),
+            .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
+            .AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub),
+            .AlleGruppen = GetAlleGruppen(Skiclub)}
 
         ' Einteilung wird neu erstellt
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
@@ -56,9 +47,11 @@ Public Module MappingGeneration2
     ''' <returns></returns>
     Private Function GetAlleFaehigkeiten(Skiclub As Generation2.Club) As FaehigkeitCollection
 
-        Dim Faehigkeiten = New FaehigkeitCollection
         ' Leere Fähigkeit hinzufügen für Dropdowns
-        Faehigkeiten.Add(New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+        Dim Faehigkeiten = New FaehigkeitCollection From {
+            New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}
+        }
+
         ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
         Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(M) M.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f))))
         Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) T.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f)))
@@ -114,9 +107,10 @@ Public Module MappingGeneration2
     ''' <returns></returns>
     Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation2.Club) As LeistungsstufeCollection
         ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
         ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
-        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+        Dim Leistungsstufen = New LeistungsstufeCollection From {
+            New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}
+        }
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand)))
         Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand))

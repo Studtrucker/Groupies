@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports PropertyChanged
+Imports Groupies.Controller
 
 Namespace Entities
 
@@ -55,7 +55,7 @@ Namespace Entities
             Trainer = OriginGruppe.Trainer
 
             Dim KopierteListe = New TeilnehmerCollection
-            KopierteListe.AddRange(Controller.AppController.KopiereListeMitNeuenObjekten(Of Teilnehmer)(OriginGruppe.Mitgliederliste.ToList, Function(t) New Teilnehmer(t)))
+            KopierteListe.AddRange(AppController.KopiereListeMitNeuenObjekten(Of Teilnehmer)(OriginGruppe.Mitgliederliste.ToList, Function(t) New Teilnehmer(t)))
             Mitgliederliste = KopierteListe
 
         End Sub

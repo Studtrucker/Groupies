@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports CDS = Groupies.Controller.AppController
 
 Namespace Entities.Generation1
 

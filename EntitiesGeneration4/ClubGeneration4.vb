@@ -51,7 +51,6 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public Property ClubName As String Implements IClub.Name
 
-
         ''' <summary>
         ''' Die Einteilungen im aktuellen Club
         ''' Es kann hiermit eine Historie verwaltet werden

@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports Groupies.Entities
+Imports Groupies.Controller
 
 Namespace Services
 
@@ -121,10 +122,13 @@ Namespace Services
 
             Dim IndexGruppenName As Integer
             For i = 0 To AnzahlGruppen - 1
+                'groupCol.Add(New Gruppe("Genießer", 3) With {
+                '        .Benennung = GroupPrintNames.Item(IndexGruppenName),
+                '        .Sortierung = GroupSorting.Item(IndexGruppenName),
+                '        .Leistungsstufe = AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(L) L.Sortierung = -1).Single})
                 groupCol.Add(New Gruppe("Genießer", 3) With {
                         .Benennung = GroupPrintNames.Item(IndexGruppenName),
-                        .Sortierung = GroupSorting.Item(IndexGruppenName),
-                        .Leistungsstufe = Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(L) L.Sortierung = -1).Single})
+                        .Sortierung = GroupSorting.Item(IndexGruppenName)})
 
                 IndexGruppenName += 1
             Next
@@ -284,22 +288,22 @@ Namespace Services
         End Function
 
         Private Function GruppenAusgabeNamenUndSortierung() As Dictionary(Of Integer, String)
-            Dim Namen = New Dictionary(Of Integer, String)
-            Namen.Add(10, "Zugspitze 2962")
-            Namen.Add(20, "Watzmann 2712")
-            Namen.Add(30, "Kreuzspitze 2656")
-            Namen.Add(40, "Hochwanner 2744")
-            Namen.Add(50, "Höllentalspitze 2743")
-            Namen.Add(60, "Alpenspitze 2751")
-            Namen.Add(70, "Falknerhorn 2655")
-            Namen.Add(80, "Brettfallspitze 2404")
-            Namen.Add(90, "Mont Blanc 4808")
-            Namen.Add(100, "Dufourspitze 4634")
-            Namen.Add(110, "Dom 4545")
-            Namen.Add(120, "Lyskamm 4527")
-            Namen.Add(130, "Weisshorn 4506")
-            Namen.Add(140, "Täschhorn 4491")
-            Namen.Add(150, "Matterhorn 4478")
+            Dim Namen = New Dictionary(Of Integer, String) From {
+                {10, "Zugspitze 2962"},
+                {20, "Watzmann 2712"},
+                {30, "Kreuzspitze 2656"},
+                {40, "Hochwanner 2744"},
+                {50, "Höllentalspitze 2743"},
+                {60, "Alpenspitze 2751"},
+                {70, "Falknerhorn 2655"},
+                {80, "Brettfallspitze 2404"},
+                {90, "Mont Blanc 4808"},
+                {100, "Dufourspitze 4634"},
+                {110, "Dom 4545"},
+                {120, "Lyskamm 4527"},
+                {130, "Weisshorn 4506"},
+                {140, "Täschhorn 4491"},
+                {150, "Matterhorn 4478"}}
             Return Namen
         End Function
 

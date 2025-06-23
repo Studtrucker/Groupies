@@ -63,7 +63,7 @@ Public Class TeilnehmerTests
 
         Dim Willi As New Teilnehmer("Willi", "Steiner", New Leistungsstufe("Experte") With {.Sortierung = 2})
         Dim Lothar As New Teilnehmer("Lothar", "Hötger", New Leistungsstufe("Experte") With {.Sortierung = 2})
-        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = New Leistungsstufe("Anfänger", 0)}
+        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = New Leistungsstufe("Anfänger")}
 
         Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane, Elke, Lothar}
         'tnL.Add(Elke)
@@ -89,8 +89,8 @@ Public Class TeilnehmerTests
                                   },
                                   tnL.TrainerinfoGeordnet.ToList)
 
-        Dim Anfaenger = New Leistungsstufe("Anfänger", 1)
-        Dim Experte = New Leistungsstufe("Experte", 3)
+        Dim Anfaenger = New Leistungsstufe("Anfänger")
+        Dim Experte = New Leistungsstufe("Experte")
 
         Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstand = Experte}
         Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
@@ -115,7 +115,7 @@ Public Class TeilnehmerTests
     <TestMethod>
     Public Sub TestTeilnehmerlisten()
 
-        Dim Anfaenger = New Leistungsstufe("Anfänger", 1)
+        Dim Anfaenger = New Leistungsstufe("Anfänger")
         Dim Koenner = New Leistungsstufe("Könner") With {.Sortierung = 2}
         Dim Experte = New Leistungsstufe("Experte") With {.Sortierung = 3}
 

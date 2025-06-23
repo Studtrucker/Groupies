@@ -1,7 +1,5 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Groupies
 Imports Groupies.Controller
-Imports Groupies.Controller.AppController
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation3
 
@@ -24,7 +22,7 @@ Public Class ClubTests
         Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
 
-        Stubai2024.Einteilungsliste(0).Gruppenliste = Groupies.Controller.AppController.AktuellerClub.AlleGruppen
+        Stubai2024.Einteilungsliste(0).Gruppenliste = AppController.AktuellerClub.AlleGruppen
 
         Stubai2024.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Studti, Stubai2024.Einteilungsliste(0).Gruppenliste.ElementAt(0))
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).AlleTeilnehmer.Count)
@@ -130,10 +128,8 @@ Public Class ClubTests
         ' Die Gruppe wird der Gruppenliste hinzugefügt 
         Testverein.Einteilungsliste(0).Gruppenliste.Add(Experte)
         Testverein.Einteilungsliste(0).Gruppenliste.Add(Racer)
-        ' Vier Teilnehmer werden der Teilnehmerliste hinzugefügt 
-        Testverein.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(New List(Of Teilnehmer) From {Studti, Manu, Ralf, Sandra})
-        ' Teilnehmer fünf wird der Teilnehmerliste hinzugefügt 
-        Testverein.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Rene)
+        ' fünf Teilnehmer werden der Teilnehmerliste hinzugefügt 
+        Testverein.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection(New List(Of Teilnehmer) From {Studti, Manu, Ralf, Sandra, Rene})
         ' 2 Teilnehmer werden der Gruppe als Mitglieder hinzugefügt
         Testverein.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Manu, Experte)
         Testverein.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Studti, Experte)

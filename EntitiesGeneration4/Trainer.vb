@@ -1,9 +1,4 @@
 ﻿Imports System.ComponentModel.DataAnnotations
-Imports System.ComponentModel
-Imports System.Linq
-Imports System.Runtime.InteropServices
-Imports System.Threading
-Imports Groupies.Controller.AppController
 
 Namespace Entities
 

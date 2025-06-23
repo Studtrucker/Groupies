@@ -5,8 +5,6 @@ Imports Groupies.Services
 Imports Groupies.Interfaces
 Imports System.IO
 Imports System.Xml.Serialization
-Imports System.ComponentModel
-Imports Groupies.Controller
 
 Namespace Entities.Generation3
 

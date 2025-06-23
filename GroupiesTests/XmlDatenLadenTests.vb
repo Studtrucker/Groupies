@@ -1,6 +1,5 @@
 ﻿Imports Groupies
 Imports Groupies.Entities
-Imports Groupies.Controller
 Imports System.Windows
 Imports System.IO
 

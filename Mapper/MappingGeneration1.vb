@@ -8,25 +8,14 @@ Public Module MappingGeneration1
     ''' <returns></returns>
     Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Generation4.Club
 
-        Dim NeuerClub = New Generation4.Club
-        NeuerClub.ClubName = If(Skiclub.Name, "Club")
+        Dim NeuerClub = New Generation4.Club With {
+            .ClubName = If(Skiclub.Name, "Club"),
+            .AlleTrainer = GetAlleTrainer(Skiclub),
+            .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
+            .AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub),
+            .AlleGruppen = GetAlleGruppen(Skiclub)}
 
-        ' Trainer laden
-        NeuerClub.AlleTrainer = GetAlleTrainer(Skiclub)
-
-        ' Teilnehmer laden
-        NeuerClub.AlleTeilnehmer = GetAlleTeilnehmer(Skiclub)
-
-        ' Leistungsstufen laden
-        NeuerClub.AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub)
-
-        ' Fähigkeiten laden
-        NeuerClub.AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub)
-
-        ' Gruppen laden
-        NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
-
-        ' Einteilung wird neu erstellt
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
@@ -36,10 +25,6 @@ Public Module MappingGeneration1
 
         Return NeuerClub
 
-    End Function
-
-    Private Function EinteilungPflegen(Club As Generation1.Skiclub) As Generation4.Club
-        Return Nothing
     End Function
 
     ''' <summary>
@@ -164,9 +149,9 @@ Public Module MappingGeneration1
     ''' <returns></returns>
     Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
         ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
-        Leistungsstufen.Add(New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
+        Dim Leistungsstufen = New LeistungsstufeCollection From {
+            New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}
+        }
 
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(Gl) Gl.GroupMembers.ToList.ForEach(Sub(M) Leistungsstufen.Add(MapLevel2Leistungsstufe(M.ParticipantLevel))))

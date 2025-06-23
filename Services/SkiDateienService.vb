@@ -141,9 +141,9 @@ Namespace Services
         Private Shared Function LeseXmlDatei(filePath As String) As List(Of String)
             Dim ElementListe As New List(Of String)
             ' Erstelle einen FileStream 
-            Using FileStream As FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
+            Using FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
                 ' und einen StreamReader, um die Datei zu lesen
-                Using reader As StreamReader = New StreamReader(FileStream)
+                Using reader = New StreamReader(FileStream)
                     ' Erstelle den XmlReader aus dem StreamReader
                     Using xmlReader As XmlReader = XmlReader.Create(reader)
                         '  Solange es noch Elemente im XML gibt

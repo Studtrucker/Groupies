@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
-Imports Groupies.Entities
-Imports Groupies.Controller.AppController
+Imports Groupies.Controller
 
 Public Class TeilnehmerSuchErgebnis
 
@@ -47,10 +46,10 @@ Public Class TeilnehmerSuchErgebnis
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        TeilnehmerAnzahl = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.Count
-        TrainerAnzahl = AktuellerClub.Einteilungsliste(0).AlleTrainer.Count
-        Dim x = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
-        Dim z = AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        TeilnehmerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.Count
+        TrainerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.Count
+        Dim x = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        Dim z = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
         Dim y As New System.Text.StringBuilder
 
         For Each Stufengruppe In x
@@ -72,12 +71,12 @@ Public Class TeilnehmerSuchErgebnis
         Dim Teilnehmerliste As New List(Of Object)
 
         ' Die Teilnehmer und Gruppeninfo aus den einzelen Gruppen
-        For Each TnL In AktuellerClub.SelectedEinteilung.Gruppenliste
+        For Each TnL In AppController.AktuellerClub.SelectedEinteilung.Gruppenliste
             Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
         Next
 
         ' Noch nicht eingeteilte Teilnehmer
-        For Each Tn In AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer
+        For Each Tn In AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer
             Teilnehmerliste.Add(New With {.Teilnehmer = Tn, .Gruppe = Nothing})
         Next
 

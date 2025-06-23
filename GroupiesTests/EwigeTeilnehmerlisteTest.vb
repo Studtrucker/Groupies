@@ -1,7 +1,4 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Groupies
-Imports Groupies.Controller
-Imports Groupies.Controller.AppController
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation3
 

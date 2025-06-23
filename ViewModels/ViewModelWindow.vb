@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Input
-Imports Groupies.Controller
 Imports Groupies.Interfaces
 Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel

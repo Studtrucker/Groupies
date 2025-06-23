@@ -10,7 +10,7 @@ Public Class AppControllerTests
     <TestMethod>
     Sub TestNeuenSkiclubErstellen()
 
-        Dim numberOfGroups = 9
+        'Dim numberOfGroups = 9
         Assert.AreEqual($"Stubaital2024 wurde erfolgreich erstellt.", AppController.NeuenClubErstellen("Stubaital2024"))
         Assert.IsNotNull(AppController.AktuellerClub)
         AppController.AktuellerClub.SelectedEinteilung = AppController.AktuellerClub.Einteilungsliste(0)

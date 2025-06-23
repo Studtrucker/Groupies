@@ -197,14 +197,11 @@ Public Class LeistungsstufeViewModel
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Leistungsstufe.Sortierung))
 
-        If _Leistungsstufe.Sortierung < 0 Then
-            AddError(NameOf(_Leistungsstufe.Sortierung), "Sortierung darf nicht negativ sein.")
-        End If
-        If String.IsNullOrWhiteSpace(_Leistungsstufe.Sortierung) Then
-            AddError(NameOf(_Leistungsstufe.Sortierung), "Sortierung muss eingetragen sein.")
-        End If
-        If Controller.AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Sortierung = _Leistungsstufe.Sortierung AndAlso Ls.LeistungsstufeID <> _Leistungsstufe.LeistungsstufeID).Any() Then
-            AddError(NameOf(_Leistungsstufe.Sortierung), "Die Sortierung muss eindeutig sein.")
+        Dim result = New ValidationRules.SortierungValidationRule().Validate(_Leistungsstufe, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Leistungsstufe.Sortierung), result.ErrorContent.ToString())
         End If
 
     End Sub

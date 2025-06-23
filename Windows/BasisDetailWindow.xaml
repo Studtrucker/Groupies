@@ -392,15 +392,15 @@
                     </TextBlock>
                 </Label>                
                 <Label Content="Beschreibung" Grid.Column="1" Grid.Row="3"/>
-                
-                <TextBox Text="{Binding FaehigkeitID, UpdateSourceTrigger=PropertyChanged}" 
+
+                <TextBox Text="{Binding FaehigkeitID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          IsReadOnly="True" 
                          Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left"/>
-                
-                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" 
+
+                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
                      Grid.Column="2" Grid.Row="1" Width="75" HorizontalAlignment="Left"/>
 
-                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
                      Grid.Column="2" Grid.Row="2" x:Name="BenennungTextBox"/>
                 <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="2" Grid.Row="3" TextWrapping="Wrap" x:Name="BeschreibungTextBox"/>

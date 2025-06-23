@@ -168,15 +168,13 @@ Public Class GruppeViewModel
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Gruppe.Sortierung))
 
-        If _Gruppe.Sortierung < 0 Then
-            AddError(NameOf(_Gruppe.Sortierung), "Sortierung darf nicht negativ sein.")
+        Dim result = New ValidationRules.SortierungValidationRule().Validate(_Gruppe, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Gruppe.Sortierung), result.ErrorContent.ToString())
         End If
-        If String.IsNullOrWhiteSpace(_Gruppe.Sortierung) Then
-            AddError(NameOf(_Gruppe.Sortierung), "Sortierung muss eingetragen sein.")
-        End If
-        If Controller.AppController.AktuellerClub.AlleGruppen.Where(Function(Gr) Gr.Sortierung = _Gruppe.Sortierung AndAlso Gr.GruppenID <> _Gruppe.GruppenID).Any() Then
-            AddError(NameOf(_Gruppe.Sortierung), "Die Sortierung muss eindeutig sein.")
-        End If
+
     End Sub
 
     Private Sub ValidateBenennung()

@@ -16,6 +16,7 @@ Namespace Entities
 #Region "Felder"
         Private _GruppenID = Guid.NewGuid()
         Private _Mitgliederliste = New TeilnehmerCollection
+        Private _Sortierung As Integer
 #End Region
 
 #Region "Konstruktor"
@@ -61,7 +62,7 @@ Namespace Entities
 
 #End Region
 
-#Region "Eigenschaft"
+#Region "Properties"
         ''' <summary>
         ''' Eindeutige Gruppenkennung
         ''' </summary>
@@ -96,6 +97,14 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Sortierung As Integer
+            Get
+                Return _Sortierung
+            End Get
+            Set(value As Integer)
+                _Sortierung = value
+                OnPropertyChanged(NameOf(Sortierung))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Die Leistungsstufe der Gruppe

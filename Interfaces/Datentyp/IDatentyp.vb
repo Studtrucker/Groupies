@@ -27,9 +27,8 @@
         ReadOnly Property DatentypDetailUserControl As UserControl
 
         ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial
+
         ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial
-
-
 
     End Interface
 

@@ -84,7 +84,7 @@ Namespace Entities
 
 #End Region
 
-#Region "Eigenschaften"
+#Region "Properties"
         ''' <summary>
         ''' Eindeutige Kennzeichnung des Teilnehmers 
         ''' </summary>

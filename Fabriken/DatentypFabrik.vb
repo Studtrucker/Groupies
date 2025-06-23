@@ -58,12 +58,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
-        '    Get
-        '        Return New UserControls.TrainerlisteUserControl
-        '    End Get
-        'End Property
-
         Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New TrainerViewModel
@@ -76,9 +70,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
-        '    Return Groupies.Controller.AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList
-        'End Function
     End Class
 
     Public Class TeilnehmerDatentyp
@@ -93,12 +84,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
-        '    Get
-        '        Return New UserControls.TeilnehmerlisteUserControl
-        '    End Get
-        'End Property
-
         Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New TeilnehmerViewModel
@@ -111,9 +96,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
-        '    Throw New NotImplementedException()
-        'End Function
     End Class
 
     Public Class GruppeDatentyp
@@ -128,11 +110,6 @@ Namespace Fabriken
                 Return New UserControls.GruppeUserControl
             End Get
         End Property
-        'Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
-        '    Get
-        '        Return New UserControls.GruppenlisteUserControl
-        '    End Get
-        'End Property
 
         Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
@@ -146,9 +123,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
-        '    Throw New NotImplementedException()
-        'End Function
     End Class
 
     Public Class FaehigkeitDatentyp
@@ -162,12 +136,6 @@ Namespace Fabriken
                 Return New UserControls.FaehigkeitUserControl
             End Get
         End Property
-        'Public ReadOnly Property DatentypListUserControl As UserControl Implements IDatentyp.DatentypListUserControl
-        '    Get
-        '        Return New UserControls.FaehigkeitenlisteUserControl
-        '    End Get
-        'End Property
-
 
         Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
@@ -181,9 +149,6 @@ Namespace Fabriken
             End Get
         End Property
 
-        'Public Function getAll() As IEnumerable(Of IModel) Implements IDatentyp.getAll
-        '    Throw New NotImplementedException()
-        'End Function
     End Class
 
     Public Class LeistungsstufeDatentyp

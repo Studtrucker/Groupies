@@ -208,10 +208,10 @@
     <Compile Include="EntitiesGeneration1\Skiclub.vb" />
     <Compile Include="EntitiesGeneration1\Skill.vb" />
     <Compile Include="EntitiesGeneration1\SkillCollection.vb" />
-    <Compile Include="EntitiesGeneration4\EwigerTrainer.vb" />
-    <Compile Include="EntitiesGeneration4\EwigeTrainerCollection.vb" />
-    <Compile Include="EntitiesGeneration4\EwigeTeilnehmerCollection.vb" />
-    <Compile Include="EntitiesGeneration4\EwigerTeilnehmer.vb" />
+    <Compile Include="EntitiesGeneration4\KannWeg\EwigerTrainer.vb" />
+    <Compile Include="EntitiesGeneration4\KannWeg\EwigeTrainerCollection.vb" />
+    <Compile Include="EntitiesGeneration4\KannWeg\EwigeTeilnehmerCollection.vb" />
+    <Compile Include="EntitiesGeneration4\KannWeg\EwigerTeilnehmer.vb" />
     <Compile Include="EntitiesGeneration4\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
@@ -251,7 +251,7 @@
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidationRules\SortierungUniqueValidationRule.vb" />
+    <Compile Include="ValidationRules\SortierungValidationRule.vb" />
     <Compile Include="ValidationRules\TeilnehmerValidationRule.vb" />
     <Compile Include="ValidationRules\TrainerSpitznameValidationRule.vb" />
     <Compile Include="XMLDatenLaden.vb" />

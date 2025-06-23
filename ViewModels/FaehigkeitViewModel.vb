@@ -162,14 +162,11 @@ Public Class FaehigkeitViewModel
     Private Sub ValidateSortierung()
         ClearErrors(NameOf(_Faehigkeit.Sortierung))
 
-        If _Faehigkeit.Sortierung < 0 Then
-            AddError(NameOf(_Faehigkeit.Sortierung), "Sortierung darf nicht negativ sein.")
-        End If
-        If String.IsNullOrWhiteSpace(_Faehigkeit.Sortierung) Then
-            AddError(NameOf(_Faehigkeit.Sortierung), "Sortierung muss eingetragen sein.")
-        End If
-        If Controller.AppController.AktuellerClub.AlleFaehigkeiten.Where(Function(Fa) Fa.Sortierung = _Faehigkeit.Sortierung AndAlso Fa.FaehigkeitID <> _Faehigkeit.FaehigkeitID).Any() Then
-            AddError(NameOf(_Faehigkeit.Sortierung), "Die Sortierung muss eindeutig sein.")
+        Dim result = New ValidationRules.SortierungValidationRule().Validate(_Faehigkeit, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Faehigkeit.Sortierung), result.ErrorContent.ToString())
         End If
     End Sub
 

@@ -43,7 +43,7 @@ Namespace Entities
         End Sub
 #End Region
 
-#Region "Eigenschaften"
+#Region "Properties"
         ''' <summary>
         ''' Eindeutige Kennzeichnung der Fähigkeit
         ''' </summary>

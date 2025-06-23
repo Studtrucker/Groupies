@@ -53,7 +53,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Einteilung) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
-                If AppController.AktuellerClub.Einteilungsliste.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                If AppController.AktuellerClub.AlleEinteilungen.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
                     Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
                 End If
             End If

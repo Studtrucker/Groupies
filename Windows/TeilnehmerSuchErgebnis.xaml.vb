@@ -46,10 +46,10 @@ Public Class TeilnehmerSuchErgebnis
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        TeilnehmerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.Count
-        TrainerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.Count
-        Dim x = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
-        Dim z = AppController.AktuellerClub.Einteilungsliste(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        TeilnehmerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.Count
+        TrainerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.Count
+        Dim x = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        Dim z = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
         Dim y As New System.Text.StringBuilder
 
         For Each Stufengruppe In x

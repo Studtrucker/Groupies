@@ -70,16 +70,16 @@ Namespace Services
             End If
 
             'Aus der Importdatei werden bekannte Trainer markiert
-            For Each aktuellerTr As Trainer In AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer
+            For Each aktuellerTr As Trainer In AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer
                 ImportTrainerliste.Where(Function(importTr) importTr.TrainerID = aktuellerTr.TrainerID) _
                                                 .ToList.ForEach(Sub(neueTrainer) neueTrainer.IstBekannt = True)
             Next
 
             ' Aus dem aktuellen Club werden alle Trainer als potentieller Archivkandidat gesetzt
-            AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList.ForEach(Sub(Tr) Tr.Archivieren = True)
+            AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.ToList.ForEach(Sub(Tr) Tr.Archivieren = True)
             ' Alle Archivkandidaten werden, wenn sie in der Importdatei gelistet sind, beibehalten
             For Each importTn In ImportTrainerliste
-                AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList.Where(Function(Tn) _
+                AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.ToList.Where(Function(Tn) _
                                                                           Tn.TrainerID = importTn.TrainerID) _
                                                                           .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
             Next
@@ -88,18 +88,18 @@ Namespace Services
             Dim UnbekannteTrainer = ImportTrainerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Trainer(Tn.Vorname, Tn.Nachname))
             ' Alle bekannten Teilnehmer 
             Dim BekannteTeilnehmer = ImportTrainerliste.Where(Function(Tn) Tn.IstBekannt).
-                Select(Function(Tn) AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.
+                Select(Function(Tn) AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.
                 Where(Function(AlterTeilnehmer) Tn.TrainerID = AlterTeilnehmer.TrainerID))
 
             ' Alle zu archivierenden Teilnehmer 
-            Dim ZuArchivierende = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
+            Dim ZuArchivierende = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
 
             ' Teilnehmer in der ewigen Liste archivieren
-            Dim Archiv = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTrainer(Tn, Now.Date)))
+            Dim Archiv = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTrainer(Tn, Now.Date)))
             ' Teilnehmer, die nicht dabei sind, aussortieren
             For Each ArchivTr In ZuArchivierende
-                AppController.AktuellerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)
-                AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer.Remove(ArchivTr)
+                AppController.AktuellerClub.AlleEinteilungen(0).Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)
+                AppController.AktuellerClub.AlleEinteilungen(0).GruppenloseTrainer.Remove(ArchivTr)
             Next
 
             Dim sb As New StringBuilder

@@ -21,22 +21,27 @@ Namespace Controller
         Public Shared Property AktuellerClub As Club
 
         ''' <summary>
-        ''' Die aktuellen Leistungsstufen
-        ''' Standard sind 5 Stufen und die Beschreibung 
-        ''' der notwendigen Fähigkeiten, 
-        ''' um der Stufe gerecht zu werden
+        ''' Standard Leistungsstufen, um die Teilnehmer und Gruppen zu beschreiben
         ''' </summary>
         ''' <returns></returns>
         Public Shared Property StandardLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen
 
-        '''' <summary>
-        '''' Aktuelle Gruppen
-        '''' Es können bis zu 15 verschiedene Gruppen
-        '''' angelegt werden, die mit verschiedenen Namen
-        '''' versehen werden
-        '''' </summary>
-        '''' <returns></returns>
+        ''' <summary>
+        ''' Standard Fähigkeiten, um die Leistungsstufen zu beschreiben
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Property StandardFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen
+
+        ''' <summary>
+        ''' Standard Gruppen, um die Teilnehmer leistungssmäßig zu gruppieren
+        ''' </summary>
+        ''' <returns></returns>
         Public Shared Property StandardGruppen = TemplateService.StandardGruppenErstellen(15)
+
+        ''' <summary>
+        ''' Standard Einteilungen, um die Teilnehmer in Gruppen zu bringen
+        ''' </summary>
+        Public Shared Property StandardEinteilungen = TemplateService.StandardEinteilungenErstellen
 
 #End Region
 
@@ -66,7 +71,7 @@ Namespace Controller
                 .AlleGruppen = TemplateService.StandardGruppenErstellen(15),
                 .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
                 .AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen,
-                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
+                .AlleEinteilungen = TemplateService.StandardEinteilungenErstellen}
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")
 

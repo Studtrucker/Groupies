@@ -5,7 +5,7 @@ Public Module MappingGeneration2
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation4.Club
 
         Dim NeuerClub = New Generation4.Club With {
-            .Einteilungsliste = New EinteilungCollection,
+            .AlleEinteilungen = New EinteilungCollection,
             .ClubName = If(Skiclub.ClubName, "Club"),
             .AlleTrainer = GetAlleTrainer(Skiclub),
             .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
@@ -14,12 +14,12 @@ Public Module MappingGeneration2
             .AlleGruppen = GetAlleGruppen(Skiclub)}
 
         ' Einteilung wird neu erstellt
-        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).Gruppenliste.Add(Gl))
-        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
-        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.AlleEinteilungen(0).Gruppenliste.Add(Gl))
+        NeuerClub.AlleEinteilungen(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
+        NeuerClub.AlleEinteilungen(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
 
         Return NeuerClub
 

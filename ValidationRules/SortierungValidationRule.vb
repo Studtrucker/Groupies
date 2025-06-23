@@ -43,7 +43,7 @@ Namespace ValidationRules
         End Function
 
         Public Function GetEindeutigkeit(Einteilung As Einteilung) As ValidationResult
-            If AppController.AktuellerClub.Einteilungsliste.Where(Function(Ls) Ls.Sortierung = Einteilung.Sortierung AndAlso Ls.EinteilungID <> Einteilung.EinteilungID).Any() Then
+            If AppController.AktuellerClub.AlleEinteilungen.Where(Function(Ls) Ls.Sortierung = Einteilung.Sortierung AndAlso Ls.EinteilungID <> Einteilung.EinteilungID).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult

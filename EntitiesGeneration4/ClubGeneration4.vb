@@ -17,7 +17,7 @@ Namespace Entities.Generation4
 
 #Region "Fields"
 
-        Private _Einteilungsliste = New EinteilungCollection
+        Private _AlleEinteilungen = New EinteilungCollection
         Private _AlleLeistungsstufen = New LeistungsstufeCollection
 
 #End Region
@@ -56,12 +56,12 @@ Namespace Entities.Generation4
         ''' Es kann hiermit eine Historie verwaltet werden
         ''' </summary>
         ''' <returns></returns>
-        Public Property Einteilungsliste() As EinteilungCollection
+        Public Property AlleEinteilungen() As EinteilungCollection
             Get
-                Return _Einteilungsliste
+                Return _AlleEinteilungen
             End Get
             Set(value As EinteilungCollection)
-                _Einteilungsliste = value
+                _AlleEinteilungen = value
             End Set
         End Property
 

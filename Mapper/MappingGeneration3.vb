@@ -25,7 +25,7 @@ Public Module MappingGeneration3
         NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
 
         'Einteilungen laden
-        NeuerClub.Einteilungsliste = GetAlleEinteilungen(Skiclub)
+        NeuerClub.AlleEinteilungen = GetAlleEinteilungen(Skiclub)
 
         'NeuerClub = Skiclub
         Return NeuerClub

@@ -144,7 +144,7 @@
                               IsReadOnly="True" CanUserAddRows="False" >-->
                     <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                                   AutoGenerateColumns="False" 
-                                  ItemsSource="{Binding Einteilungsliste}"
+                                  ItemsSource="{Binding AlleEinteilungen}"
                                   SelectedItem="{Binding SelectedEinteilung}"
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >

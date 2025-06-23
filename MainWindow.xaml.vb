@@ -716,7 +716,7 @@ Public Class MainWindow
 
 #Region "Einteilung"
     Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Einteilungsliste IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleEinteilungen IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -736,7 +736,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
     End Sub
@@ -1157,7 +1157,7 @@ Public Class MainWindow
 
         Dim Fenster As New BasisDetailWindow()
         Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        Dim Trainer = AppController.AktuellerClub.Einteilungsliste(0).AlleTrainer(2)
+        Dim Trainer = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer(2)
         vm.Trainer = Trainer
         'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
 
@@ -1259,7 +1259,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Einteilungsliste
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleEinteilungen
 
         fenster.DataContext = mvw
         fenster.Show()

@@ -170,14 +170,17 @@ Public Class LeistungsstufeViewModel
 
     Private Sub ValidateBenennung()
         ClearErrors(NameOf(_Leistungsstufe.Benennung))
+
         If String.IsNullOrWhiteSpace(_Leistungsstufe.Benennung) Then
             AddError(NameOf(_Leistungsstufe.Benennung), "Benennung darf nicht leer sein.")
         End If
 
-        If Groupies.Controller.AppController.AktuellerClub.AlleLeistungsstufen.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(_Leistungsstufe.Benennung.ToLower) Then
-            AddError(NameOf(_Leistungsstufe.Benennung), $"{_Leistungsstufe.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
-        End If
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Leistungsstufe, Nothing)
 
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Leistungsstufe.Benennung), result.ErrorContent.ToString())
+        End If
     End Sub
 
     Private Sub ValidateFaehigkeiten()

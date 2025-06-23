@@ -149,6 +149,12 @@ Public Class FaehigkeitViewModel
         If String.IsNullOrWhiteSpace(_Faehigkeit.Benennung) Then
             AddError(NameOf(_Faehigkeit.Benennung), "Benennung darf nicht leer sein.")
         End If
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Faehigkeit, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Faehigkeit.Benennung), result.ErrorContent.ToString())
+        End If
     End Sub
 
     Private Sub ValidateBeschreibung()

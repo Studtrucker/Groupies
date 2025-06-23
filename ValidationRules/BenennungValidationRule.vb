@@ -1,19 +1,81 @@
-﻿Namespace ValidationRules
+﻿Imports Groupies.Entities
+
+Namespace ValidationRules
 
     Public Class BenennungValidationRule
         Inherits ValidationRule
 
         Public Overrides Function Validate(value As Object, cultureInfo As Globalization.CultureInfo) As ValidationResult
-            If value = Nothing OrElse String.IsNullOrEmpty(value.ToString) Then
-                Return New ValidationResult(False, "Die Benennung darf nicht leer sein")
-            End If
-            If value.ToString.StartsWith(" ") Then
-                Return New ValidationResult(False, "Der Bennenung kann nicht mit Leerzeichen beginnen")
-            End If
-            If value.ToString.EndsWith(" ") Then
-                Return New ValidationResult(False, "Der Benennung kann nicht mit Leerzeichen enden")
-            End If
+
+            Return GetEindeutigkeit(value)
             Return ValidationResult.ValidResult
+
+        End Function
+
+
+        Public Function GetEindeutigkeit(Objekt As Leistungsstufe) As ValidationResult
+
+            If Controller.AppController.AktuellerClub.AlleLeistungsstufen.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
+            End If
+
+            Return ValidationResult.ValidResult
+
+        End Function
+
+        Public Function GetEindeutigkeit(Objekt As Faehigkeit) As ValidationResult
+
+            If Controller.AppController.AktuellerClub.AlleFaehigkeiten.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
+            End If
+
+            Return ValidationResult.ValidResult
+
+        End Function
+
+        Public Function GetEindeutigkeit(Objekt As Gruppe) As ValidationResult
+
+            If Controller.AppController.AktuellerClub.AlleGruppen.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
+            End If
+
+            Return ValidationResult.ValidResult
+
+        End Function
+
+        Public Function GetEindeutigkeit(Objekt As Einteilung) As ValidationResult
+
+            If Controller.AppController.AktuellerClub.Einteilungsliste.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
+            End If
+
+            Return ValidationResult.ValidResult
+
+        End Function
+
+        Public Function GetEindeutigkeit(Objekt As Trainer) As ValidationResult
+            If Objekt.Spitzname IsNot Nothing Then
+
+                If Controller.AppController.AktuellerClub.AlleTrainer.ToList.Select(Function(O) $"{O.Spitzname.ToLower}").Contains(Objekt.Spitzname.ToLower) Then
+                    Return New ValidationResult(False, $"{Objekt.Spitzname} wird bereits verwendet. Der Alias muss aber eindeutig sein.")
+                End If
+            End If
+
+            Return ValidationResult.ValidResult
+
+        End Function
+
+
+        Public Function GetEindeutigkeit(Objekt As Teilnehmer) As ValidationResult
+            If Objekt.VorUndNachname IsNot Nothing Then
+
+                If Controller.AppController.AktuellerClub.AlleTeilnehmer.ToList.Select(Function(O) $"{O.VorUndNachname.ToLower}").Contains(Objekt.VorUndNachname.ToLower) Then
+                    Return New ValidationResult(False, $"{Objekt.VorUndNachname} wird bereits verwendet. Die Kombination Vor- und Nachname muss aber eindeutig sein.")
+                End If
+            End If
+
+            Return ValidationResult.ValidResult
+
         End Function
     End Class
 

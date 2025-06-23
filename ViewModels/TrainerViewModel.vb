@@ -1,13 +1,14 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
+Imports Groupies.DataImport
 Imports Groupies.Entities
 
 Public Class TrainerViewModel
-    Inherits MasterDetailViewModel(Of Trainer)
+    Inherits MasterDetailViewModel(Of Entities.Trainer)
     Implements IViewModelSpecial
 
 #Region "Felder"
-    Private _Trainer As Trainer
+    Private _Trainer As Entities.Trainer
     Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
 #End Region
 
@@ -32,7 +33,7 @@ Public Class TrainerViewModel
         'MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        UserControlLoaded = New RelayCommand(Of Trainer)(AddressOf OnLoaded)
+        UserControlLoaded = New RelayCommand(Of Entities.Trainer)(AddressOf OnLoaded)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
@@ -47,7 +48,7 @@ Public Class TrainerViewModel
             Return _Trainer
         End Get
         Set(value As IModel)
-            _Trainer = DirectCast(value, Trainer)
+            _Trainer = DirectCast(value, Entities.Trainer)
         End Set
     End Property
 
@@ -246,14 +247,15 @@ Public Class TrainerViewModel
 
     Private Sub ValidateSpitzname()
         ClearErrors(NameOf(_Trainer.Spitzname))
-        If String.IsNullOrWhiteSpace(_Trainer.Spitzname) Then
+        If _Trainer.Spitzname Is Nothing OrElse String.IsNullOrWhiteSpace(_Trainer.Spitzname) Then
             AddError(NameOf(_Trainer.Spitzname), "Spitzname darf nicht leer sein.")
         End If
-        'todo: Hier muss die Function geprüft werden! -> vorhandenen Trainer bearbeiten
-        'Funktionsprüfung erledigt: Neuen Trainer anlegen 
-        'todo: Es muss eine Liste mit allen Trainern aus dieser Datei geben! Diese wird auf alle Einteilungen verteilt!
-        If Groupies.Controller.AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso Groupies.Controller.AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Where(Function(tr) Not tr.TrainerID = _Trainer.TrainerID).Where(Function(tr) tr.Spitzname = _Trainer.Spitzname).Count = 1 Then
-            AddError(NameOf(_Trainer.Spitzname), $"Der Spitzname {_Trainer.Spitzname} ist bereits vergeben und darf nicht doppelt vergeben werden.")
+
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Trainer, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Trainer.Spitzname), result.ErrorContent.ToString())
         End If
     End Sub
 

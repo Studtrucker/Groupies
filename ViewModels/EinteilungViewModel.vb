@@ -147,6 +147,12 @@ Public Class EinteilungViewModel
         If String.IsNullOrWhiteSpace(_Einteilung.Benennung) Then
             AddError(NameOf(_Einteilung.Benennung), "Benennung darf nicht leer sein.")
         End If
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Einteilung, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Einteilung.Benennung), result.ErrorContent.ToString())
+        End If
     End Sub
 #End Region
 

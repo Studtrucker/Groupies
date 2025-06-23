@@ -178,12 +178,29 @@ Public Class TeilnehmerViewModel
         If String.IsNullOrWhiteSpace(_Teilnehmer.Vorname) Then
             AddError(NameOf(_Teilnehmer.Vorname), "Vorname darf nicht leer sein.")
         End If
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Teilnehmer, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ClearErrors(NameOf(_Teilnehmer.Nachname))
+
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Teilnehmer.Vorname), result.ErrorContent.ToString())
+        End If
     End Sub
 
     Private Sub ValidateNachname()
         ClearErrors(NameOf(_Teilnehmer.Nachname))
-        If String.IsNullOrWhiteSpace(_Teilnehmer.Nachname) Then
+        If _Teilnehmer.Nachname Is Nothing OrElse String.IsNullOrWhiteSpace(_Teilnehmer.Nachname) Then
             AddError(NameOf(_Teilnehmer.Nachname), "Nachname darf nicht leer sein.")
+        End If
+
+        Dim result = New ValidationRules.BenennungValidationRule().Validate(_Teilnehmer, Nothing)
+
+        If Not result = ValidationResult.ValidResult Then
+            ClearErrors(NameOf(_Teilnehmer.Vorname))
+
+            ' Fehler hinzufügen, wenn die Validierung fehlschlägt
+            AddError(NameOf(_Teilnehmer.Nachname), result.ErrorContent.ToString())
         End If
     End Sub
 

@@ -149,6 +149,7 @@
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Sortierung"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
                         </DataGrid.Columns>
                         <!--<DataGrid.ContextMenu>

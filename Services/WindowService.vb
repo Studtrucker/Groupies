@@ -44,6 +44,15 @@
         End Set
     End Property
 
+    Public Property MaxWidth As Double Implements IWindowService.MaxWidth
+        Get
+            Return _window.MaxWidth
+        End Get
+        Set(value As Double)
+            _window.MaxWidth = value
+        End Set
+    End Property
+
     Public Property Width As Double Implements IWindowService.Width
         Get
             Return _window.Width
@@ -52,7 +61,6 @@
             _window.Width = value
         End Set
     End Property
-
     Public Property Height As Double Implements IWindowService.Height
         Get
             Return _window.Height
@@ -62,6 +70,14 @@
         End Set
     End Property
 
+    Public Property MaxHeight As Double Implements IWindowService.MaxHeight
+        Get
+            Return _window.MaxHeight
+        End Get
+        Set(value As Double)
+            _window.MaxHeight = value
+        End Set
+    End Property
     Public Property Left As Double Implements IWindowService.Left
         Get
             Return _window.Left
@@ -77,6 +93,26 @@
         End Get
         Set(value As Double)
             _window.Top = value
+        End Set
+    End Property
+
+    Public ReadOnly Property ActualHeight As Double Implements IWindowService.ActualHeight
+        Get
+            Return _window.ActualHeight
+        End Get
+    End Property
+    Public ReadOnly Property ActualWidth As Double Implements IWindowService.ActualWidth
+        Get
+            Return _window.ActualWidth
+        End Get
+    End Property
+
+    Public Property WindowStartupLocation As WindowStartupLocation Implements IWindowService.WindowStartupLocation
+        Get
+            Return _window.WindowStartupLocation
+        End Get
+        Set(value As WindowStartupLocation)
+            _window.WindowStartupLocation = value
         End Set
     End Property
 End Class

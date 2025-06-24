@@ -25,7 +25,8 @@ Public Class ViewModelWindow
         OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOK)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        LoadedWindowCommand = New RelayCommand(Of Object)(AddressOf OnLoadedWindow)
+        UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
+        DetailWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnDetailWindowLoaded)
     End Sub
 
     Public Sub New(windowService As IWindowService)
@@ -34,7 +35,8 @@ Public Class ViewModelWindow
         OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOk)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        LoadedWindowCommand = New RelayCommand(Of Object)(AddressOf OnLoadedWindow)
+        UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
+        DetailWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnDetailWindowLoaded)
     End Sub
 
 
@@ -52,7 +54,8 @@ Public Class ViewModelWindow
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
     Public Property OkCommand As ICommand
-    Public Property LoadedWindowCommand As ICommand
+    Public Property UebersichtWindowLoadedCommand As ICommand
+    Public Property DetailWindowLoadedCommand As ICommand
 
 #End Region
 
@@ -203,20 +206,30 @@ Public Class ViewModelWindow
         _windowService.CloseWindow()
     End Sub
 
-    Protected Sub OnLoadedWindow(obj As Object)
+    Protected Sub OnUebersichtWindowLoaded(obj As Object)
+
         AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnModelChanged
 
         ' Fenster wurde geladen
         AktuellesViewModel.OnLoaded(obj)
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-        '_windowService.SizeToContent = SizeToContent.WidthAndHeight
+
+        _windowService.SizeToContent = SizeToContent.WidthAndHeight
+        _windowService.MaxHeight = SystemParameters.WorkArea.Height * 0.8
+        _windowService.MaxWidth = SystemParameters.WorkArea.Width * 0.8
+
+    End Sub
+
+    Protected Sub OnDetailWindowLoaded(obj As Object)
         Dim screenWidth = SystemParameters.WorkArea.Width
         Dim screenHeight = SystemParameters.WorkArea.Height
-        _windowService.Width = screenWidth * 0.8
-        _windowService.Height = screenHeight * 0.8
-        _windowService.Left = (screenWidth - _windowService.Width) / 2
-        _windowService.Top = (screenHeight - _windowService.Height) / 2
-
+        AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnModelChanged
+        ' Fenster wurde geladen
+        AktuellesViewModel.OnLoaded(obj)
+        CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        _windowService.SizeToContent = SizeToContent.WidthAndHeight
+        _windowService.Left = (screenWidth - _windowService.ActualWidth) / 2
+        _windowService.Top = (screenHeight - _windowService.ActualHeight) / 2
     End Sub
 
     Private Sub OnModelChanged(sender As Object, e As Boolean)

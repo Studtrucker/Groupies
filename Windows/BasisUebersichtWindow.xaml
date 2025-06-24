@@ -7,12 +7,11 @@
         mc:Ignorable="d"
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        WindowStartupLocation="CenterScreen">
+        Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}"/>
+            <i:InvokeCommandAction Command="{Binding UebersichtWindowLoadedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -36,9 +35,7 @@
                             <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    
-                    
-                    
+                                       
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" SortMemberPath="Spitzname" Width="Auto"/>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
@@ -46,10 +43,9 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <GridSplitter HorizontalAlignment="Center" Width="3" Background="LightGray" />
 
                 <!-- Detailansicht-->
-                <Grid  Grid.Column="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
@@ -390,11 +386,11 @@
                           SelectedItem="{Binding SelectedItem}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
                     
-                    <i:Interaction.Triggers>
+                    <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="Sorting">
                             <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
                     
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
@@ -411,11 +407,11 @@
                           ItemsSource="{Binding AuswahlFaehigkeiten}"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
-                        <i:Interaction.Triggers>
+                        <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="Sorting">
-                                <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
+                                <i:InvokeCommandAction Command="{Binding DataGrid2SortingCommand}"  PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        </i:Interaction.Triggers>-->
 
                         <DataGrid.Columns >
                             <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung"/>
@@ -489,7 +485,7 @@
                                    SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
                                    Grid.Column="2" Grid.Row="4">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                                <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
                                 <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
                                     <DataGridTextColumn.ElementStyle>
                                         <Style>

@@ -180,7 +180,6 @@ Public Class ViewModelWindow
     End Property
 
 
-
 #End Region
 
 #Region "Methoden"

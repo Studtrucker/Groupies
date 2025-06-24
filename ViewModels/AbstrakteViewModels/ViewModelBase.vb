@@ -35,7 +35,7 @@ Public MustInherit Class ViewModelBase
 
 #Region "Fehlerverwaltung"
 
-    Private _fehler As New Dictionary(Of String, List(Of String))
+    Private ReadOnly _fehler As New Dictionary(Of String, List(Of String))
 
     Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
         Get

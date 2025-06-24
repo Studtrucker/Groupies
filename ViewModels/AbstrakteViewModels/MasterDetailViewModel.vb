@@ -1,4 +1,5 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports Groupies.Entities
 
@@ -15,9 +16,11 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
 #Region "Felder"
     Private _selectedItem As T
-    Private _items As ObservableCollection(Of T)
+    Private ReadOnly _items As ObservableCollection(Of T)
     Private _ItemsView As ICollectionView
 #End Region
+
+
 
 #Region "Konstruktoren"
     Public Sub New()
@@ -27,6 +30,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
         MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext())
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
+        LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
+
     End Sub
 
 #End Region
@@ -36,15 +41,22 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #End Region
 
 #Region "Properties"
+
+    Public ReadOnly Property AktuelleAnzahlObjekte As String
+        Get
+            Return $"Aktuelle Anzahl in der Liste: {Items.Count}"
+        End Get
+    End Property
+
     Public Property Items As ObservableCollection(Of T)
         Get
-            'Return _items
             Return ItemsView.SourceCollection
         End Get
         Set(value As ObservableCollection(Of T))
             If Not Equals(_items, value) Then
                 ItemsView = New ListCollectionView(value)
                 OnPropertyChanged(NameOf(Items))
+                OnPropertyChanged(NameOf(AktuelleAnzahlObjekte))
             End If
         End Set
     End Property
@@ -60,8 +72,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         End Set
     End Property
 
-
-
     Public Property CanMoveNext() As Boolean
         Get
             Return ItemsView.CurrentPosition + 1 < Items.Count
@@ -74,16 +84,23 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Property CanMovePrevious As Boolean
         Get
             Return ItemsView.CurrentPosition > 0
-            'Return Items.IndexOf(SelectedItem) > 0
         End Get
         Set(value As Boolean)
             OnPropertyChanged(NameOf(CanMovePrevious))
         End Set
     End Property
 
+    Public Property CanLoeschen As Boolean
+        Get
+            Return ItemsView.CurrentItem IsNot Nothing AndAlso Items.Count > 1
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanLoeschen))
+        End Set
+    End Property
+
     Public Property SelectedItem As T
         Get
-            'Return ItemsView.CurrentItem
             Return _selectedItem
         End Get
         Set(value As T)
@@ -103,6 +120,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #Region "Commands"
     Public Property MoveNextCommand As RelayCommand(Of T)
     Public Property MovePreviousCommand As RelayCommand(Of T)
+    Public Property LoeschenCommand As RelayCommand(Of T)
+
 
 #End Region
 
@@ -129,10 +148,22 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Private Sub OnMovePrevious()
         ItemsView.MoveCurrentToPrevious()
     End Sub
+
     Private Sub OnMoveNext()
         ItemsView.MoveCurrentToNext()
     End Sub
 
+    Public Sub OnLoeschen()
+        Items.Remove(SelectedItem)
+    End Sub
+
+    Friend Sub OnLoaded()
+        AddHandler Items.CollectionChanged, AddressOf OnCollectionChanged
+    End Sub
+
+    Public Sub OnCollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+        OnPropertyChanged(NameOf(AktuelleAnzahlObjekte))
+    End Sub
 #End Region
 
 End Class

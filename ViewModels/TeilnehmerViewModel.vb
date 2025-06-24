@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports Groupies.Controller
 Imports Groupies.Entities
 
@@ -30,6 +31,8 @@ Public Class TeilnehmerViewModel
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
+
     End Sub
 
 #End Region
@@ -130,14 +133,15 @@ Public Class TeilnehmerViewModel
         Set(value As IEnumerable(Of IModel))
             Items = value
             OnPropertyChanged(NameOf(Daten))
+            OnPropertyChanged(NameOf(Items))
         End Set
     End Property
 
-    Public ReadOnly Property AktuelleAnzahlObjekte As String
-        Get
-            Return $"Aktuelle Anzahl der Teilnehmer: {Items.ToList.Count}"
-        End Get
-    End Property
+    'Public ReadOnly Property AktuelleAnzahlObjekte As String
+    '    Get
+    '        Return $"Aktuelle Anzahl der Teilnehmer: {Items.Count}"
+    '    End Get
+    'End Property
 
 
     Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
@@ -153,8 +157,9 @@ Public Class TeilnehmerViewModel
 
     Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
-    Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
+    Public ReadOnly Property LoeschenCommand As ICommand 'Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
+
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
 #End Region
@@ -166,11 +171,16 @@ Public Class TeilnehmerViewModel
         _Teilnehmer.speichern()
     End Sub
 
-    Private Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Private Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+        MyBase.OnLoaded()
         ValidateVorname()
         ValidateNachname()
         ValidateLeistungsstand()
         ValidateTeilnehmerID()
+    End Sub
+
+    Private Overloads Sub OnLoeschen(obj As Object)
+        MyBase.OnLoeschen()
     End Sub
 
 #End Region

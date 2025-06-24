@@ -39,36 +39,9 @@ Public Class TrainerViewModel
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
 
         NeuCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnNeu(), Function() CanNeu())
-        LoeschenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnLoeschen(), Function() CanLoeschen())
+        'LoeschenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnLoeschen(), Function() CanLoeschen())
         BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnBearbeiten(), Function() CanBearbeiten())
     End Sub
-
-    Private Property CanBearbeiten() As Boolean
-        Get
-            Return True ' ItemsView.CurrentPosition + 1 < Items.Count
-        End Get
-        Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanBearbeiten))
-        End Set
-    End Property
-
-    Private Property CanLoeschen() As Boolean
-        Get
-            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
-        End Get
-        Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanLoeschen))
-        End Set
-    End Property
-
-    Private Property CanNeu() As Boolean
-        Get
-            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
-        End Get
-        Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanNeu))
-        End Set
-    End Property
 
 #End Region
 
@@ -178,6 +151,26 @@ Public Class TrainerViewModel
             Return MyBase.IstEingabeGueltig
         End Get
     End Property
+
+    Private Property CanBearbeiten() As Boolean
+        Get
+            Return True ' ItemsView.CurrentPosition + 1 < Items.Count
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanBearbeiten))
+        End Set
+    End Property
+
+
+    Private Property CanNeu() As Boolean
+        Get
+            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanNeu))
+        End Set
+    End Property
+
 #End Region
 
 #Region "Command-Properties"
@@ -188,7 +181,7 @@ Public Class TrainerViewModel
 
     Public ReadOnly Property DragOverCommand As ICommand
 
-    Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
+    'Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
@@ -254,6 +247,9 @@ Public Class TrainerViewModel
         '    OnPropertyChanged(NameOf(Trainer))
         '    RaiseEvent ModelChangedEvent(Me, HasErrors)
         'End If
+        Items.Remove(SelectedItem)
+        OnPropertyChanged(NameOf(Trainer))
+        RaiseEvent ModelChangedEvent(Me, HasErrors)
     End Sub
 
     Public Sub OnBearbeiten() ' Implements IViewModelSpecial.BearbeitenCommand

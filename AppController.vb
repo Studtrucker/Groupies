@@ -6,6 +6,8 @@ Namespace Controller
 
     Public Class AppController
 
+
+
 #Region "Eigenschaften"
 
         ''' <summary>
@@ -42,6 +44,22 @@ Namespace Controller
         ''' Standard Einteilungen, um die Teilnehmer in Gruppen zu bringen
         ''' </summary>
         Public Shared Property StandardEinteilungen = TemplateService.StandardEinteilungenErstellen
+
+        ''' <summary>
+        ''' Command zum Sortieren der Gruppen im aktuellen Club
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Property SortiereGruppenCommand = New RelayCommand(Of Object)(AddressOf OnSortiereGruppen)
+
+        Private Shared Sub OnSortiereGruppen(obj As Object)
+            MessageBox.Show("Sortieren")
+        End Sub
+
+        ''' <summary>
+        ''' Command zum Suchen von Teilnehmern
+        ''' </summary>
+        ''' <returns></returns>
+
 
 #End Region
 

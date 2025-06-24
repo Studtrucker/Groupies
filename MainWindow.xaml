@@ -175,7 +175,7 @@
                     </DataGrid>-->
                     <DataGrid x:Name="GruppenlisteDataGrid" 
                               ItemsSource="{Binding  SelectedEinteilung.Gruppenliste}"  
-                              SelectedItem="{Binding SelectedGruppe}"
+                              SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
                               IsSynchronizedWithCurrentItem="True"
                               IsReadOnly="True" DockPanel.Dock="Bottom"
@@ -183,8 +183,32 @@
                               AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
 
                         <DataGrid.Resources>
+                            <!--<DataTemplate x:Key="GruppenlisteDataTemplate3">
+                                <DataGridTemplateColumn Header="Gruppe" SortMemberPath="Sortierung">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Sortierung}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataTemplate>-->
 
-                            <DataTemplate x:Key="GruppenlisteDataTemplate">
+                            <!--<DataTemplate x:Key="GruppenlisteDataTemplate2">
+                                <DataGridTemplateColumn >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="{Binding Sortierung}"/>
+                                                <TextBlock Text="{Binding Benennung}"/>
+                                                <TextBlock Text="{Binding Leistungsstufe}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataTemplate>-->
+
+
+                            <DataTemplate x:Key="GruppenlisteDataTemplate1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -200,20 +224,18 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Sortierung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Name für Teilnehmer"/>
                                     <TextBlock Grid.Column="0" Grid.Row="2" Text="Interne Benennung"/>
                                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Leistungsstufe"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Skilehrer"/>
                                     <TextBlock Grid.Column="0" Grid.Row="5" Text="Anzahl Mitglieder"/>
                                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AusgabeTeilnehmerinfo, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Trainer.VorUndNachname,UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
                             </DataTemplate>
+                       
                         </DataGrid.Resources>
+                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
@@ -222,8 +244,11 @@
                         </DataGrid.ContextMenu>
 
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Gruppen" Width="*"
-                                                    CellTemplate="{StaticResource GruppenlisteDataTemplate}"/>
+                            <!--<DataGridTemplateColumn Header="Gruppen" Width="*" CellTemplate="{StaticResource GruppenlisteDataTemplate1}"/>-->
+                            <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
+                            <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
+                            <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="Auto" />
+                            <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" Width="Auto" />
                         </DataGrid.Columns>
                     </DataGrid>
 

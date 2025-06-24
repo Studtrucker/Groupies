@@ -210,6 +210,13 @@ Public Class ViewModelWindow
         AktuellesViewModel.OnLoaded(obj)
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
         '_windowService.SizeToContent = SizeToContent.WidthAndHeight
+        Dim screenWidth = SystemParameters.WorkArea.Width
+        Dim screenHeight = SystemParameters.WorkArea.Height
+        _windowService.Width = screenWidth * 0.8
+        _windowService.Height = screenHeight * 0.8
+        _windowService.Left = (screenWidth - _windowService.Width) / 2
+        _windowService.Top = (screenHeight - _windowService.Height) / 2
+
     End Sub
 
     Private Sub OnModelChanged(sender As Object, e As Boolean)

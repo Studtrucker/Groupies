@@ -44,4 +44,39 @@
         End Set
     End Property
 
+    Public Property Width As Double Implements IWindowService.Width
+        Get
+            Return _window.Width
+        End Get
+        Set(value As Double)
+            _window.Width = value
+        End Set
+    End Property
+
+    Public Property Height As Double Implements IWindowService.Height
+        Get
+            Return _window.Height
+        End Get
+        Set(value As Double)
+            _window.Height = value
+        End Set
+    End Property
+
+    Public Property Left As Double Implements IWindowService.Left
+        Get
+            Return _window.Left
+        End Get
+        Set(value As Double)
+            _window.Left = value
+        End Set
+    End Property
+
+    Public Property Top As Double Implements IWindowService.Top
+        Get
+            Return _window.Top
+        End Get
+        Set(value As Double)
+            _window.Top = value
+        End Set
+    End Property
 End Class

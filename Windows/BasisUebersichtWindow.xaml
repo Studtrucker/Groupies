@@ -8,7 +8,6 @@
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        Width="1350" Height="850" 
         WindowStartupLocation="CenterScreen">
     
     <i:Interaction.Triggers>

@@ -26,7 +26,6 @@ Public Class LeistungsstufeViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoaded)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         AuswahlFaehigkeiten = New ListCollectionView(AppController.AktuellerClub.AlleValidenFaehigkeiten)
     End Sub
@@ -124,10 +123,8 @@ Public Class LeistungsstufeViewModel
 #End Region
 
 #Region "Command-Properties"
-    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
     Public ReadOnly Property OkCommand As ICommand
-    'Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 #End Region
@@ -135,16 +132,10 @@ Public Class LeistungsstufeViewModel
 #Region "Methoden"
 
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        Validate()
+        If _Leistungsstufe IsNot Nothing Then
+            Validate()
+        End If
     End Sub
-
-    'Public Overrides Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
-
-    '    ' Hier können Sie die Logik für den OK-Button implementieren
-    '    _Leistungsstufe.speichern()
-
-    '    MyBase.OnOk(Me)
-    'End Sub
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
 

@@ -25,7 +25,7 @@ Public Class ViewModelWindow
         OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOK)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        LoadedCommand = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        LoadedWindowCommand = New RelayCommand(Of Object)(AddressOf OnLoadedWindow)
     End Sub
 
     Public Sub New(windowService As IWindowService)
@@ -34,7 +34,7 @@ Public Class ViewModelWindow
         OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOk)
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        LoadedCommand = New RelayCommand(Of Object)(AddressOf OnLoaded)
+        LoadedWindowCommand = New RelayCommand(Of Object)(AddressOf OnLoadedWindow)
     End Sub
 
 
@@ -52,7 +52,7 @@ Public Class ViewModelWindow
     Public Property CancelCommand As ICommand
     Public Property CloseCommand As ICommand
     Public Property OkCommand As ICommand
-    Public Property LoadedCommand As ICommand
+    Public Property LoadedWindowCommand As ICommand
 
 #End Region
 
@@ -203,13 +203,13 @@ Public Class ViewModelWindow
         _windowService.CloseWindow()
     End Sub
 
-    Protected Sub OnLoaded(obj As Object)
+    Protected Sub OnLoadedWindow(obj As Object)
         AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnModelChanged
 
         ' Fenster wurde geladen
-        _windowService.SizeToContent = SizeToContent.WidthAndHeight
         AktuellesViewModel.OnLoaded(obj)
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '_windowService.SizeToContent = SizeToContent.WidthAndHeight
     End Sub
 
     Private Sub OnModelChanged(sender As Object, e As Boolean)

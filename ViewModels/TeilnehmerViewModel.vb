@@ -137,13 +137,6 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
-    'Public ReadOnly Property AktuelleAnzahlObjekte As String
-    '    Get
-    '        Return $"Aktuelle Anzahl der Teilnehmer: {Items.Count}"
-    '    End Get
-    'End Property
-
-
     Public Overloads ReadOnly Property IstEingabeGueltig As Boolean Implements IViewModelSpecial.IstEingabeGueltig
         Get
             Return MyBase.IstEingabeGueltig
@@ -155,9 +148,6 @@ Public Class TeilnehmerViewModel
 
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
 
-    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
-
-    'Public ReadOnly Property LoeschenCommand As ICommand 'Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
 
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand

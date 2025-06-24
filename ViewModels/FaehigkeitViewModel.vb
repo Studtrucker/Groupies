@@ -23,7 +23,6 @@ Public Class FaehigkeitViewModel
         ' Hier können Sie den Konstruktor anpassen
 
         OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
-        UserControlLoaded = New RelayCommand(Of Faehigkeit)(AddressOf OnLoaded)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
@@ -107,9 +106,7 @@ Public Class FaehigkeitViewModel
 
 #Region "Command-Properties"
 
-    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
-    'Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 #End Region
@@ -133,10 +130,12 @@ Public Class FaehigkeitViewModel
 
 #Region "Validation"
     Private Sub Validate()
-        ValidateFaehigkeitID()
-        ValidateBenennung()
-        ValidateBeschreibung()
-        ValidateSortierung()
+        If _Faehigkeit IsNot Nothing Then
+            ValidateFaehigkeitID()
+            ValidateBenennung()
+            ValidateBeschreibung()
+            ValidateSortierung()
+        End If
     End Sub
 
     Private Sub ValidateFaehigkeitID()

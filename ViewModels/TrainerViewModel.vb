@@ -33,13 +33,11 @@ Public Class TrainerViewModel
         'MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        UserControlLoaded = New RelayCommand(Of Entities.Trainer)(AddressOf OnLoaded)
         DropCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDrop)
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
 
         NeuCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnNeu(), Function() CanNeu())
-        'LoeschenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnLoeschen(), Function() CanLoeschen())
         BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnBearbeiten(), Function() CanBearbeiten())
     End Sub
 
@@ -175,13 +173,11 @@ Public Class TrainerViewModel
 
 #Region "Command-Properties"
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
-    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
     Public ReadOnly Property DropCommand As ICommand
 
     Public ReadOnly Property DragOverCommand As ICommand
 
-    'Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
@@ -227,10 +223,12 @@ Public Class TrainerViewModel
 
 
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        ValidateVorname()
-        ValidateSpitzname()
-        ValidateEMail()
-        ValidateTrainerID()
+        If _Trainer IsNot Nothing Then
+            ValidateVorname()
+            ValidateSpitzname()
+            ValidateEMail()
+            ValidateTrainerID()
+        End If
     End Sub
 
     Public Sub OnNeu() 'Implements IViewModelSpecial.NeuCommand
@@ -239,18 +237,6 @@ Public Class TrainerViewModel
         'OnPropertyChanged(NameOf(Trainer))
         'RaiseEvent ModelChangedEvent(Me, HasErrors)
     End Sub
-    'Public Sub OnLoeschen() 'Implements IViewModelSpecial.LoeschenCommand
-    '    ' Hier können Sie die Logik für den Löschen-Button implementieren
-    '    'If _Trainer IsNot Nothing Then
-    '    '    _Trainer.loeschen()
-    '    '    _Trainer = Nothing
-    '    '    OnPropertyChanged(NameOf(Trainer))
-    '    '    RaiseEvent ModelChangedEvent(Me, HasErrors)
-    '    'End If
-    '    Items.Remove(SelectedItem)
-    '    OnPropertyChanged(NameOf(Trainer))
-    '    RaiseEvent ModelChangedEvent(Me, HasErrors)
-    'End Sub
 
     Public Sub OnBearbeiten() ' Implements IViewModelSpecial.BearbeitenCommand
         ' Hier können Sie die Logik für den Bearbeiten-Button implementieren

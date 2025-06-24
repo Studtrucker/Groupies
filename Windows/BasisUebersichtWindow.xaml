@@ -8,11 +8,12 @@
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        Width="1350" Height="750" >
+        Width="1350" Height="850" 
+        WindowStartupLocation="CenterScreen">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedComman1d}"/>
+            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -25,7 +26,7 @@
             <DockPanel>
 
                 <!--Objektliste-->
-                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserSortColumns="True"
+                <DataGrid CanUserAddRows="False" CanUserSortColumns="True"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}" 
@@ -37,13 +38,17 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     
-                     <DataGrid.Columns >
+                    
+                    
+                    <DataGrid.Columns >
                         <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" SortMemberPath="Spitzname" Width="Auto"/>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                
+
+                <GridSplitter HorizontalAlignment="Center" Width="3" Background="LightGray" />
+
                 <!-- Detailansicht-->
                 <Grid  Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -136,13 +141,12 @@
         <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">
             <DockPanel>
 
-
                     <!--Objektliste-->
                     <DataGrid Grid.Row="0" CanUserAddRows="False" CanUserDeleteRows="False"
                               AutoGenerateColumns="False"
                               IsSynchronizedWithCurrentItem="True"
                               ItemsSource="{Binding ItemsView}"
-                              SelectedItem="{Binding SelectedItem}"                           
+                              SelectedItem="{Binding SelectedItem}"        
                               local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
                         <i:Interaction.Triggers>
@@ -647,7 +651,7 @@
         </Border>
 
         <!--Liste und Detailfeld-->
-        <ContentControl x:Name="ContontControl" Content="{Binding AktuellesViewModel}" Margin="20,10" />
+        <ContentControl  Content="{Binding AktuellesViewModel}" Margin="20,10" />
         
     </DockPanel>
     

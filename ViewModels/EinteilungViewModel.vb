@@ -22,7 +22,6 @@ Public Class EinteilungViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        UserControlLoaded = New RelayCommand(Of Einteilung)(AddressOf OnLoaded)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
     End Sub
 
@@ -97,8 +96,6 @@ Public Class EinteilungViewModel
 
 #Region "Command-Properties"
     Public ReadOnly Property DataGridSortingCommand As ICommand Implements IViewModelSpecial.DataGridSortingCommand
-    Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
-    'Public ReadOnly Property LoeschenCommand As ICommand Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 #End Region
@@ -112,9 +109,11 @@ Public Class EinteilungViewModel
     ''' <param name="obj">Das geladene Objekt.</param>
     ''' <remarks>Implementierung der IViewModelSpecial-Schnittstelle.</remarks>
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
-        ValidateBenennung()
-        ValidateEinteilungID()
-        ValidateSortierung()
+        If _Einteilung IsNot Nothing Then
+            ValidateBenennung()
+            ValidateEinteilungID()
+            ValidateSortierung()
+        End If
     End Sub
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk

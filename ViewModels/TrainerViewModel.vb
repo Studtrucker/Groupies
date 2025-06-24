@@ -226,7 +226,7 @@ Public Class TrainerViewModel
     End Sub
 
 
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateVorname()
         ValidateSpitzname()
         ValidateEMail()
@@ -239,18 +239,18 @@ Public Class TrainerViewModel
         'OnPropertyChanged(NameOf(Trainer))
         'RaiseEvent ModelChangedEvent(Me, HasErrors)
     End Sub
-    Public Sub OnLoeschen() 'Implements IViewModelSpecial.LoeschenCommand
-        ' Hier können Sie die Logik für den Löschen-Button implementieren
-        'If _Trainer IsNot Nothing Then
-        '    _Trainer.loeschen()
-        '    _Trainer = Nothing
-        '    OnPropertyChanged(NameOf(Trainer))
-        '    RaiseEvent ModelChangedEvent(Me, HasErrors)
-        'End If
-        Items.Remove(SelectedItem)
-        OnPropertyChanged(NameOf(Trainer))
-        RaiseEvent ModelChangedEvent(Me, HasErrors)
-    End Sub
+    'Public Sub OnLoeschen() 'Implements IViewModelSpecial.LoeschenCommand
+    '    ' Hier können Sie die Logik für den Löschen-Button implementieren
+    '    'If _Trainer IsNot Nothing Then
+    '    '    _Trainer.loeschen()
+    '    '    _Trainer = Nothing
+    '    '    OnPropertyChanged(NameOf(Trainer))
+    '    '    RaiseEvent ModelChangedEvent(Me, HasErrors)
+    '    'End If
+    '    Items.Remove(SelectedItem)
+    '    OnPropertyChanged(NameOf(Trainer))
+    '    RaiseEvent ModelChangedEvent(Me, HasErrors)
+    'End Sub
 
     Public Sub OnBearbeiten() ' Implements IViewModelSpecial.BearbeitenCommand
         ' Hier können Sie die Logik für den Bearbeiten-Button implementieren

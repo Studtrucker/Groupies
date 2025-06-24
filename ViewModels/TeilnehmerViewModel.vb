@@ -157,7 +157,7 @@ Public Class TeilnehmerViewModel
 
     Public ReadOnly Property UserControlLoaded As ICommand Implements IViewModelSpecial.UserControlLoaded
 
-    Public ReadOnly Property LoeschenCommand As ICommand 'Implements IViewModelSpecial.LoeschenCommand
+    'Public ReadOnly Property LoeschenCommand As ICommand 'Implements IViewModelSpecial.LoeschenCommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
 
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
@@ -173,10 +173,12 @@ Public Class TeilnehmerViewModel
 
     Private Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         MyBase.OnLoaded()
-        ValidateVorname()
-        ValidateNachname()
-        ValidateLeistungsstand()
-        ValidateTeilnehmerID()
+        If _Teilnehmer IsNot Nothing Then
+            ValidateVorname()
+            ValidateNachname()
+            ValidateLeistungsstand()
+            ValidateTeilnehmerID()
+        End If
     End Sub
 
     Private Overloads Sub OnLoeschen(obj As Object)

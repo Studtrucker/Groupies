@@ -111,7 +111,7 @@ Public Class EinteilungViewModel
     ''' </summary>
     ''' <param name="obj">Das geladene Objekt.</param>
     ''' <remarks>Implementierung der IViewModelSpecial-Schnittstelle.</remarks>
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateBenennung()
         ValidateEinteilungID()
         ValidateSortierung()

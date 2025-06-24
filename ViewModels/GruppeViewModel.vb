@@ -142,7 +142,7 @@ Public Class GruppeViewModel
     End Sub
 
 
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         ValidateGruppenID()
         ValidateBenennung()
         ValidateSortierung()

@@ -118,7 +118,7 @@ Public Class FaehigkeitViewModel
 
     Public ReadOnly Property OkCommand As ICommand
 
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         Validate()
     End Sub
 

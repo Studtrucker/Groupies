@@ -134,7 +134,7 @@ Public Class LeistungsstufeViewModel
 
 #Region "Methoden"
 
-    Public Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+    Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         Validate()
     End Sub
 

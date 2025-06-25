@@ -315,6 +315,26 @@
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="Auto"/>
                     </DataGrid.Columns>
+
+                    <DataGrid.ContextMenu>                        
+                        <ContextMenu>
+                            <MenuItem Header="Erstellen" Command="{Binding AktuellesViewModel.NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon> 
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding AktuellesViewModel.BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                                <MenuItem Header="Löschen" Command="{Binding AktuellesViewModel.LoeschenCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
                 <!-- Detailansicht-->

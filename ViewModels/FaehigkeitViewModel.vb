@@ -96,6 +96,8 @@ Public Class FaehigkeitViewModel
         End Get
         Set(value As IEnumerable(Of IModel))
             Items = value
+            OnPropertyChanged(NameOf(Daten))
+            OnPropertyChanged(NameOf(Items))
         End Set
     End Property
 
@@ -169,7 +171,7 @@ Public Class FaehigkeitViewModel
         If result = True Then
             Dim index = AppController.AktuellerClub.AlleFaehigkeiten.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleFaehigkeiten(index) = mvw.AktuellesViewModel.Model
+            AppController.AktuellerClub.AlleValidenFaehigkeiten(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
         End If
 

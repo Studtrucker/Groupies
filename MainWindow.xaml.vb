@@ -1245,7 +1245,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleValidenFaehigkeiten
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleFaehigkeiten
 
         fenster.DataContext = mvw
 

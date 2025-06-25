@@ -150,6 +150,8 @@ Public Class TrainerViewModel
         End Get
         Set(value As IEnumerable(Of IModel))
             Items = value
+            OnPropertyChanged(NameOf(Daten))
+            OnPropertyChanged(NameOf(Items))
         End Set
     End Property
 

@@ -20,7 +20,7 @@ Namespace Entities.Generation4
         Private _AlleEinteilungen = New EinteilungCollection
         Private _AlleGruppen = New GruppeCollection
         Private _AlleLeistungsstufen = New LeistungsstufeCollection
-        Private _AlleFaehigkeiten = New FaehigkeitCollection
+        Private _AlleFaehigkeiten As FaehigkeitCollection = New FaehigkeitCollection
         Private _AlleTrainer = New TrainerCollection
         Private _AlleTeilnehmer = New TeilnehmerCollection
 

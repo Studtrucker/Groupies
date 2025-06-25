@@ -109,21 +109,20 @@
                     </i:Interaction.Behaviors>
                     
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
-                            <RowDefinition Height="4*"/>
-                        </Grid.RowDefinitions>
-                        <Rectangle Fill="Transparent"/>
-                        <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png" 
-                               Visibility="{Binding Path=HatKeinFoto,Converter={StaticResource BooleanToVisibilityInverted}}"
-                               Grid.Row="0"/>
-                        <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"  Grid.Row="1"
-                                   Visibility="{Binding Path=HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">Bild per
-                            <LineBreak/> Drag'n'Drop<LineBreak/>setzen
-                        </TextBlock>
-                        <Image x:Name="FotoImage" Height="180" StretchDirection="Both"  Source="{Binding Foto}"
-                               Grid.RowSpan="2"/>
+
+                        <Grid Height="180">
+                            <Rectangle Fill="Transparent"/>
+                            <Image VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png"  Opacity="0.3"
+                                   Visibility="{Binding HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}"/>
+                            <TextBlock TextAlignment="Center" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Visibility="{Binding HatFoto,Converter={StaticResource BooleanToVisibilityInverted}}">
+                                Bild per <LineBreak/>
+                                Drag'n'Drop <LineBreak/>
+                                setzen<LineBreak/>
+                            </TextBlock>
+                            <Image Height="180" Source="{Binding Foto, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill"/>
+                        </Grid>
+
                     </Grid>
 
                 </Border>

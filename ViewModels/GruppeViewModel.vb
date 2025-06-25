@@ -141,6 +141,7 @@ Public Class GruppeViewModel
 
 
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
+
         If _Gruppe IsNot Nothing Then
             ValidateGruppenID()
             ValidateBenennung()

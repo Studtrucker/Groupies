@@ -371,7 +371,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
     End Sub
 
 #End Region
@@ -386,7 +386,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -524,7 +524,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.AlleTrainer.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.Count > 0
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -700,7 +700,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Remove(_gruppenlisteCollectionView.CurrentItem)
+        AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Remove(_gruppenlisteCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -1092,7 +1092,7 @@ Public Class MainWindow
 
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.Gruppenliste)
+        Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
         sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
         Dim skikursgruppe As Gruppe
@@ -1159,7 +1159,7 @@ Public Class MainWindow
 
         Dim Fenster As New BasisDetailWindow()
         Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        Dim Trainer = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer(2)
+        Dim Trainer = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTrainer(2)
         vm.Trainer = Trainer
         'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
 

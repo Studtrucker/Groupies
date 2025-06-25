@@ -102,12 +102,6 @@ Public Class DetailViewModel
         End Get
     End Property
 
-    'Public ReadOnly Property CurrentListUserControl As UserControl
-    '    Get
-    '        Return Datentyp.DatentypListUserControl
-    '    End Get
-    'End Property
-
     Public ReadOnly Property CurrentDetailUserControl As UserControl
         Get
             Return Datentyp.DatentypDetailUserControl
@@ -127,7 +121,6 @@ Public Class DetailViewModel
 
 
 #End Region
-
 
 #Region "Methoden"
 

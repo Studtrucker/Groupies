@@ -31,7 +31,7 @@ Namespace Services
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Club.SelectedEinteilung.Gruppenliste = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
+                    Club.SelectedEinteilung.EinteilungAlleGruppen = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
                 End If
             End If
         End Sub

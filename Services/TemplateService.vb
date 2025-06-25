@@ -67,7 +67,7 @@ Namespace Services
                 New Einteilung With {
                     .Benennung = "Tag 1",
                     .Sortierung = 10,
-                    .Gruppenliste = Nothing}}
+                    .EinteilungAlleGruppen = Nothing}}
             Return einteilungen
         End Function
 

@@ -1,4 +1,6 @@
-﻿Namespace Entities
+﻿Imports Groupies.DataImport
+
+Namespace Entities
 
 
     Public Class Einteilung
@@ -18,18 +20,33 @@
 
         End Sub
 
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="Origin"></param>
+        Public Sub New(Origin As Einteilung)
+            EinteilungID = Origin.EinteilungID
+            Benennung = Origin.Benennung
+            Sortierung = Origin.Sortierung
+            EinteilungAlleGruppen = Origin.EinteilungAlleGruppen
+            GruppenloseTeilnehmer = Origin.GruppenloseTeilnehmer
+            GruppenloseTrainer = Origin.GruppenloseTrainer
+        End Sub
+
 #End Region
 
 #Region "Felder"
 
-        Private _Gruppenliste = New GruppeCollection
-        Private _GruppenloseTeilnehmer As New TeilnehmerCollection
-        Private _GruppenloseTrainer As New TrainerCollection
+        Private _EinteilungAlleGruppen = New GruppeCollection
+
+        Private ReadOnly _EinteilungAlleTrainer As New TrainerCollection
+        Private ReadOnly _EinteilungAlleTeilnehmer As New TeilnehmerCollection
 
         Private ReadOnly _EingeteilteTrainer As New TrainerCollection
-        Private ReadOnly _AlleTrainer As New TrainerCollection
         Private ReadOnly _EingeteilteTeilnehmer As New TeilnehmerCollection
-        Private ReadOnly _AlleTeilnehmer As New TeilnehmerCollection
+
+        Private _GruppenloseTeilnehmer As New TeilnehmerCollection
+        Private _GruppenloseTrainer As New TrainerCollection
 
 #End Region
 
@@ -55,12 +72,12 @@
         ''' Eine Liste aller Gruppen
         ''' </summary>
         ''' <returns></returns>
-        Public Property Gruppenliste() As GruppeCollection
+        Public Property EinteilungAlleGruppen() As GruppeCollection
             Get
-                Return _Gruppenliste
+                Return _EinteilungAlleGruppen
             End Get
             Set(value As GruppeCollection)
-                _Gruppenliste = value
+                _EinteilungAlleGruppen = value
             End Set
         End Property
 
@@ -129,7 +146,7 @@
             ' = Gruppenliste.ToList.Select(Function(Gr) Gr.Trainer))
             Get
                 _EingeteilteTrainer.Clear()
-                Gruppenliste.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
+                EinteilungAlleGruppen.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get
         End Property
@@ -139,12 +156,12 @@
         ''' Liste mit allen Trainern, Eingeteilte und die ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AlleTrainer() As TrainerCollection
+        Public ReadOnly Property EinteilungAlleTrainer() As TrainerCollection
             Get
-                _AlleTrainer.Clear()
-                EingeteilteTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
-                GruppenloseTrainer.ToList.ForEach(Sub(T) _AlleTrainer.Add(T))
-                Return _AlleTrainer
+                _EinteilungAlleTrainer.Clear()
+                EingeteilteTrainer.ToList.ForEach(Sub(T) _EinteilungAlleTrainer.Add(T))
+                GruppenloseTrainer.ToList.ForEach(Sub(T) _EinteilungAlleTrainer.Add(T))
+                Return _EinteilungAlleTrainer
             End Get
         End Property
 
@@ -155,7 +172,7 @@
         Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
             Get
                 _EingeteilteTeilnehmer.Clear()
-                Gruppenliste.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
+                EinteilungAlleGruppen.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
                 Return _EingeteilteTeilnehmer
             End Get
         End Property
@@ -165,13 +182,14 @@
         ''' Liste mit allen Teilnehmern, Eingeteilte und die ohne Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AlleTeilnehmer As TeilnehmerCollection
+        Public ReadOnly Property EinteilungAlleTeilnehmer As TeilnehmerCollection
             Get
-                _AlleTeilnehmer.Clear()
-                EingeteilteTeilnehmer.ToList.ForEach(Sub(M) _AlleTeilnehmer.Add(M))
-                GruppenloseTeilnehmer.ToList.ForEach(Sub(M) _AlleTeilnehmer.Add(M))
-                Return _AlleTeilnehmer
+                _EinteilungAlleTeilnehmer.Clear()
+                EingeteilteTeilnehmer.ToList.ForEach(Sub(M) _EinteilungAlleTeilnehmer.Add(M))
+                GruppenloseTeilnehmer.ToList.ForEach(Sub(M) _EinteilungAlleTeilnehmer.Add(M))
+                Return _EinteilungAlleTeilnehmer
             End Get
+
         End Property
 
 

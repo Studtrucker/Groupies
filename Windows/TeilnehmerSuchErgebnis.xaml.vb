@@ -46,10 +46,10 @@ Public Class TeilnehmerSuchErgebnis
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        TeilnehmerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.Count
-        TrainerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).AlleTrainer.Count
-        Dim x = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
-        Dim z = AppController.AktuellerClub.AlleEinteilungen(0).AlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        TeilnehmerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTeilnehmer.Count
+        TrainerAnzahl = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTrainer.Count
+        Dim x = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        Dim z = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
         Dim y As New System.Text.StringBuilder
 
         For Each Stufengruppe In x
@@ -71,7 +71,7 @@ Public Class TeilnehmerSuchErgebnis
         Dim Teilnehmerliste As New List(Of Object)
 
         ' Die Teilnehmer und Gruppeninfo aus den einzelen Gruppen
-        For Each TnL In AppController.AktuellerClub.SelectedEinteilung.Gruppenliste
+        For Each TnL In AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen
             Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
         Next
 

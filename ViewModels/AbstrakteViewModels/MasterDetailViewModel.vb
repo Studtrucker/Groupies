@@ -31,7 +31,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext())
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
-
     End Sub
 
 #End Region
@@ -60,7 +59,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
             End If
         End Set
     End Property
-
 
     Public Property ItemsView As ICollectionView
         Get
@@ -105,7 +103,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         End Get
         Set(value As T)
             If Not Equals(_selectedItem, value) Then
-                ' _SelectedItem muss aktualisiert werden, damit
                 _selectedItem = value
                 ItemsView.MoveCurrentTo(value)
                 OnPropertyChanged(NameOf(SelectedItem))

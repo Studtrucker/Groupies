@@ -108,8 +108,15 @@ Public Class TrainerViewModel
         Set(value As Byte())
             _Trainer.Foto = value
             OnPropertyChanged(NameOf(Foto))
+            OnPropertyChanged(NameOf(HatFoto))
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
+    End Property
+
+    Public ReadOnly Property HatFoto As Boolean
+        Get
+            Return _Trainer.HatFoto
+        End Get
     End Property
 
     Public Property EMail As String
@@ -198,10 +205,13 @@ Public Class TrainerViewModel
             Dim validFiles = files.Where(Function(f) _zulaessigeEndungen.Contains(Path.GetExtension(f).ToLower())).ToArray()
 
             If validFiles.Any() Then
-                MessageBox.Show("Zulässige Dateien: " & Environment.NewLine & String.Join(Environment.NewLine, validFiles))
+                Foto = File.ReadAllBytes(validFiles(0))
             Else
                 'todo: Hier muss eine Fehlermeldung kommen, dass nur jpg, gif und png Dateien erlaubt sind.Also die Variable zulaessigeEndungen verwenden.
-                MessageBox.Show("Nur .txt oder .pdf Dateien sind erlaubt.")
+                Dim Fm As String = String.Empty
+                _zulaessigeEndungen.ToList.ForEach(Sub(zE) Fm &= $"{zE}, ")
+                Fm = Left(Fm, Fm.Length - 2)
+                MessageBox.Show($"Nur {Fm} Dateien sind erlaubt.")
             End If
         End If
         e.Handled = True

@@ -1,4 +1,5 @@
-﻿Imports Groupies.DataImport
+﻿Imports Groupies.Controller
+Imports Groupies.DataImport
 Imports Groupies.Entities
 
 Public Class EinteilungViewModel
@@ -23,11 +24,30 @@ Public Class EinteilungViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
+        BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
 
 #End Region
 
 #Region "Properties"
+
+    Public Property CanNeu As Boolean ' Implements IViewModelSpecial.CanNeu
+        Get
+            Return True ' Hier können Sie die Logik für die Aktivierung des Neu-Buttons implementieren
+        End Get
+        Set(value As Boolean)
+            ' Setter-Logik, falls benötigt
+        End Set
+    End Property
+    Public Property CanBearbeiten As Boolean ' Implements IViewModelSpecial.CanNeu
+        Get
+            Return SelectedItem IsNot Nothing
+        End Get
+        Set(value As Boolean)
+            ' Setter-Logik, falls benötigt
+        End Set
+    End Property
 
     Public Property Einteilung As IModel Implements IViewModelSpecial.Model
         Get
@@ -116,6 +136,51 @@ Public Class EinteilungViewModel
         End If
     End Sub
 
+    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+        mvw.AktuellesViewModel.Model = New Einteilung
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
+        End If
+    End Sub
+
+    Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+        mvw.AktuellesViewModel.Model = New Einteilung(SelectedItem)
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            Dim index = AppController.AktuellerClub.AlleEinteilungen.IndexOf(SelectedItem)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleEinteilungen(Index) = mvw.AktuellesViewModel.Model
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
+        End If
+
+    End Sub
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Einteilung.speichern()

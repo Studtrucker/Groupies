@@ -47,7 +47,7 @@ Public Module MappingGeneration3
     Private Function GetAlleGruppen(Skiclub As Generation3.Club) As GruppeCollection
         Dim Gruppen = New GruppeCollection
         ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g)))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) Gruppen.Add(g)))
 
         ' Entferne doppelte Gruppen
         Gruppen = New GruppeCollection(Gruppen.GroupBy(Of Guid)(Function(G) G.GruppenID).Select(Function(Gruppe) Gruppe.First).ToList)
@@ -66,7 +66,7 @@ Public Module MappingGeneration3
         ' Leere Fähigkeit hinzufügen für Dropdowns
         Dim Faehigkeiten = New FaehigkeitCollection From {New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}}
         ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(M) M.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f)))))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(M) M.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f)))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(e) e.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) T.Leistungsstand.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f))))
 
         ' Entferne doppelte Fähigkeiten
@@ -85,7 +85,7 @@ Public Module MappingGeneration3
 
         Dim Teilnehmer = New TeilnehmerCollection
 
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T))))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
 
         ' Entferne doppelte Teilnehmer
@@ -103,7 +103,7 @@ Public Module MappingGeneration3
 
         Dim Trainer = New TrainerCollection
 
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Trainer.Add(g.Trainer)))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) Trainer.Add(g.Trainer)))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTrainer.ToList.ForEach(Sub(T) Trainer.Add(T)))
 
         'Entferne leere Trainer-Objekte 
@@ -126,7 +126,7 @@ Public Module MappingGeneration3
         ' Leistungsstufe mit ID Guid.Empty hinzufügen, damit die Dropdownlisten einen leeren Eintrag bekommen
         Dim Leistungsstufen = New LeistungsstufeCollection From {New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}}
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand))))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand)))
 
         ' Entferne doppelte Leistungsstufen

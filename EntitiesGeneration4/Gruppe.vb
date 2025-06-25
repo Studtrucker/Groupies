@@ -53,11 +53,7 @@ Namespace Entities
             Benennung = OriginGruppe.Benennung
             Sortierung = OriginGruppe.Sortierung
             Trainer = OriginGruppe.Trainer
-
-            Dim KopierteListe = New TeilnehmerCollection
-            KopierteListe.AddRange(AppController.KopiereListeMitNeuenObjekten(Of Teilnehmer)(OriginGruppe.Mitgliederliste.ToList, Function(t) New Teilnehmer(t)))
-            Mitgliederliste = KopierteListe
-
+            Mitgliederliste = OriginGruppe.Mitgliederliste
         End Sub
 
 #End Region

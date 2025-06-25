@@ -29,6 +29,8 @@ Public Class GruppeViewModel
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
+        BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
 
 #End Region
@@ -150,6 +152,51 @@ Public Class GruppeViewModel
         End If
     End Sub
 
+    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+        mvw.AktuellesViewModel.Model = New Gruppe
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
+        End If
+    End Sub
+
+    Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+        mvw.AktuellesViewModel.Model = New Gruppe(SelectedItem)
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            Dim index = AppController.AktuellerClub.AlleGruppen.IndexOf(SelectedItem)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleGruppen(index) = mvw.AktuellesViewModel.Model
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
+        End If
+
+    End Sub
 
 #End Region
 

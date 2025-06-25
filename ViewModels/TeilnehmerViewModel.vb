@@ -32,7 +32,8 @@ Public Class TeilnehmerViewModel
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
-
+        NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
+        BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
 
 #End Region
@@ -175,6 +176,51 @@ Public Class TeilnehmerViewModel
         MyBase.OnLoeschen()
     End Sub
 
+    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+        mvw.AktuellesViewModel.Model = New Teilnehmer
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
+        End If
+    End Sub
+
+    Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+        mvw.AktuellesViewModel.Model = New Teilnehmer(SelectedItem)
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            Dim index = AppController.AktuellerClub.AlleTeilnehmer.IndexOf(SelectedItem)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleTeilnehmer(index) = mvw.AktuellesViewModel.Model
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
+        End If
+
+    End Sub
 #End Region
 
 #Region "Validation"

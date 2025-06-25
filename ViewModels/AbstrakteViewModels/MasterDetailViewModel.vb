@@ -40,6 +40,23 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #End Region
 
 #Region "Properties"
+    Friend Property CanBearbeiten() As Boolean
+        Get
+            Return SelectedItem IsNot Nothing
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanBearbeiten))
+        End Set
+    End Property
+
+    Friend Property CanNeu() As Boolean
+        Get
+            Return True
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanNeu))
+        End Set
+    End Property
 
     Public ReadOnly Property AktuelleAnzahlObjekte As String
         Get

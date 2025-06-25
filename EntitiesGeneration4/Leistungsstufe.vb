@@ -48,6 +48,18 @@ Namespace Entities
         End Sub
 
 
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="Origin"></param>
+        Public Sub New(origin As Leistungsstufe)
+            _LeistungsstufeID = origin.LeistungsstufeID
+            _Benennung = origin.Benennung
+            _Sortierung = origin.Sortierung
+            _Beschreibung = origin.Beschreibung
+            _Faehigkeiten = origin.Faehigkeiten
+        End Sub
+
 #End Region
 
 #Region "Properties"
@@ -79,22 +91,6 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe (Required)")>
         Public Property Benennung As String
-
-
-        Public ReadOnly Property Beschreibungstext As String
-            Get
-                Return GeneriereBeschreibungstext()
-            End Get
-        End Property
-
-        Private Function GeneriereBeschreibungstext() As String
-            Dim txt As New StringBuilder
-            txt.Append($"Beschreibung: {Beschreibung}")
-            Me.Faehigkeiten.OrderBy(Function(f) f.Sortierung).ToList.ForEach(Sub(f) txt.Append($"{f.Benennung}: {f.Beschreibung}{vbNewLine}"))
-
-            Return txt.ToString
-
-        End Function
 
         ''' <summary>
         ''' Beschreibung der Leistungsstufe

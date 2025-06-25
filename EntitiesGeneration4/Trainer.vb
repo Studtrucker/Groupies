@@ -62,6 +62,21 @@ Namespace Entities
             _Vorname = Vorname
         End Sub
 
+
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="Origin"></param>
+        Public Sub New(origin As Trainer)
+            _Vorname = origin.Vorname
+            _Foto = origin.Foto
+            _Nachname = origin.Nachname
+            _Spitzname = origin.Spitzname
+            _TrainerID = origin.TrainerID
+            _Telefonnummer = origin.Telefonnummer
+            _EMail = origin.EMail
+        End Sub
+
 #End Region
 
 #Region "Properties"

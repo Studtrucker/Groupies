@@ -41,6 +41,17 @@ Namespace Entities
             _Benennung = Benennung
             _Sortierung = Sortierung
         End Sub
+
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="Origin"></param>
+        Public Sub New(origin As Faehigkeit)
+            _FaehigkeitID = origin.FaehigkeitID
+            _Benennung = origin.Benennung
+            _Beschreibung = origin.Beschreibung
+            _Sortierung = origin.Sortierung
+        End Sub
 #End Region
 
 #Region "Properties"

@@ -57,8 +57,10 @@
 
                 <TextBox x:Name="TeilnehmerIDTextBox" Grid.Column="2" Grid.Row="0" IsReadOnly="True"  Padding="5"  
                          Text="{Binding TeilnehmerID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                
                 <TextBox x:Name="VornameTextBox" Grid.Column="2" Grid.Row="1" 
                          Text="{Binding Vorname, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                
                 <TextBox x:Name="NachnameTextBox" Grid.Column="2" Grid.Row="2"
                          Text="{Binding Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
@@ -71,7 +73,7 @@
                 <TextBox x:Name="TelefonTextBox" Grid.Column="2" Grid.Row="4"
                          Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
                 
-                <ComboBox Grid.Column="2" Grid.Row="5" IsSynchronizedWithCurrentItem="True"
+                <ComboBox Grid.Column="2" Grid.Row="5"
                               ItemsSource="{Binding LeistungsstufenListCollectionView}"
                               SelectedValuePath="Benennung"
                               SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
@@ -185,7 +187,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
@@ -197,7 +198,6 @@
                 <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
                     <TextBlock>Benennung <Run Foreground="Red" >*</Run></TextBlock>
                 </Label>
-                <Label Grid.Column="1" Grid.Row="3" Content="Beschreibung"/>
 
 
                 <TextBox Grid.Column="2" Grid.Row="0"  IsReadOnly="True" 
@@ -206,13 +206,6 @@
                          Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
                 <TextBox Grid.Column="2" Grid.Row="2"
                          Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
-
-                <TextBox Grid.Column="2" Grid.Row="3" 
-                         Text="{Binding Beschreibung,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
-                         TextWrapping="Wrap" AcceptsReturn="True" />
-
-                <DockPanel Grid.Column="2" Grid.Row="4">
-                </DockPanel>
 
             </Grid>
 
@@ -261,19 +254,19 @@
                 
 
                 <!--Felder-->
-                <TextBox Text="{Binding GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                <TextBox Text="{Binding GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                          IsReadOnly="True" x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="0"/>
 
-                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="1"/>        
+                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                         x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="1"/>
 
-                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
                          x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="2" />
 
-                <ComboBox Grid.Column="2" Grid.Row="3" IsSynchronizedWithCurrentItem="True"
-                              ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                              SelectedValuePath="Benennung"
-                              SelectedValue="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                <ComboBox Grid.Column="2" Grid.Row="3" 
+                          ItemsSource="{Binding LeistungsstufenListCollectionView}"
+                          SelectedValuePath="Benennung"
+                          SelectedValue="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
             </Grid>
 
@@ -314,13 +307,13 @@
                 <TextBox Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" IsReadOnly="True" 
                          Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
 
-                <TextBox Grid.Column="2" Grid.Row="1" Width="50" HorizontalAlignment="Left">
-                    <Binding Path="Sortierung" UpdateSourceTrigger="PropertyChanged"/>
-                </TextBox>
-                
-                <TextBox x:Name="BenennungTextBox" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
-                         Grid.Column="2" Grid.Row="2" />
-                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Grid.Column="2" Grid.Row="1" Width="50" HorizontalAlignment="Left" 
+                         Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+
+                <TextBox Grid.Column="2" Grid.Row="2" 
+                         Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+
+                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
                          Grid.Column="2" Grid.Row="3" 
                          TextWrapping="Wrap" AcceptsReturn="True" />
 
@@ -392,16 +385,16 @@
                 </Label>                
                 <Label Content="Beschreibung" Grid.Column="1" Grid.Row="3"/>
 
-                <TextBox Text="{Binding FaehigkeitID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding FaehigkeitID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
                          IsReadOnly="True" 
                          Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left"/>
 
-                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" 
                      Grid.Column="2" Grid.Row="1" Width="75" HorizontalAlignment="Left"/>
 
-                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" 
                      Grid.Column="2" Grid.Row="2" x:Name="BenennungTextBox"/>
-                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
                      Grid.Column="2" Grid.Row="3" TextWrapping="Wrap" x:Name="BeschreibungTextBox"/>
             </Grid>
 

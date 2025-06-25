@@ -18,7 +18,12 @@ Namespace Entities.Generation4
 #Region "Fields"
 
         Private _AlleEinteilungen = New EinteilungCollection
+        Private _AlleGruppen = New GruppeCollection
         Private _AlleLeistungsstufen = New LeistungsstufeCollection
+        Private _AlleFaehigkeiten = New FaehigkeitCollection
+        Private _AlleTrainer = New TrainerCollection
+        Private _AlleTeilnehmer = New TeilnehmerCollection
+
 
 #End Region
 
@@ -51,21 +56,6 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public Property ClubName As String Implements IClub.Name
 
-        ''' <summary>
-        ''' Die Einteilungen im aktuellen Club
-        ''' Es kann hiermit eine Historie verwaltet werden
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property AlleEinteilungen() As EinteilungCollection
-            Get
-                Return _AlleEinteilungen
-            End Get
-            Set(value As EinteilungCollection)
-                _AlleEinteilungen = value
-            End Set
-        End Property
-
-
         Private _SelectedEinteilung As Einteilung
         ''' <summary>
         ''' Die aktuell ausgewählte Einteilung
@@ -96,7 +86,21 @@ Namespace Entities.Generation4
         End Property
 
         ''' <summary>
-        ''' Eine Liste aller Leistungsstufen
+        ''' Die Einteilungen im aktuellen Club
+        ''' Es kann hiermit eine Historie verwaltet werden
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AlleEinteilungen() As EinteilungCollection
+            Get
+                Return _AlleEinteilungen
+            End Get
+            Set(value As EinteilungCollection)
+                _AlleEinteilungen = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Eine Liste aller Leistungsstufen, ohne die leere Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
         Public Property AlleLeistungsstufen() As LeistungsstufeCollection
@@ -110,7 +114,7 @@ Namespace Entities.Generation4
 
 
         ''' <summary>
-        ''' Eine Liste aller  Leistungsstufen
+        ''' Eine Liste aller gültigen Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property AlleValidenLeistungsstufen() As LeistungsstufeCollection
@@ -131,11 +135,17 @@ Namespace Entities.Generation4
         ''' als Vorlage für die Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
+        Public Property AlleFaehigkeiten() As FaehigkeitCollection
+            Get
+                Return _AlleFaehigkeiten
+            End Get
+            Set(value As FaehigkeitCollection)
+                _AlleFaehigkeiten = value
+            End Set
+        End Property
 
         ''' <summary>
-        ''' Eine Liste aller Faehigkeiten
-        ''' als Vorlage für die Leistungsstufen
+        ''' Eine Liste aller gültigen Faehigkeiten
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
@@ -148,20 +158,40 @@ Namespace Entities.Generation4
         ''' Eine Liste der aller Trainer
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleTrainer() As TrainerCollection = New TrainerCollection
+        Public Property AlleTrainer() As TrainerCollection
+            Get
+                Return _AlleTrainer
+            End Get
+            Set(value As TrainerCollection)
+                _AlleTrainer = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Eine Liste der aller Teilnehmer
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleTeilnehmer() As TeilnehmerCollection = New TeilnehmerCollection
-
+        Public Property AlleTeilnehmer() As TeilnehmerCollection
+            Get
+                Return _AlleTeilnehmer
+            End Get
+            Set(value As TeilnehmerCollection)
+                _AlleTeilnehmer = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Eine Liste der aller Gruppen
         ''' </summary>
         ''' <returns></returns>
-        Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
+        Public Property AlleGruppen() As GruppeCollection
+            Get
+                Return _AlleGruppen
+            End Get
+            Set(value As GruppeCollection)
+                _AlleGruppen = value
+            End Set
+        End Property
 
 #End Region
 

@@ -41,6 +41,25 @@
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                     </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
 
@@ -94,22 +113,22 @@
 
 
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.TrainerID,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                             Text="{Binding SelectedItem.TrainerID}" />
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Spitzname}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"                           
-                             Text="{Binding SelectedItem.Vorname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Vorname}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="4" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Nachname,  UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                             Text="{Binding SelectedItem.Nachname}" />
 
                     <TextBox Grid.Column="2" Grid.Row="5" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                             Text="{Binding SelectedItem.Telefonnummer}" />
 
                     <TextBox Grid.Column="2" Grid.Row="6" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.EMail, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                             Text="{Binding SelectedItem.EMail}" />
                 
                 </Grid>
             </DockPanel>
@@ -140,7 +159,26 @@
                             <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="Auto" SortMemberPath="Alter"/>
                             <DataGridTextColumn Header="Leistungsstand" Binding="{Binding Leistungsstand}"  SortMemberPath="Leistungsstand.Benennung"/>
                         </DataGrid.Columns>
-                    </DataGrid>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
 
                 <!-- Detailansicht-->
                 <Grid Grid.Column="1">
@@ -181,27 +219,30 @@
                     </Label>
 
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.TeilnehmerID, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.TeilnehmerID}"/>
                     
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Vorname, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Vorname}"/>
                     
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Nachname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Nachname}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="4" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Telefonnummer}"/>
 
                     <DatePicker  Grid.Column="2" Grid.Row="5" Width="150" HorizontalAlignment="Left"
-                                SelectedDate="{Binding SelectedItem.Geburtsdatum, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
+                                SelectedDate="{Binding SelectedItem.Geburtsdatum}"/>
                     
                     <TextBox Grid.Column="2" Grid.Row="6" Width="75" HorizontalAlignment="Left" IsReadOnly="True"
                              Text="{Binding SelectedItem.Alter,Mode=OneWay}" />
+                    
+                    <TextBox Grid.Column="2" Grid.Row="7" IsReadOnly="True"
+                             Text="{Binding SelectedItem.Leistungsstand.Benennung}" />
 
-                    <ComboBox Grid.Column="2" Grid.Row="7" IsReadOnly="True" 
+                    <!--<ComboBox Grid.Column="2" Grid.Row="7" IsReadOnly="True" 
                               SelectedValuePath="Benennung"
                               ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                              SelectedValue="{Binding SelectedItem.Leistungsstand, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                              SelectedValue="{Binding SelectedItem.Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
 
                 </Grid>
             </DockPanel>
@@ -230,6 +271,25 @@
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="AusgabeTeilnehmerinfo" Width="Auto"/>
                         <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="Auto"/>
                     </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
                 <!-- Detailansicht-->
@@ -275,20 +335,20 @@
 
                     <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.GruppenID}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Sortierung}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="2"  IsReadOnly="True"
-                             Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                             Text="{Binding SelectedItem.Benennung}" />
 
                     <!--<ComboBox Grid.Column="2" Grid.Row="3" 
                               SelectedValuePath="Benennung"
                               ItemsSource="{Binding LeistungsstufenListCollectionView}"
                               SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
                     <TextBox Grid.Column="2" Grid.Row="3"  IsReadOnly="True"
-                             Text="{Binding SelectedItem.Leistungsstufe.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                             Text="{Binding SelectedItem.Leistungsstufe.Benennung}" />
 
                 </Grid>
             </DockPanel>
@@ -299,10 +359,13 @@
             <DockPanel>
                                
                 <!--Objektliste-->
-                <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" DockPanel.Dock="Left"
+                <DataGrid CanUserAddRows="False" 
+                          CanUserDeleteRows="False" 
+                          DockPanel.Dock="Left"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ItemsView}"
-                          SelectedItem="{Binding SelectedItem}" IsReadOnly="True"
+                          SelectedItem="{Binding SelectedItem}" 
+                          IsReadOnly="True"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
                     <i:Interaction.Triggers>
@@ -316,19 +379,19 @@
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="Auto"/>
                     </DataGrid.Columns>
 
-                    <DataGrid.ContextMenu>                        
-                        <ContextMenu>
-                            <MenuItem Header="Erstellen" Command="{Binding AktuellesViewModel.NeuCommand}">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
                                 </MenuItem.Icon> 
                             </MenuItem>
-                            <MenuItem Header="Bearbeiten" Command="{Binding AktuellesViewModel.BearbeitenCommand}">
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                                <MenuItem Header="Löschen" Command="{Binding AktuellesViewModel.LoeschenCommand}">
+                                <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
                                     <MenuItem.Icon>
                                         <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
                                     </MenuItem.Icon>
@@ -368,16 +431,16 @@
                     <Run Foreground="Red">*</Run>
                         </TextBlock>
                     </Label>
-
+                                       
                        <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True"
-                             Text="{Binding SelectedItem.EinteilungID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.EinteilungID}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Sortierung}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Benennung}"/>
 
                 </Grid>
             </DockPanel>
@@ -404,6 +467,25 @@
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung" Width="Auto"/>
                     </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
                 <!-- Detailansicht-->
@@ -455,27 +537,27 @@
 
                         <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True"
-                             Text="{Binding SelectedItem.LeistungsstufeID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.LeistungsstufeID}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="1"  IsReadOnly="True"
-                             Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Sortierung}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True" 
-                              Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                              Text="{Binding SelectedItem.Benennung}"/>
 
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Beschreibung}"/>
 
                     <DataGrid  x:Name="FaehigkeitenDataGrid"
                                AutoGenerateColumns="False" IsReadOnly="True"
-                               ItemsSource="{Binding SelectedItem.Faehigkeiten,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                               ItemsSource="{Binding SelectedItem.Faehigkeiten}"
                                CanUserAddRows="False" 
                                SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
                                Grid.Column="2" Grid.Row="4">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
-                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" >
+                            <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" />
+                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}" >
                                 <DataGridTextColumn.ElementStyle>
                                     <Style>
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
@@ -483,7 +565,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Width="*">
+                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="*">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style>
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
@@ -505,10 +587,13 @@
             <DockPanel LastChildFill="True">
 
                 <!--Objektliste-->
-                <DataGrid DockPanel.Dock="Left"  CanUserAddRows="False" CanUserDeleteRows="False" 
-                          AutoGenerateColumns="False" IsReadOnly="True"
+                <DataGrid CanUserAddRows="False" 
+                          CanUserDeleteRows="False" 
+                          DockPanel.Dock="Left"
+                          AutoGenerateColumns="False"
                           ItemsSource="{Binding ItemsView}"
-                          SelectedItem="{Binding SelectedItem}"
+                          SelectedItem="{Binding SelectedItem}" 
+                          IsReadOnly="True"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
 
                     <i:Interaction.Triggers>
@@ -521,6 +606,25 @@
                         <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung"/>
                     </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
                 <!-- Detailansicht-->
@@ -565,16 +669,16 @@
 
                     <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True"
-                             Text="{Binding SelectedItem.FaehigkeitID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.FaehigkeitID}"/>
                     
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                             Text="{Binding SelectedItem.Sortierung}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>                    
+                             Text="{Binding SelectedItem.Benennung}"/>                    
                     
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                             Text="{Binding SelectedItem.Beschreibung}" />
                     
                 </Grid>
                 

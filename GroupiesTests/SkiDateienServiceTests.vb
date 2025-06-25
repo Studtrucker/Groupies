@@ -38,8 +38,8 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(1, Club.AlleEinteilungen(0).Sortierung)
         Assert.AreEqual("Club", Club.ClubName)
         Assert.AreEqual("Tag1", Club.AlleEinteilungen(0).Benennung)
-        Assert.AreEqual(43, Club.AlleEinteilungen(0).AlleTeilnehmer.Count)
-        Assert.AreEqual(9, Club.AlleEinteilungen(0).AlleTrainer.Count)
+        Assert.AreEqual(43, Club.AlleEinteilungen(0).EinteilungAlleTeilnehmer.Count)
+        Assert.AreEqual(9, Club.AlleEinteilungen(0).EinteilungAlleTrainer.Count)
         Assert.AreEqual(2, Club.AlleEinteilungen(0).GruppenloseTrainer.Count)
     End Sub
 
@@ -59,13 +59,13 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(1, Club.AlleEinteilungen(0).Sortierung)
         Assert.AreEqual("Club", Club.ClubName)
         Assert.AreEqual("Tag1", Club.AlleEinteilungen(0).Benennung)
-        Assert.AreEqual(9, Club.AlleEinteilungen(0).Gruppenliste.Count)
+        Assert.AreEqual(9, Club.AlleEinteilungen(0).EinteilungAlleGruppen.Count)
         Assert.AreEqual(55, Club.AlleEinteilungen(0).EingeteilteTeilnehmer.Count)
         Assert.AreEqual(1, Club.AlleEinteilungen(0).GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(56, Club.AlleEinteilungen(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(56, Club.AlleEinteilungen(0).EinteilungAlleTeilnehmer.Count)
         Assert.AreEqual(1, Club.AlleEinteilungen(0).GruppenloseTrainer.Count)
         Assert.AreEqual(9, Club.AlleEinteilungen(0).EingeteilteTrainer.Count)
-        Assert.AreEqual(10, Club.AlleEinteilungen(0).AlleTrainer.Count)
+        Assert.AreEqual(10, Club.AlleEinteilungen(0).EinteilungAlleTrainer.Count)
         Assert.AreEqual(5, Club.AlleEinteilungen.Count)
     End Sub
 
@@ -85,13 +85,13 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(1, Club.AlleEinteilungen(0).Sortierung)
         Assert.AreEqual("Club", Club.ClubName)
         Assert.AreEqual("Tag1", Club.AlleEinteilungen(0).Benennung)
-        Assert.AreEqual(9, Club.AlleEinteilungen(0).Gruppenliste.Count)
+        Assert.AreEqual(9, Club.AlleEinteilungen(0).EinteilungAlleGruppen.Count)
         Assert.AreEqual(55, Club.AlleEinteilungen(0).EingeteilteTeilnehmer.Count)
         Assert.AreEqual(0, Club.AlleEinteilungen(0).GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(55, Club.AlleEinteilungen(0).AlleTeilnehmer.Count)
+        Assert.AreEqual(55, Club.AlleEinteilungen(0).EinteilungAlleTeilnehmer.Count)
         Assert.AreEqual(2, Club.AlleEinteilungen(0).GruppenloseTrainer.Count)
         Assert.AreEqual(8, Club.AlleEinteilungen(0).EingeteilteTrainer.Count)
-        Assert.AreEqual(10, Club.AlleEinteilungen(0).AlleTrainer.Count)
+        Assert.AreEqual(10, Club.AlleEinteilungen(0).EinteilungAlleTrainer.Count)
         Assert.AreEqual(5, Club.AlleEinteilungen.Count)
     End Sub
 

@@ -17,7 +17,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Leistungsstufe) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
-                If AppController.AktuellerClub.AlleLeistungsstufen.ToList.Select(Function(Ls) $"{Ls.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                If AppController.AktuellerClub.AlleLeistungsstufen.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.LeistungsstufeID <> Objekt.LeistungsstufeID).Any() Then
                     Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
                 End If
             End If
@@ -29,7 +29,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Faehigkeit) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
-                If AppController.AktuellerClub.AlleFaehigkeiten.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                If AppController.AktuellerClub.AlleFaehigkeiten.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.FaehigkeitID <> Objekt.FaehigkeitID).Any() Then
                     Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
                 End If
             End If
@@ -41,7 +41,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Gruppe) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
-                If AppController.AktuellerClub.AlleGruppen.ToList.Select(Function(O) $"{O.Benennung.ToLower}").Contains(Objekt.Benennung.ToLower) Then
+                If AppController.AktuellerClub.AlleGruppen.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.GruppenID <> Objekt.GruppenID).Any() Then
                     Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
                 End If
             End If
@@ -65,7 +65,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Trainer) As ValidationResult
 
             If Objekt.Spitzname IsNot Nothing Then
-                If AppController.AktuellerClub.AlleTrainer.ToList.Select(Function(O) $"{O.Spitzname.ToLower}").Contains(Objekt.Spitzname.ToLower) Then
+                If AppController.AktuellerClub.AlleTrainer.Where(Function(o) o.Spitzname.ToLower = Objekt.Spitzname.ToLower AndAlso o.TrainerID <> Objekt.TrainerID).Any() Then
                     Return New ValidationResult(False, $"{Objekt.Spitzname} wird bereits verwendet. Der Alias muss aber eindeutig sein.")
                 End If
             End If
@@ -78,7 +78,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Teilnehmer) As ValidationResult
 
             If Objekt.VorUndNachname IsNot Nothing Then
-                If AppController.AktuellerClub.AlleTeilnehmer.ToList.Select(Function(O) $"{O.VorUndNachname.ToLower}").Contains(Objekt.VorUndNachname.ToLower) Then
+                If AppController.AktuellerClub.AlleTeilnehmer.Where(Function(o) o.VorUndNachname.ToLower = Objekt.VorUndNachname.ToLower AndAlso o.TeilnehmerID <> Objekt.TeilnehmerID).Any() Then
                     Return New ValidationResult(False, $"{Objekt.VorUndNachname} wird bereits verwendet. Die Kombination Vor- und Nachname muss aber eindeutig sein.")
                 End If
             End If

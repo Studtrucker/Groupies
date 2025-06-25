@@ -8,8 +8,6 @@ Namespace Entities
         Inherits ObservableCollection(Of Leistungsstufe)
         Implements IEnumerable(Of Leistungsstufe)
 
-        Private Fehler As New List(Of String)
-
         Public Sub New()
             MyBase.New
         End Sub

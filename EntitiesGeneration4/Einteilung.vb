@@ -28,9 +28,9 @@ Namespace Entities
             EinteilungID = Origin.EinteilungID
             Benennung = Origin.Benennung
             Sortierung = Origin.Sortierung
-            EinteilungAlleGruppen = Origin.EinteilungAlleGruppen
-            GruppenloseTeilnehmer = Origin.GruppenloseTeilnehmer
-            GruppenloseTrainer = Origin.GruppenloseTrainer
+            EinteilungAlleGruppen = New GruppeCollection(Origin.EinteilungAlleGruppen.Select(Function(G) New Gruppe(G)))
+            GruppenloseTeilnehmer = New TeilnehmerCollection(Origin.GruppenloseTeilnehmer.Select(Function(T) New Teilnehmer(T)))
+            GruppenloseTrainer = New TrainerCollection(Origin.GruppenloseTrainer.Select(Function(T) New Trainer(T)))
         End Sub
 
 #End Region

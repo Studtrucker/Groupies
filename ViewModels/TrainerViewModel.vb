@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
+Imports Groupies.Controller
 Imports Groupies.DataImport
 Imports Groupies.Entities
 
@@ -37,9 +38,10 @@ Public Class TrainerViewModel
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
 
-        NeuCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnNeu(), Function() CanNeu())
-        BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(Sub() OnBearbeiten(), Function() CanBearbeiten())
+        NeuCommand = New RelayCommand(Of Entities.Trainer)(AddressOf OnNeu, Function() CanNeu())
+        BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
     End Sub
+
 
 #End Region
 
@@ -157,25 +159,6 @@ Public Class TrainerViewModel
         End Get
     End Property
 
-    Private Property CanBearbeiten() As Boolean
-        Get
-            Return True ' ItemsView.CurrentPosition + 1 < Items.Count
-        End Get
-        Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanBearbeiten))
-        End Set
-    End Property
-
-
-    Private Property CanNeu() As Boolean
-        Get
-            Return False ' ItemsView.CurrentPosition + 1 < Items.Count
-        End Get
-        Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanNeu))
-        End Set
-    End Property
-
 #End Region
 
 #Region "Command-Properties"
@@ -241,24 +224,50 @@ Public Class TrainerViewModel
         End If
     End Sub
 
-    Public Sub OnNeu() 'Implements IViewModelSpecial.NeuCommand
+    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
         ' Hier können Sie die Logik für den Neu-Button implementieren
-        '_Trainer = New Entities.Trainer()
-        'OnPropertyChanged(NameOf(Trainer))
-        'RaiseEvent ModelChangedEvent(Me, HasErrors)
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+        mvw.AktuellesViewModel.Model = New Entities.Trainer
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
+        End If
     End Sub
 
-    Public Sub OnBearbeiten() ' Implements IViewModelSpecial.BearbeitenCommand
-        ' Hier können Sie die Logik für den Bearbeiten-Button implementieren
-        'If _Trainer IsNot Nothing Then
-        '    ' Beispiel: Öffnen eines Dialogs zur Bearbeitung des Trainers
-        '    Dim dialog = New TrainerEditDialog(_Trainer)
-        '    If dialog.ShowDialog() = True Then
-        '        _Trainer.speichern()
-        '        OnPropertyChanged(NameOf(Trainer))
-        '        RaiseEvent ModelChangedEvent(Me, HasErrors)
-        '    End If
-        'End If
+    Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+        mvw.AktuellesViewModel.Model = New Entities.Trainer(SelectedItem)
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            Dim index = AppController.AktuellerClub.AlleTrainer.IndexOf(SelectedItem)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleTrainer(index) = mvw.AktuellesViewModel.Model
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
+        End If
+
     End Sub
 #End Region
 

@@ -32,23 +32,6 @@ Public Class EinteilungViewModel
 
 #Region "Properties"
 
-    Public Property CanNeu As Boolean ' Implements IViewModelSpecial.CanNeu
-        Get
-            Return True ' Hier können Sie die Logik für die Aktivierung des Neu-Buttons implementieren
-        End Get
-        Set(value As Boolean)
-            ' Setter-Logik, falls benötigt
-        End Set
-    End Property
-    Public Property CanBearbeiten As Boolean ' Implements IViewModelSpecial.CanNeu
-        Get
-            Return SelectedItem IsNot Nothing
-        End Get
-        Set(value As Boolean)
-            ' Setter-Logik, falls benötigt
-        End Set
-    End Property
-
     Public Property Einteilung As IModel Implements IViewModelSpecial.Model
         Get
             Return _Einteilung
@@ -70,20 +53,6 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
-
-    Public Property Benennung As String
-        Get
-            Return _Einteilung.Benennung
-        End Get
-        Set(value As String)
-            _Einteilung.Benennung = value
-            OnPropertyChanged(NameOf(Benennung))
-            ValidateBenennung()
-            RaiseEvent ModelChangedEvent(Me, HasErrors)
-        End Set
-    End Property
-
-
     Public Property Sortierung As Integer
         Get
             Return _Einteilung.Sortierung
@@ -96,6 +65,17 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
+    Public Property Benennung As String
+        Get
+            Return _Einteilung.Benennung
+        End Get
+        Set(value As String)
+            _Einteilung.Benennung = value
+            OnPropertyChanged(NameOf(Benennung))
+            ValidateBenennung()
+            RaiseEvent ModelChangedEvent(Me, HasErrors)
+        End Set
+    End Property
 
     Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
@@ -181,6 +161,7 @@ Public Class EinteilungViewModel
         End If
 
     End Sub
+
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Einteilung.speichern()

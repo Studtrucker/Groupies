@@ -15,7 +15,7 @@ Public Class AppControllerTests
         Assert.IsNotNull(AppController.AktuellerClub)
         AppController.AktuellerClub.SelectedEinteilung = AppController.AktuellerClub.AlleEinteilungen(0)
         Assert.AreEqual("Stubaital2024", AppController.AktuellerClub.ClubName)
-        Assert.AreEqual(15, AppController.AktuellerClub.SelectedEinteilung.Gruppenliste.Count)
+        Assert.AreEqual(15, AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count)
         Assert.AreEqual(0, AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Count)
         Assert.AreEqual(6, AppController.StandardLeistungsstufen.Count)
         Assert.AreEqual(0, AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Count)
@@ -25,7 +25,7 @@ Public Class AppControllerTests
 
         AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer = New TeilnehmerCollection From {Studti, Manuela}
         Assert.AreEqual(2, AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer.Count)
-        Assert.AreEqual(2, AppController.AktuellerClub.SelectedEinteilung.AlleTeilnehmer.Count)
+        Assert.AreEqual(2, AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.Count)
         Assert.AreEqual(0, AppController.AktuellerClub.SelectedEinteilung.EingeteilteTeilnehmer.Count)
 
         'Assert.AreEqual(String.Format("Manuela Ramm{0}Andreas Studtrucker{0}", vbCrLf), AppController.CurrentClub.Teilnehmerliste)

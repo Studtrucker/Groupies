@@ -1,11 +1,12 @@
-﻿Imports Groupies.Entities
+﻿Imports Groupies.Controller
+Imports Groupies.Entities
 
 Public Class FaehigkeitViewModel
     Inherits MasterDetailViewModel(Of Faehigkeit)
     Implements IViewModelSpecial
 
 #Region "Felder"
-    Private _Faehigkeit As Entities.Faehigkeit
+    Private _Faehigkeit As Faehigkeit
 #End Region
 
 #Region "Events"
@@ -22,8 +23,10 @@ Public Class FaehigkeitViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
+        'OkCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
+        NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
+        BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
 
 #End Region
@@ -126,6 +129,51 @@ Public Class FaehigkeitViewModel
 
     End Sub
 
+    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+        mvw.AktuellesViewModel.Model = New Faehigkeit
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
+        End If
+    End Sub
+
+    Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+        mvw.AktuellesViewModel.Model = New Faehigkeit(SelectedItem)
+        dialog.DataContext = mvw
+
+        Dim result As Boolean = dialog.ShowDialog()
+
+        If result = True Then
+            Dim index = AppController.AktuellerClub.AlleFaehigkeiten.IndexOf(SelectedItem)
+            ' Todo: Das Speichern muss im ViewModel erledigt werden
+            AppController.AktuellerClub.AlleFaehigkeiten(index) = mvw.AktuellesViewModel.Model
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
+        End If
+
+    End Sub
 #End Region
 
 #Region "Validation"

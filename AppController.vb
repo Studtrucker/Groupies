@@ -84,11 +84,12 @@ Namespace Controller
 
         Public Shared Function NeuenClubErstellen(Clubname As String) As String
             'AktuellerClub = Nothing
+
             AktuellerClub = New Club(Clubname) With {
                 .ClubName = Clubname,
                 .AlleGruppen = TemplateService.StandardGruppenErstellen(15),
-                .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
                 .AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen,
+                .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
                 .AlleEinteilungen = TemplateService.StandardEinteilungenErstellen}
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")

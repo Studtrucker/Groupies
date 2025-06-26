@@ -17,5 +17,10 @@ Namespace Entities
             Leistungsstufenliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
+        Public Function Sortieren() As LeistungsstufeCollection
+            Dim SortedList As New LeistungsstufeCollection(Me.OrderBy(Function(x) x.Sortierung))
+            Return SortedList
+        End Function
+
     End Class
 End Namespace

@@ -974,7 +974,7 @@ Public Class MainWindow
         Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.GroupiesFile.Name
 
         ' Die allgemeinen Leistungsstufen füllen
-        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenTextliste)
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
         GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
         GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
@@ -1294,7 +1294,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleLeistungsstufen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleLeistungsstufen.Sortieren
 
         fenster.DataContext = mvw
 

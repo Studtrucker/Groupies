@@ -52,8 +52,6 @@ Public Module MappingGeneration1
         ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(M) M.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f)))))
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) T.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f))))
-        ' Leere Fähigkeit hinzufügen für Dropdowns
-        Faehigkeiten.Add(New Faehigkeit With {.FaehigkeitID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1})
         ' Entferne doppelte Fähigkeiten
         Faehigkeiten = New FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
 
@@ -149,9 +147,7 @@ Public Module MappingGeneration1
     ''' <returns></returns>
     Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
         ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection From {
-            New Leistungsstufe With {.LeistungsstufeID = Guid.Empty, .Benennung = String.Empty, .Sortierung = -1}
-        }
+        Dim Leistungsstufen = New LeistungsstufeCollection
 
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(Gl) Gl.GroupMembers.ToList.ForEach(Sub(M) Leistungsstufen.Add(MapLevel2Leistungsstufe(M.ParticipantLevel))))

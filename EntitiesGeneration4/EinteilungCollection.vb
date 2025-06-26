@@ -17,18 +17,10 @@ Namespace Entities
             Einteilungsliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
-        Public Property BenennungGruppeneinteilung As String
-
-        ''' <summary>
-        ''' Fügt eine neue Einteilung hinzu,
-        ''' erstellt dazu Benennung und Sortierung
-        ''' </summary>
-        ''' <param name="Einteilung"></param>
-        Public Sub AddEinteilung(Einteilung As Einteilung)
-            Einteilung.Benennung = BenenneEinteilung()
-            Einteilung.Sortierung = Count + 1
-            Add(Einteilung)
-        End Sub
+        Public Function Sortieren() As EinteilungCollection
+            Dim SortedList As New EinteilungCollection(Me.OrderBy(Function(x) x.Sortierung))
+            Return SortedList
+        End Function
 
         ''' <summary>
         ''' Benennt eine neue Einteilung

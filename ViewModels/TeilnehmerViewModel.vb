@@ -27,7 +27,7 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.AlleLeistungsstufen)
+        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)

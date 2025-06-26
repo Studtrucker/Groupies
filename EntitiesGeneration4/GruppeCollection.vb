@@ -23,21 +23,13 @@ Namespace Entities
             End Get
         End Property
 
-        Public ReadOnly Property BenennungGeordnet As IEnumerable(Of String) =
-            OrderBy(Function(G) G.Sortierung) _
-            .ThenBy(Function(G) G.Benennung) _
-            .Select(Function(G) G.Benennung)
-
-        Public ReadOnly Property GruppeGeordnet As IEnumerable(Of Gruppe) =
-            OrderBy(Function(G) G.Sortierung) _
-            .ThenBy(Function(G) G.Benennung)
-
 #Region "Funktionen und Methoden"
-        Public Overloads Sub AddRange(Gruppenliste As IEnumerable(Of Gruppe))
-            For Each Gruppe As Gruppe In Gruppenliste
-                Add(Gruppe)
-            Next
-        End Sub
+
+
+        Public Function Sortieren() As GruppeCollection
+            Dim SortedList As New GruppeCollection(Me.OrderBy(Function(x) x.Sortierung))
+            Return SortedList
+        End Function
 
 #End Region
 

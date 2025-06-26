@@ -91,19 +91,10 @@ Namespace Entities
 
 #Region "Funktionen und Methoden"
 
-        Public Overloads Sub AddRange(Teilnehmerliste As IEnumerable(Of Teilnehmer))
-            For Each Teilnehmer As Teilnehmer In Teilnehmerliste
-                Add(Teilnehmer)
-            Next
-        End Sub
-
-        'Public Overloads Sub Add(Teilnehmer As Teilnehmer)
-        '    Add(Teilnehmer)
-        'End Sub
-
-        'Public Overloads Sub Remove(Teilnehmer As Teilnehmer)
-        '    Remove(Teilnehmer)
-        'End Sub
+        Public Function Sortieren() As TeilnehmerCollection
+            Dim SortedList As New TeilnehmerCollection(Me.OrderBy(Function(x) x.Nachname).OrderBy(Function(x) x.Vorname))
+            Return SortedList
+        End Function
 
 #End Region
 

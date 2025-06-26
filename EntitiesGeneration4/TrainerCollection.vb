@@ -24,42 +24,10 @@ Namespace Entities
             Trainers.ToList.ForEach(Sub(Tr) Remove(Tr))
         End Sub
 
-        ''' <summary>
-        ''' Liste verfügbare Trainer
-        ''' Geordnet:
-        ''' Nachname
-        ''' Vorname
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property VorUndNachnameVerfuegbar As IEnumerable(Of String) =
-            Where(Function(Tr) Tr.IstEinerGruppeZugewiesen = False) _
-            .OrderBy(Function(Tr) Tr.Nachname) _
-            .ThenBy(Function(Tr) Tr.Vorname) _
-            .Select(Function(Tr) Tr.VorUndNachname)
-
-        ''' <summary>
-        ''' Liste aller Trainer
-        ''' Geordnet:
-        ''' Nachname
-        ''' Vorname
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property VorUndNachname As IEnumerable(Of String) =
-            OrderBy(Function(Tr) Tr.Nachname) _
-            .ThenBy(Function(Tr) Tr.Vorname) _
-            .Select(Function(Tr) Tr.VorUndNachname)
-
-        ''' <summary>
-        ''' Liste verfügbare Trainer
-        ''' Geordnet:
-        ''' Nachname
-        ''' Vorname
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property GeordnetVerfuegbar As IEnumerable(Of Trainer) =
-            Where(Function(Tr) Tr.IstEinerGruppeZugewiesen = False) _
-            .OrderBy(Function(Tr) Tr.Nachname) _
-            .ThenBy(Function(Tr) Tr.Vorname)
+        Public Function Sortieren() As TrainerCollection
+            Dim SortedList As New TrainerCollection(Me.OrderBy(Function(x) x.Spitzname))
+            Return SortedList
+        End Function
 
     End Class
 End Namespace

@@ -50,15 +50,6 @@ Public Class ViewModelWindow
 
 #End Region
 
-#Region "Commands"
-    Public Property CancelCommand As ICommand
-    Public Property CloseCommand As ICommand
-    Public Property OkCommand As ICommand
-    Public Property UebersichtWindowLoadedCommand As ICommand
-    Public Property DetailWindowLoadedCommand As ICommand
-
-#End Region
-
 #Region "Properties"
 
 
@@ -181,6 +172,15 @@ Public Class ViewModelWindow
             Return Modus.CancelButtonVisibility
         End Get
     End Property
+
+#End Region
+
+#Region "Command Properties"
+    Public Property CancelCommand As ICommand
+    Public Property CloseCommand As ICommand
+    Public Property OkCommand As ICommand
+    Public Property UebersichtWindowLoadedCommand As ICommand
+    Public Property DetailWindowLoadedCommand As ICommand
 
 #End Region
 

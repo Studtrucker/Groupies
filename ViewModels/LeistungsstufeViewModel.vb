@@ -27,7 +27,7 @@ Public Class LeistungsstufeViewModel
         ' Hier können Sie den Konstruktor anpassen
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
-        AuswahlFaehigkeiten = New ListCollectionView(AppController.AktuellerClub.AlleValidenFaehigkeiten)
+        AuswahlFaehigkeiten = New ListCollectionView(AppController.AktuellerClub.FaehigkeitenComboBox)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub

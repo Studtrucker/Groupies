@@ -16,14 +16,10 @@ Namespace Entities
             Faehigkeitenliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
-        Public Property TrainerInfoGeordnet As IEnumerable(Of String) =
-            OrderBy(Function(f) f.Sortierung) _
-            .ThenBy(Function(f) f.Benennung) _
-            .Select(Function(f) f.AusgabeAnTrainerInfo)
-
-        Public Property FaehigkeitGeordnet As IEnumerable(Of Faehigkeit) =
-            OrderBy(Function(f) f.Sortierung) _
-            .ThenBy(Function(f) f.Benennung)
+        Public Function Sortieren() As FaehigkeitCollection
+            Dim SortedList As New FaehigkeitCollection(Me.OrderBy(Function(x) x.Sortierung))
+            Return SortedList
+        End Function
 
     End Class
 

@@ -17,12 +17,12 @@ Namespace Entities.Generation4
 
 #Region "Fields"
 
-        Private _AlleEinteilungen = New EinteilungCollection
-        Private _AlleGruppen = New GruppeCollection
-        Private _AlleLeistungsstufen = New LeistungsstufeCollection
-        Private _AlleFaehigkeiten As FaehigkeitCollection = New FaehigkeitCollection
-        Private _AlleTrainer = New TrainerCollection
-        Private _AlleTeilnehmer = New TeilnehmerCollection
+        Private _AlleEinteilungen As EinteilungCollection
+        Private _AlleGruppen As GruppeCollection
+        Private _AlleLeistungsstufen As LeistungsstufeCollection
+        Private _AlleFaehigkeiten As FaehigkeitCollection
+        Private _AlleTrainer As TrainerCollection
+        Private _AlleTeilnehmer As TeilnehmerCollection
 
 
 #End Region
@@ -117,17 +117,17 @@ Namespace Entities.Generation4
         ''' Eine Liste aller gültigen Leistungsstufen
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AlleValidenLeistungsstufen() As LeistungsstufeCollection
+
+        <XmlIgnore>
+        Public ReadOnly Property LeistungsstufenComboBox() As LeistungsstufeCollection
             Get
-                Return New LeistungsstufeCollection(AlleLeistungsstufen.ToList.Where(Function(l) l.Sortierung > 0))
+                Dim ComboLeistungsstufen = New LeistungsstufeCollection(AlleLeistungsstufen)
+                ComboLeistungsstufen.Add(New Leistungsstufe With {.Benennung = String.Empty, .Sortierung = -1, .LeistungsstufeID = Guid.Empty})
+                Return ComboLeistungsstufen.Sortieren()
+
             End Get
         End Property
 
-        Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
-            Get
-                Return AlleLeistungsstufen.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
-            End Get
-        End Property
 
 
         ''' <summary>
@@ -148,9 +148,16 @@ Namespace Entities.Generation4
         ''' Eine Liste aller gültigen Faehigkeiten
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
+        <XmlIgnore>
+        Public ReadOnly Property FaehigkeitenComboBox() As FaehigkeitCollection
             Get
-                Return New FaehigkeitCollection(AlleFaehigkeiten.Where(Function(f) f.Sortierung > -1))
+                Dim Faehigkeiten = AlleFaehigkeiten
+                Faehigkeiten.Add(New Faehigkeit With {
+                    .Benennung = String.Empty,
+                    .Sortierung = -1,
+                    .FaehigkeitID = Guid.Empty
+                })
+                Return Faehigkeiten
             End Get
         End Property
 

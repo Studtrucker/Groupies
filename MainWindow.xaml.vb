@@ -1294,7 +1294,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleValidenLeistungsstufen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleLeistungsstufen
 
         fenster.DataContext = mvw
 

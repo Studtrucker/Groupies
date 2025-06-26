@@ -54,7 +54,7 @@ Public Class FaehigkeitenTests
                                   $"1. Kurven",
                                   $"2. Pflug{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen Kurven fahren",
                                   $"3. Bremsen{Environment.NewLine}Kann mit Hilfe des Pflugs an flachen Hängen stoppen"},
-                                  fcol.TrainerInfoGeordnet.ToList)
+                                  fcol.Sortieren.ToList)
 
     End Sub
 
@@ -95,7 +95,7 @@ Public Class FaehigkeitenTests
         Next
     End Sub
 
-    Private Richtungen As Dictionary(Of Integer, String) = New Dictionary(Of Integer, String)()
+    Private ReadOnly Richtungen = New Dictionary(Of Integer, String)()
 
     Property RichtungslisteWert As IEnumerable(Of String) = Richtungen _
         .OrderBy(Function(SchlüsselWertPaar) SchlüsselWertPaar.Key) _

@@ -60,6 +60,16 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+            <!-- Design for Textbox Beschreibung -->
+            <Style TargetType="TextBox" x:Key="BeschreibungTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="AcceptsReturn" Value="True"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="MinHeight" Value="200"/>
+            </Style>
+
+
             <!-- Design for Textbox -->
 
 

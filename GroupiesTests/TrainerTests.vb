@@ -22,7 +22,7 @@ Public Class TrainerTests
         Dim l = New List(Of Trainer) From {t2, t1, t3}
         Dim trl = New TrainerCollection(l)
 
-        CollectionAssert.AreEqual(New List(Of String) From {"Ralf", "Andreas Studtrucker", "Sandra Witzel"}, trl.VorUndNachname.ToList)
+        CollectionAssert.AreEqual(New List(Of String) From {"Ralf", "Andreas Studtrucker", "Sandra Witzel"}, trl.Select(Of String)(Function(T) T.VorUndNachname).ToList)
 
     End Sub
 

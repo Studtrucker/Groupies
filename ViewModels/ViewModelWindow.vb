@@ -214,8 +214,8 @@ Public Class ViewModelWindow
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
 
         _windowService.SizeToContent = SizeToContent.WidthAndHeight
-        _windowService.MaxHeight = SystemParameters.WorkArea.Height * 0.8
-        _windowService.MaxWidth = SystemParameters.WorkArea.Width * 0.8
+        '_windowService.MaxHeight = SystemParameters.WorkArea.Height * 0.8
+        '_windowService.MaxWidth = SystemParameters.WorkArea.Width * 0.8
 
     End Sub
 

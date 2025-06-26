@@ -6,8 +6,6 @@ Namespace Controller
 
     Public Class AppController
 
-
-
 #Region "Eigenschaften"
 
         ''' <summary>
@@ -17,7 +15,7 @@ Namespace Controller
         Public Shared Property GroupiesFile As FileInfo
 
         ''' <summary>
-        ''' Der aktuell verwaltete Club
+        ''' Der aktuelle Club
         ''' </summary>
         ''' <returns></returns>
         Public Shared Property AktuellerClub As Club

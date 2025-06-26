@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
-        Height="100" Width="200" >
+        MinHeight="300" MinWidth="600">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -179,7 +179,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="405"/>
                     <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                 </Grid.ColumnDefinitions>
 
@@ -314,8 +314,7 @@
                          Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
 
                 <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
-                         Grid.Column="2" Grid.Row="3" 
-                         TextWrapping="Wrap" AcceptsReturn="True" />
+                         Grid.Column="2" Grid.Row="3" Style="{StaticResource BeschreibungTextBoxStyle}"/>
 
 
                 <!--<DataGrid  x:Name="FaehigkeitenDataGrid" Width="400"
@@ -395,7 +394,7 @@
                 <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" 
                      Grid.Column="2" Grid.Row="2" x:Name="BenennungTextBox"/>
                 <TextBox Text="{Binding Beschreibung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
-                     Grid.Column="2" Grid.Row="3" TextWrapping="Wrap" x:Name="BeschreibungTextBox"/>
+                     Grid.Column="2" Grid.Row="3" Style="{StaticResource BeschreibungTextBoxStyle}" />
             </Grid>
 
         </DataTemplate>
@@ -415,8 +414,8 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label x:Name="FehlerInfoLabel" Content="{Binding (Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
                 <Button x:Name="CloseButton" Width="110" Content="Schliessen"  Command="{Binding CloseCommand}" Visibility="{Binding CloseButtonVisibility}"/>
-                <Button x:Name="OkButton" Width="110" Content="Ok"  Command="{Binding OkCommand}"  IsEnabled="{Binding IstEingabeGueltig}" Visibility="{Binding OkButtonVisibility}"/>
-                <Button x:Name="CancelButton" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"  Visibility="{Binding CancelButtonVisibility}"/>
+                <Button x:Name="OkButton" IsDefault="True" Width="110" Content="Ok"  Command="{Binding OkCommand}"  IsEnabled="{Binding IstEingabeGueltig}" Visibility="{Binding OkButtonVisibility}"/>
+                <Button x:Name="CancelButton"  IsCancel="True" Width="110" Content="Abbrechen" Command="{Binding CancelCommand}"  Visibility="{Binding CancelButtonVisibility}"/>
             </StackPanel>
         </Border>
 

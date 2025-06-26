@@ -68,7 +68,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -185,7 +185,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition x:Name="CaptionColumn" Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -297,7 +297,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -405,7 +405,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -493,15 +493,15 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
                     <!--Labels-->
@@ -524,9 +524,7 @@
                     </Label>
                     
                     <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock>Beschreibung
-                            <!--<Run Foreground="Red">*</Run>-->
-                        </TextBlock>
+                        <TextBlock>Beschreibung</TextBlock>
                     </Label>
                     
                     <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource PflichtangabeLabel}">
@@ -547,33 +545,39 @@
 
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Beschreibung}"/>
+                             Text="{Binding SelectedItem.Beschreibung}"
+                             Style="{StaticResource BeschreibungTextBoxStyle}"/>
 
-                    <DataGrid  x:Name="FaehigkeitenDataGrid"
-                               AutoGenerateColumns="False" IsReadOnly="True"
-                               ItemsSource="{Binding SelectedItem.Faehigkeiten}"
-                               CanUserAddRows="False" 
-                               SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
-                               Grid.Column="2" Grid.Row="4">
+                    <DataGrid x:Name="FaehigkeitenDataGrid"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              ItemsSource="{Binding SelectedItem.Faehigkeiten}"
+                              CanUserAddRows="False"
+                              Grid.Column="2" Grid.Row="4">
+                        <!--<DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Height" Value="Auto"/>
+                            </Style>
+                        </DataGrid.RowStyle>-->
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" />
-                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}" >
+                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}">
                                 <DataGridTextColumn.ElementStyle>
-                                    <Style>
+                                    <Style TargetType="TextBlock">
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
                                         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="*">
+                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="Auto">
                                 <DataGridTextColumn.ElementStyle>
-                                    <Style>
+                                    <Style TargetType="TextBlock">
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
                                         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
+                        
                     </DataGrid>
                         
 
@@ -633,7 +637,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="405"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -657,15 +661,17 @@
 
                     <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
                         <TextBlock >Benennung
-                    <Run Foreground="Red">*</Run>
+                            <Run Foreground="Red">*</Run>
                         </TextBlock>
                     </Label>
 
                     <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock>Beschreibung
-                    <!--<Run Foreground="Red">*</Run>-->
+                        <TextBlock >Beschreibung
+                            <Run Foreground="Red">*</Run>
                         </TextBlock>
                     </Label>
+
+
 
                     <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True"
@@ -675,11 +681,12 @@
                              Text="{Binding SelectedItem.Sortierung}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Benennung}"/>                    
-                    
+                             Text="{Binding SelectedItem.Benennung}"/>
+
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Beschreibung}" />
-                    
+                             Style="{StaticResource BeschreibungTextBoxStyle}"
+                             Text="{Binding SelectedItem.Beschreibung}"/>
+
                 </Grid>
                 
             </DockPanel>

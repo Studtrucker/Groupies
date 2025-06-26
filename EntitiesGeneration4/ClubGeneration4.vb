@@ -49,7 +49,6 @@ Namespace Entities.Generation4
 
 #Region "Properties"
 
-
         ''' <summary>
         ''' Der Clubname
         ''' </summary>
@@ -121,8 +120,8 @@ Namespace Entities.Generation4
         <XmlIgnore>
         Public ReadOnly Property LeistungsstufenComboBox() As LeistungsstufeCollection
             Get
-                Dim ComboLeistungsstufen = New LeistungsstufeCollection(AlleLeistungsstufen)
-                ComboLeistungsstufen.Add(New Leistungsstufe With {.Benennung = String.Empty, .Sortierung = -1, .LeistungsstufeID = Guid.Empty})
+                Dim ComboLeistungsstufen = New LeistungsstufeCollection(AlleLeistungsstufen) From {
+                    New Leistungsstufe With {.Benennung = String.Empty, .Sortierung = -1, .LeistungsstufeID = Guid.Empty}}
                 Return ComboLeistungsstufen.Sortieren()
 
             End Get
@@ -245,7 +244,6 @@ Namespace Entities.Generation4
                 Dim loadedSkiclub As Generation4.Club
                 Try
                     loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation4.Club)
-                    'Return MappingGeneration3.MapSkiClub2Club(loadedSkiclub)
                     Return Map2AktuelleGeneration(loadedSkiclub)
                 Catch ex As InvalidDataException
                     Throw ex

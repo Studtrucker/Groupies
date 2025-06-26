@@ -17,15 +17,17 @@
     End Property
 
     Public Sub ShowWindow() Implements IWindowService.ShowWindow
-        If _window IsNot Nothing Then
-            _window.Show()
+        If _window Is Nothing Then
+            Return
         End If
+        _window.Show()
     End Sub
 
     Public Sub CloseWindow() Implements IWindowService.CloseWindow
-        If _window IsNot Nothing Then
-            _window.Close()
+        If _window Is Nothing Then
+            Return
         End If
+        _window.Close()
     End Sub
 
     Public Function ShowDialog() As Boolean Implements IWindowService.ShowDialog
@@ -44,14 +46,14 @@
         End Set
     End Property
 
-    Public Property MaxWidth As Double Implements IWindowService.MaxWidth
-        Get
-            Return _window.MaxWidth
-        End Get
-        Set(value As Double)
-            _window.MaxWidth = value
-        End Set
-    End Property
+    'Public Property MaxWidth As Double Implements IWindowService.MaxWidth
+    '    Get
+    '        Return _window.MaxWidth
+    '    End Get
+    '    Set(value As Double)
+    '        _window.MaxWidth = value
+    '    End Set
+    'End Property
 
     Public Property Width As Double Implements IWindowService.Width
         Get
@@ -70,14 +72,14 @@
         End Set
     End Property
 
-    Public Property MaxHeight As Double Implements IWindowService.MaxHeight
-        Get
-            Return _window.MaxHeight
-        End Get
-        Set(value As Double)
-            _window.MaxHeight = value
-        End Set
-    End Property
+    'Public Property MaxHeight As Double Implements IWindowService.MaxHeight
+    '    Get
+    '        Return _window.MaxHeight
+    '    End Get
+    '    Set(value As Double)
+    '        _window.MaxHeight = value
+    '    End Set
+    'End Property
     Public Property Left As Double Implements IWindowService.Left
         Get
             Return _window.Left

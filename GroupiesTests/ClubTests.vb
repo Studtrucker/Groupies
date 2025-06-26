@@ -13,7 +13,7 @@ Public Class ClubTests
         Dim Manuela As New Teilnehmer("Manuela", "Ramm")
         Dim Lina As New Teilnehmer("Lina", "Hötger")
         Dim Tag1 As New Einteilung
-        Stubai2024.Einteilungsliste.AddEinteilung(Tag1)
+        Stubai2024.Einteilungsliste.Add(Tag1)
         Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Studti)
         Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Manuela)
         Stubai2024.Einteilungsliste(0).GruppenloseTeilnehmer.Add(Lina)
@@ -57,7 +57,7 @@ Public Class ClubTests
     Public Sub TestTrainerEingruppierenUndEntfernen()
         Dim Stubai2024 = New Club("Stubaital2024")
         Dim Tag1 As New Einteilung
-        Stubai2024.Einteilungsliste.AddEinteilung(Tag1)
+        Stubai2024.Einteilungsliste.Add(Tag1)
 
         Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EinteilungAlleGruppen.Count)
 

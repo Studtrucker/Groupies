@@ -132,6 +132,9 @@
     <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
     <Compile Include="Interfaces\Windows\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
+    <Compile Include="MainWindow1.xaml.vb">
+      <DependentUpon>MainWindow1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mapper\MappingGeneration4.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
     <Compile Include="Mapper\MappingGeneration2.vb" />
@@ -246,6 +249,10 @@
     </Compile>
     <Compile Include="ValidationRules\SortierungValidationRule.vb" />
     <Compile Include="XMLDatenLaden.vb" />
+    <Page Include="MainWindow1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\EinteilungenlisteUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -534,6 +541,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-diversity-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-uebersichtsliste-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

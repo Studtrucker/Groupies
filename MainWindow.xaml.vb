@@ -1301,6 +1301,11 @@ Public Class MainWindow
         fenster.Show()
     End Sub
 
+    Private Sub HandleNeuesMainWindow(sender As Object, e As RoutedEventArgs)
+        Dim w As New MainWindow1()
+        w.Show()
+    End Sub
+
 
 #End Region
 

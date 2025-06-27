@@ -57,7 +57,7 @@
                 </MenuItem>
                 <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ApplicationPrintCommand}"  CommandParameter="InstructorInfo"/>
                 <Separator/>
-                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem" />
+                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" />
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="{Binding ApplicationCloseCommand}" />
             </MenuItem>

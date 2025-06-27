@@ -252,7 +252,7 @@ Public Class MainWindow
         ' 2. Die meist genutzten Listen ins Isolated Storage speichern
         If _mRuSortedList.Count > 0 Then
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                Using stream = New IsolatedStorageFileStream("_mRUSortedList", FileMode.OpenOrCreate, iso)
+                Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
                     Using writer = New StreamWriter(stream)
                         For Each kvp As KeyValuePair(Of Integer, String) In _mRuSortedList
                             writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
@@ -270,7 +270,7 @@ Public Class MainWindow
     Public Sub LoadmRUSortedListMenu()
         Try
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                Using stream = New IsolatedStorageFileStream("LastGroupies", System.IO.FileMode.Open, iso)
+                Using stream = New IsolatedStorageFileStream("mRuSortedList", System.IO.FileMode.Open, iso)
                     Using reader = New StreamReader(stream)
                         Dim i = 0
                         While reader.Peek <> -1

@@ -34,9 +34,9 @@ Namespace Entities
         ''' </summary>
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
-            If AppController.AktuellerClub IsNot Nothing OrElse AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
-                Leistungsstand = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
-            End If
+            'If AppController.AktuellerClub IsNot Nothing OrElse AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
+            '    Leistungsstand = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
+            'End If
         End Sub
 
         ''' <summary>

@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Collections.ObjectModel
+Imports System.IO
 Imports System.IO.IsolatedStorage
 Imports System.Reflection
 Imports System.Windows.Shell
@@ -87,7 +88,7 @@ Namespace ViewModels
         Private Sub LoadmRUSortedListMenu()
             Try
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                    Using stream = New IsolatedStorageFileStream("LastGroupies", System.IO.FileMode.Open, iso)
+                    Using stream = New IsolatedStorageFileStream("mRuSortedList", System.IO.FileMode.Open, iso)
                         Using reader = New StreamReader(stream)
                             Dim i = 0
                             While reader.Peek <> -1
@@ -191,7 +192,8 @@ Namespace ViewModels
 
 #Region "Properties"
 
-        Public Property MostRecentlyUsedMenuItem As MenuItem = New MenuItem
+        'Public Property MostRecentlyUsedMenuItem = New ObservableCollection(Of MenuEintragViewModel)
+        Public Property MostRecentlyUsedMenuItem
 
         Public Property WindowTitleIcon As String = "pack://application:,,,/Images/icons8-ski-resort-48.png"
 

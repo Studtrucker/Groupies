@@ -58,6 +58,15 @@
                 <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ApplicationPrintCommand}"  CommandParameter="InstructorInfo"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" />
+                <Menu ItemsSource="{Binding NeueSortedList}">
+                    <Menu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Titel}"/>
+                            <Setter Property="Command" Value="{Binding Befehl}"/>
+                            <Setter Property="CommandParameter" Value="{Binding Sortierung}"/>
+                        </Style>
+                    </Menu.ItemContainerStyle>
+                </Menu>
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="{Binding ApplicationCloseCommand}" />
             </MenuItem>

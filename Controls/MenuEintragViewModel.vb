@@ -1,6 +1,9 @@
-﻿Public Class MenuEintragViewModel
-    Public Property Titel As String
-    Public Property Befehl As ICommand
-    Public Property Sortierung As Integer
+﻿Imports System.Collections.ObjectModel
+
+Public Class MenuEintragViewModel
+    Public Property Header As String
+    Public Property Command As ICommand
+    Public Property SubItems As ObservableCollection(Of MenuItem)
+    Public Property Key As Integer
 
 End Class

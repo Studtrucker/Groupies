@@ -17,8 +17,8 @@ Namespace ViewModels
         Inherits BaseModel
 
 #Region "Felder"
-        Private _mRuSortedList As SortedList(Of Integer, String)
-        Private _neueSortedList As New ObservableCollection(Of MenuEintragViewModel)
+        'Private _mRuSortedList As SortedList(Of Integer, String)
+        Private _mRuSortedList As New ObservableCollection(Of MenuEintragViewModel)
 #End Region
 
 #Region "Konstruktor"
@@ -37,7 +37,8 @@ Namespace ViewModels
             ApplicationCloseCommand = New RelayCommand(Of Object)(Sub(o) Application.Current.Shutdown())
 
             ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-            _mRuSortedList = New SortedList(Of Integer, String)
+            '_mRuSortedList = New SortedList(Of Integer, String)
+            _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel)
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             LoadmRUSortedListMenu()
@@ -94,11 +95,11 @@ Namespace ViewModels
                             Dim i = 0
                             While reader.Peek <> -1
                                 Dim line = reader.ReadLine().Split(";")
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                Dim abc = _mRuSortedList.Any(Function(M) M.Key = i) '.Select(Function(M) M.Header).ToString()
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not abc Then
                                     If File.Exists(line(1)) Then
+                                        _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel) From {New MenuEintragViewModel With {.Header = line(1), .Key = i}}
                                         i += 1
-                                        _mRuSortedList.Add(i, line(1))
-                                        _neueSortedList.Add(New MenuEintragViewModel With {.Titel = line(1), .Sortierung = i})
                                     End If
                                 End If
                             End While
@@ -112,7 +113,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub RefreshMostRecentMenu()
-            'MostRecentlyUsedMenuItem.Items.Clear()
+            MostRecentlyUsedMenuItem.Clear()
 
             RefreshMenuInApplication()
             RefreshJumpListInWinTaskbar()
@@ -120,16 +121,16 @@ Namespace ViewModels
 
         Private Sub RefreshMenuInApplication()
 
-            For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
-                Dim mi As New MenuItem() With {.Header = _mRuSortedList.Values(i)}
+            For i = _mRuSortedList.Count - 1 To 0 Step -1
+                Dim mi As New MenuItem() With {.Header = _mRuSortedList(i)}
                 AddHandler mi.Click, AddressOf HandleMostRecentClick
-                'MostRecentlyUsedMenuItem.Items.Add(mi)
+                'MostRecentlyUsedMenuItem.Add(mi)
             Next
 
-            'If MostRecentlyUsedMenuItem.Items.Count = 0 Then
-            '    Dim mi = New MenuItem With {.Header = "keine"}
-            '    'MostRecentlyUsedMenuItem.Items.Add(mi)
-            'End If
+            If MostRecentlyUsedMenuItem.Count = 0 Then
+                Dim mi = New MenuEintragViewModel With {.Header = "keine"}
+                'MostRecentlyUsedMenuItem.Items.Add(mi)
+            End If
         End Sub
         Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
             OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
@@ -159,10 +160,11 @@ Namespace ViewModels
             ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
             ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-            For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            For i = _mRuSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
-                    .Path = _mRuSortedList.Values(i)}
+                    .Path = $"!Pfad{i}"}
+                '_mRuSortedList.Select(Of String)(Function(M) M.Key = i).Titel}
 
                 jumplist.JumpItems.Add(jumpPath)
             Next
@@ -194,15 +196,23 @@ Namespace ViewModels
 
 #Region "Properties"
 
-        Public Property NeueSortedList As ObservableCollection(Of MenuEintragViewModel)
+        'Public Property NeueSortedList As ObservableCollection(Of MenuEintragViewModel)
+        '    Get
+        '        Return _neueSortedList
+        '    End Get
+        '    Set(value As ObservableCollection(Of MenuEintragViewModel))
+        '        _neueSortedList = value
+        '    End Set
+        'End Property
+
+        Public Property MostRecentlyUsedMenuItem As ObservableCollection(Of MenuEintragViewModel)
             Get
-                Return _neueSortedList
+                Return _mRuSortedList
             End Get
             Set(value As ObservableCollection(Of MenuEintragViewModel))
-                _neueSortedList = value
+                _mRuSortedList = value
             End Set
         End Property
-        Public Property MostRecentlyUsedMenuItem
 
         Public Property WindowTitleIcon As String = "pack://application:,,,/Images/icons8-ski-resort-48.png"
 

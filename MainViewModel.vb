@@ -18,7 +18,7 @@ Namespace ViewModels
 
 #Region "Felder"
         Private _mRuSortedList As SortedList(Of Integer, String)
-        Private _neueSortedList As New ObservableCollection(Of MenuEintragViewModel)
+        'Private _neueSortedList As New ObservableCollection(Of MenuEintragViewModel)
 #End Region
 
 #Region "Konstruktor"
@@ -98,7 +98,7 @@ Namespace ViewModels
                                     If File.Exists(line(1)) Then
                                         i += 1
                                         _mRuSortedList.Add(i, line(1))
-                                        _neueSortedList.Add(New MenuEintragViewModel With {.Titel = line(1), .Sortierung = i})
+                                        '_neueSortedList.Add(New MenuEintragViewModel With {.Titel = line(1), .Sortierung = i})
                                     End If
                                 End If
                             End While
@@ -121,16 +121,27 @@ Namespace ViewModels
         Private Sub RefreshMenuInApplication()
 
             For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
-                Dim mi As New MenuItem() With {.Header = _mRuSortedList.Values(i)}
-                AddHandler mi.Click, AddressOf HandleMostRecentClick
-                'MostRecentlyUsedMenuItem.Items.Add(mi)
+                Dim mi As New MenuEintragViewModel() With {
+                    .Titel = _mRuSortedList.Values(i),
+                    .Sortierung = i,
+                    .Befehl = New RelayCommand(Of MenuEintragViewModel)(AddressOf HandleMostRecentClick)}
+                MostRecentlyUsedMenuItem.Add(mi)
             Next
 
-            'If MostRecentlyUsedMenuItem.Items.Count = 0 Then
-            '    Dim mi = New MenuItem With {.Header = "keine"}
-            '    'MostRecentlyUsedMenuItem.Items.Add(mi)
-            'End If
+            If MostRecentlyUsedMenuItem.Count = 0 Then
+                Dim mi = New MenuEintragViewModel With {.Titel = "keine", .Sortierung = 1, .Befehl = Nothing}
+                MostRecentlyUsedMenuItem.Add(mi)
+            End If
+
         End Sub
+
+        Private Sub HandleMostRecentClick(sender As Object)
+            Dim mi = TryCast(sender, RelayCommand(Of MenuEintragViewModel))
+            If mi IsNot Nothing Then
+                'OpenGroupies(mi.Titel)
+            End If
+        End Sub
+
         Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
             OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
         End Sub
@@ -194,15 +205,7 @@ Namespace ViewModels
 
 #Region "Properties"
 
-        Public Property NeueSortedList As ObservableCollection(Of MenuEintragViewModel)
-            Get
-                Return _neueSortedList
-            End Get
-            Set(value As ObservableCollection(Of MenuEintragViewModel))
-                _neueSortedList = value
-            End Set
-        End Property
-        Public Property MostRecentlyUsedMenuItem
+        Public Property MostRecentlyUsedMenuItem As New ObservableCollection(Of MenuEintragViewModel)
 
         Public Property WindowTitleIcon As String = "pack://application:,,,/Images/icons8-ski-resort-48.png"
 

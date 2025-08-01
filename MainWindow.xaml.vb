@@ -174,7 +174,7 @@ Public Class MainWindow
             Dim filename = args(1)
             OpenGroupies(filename)
         Else
-            LoadLastSkischule()
+            LoadLastGroupies()
         End If
 
 
@@ -832,7 +832,7 @@ Public Class MainWindow
 #Region "Helper-Methoden"
 
 
-    Private Sub LoadLastSkischule()
+    Private Sub LoadLastGroupies()
         ' Die letzte Skischule aus dem IsolatedStorage holen.
         Try
             Dim x = String.Empty

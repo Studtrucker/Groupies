@@ -37,7 +37,8 @@ Namespace ViewModels
             ApplicationCloseCommand = New RelayCommand(Of Object)(Sub(o) Application.Current.Shutdown())
 
             ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-            _mRuSortedList = New SortedList(Of Integer, String)
+            '_mRuSortedList = New SortedList(Of Integer, String)
+            _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel)
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             LoadmRUSortedListMenu()
@@ -94,8 +95,10 @@ Namespace ViewModels
                             Dim i = 0
                             While reader.Peek <> -1
                                 Dim line = reader.ReadLine().Split(";")
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                Dim abc = _mRuSortedList.Any(Function(M) M.Key = i) '.Select(Function(M) M.Header).ToString()
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not abc Then
                                     If File.Exists(line(1)) Then
+                                        _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel) From {New MenuEintragViewModel With {.Header = line(1), .Key = i}}
                                         i += 1
                                         _mRuSortedList.Add(i, line(1))
                                         '_neueSortedList.Add(New MenuEintragViewModel With {.Titel = line(1), .Sortierung = i})
@@ -112,7 +115,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub RefreshMostRecentMenu()
-            'MostRecentlyUsedMenuItem.Items.Clear()
+            MostRecentlyUsedMenuItem.Clear()
 
             RefreshMenuInApplication()
             RefreshJumpListInWinTaskbar()
@@ -170,15 +173,16 @@ Namespace ViewModels
             ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
             ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-            For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            For i = _mRuSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
-                    .Path = _mRuSortedList.Values(i)}
+                    .Path = $"!Pfad{i}"}
+                '_mRuSortedList.Select(Of String)(Function(M) M.Key = i).Titel}
 
                 jumplist.JumpItems.Add(jumpPath)
             Next
 
-            JumpList.SetJumpList(Application.Current, jumplist)
+            jumplist.SetJumpList(Application.Current, jumplist)
 
         End Sub
 

@@ -37,8 +37,7 @@ Namespace ViewModels
             ApplicationCloseCommand = New RelayCommand(Of Object)(Sub(o) Application.Current.Shutdown())
 
             ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-            '_mRuSortedList = New SortedList(Of Integer, String)
-            _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel)
+            _mRuSortedList = New SortedList(Of Integer, String)
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             LoadmRUSortedListMenu()
@@ -96,12 +95,10 @@ Namespace ViewModels
                             While reader.Peek <> -1
                                 Dim line = reader.ReadLine().Split(";")
                                 Dim abc = _mRuSortedList.Any(Function(M) M.Key = i) '.Select(Function(M) M.Header).ToString()
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not abc Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     If File.Exists(line(1)) Then
-                                        _mRuSortedList = New ObservableCollection(Of MenuEintragViewModel) From {New MenuEintragViewModel With {.Header = line(1), .Key = i}}
                                         i += 1
                                         _mRuSortedList.Add(i, line(1))
-                                        '_neueSortedList.Add(New MenuEintragViewModel With {.Titel = line(1), .Sortierung = i})
                                     End If
                                 End If
                             End While
@@ -127,7 +124,7 @@ Namespace ViewModels
                 Dim mi As New MenuEintragViewModel() With {
                     .Titel = _mRuSortedList.Values(i),
                     .Sortierung = i,
-                    .Befehl = New RelayCommand(Of MenuEintragViewModel)(AddressOf HandleMostRecentClick)}
+                    .Befehl = New RelayCommand(Of String)(AddressOf HandleMostRecentClick)}
                 MostRecentlyUsedMenuItem.Add(mi)
             Next
 
@@ -139,15 +136,15 @@ Namespace ViewModels
         End Sub
 
         Private Sub HandleMostRecentClick(sender As Object)
-            Dim mi = TryCast(sender, RelayCommand(Of MenuEintragViewModel))
-            If mi IsNot Nothing Then
-                'OpenGroupies(mi.Titel)
-            End If
+            'Dim mi = TryCast(sender, RelayCommand(Of String))
+            'If mi IsNot Nothing Then
+            OpenGroupies(sender)
+            'End If
         End Sub
 
-        Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
-            OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
-        End Sub
+        'Private Sub HandleMostRecentClick(sender As Object, e As RoutedEventArgs)
+        '    OpenGroupies(TryCast(sender, MenuItem).Header.ToString())
+        'End Sub
 
         Private Sub RefreshJumpListInWinTaskbar()
             'JumpList Klasse
@@ -182,7 +179,7 @@ Namespace ViewModels
                 jumplist.JumpItems.Add(jumpPath)
             Next
 
-            jumplist.SetJumpList(Application.Current, jumplist)
+            JumpList.SetJumpList(Application.Current, jumplist)
 
         End Sub
 

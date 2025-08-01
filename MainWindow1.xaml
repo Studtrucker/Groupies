@@ -29,7 +29,7 @@
     </i:Interaction.Triggers>
     
     <DockPanel>
-        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightSlateGray">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="HotPink">
 
             <MenuItem  Header="_Datei">
                 <MenuItem Header="_Neuer Club" Command="{Binding ApplicationNewCommand}">
@@ -57,17 +57,14 @@
                 </MenuItem>
                 <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ApplicationPrintCommand}"  CommandParameter="InstructorInfo"/>
                 <Separator/>
-                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" >
-                        <Menu ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
-                            
-                            <Menu.ItemContainerStyle>
-                                <Style TargetType="MenuItem">
-                                    <Setter Property="Header" Value="{Binding Titel}"/>
-                                    <Setter Property="Command" Value="{Binding Befehl}"/>
-                                    <Setter Property="CommandParameter" Value="{Binding Sortierung}"/>
-                                </Style>
-                            </Menu.ItemContainerStyle>
-                        </Menu>
+                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Titel}"/>
+                            <Setter Property="Command" Value="{Binding Befehl}"/>
+                            <Setter Property="CommandParameter" Value="{Binding Titel}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="{Binding ApplicationCloseCommand}" />

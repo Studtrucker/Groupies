@@ -118,8 +118,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
-    <Compile Include="Services\ApplicationService.vb" />
+    <Compile Include="Services\GroupiesApplicationService.vb" />
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
     <Compile Include="Behaviors\DataGridSortBehavior.vb" />

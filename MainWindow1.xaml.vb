@@ -6,7 +6,9 @@ Public Class MainWindow1
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        DataContext = New ViewModels.MainViewModel()
+        Dim ws As IWindowService = New WindowService(Me)
+
+        DataContext = New ViewModels.MainViewModel(ws)
 
     End Sub
 

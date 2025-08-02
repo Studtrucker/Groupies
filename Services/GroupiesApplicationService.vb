@@ -10,7 +10,7 @@ Namespace Services
     ''' <summary>
     ''' Stellt grundlegende Anwendungsdienste bereit, wie z.B. das Erstellen eines neuen Clubs.
     ''' </summary>
-    Public Class GroupiesApplication
+    Public Class GroupiesApplicationService
 
         ''' <summary>
         ''' Erstellt einen neuen Club, indem der Benutzer nach dem Namen gefragt wird.

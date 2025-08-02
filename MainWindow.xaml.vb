@@ -269,15 +269,26 @@ Public Class MainWindow
 #Region "Methoden zum Laden der meist genutzten Groupies und der letzten Groupies Datei"
     Public Sub LoadmRUSortedListMenu()
         Try
+            ' IsolatedStorage initialisiern
             Using iso = IsolatedStorageFile.GetUserStoreForAssembly
+                ' Die Datei mRUSortedList in den Stream packen
                 Using stream = New IsolatedStorageFileStream("mRuSortedList", System.IO.FileMode.Open, iso)
+                    ' Den Stream lesen
                     Using reader = New StreamReader(stream)
                         Dim i = 0
+                        ' Gibt es zu lesende Zeichen in dem Reader
                         While reader.Peek <> -1
+                            ' Die Zeilen aus dem Reader lesen und splitten
                             Dim line = reader.ReadLine().Split(";")
+                            ' Prüfen, ob die Zeile gesplittet werden konnte UND 
+                            ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
+                            ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
                             If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                 If File.Exists(line(1)) Then
+                                    ' Key erhöhen
                                     i += 1
+                                    ' Key-Value der Liste hinzufügen
                                     _mRuSortedList.Add(i, line(1))
                                 End If
                             End If
@@ -878,8 +889,16 @@ Public Class MainWindow
         End Using
     End Sub
 
+    ''' <summary>
+    ''' Hier wird die Liste der zuletzt geöffneten *.friends-files akualisiert
+    ''' es werden 'Zuletzt geöffnet' maximal 5 Files angezeigt
+    ''' </summary>
+    ''' <param name="fileName"></param>
+    ''' Filename ist voll qualifiziert
     Private Sub QueueMostRecentFilename(fileName As String)
-
+        ' Hier wird der maximale Zähler in der Variablen
+        ' _mRUSortedList herausgefunden und in der lokalen
+        ' Variablen max gespeichert
         Dim max As Integer = 0
         For Each i In _mRuSortedList.Keys
             If i > max Then max = i
@@ -887,24 +906,31 @@ Public Class MainWindow
 
         Dim keysToRemove As New List(Of Integer)()
         For Each kvp In _mRuSortedList
+            ' Hier wird geprüft, ob der an die Methode übergebene
+            ' filename einem Wert in der _mRUSortedList entspricht
             If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
         Next
+
+        ' Gibt es einen Eintrag in keysToRemove, dann wird dieser aus _mRUSortedList entfernt
         For Each i In keysToRemove
             _mRuSortedList.Remove(i)
         Next
 
+        ' Hier wird der neue filename in die _mRUSortedList eingefügt
         _mRuSortedList.Add(max + 1, fileName)
 
+        ' Wenn die Liste grösser als 5 ist, dann wird der kleinste Eintrag entfernt
         If _mRuSortedList.Count > 5 Then
             Dim min = Integer.MaxValue
             For Each i In _mRuSortedList.Keys
                 If i < min Then min = i
             Next
-
             _mRuSortedList.Remove(min)
         End If
 
+        ' Das MostRecently-Menü aktualisieren
         RefreshMostRecentMenu()
+
     End Sub
 
     Private Sub RefreshMostRecentMenu()
@@ -939,8 +965,8 @@ Public Class MainWindow
         'Stellt eine Verknüpfung zu einer Anwendung in der Taskleisten-Sprungliste unter Windows 7 dar.
         Dim jumptask = New JumpTask With {
                 .CustomCategory = "Release Notes",
-                .Title = "SkikursReleaseNotes",
-                .Description = "Zeigt die ReleaseNotes zu Skikurse an",
+                .Title = "Groupies Release Notes",
+                .Description = "Zeigt die ReleaseNotes zu der Groupies App an",
                 .ApplicationPath = "C:\Windows\notepad.exe",
                 .IconResourcePath = "C:\Windows\notepad.exe",
                 .WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
@@ -949,7 +975,7 @@ Public Class MainWindow
         jumplist.JumpItems.Add(jumptask)
 
         ' Hinweis Die JumpPath - Elemente sind nur sichtbar, wenn die ".ski"-Dateiendung
-        ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
+        ' unter Windows mit Groupies assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
         ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
         For i = _mRuSortedList.Values.Count - 1 To 0 Step -1

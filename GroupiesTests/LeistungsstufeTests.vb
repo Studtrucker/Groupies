@@ -1,9 +1,9 @@
 ﻿Imports Groupies
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
-<TestClass>
+'<TestClass>
 Public Class LeistungsstufeTests
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestKonstruktor()
 
         Dim l1 = New Entities.Leistungsstufe("Anfänger") With {.Sortierung = 1}

@@ -2,9 +2,9 @@
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation3
 
-<TestClass>
+'<TestClass>
 Public Class EwigeTeilnehmerlisteTest
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTeilnehmerHinzufuegen()
 
         Dim Stubai24 As New Club

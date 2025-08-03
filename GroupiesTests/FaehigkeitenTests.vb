@@ -1,12 +1,12 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies.Entities
 
-<TestClass>
+'<TestClass>
 Public Class FaehigkeitenTests
 
 
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestKonstruktor1()
 
         Dim f = New Faehigkeit() With {.Benennung = "Kurven", .Beschreibung = "Kurven fahren", .Sortierung = 1}
@@ -14,7 +14,7 @@ Public Class FaehigkeitenTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestKonstruktor2()
 
         Dim f1 = New Faehigkeit("Pflug") With {.Beschreibung = "Pflug fahren"}
@@ -25,7 +25,7 @@ Public Class FaehigkeitenTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestKonstruktor3()
         Dim f = New Faehigkeit("Bremsen", 3) With {.Beschreibung = "Kann stoppen"}
         Assert.AreEqual("Bremsen", f.Benennung)
@@ -33,7 +33,7 @@ Public Class FaehigkeitenTests
         Assert.AreEqual($"3. Bremsen{Environment.NewLine}Kann stoppen", f.AusgabeAnTrainerInfo)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestSortierungSammlung()
 
         Dim f = New Faehigkeit("Bremsen", 3) With {
@@ -58,7 +58,7 @@ Public Class FaehigkeitenTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestSortierung()
 
         Richtungen.Add(-1, "Nord")

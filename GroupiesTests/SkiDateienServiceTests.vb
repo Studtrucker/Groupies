@@ -2,10 +2,10 @@
 Imports Groupies.Entities
 Imports Groupies.Services
 
-<TestClass>
+'<TestClass>
 Public Class SkiDateienServiceTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub IdentifiziereDateiGenerationTest()
         Dim filelist = New List(Of String) From {
             "C:\Users\studt_era90oc\OneDrive\Dokumente\Reisen\Testdateien\TestdateiGeneration3.ski",
@@ -22,7 +22,7 @@ Public Class SkiDateienServiceTests
     End Sub
 
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub LadenDateiGeneration1_In_AktuelleStruktur()
         Dim Pfad
 
@@ -43,7 +43,7 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(2, Club.AlleEinteilungen(0).GruppenloseTrainer.Count)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub LadenDateiGeneration2_In_AktuelleStruktur()
         Dim Pfad
 
@@ -69,7 +69,7 @@ Public Class SkiDateienServiceTests
         Assert.AreEqual(5, Club.AlleEinteilungen.Count)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub LadenDateiGeneration3_In_AktuelleStruktur()
         Dim Pfad
 

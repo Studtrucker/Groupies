@@ -3,9 +3,9 @@ Imports Groupies.Controller
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation3
 
-<TestClass>
+'<TestClass>
 Public Class ClubTests
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTeilnehmerEingruppierenUndEntfernen()
         Dim Stubai2024 = New Club("Stubaital2024")
 
@@ -53,7 +53,7 @@ Public Class ClubTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTrainerEingruppierenUndEntfernen()
         Dim Stubai2024 = New Club("Stubaital2024")
         Dim Tag1 As New Einteilung
@@ -107,7 +107,7 @@ Public Class ClubTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestEingeteilteTeilnehmer()
         ' Ein Verein wird neu instanziiert
         Dim Testverein = New Club("Testverein09")

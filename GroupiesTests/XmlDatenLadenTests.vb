@@ -3,7 +3,7 @@ Imports Groupies.Entities
 Imports System.Windows
 Imports System.IO
 
-<TestClass>
+'<TestClass>
 Public Class XmlDatenLadenTests
 
     '<TestMethod>

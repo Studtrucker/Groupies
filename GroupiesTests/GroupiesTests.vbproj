@@ -83,6 +83,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateiServiceTests.vb" />
     <Compile Include="AppControllerTests.vb" />
     <Compile Include="ClubTests.vb" />
     <Compile Include="EwigeTeilnehmerlisteTest.vb" />

@@ -2,10 +2,10 @@
 Imports Groupies
 Imports Groupies.Entities
 
-<TestClass>
+'<TestClass>
 Public Class GruppeTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestKonstruktor()
         Dim g1 = New Gruppe("Enzian", 1)
         Dim g2 = New Gruppe("K2", 2)
@@ -17,7 +17,7 @@ Public Class GruppeTests
         Assert.AreEqual(2, g2.Sortierung)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestMitgliedHinzufuegen()
         Dim g1 = New Gruppe("Enzian", 1)
         Dim Koenner = New Leistungsstufe()

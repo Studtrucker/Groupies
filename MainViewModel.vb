@@ -19,40 +19,36 @@ Namespace ViewModels
         Inherits BaseModel
 
 #Region "Felder"
-        Private _mRuSortedList As SortedList(Of Integer, String)
         Private ReadOnly _windowService As IWindowService
 #End Region
 
 #Region "Konstruktor"
 
-        Public Sub New()
+        Private Sub New()
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
-            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
         End Sub
 
         Public Sub New(windowService As IWindowService)
             MyBase.New()
             _windowService = windowService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
-            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
         End Sub
 #End Region
 
 #Region "Window Events"
 
         Private Sub OnWindowLoaded(obj As Object)
-
+            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
+            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
             ApplicationNewCommand = New RelayCommand(Of Object)(AddressOf OnApplicationNew)
             ApplicationOpenCommand = New RelayCommand(Of Object)(AddressOf OnApplicationOpen)
             ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
+            ApplicationSaveCommand = New RelayCommand(Of Object)(AddressOf OnSave)
+            ApplicationSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnSaveAs)
 
-            ' 2. SortedList für meist genutzte Skischulen (Most Recently Used) initialisieren
-            _mRuSortedList = New SortedList(Of Integer, String)
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
-            LoadmRUSortedListMenu()
+            DateiService.LoadmRUSortedListMenu()
 
             ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
             If (Environment.GetCommandLineArgs().Length = 2) Then
@@ -63,6 +59,7 @@ Namespace ViewModels
                 LoadLastGroupies()
             End If
 
+            RefreshMostRecentMenu()
             RefreshJumpListInWinTaskbar()
 
         End Sub
@@ -90,11 +87,11 @@ Namespace ViewModels
             End If
 
             ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            If _mRuSortedList.Count > 0 Then
+            If DateiService.MostRecentUsedSortedList.Count > 0 Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                     Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
                         Using writer = New StreamWriter(stream)
-                            For Each kvp As KeyValuePair(Of Integer, String) In _mRuSortedList
+                            For Each kvp As KeyValuePair(Of Integer, String) In DateiService.MostRecentUsedSortedList
                                 writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
                             Next
                         End Using
@@ -125,9 +122,6 @@ Namespace ViewModels
         End Property
 
         Public Property Einteilungsliste As EinteilungCollection
-
-
-        Public Property AktuellerClub As Generation4.Club
 
         Public Property AlleEinteilungen As EinteilungCollection
             Get
@@ -171,7 +165,7 @@ Namespace ViewModels
 #Region "Command Properties"
         Public Property WindowLoadedCommand As ICommand
         Public Property WindowClosedCommand As ICommand
-        Public ReadOnly Property WindowClosingCommand As ICommand
+        Public Property WindowClosingCommand As ICommand
         Public Property ApplicationNewCommand As ICommand
         Public Property ApplicationOpenCommand As ICommand
         Public Property ApplicationSaveCommand As ICommand
@@ -293,17 +287,8 @@ Namespace ViewModels
         ''' <param name="obj"></param>
         Private Sub OnApplicationNew(obj As Object)
 
-            ' Ist aktuell eine Skischuldatei geöffnet?
-            If AktuellerClub IsNot Nothing Then
-                Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie den aktuellen Groupies Club noch speichern?", "", MessageBoxButton.YesNoCancel)
-                If rs = MessageBoxResult.Yes Then
-                    ApplicationCommands.Save.Execute(Nothing, Me)
-                ElseIf rs = MessageBoxResult.Cancel Then
-                    Exit Sub
-                End If
-            End If
-
-            AktuellerClub = Services.GroupiesApplicationService.NeuenClubErstellen()
+            DateiService.NeueDateiErstellen()
+            SetProperties()
 
         End Sub
 
@@ -333,6 +318,38 @@ Namespace ViewModels
                 SetProperties()
             End If
         End Sub
+        Private Sub OnSaveAs(obj As Object)
+            Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
+            If AppController.GroupiesFile IsNot Nothing Then
+                dlg.FileName = AppController.GroupiesFile.Name
+            End If
+
+            If dlg.ShowDialog = True Then
+                SaveGroupies(dlg.FileName)
+                AppController.GroupiesFile = New FileInfo(dlg.FileName)
+            End If
+        End Sub
+
+        Private Sub OnSave(obj As Object)
+            If AppController.GroupiesFile Is Nothing Then
+                ApplicationCommands.SaveAs.Execute(Nothing, Me)
+            Else
+                SaveGroupies(AppController.GroupiesFile)
+            End If
+        End Sub
+
+        Private Sub SaveGroupies(fileName As String)
+            SaveGroupies(New FileInfo(fileName))
+        End Sub
+
+        Private Sub SaveGroupies(fileInfo As FileInfo)
+            ' 1. Skischule serialisieren und gezippt abspeichern
+            'SaveXML(fileInfo.FullName)
+            ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
+            WindowTitleText = $"Groupies - {AppController.AktuellerClub.ClubName} - {fileInfo.Name}"
+            QueueMostRecentFilename(fileInfo.FullName)
+            MessageBox.Show($"Die Datei {fileInfo.Name} wurde gespeichert!", AppController.AktuellerClub.ClubName, MessageBoxButton.OK, MessageBoxImage.Information)
+        End Sub
 
         Private Sub SetProperties()
             WindowTitleText = DefaultWindowTitleText & " - " & AppController.GroupiesFile.Name
@@ -361,13 +378,13 @@ Namespace ViewModels
                                 ' Prüfen, ob die Zeile gesplittet werden konnte UND 
                                 ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
                                 ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not _mRuSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MostRecentUsedSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                     If File.Exists(line(1)) Then
                                         ' Key erhöhen
                                         i += 1
                                         ' Key-Value der Liste hinzufügen
-                                        _mRuSortedList.Add(i, line(1))
+                                        DateiService.MostRecentUsedSortedList.Add(i, line(1))
                                     End If
                                 End If
                             End While
@@ -380,47 +397,6 @@ Namespace ViewModels
             End Try
         End Sub
 
-        ''' <summary>
-        ''' Schreibt den Filename in die Variable _mRuSortedList
-        ''' </summary>
-        ''' <param name="fileName"></param>
-        Private Sub QueueMostRecentFilename(fileName As String)
-            ' Hier wird der maximale Zähler in der Variablen
-            ' _mRUSortedList herausgefunden und in der lokalen
-            ' Variablen max gespeichert
-            Dim max As Integer = 0
-            For Each i In _mRuSortedList.Keys
-                If i > max Then max = i
-            Next
-
-            Dim keysToRemove As New List(Of Integer)()
-            For Each kvp In _mRuSortedList
-                ' Hier wird geprüft, ob der an die Methode übergebene
-                ' filename einem Wert in der _mRUSortedList entspricht
-                If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
-            Next
-
-            ' Gibt es einen Eintrag in keysToRemove, dann wird dieser aus _mRUSortedList entfernt
-            For Each i In keysToRemove
-                _mRuSortedList.Remove(i)
-            Next
-
-            ' Hier wird der neue filename in die _mRUSortedList eingefügt
-            _mRuSortedList.Add(max + 1, fileName)
-
-            ' Wenn die Liste grösser als 5 ist, dann wird der kleinste Eintrag entfernt
-            If _mRuSortedList.Count > 5 Then
-                Dim min = Integer.MaxValue
-                For Each i In _mRuSortedList.Keys
-                    If i < min Then min = i
-                Next
-                _mRuSortedList.Remove(min)
-            End If
-
-            ' Das MostRecently-Menü aktualisieren
-            RefreshMostRecentMenu()
-
-        End Sub
 
         Private Sub RefreshMostRecentMenu()
             MostRecentlyUsedMenuItem.Clear()
@@ -435,9 +411,9 @@ Namespace ViewModels
         ''' </summary>
         Private Sub RefreshMenuInApplication()
 
-            For i = _mRuSortedList.Values.Count - 1 To 0 Step -1
+            For i = DateiService.MostRecentUsedSortedList.Values.Count - 1 To 0 Step -1
                 Dim mi As New MenuEintragViewModel() With {
-                    .Titel = _mRuSortedList.Values(i),
+                    .Titel = DateiService.MostRecentUsedSortedList.Values(i),
                     .Sortierung = i,
                     .Befehl = New RelayCommand(Of String)(AddressOf HandleMostRecentClick)}
                 MostRecentlyUsedMenuItem.Add(mi)
@@ -497,7 +473,7 @@ Namespace ViewModels
             ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
             ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-            For i = _mRuSortedList.Count - 1 To 0 Step -1
+            For i = DateiService.MostRecentUsedSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
                     .Path = $"!Pfad{i}"}

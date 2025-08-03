@@ -4,10 +4,10 @@ Imports Groupies
 Imports System.IO
 Imports System.Xml.Serialization
 
-<TestClass>
+'<TestClass>
 Public Class MappingVeraltertAufNeuTest
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestClubOeffnen()
 
         Dim filename

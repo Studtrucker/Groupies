@@ -10,7 +10,7 @@ Namespace Services
     ''' <summary>
     ''' Stellt grundlegende Anwendungsdienste bereit, wie z.B. das Erstellen eines neuen Clubs.
     ''' </summary>
-    Public Class GroupiesApplicationService
+    Public Class AppService
 
         ''' <summary>
         ''' Erstellt einen neuen Club, indem der Benutzer nach dem Namen gefragt wird.
@@ -18,7 +18,7 @@ Namespace Services
         ''' </summary>
         ''' <returns>Ein neues Club-Objekt.</returns>
         Public Shared Function NeuenClubErstellen() As Generation4.Club
-            Dim dlg = InputBox("Bitte geben Sie den Namen des neuen Clubs ein", "Neuen Club erstellen", "Groupies Club")
+            Dim dlg = InputBox("Bitte geben Sie den Namen des neuen Clubs ein", "Neuen Club erstellen", "Groupies")
             If String.IsNullOrEmpty(dlg) OrElse String.IsNullOrWhiteSpace(dlg) Then
                 MessageBox.Show("Der Clubname darf nicht leer sein.")
                 Return Nothing

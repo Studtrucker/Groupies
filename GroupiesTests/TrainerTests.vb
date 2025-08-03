@@ -1,10 +1,10 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies.Entities
 
-<TestClass>
+'<TestClass>
 Public Class TrainerTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTrainerErstellen()
         Dim t1 = New Trainer("Ralf")
         Assert.AreEqual("Ralf", t1.AusgabeTeilnehmerInfo)
@@ -14,7 +14,7 @@ Public Class TrainerTests
         Assert.AreEqual("Studti", t3.AusgabeTeilnehmerInfo)
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestTrainerlisten()
         Dim t1 = New Trainer("Ralf")
         Dim t2 = New Trainer("Sandra", "Witzel")

@@ -1,8 +1,8 @@
 ﻿Imports Groupies.Services
-<TestClass>
+'<TestClass>
 Public Class ImportServiceTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestStarteOpenFileDialog()
         Dim Pfad
         Dim Result

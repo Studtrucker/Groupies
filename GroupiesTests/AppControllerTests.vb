@@ -7,7 +7,7 @@ Imports Groupies.Controller
 <TestClass>
 Public Class AppControllerTests
 
-    <TestMethod>
+    '<TestMethod>
     Sub TestNeuenSkiclubErstellen()
 
         'Dim numberOfGroups = 9

@@ -99,6 +99,7 @@
       <HintPath>packages\System.Text.Encoding.CodePages.10.0.0-preview.5.25277.114\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -120,7 +121,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
-    <Compile Include="Services\GroupiesApplicationService.vb" />
+    <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
     <Compile Include="Behaviors\DataGridSortBehavior.vb" />
@@ -143,6 +144,7 @@
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
     <Compile Include="Interfaces\Refactoring\IClub.vb" />
+    <Compile Include="Services\DateiService.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="Services\WindowService.vb" />
     <Compile Include="SkiDatenLaden.vb" />

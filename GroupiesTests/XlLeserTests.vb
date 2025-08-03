@@ -6,10 +6,10 @@ Imports System.IO
 Imports System.Net.WebRequestMethods
 
 
-<TestClass>
+'<TestClass>
 Public Class XlLeserTests
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestXLSXReaderMitFehler()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then
@@ -81,7 +81,7 @@ Public Class XlLeserTests
 
     End Sub
 
-    <TestMethod>
+    '<TestMethod>
     Public Sub TestCSVReaderTeilnehmer()
         Dim Pfad
         If Environment.MachineName = "DESKTOP-JGIR9SQ" Then

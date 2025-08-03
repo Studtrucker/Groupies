@@ -146,7 +146,7 @@ Namespace Entities
             ' = Gruppenliste.ToList.Select(Function(Gr) Gr.Trainer))
             Get
                 _EingeteilteTrainer.Clear()
-                EinteilungAlleGruppen.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
+                EinteilungAlleGruppen?.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
                 Return _EingeteilteTrainer
             End Get
         End Property
@@ -172,7 +172,7 @@ Namespace Entities
         Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
             Get
                 _EingeteilteTeilnehmer.Clear()
-                EinteilungAlleGruppen.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
+                EinteilungAlleGruppen?.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
                 Return _EingeteilteTeilnehmer
             End Get
         End Property

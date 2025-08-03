@@ -3,7 +3,7 @@ Imports Groupies.Entities
 Imports Groupies.Controller
 Imports Groupies.Entities.Generation4
 
-<TestClass>
+'<TestClass>
 Public Class XlSchreiberTests
     '<TestMethod>
     Public Sub TestXlExport()

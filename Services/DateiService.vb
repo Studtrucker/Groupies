@@ -18,7 +18,7 @@ Namespace Services
         ''' <summary>
         ''' Gibt die Liste der zuletzt verwendeten Dateien zurück.
         ''' </summary>
-        Public ReadOnly Property MostRecentUsedSortedList As New SortedList(Of Integer, String)
+        Public ReadOnly Property MeistVerwendeteDateienSortedList As New SortedList(Of Integer, String)
 
         ''' <summary>
         ''' Die aktuell geladene Datei.
@@ -165,8 +165,17 @@ Namespace Services
 
         End Function
 
+#End Region
 
-        Public Sub LoadmRUSortedListMenu()
+#Region "IsolatedStorage"
+
+
+        ''' <summary>
+        ''' Der IsolatedStorage wird geladen, um die meist verwendeten Dateien zu laden und im Menu zu zeigen.
+        ''' Diese Funktion wird aufgerufen, wenn das MainWindow geöffnet wird.
+        ''' Die Dateien werden in der MeistVerwendeteDateienSortedList gespeichert.
+        ''' </summary>
+        Public Sub LadeMeistVerwendeteDateienInSortedList()
             Try
                 ' IsolatedStorage initialisiern
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly
@@ -182,13 +191,13 @@ Namespace Services
                                 ' Prüfen, ob die Zeile gesplittet werden konnte UND 
                                 ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
                                 ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MostRecentUsedSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MeistVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                     If File.Exists(line(1)) Then
                                         ' Key erhöhen
                                         i += 1
                                         ' Key-Value der Liste hinzufügen
-                                        DateiService.MostRecentUsedSortedList.Add(i, line(1))
+                                        DateiService.MeistVerwendeteDateienSortedList.Add(i, line(1))
                                     End If
                                 End If
                             End While
@@ -206,17 +215,17 @@ Namespace Services
         ''' Die Liste behält maximal 5 Einträge bei, wobei die ältesten entfernt werden.
         ''' </summary>
         ''' <param name="fileName"></param>
-        Public Sub QueueMostRecentFilename(fileName As String)
+        Public Sub SchreibeFilenameInMeistVerwendeteDateienSortedList(fileName As String)
             ' Hier wird der maximale Zähler in der Variablen
             ' _mRUSortedList herausgefunden und in der lokalen
             ' Variablen max gespeichert
             Dim max As Integer = 0
-            For Each i In MostRecentUsedSortedList.Keys
+            For Each i In MeistVerwendeteDateienSortedList.Keys
                 If i > max Then max = i
             Next
 
             Dim keysToRemove As New List(Of Integer)()
-            For Each kvp In MostRecentUsedSortedList
+            For Each kvp In MeistVerwendeteDateienSortedList
                 ' Hier wird geprüft, ob der an die Methode übergebene
                 ' filename einem Wert in der _mRUSortedList entspricht
                 If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
@@ -224,23 +233,69 @@ Namespace Services
 
             ' Gibt es einen Eintrag in keysToRemove, dann wird dieser aus _mRUSortedList entfernt
             For Each i In keysToRemove
-                MostRecentUsedSortedList.Remove(i)
+                MeistVerwendeteDateienSortedList.Remove(i)
             Next
 
             ' Hier wird der neue filename in die _mRUSortedList eingefügt
-            MostRecentUsedSortedList.Add(max + 1, fileName)
+            MeistVerwendeteDateienSortedList.Add(max + 1, fileName)
 
             ' Wenn die Liste grösser als 5 ist, dann wird der kleinste Eintrag entfernt
-            If MostRecentUsedSortedList.Count > 5 Then
+            If MeistVerwendeteDateienSortedList.Count > 5 Then
                 Dim min = Integer.MaxValue
-                For Each i In MostRecentUsedSortedList.Keys
+                For Each i In MeistVerwendeteDateienSortedList.Keys
                     If i < min Then min = i
                 Next
-                MostRecentUsedSortedList.Remove(min)
+                MeistVerwendeteDateienSortedList.Remove(min)
             End If
         End Sub
 
-        Public Sub LastClubInIsolatedStorageSpeichern()
+        ''' <summary>
+        ''' Die Dateien aus der MeistVerwendeteDateienSortedList werden ins IsolatedStorage gespeichert.
+        ''' Diese Funktion wird aufgerufen, wenn das MainWindow geschlossen wird.
+        ''' </summary>
+        Public Sub SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
+            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
+            If MeistVerwendeteDateienSortedList.Count > 0 Then
+                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                    Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
+                        Using writer = New StreamWriter(stream)
+                            For Each kvp As KeyValuePair(Of Integer, String) In MeistVerwendeteDateienSortedList
+                                writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
+                            Next
+                        End Using
+                    End Using
+                End Using
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Liest den zuletzt verwendeten Dateinamen aus dem IsolatedStorage.
+        ''' </summary>
+        Public Function LiesZuletztGeoeffneteDatei() As String
+            ' Die LastGroupies aus dem IsolatedStorage einlesen.
+            Try
+                Dim Filestring = String.Empty
+                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
+                    Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
+                        Using reader = New StreamReader(stream)
+                            Filestring = reader.ReadLine
+                        End Using
+                    End Using
+                End Using
+                If File.Exists(Filestring) Then
+                    Return (Filestring)
+                End If
+            Catch ex As FileNotFoundException
+            End Try
+            Return Nothing
+        End Function
+
+
+        ''' <summary>
+        ''' Der zuletzt verwendete Dateiname wird im IsolatedStorage gespeichert.
+        ''' Diese Funktion wird aufgerufen, wenn das MainWindow geschlossen wird.
+        ''' </summary>
+        Public Sub SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
             If AppController.GroupiesFile IsNot Nothing Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
@@ -251,26 +306,11 @@ Namespace Services
                     End Using
                 End Using
             End If
-
-        End Sub
-
-        Public Sub MeistGenutztenClubsInsIsolatedStorageSpeichern()
-            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            If MostRecentUsedSortedList.Count > 0 Then
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                    Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
-                        Using writer = New StreamWriter(stream)
-                            For Each kvp As KeyValuePair(Of Integer, String) In MostRecentUsedSortedList
-                                writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
-                            Next
-                        End Using
-                    End Using
-                End Using
-            End If
         End Sub
 
 
 #End Region
+
 
 #Region "Hilfsfunktionen"
 

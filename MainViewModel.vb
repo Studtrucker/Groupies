@@ -38,25 +38,29 @@ Namespace ViewModels
 #Region "Window Events"
 
         Private Sub OnWindowLoaded(obj As Object)
+
+            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
             WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
             WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
             ApplicationNewCommand = New RelayCommand(Of Object)(AddressOf OnApplicationNew)
             ApplicationOpenCommand = New RelayCommand(Of Object)(AddressOf OnApplicationOpen)
-            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-            ApplicationSaveCommand = New RelayCommand(Of Object)(AddressOf OnSave)
-            ApplicationSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnSaveAs)
-
+            ApplicationSaveCommand = New RelayCommand(Of Object)(AddressOf OnApplicationSave, Function() CanApplicationSave())
+            ApplicationSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnApplicationSaveAs, Function() CanApplicationSaveAs())
+            ApplicationPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
-            DateiService.LoadmRUSortedListMenu()
+            DateiService.LadeMeistVerwendeteDateienInSortedList()
 
             ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
             If (Environment.GetCommandLineArgs().Length = 2) Then
                 Dim args = Environment.GetCommandLineArgs
                 Dim filename = args(1)
-                OpenGroupies(filename)
+                DateiService.DateiLaden(New FileInfo(filename))
             Else
-                LoadLastGroupies()
+                Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
+                If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
+                    DateiService.DateiLaden(New FileInfo(LetzteDatei))
+                End If
             End If
 
             RefreshMostRecentMenu()
@@ -64,7 +68,23 @@ Namespace ViewModels
 
         End Sub
 
-        Private Sub OnClose(obj As Object)
+        Private Function CanApplicationPrint() As Boolean
+            Return False
+        End Function
+
+        Private Sub OnApplicationPrint(obj As Object)
+            Throw New NotImplementedException()
+        End Sub
+
+        Private Function CanApplicationSaveAs() As Boolean
+            Return False
+        End Function
+
+        Private Function CanApplicationSave() As Boolean
+            Return False
+        End Function
+
+        Private Sub OnWindowClose(obj As Object)
             _windowService.CloseWindow()
         End Sub
 
@@ -76,28 +96,11 @@ Namespace ViewModels
         Private Sub OnWindowClosed(obj As Object)
 
             ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
-            If AppController.GroupiesFile IsNot Nothing Then
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                    Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
-                        Using writer = New StreamWriter(stream)
-                            writer.WriteLine(AppController.GroupiesFile.FullName)
-                        End Using
-                    End Using
-                End Using
-            End If
+            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
 
             ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            If DateiService.MostRecentUsedSortedList.Count > 0 Then
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                    Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
-                        Using writer = New StreamWriter(stream)
-                            For Each kvp As KeyValuePair(Of Integer, String) In DateiService.MostRecentUsedSortedList
-                                writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
-                            Next
-                        End Using
-                    End Using
-                End Using
-            End If
+            DateiService.SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
+
         End Sub
 
 #End Region
@@ -286,10 +289,9 @@ Namespace ViewModels
         ''' </summary>
         ''' <param name="obj"></param>
         Private Sub OnApplicationNew(obj As Object)
-
             DateiService.NeueDateiErstellen()
+            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
             SetProperties()
-
         End Sub
 
         ''' <summary>
@@ -298,57 +300,34 @@ Namespace ViewModels
         ''' </summary>
         ''' <param name="obj"></param>
         Private Sub OnApplicationOpen(obj As Object)
-            If SkiDateienService.OpenSkiDatei() Then
-                QueueMostRecentFilename(AppController.GroupiesFile.FullName)
-                SetProperties()
-            End If
+            DateiService.DateiLaden()
+            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
+            SetProperties()
         End Sub
+
+        Private Sub OnApplicationSave(obj As Object)
+            DateiService.DateiSpeichern()
+        End Sub
+
+        Private Sub OnApplicationSaveAs(obj As Object)
+            DateiService.DateiSpeichernAls()
+            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
+            SetProperties()
+        End Sub
+
 
         ''' <summary>
         ''' Handler für Eintrag aus 'Zuletzt geöffnet'
         ''' </summary>
         ''' <param name="sender"></param>
         Private Sub HandleMostRecentClick(sender As Object)
-            OpenGroupies(sender)
+            DateiService.DateiLaden(New FileInfo(sender))
+            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(sender)
         End Sub
 
         Private Sub OpenGroupies(fileName As String)
-            If SkiDateienService.OpenSkiDatei(fileName) Then
-                QueueMostRecentFilename(fileName)
-                SetProperties()
-            End If
-        End Sub
-        Private Sub OnSaveAs(obj As Object)
-            Dim dlg = New SaveFileDialog With {.Filter = "*.ski|*.ski"}
-            If AppController.GroupiesFile IsNot Nothing Then
-                dlg.FileName = AppController.GroupiesFile.Name
-            End If
-
-            If dlg.ShowDialog = True Then
-                SaveGroupies(dlg.FileName)
-                AppController.GroupiesFile = New FileInfo(dlg.FileName)
-            End If
-        End Sub
-
-        Private Sub OnSave(obj As Object)
-            If AppController.GroupiesFile Is Nothing Then
-                ApplicationCommands.SaveAs.Execute(Nothing, Me)
-            Else
-                SaveGroupies(AppController.GroupiesFile)
-            End If
-        End Sub
-
-        Private Sub SaveGroupies(fileName As String)
-            SaveGroupies(New FileInfo(fileName))
-        End Sub
-
-        Private Sub SaveGroupies(fileInfo As FileInfo)
-            ' 1. Skischule serialisieren und gezippt abspeichern
-            'SaveXML(fileInfo.FullName)
-            ' 2. Titel setzen und Datei zum MostRecently-Menü hinzufügen
-            WindowTitleText = $"Groupies - {AppController.AktuellerClub.ClubName} - {fileInfo.Name}"
-            QueueMostRecentFilename(fileInfo.FullName)
-            MessageBox.Show($"Die Datei {fileInfo.Name} wurde gespeichert!", AppController.AktuellerClub.ClubName, MessageBoxButton.OK, MessageBoxImage.Information)
+            DateiService.DateiLaden(New FileInfo(fileName))
+            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(fileName)
         End Sub
 
         Private Sub SetProperties()
@@ -378,13 +357,13 @@ Namespace ViewModels
                                 ' Prüfen, ob die Zeile gesplittet werden konnte UND 
                                 ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
                                 ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MostRecentUsedSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MeistVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                     If File.Exists(line(1)) Then
                                         ' Key erhöhen
                                         i += 1
                                         ' Key-Value der Liste hinzufügen
-                                        DateiService.MostRecentUsedSortedList.Add(i, line(1))
+                                        DateiService.MeistVerwendeteDateienSortedList.Add(i, line(1))
                                     End If
                                 End If
                             End While
@@ -411,9 +390,9 @@ Namespace ViewModels
         ''' </summary>
         Private Sub RefreshMenuInApplication()
 
-            For i = DateiService.MostRecentUsedSortedList.Values.Count - 1 To 0 Step -1
+            For i = DateiService.MeistVerwendeteDateienSortedList.Values.Count - 1 To 0 Step -1
                 Dim mi As New MenuEintragViewModel() With {
-                    .Titel = DateiService.MostRecentUsedSortedList.Values(i),
+                    .Titel = DateiService.MeistVerwendeteDateienSortedList.Values(i),
                     .Sortierung = i,
                     .Befehl = New RelayCommand(Of String)(AddressOf HandleMostRecentClick)}
                 MostRecentlyUsedMenuItem.Add(mi)
@@ -473,7 +452,7 @@ Namespace ViewModels
             ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
             ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-            For i = DateiService.MostRecentUsedSortedList.Count - 1 To 0 Step -1
+            For i = DateiService.MeistVerwendeteDateienSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
                     .Path = $"!Pfad{i}"}

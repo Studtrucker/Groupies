@@ -22,86 +22,46 @@ Namespace ViewModels
         Private ReadOnly _windowService As IWindowService
 #End Region
 
-#Region "Konstruktor"
+#Region "Command Properties"
+        Public Property ApplicationCloseCommand As ICommand
+        Public Property WindowLoadedCommand As ICommand
+        Public Property WindowClosedCommand As ICommand
+        Public Property WindowClosingCommand As ICommand
+        Public Property ClubNewCommand As ICommand
+        Public Property ClubOpenCommand As ICommand
+        Public Property ClubSaveCommand As ICommand
+        Public Property ClubSaveAsCommand As ICommand
+        Public Property ClubPrintCommand As ICommand
+        Public Property ClubCloseCommand As ICommand
 
-        Private Sub New()
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-        End Sub
+        Public Property EinteilungErstellenCommand As ICommand
+        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
 
-        Public Sub New(windowService As IWindowService)
-            MyBase.New()
-            _windowService = windowService
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-        End Sub
-#End Region
+        Public Property GruppeErstellenCommand As ICommand
+        Public Property GruppeLoeschenCommand As ICommand
+        Public Property GruppenuebersichtAnzeigenCommand As ICommand
 
-#Region "Window Events"
+        Public Property LeistungsstufeErstellenCommand As ICommand
+        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
 
-        Private Sub OnWindowLoaded(obj As Object)
+        Public Property FaehigkeitErstellenCommand As ICommand
+        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
 
-            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
-            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
-            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
-            ApplicationNewCommand = New RelayCommand(Of Object)(AddressOf OnApplicationNew)
-            ApplicationOpenCommand = New RelayCommand(Of Object)(AddressOf OnApplicationOpen)
-            ApplicationSaveCommand = New RelayCommand(Of Object)(AddressOf OnApplicationSave, Function() CanApplicationSave())
-            ApplicationSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnApplicationSaveAs, Function() CanApplicationSaveAs())
-            ApplicationPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
+        Public Property TeilnehmerErstellenCommand As ICommand
+        Public Property TeilnehmerEinteilenCommand As ICommand
+        Public Property TeilnehmerBearbeitenCommand As ICommand
+        Public Property TeilnehmerLoeschenCommand As ICommand
+        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
 
-            ' 3. SortedList für meist genutzte Skischulen befüllen
-            DateiService.LadeMeistVerwendeteDateienInSortedList()
 
-            ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
-            If (Environment.GetCommandLineArgs().Length = 2) Then
-                Dim args = Environment.GetCommandLineArgs
-                Dim filename = args(1)
-                DateiService.DateiLaden(New FileInfo(filename))
-            Else
-                Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
-                If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
-                    DateiService.DateiLaden(New FileInfo(LetzteDatei))
-                End If
-            End If
+        Public Property TrainerErstellenCommand As ICommand
+        Public Property TrainerEinteilenCommand As ICommand
+        Public Property TrainerLoeschenCommand As ICommand
+        Public Property TrainerBearbeitenCommand As ICommand
+        Public Property TraineruebersichtAnzeigenCommand As ICommand
 
-            RefreshMostRecentMenu()
-            RefreshJumpListInWinTaskbar()
 
-        End Sub
 
-        Private Function CanApplicationPrint() As Boolean
-            Return False
-        End Function
-
-        Private Sub OnApplicationPrint(obj As Object)
-            Throw New NotImplementedException()
-        End Sub
-
-        Private Function CanApplicationSaveAs() As Boolean
-            Return False
-        End Function
-
-        Private Function CanApplicationSave() As Boolean
-            Return False
-        End Function
-
-        Private Sub OnWindowClose(obj As Object)
-            _windowService.CloseWindow()
-        End Sub
-
-        Private Sub OnWindowClosing(e As CancelEventArgs)
-            Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
-            e.Cancel = (result = MessageBoxResult.No)
-        End Sub
-
-        Private Sub OnWindowClosed(obj As Object)
-
-            ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
-            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
-
-            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            DateiService.SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
-
-        End Sub
 
 #End Region
 
@@ -165,45 +125,104 @@ Namespace ViewModels
 
 #End Region
 
-#Region "Command Properties"
-        Public Property WindowLoadedCommand As ICommand
-        Public Property WindowClosedCommand As ICommand
-        Public Property WindowClosingCommand As ICommand
-        Public Property ApplicationNewCommand As ICommand
-        Public Property ApplicationOpenCommand As ICommand
-        Public Property ApplicationSaveCommand As ICommand
-        Public Property ApplicationSaveAsCommand As ICommand
-        Public Property ApplicationPrintCommand As ICommand
-        Public Property ApplicationCloseCommand As ICommand
+#Region "Konstruktor"
 
-        Public Property EinteilungErstellenCommand As ICommand
-        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
+        Private Sub New()
+            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+        End Sub
 
-        Public Property GruppeErstellenCommand As ICommand
-        Public Property GruppeLoeschenCommand As ICommand
-        Public Property GruppenuebersichtAnzeigenCommand As ICommand
+        Public Sub New(windowService As IWindowService)
+            MyBase.New()
+            _windowService = windowService
+            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+        End Sub
+#End Region
 
-        Public Property LeistungsstufeErstellenCommand As ICommand
-        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
+#Region "Window Events"
 
-        Public Property FaehigkeitErstellenCommand As ICommand
-        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
+        Private Sub OnWindowLoaded(obj As Object)
 
-        Public Property TeilnehmerErstellenCommand As ICommand
-        Public Property TeilnehmerEinteilenCommand As ICommand
-        Public Property TeilnehmerBearbeitenCommand As ICommand
-        Public Property TeilnehmerLoeschenCommand As ICommand
-        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
+            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
+            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
+            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
+            ClubNewCommand = New RelayCommand(Of Object)(AddressOf OnClubNew)
+            ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
+            ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
+            ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
+            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
+            ClubPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
 
+            ' 3. SortedList für meist genutzte Skischulen befüllen
+            DateiService.LadeMeistVerwendeteDateienInSortedList()
 
-        Public Property TrainerErstellenCommand As ICommand
-        Public Property TrainerEinteilenCommand As ICommand
-        Public Property TrainerLoeschenCommand As ICommand
-        Public Property TrainerBearbeitenCommand As ICommand
-        Public Property TraineruebersichtAnzeigenCommand As ICommand
+            ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
+            If (Environment.GetCommandLineArgs().Length = 2) Then
+                Dim args = Environment.GetCommandLineArgs
+                Dim filename = args(1)
+                DateiService.DateiLaden(filename)
+            Else
+                Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
+                If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
+                    DateiService.DateiLaden(LetzteDatei)
+                End If
+            End If
 
+            RefreshMostRecentMenu()
+            RefreshJumpListInWinTaskbar()
+            SetProperties()
 
+        End Sub
 
+        Private Function CanClubClose() As Boolean
+            Return DateiService.AktuellerClub IsNot Nothing
+        End Function
+
+        Private Sub OnClubClose(obj As Object)
+            DateiService.DateiSchliessen()
+            UnsetProperties()
+        End Sub
+
+        Private Function CanApplicationPrint() As Boolean
+            Return AppController.AktuellerClub IsNot Nothing _
+                AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing _
+                AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
+        End Function
+
+        Private Sub OnApplicationPrint(obj As Object)
+            Throw New NotImplementedException()
+        End Sub
+
+        Private Function CanClubSaveAs() As Boolean
+            Return AppController.AktuellerClub IsNot Nothing
+        End Function
+
+        Private Property CanClubSave() As Boolean
+            Get
+                Return AppController.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(DateiService.AktuellerClub))
+            End Set
+        End Property
+
+        Private Sub OnWindowClose(obj As Object)
+            _windowService.CloseWindow()
+        End Sub
+
+        Private Sub OnWindowClosing(e As CancelEventArgs)
+            Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
+            e.Cancel = (result = MessageBoxResult.No)
+        End Sub
+
+        Private Sub OnWindowClosed(obj As Object)
+
+            ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
+            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
+
+            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
+            DateiService.SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
+
+        End Sub
 
 #End Region
 
@@ -217,69 +236,6 @@ Namespace ViewModels
             Return copiedList
         End Function
 
-
-        '''' <summary>
-        '''' Lädt eine XML-Datei und erstellt daraus einen Club
-        '''' </summary>
-        'Public Sub DateiLaden()
-        '    Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-
-        '    If dlg.ShowDialog = True Then
-        '        Club = Controller.SkiDatenLaden.SkiDateiLesen(dlg.FileName)
-        '        Dim Einteilungen = Controller.SkiDatenLaden.EinteilungenLesen(Club)
-
-        '        If Club IsNot Nothing Then
-        '            Einteilungen.ToList.ForEach(Sub(E) Club.AddEinteilung(E))
-        '        End If
-        '    End If
-        'End Sub
-
-        '''' <summary>
-        '''' Lädt aus einer XML-Datei eine Einteilung 
-        '''' </summary>
-        'Public Sub EinteilungAusDateiLaden()
-
-        '    Dim dlg = New OpenFileDialog With {.Filter = "*.ski|*.ski"}
-        '    If dlg.ShowDialog = True Then
-        '        Dim lokalerClub = Controller.SkiDatenLaden.SkiDateiLesen(dlg.FileName)
-
-        '        If lokalerClub IsNot Nothing Then
-        '            Dim Einteilungsname = BestimmeEinteilungsbenennung()
-        '            Trainerliste = lokalerClub.AlleTrainer
-        '            If Club.Einteilungsliste IsNot Nothing AndAlso Club.Einteilungsliste.Count > 0 Then
-        '            Else
-        '                Einteilungsliste = New EinteilungCollection From {New Einteilung With {.Benennung = Einteilungsname, .Gruppenliste = Club.Gruppenliste}}
-        '            End If
-        '        End If
-        '    End If
-        'End Sub
-
-        'Public Function BestimmeEinteilungsbenennung(Einteilungsliste As EinteilungCollection) As String
-        '    Dim Einteilungsname = String.Empty
-        '    Dim Zaehler As Integer
-        '    If Club.Einteilungsliste.Count > 0 Then
-        '        Einteilungsname = Club.Einteilungsliste.OrderByDescending(Function(e) e.Sortierung).First.Benennung
-        '        Zaehler = Val(Einteilungsname.Last) + 1
-        '        Einteilungsname &= Zaehler
-        '    Else
-        '        Einteilungsname = "Tag1"
-        '    End If
-        '    Return Einteilungsname
-        'End Function
-
-        'Public Function BestimmeEinteilungsbenennung() As String
-        '    Dim Einteilungsname = String.Empty
-        '    Dim Zaehler As Integer
-        '    If Einteilungsliste.Count > 0 Then
-        '        Einteilungsname = Club.Einteilungsliste.OrderByDescending(Function(e) e.Sortierung).First.Benennung
-        '        Zaehler = Val(Einteilungsname.Last) + 1
-        '        Einteilungsname &= Zaehler
-        '    Else
-        '        Einteilungsname = "Tag1"
-        '    End If
-        '    Return Einteilungsname
-        'End Function
-
 #End Region
 
 #Region "Methoden"
@@ -288,9 +244,8 @@ Namespace ViewModels
         ''' Wird aufgerufen, wenn im Menu Öffnen geklickt wird.
         ''' </summary>
         ''' <param name="obj"></param>
-        Private Sub OnApplicationNew(obj As Object)
+        Private Sub OnClubNew(obj As Object)
             DateiService.NeueDateiErstellen()
-            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
             SetProperties()
         End Sub
 
@@ -299,19 +254,17 @@ Namespace ViewModels
         ''' Zeigt einen Dialog zum Öffnen einer Groupies-Datei an.
         ''' </summary>
         ''' <param name="obj"></param>
-        Private Sub OnApplicationOpen(obj As Object)
-            DateiService.DateiLaden()
-            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
+        Private Sub OnClubOpen(obj As Object)
+            MessageBox.Show(DateiService.DateiLaden())
             SetProperties()
         End Sub
 
-        Private Sub OnApplicationSave(obj As Object)
+        Private Sub OnClubSave(obj As Object)
             DateiService.DateiSpeichern()
         End Sub
 
-        Private Sub OnApplicationSaveAs(obj As Object)
+        Private Sub OnClubSaveAs(obj As Object)
             DateiService.DateiSpeichernAls()
-            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(DateiService.AktuelleDatei.FullName)
             SetProperties()
         End Sub
 
@@ -321,61 +274,19 @@ Namespace ViewModels
         ''' </summary>
         ''' <param name="sender"></param>
         Private Sub HandleMostRecentClick(sender As Object)
-            DateiService.DateiLaden(New FileInfo(sender))
-            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(sender)
-        End Sub
-
-        Private Sub OpenGroupies(fileName As String)
-            DateiService.DateiLaden(New FileInfo(fileName))
-            DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList(fileName)
+            MessageBox.Show(DateiService.DateiLaden(sender))
         End Sub
 
         Private Sub SetProperties()
-            WindowTitleText = DefaultWindowTitleText & " - " & AppController.GroupiesFile.Name
+            WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
+        End Sub
+        Private Sub UnsetProperties()
+            WindowTitleText = DefaultWindowTitleText
         End Sub
 
 #End Region
 
 #Region "Methoden zum Laden der meist genutzten Groupies und der letzten Groupies Datei"
-
-        ''' <summary>
-        ''' Lädt die zuletzt verwendeten Skischulen in eine SortedList und aktualisiert das Menü.
-        ''' </summary>
-        Public Sub LoadmRUSortedListMenu()
-            Try
-                ' IsolatedStorage initialisiern
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly
-                    ' Die Datei mRUSortedList in den Stream packen
-                    Using stream = New IsolatedStorageFileStream("mRuSortedList", System.IO.FileMode.Open, iso)
-                        ' Den Stream lesen
-                        Using reader = New StreamReader(stream)
-                            Dim i = 0
-                            ' Gibt es zu lesende Zeichen in dem Reader
-                            While reader.Peek <> -1
-                                ' Die Zeilen aus dem Reader lesen und splitten
-                                Dim line = reader.ReadLine().Split(";")
-                                ' Prüfen, ob die Zeile gesplittet werden konnte UND 
-                                ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
-                                ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MeistVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
-                                    ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
-                                    If File.Exists(line(1)) Then
-                                        ' Key erhöhen
-                                        i += 1
-                                        ' Key-Value der Liste hinzufügen
-                                        DateiService.MeistVerwendeteDateienSortedList.Add(i, line(1))
-                                    End If
-                                End If
-                            End While
-                        End Using
-                    End Using
-                End Using
-                RefreshMostRecentMenu()
-            Catch ex As FileNotFoundException
-                Throw ex
-            End Try
-        End Sub
-
 
         Private Sub RefreshMostRecentMenu()
             MostRecentlyUsedMenuItem.Clear()
@@ -390,9 +301,9 @@ Namespace ViewModels
         ''' </summary>
         Private Sub RefreshMenuInApplication()
 
-            For i = DateiService.MeistVerwendeteDateienSortedList.Values.Count - 1 To 0 Step -1
+            For i = DateiService.ZuletztVerwendeteDateienSortedList.Values.Count - 1 To 0 Step -1
                 Dim mi As New MenuEintragViewModel() With {
-                    .Titel = DateiService.MeistVerwendeteDateienSortedList.Values(i),
+                    .Titel = DateiService.ZuletztVerwendeteDateienSortedList.Values(i),
                     .Sortierung = i,
                     .Befehl = New RelayCommand(Of String)(AddressOf HandleMostRecentClick)}
                 MostRecentlyUsedMenuItem.Add(mi)
@@ -405,24 +316,6 @@ Namespace ViewModels
 
         End Sub
 
-        ''' <summary>
-        ''' Lädt die Datei der letzten App-Ausführung
-        ''' </summary>
-        Private Sub LoadLastGroupies()
-            ' Die LastGroupies aus dem IsolatedStorage einlesen.
-            Try
-                Dim Filestring = String.Empty
-                Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
-                    Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.Open, iso)
-                        Using reader = New StreamReader(stream)
-                            Filestring = reader.ReadLine
-                        End Using
-                    End Using
-                End Using
-                If File.Exists(Filestring) Then OpenGroupies(Filestring)
-            Catch ex As FileNotFoundException
-            End Try
-        End Sub
 
         ''' <summary>
         ''' Zur Aktualisierung der JumpList im Windows Taskbar
@@ -452,7 +345,7 @@ Namespace ViewModels
             ' unter Windows mit Skikurs assoziiert wird (kann durch Installation via Setup-Projekt erreicht werden,
             ' das auch in den Beispielen enthalten ist, welches die dafür benötigten Werte in die Registry schreibt)
 
-            For i = DateiService.MeistVerwendeteDateienSortedList.Count - 1 To 0 Step -1
+            For i = DateiService.ZuletztVerwendeteDateienSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
                     .Path = $"!Pfad{i}"}

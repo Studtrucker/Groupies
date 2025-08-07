@@ -51,7 +51,7 @@ Public Class DateiServiceTests
 
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei laden", GetFileInfoMode.Laden)
 
-        DateiService.DateiLaden(mFileInfo)
+        DateiService.DateiLaden(mFileInfo.FullName)
         DateiService.DateiSchliessen()
 
         Assert.IsNull(DateiService.AktuelleDatei)
@@ -64,7 +64,7 @@ Public Class DateiServiceTests
 
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei schliessen", GetFileInfoMode.Laden)
 
-        DateiService.DateiLaden(mFileInfo)
+        DateiService.DateiLaden(mFileInfo.FullName)
 
         Assert.AreEqual(mFileInfo, DateiService.AktuelleDatei)
 
@@ -74,26 +74,26 @@ Public Class DateiServiceTests
     Sub LoadmRUSortedListMenuTest()
 
         DateiService.LadeMeistVerwendeteDateienInSortedList()
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei1.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei5.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei3.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei9.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei13.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei1.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei5.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei3.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei9.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei13.ski")
         SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
         DateiService.LadeMeistVerwendeteDateienInSortedList()
-        Assert.AreEqual("c:\User\Datei13.ski", DateiService.MeistVerwendeteDateienSortedList(5))
-        Assert.AreEqual("c:\User\Datei1.ski", DateiService.MeistVerwendeteDateienSortedList(1))
-        Assert.AreEqual("c:\User\Datei3.ski", DateiService.MeistVerwendeteDateienSortedList(3))
+        Assert.AreEqual("c:\User\Datei13.ski", DateiService.ZuletztVerwendeteDateienSortedList(5))
+        Assert.AreEqual("c:\User\Datei1.ski", DateiService.ZuletztVerwendeteDateienSortedList(1))
+        Assert.AreEqual("c:\User\Datei3.ski", DateiService.ZuletztVerwendeteDateienSortedList(3))
 
     End Sub
 
     <TestMethod>
     Sub QueueMostRecentFilenameTest()
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei1.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei5.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei3.ski")
-        DateiService.SchreibeFilenameInMeistVerwendeteDateienSortedList("c:\User\Datei9.ski")
-        Assert.AreEqual(4, DateiService.MeistVerwendeteDateienSortedList.Count)
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei1.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei5.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei3.ski")
+        DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei9.ski")
+        Assert.AreEqual(4, DateiService.ZuletztVerwendeteDateienSortedList.Count)
     End Sub
 
 End Class

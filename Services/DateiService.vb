@@ -10,6 +10,11 @@ Namespace Services
 
     Public Module DateiService
 
+        ''' <summary>
+        ''' Modus für die Dateiauswahl: Laden oder Speichern.
+        ''' </summary>
+        ''' <remarks>Wird verwendet, um den Modus der Dateiauswahl zu unterscheiden.</remarks>
+
         Public Enum GetFileInfoMode
             Laden
             Speichern
@@ -18,7 +23,7 @@ Namespace Services
         ''' <summary>
         ''' Gibt die Liste der zuletzt verwendeten Dateien zurück.
         ''' </summary>
-        Public ReadOnly Property MeistVerwendeteDateienSortedList As New SortedList(Of Integer, String)
+        Public ReadOnly Property ZuletztVerwendeteDateienSortedList As New SortedList(Of Integer, String)
 
         ''' <summary>
         ''' Die aktuell geladene Datei.
@@ -37,32 +42,6 @@ Namespace Services
         Public Property AktuellerClub As Generation4.Club
 
 #Region "Datei Funktionen"
-
-        Public Function DateiLaden() As String
-
-            Dim mAktuelleDatei = GetFileInfo(String.Empty, "Club laden", GetFileInfoMode.Laden)
-
-            Return DateiLaden(mAktuelleDatei)
-
-        End Function
-
-        Public Function DateiLaden(FileInfo As FileInfo) As String
-
-            If FileInfo Is Nothing Then
-                Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
-            End If
-
-            If FileInfo.Equals(AktuelleDatei) OrElse
-                AktuellerClub?.ClubName.Equals(Path.GetFileNameWithoutExtension(FileInfo.FullName)) Then
-                Return "Der Club " & AktuellerClub.ClubName & " ist bereits geöffnet"
-            End If
-
-            AktuelleDatei = FileInfo
-            AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
-
-            Return $"Der Club '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
-
-        End Function
 
 
         ''' <summary>
@@ -91,35 +70,41 @@ Namespace Services
 
             NeuenClubErstellen()
 
+            SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
             DateiSpeichern()
 
         End Sub
 
-        Public Function DateiSpeichernAls(Dateiname As String) As String
+        Public Function DateiLaden() As String
 
-            If AktuellerClub Is Nothing Then
-                Return ("Es ist keine Club geladen. Bitte laden Sie einen Club, bevor Sie speichern.")
+            Dim mAktuelleDatei = GetFileInfo(String.Empty, "Club laden", GetFileInfoMode.Laden)
+
+            Return DateiLaden(mAktuelleDatei.FullName)
+
+        End Function
+
+        Public Function DateiLaden(FileFullname As String) As String
+
+            If FileFullname Is Nothing OrElse String.IsNullOrEmpty(FileFullname) Then
+                Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
             End If
 
-            Dim mFileInfo = Path.Combine(Path.GetDirectoryName(AktuelleDatei.FullName), Dateiname)
+            If AktuelleDatei IsNot Nothing AndAlso FileFullname.Equals(AktuelleDatei.FullName) Then
+                Return $"Der Club '{AktuellerClub.ClubName}' ist bereits geöffnet"
+            End If
 
-            AktuelleDatei = New FileInfo(mFileInfo)
+            AktuelleDatei = New FileInfo(FileFullname)
+            AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
+            SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
 
-            DateiSpeichern()
-
-            Return $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."
-
-        End Function
-
-        Public Function DateiSpeichernAls() As String
-
-
-            AktuelleDatei = GetFileInfo(String.Empty, "Club speichern als", GetFileInfoMode.Speichern)
-
-            Return DateiSpeichernAls(AktuelleDatei.FullName)
+            Return $"Der Club '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
 
         End Function
 
+        ''' <summary>
+        ''' Speichert den aktuellen Club in der aktuell geladenen Datei.
+        ''' </summary>
+        ''' <returns>Eine Erfolgsmeldung, dass die Datei gespeichert wurde.</returns>
         Public Function DateiSpeichern() As String
 
             If AktuellerClub Is Nothing Then
@@ -136,6 +121,43 @@ Namespace Services
 
         End Function
 
+
+        ''' <summary>
+        ''' Speichert den aktuellen Club in einer neuen Datei.
+        ''' </summary>
+        ''' <returns>Eine Erfolgsmeldung, dass die Datei gespeichert wurde.</returns>
+        Public Function DateiSpeichernAls() As String
+
+            AktuelleDatei = GetFileInfo(String.Empty, "Club speichern als", GetFileInfoMode.Speichern)
+
+            Return DateiSpeichernAls(AktuelleDatei.FullName)
+
+        End Function
+
+        Public Function DateiSpeichernAls(Dateiname As String) As String
+
+            If AktuellerClub Is Nothing Then
+                Return ("Es ist keine Club geladen. Bitte laden Sie einen Club, bevor Sie speichern.")
+            End If
+
+            Dim mFileInfo = Path.Combine(Path.GetDirectoryName(AktuelleDatei.FullName), Dateiname)
+
+            AktuelleDatei = New FileInfo(mFileInfo)
+
+            DateiSpeichern()
+            SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
+
+
+            Return $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."
+
+        End Function
+
+
+        ''' <summary>
+        ''' Schliesst die aktuell geöffnete Datei und setzt den aktuellen Club auf Nothing.
+        ''' Dies wird aufgerufen, wenn der Benutzer eine Datei schließt.
+        ''' </summary>
+        ''' <remarks>Die Datei wird nicht gespeichert, wenn sie nicht explizit gespeichert wurde.</remarks>
         Public Sub DateiSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
@@ -191,13 +213,13 @@ Namespace Services
                                 ' Prüfen, ob die Zeile gesplittet werden konnte UND 
                                 ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
                                 ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.MeistVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.ZuletztVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                     If File.Exists(line(1)) Then
                                         ' Key erhöhen
                                         i += 1
                                         ' Key-Value der Liste hinzufügen
-                                        DateiService.MeistVerwendeteDateienSortedList.Add(i, line(1))
+                                        DateiService.ZuletztVerwendeteDateienSortedList.Add(i, line(1))
                                     End If
                                 End If
                             End While
@@ -215,17 +237,17 @@ Namespace Services
         ''' Die Liste behält maximal 5 Einträge bei, wobei die ältesten entfernt werden.
         ''' </summary>
         ''' <param name="fileName"></param>
-        Public Sub SchreibeFilenameInMeistVerwendeteDateienSortedList(fileName As String)
+        Public Sub SchreibeZuletztVerwendeteDateienSortedList(fileName As String)
             ' Hier wird der maximale Zähler in der Variablen
             ' _mRUSortedList herausgefunden und in der lokalen
             ' Variablen max gespeichert
             Dim max As Integer = 0
-            For Each i In MeistVerwendeteDateienSortedList.Keys
+            For Each i In ZuletztVerwendeteDateienSortedList.Keys
                 If i > max Then max = i
             Next
 
             Dim keysToRemove As New List(Of Integer)()
-            For Each kvp In MeistVerwendeteDateienSortedList
+            For Each kvp In ZuletztVerwendeteDateienSortedList
                 ' Hier wird geprüft, ob der an die Methode übergebene
                 ' filename einem Wert in der _mRUSortedList entspricht
                 If kvp.Value.Equals(fileName) Then keysToRemove.Add(kvp.Key)
@@ -233,19 +255,19 @@ Namespace Services
 
             ' Gibt es einen Eintrag in keysToRemove, dann wird dieser aus _mRUSortedList entfernt
             For Each i In keysToRemove
-                MeistVerwendeteDateienSortedList.Remove(i)
+                ZuletztVerwendeteDateienSortedList.Remove(i)
             Next
 
             ' Hier wird der neue filename in die _mRUSortedList eingefügt
-            MeistVerwendeteDateienSortedList.Add(max + 1, fileName)
+            ZuletztVerwendeteDateienSortedList.Add(max + 1, fileName)
 
             ' Wenn die Liste grösser als 5 ist, dann wird der kleinste Eintrag entfernt
-            If MeistVerwendeteDateienSortedList.Count > 5 Then
+            If ZuletztVerwendeteDateienSortedList.Count > 5 Then
                 Dim min = Integer.MaxValue
-                For Each i In MeistVerwendeteDateienSortedList.Keys
+                For Each i In ZuletztVerwendeteDateienSortedList.Keys
                     If i < min Then min = i
                 Next
-                MeistVerwendeteDateienSortedList.Remove(min)
+                ZuletztVerwendeteDateienSortedList.Remove(min)
             End If
         End Sub
 
@@ -255,11 +277,11 @@ Namespace Services
         ''' </summary>
         Public Sub SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
             ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            If MeistVerwendeteDateienSortedList.Count > 0 Then
+            If ZuletztVerwendeteDateienSortedList.Count > 0 Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                     Using stream = New IsolatedStorageFileStream("mRUSortedList", FileMode.OpenOrCreate, iso)
                         Using writer = New StreamWriter(stream)
-                            For Each kvp As KeyValuePair(Of Integer, String) In MeistVerwendeteDateienSortedList
+                            For Each kvp As KeyValuePair(Of Integer, String) In ZuletztVerwendeteDateienSortedList
                                 writer.WriteLine(kvp.Key.ToString() & ";" & kvp.Value)
                             Next
                         End Using
@@ -297,11 +319,11 @@ Namespace Services
         ''' </summary>
         Public Sub SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
-            If AppController.GroupiesFile IsNot Nothing Then
+            If AktuelleDatei IsNot Nothing Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
                     Using stream = New IsolatedStorageFileStream("LastGroupies", FileMode.OpenOrCreate, iso)
                         Using writer = New StreamWriter(stream)
-                            writer.WriteLine(AppController.GroupiesFile.FullName)
+                            writer.WriteLine(AktuelleDatei.FullName)
                         End Using
                     End Using
                 End Using

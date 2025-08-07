@@ -35,30 +35,30 @@
         <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="HotPink">
 
             <MenuItem  Header="_Datei">
-                <MenuItem Header="_Neuer Club" Command="{Binding ApplicationNewCommand}">
+                <MenuItem Header="_Neuer Club" Command="{Binding ClubNewCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Club ö_ffnen" Command="{Binding ApplicationOpenCommand}">
+                <MenuItem Header="Club ö_ffnen" Command="{Binding ClubOpenCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Club _speichern" Command="{Binding ApplicationSaveCommand}">
+                <MenuItem Header="Club _speichern" Command="{Binding ClubSaveCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Club speichern _unter..." Command="{Binding ApplicationSaveAsCommand}"/>
+                <MenuItem Header="Club speichern _unter..." Command="{Binding ClubSaveAsCommand}"/>
                 <Separator/>
-                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ApplicationPrintCommand}" CommandParameter="ParticipantInfo">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubPrintCommand}" CommandParameter="ParticipantInfo">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ApplicationPrintCommand}"  CommandParameter="InstructorInfo"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubPrintCommand}"  CommandParameter="InstructorInfo"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
                     <MenuItem.ItemContainerStyle>
@@ -69,6 +69,9 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
+                <Separator/>
+                <MenuItem Header="Club schliesse_n" Command="{Binding ClubCloseCommand}"/>
+
                 <Separator/>
                 <MenuItem Header="_Beenden" Command="{Binding ApplicationCloseCommand}" />
             </MenuItem>

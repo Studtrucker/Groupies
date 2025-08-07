@@ -88,10 +88,10 @@ Namespace ViewModels
 
         Public Property AlleEinteilungen As EinteilungCollection
             Get
-                Return AktuellerClub?.AlleEinteilungen
+                Return DateiService.AktuellerClub?.AlleEinteilungen
             End Get
             Set(value As EinteilungCollection)
-                AktuellerClub.AlleEinteilungen = value
+                DateiService.AktuellerClub.AlleEinteilungen = value
             End Set
         End Property
 
@@ -149,7 +149,7 @@ Namespace ViewModels
             ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
             ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
-            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
+            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose)
             ClubPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
@@ -173,12 +173,19 @@ Namespace ViewModels
 
         End Sub
 
-        Private Function CanClubClose() As Boolean
-            Return DateiService.AktuellerClub IsNot Nothing
-        End Function
+        Private Property CanClubClose() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanClubClose))
+            End Set
+        End Property
+
 
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
+            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             UnsetProperties()
         End Sub
 
@@ -220,7 +227,7 @@ Namespace ViewModels
             DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
 
             ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            DateiService.SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
+            DateiService.SpeicherZuletztVerwendeteDateienSortedList()
 
         End Sub
 
@@ -246,6 +253,7 @@ Namespace ViewModels
         ''' <param name="obj"></param>
         Private Sub OnClubNew(obj As Object)
             DateiService.NeueDateiErstellen()
+            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             SetProperties()
         End Sub
 
@@ -256,6 +264,7 @@ Namespace ViewModels
         ''' <param name="obj"></param>
         Private Sub OnClubOpen(obj As Object)
             MessageBox.Show(DateiService.DateiLaden())
+            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             SetProperties()
         End Sub
 

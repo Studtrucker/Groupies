@@ -28,7 +28,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         Items = New ObservableCollection(Of T)()
         ItemsView = New ListCollectionView(Items)
 
-        MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext())
+        MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext)
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
     End Sub
@@ -92,7 +92,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
             Return ItemsView.CurrentPosition + 1 < Items.Count
         End Get
         Set(value As Boolean)
-            OnPropertyChanged(NameOf(CanMoveNext))
+            OnPropertyChanged(NameOf(MoveNextCommand))
         End Set
     End Property
 

@@ -79,7 +79,7 @@ Public Class DateiServiceTests
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei3.ski")
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei9.ski")
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei13.ski")
-        SpeicherMeistVerwendeteDateienSortedListInsIsolatedStorage()
+        DateiService.SpeicherZuletztVerwendeteDateienSortedList()
         DateiService.LadeMeistVerwendeteDateienInSortedList()
         Assert.AreEqual("c:\User\Datei13.ski", DateiService.ZuletztVerwendeteDateienSortedList(5))
         Assert.AreEqual("c:\User\Datei1.ski", DateiService.ZuletztVerwendeteDateienSortedList(1))

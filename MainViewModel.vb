@@ -20,7 +20,7 @@ Namespace ViewModels
 
 #Region "Felder"
         Private ReadOnly _windowService As IWindowService
-        Private ReadOnly DateiService = New DateiService
+        Private ReadOnly DateiService As DateiService
 #End Region
 
 #Region "Command Properties"
@@ -129,12 +129,14 @@ Namespace ViewModels
 #Region "Konstruktor"
 
         Private Sub New()
+            DateiService = New DateiService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
         End Sub
 
         Public Sub New(windowService As IWindowService)
             MyBase.New()
             _windowService = windowService
+            DateiService = New DateiService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
         End Sub
 #End Region
@@ -254,7 +256,7 @@ Namespace ViewModels
         ''' <param name="obj"></param>
         Private Sub OnClubOpen(obj As Object)
             MessageBox.Show(DateiService.DateiLaden())
-            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            'DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             SetProperties()
         End Sub
 

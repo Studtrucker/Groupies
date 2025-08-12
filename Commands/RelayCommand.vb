@@ -5,7 +5,7 @@ Public Class RelayCommand(Of T)
     Implements ICommand
 
     Private ReadOnly _execute As Action(Of T)
-    Private ReadOnly _canExecute As Predicate(Of T)
+    Private ReadOnly _canExecute As Func(Of Boolean)
 
 
     ''' <summary>
@@ -13,11 +13,11 @@ Public Class RelayCommand(Of T)
     ''' </summary>
     ''' <param name="execute"></param>
     ''' <param name="canExecute"></param>
-    Public Sub New(execute As Action(Of T), Optional canExecute As Predicate(Of T) = Nothing)
+    Public Sub New(execute As Action(Of T), Optional canExecute As Func(Of Boolean) = Nothing)
         ' Hier wird der Delegate für die Ausführung des Befehls gesetzt.
         _execute = execute
         ' Hier wird der Delegate für die Ausführbarkeit gesetzt.
-        _canExecute = If(canExecute, Function(x) True)
+        _canExecute = If(canExecute, Function() True)
     End Sub
 
     ''' <summary>
@@ -36,7 +36,7 @@ Public Class RelayCommand(Of T)
     ''' <returns></returns>
     ''' <remarks>Hier wird die Ausführbarkeit des Befehls geprüft.</remarks>
     Public Function CanExecute(parameter As Object) As Boolean Implements ICommand.CanExecute
-        Return _canExecute(CType(parameter, T))
+        Return _canExecute()
     End Function
 
     ''' <summary>

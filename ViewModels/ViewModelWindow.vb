@@ -22,7 +22,7 @@ Public Class ViewModelWindow
 
     Public Sub New()
         MyBase.New()
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOK)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() CanOk())
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
@@ -32,7 +32,7 @@ Public Class ViewModelWindow
     Public Sub New(windowService As IWindowService)
         MyBase.New()
         _windowService = windowService
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, AddressOf CanOk)
+        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() CanOk())
         CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
@@ -186,7 +186,7 @@ Public Class ViewModelWindow
 
 #Region "Methoden"
 
-    Private Function CanOk(param As Object) As Boolean
+    Private Function CanOk() As Boolean
         Return AktuellesViewModel.IstEingabeGueltig
     End Function
 

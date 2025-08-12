@@ -20,12 +20,14 @@ Namespace Services
     Public Class DateiService
         Inherits BaseModel
 
-
+        Public Sub New()
+            ZuletztVerwendeteDateienSortedList = New SortedList(Of Integer, String)()
+        End Sub
 
         ''' <summary>
         ''' Gibt die Liste der zuletzt verwendeten Dateien zurück.
         ''' </summary>
-        Public Shared ReadOnly Property ZuletztVerwendeteDateienSortedList As New SortedList(Of Integer, String)
+        Public ReadOnly Property ZuletztVerwendeteDateienSortedList As New SortedList(Of Integer, String)
 
         ''' <summary>
         ''' Die aktuell geladene Datei.
@@ -33,17 +35,17 @@ Namespace Services
         ''' Wenn keine Datei geladen ist, ist dieser Wert Nothing.
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property AktuelleDatei As FileInfo
+        Public Property AktuelleDatei As FileInfo
 
 
-        Private Shared _aktuellerClub As Generation4.Club
+        Private _aktuellerClub As Generation4.Club
         ''' <summary>
         ''' Ist der aktuell geladene Club.
         ''' Wird verwendet, um den aktuellen Club zu speichern oder zu laden.
         ''' Wenn kein Club geladen ist, ist dieser Wert Nothing.
         ''' </summary>
         ''' <returns></returns>
-        Public Shared Property AktuellerClub As Generation4.Club
+        Public Property AktuellerClub As Generation4.Club
             Get
                 Return _aktuellerClub
             End Get
@@ -60,7 +62,7 @@ Namespace Services
         ''' Wenn bereits eine Datei geöffnet ist, wird der Benutzer gefragt, ob er sie speichern möchte.
         ''' </summary>
         ''' <remarks>Die Datei wird im aktuellen Arbeitsverzeichnis erstellt.</remarks>
-        Public Shared Sub NeueDateiErstellen()
+        Public Sub NeueDateiErstellen()
 
             ' Ist aktuell eine Datei geöffnet?
             If AktuellerClub IsNot Nothing Then
@@ -86,7 +88,7 @@ Namespace Services
 
         End Sub
 
-        Public Shared Function DateiLaden() As String
+        Public Function DateiLaden() As String
 
             Dim mAktuelleDatei = GetFileInfo(String.Empty, "Club laden", GetFileInfoMode.Laden)
 
@@ -98,7 +100,7 @@ Namespace Services
 
         End Function
 
-        Public Shared Function DateiLaden(FileFullname As String) As String
+        Public Function DateiLaden(FileFullname As String) As String
 
             If FileFullname Is Nothing OrElse String.IsNullOrEmpty(FileFullname) Then
                 Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
@@ -120,7 +122,7 @@ Namespace Services
         ''' Speichert den aktuellen Club in der aktuell geladenen Datei.
         ''' </summary>
         ''' <returns>Eine Erfolgsmeldung, dass die Datei gespeichert wurde.</returns>
-        Public Shared Function DateiSpeichern() As String
+        Public Function DateiSpeichern() As String
 
             If AktuellerClub Is Nothing Then
                 Return ("Es ist keine Club geladen. Bitte laden Sie einen Club, bevor Sie speichern.")
@@ -141,7 +143,7 @@ Namespace Services
         ''' Speichert den aktuellen Club in einer neuen Datei.
         ''' </summary>
         ''' <returns>Eine Erfolgsmeldung, dass die Datei gespeichert wurde.</returns>
-        Public Shared Function DateiSpeichernAls() As String
+        Public Function DateiSpeichernAls() As String
 
             AktuelleDatei = GetFileInfo(String.Empty, "Club speichern als", GetFileInfoMode.Speichern)
 
@@ -149,7 +151,7 @@ Namespace Services
 
         End Function
 
-        Public Shared Function DateiSpeichernAls(Dateiname As String) As String
+        Public Function DateiSpeichernAls(Dateiname As String) As String
 
             If AktuellerClub Is Nothing Then
                 Return ("Es ist keine Club geladen. Bitte laden Sie einen Club, bevor Sie speichern.")
@@ -173,7 +175,7 @@ Namespace Services
         ''' Dies wird aufgerufen, wenn der Benutzer eine Datei schließt.
         ''' </summary>
         ''' <remarks>Die Datei wird nicht gespeichert, wenn sie nicht explizit gespeichert wurde.</remarks>
-        Public Shared Sub DateiSchliessen()
+        Public Sub DateiSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
         End Sub
@@ -187,7 +189,7 @@ Namespace Services
         ''' Der Clubname wird aus dem Dateinamen der aktuellen Datei generiert.
         ''' </summary>
         ''' <returns>Eine Erfolgsmeldung, dass der Club erstellt wurde.</returns>"
-        Public Shared Function NeuenClubErstellen() As String
+        Public Function NeuenClubErstellen() As String
 
             AktuellerClub = Nothing
 
@@ -212,7 +214,7 @@ Namespace Services
         ''' Diese Funktion wird aufgerufen, wenn das MainWindow geöffnet wird.
         ''' Die Dateien werden in der MeistVerwendeteDateienSortedList gespeichert.
         ''' </summary>
-        Public Shared Sub LadeMeistVerwendeteDateienInSortedList()
+        Public Sub LadeMeistVerwendeteDateienInSortedList()
             Try
                 ' IsolatedStorage initialisiern
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly
@@ -228,13 +230,13 @@ Namespace Services
                                 ' Prüfen, ob die Zeile gesplittet werden konnte UND 
                                 ' Prüfen, ob der erste Teil (Key) größer als 0 ist UND
                                 ' Prüfen, ob der Key Wert bereits in der Variablen _mRuSortedList vorhanden ist
-                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not DateiService.ZuletztVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
+                                If line.Length = 2 AndAlso line(0).Length > 0 AndAlso Not ZuletztVerwendeteDateienSortedList.ContainsKey(Integer.Parse(line(0))) Then
                                     ' Prüfen, ob die Datei (Wert) auf dem Rechner vorhanden ist
                                     If File.Exists(line(1)) Then
                                         ' Key erhöhen
                                         i += 1
                                         ' Key-Value der Liste hinzufügen
-                                        DateiService.ZuletztVerwendeteDateienSortedList.Add(i, line(1))
+                                        ZuletztVerwendeteDateienSortedList.Add(i, line(1))
                                     End If
                                 End If
                             End While
@@ -252,7 +254,7 @@ Namespace Services
         ''' Die Liste behält maximal 5 Einträge bei, wobei die ältesten entfernt werden.
         ''' </summary>
         ''' <param name="fileName"></param>
-        Public Shared Sub SchreibeZuletztVerwendeteDateienSortedList(fileName As String)
+        Public Sub SchreibeZuletztVerwendeteDateienSortedList(fileName As String)
             ' Hier wird der maximale Zähler in der Variablen
             ' _mRUSortedList herausgefunden und in der lokalen
             ' Variablen max gespeichert
@@ -290,7 +292,7 @@ Namespace Services
         ''' Die Dateien aus der ZuletztVerwendeteDateienSortedList werden ins IsolatedStorage gespeichert.
         ''' Diese Funktion wird aufgerufen, wenn das MainWindow geschlossen wird.
         ''' </summary>
-        Public Shared Sub SpeicherZuletztVerwendeteDateienSortedList()
+        Public Sub SpeicherZuletztVerwendeteDateienSortedList()
             ' 2. Die meist genutzten Listen ins Isolated Storage speichern
             If ZuletztVerwendeteDateienSortedList.Count > 0 Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
@@ -308,7 +310,7 @@ Namespace Services
         ''' <summary>
         ''' Liest den zuletzt verwendeten Dateinamen aus dem IsolatedStorage.
         ''' </summary>
-        Public Shared Function LiesZuletztGeoeffneteDatei() As String
+        Public Function LiesZuletztGeoeffneteDatei() As String
             ' Die LastGroupies aus dem IsolatedStorage einlesen.
             Try
                 Dim Filestring = String.Empty
@@ -332,7 +334,7 @@ Namespace Services
         ''' Der zuletzt verwendete Dateiname wird im IsolatedStorage gespeichert.
         ''' Diese Funktion wird aufgerufen, wenn das MainWindow geschlossen wird.
         ''' </summary>
-        Public Shared Sub SpeicherZuletztVerwendeteDateiInsIolatedStorage()
+        Public Sub SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
             If AktuelleDatei IsNot Nothing Then
                 Using iso = IsolatedStorageFile.GetUserStoreForAssembly()
@@ -351,7 +353,7 @@ Namespace Services
 
 #Region "Hilfsfunktionen"
 
-        Public Shared Function GetFileInfo(DefaultFilename As String, Titel As String, FileMode As GetFileInfoMode) As FileInfo
+        Public Function GetFileInfo(DefaultFilename As String, Titel As String, FileMode As GetFileInfoMode) As FileInfo
 
             ' CheckFileExists = False => Existierende Dateien dürfen überschrieben werden
             Dim openFileDialog As New OpenFileDialog() With {

@@ -7,10 +7,12 @@ Imports System.IO
 <TestClass>
 Public Class DateiServiceTests
 
+    'Private ReadOnly DateiService = New DateiService
+
     <TestMethod>
     Sub NeueDateiErstellenTest()
-        DateiService.AktuellerClub = Nothing
-        DateiService.AktuelleDatei = Nothing
+
+        Dim DateiService = New DateiService()
 
         DateiService.NeueDateiErstellen()
         Assert.AreEqual("MeinClub", DateiService.AktuellerClub.ClubName)
@@ -21,8 +23,7 @@ Public Class DateiServiceTests
     <TestMethod>
     Sub DateiSpeichernTest()
 
-        DateiService.AktuellerClub = Nothing
-        DateiService.AktuelleDatei = Nothing
+        Dim DateiService = New DateiService()
 
         DateiService.DateiLaden()
         DateiService.DateiSpeichern()
@@ -34,8 +35,7 @@ Public Class DateiServiceTests
     <TestMethod>
     Sub DateiSpeichernAlsTest()
 
-        DateiService.AktuellerClub = Nothing
-        DateiService.AktuelleDatei = Nothing
+        Dim DateiService = New DateiService()
 
         DateiService.DateiLaden()
         Dim Filename = "MeinClub1.ski"
@@ -48,6 +48,8 @@ Public Class DateiServiceTests
 
     <TestMethod>
     Sub DateiLadenTest()
+
+        Dim DateiService = New DateiService()
 
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei laden", GetFileInfoMode.Laden)
 
@@ -62,16 +64,21 @@ Public Class DateiServiceTests
     <TestMethod>
     Sub DateiSchliessenTest()
 
+        Dim DateiService = New DateiService()
+
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei schliessen", GetFileInfoMode.Laden)
 
         DateiService.DateiLaden(mFileInfo.FullName)
 
-        Assert.AreEqual(mFileInfo, DateiService.AktuelleDatei)
+        Assert.AreEqual(mFileInfo.FullName, DateiService.AktuelleDatei.FullName)
 
     End Sub
 
     <TestMethod>
     Sub LoadmRUSortedListMenuTest()
+
+        Dim DateiService = New DateiService()
+
 
         DateiService.LadeMeistVerwendeteDateienInSortedList()
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei1.ski")
@@ -89,6 +96,8 @@ Public Class DateiServiceTests
 
     <TestMethod>
     Sub QueueMostRecentFilenameTest()
+        Dim DateiService = New DateiService()
+
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei1.ski")
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei5.ski")
         DateiService.SchreibeZuletztVerwendeteDateienSortedList("c:\User\Datei3.ski")

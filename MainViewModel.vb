@@ -20,6 +20,7 @@ Namespace ViewModels
 
 #Region "Felder"
         Private ReadOnly _windowService As IWindowService
+        Private ReadOnly DateiService = New DateiService
 #End Region
 
 #Region "Command Properties"
@@ -149,7 +150,7 @@ Namespace ViewModels
             ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
             ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
-            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose)
+            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
             ClubPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
@@ -173,19 +174,13 @@ Namespace ViewModels
 
         End Sub
 
-        Private Property CanClubClose() As Boolean
-            Get
-                Return DateiService.AktuellerClub IsNot Nothing
-            End Get
-            Set(value As Boolean)
-                OnPropertyChanged(NameOf(CanClubClose))
-            End Set
-        End Property
-
+        Private Function CanClubClose() As Boolean
+            Return DateiService.AktuellerClub IsNot Nothing
+        End Function
 
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
-            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            'DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             UnsetProperties()
         End Sub
 
@@ -203,14 +198,9 @@ Namespace ViewModels
             Return AppController.AktuellerClub IsNot Nothing
         End Function
 
-        Private Property CanClubSave() As Boolean
-            Get
-                Return AppController.AktuellerClub IsNot Nothing
-            End Get
-            Set(value As Boolean)
-                OnPropertyChanged(NameOf(DateiService.AktuellerClub))
-            End Set
-        End Property
+        Private Function CanClubSave() As Boolean
+            Return AppController.AktuellerClub IsNot Nothing
+        End Function
 
         Private Sub OnWindowClose(obj As Object)
             _windowService.CloseWindow()

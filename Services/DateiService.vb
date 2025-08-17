@@ -29,6 +29,7 @@ Namespace Services
         ''' </summary>
         Public ReadOnly Property ZuletztVerwendeteDateienSortedList As New SortedList(Of Integer, String)
 
+        Private _aktuelleDatei As FileInfo
         ''' <summary>
         ''' Die aktuell geladene Datei.
         ''' Wird verwendet, um den aktuellen Club im Dateisystem als XML zu speichern.
@@ -36,6 +37,16 @@ Namespace Services
         ''' </summary>
         ''' <returns></returns>
         Public Property AktuelleDatei As FileInfo
+            Get
+                Return _AktuelleDatei
+            End Get
+            Set(value As FileInfo)
+                If _AktuelleDatei IsNot value Then
+                    _AktuelleDatei = value
+                    OnPropertyChanged(NameOf(AktuelleDatei))
+                End If
+            End Set
+        End Property
 
 
         Private _aktuellerClub As Generation4.Club
@@ -51,6 +62,7 @@ Namespace Services
             End Get
             Set(value As Generation4.Club)
                 _aktuellerClub = value
+                OnPropertyChanged(NameOf(AktuellerClub))
             End Set
         End Property
 

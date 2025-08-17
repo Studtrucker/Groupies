@@ -145,6 +145,12 @@ Namespace ViewModels
 
         Private Sub OnWindowLoaded(obj As Object)
 
+            AddHandler DateiService.PropertyChanged, Sub(sender, e)
+                                                         If e.PropertyName = NameOf(DateiService.AktuelleDatei) Then
+                                                             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                         End If
+                                                     End Sub
+
             ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
             WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
             WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
@@ -176,9 +182,18 @@ Namespace ViewModels
 
         End Sub
 
-        Private Function CanClubClose() As Boolean
-            Return DateiService.AktuellerClub IsNot Nothing
-        End Function
+        'Private Function CanClubClose() As Boolean
+        '    Return DateiService.AktuellerClub IsNot Nothing
+        'End Function
+
+        Public Property CanClubClose() As String
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(ByVal value As String)
+                OnPropertyChanged(NameOf(CanClubClose))
+            End Set
+        End Property
 
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()

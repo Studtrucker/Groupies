@@ -32,7 +32,7 @@ Namespace ViewModels
         Public Property ClubOpenCommand As ICommand
         Public Property ClubSaveCommand As ICommand
         Public Property ClubSaveAsCommand As ICommand
-        Public Property ClubPrintCommand As ICommand
+        Public Property ClubInfoPrintCommand As ICommand
         Public Property ClubCloseCommand As ICommand
 
         Public Property EinteilungErstellenCommand As ICommand
@@ -87,12 +87,17 @@ Namespace ViewModels
 
         Public Property Einteilungsliste As EinteilungCollection
 
-        Public Property AlleEinteilungen As EinteilungCollection
+        Private _AlleEinteilungen As CollectionView
+        ''' <summary>
+        ''' Alle Einteilungen des aktuellen Clubs.
+        ''' </summary>
+        ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
+        Public Property AlleEinteilungenCV As CollectionView
             Get
-                Return DateiService.AktuellerClub?.AlleEinteilungen
+                Return _AlleEinteilungen
             End Get
-            Set(value As EinteilungCollection)
-                DateiService.AktuellerClub.AlleEinteilungen = value
+            Set(value As CollectionView)
+                _AlleEinteilungen = value
             End Set
         End Property
 
@@ -124,6 +129,46 @@ Namespace ViewModels
 
         Public Property GruppenloseTeilnehmer As TeilnehmerCollection
 
+
+        Public Property CanClubClose() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanClubClose))
+            End Set
+        End Property
+
+        Private Property CanClubSave() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanClubSave))
+            End Set
+        End Property
+
+        Private Property CanClubSaveAs() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanClubSaveAs))
+            End Set
+        End Property
+
+        Private Property CanClubInfoPrint() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing _
+                    AndAlso DateiService.AktuellerClub.SelectedEinteilung IsNot Nothing _
+                    AndAlso DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanClubInfoPrint))
+            End Set
+        End Property
+
+
 #End Region
 
 #Region "Konstruktor"
@@ -146,10 +191,20 @@ Namespace ViewModels
         Private Sub OnWindowLoaded(obj As Object)
 
             AddHandler DateiService.PropertyChanged, Sub(sender, e)
-                                                         If e.PropertyName = NameOf(DateiService.AktuelleDatei) Then
+                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
                                                              DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                         End If
+                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung) Then
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                         End If
+                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
+
 
             ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
             WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
@@ -159,7 +214,7 @@ Namespace ViewModels
             ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
             ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
-            ClubPrintCommand = New RelayCommand(Of Object)(AddressOf OnApplicationPrint, Function() CanApplicationPrint())
+            ClubInfoPrintCommand = New RelayCommand(Of Object)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             DateiService.LadeMeistVerwendeteDateienInSortedList()
@@ -182,42 +237,18 @@ Namespace ViewModels
 
         End Sub
 
-        'Private Function CanClubClose() As Boolean
-        '    Return DateiService.AktuellerClub IsNot Nothing
-        'End Function
-
-        Public Property CanClubClose() As String
-            Get
-                Return DateiService.AktuellerClub IsNot Nothing
-            End Get
-            Set(ByVal value As String)
-                OnPropertyChanged(NameOf(CanClubClose))
-            End Set
-        End Property
-
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
-            'DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             UnsetProperties()
         End Sub
 
-        Private Function CanApplicationPrint() As Boolean
-            Return AppController.AktuellerClub IsNot Nothing _
-                AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing _
-                AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
-        End Function
 
-        Private Sub OnApplicationPrint(obj As Object)
+
+        Private Sub OnClubInfoPrint(obj As Object)
             Throw New NotImplementedException()
         End Sub
 
-        Private Function CanClubSaveAs() As Boolean
-            Return AppController.AktuellerClub IsNot Nothing
-        End Function
 
-        Private Function CanClubSave() As Boolean
-            Return AppController.AktuellerClub IsNot Nothing
-        End Function
 
         Private Sub OnWindowClose(obj As Object)
             _windowService.CloseWindow()
@@ -271,7 +302,6 @@ Namespace ViewModels
         ''' <param name="obj"></param>
         Private Sub OnClubOpen(obj As Object)
             MessageBox.Show(DateiService.DateiLaden())
-            'DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             SetProperties()
         End Sub
 
@@ -295,6 +325,7 @@ Namespace ViewModels
 
         Private Sub SetProperties()
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
+            AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
         End Sub
         Private Sub UnsetProperties()
             WindowTitleText = DefaultWindowTitleText

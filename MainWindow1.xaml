@@ -53,12 +53,12 @@
                 </MenuItem>
                 <MenuItem Header="Club speichern _unter..." Command="{Binding ClubSaveAsCommand}"/>
                 <Separator/>
-                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubPrintCommand}" CommandParameter="ParticipantInfo">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="ParticipantInfo">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubPrintCommand}"  CommandParameter="InstructorInfo"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="InstructorInfo"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
                     <MenuItem.ItemContainerStyle>
@@ -227,13 +227,13 @@
 
                     <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                                   AutoGenerateColumns="False" 
-                                  ItemsSource="{Binding AlleEinteilungen}"
+                                  ItemsSource="{Binding AlleEinteilungenCV}"
                                   SelectedItem="{Binding SelectedEinteilung}"
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sortierung"  Binding="{Binding Sortierung}" Width="Auto" />
-                            <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
+                            <DataGridTextColumn Header="Sortierung"  Binding="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
+                            <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" Width="*" />
                         </DataGrid.Columns>
       
 

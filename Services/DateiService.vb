@@ -139,7 +139,7 @@ Namespace Services
 
             AktuelleDatei = GetFileInfo(String.Empty, "Club speichern als", GetFileInfoMode.Speichern)
 
-            Return DateiSpeichernAls(AktuelleDatei.FullName)
+            Return DateiSpeichernAls(AktuelleDatei?.FullName)
 
         End Function
 

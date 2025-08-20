@@ -85,19 +85,19 @@ Namespace ViewModels
             End Set
         End Property
 
-        Public Property Einteilungsliste As EinteilungCollection
+        'Public Property Einteilungsliste As EinteilungCollection
 
-        Private _AlleEinteilungen As CollectionView
+        Private _AlleEinteilungenCV As CollectionView
         ''' <summary>
         ''' Alle Einteilungen des aktuellen Clubs.
         ''' </summary>
         ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
         Public Property AlleEinteilungenCV As CollectionView
             Get
-                Return _AlleEinteilungen
+                Return _AlleEinteilungenCV
             End Get
             Set(value As CollectionView)
-                _AlleEinteilungen = value
+                _AlleEinteilungenCV = value
             End Set
         End Property
 
@@ -160,8 +160,9 @@ Namespace ViewModels
         Private Property CanClubInfoPrint() As Boolean
             Get
                 Return DateiService.AktuellerClub IsNot Nothing _
-                    AndAlso DateiService.AktuellerClub.SelectedEinteilung IsNot Nothing _
-                    AndAlso DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
+                    AndAlso SelectedEinteilung IsNot Nothing
+                '_
+                '    AndAlso DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
             End Get
             Set(value As Boolean)
                 OnPropertyChanged(NameOf(CanClubInfoPrint))
@@ -197,9 +198,13 @@ Namespace ViewModels
                                                              DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If
-                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung) Then
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                         End If
+                                                     End Sub
+            AddHandler PropertyChanged, Sub(sender, e)
+                                            If e.PropertyName = NameOf(SelectedEinteilung) Then
+                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                            End If
+                                        End Sub
+            AddHandler DateiService.PropertyChanged, Sub(sender, e)
                                                          If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
                                                              DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If

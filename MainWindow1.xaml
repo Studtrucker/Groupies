@@ -255,7 +255,7 @@
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single">
 
-                        <DataGrid.Resources>
+                        <!--<DataGrid.Resources>
                             <DataTemplate x:Key="GruppenlisteDataTemplate1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -282,7 +282,7 @@
                                 </Grid>
                             </DataTemplate>
 
-                        </DataGrid.Resources>
+                        </DataGrid.Resources>-->
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -291,10 +291,11 @@
                         </DataGrid.ContextMenu>
 
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Gruppen" Width="*" CellTemplate="{StaticResource GruppenlisteDataTemplate1}"/>
+                            <!--<DataGridTemplateColumn Header="Gruppen" Width="*" CellTemplate="{StaticResource GruppenlisteDataTemplate1}"/>-->
                             <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
                             <DataGridTextColumn Header="Anz Teilnehmer"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
+                            <DataGridTextColumn Header="Sort Stufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
                             <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>

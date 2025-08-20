@@ -6,7 +6,7 @@
              xmlns:templ="clr-namespace:Groupies.TemplateSelectors"
              xmlns:sys="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
              Startup="Skikurs_Startup"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow1.xaml">
 
     
     <Application.Resources>

@@ -2,6 +2,7 @@
 Imports Groupies.Controller
 Imports Groupies.DataImport
 Imports Groupies.Entities
+Imports Groupies.Services
 
 Public Class GruppeViewModel
     Inherits MasterDetailViewModel(Of Gruppe)
@@ -25,7 +26,7 @@ Public Class GruppeViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
+        Dim DropDown = New ListCollectionView(DateiService.AktuellerClub.LeistungsstufenComboBox)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)

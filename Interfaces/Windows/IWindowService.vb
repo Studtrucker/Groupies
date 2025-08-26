@@ -2,7 +2,7 @@
     Sub CloseWindow()
     Sub ShowWindow()
     Function ShowDialog() As Boolean
-
+    Property Window As Window
     Property DialogResult() As Nullable(Of Boolean)
     Property SizeToContent As SizeToContent
     Property WindowStartupLocation As WindowStartupLocation

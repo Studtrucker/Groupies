@@ -1,7 +1,8 @@
 ﻿Imports System.ComponentModel
+Imports Groupies.Controller
 Imports Groupies.DataImport
 Imports Groupies.Entities
-Imports Groupies.Controller
+Imports Groupies.Services
 
 Public Class LeistungsstufeViewModel
     Inherits MasterDetailViewModel(Of Leistungsstufe)
@@ -27,7 +28,7 @@ Public Class LeistungsstufeViewModel
         ' Hier können Sie den Konstruktor anpassen
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
-        AuswahlFaehigkeiten = New ListCollectionView(AppController.AktuellerClub.FaehigkeitenComboBox)
+        AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.FaehigkeitenComboBox)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub

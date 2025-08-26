@@ -24,6 +24,123 @@ Namespace ViewModels
         Private ReadOnly DateiService As DateiService
 #End Region
 
+#Region "Konstruktor"
+
+        Private Sub New()
+            DateiService = New DateiService
+            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+        End Sub
+
+        Public Sub New(windowService As IWindowService)
+            MyBase.New()
+            _windowService = windowService
+            DateiService = New DateiService
+            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+        End Sub
+#End Region
+
+#Region "Window Events"
+
+        Private Sub OnWindowLoaded(obj As Object)
+
+            AddHandler DateiService.PropertyChanged, Sub(sender, e)
+                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
+                                                             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                                                             DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                         End If
+                                                     End Sub
+            AddHandler PropertyChanged, Sub(sender, e)
+                                            If e.PropertyName = NameOf(SelectedEinteilung) Then
+                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                                            End If
+                                        End Sub
+            AddHandler DateiService.PropertyChanged, Sub(sender, e)
+                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                                                         End If
+                                                     End Sub
+
+
+            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
+            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
+            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
+            ClubNewCommand = New RelayCommand(Of Object)(AddressOf OnClubNew)
+            ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
+            ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
+            ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
+            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
+            ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
+
+            EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
+            GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
+            LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
+            FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
+
+            ' 3. SortedList für meist genutzte Skischulen befüllen
+            DateiService.LadeMeistVerwendeteDateienInSortedList()
+
+            ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
+            If (Environment.GetCommandLineArgs().Length = 2) Then
+                Dim args = Environment.GetCommandLineArgs
+                Dim filename = args(1)
+                DateiService.DateiLaden(filename)
+            Else
+                Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
+                If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
+                    DateiService.DateiLaden(LetzteDatei)
+                End If
+            End If
+
+            If DateiService.AktuellerClub IsNot Nothing Then
+                RefreshMostRecentMenu()
+                RefreshJumpListInWinTaskbar()
+                SetProperties()
+            Else
+                ResetProperties()
+            End If
+
+        End Sub
+
+
+        Private Sub OnClubInfoPrint(obj As Printversion)
+            Dim dlg = New PrintDialog()
+            If dlg.ShowDialog = True Then
+                Dim doc As FixedDocument
+                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+                Dim pageMargin = New Thickness(30, 30, 30, 60)
+                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
+                dlg.PrintDocument(doc.DocumentPaginator, obj)
+            End If
+        End Sub
+
+
+        Private Sub OnWindowClose(obj As Object)
+            _windowService.CloseWindow()
+        End Sub
+
+        Private Sub OnWindowClosing(e As CancelEventArgs)
+            Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
+            e.Cancel = (result = MessageBoxResult.No)
+        End Sub
+
+        Private Sub OnWindowClosed(obj As Object)
+
+            ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
+            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
+
+            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
+            DateiService.SpeicherZuletztVerwendeteDateienSortedList()
+
+        End Sub
+
+#End Region
+
 #Region "Command Properties"
         Public Property ApplicationCloseCommand As ICommand
         Public Property WindowLoadedCommand As ICommand
@@ -85,8 +202,6 @@ Namespace ViewModels
                 _WindowTitleText = value
             End Set
         End Property
-
-        'Public Property Einteilungsliste As EinteilungCollection
 
         Private _AlleEinteilungenCV As CollectionView
         ''' <summary>
@@ -169,132 +284,41 @@ Namespace ViewModels
                 OnPropertyChanged(NameOf(CanClubInfoPrint))
             End Set
         End Property
+        Public Property CanEinteilungsuebersichtAnzeigen() As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanEinteilungsuebersichtAnzeigen))
+            End Set
+        End Property
 
+        Private Property CanFaehigkeitenuebersichtAnzeigen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanFaehigkeitenuebersichtAnzeigen))
+            End Set
+        End Property
 
-#End Region
+        Private Property CanLeistungsstufenuebersichtAnzeigen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanLeistungsstufenuebersichtAnzeigen))
+            End Set
+        End Property
 
-#Region "Konstruktor"
-
-        Private Sub New()
-            DateiService = New DateiService
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-        End Sub
-
-        Public Sub New(windowService As IWindowService)
-            MyBase.New()
-            _windowService = windowService
-            DateiService = New DateiService
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-        End Sub
-#End Region
-
-#Region "Window Events"
-
-        Private Sub OnWindowLoaded(obj As Object)
-
-            AddHandler DateiService.PropertyChanged, Sub(sender, e)
-                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
-                                                             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                                         End If
-                                                     End Sub
-            AddHandler PropertyChanged, Sub(sender, e)
-                                            If e.PropertyName = NameOf(SelectedEinteilung) Then
-                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                            End If
-                                        End Sub
-            AddHandler DateiService.PropertyChanged, Sub(sender, e)
-                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                                         End If
-                                                     End Sub
-
-
-            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
-            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
-            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
-            ClubNewCommand = New RelayCommand(Of Object)(AddressOf OnClubNew)
-            ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
-            ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
-            ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
-            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
-            ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
-
-            ' 3. SortedList für meist genutzte Skischulen befüllen
-            DateiService.LadeMeistVerwendeteDateienInSortedList()
-
-            ' 4. Die zuletzt verwendete Skischulen laden, falls nicht eine .ski-Datei doppelgeklickt wurde
-            If (Environment.GetCommandLineArgs().Length = 2) Then
-                Dim args = Environment.GetCommandLineArgs
-                Dim filename = args(1)
-                DateiService.DateiLaden(filename)
-            Else
-                Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
-                If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
-                    DateiService.DateiLaden(LetzteDatei)
-                End If
-            End If
-
-            If DateiService.AktuellerClub IsNot Nothing Then
-                RefreshMostRecentMenu()
-                RefreshJumpListInWinTaskbar()
-                SetProperties()
-            Else
-                ResetProperties()
-            End If
-
-        End Sub
-
-        Private Sub OnClubClose(obj As Object)
-            DateiService.DateiSchliessen()
-            ResetProperties()
-        End Sub
-
-        Private Sub OnClubInfoPrint(obj As Printversion)
-            Dim dlg = New PrintDialog()
-            If dlg.ShowDialog = True Then
-                Dim doc As FixedDocument
-                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-                Dim pageMargin = New Thickness(30, 30, 30, 60)
-                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
-                dlg.PrintDocument(doc.DocumentPaginator, obj)
-            End If
-        End Sub
-
-        'Private Sub OnClubInfoPrintToTeilnehmer(obj As Object)
-        '    Dim dlg = New PrintDialog()
-        '    If dlg.ShowDialog = True Then
-        '        Dim doc As FixedDocument
-        '        Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-        '        Dim pageMargin = New Thickness(30, 30, 30, 60)
-        '        doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
-
-        '        dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
-        '    End If
-        'End Sub
-
-
-
-        Private Sub OnWindowClose(obj As Object)
-            _windowService.CloseWindow()
-        End Sub
-
-        Private Sub OnWindowClosing(e As CancelEventArgs)
-            Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
-            e.Cancel = (result = MessageBoxResult.No)
-        End Sub
-
-        Private Sub OnWindowClosed(obj As Object)
-
-            ' 1. Den Pfad der letzten Liste ins IsolatedStorage speichern.
-            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
-
-            ' 2. Die meist genutzten Listen ins Isolated Storage speichern
-            DateiService.SpeicherZuletztVerwendeteDateienSortedList()
-
-        End Sub
+        Private Property CanGruppenuebersichtAnzeigen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanGruppenuebersichtAnzeigen))
+            End Set
+        End Property
 
 #End Region
 
@@ -356,6 +380,73 @@ Namespace ViewModels
         End Sub
         Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText
+        End Sub
+
+        Private Sub OnFaehigkeitenuebersichtAnzeigen(obj As Object)
+            Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = _windowService.Window,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleFaehigkeiten
+
+            fenster.DataContext = mvw
+
+            fenster.Show()
+        End Sub
+
+        Private Sub OnLeistungsstufenuebersichtAnzeigen(obj As Object)
+            Dim fenster = New BasisUebersichtWindow() With {
+            .Owner = _windowService.Window,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+        }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+
+            fenster.DataContext = mvw
+
+            fenster.Show()
+        End Sub
+
+        Private Sub OnEinteilungsuebersichtAnzeigen()
+            Dim fenster = New BasisUebersichtWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+            }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleEinteilungen
+
+            fenster.DataContext = mvw
+            fenster.Show()
+        End Sub
+        Private Sub OnGruppenuebersichtAnzeigen(obj As Object)
+            Dim fenster = New BasisUebersichtWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+            }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleGruppen
+
+            fenster.DataContext = mvw
+
+            fenster.Show()
+        End Sub
+
+        Private Sub OnClubClose(obj As Object)
+            DateiService.DateiSchliessen()
+            ResetProperties()
         End Sub
 
 #End Region

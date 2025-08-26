@@ -1,7 +1,7 @@
 ﻿Public Class WindowService
     Implements IWindowService
 
-    Private ReadOnly _window As Window
+    Private _window As Window
 
     Public Sub New(window As Window)
         _window = window
@@ -13,6 +13,15 @@
         End Get
         Set(value As Nullable(Of Boolean))
             _window.DialogResult = value
+        End Set
+    End Property
+
+    Property Window As Window Implements IWindowService.Window
+        Get
+            Return _window
+        End Get
+        Set(value As Window)
+            _window = value
         End Set
     End Property
 

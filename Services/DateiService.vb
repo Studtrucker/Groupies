@@ -43,7 +43,7 @@ Namespace Services
         ''' Wenn kein Club geladen ist, ist dieser Wert Nothing.
         ''' </summary>
         ''' <returns></returns>
-        Public Property AktuellerClub As Generation4.Club
+        Public Shared Property AktuellerClub As Generation4.Club
 
 
 #Region "Datei Funktionen"

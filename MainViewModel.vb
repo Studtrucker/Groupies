@@ -6,6 +6,7 @@ Imports System.Reflection
 Imports System.Windows.Shell
 Imports Groupies.Controller
 Imports Groupies.Entities
+Imports Groupies.MainWindow
 Imports Groupies.Services
 Imports Microsoft.Win32
 
@@ -196,17 +197,17 @@ Namespace ViewModels
                                                              DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
             AddHandler PropertyChanged, Sub(sender, e)
                                             If e.PropertyName = NameOf(SelectedEinteilung) Then
-                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
                                             End If
                                         End Sub
             AddHandler DateiService.PropertyChanged, Sub(sender, e)
                                                          If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
 
@@ -219,7 +220,7 @@ Namespace ViewModels
             ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
             ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
-            ClubInfoPrintCommand = New RelayCommand(Of Object)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
+            ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             DateiService.LadeMeistVerwendeteDateienInSortedList()
@@ -236,22 +237,43 @@ Namespace ViewModels
                 End If
             End If
 
-            RefreshMostRecentMenu()
-            RefreshJumpListInWinTaskbar()
-            SetProperties()
+            If DateiService.AktuellerClub IsNot Nothing Then
+                RefreshMostRecentMenu()
+                RefreshJumpListInWinTaskbar()
+                SetProperties()
+            Else
+                ResetProperties()
+            End If
 
         End Sub
 
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
-            UnsetProperties()
+            ResetProperties()
         End Sub
 
-
-
-        Private Sub OnClubInfoPrint(obj As Object)
-            Throw New NotImplementedException()
+        Private Sub OnClubInfoPrint(obj As Printversion)
+            Dim dlg = New PrintDialog()
+            If dlg.ShowDialog = True Then
+                Dim doc As FixedDocument
+                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+                Dim pageMargin = New Thickness(30, 30, 30, 60)
+                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
+                dlg.PrintDocument(doc.DocumentPaginator, obj)
+            End If
         End Sub
+
+        'Private Sub OnClubInfoPrintToTeilnehmer(obj As Object)
+        '    Dim dlg = New PrintDialog()
+        '    If dlg.ShowDialog = True Then
+        '        Dim doc As FixedDocument
+        '        Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+        '        Dim pageMargin = New Thickness(30, 30, 30, 60)
+        '        doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
+
+        '        dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
+        '    End If
+        'End Sub
 
 
 
@@ -332,7 +354,7 @@ Namespace ViewModels
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
         End Sub
-        Private Sub UnsetProperties()
+        Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText
         End Sub
 
@@ -413,4 +435,9 @@ Namespace ViewModels
 #End Region
 
     End Class
+
+    Public Enum Printversion
+        TrainerInfo
+        TeilnehmerInfo
+    End Enum
 End Namespace

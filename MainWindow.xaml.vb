@@ -13,6 +13,7 @@ Imports Groupies.Interfaces
 Imports Groupies.Services
 Imports Groupies.UserControls
 Imports Microsoft.Win32
+Imports Groupies.ViewModels
 
 Public Class MainWindow
 
@@ -372,9 +373,9 @@ Public Class MainWindow
             Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
             Dim pageMargin = New Thickness(30, 30, 30, 60)
             If e.Parameter = "InstructorInfo" Then
-                doc = PrintoutInfo(Printversion.Instructor, printArea, pageMargin)
+                doc = PrintoutInfo(Printversion.TrainerInfo, printArea, pageMargin)
             Else
-                doc = PrintoutInfo(Printversion.Participant, printArea, pageMargin)
+                doc = PrintoutInfo(Printversion.TeilnehmerInfo, printArea, pageMargin)
             End If
             dlg.PrintDocument(doc.DocumentPaginator, e.Parameter)
         End If
@@ -1077,7 +1078,7 @@ Public Class MainWindow
 
     End Sub
 
-    Private Function PrintoutInfo(Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
+    Public Shared Function PrintoutInfo(Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
 
         ' ein paar Variablen setzen
         Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
@@ -1141,7 +1142,7 @@ Public Class MainWindow
 
             ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
             Dim pSkikursgruppe As IPrintableNotice
-            If Printversion = Printversion.Participant Then
+            If Printversion = Printversion.TeilnehmerInfo Then
                 pSkikursgruppe = New TeilnehmerAusdruckUserControl
             Else
                 pSkikursgruppe = New TrainerausdruckUserControl
@@ -1167,15 +1168,100 @@ Public Class MainWindow
 
     End Function
 
+    Public Shared Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
+
+        ' ein paar Variablen setzen
+        Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
+        Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
+
+        ' ermitteln der tatsächlich verfügbaren Seitengröße
+        Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
+        Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
+
+        ' ermitteln der Anzahl Spalten und Zeilen
+        Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
+        Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
+
+        ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
+        If rowsPerPage = 0 Then rowsPerPage = 1
+        If columnsPerPage = 0 Then columnsPerPage = 1
+
+        Dim participantsPerPage As Integer = rowsPerPage * columnsPerPage
+
+
+        ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
+        Dim vMarginBetweenFriends As Double = 0
+        If rowsPerPage > 1 Then
+            Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
+            vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
+        End If
+
+        Dim hMarginBetweenFriends As Double = 0
+        If columnsPerPage > 1 Then
+            Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
+            hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
+        End If
+
+        'Todo: Berechnen, wie viele Teilnehmer auf einer Seite gedruckt werden können
+        Dim doc = New FixedDocument()
+        doc.DocumentPaginator.PageSize = pageSize
+        ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
+
+
+        ' nach AngezeigterName sortierte Liste verwenden
+        Dim sortedGroupView = New ListCollectionView(Einteilung.EinteilungAlleGruppen)
+        'Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
+        sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+
+        Dim skikursgruppe As Gruppe
+        Dim page As FixedPage = Nothing
+
+        ' durch die Gruppen loopen und Seiten generieren
+        For i As Integer = 0 To sortedGroupView.Count - 1
+            sortedGroupView.MoveCurrentToPosition(i)
+            skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
+
+            If i Mod participantsPerPage = 0 Then
+                page = New FixedPage
+                If page IsNot Nothing Then
+                    Dim content = New PageContent()
+                    TryCast(content, IAddChild).AddChild(page)
+                    doc.Pages.Add(content)
+                End If
+            End If
+
+
+            ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
+            Dim pSkikursgruppe As IPrintableNotice
+            If Printversion = Printversion.TeilnehmerInfo Then
+                pSkikursgruppe = New TeilnehmerAusdruckUserControl
+            Else
+                pSkikursgruppe = New TrainerausdruckUserControl
+            End If
+
+            DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
+            DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
+
+            If String.IsNullOrWhiteSpace(Einteilung.Benennung) Then
+                Einteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
+            End If
+
+            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, Einteilung.Benennung)
+            Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
+            Dim currentColumn As Integer = i Mod columnsPerPage
+
+            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
+            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
+            page.Children.Add(pSkikursgruppe)
+        Next
+
+        Return doc
+
+    End Function
 
 #End Region
 
 #Region "Enum für Printversion"
-
-    Enum Printversion
-        Instructor
-        Participant
-    End Enum
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
 

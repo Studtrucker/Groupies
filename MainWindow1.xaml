@@ -53,12 +53,12 @@
                 </MenuItem>
                 <MenuItem Header="Club speichern _unter..." Command="{Binding ClubSaveAsCommand}"/>
                 <Separator/>
-                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="ParticipantInfo">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="{x:Static ViewModels:Printversion.TeilnehmerInfo}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="InstructorInfo"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="{x:Static ViewModels:Printversion.TrainerInfo}"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
                     <MenuItem.ItemContainerStyle>

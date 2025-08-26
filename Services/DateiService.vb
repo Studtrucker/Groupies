@@ -236,7 +236,7 @@ Namespace Services
                     End Using
                 End Using
             Catch ex As FileNotFoundException
-                Throw ex
+
             End Try
         End Sub
 

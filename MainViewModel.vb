@@ -53,6 +53,10 @@ Namespace ViewModels
                                                              DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
             AddHandler PropertyChanged, Sub(sender, e)
@@ -81,6 +85,11 @@ Namespace ViewModels
             GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
             LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
             FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
+
+            EinteilungErstellenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungErstellen, Function() CanEinteilungErstellen())
+            GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
+            LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
+            FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             DateiService.LadeMeistVerwendeteDateienInSortedList()
@@ -320,6 +329,41 @@ Namespace ViewModels
             End Set
         End Property
 
+        Private Property CanFaehigkeitErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanFaehigkeitErstellen))
+            End Set
+        End Property
+
+        Private Property CanLeistungsstufeErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanLeistungsstufeErstellen))
+            End Set
+        End Property
+
+        Private Property CanGruppeErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanGruppeErstellen))
+            End Set
+        End Property
+
+        Private Property CanEinteilungErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanEinteilungErstellen))
+            End Set
+        End Property
 #End Region
 
 #Region "Functions"
@@ -428,6 +472,7 @@ Namespace ViewModels
             fenster.DataContext = mvw
             fenster.Show()
         End Sub
+
         Private Sub OnGruppenuebersichtAnzeigen(obj As Object)
             Dim fenster = New BasisUebersichtWindow() With {
                 .Owner = _windowService.Window,
@@ -443,7 +488,90 @@ Namespace ViewModels
 
             fenster.Show()
         End Sub
+        Private Sub OnFaehigkeitErstellen(obj As Object)
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Faehigkeit
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
+            End If
+        End Sub
+
+        Private Sub OnLeistungsstufeErstellen(obj As Object)
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Leistungsstufe
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
+            End If
+        End Sub
+
+        Private Sub OnGruppeErstellen(obj As Object)
+
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Gruppe
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
+            End If
+        End Sub
+
+        Private Sub OnEinteilungErstellen(obj As Object)
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Einteilung
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
+            End If
+        End Sub
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
             ResetProperties()

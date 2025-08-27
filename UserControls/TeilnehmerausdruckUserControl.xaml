@@ -8,6 +8,7 @@
              d:DesignHeight="1000" d:DesignWidth="700">
 
     <DockPanel >
+
         <Grid DockPanel.Dock="Bottom" Width="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -54,9 +55,9 @@
             </Grid.RowDefinitions>
 
             
-            <TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
+            <!--<TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
                      Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
-                     Style="{StaticResource SmallCaption}" FontWeight="Bold"/>
+                     Style="{StaticResource SmallCaption}" FontWeight="Bold"/>-->
 
 
             <!--Area Group Header-->
@@ -75,10 +76,26 @@
 
 
             <!--Area Participants-->
+            <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
+                   FontSize="72"
+                   FontWeight="DemiBold"
+                   Foreground="Gray"
+                   Background="Transparent"
+                   Opacity="0.35"
+                   Grid.Row="4"
+                   
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" Panel.ZIndex="0">
+                <TextBlock.RenderTransform>
+                    <RotateTransform Angle="-30"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+
             <DockPanel Grid.Row="3" Margin="5">
                 <TextBlock Text="Teilnehmer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
                 <DataGrid x:Name="lstMitgliederliste" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                      GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}" MinHeight="30">
+                          GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}" 
+                          MinHeight="30" Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
                     </DataGrid.Columns>

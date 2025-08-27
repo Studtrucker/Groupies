@@ -53,10 +53,14 @@ Namespace ViewModels
                                                              DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
             AddHandler PropertyChanged, Sub(sender, e)
@@ -70,26 +74,8 @@ Namespace ViewModels
                                                          End If
                                                      End Sub
 
+            InitializeCommands()
 
-            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
-            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
-            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
-            ClubNewCommand = New RelayCommand(Of Object)(AddressOf OnClubNew)
-            ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
-            ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
-            ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
-            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
-            ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
-
-            EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
-            GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
-            LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
-            FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
-
-            EinteilungErstellenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungErstellen, Function() CanEinteilungErstellen())
-            GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
-            LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
-            FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
             DateiService.LadeMeistVerwendeteDateienInSortedList()
@@ -116,6 +102,33 @@ Namespace ViewModels
 
         End Sub
 
+        Private Sub InitializeCommands()
+
+            ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
+            WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
+            WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
+            ClubNewCommand = New RelayCommand(Of Object)(AddressOf OnClubNew)
+            ClubOpenCommand = New RelayCommand(Of Object)(AddressOf OnClubOpen)
+            ClubSaveCommand = New RelayCommand(Of Object)(AddressOf OnClubSave, Function() CanClubSave())
+            ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
+            ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
+            ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
+
+            EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
+            GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
+            LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
+            FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
+            TraineruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTraineruebersichtAnzeigen, Function() CanTraineruebersichtAnzeigen())
+            TeilnehmeruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmeruebersichtAnzeigen, Function() CanTeilnehmeruebersichtAnzeigen())
+
+            EinteilungErstellenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungErstellen, Function() CanEinteilungErstellen())
+            GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
+            LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
+            FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
+            TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
+            TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
+
+        End Sub
 
         Private Sub OnClubInfoPrint(obj As Printversion)
             Dim dlg = New PrintDialog()
@@ -329,6 +342,24 @@ Namespace ViewModels
             End Set
         End Property
 
+        Private Property CanTraineruebersichtAnzeigen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanTraineruebersichtAnzeigen))
+            End Set
+        End Property
+
+        Private Property CanTeilnehmeruebersichtAnzeigen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanTeilnehmeruebersichtAnzeigen))
+            End Set
+        End Property
+
         Private Property CanFaehigkeitErstellen As Boolean
             Get
                 Return DateiService.AktuellerClub IsNot Nothing
@@ -362,6 +393,24 @@ Namespace ViewModels
             End Get
             Set(value As Boolean)
                 OnPropertyChanged(NameOf(CanEinteilungErstellen))
+            End Set
+        End Property
+
+        Private Property CanTrainerErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanTrainerErstellen))
+            End Set
+        End Property
+
+        Private Property CanTeilnehmerErstellen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanTeilnehmerErstellen))
             End Set
         End Property
 #End Region
@@ -408,7 +457,10 @@ Namespace ViewModels
             DateiService.DateiSpeichernAls()
             SetProperties()
         End Sub
-
+        Private Sub OnClubClose(obj As Object)
+            DateiService.DateiSchliessen()
+            ResetProperties()
+        End Sub
 
         ''' <summary>
         ''' Handler für Eintrag aus 'Zuletzt geöffnet'
@@ -488,6 +540,40 @@ Namespace ViewModels
 
             fenster.Show()
         End Sub
+
+
+        Private Sub OnTraineruebersichtAnzeigen(obj As Object)
+            Dim fenster = New BasisUebersichtWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+            }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleTrainer
+
+            fenster.DataContext = mvw
+
+            fenster.Show()
+        End Sub
+
+        Private Sub OnTeilnehmeruebersichtAnzeigen(obj As Object)
+            Dim fenster = New BasisUebersichtWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+            }
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleTeilnehmer
+
+            fenster.DataContext = mvw
+
+            fenster.Show()
+        End Sub
+
         Private Sub OnFaehigkeitErstellen(obj As Object)
             Dim dialog = New BasisDetailWindow() With {
                 .Owner = _windowService.Window,
@@ -572,10 +658,50 @@ Namespace ViewModels
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
             End If
         End Sub
-        Private Sub OnClubClose(obj As Object)
-            DateiService.DateiSchliessen()
-            ResetProperties()
+
+        Private Sub OnTrainerErstellen(obj As Object)
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Trainer
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
+            End If
         End Sub
+
+        Private Sub OnTeilnehmerErstellen(obj As Object)
+            Dim dialog = New BasisDetailWindow() With {
+                .Owner = _windowService.Window,
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)
+            }
+            mvw.AktuellesViewModel.Model = New Teilnehmer
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                DateiService.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
+            End If
+        End Sub
+
+
 
 #End Region
 

@@ -242,9 +242,11 @@ Public Class TrainerViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
         End If
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -264,9 +266,9 @@ Public Class TrainerViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleTrainer.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleTrainer.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTrainer(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.AlleTrainer(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
         End If
 

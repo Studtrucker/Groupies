@@ -147,9 +147,11 @@ Public Class FaehigkeitViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
         End If
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -169,9 +171,9 @@ Public Class FaehigkeitViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleFaehigkeiten.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleFaehigkeiten.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleFaehigkeiten(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.AlleFaehigkeiten(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
         End If
 

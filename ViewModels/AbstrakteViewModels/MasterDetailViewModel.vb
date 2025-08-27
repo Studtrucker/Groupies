@@ -31,6 +31,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext)
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
+        'NeuCommand = New RelayCommand(Of T)(AddressOf OnNeu)
     End Sub
 
 #End Region
@@ -135,6 +136,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Property MoveNextCommand As RelayCommand(Of T)
     Public Property MovePreviousCommand As RelayCommand(Of T)
     Public Property LoeschenCommand As RelayCommand(Of T)
+    'Public Property NeuCommand As RelayCommand(Of T)
 
 
 #End Region
@@ -169,6 +171,14 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
     Public Sub OnLoeschen()
         Items.Remove(SelectedItem)
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
+    End Sub
+
+    Friend Sub OnNeu()
+        ' Diese Methode kann in abgeleiteten Klassen überschrieben werden, um die Logik für den Neu-Button zu implementieren.
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Friend Sub OnLoaded()

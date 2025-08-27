@@ -118,7 +118,7 @@ Public Class EinteilungViewModel
         End If
     End Sub
 
-    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+    Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
         ' Hier können Sie die Logik für den Neu-Button implementieren
         Dim dialog = New BasisDetailWindow() With {
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
@@ -134,9 +134,10 @@ Public Class EinteilungViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
+        MyBase.OnNeu()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -156,9 +157,9 @@ Public Class EinteilungViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleEinteilungen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleEinteilungen.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleEinteilungen(Index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.AlleEinteilungen(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
 

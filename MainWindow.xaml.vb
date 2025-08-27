@@ -315,7 +315,7 @@ Public Class MainWindow
     Private Sub Handle_New_Execute(sender As Object, e As ExecutedRoutedEventArgs)
 
         ' Ist aktuell eine Skischuldatei geöffnet?
-        If AppController.AktuellerClub IsNot Nothing Then
+        If Services.DateiService.AktuellerClub IsNot Nothing Then
             Dim rs As MessageBoxResult = MessageBox.Show("Möchten Sie den aktuellen Club noch speichern?", "", MessageBoxButton.YesNoCancel)
             If rs = MessageBoxResult.Yes Then
                 ApplicationCommands.Save.Execute(Nothing, Me)

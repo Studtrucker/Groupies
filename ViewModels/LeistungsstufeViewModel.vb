@@ -165,9 +165,11 @@ Public Class LeistungsstufeViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -187,10 +189,10 @@ Public Class LeistungsstufeViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleLeistungsstufen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleLeistungsstufen.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleLeistungsstufen(index) = mvw.AktuellesViewModel.Model
-            Debug.WriteLine(AppController.AktuellerClub.AlleLeistungsstufen(index).Beschreibung)
+            Services.DateiService.AktuellerClub.AlleLeistungsstufen(index) = mvw.AktuellesViewModel.Model
+            Debug.WriteLine(Services.DateiService.AktuellerClub.AlleLeistungsstufen(index).Beschreibung)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
 

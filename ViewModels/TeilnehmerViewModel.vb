@@ -27,7 +27,7 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        Dim DropDown = New ListCollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
+        Dim DropDown = New ListCollectionView(Services.DateiService.AktuellerClub.LeistungsstufenComboBox)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
@@ -192,9 +192,11 @@ Public Class TeilnehmerViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
         End If
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -214,9 +216,9 @@ Public Class TeilnehmerViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleTeilnehmer.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleTeilnehmer.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTeilnehmer(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.AlleTeilnehmer(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
         End If
 

@@ -171,9 +171,11 @@ Public Class GruppeViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
@@ -193,9 +195,9 @@ Public Class GruppeViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = AppController.AktuellerClub.AlleGruppen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.AlleGruppen.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleGruppen(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.AlleGruppen(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
 

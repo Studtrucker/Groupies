@@ -502,7 +502,7 @@ Namespace ViewModels
             Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        }
+            }
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
 
             fenster.DataContext = mvw

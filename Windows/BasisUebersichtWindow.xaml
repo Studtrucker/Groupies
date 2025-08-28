@@ -494,6 +494,7 @@
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*" MinWidth="405"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -531,6 +532,10 @@
                         <TextBlock >Fähigkeiten
                             <Run Foreground="Red">*</Run>
                         </TextBlock>
+                    </Label>
+
+                    <Label Grid.Column="3" Content="Auswahl Fähigkeiten">
+                        
                     </Label>
 
                         <!--Felder-->
@@ -577,11 +582,17 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
-                        
                     </DataGrid>
-                        
-
-                    </Grid>
+                    
+                    <DataGrid Grid.Column="3" Grid.Row="1" Grid.RowSpan="4"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              ItemsSource="{Binding SelectedItem.Faehigkeiten}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Sort" Binding="{Binding Sortierung}"/>
+                            <DataGridTextColumn Header="Ben" Binding="{Binding Benennung}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
                 <!--</DockPanel>-->
             </DockPanel>
         </DataTemplate>

@@ -28,7 +28,7 @@ Public Class LeistungsstufeViewModel
         ' Hier können Sie den Konstruktor anpassen
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
-        AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.FaehigkeitenComboBox)
+        AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.AlleFaehigkeiten)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
@@ -148,6 +148,20 @@ Public Class LeistungsstufeViewModel
         _Leistungsstufe.speichern()
 
     End Sub
+
+    Public Overloads Property SelectedItem As Leistungsstufe
+        Get
+            Return MyBase.SelectedItem
+        End Get
+        Set(value As Leistungsstufe)
+            MyBase.SelectedItem = value
+            OnPropertyChanged(NameOf(SelectedItem))
+            OnPropertyChanged(NameOf(CanBearbeiten))
+            CType(BearbeitenCommand, RelayCommand(Of Einteilung)).RaiseCanExecuteChanged()
+            Dim abc = DateiService.AktuellerClub.AlleFaehigkeiten.Except(SelectedItem.Faehigkeiten)
+            AuswahlFaehigkeiten = New ListCollectionView(abc.ToList)
+        End Set
+    End Property
 
     Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
         ' Hier können Sie die Logik für den Neu-Button implementieren

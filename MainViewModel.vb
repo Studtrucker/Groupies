@@ -61,6 +61,7 @@ Namespace ViewModels
                                                              DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                              DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                                                             DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                                                          End If
                                                      End Sub
             AddHandler PropertyChanged, Sub(sender, e)
@@ -127,6 +128,7 @@ Namespace ViewModels
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
             TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
             TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
+            TeilnehmerEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEinteilen, Function() CanTeilnehmerEinteilen())
 
         End Sub
 
@@ -411,6 +413,15 @@ Namespace ViewModels
             End Get
             Set(value As Boolean)
                 OnPropertyChanged(NameOf(CanTeilnehmerErstellen))
+            End Set
+        End Property
+
+        Private Property CanTeilnehmerEinteilen As Boolean
+            Get
+                Return DateiService.AktuellerClub IsNot Nothing
+            End Get
+            Set(value As Boolean)
+                OnPropertyChanged(NameOf(CanTeilnehmerEinteilen))
             End Set
         End Property
 #End Region
@@ -701,7 +712,9 @@ Namespace ViewModels
             End If
         End Sub
 
-
+        Private Sub OnTeilnehmerEinteilen(obj As Object)
+            SelectedEinteilung.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), SelectedGruppe)
+        End Sub
 
 #End Region
 

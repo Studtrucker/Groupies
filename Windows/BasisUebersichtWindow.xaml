@@ -586,10 +586,10 @@
                     
                     <DataGrid Grid.Column="3" Grid.Row="1" Grid.RowSpan="4"
                               AutoGenerateColumns="False" IsReadOnly="True"
-                              ItemsSource="{Binding SelectedItem.Faehigkeiten}">
+                              ItemsSource="{Binding AuswahlFaehigkeiten}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Sort" Binding="{Binding Sortierung}"/>
-                            <DataGridTextColumn Header="Ben" Binding="{Binding Benennung}"/>
+                            <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

@@ -294,8 +294,8 @@
                             <!--<DataGridTemplateColumn Header="Gruppen" Width="*" CellTemplate="{StaticResource GruppenlisteDataTemplate1}"/>-->
                             <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
-                            <DataGridTextColumn Header="Anz Teilnehmer"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
-                            <DataGridTextColumn Header="Sort Stufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
+                            <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
+                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
                             <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -371,6 +371,8 @@
                               ItemsSource="{Binding SelectedEinteilung.GruppenloseTeilnehmer}" 
                               SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTeilnehmer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              SelectionMode="Extended" SelectionUnit="FullRow"
+                              local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTeilnehmer}"
                               CanUserAddRows="False">
 
                         <i:Interaction.Triggers>
@@ -383,8 +385,9 @@
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                            <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstufe.Benennung"
-                                                    SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                            <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <!--<DataGridComboBoxColumn Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstufe.Benennung"
+                                                    SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>

@@ -209,7 +209,7 @@ Namespace ViewModels
 #End Region
 
 #Region "Properties"
-
+        Public Property SelectedAlleGruppenloserTeilnehmer As New ObservableCollection(Of Teilnehmer)
         Public Property MostRecentlyUsedMenuItem As New ObservableCollection(Of MenuEintragViewModel)
 
         Public Property WindowTitleIcon As String = "pack://application:,,,/Images/icons8-ski-resort-48.png"
@@ -713,7 +713,9 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnTeilnehmerEinteilen(obj As Object)
-            SelectedEinteilung.TeilnehmerAusGruppeEntfernen(MitgliederlisteDataGrid.SelectedItems.Item(i), SelectedGruppe)
+            For i = SelectedAlleGruppenloserTeilnehmer.Count - 1 To 0 Step -1
+                SelectedEinteilung.TeilnehmerInGruppeEinteilen(SelectedAlleGruppenloserTeilnehmer(i), SelectedGruppe)
+            Next
         End Sub
 
 #End Region

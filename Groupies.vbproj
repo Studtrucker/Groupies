@@ -128,6 +128,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
     <Compile Include="Services\AppService.vb" />

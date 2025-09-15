@@ -72,10 +72,11 @@
 
                 <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding SelectedGruppe.Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding SelectedGruppe.Benennung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding SelectedGruppe.Leistungsstufe.Benennung}"/>
 
-                <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
+                <!--<ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
                           x:Name="GruppenleistungsstufeComboBox"
-                          SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                          SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
 
 
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
@@ -108,8 +109,10 @@
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                        <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstand.Benennung"
-                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                        <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+
+                        <!--<DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstand.Benennung"
+                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

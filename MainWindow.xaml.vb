@@ -1003,7 +1003,7 @@ Public Class MainWindow
         ' Die allgemeinen Leistungsstufen füllen
         _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
         GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         ' Hier wird der DataContext gesetzt!

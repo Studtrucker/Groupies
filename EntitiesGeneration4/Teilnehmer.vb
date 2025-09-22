@@ -180,8 +180,12 @@ Namespace Entities
             End Get
             Set(value As Leistungsstufe)
                 _Leistungsstand = value
+                LeistungsstufeID = value.LeistungsstufeID
             End Set
         End Property
+
+        Public Property LeistungsstufeID As Guid
+
 
         ''' <summary>
         ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück

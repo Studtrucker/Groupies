@@ -98,7 +98,6 @@ Namespace Entities
 
 #End Region
 
-
 #Region "Beispiel Gruppierung"
 
         Public Property GruppeLeistungNachnameVorname =

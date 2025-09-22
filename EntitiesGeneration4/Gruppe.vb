@@ -102,11 +102,27 @@ Namespace Entities
             End Set
         End Property
 
+
+        Private _Leistungsstufe As Leistungsstufe
         ''' <summary>
         ''' Die Leistungsstufe der Gruppe
         ''' </summary>
         ''' <returns></returns>
         Public Property Leistungsstufe As Leistungsstufe
+            Get
+                Return _Leistungsstufe
+            End Get
+            Set(value As Leistungsstufe)
+                _Leistungsstufe = value
+                LeistungsstufeID = value.LeistungsstufeID
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Die Leistungsstufe der Gruppe
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property LeistungsstufeID As Guid
 
         ''' <summary>
         ''' Der Trainer der Gruppe

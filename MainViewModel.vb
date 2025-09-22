@@ -241,6 +241,19 @@ Namespace ViewModels
             End Set
         End Property
 
+        Private _Leistungsstufenliste As LeistungsstufeCollection
+        ''' <summary>
+        ''' Alle Einteilungen des aktuellen Clubs.
+        ''' </summary>
+        ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
+        Public Property Leistungsstufenliste As LeistungsstufeCollection
+            Get
+                Return _Leistungsstufenliste
+            End Get
+            Set(value As LeistungsstufeCollection)
+                _Leistungsstufenliste = value
+            End Set
+        End Property
 
         Private _SelectedEinteilung As Einteilung
 
@@ -261,7 +274,19 @@ Namespace ViewModels
                 Return _SelectedGruppe
             End Get
             Set(value As Gruppe)
+                _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
+                OnPropertyChanged(NameOf(SelectedGruppe))
+            End Set
+        End Property
+
+        Private _GruppendetailViewModel As GruppendetailViewModel
+        Public Property GruppendetailViewModel As GruppendetailViewModel
+            Get
+                Return _GruppendetailViewModel
+            End Get
+            Set(value As GruppendetailViewModel)
+                _GruppendetailViewModel = value
             End Set
         End Property
 
@@ -436,6 +461,10 @@ Namespace ViewModels
             Return copiedList
         End Function
 
+        Public Function GetLeistungsstufenliste() As LeistungsstufeCollection
+            Return DateiService.AktuellerClub.AlleLeistungsstufen
+        End Function
+
 #End Region
 
 #Region "Methoden"
@@ -484,6 +513,10 @@ Namespace ViewModels
         Private Sub SetProperties()
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
+            Leistungsstufenliste = DateiService.AktuellerClub.AlleLeistungsstufen
+            GruppendetailViewModel = New GruppendetailViewModel(New Gruppe With {.Benennung = "Keine Gruppe ausgewählt"})
+
+
         End Sub
         Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText

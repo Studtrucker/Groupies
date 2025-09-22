@@ -192,6 +192,7 @@
     <Compile Include="ViewModels\AbstrakteViewModels\ViewModelBase.vb" />
     <Compile Include="ViewModels\EinteilungViewModel.vb" />
     <Compile Include="ViewModels\FaehigkeitViewModel.vb" />
+    <Compile Include="ViewModels\GruppendetailViewModel.vb" />
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />

@@ -36,6 +36,7 @@ Namespace ViewModels
             _windowService = windowService
             DateiService = New DateiService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+            GruppendetailViewModel = New GruppendetailViewModel()
         End Sub
 #End Region
 
@@ -514,9 +515,6 @@ Namespace ViewModels
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
             Leistungsstufenliste = DateiService.AktuellerClub.AlleLeistungsstufen
-            GruppendetailViewModel = New GruppendetailViewModel(New Gruppe With {.Benennung = "Keine Gruppe ausgewählt"})
-
-
         End Sub
         Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText

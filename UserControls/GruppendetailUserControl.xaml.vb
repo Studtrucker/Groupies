@@ -7,6 +7,15 @@ Namespace UserControls
 
     Public Class GruppendetailUserControl
 
+        Public Sub New()
+
+            ' Dieser Aufruf ist für den Designer erforderlich.
+            InitializeComponent()
+
+            ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+        End Sub
+
         'Private _LeistungsstufenListCollectionView As ICollectionView
 
         '        Sub New()

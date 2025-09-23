@@ -13,11 +13,19 @@
              mc:Ignorable="d"
              Width="Auto" Height="Auto">
 
-
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="LeistungsstufenProvider" ObjectType="{x:Type ViewModels:GruppendetailViewModel}" MethodName="GetLeistungsstufen"/>
+        <ObjectDataProvider x:Key="LeistungsstufenProvider"
+                            x:Name="LeistungsstufenProvider"
+                            ObjectType="{x:Type ViewModels:MainViewModel}" 
+                            MethodName="GetLeistungsstufen">
+        </ObjectDataProvider>
     </UserControl.Resources>
-
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding UserControlLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
         <Border.Effect>
@@ -65,7 +73,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Anzahl Mitglieder"/>
-                        <Label Grid.Column="1" Content="{Binding SelectedGruppe.Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
+                        <Label Grid.Column="1" Content="{Binding Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
                     </Grid>
                 </StackPanel>
 
@@ -74,12 +82,11 @@
                 <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding Leistungsstufe.LeistungsstufeID}"/>
 
                 <ComboBox Grid.Column="2" Grid.Row="4" x:Name="GruppenleistungsstufeComboBox"
-                          ItemsSource="{Binding Source={StaticResource LeistungsstufenProvider}}" 
-                          SelectedValue="{Binding LeistungsstufenID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValuePath="LeistungsstufenID"
+                          SelectedValue="{Binding Leistungsstufe.LeistungsstufeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding LeistungsstufenListe}"
+                          SelectedValuePath="LeistungsstufeID"
                           DisplayMemberPath="Benennung"/>
-
-
+   
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
                           Text="{Binding Trainer.VorUndNachname}">
                     
@@ -120,14 +127,10 @@
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
-
-                        <!--<DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstand.Benennung"
-                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
+                        <!--<DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />-->
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </Grid>
     </Border>
-
 </UserControl>

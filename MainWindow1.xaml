@@ -267,8 +267,8 @@
                             <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
                             <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
-                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
-                            <DataGridTextColumn Header="Stufe"  
+                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.LeistungsstufeID}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
+                            <DataGridTextColumn Header="Stufe"      
                                                 Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>

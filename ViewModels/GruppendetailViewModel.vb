@@ -1,4 +1,5 @@
-﻿Imports Groupies.DataImport
+﻿Imports System.Collections.ObjectModel
+Imports Groupies.DataImport
 Imports Groupies.Entities
 Imports Groupies.Services
 Imports Trainer = Groupies.Entities.Trainer
@@ -13,22 +14,30 @@ Namespace ViewModels
 
 #Region "Kontruktor"
         Public Sub New()
+            UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
+
             TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
             TrainerEntfernen = New RelayCommand(Of Object)(AddressOf OnTrainerEntfernen, Function() CanTrainerEntfernen())
         End Sub
-        Public Sub New(Gruppe As Gruppe)
-            Me.New
-            _Gruppe = Gruppe
-        End Sub
+
+
 #End Region
 
 #Region "Commands"
         Public Property TeilnehmerEntfernen As RelayCommand(Of Object)
         Public Property TrainerEntfernen As RelayCommand(Of Object)
+        Public Property UserControlLoadedCommand As RelayCommand(Of Object)
 
 #End Region
 
 #Region "Command-Methoden"
+
+        Private Sub OnUserControlLoaded(obj As Object)
+            'Dim provider = CType(Me.FindResource("LeistungsstufenProvider"), ObjectDataProvider)
+            'provider.Refresh()
+            OnPropertyChanged(NameOf(LeistungsstufenListe))
+        End Sub
+
         Private Sub OnTeilnehmerEntfernen(obj As Object)
             ' Logik zum Entfernen eines Teilnehmers aus der Gruppe
             ' Zum Beispiel:
@@ -190,6 +199,22 @@ Namespace ViewModels
             End Get
         End Property
 
+        Public ReadOnly Property LeistungsstufenListe As LeistungsstufeCollection
+            Get
+                Return GetLeistungsstufen()
+            End Get
+        End Property
+
+#End Region
+
+#Region "Methoden"
+        Public Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
+            If DateiService.AktuellerClub IsNot Nothing Then
+                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.AlleLeistungsstufen)
+                Return DateiService.AktuellerClub.AlleLeistungsstufen
+            End If
+            Return Nothing
+        End Function
 #End Region
 
     End Class

@@ -164,6 +164,9 @@
     <Compile Include="EntitiesGeneration4\Einteilung.vb" />
     <Compile Include="EntitiesGeneration4\EinteilungCollection.vb" />
     <Compile Include="MainViewModel.vb" />
+    <Compile Include="TestWindow.xaml.vb">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\EinteilungenlisteUserControl.xaml.vb">
       <DependentUpon>EinteilungenlisteUserControl.xaml</DependentUpon>
     </Compile>
@@ -197,6 +200,7 @@
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\DetailViewModel.vb" />
+    <Compile Include="ViewModels\TestWindowViewModel.vb" />
     <Compile Include="ViewModels\ViewModelWindow.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
     <Compile Include="Windows\BasisDetailWindow.xaml.vb">
@@ -266,6 +270,10 @@
     <Compile Include="ValidationRules\SortierungValidationRule.vb" />
     <Compile Include="XMLDatenLaden.vb" />
     <Page Include="MainWindow1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

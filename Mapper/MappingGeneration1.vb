@@ -154,7 +154,7 @@ Public Module MappingGeneration1
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Leistungsstufen.Add(MapLevel2Leistungsstufe(T.ParticipantLevel)))
 
         ' Entferne doppelte Leistungsstufen über ID
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 
@@ -227,7 +227,7 @@ Public Module MappingGeneration1
 
         Dim Leistungsstufe = New Leistungsstufe(Level.LevelNaming) With {
             .Beschreibung = Level.LevelDescription,
-            .LeistungsstufeID = Level.LevelID,
+            .Ident = Level.LevelID,
             .Sortierung = Level.SortNumber,
             .Faehigkeiten = FaehigkeitCollection}
 

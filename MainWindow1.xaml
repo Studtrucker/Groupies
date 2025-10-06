@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         xmlns:converters="clr-namespace:Groupies.Converters"
         xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=ViewModels:MainViewModel}"
         mc:Ignorable="d"
         WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
@@ -191,8 +191,8 @@
             <MenuItem Header="_Hilfe">
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >
                     <!--Für das Viewitem siehe WhatsApp ChatGPT vom 15.05.2025-->
-
                 </MenuItem>
+                <MenuItem Header="Testwindow" Click="MenuItem_Click"/>
             </MenuItem>
 
         </Menu>
@@ -251,8 +251,7 @@
                               ItemsSource="{Binding  SelectedEinteilung.EinteilungAlleGruppen}"  
                               SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
-                              IsSynchronizedWithCurrentItem="True"
-                              IsReadOnly="False" DockPanel.Dock="Bottom"
+                              IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single">
 
@@ -267,9 +266,14 @@
                             <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
                             <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
-                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.LeistungsstufeID}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
+                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
                             <DataGridTextColumn Header="Stufe"      
-                                                Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                                                Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <!--<DataGridComboBoxColumn Header="Stufe" Width="*" 
+                                                    ItemsSource="{Binding DataContext.LeistungsstufenListe}"                                                   
+                                                    DisplayMemberPath="Benennung"
+                                                    SelectedValuePath="Ident"
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>-->
                         </DataGrid.Columns>
                     </DataGrid>
 

@@ -18,7 +18,7 @@ Namespace Entities
 
 #Region "Felder"
 
-        Private _LeistungsstufeID = Guid.NewGuid()
+        Private _Ident = Guid.NewGuid()
 
 #End Region
 
@@ -53,7 +53,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Origin"></param>
         Public Sub New(origin As Leistungsstufe)
-            _LeistungsstufeID = origin.LeistungsstufeID
+            _Ident = origin.Ident
             _Benennung = origin.Benennung
             _Sortierung = origin.Sortierung
             _Beschreibung = origin.Beschreibung
@@ -68,12 +68,12 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        Public Property LeistungsstufeID As Guid Implements IModel.Ident
+        Public Property Ident As Guid Implements IModel.Ident
             Get
-                Return _LeistungsstufeID
+                Return _Ident
             End Get
             Set(value As Guid)
-                _LeistungsstufeID = value
+                _Ident = value
             End Set
         End Property
 

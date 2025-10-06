@@ -17,9 +17,15 @@ Namespace Entities
 
 
 #Region "Fields"
+        Private _TeilnehmerID As Guid = Guid.NewGuid()
+
+        Private _LeistungsstandID As Guid
         Private _Leistungsstand As Leistungsstufe
 
-        Private _TeilnehmerID = Guid.NewGuid()
+        Private _Nachname As String
+        Private _Vorname As String
+        Private _Telefonnummer As String
+        Private _Geburtsdatum As Date
 
 #End Region
 
@@ -95,6 +101,7 @@ Namespace Entities
             End Get
             Set(value As Guid)
                 _TeilnehmerID = value
+                OnPropertyChanged(NameOf(TeilnehmerID))
             End Set
         End Property
 
@@ -103,12 +110,30 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Nachname As String
+            Get
+                Return _Nachname
+            End Get
+            Set(value As String)
+                _Nachname = value
+                OnPropertyChanged(NameOf(Nachname))
+                OnPropertyChanged(NameOf(VorUndNachname))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Das Geburtsdatum des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
         Public Property Geburtsdatum As Date
+            Get
+                Return _Geburtsdatum
+            End Get
+            Set(value As Date)
+                _Geburtsdatum = value
+                OnPropertyChanged(NameOf(Geburtsdatum))
+                OnPropertyChanged(NameOf(Alter))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Berechnet das Alter und  
@@ -145,6 +170,15 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Vorname As String
+            Get
+                Return _Vorname
+            End Get
+            Set(value As String)
+                _Vorname = value
+                OnPropertyChanged(NameOf(Vorname))
+                OnPropertyChanged(NameOf(VorUndNachname))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Der Vor- und Nachname
@@ -169,6 +203,28 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Telefonnummer As String
+            Get
+                Return _Telefonnummer
+            End Get
+            Set(value As String)
+                _Telefonnummer = value
+            End Set
+        End Property
+
+
+        ''' <summary>
+        ''' Der FK zum Leistungsstand
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property LeistungsstandID As Guid
+            Get
+                Return _LeistungsstandID
+            End Get
+            Set(value As Guid)
+                _LeistungsstandID = value
+            End Set
+        End Property
+
 
         ''' <summary>
         ''' Setzt und liest den Leistungsstand des Teilnehmers
@@ -180,11 +236,9 @@ Namespace Entities
             End Get
             Set(value As Leistungsstufe)
                 _Leistungsstand = value
-                LeistungsstufeID = value.LeistungsstufeID
             End Set
         End Property
 
-        Public Property LeistungsstufeID As Guid
 
 
         ''' <summary>

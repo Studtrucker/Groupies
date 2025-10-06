@@ -36,7 +36,7 @@ Namespace ValidationRules
         End Function
 
         Public Function GetEindeutigkeit(Leistungsstufe As Leistungsstufe) As ValidationResult
-            If Services.DateiService.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Sortierung = Leistungsstufe.Sortierung AndAlso Ls.LeistungsstufeID <> Leistungsstufe.LeistungsstufeID).Any() Then
+            If Services.DateiService.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Sortierung = Leistungsstufe.Sortierung AndAlso Ls.Ident <> Leistungsstufe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult

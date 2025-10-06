@@ -11,13 +11,17 @@ Namespace ViewModels
         Inherits BaseModel
         Implements IViewModelSpecial
 
+        Private _LeistungsstufeID As Guid
+        Private _leistungsstufenListe As LeistungsstufeCollection
 
 #Region "Kontruktor"
         Public Sub New()
+
             UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
 
             TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
             TrainerEntfernen = New RelayCommand(Of Object)(AddressOf OnTrainerEntfernen, Function() CanTrainerEntfernen())
+
         End Sub
 
 
@@ -35,6 +39,7 @@ Namespace ViewModels
         Private Sub OnUserControlLoaded(obj As Object)
             'Dim provider = CType(Me.FindResource("LeistungsstufenProvider"), ObjectDataProvider)
             'provider.Refresh()
+            LeistungsstufenListe = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
 
@@ -91,6 +96,7 @@ Namespace ViewModels
                 OnPropertyChanged(NameOf(Sortierung))
                 OnPropertyChanged(NameOf(Benennung))
                 OnPropertyChanged(NameOf(Leistungsstufe))
+                OnPropertyChanged(NameOf(LeistungsstufeID))
                 OnPropertyChanged(NameOf(Trainer))
                 OnPropertyChanged(NameOf(Mitgliederliste))
             End Set
@@ -134,7 +140,26 @@ Namespace ViewModels
             Set(value As Leistungsstufe)
                 _Gruppe.Leistungsstufe = value
                 OnPropertyChanged(NameOf(Leistungsstufe))
+                OnPropertyChanged(NameOf(LeistungsstufeID))
                 RaiseEvent ModelChangedEvent(Me, False)
+            End Set
+        End Property
+
+        Property LeistungsstufeID As Guid
+            Get
+                If _Gruppe Is Nothing Then
+                    Return Nothing
+                End If
+                Return _Gruppe.LeistungsstufeID
+            End Get
+            Set(value As Guid)
+                If _Gruppe IsNot Nothing Then
+                    _Gruppe.LeistungsstufeID = value
+                    _Gruppe.Leistungsstufe = DateiService.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Ident = value).First
+                    OnPropertyChanged(NameOf(LeistungsstufeID))
+                    OnPropertyChanged(NameOf(Leistungsstufe))
+                    RaiseEvent ModelChangedEvent(Me, False)
+                End If
             End Set
         End Property
 
@@ -199,22 +224,27 @@ Namespace ViewModels
             End Get
         End Property
 
-        Public ReadOnly Property LeistungsstufenListe As LeistungsstufeCollection
+        Public Property LeistungsstufenListe As LeistungsstufeCollection
             Get
-                Return GetLeistungsstufen()
+                'If _leistungsstufenListe Is Nothing Then
+                '    _leistungsstufenListe = New LeistungsstufeCollection()
+                'End If
+                Return _leistungsstufenListe
             End Get
+            Set(value As LeistungsstufeCollection)
+                _leistungsstufenListe = value
+                OnPropertyChanged(NameOf(LeistungsstufenListe))
+            End Set
         End Property
-
 #End Region
 
 #Region "Methoden"
-        Public Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
-            If DateiService.AktuellerClub IsNot Nothing Then
-                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.AlleLeistungsstufen)
-                Return DateiService.AktuellerClub.AlleLeistungsstufen
-            End If
-            Return Nothing
-        End Function
+        'Public Function GetLeistungsstufen() As LeistungsstufeCollection
+        '    If DateiService.AktuellerClub IsNot Nothing Then
+        '        Return DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+        '    End If
+        '    Return New LeistungsstufeCollection()
+        'End Function
 #End Region
 
     End Class

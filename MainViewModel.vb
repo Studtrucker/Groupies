@@ -242,19 +242,23 @@ Namespace ViewModels
             End Set
         End Property
 
-        Private _Leistungsstufenliste As LeistungsstufeCollection
         ''' <summary>
-        ''' Alle Einteilungen des aktuellen Clubs.
+        ''' Alle Leistungsstufen des aktuellen Clubs.
         ''' </summary>
         ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
-        Public Property Leistungsstufenliste As LeistungsstufeCollection
+        Public ReadOnly Property LeistungsstufenListe As LeistungsstufeCollection
             Get
-                Return _Leistungsstufenliste
+                Return GetLeistungsstufen()
             End Get
-            Set(value As LeistungsstufeCollection)
-                _Leistungsstufenliste = value
-            End Set
         End Property
+
+        Public Shared Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
+            If DateiService.AktuellerClub IsNot Nothing Then
+                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.AlleLeistungsstufen)
+                Return DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+            End If
+            Return Nothing
+        End Function
 
         Private _SelectedEinteilung As Einteilung
 
@@ -265,6 +269,7 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
+                OnPropertyChanged(NameOf(LeistungsstufenListe))
             End Set
         End Property
 
@@ -514,7 +519,6 @@ Namespace ViewModels
         Private Sub SetProperties()
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
-            Leistungsstufenliste = DateiService.AktuellerClub.AlleLeistungsstufen
         End Sub
         Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText

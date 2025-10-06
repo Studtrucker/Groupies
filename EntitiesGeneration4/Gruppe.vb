@@ -14,9 +14,14 @@ Namespace Entities
         Implements IModel
 
 #Region "Felder"
-        Private _GruppenID = Guid.NewGuid()
-        Private _Mitgliederliste = New TeilnehmerCollection
+        Private _GruppenID As Guid = Guid.NewGuid()
         Private _Sortierung As Integer
+        Private _LeistungsstufeID As Guid
+        Private _Leistungsstufe As Leistungsstufe
+        Private _Mitgliederliste = New TeilnehmerCollection
+        Private _Benennung As String
+        Private _Trainer As Trainer
+        Private _TrainerID As Guid
 #End Region
 
 #Region "Konstruktor"
@@ -79,14 +84,14 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist ein Pflichtfeld")>
         Public Property Benennung As String
-
-        '''' <summary>
-        '''' Der Ausgabename für die Trainerinformation
-        '''' TeilnehmerinfoName und die Benennung
-        '''' </summary>
-        '''' <returns></returns>
-        'Public ReadOnly Property AusgabeTrainerinfo As String = $"{Benennung} {[Alias]}"
-
+            Get
+                Return _Benennung
+            End Get
+            Set(value As String)
+                _Benennung = value
+                OnPropertyChanged(NameOf(Benennung))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen 
@@ -102,8 +107,21 @@ Namespace Entities
             End Set
         End Property
 
+        ''' <summary>
+        ''' Der Fk für die Leistungsstufe der Gruppe
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property LeistungsstufeID As Guid
+            Get
+                Return _LeistungsstufeID
+            End Get
+            Set(value As Guid)
+                _LeistungsstufeID = value
+                OnPropertyChanged(NameOf(LeistungsstufeID))
+            End Set
+        End Property
 
-        Private _Leistungsstufe As Leistungsstufe
+
         ''' <summary>
         ''' Die Leistungsstufe der Gruppe
         ''' </summary>
@@ -114,21 +132,37 @@ Namespace Entities
             End Get
             Set(value As Leistungsstufe)
                 _Leistungsstufe = value
-                LeistungsstufeID = value.LeistungsstufeID
+                OnPropertyChanged(NameOf(Leistungsstufe))
             End Set
         End Property
 
         ''' <summary>
-        ''' Die Leistungsstufe der Gruppe
+        ''' Der FK für den Trainer der Gruppe
         ''' </summary>
         ''' <returns></returns>
-        Public Property LeistungsstufeID As Guid
+        Public Property TrainerID As Guid
+            Get
+                Return _TrainerID
+            End Get
+            Set(value As Guid)
+                _TrainerID = value
+                OnPropertyChanged(NameOf(TrainerID))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Der Trainer der Gruppe
         ''' </summary>
         ''' <returns></returns>
         Public Property Trainer As Trainer
+            Get
+                Return _Trainer
+            End Get
+            Set(value As Trainer)
+                _Trainer = value
+                OnPropertyChanged(NameOf(Trainer))
+            End Set
+        End Property
 
         ''' <summary>
         ''' Liste der Gruppenmitglieder

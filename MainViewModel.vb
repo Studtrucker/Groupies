@@ -36,6 +36,7 @@ Namespace ViewModels
             _windowService = windowService
             DateiService = New DateiService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
+            GruppendetailViewModel = New GruppendetailViewModel()
         End Sub
 #End Region
 
@@ -241,6 +242,23 @@ Namespace ViewModels
             End Set
         End Property
 
+        ''' <summary>
+        ''' Alle Leistungsstufen des aktuellen Clubs.
+        ''' </summary>
+        ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
+        Public ReadOnly Property LeistungsstufenListe As LeistungsstufeCollection
+            Get
+                Return GetLeistungsstufen()
+            End Get
+        End Property
+
+        Public Shared Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
+            If DateiService.AktuellerClub IsNot Nothing Then
+                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.AlleLeistungsstufen)
+                Return DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+            End If
+            Return Nothing
+        End Function
 
         Private _SelectedEinteilung As Einteilung
 
@@ -251,6 +269,7 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
+                OnPropertyChanged(NameOf(LeistungsstufenListe))
             End Set
         End Property
 
@@ -261,7 +280,19 @@ Namespace ViewModels
                 Return _SelectedGruppe
             End Get
             Set(value As Gruppe)
+                _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
+                OnPropertyChanged(NameOf(SelectedGruppe))
+            End Set
+        End Property
+
+        Private _GruppendetailViewModel As GruppendetailViewModel
+        Public Property GruppendetailViewModel As GruppendetailViewModel
+            Get
+                Return _GruppendetailViewModel
+            End Get
+            Set(value As GruppendetailViewModel)
+                _GruppendetailViewModel = value
             End Set
         End Property
 
@@ -434,6 +465,10 @@ Namespace ViewModels
                 copiedList.Add(copyConstructor(item))
             Next
             Return copiedList
+        End Function
+
+        Public Function GetLeistungsstufenliste() As LeistungsstufeCollection
+            Return DateiService.AktuellerClub.AlleLeistungsstufen
         End Function
 
 #End Region

@@ -18,14 +18,14 @@ Namespace Services
             Dim Empty = New Leistungsstufe() With {
                 .Benennung = String.Empty,
                 .Sortierung = -1,
-                .LeistungsstufeID = Guid.Empty,
+                .Ident = Guid.Empty,
                 .Faehigkeiten = Nothing,
                 .Beschreibung = String.Empty}
 
             Dim Anfaenger = New Leistungsstufe() With {
                 .Benennung = "Anfänger",
                 .Sortierung = 10,
-                .LeistungsstufeID = Guid.NewGuid,
+                .Ident = Guid.NewGuid,
                 .Faehigkeiten = SkillsAnfaenger(),
                 .Beschreibung = DescriptionAnfaenger()}
 
@@ -34,28 +34,28 @@ Namespace Services
                 .Sortierung = 20,
                 .Beschreibung = DescriptionFortgeschritten(),
                 .Faehigkeiten = SkillsFortgeschritten(),
-                .LeistungsstufeID = Guid.NewGuid}
+                .Ident = Guid.NewGuid}
 
             Dim Geniesser = New Leistungsstufe("") With {
                 .Benennung = "Genießer",
                 .Sortierung = 30,
                 .Beschreibung = DescriptionGeniesser(),
                 .Faehigkeiten = SkillsGeniesser(),
-                .LeistungsstufeID = Guid.NewGuid}
+                .Ident = Guid.NewGuid}
 
             Dim Koenner = New Leistungsstufe("") With {
                 .Benennung = "Könner",
                 .Sortierung = 40,
                 .Beschreibung = DescriptionKoenner(),
                 .Faehigkeiten = SkillsKoenner(),
-                .LeistungsstufeID = Guid.NewGuid}
+                .Ident = Guid.NewGuid}
 
             Dim Experte = New Leistungsstufe("") With {
                 .Benennung = "Experte",
                 .Sortierung = 50,
                 .Beschreibung = DescriptionExperte(),
                 .Faehigkeiten = SkillsExperte(),
-                .LeistungsstufeID = Guid.NewGuid}
+                .Ident = Guid.NewGuid}
 
             _levelCollection = New LeistungsstufeCollection From {Empty, Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
             Return _levelCollection

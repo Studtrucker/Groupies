@@ -126,7 +126,7 @@ Public Module MappingGeneration4
         ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
         Skiclub.AlleEinteilungen.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) Leistungsstufen.Add(g.Leistungsstufe)))
         ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 
@@ -144,7 +144,7 @@ Public Module MappingGeneration4
         Skiclub.AlleEinteilungen.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand))))
         Skiclub.AlleEinteilungen.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand)))
         ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 

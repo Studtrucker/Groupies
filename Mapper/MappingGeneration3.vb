@@ -128,7 +128,7 @@ Public Module MappingGeneration3
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand)))
 
         ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.LeistungsstufeID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 

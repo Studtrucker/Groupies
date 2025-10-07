@@ -1003,7 +1003,7 @@ Public Class MainWindow
         ' Die allgemeinen Leistungsstufen füllen
         _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
         GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
-        GruppeUserControl.TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
+        TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
 
         ' Hier wird der DataContext gesetzt!
@@ -1416,6 +1416,10 @@ Public Class MainWindow
     Private Sub HandleNeuesMainWindow(sender As Object, e As RoutedEventArgs)
         Dim w As New MainWindow1()
         w.Show()
+    End Sub
+
+    Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+
     End Sub
 
 

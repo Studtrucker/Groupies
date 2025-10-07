@@ -5,28 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Groupies"
              xmlns:rules="clr-namespace:Groupies.ValidationRules"
-             
+             xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
              xmlns:Converters="clr-namespace:Groupies.Converters"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:cmd="clr-namespace:Groupies.Commands"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Width="Auto" Height="Auto">
 
-
     <UserControl.Resources>
-        <Converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
     </UserControl.Resources>
     
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding UserControlLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Border BorderBrush="Black" BorderThickness="1"  Margin="20">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="10" Color="DarkGray"/>
         </Border.Effect>
         <Grid x:Name="gridSkikursdetails" Background="white" Panel.ZIndex="1" >
-            <Grid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerSuchen}"/>
-                </ContextMenu>
-            </Grid.ContextMenu>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -54,8 +56,9 @@
                     <RowDefinition MinHeight="250" Height="Auto"/>
                     <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="1" Grid.Row="1" Content="Sortierung für Gruppenliste" Margin="2"/>
-                <Label Grid.Column="1" Grid.Row="3" Content="Gruppenname" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="1" Content="Sortierung" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="2" Content="Gruppenname" Margin="2"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="LeistungsstufeID" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="4" Content="Leistungsstufe" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="5" Content="Trainer" Margin="2"/>
                 <StackPanel Grid.Column="1" Grid.Row="6">
@@ -66,24 +69,31 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Anzahl Mitglieder"/>
-                        <Label Grid.Column="1" Content="{Binding SelectedGruppe.Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
+                        <Label Grid.Column="1" Content="{Binding Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  />
                     </Grid>
                 </StackPanel>
 
-                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding SelectedGruppe.Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding SelectedGruppe.Benennung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <ComboBox Grid.Column="2" Grid.Row="4" IsSynchronizedWithCurrentItem="True"
-                          x:Name="GruppenleistungsstufeComboBox"
-                          SelectedValue="{Binding SelectedGruppe.Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding SelectedGruppe.Leistungsstufe.Benennung}"/>
-
-
+                <ComboBox Grid.Column="2" Grid.Row="4" x:Name="GruppenleistungsstufeComboBox"
+                          IsSynchronizedWithCurrentItem="True"
+                          SelectedValue="{Binding LeistungsstufeID, Mode=TwoWay}"
+                          ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}"
+                          SelectedValuePath="Ident"
+                          DisplayMemberPath="Benennung"/>
+   
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
-                          Text="{Binding SelectedGruppe.Trainer.VorUndNachname}"                         
-                          MouseDoubleClick="Handle_TrainerAusGruppeEntfernen">
+                          Text="{Binding Trainer.VorUndNachname}">
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding TrainerEntfernen}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
-                        <TextBox.ContextMenu>
+                    <TextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}" />
                             <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerAusGruppeEntfernen}" />
@@ -94,9 +104,14 @@
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
-                          ItemsSource="{Binding SelectedGruppe.Mitgliederliste}" 
-                          SelectionMode="Extended" MouseDoubleClick="Handle_TeilnehmerAusGruppeEntfernen">
-                    
+                          ItemsSource="{Binding Mitgliederliste}" 
+                          SelectionMode="Extended" >
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding TeilnehmerEntfernen}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>
@@ -109,15 +124,15 @@
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-
-                        <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstand.Benennung"
-                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}" Visibility="Hidden"/>
-
-                        <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                        <DataGridTextColumn Header="StufeSort"  Binding="{Binding Leistungsstand.Sortierung}" Width="Auto" />
+                        <DataGridComboBoxColumn Header="Stufe" Width="*"
+                                                SelectedValueBinding="{Binding LeistungsstandID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                                SelectedValuePath="Ident" 
+                                                DisplayMemberPath="Benennung"
+                                                ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </Grid>
     </Border>
-
 </UserControl>

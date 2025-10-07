@@ -121,9 +121,9 @@ Namespace Entities.Generation4
         Public ReadOnly Property LeistungsstufenComboBox() As LeistungsstufeCollection
             Get
                 Dim ComboLeistungsstufen = New LeistungsstufeCollection(AlleLeistungsstufen) From {
-                    New Leistungsstufe With {.Benennung = String.Empty, .Sortierung = -1, .LeistungsstufeID = Guid.Empty}}
-                Return ComboLeistungsstufen.Sortieren()
-
+                    New Leistungsstufe With {.Benennung = String.Empty, .Sortierung = -1, .Ident = Guid.Empty}}
+                'Return ComboLeistungsstufen.Sortieren()
+                Return AlleLeistungsstufen.Sortieren
             End Get
         End Property
 

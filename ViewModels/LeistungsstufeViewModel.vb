@@ -50,10 +50,10 @@ Public Class LeistungsstufeViewModel
 
     Public Property LeistungsstufeID() As Guid
         Get
-            Return _Leistungsstufe.LeistungsstufeID
+            Return _Leistungsstufe.Ident
         End Get
         Set(ByVal value As Guid)
-            _Leistungsstufe.LeistungsstufeID = value
+            _Leistungsstufe.Ident = value
             OnPropertyChanged(NameOf(LeistungsstufeID))
             ValidateLeitungsstufeID()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
@@ -223,9 +223,9 @@ Public Class LeistungsstufeViewModel
     End Sub
 
     Private Sub ValidateLeitungsstufeID()
-        ClearErrors(NameOf(_Leistungsstufe.LeistungsstufeID))
-        If _Leistungsstufe.LeistungsstufeID = Guid.Empty Then
-            AddError(NameOf(_Leistungsstufe.LeistungsstufeID), "Leistungsstufe ID darf nicht leer sein.")
+        ClearErrors(NameOf(_Leistungsstufe.Ident))
+        If _Leistungsstufe.Ident = Guid.Empty Then
+            AddError(NameOf(_Leistungsstufe.Ident), "Leistungsstufe ID darf nicht leer sein.")
         End If
     End Sub
 

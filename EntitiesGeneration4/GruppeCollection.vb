@@ -23,6 +23,10 @@ Namespace Entities
             End Get
         End Property
 
+        Friend Sub KorrekturLeistungsstufen(AlleLeistungsstufen As LeistungsstufeCollection)
+            Me.ToList.ForEach(Sub(Gr) Gr.Leistungsstufe = AlleLeistungsstufen.Where(Function(LS) LS.Benennung = Gr.Leistungsstufe.Benennung).Single)
+        End Sub
+
 #Region "Funktionen und Methoden"
 
 

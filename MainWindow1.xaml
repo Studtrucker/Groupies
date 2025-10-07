@@ -8,14 +8,15 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         xmlns:converters="clr-namespace:Groupies.Converters"
         xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=ViewModels:MainViewModel}"
         mc:Ignorable="d"
         WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
     <Window.Resources>
         <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <ObjectDataProvider x:Key="LeistungsstufenProvider" ObjectType="{x:Type ViewModels:MainViewModel}" MethodName="GetLeistungsstufenliste"/>
     </Window.Resources>
-    
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
@@ -190,8 +191,8 @@
             <MenuItem Header="_Hilfe">
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >
                     <!--Für das Viewitem siehe WhatsApp ChatGPT vom 15.05.2025-->
-
                 </MenuItem>
+                <MenuItem Header="Testwindow" Click="MenuItem_Click"/>
             </MenuItem>
 
         </Menu>
@@ -250,39 +251,9 @@
                               ItemsSource="{Binding  SelectedEinteilung.EinteilungAlleGruppen}"  
                               SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
-                              IsSynchronizedWithCurrentItem="True"
                               IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single">
-
-                        <!--<DataGrid.Resources>
-                            <DataTemplate x:Key="GruppenlisteDataTemplate1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Sortierung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Interne Benennung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Leistungsstufe"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Anzahl Mitglieder"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
-                                </Grid>
-                            </DataTemplate>
-
-                        </DataGrid.Resources>-->
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -296,7 +267,13 @@
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
                             <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
                             <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
-                            <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <DataGridTextColumn Header="Stufe"      
+                                                Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <!--<DataGridComboBoxColumn Header="Stufe" Width="*" 
+                                                    ItemsSource="{Binding DataContext.LeistungsstufenListe}"                                                   
+                                                    DisplayMemberPath="Benennung"
+                                                    SelectedValuePath="Ident"
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>-->
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -311,7 +288,7 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Gruppe" />
-                        <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
+                        <uc:GruppendetailUserControl x:Name="GruppeUserControl" DataContext="{Binding GruppendetailViewModel}"/>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -368,7 +345,7 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
-                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTeilnehmer}" 
+                              ItemsSource="{Binding Source={StaticResource LeistungsstufenProvider}}" 
                               SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTeilnehmer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               SelectionMode="Extended" SelectionUnit="FullRow"
@@ -386,8 +363,12 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                             <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
-                            <!--<DataGridComboBoxColumn Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstufe.Benennung"
-                                                    SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
+                            <DataGridComboBoxColumn Header="Leistungsstand" Width="*" 
+                                                    DisplayMemberPath="Benennung"
+                                                    ItemsSource="{Binding Leistungsstufenliste, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    SelectedValuePath="LeistungsstufeID"
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>
+                                                    <!--SortMemberPath="Leistungsstufe.Benennung"-->
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>

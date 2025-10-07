@@ -51,10 +51,10 @@ Public Class GruppeViewModel
 
     Public Property GruppenID As Guid
         Get
-            Return _Gruppe.GruppenID
+            Return _Gruppe.Ident
         End Get
         Set(value As Guid)
-            _Gruppe.GruppenID = value
+            _Gruppe.Ident = value
             OnPropertyChanged(NameOf(GruppenID))
             ValidateGruppenID()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
@@ -207,9 +207,9 @@ Public Class GruppeViewModel
 
 #Region "Validation"
     Private Sub ValidateGruppenID()
-        ClearErrors(NameOf(_Gruppe.GruppenID))
-        If _Gruppe.GruppenID = Nothing Then
-            AddError(NameOf(_Gruppe.GruppenID), "Eine GruppenID muss eingetragen werden.")
+        ClearErrors(NameOf(_Gruppe.Ident))
+        If _Gruppe.Ident = Nothing Then
+            AddError(NameOf(_Gruppe.Ident), "Eine GruppenID muss eingetragen werden.")
         End If
     End Sub
 

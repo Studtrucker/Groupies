@@ -166,7 +166,7 @@ Public Module MappingGeneration1
         Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
             .Benennung = Group.GroupNaming,
             .Sortierung = Group.GroupSort,
-            .GruppenID = Group.GroupID,
+            .Ident = Group.GroupID,
             .Leistungsstufe = MapLevel2Leistungsstufe(Group.GroupLevel)}
 
         ' Den Trainer mappen

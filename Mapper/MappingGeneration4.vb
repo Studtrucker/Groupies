@@ -57,7 +57,7 @@ Public Module MappingGeneration4
         Skiclub.AlleEinteilungen.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) Gruppen.Add(g)))
 
         ' Entferne doppelte Gruppen
-        Gruppen = New GruppeCollection(Gruppen.GroupBy(Of Guid)(Function(G) G.GruppenID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Gruppen = New GruppeCollection(Gruppen.GroupBy(Of Guid)(Function(G) G.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Gruppen
 

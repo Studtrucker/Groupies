@@ -251,7 +251,7 @@
                               ItemsSource="{Binding  SelectedEinteilung.EinteilungAlleGruppen}"  
                               SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
-                              IsReadOnly="True" DockPanel.Dock="Bottom"
+                              IsReadOnly="False" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single">
 
@@ -269,11 +269,11 @@
                             <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
                             <DataGridTextColumn Header="Stufe"      
                                                 Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
-                            <!--<DataGridComboBoxColumn Header="Stufe" Width="*" 
+                            <DataGridComboBoxColumn Header="Stufe" Width="*" 
                                                     ItemsSource="{Binding DataContext.LeistungsstufenListe}"                                                   
                                                     DisplayMemberPath="Benennung"
                                                     SelectedValuePath="Ident"
-                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>-->
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

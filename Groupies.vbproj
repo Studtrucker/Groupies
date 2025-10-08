@@ -131,14 +131,13 @@
     <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
-    <Compile Include="EntitiesGeneration4\ClubGeneration4Neu.vb" />
+    <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
     <Compile Include="Behaviors\DataGridSortBehavior.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
     <Compile Include="Behaviors\DragDropBehavior.vb" />
-    <Compile Include="EntitiesGeneration4\ClubGeneration4Alt.vb" />
     <Compile Include="Interfaces\Windows\IWindowService.vb" />
     <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />
@@ -147,8 +146,8 @@
     <Compile Include="Interfaces\ViewModel\IViewModelSpecial.vb" />
     <Compile Include="Interfaces\Windows\Modus\IModus.vb" />
     <Compile Include="Enums\ModusEnum.vb" />
-    <Compile Include="MainWindow1.xaml.vb">
-      <DependentUpon>MainWindow1.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.vb">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mapper\MappingGeneration4.vb" />
     <Compile Include="Mapper\MappingGeneration3.vb" />
@@ -228,10 +227,6 @@
     <Compile Include="EntitiesGeneration1\Skiclub.vb" />
     <Compile Include="EntitiesGeneration1\Skill.vb" />
     <Compile Include="EntitiesGeneration1\SkillCollection.vb" />
-    <Compile Include="EntitiesGeneration4\KannWeg\EwigerTrainer.vb" />
-    <Compile Include="EntitiesGeneration4\KannWeg\EwigeTrainerCollection.vb" />
-    <Compile Include="EntitiesGeneration4\KannWeg\EwigeTeilnehmerCollection.vb" />
-    <Compile Include="EntitiesGeneration4\KannWeg\EwigerTeilnehmer.vb" />
     <Compile Include="EntitiesGeneration4\ImportKlassen.vb" />
     <Compile Include="Exceptions\GroupiesException.vb" />
     <Compile Include="Fabriken\DataImportFabrik.vb" />
@@ -265,12 +260,9 @@
       <DependentUpon>TeilnehmerausdruckUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\BenennungValidationRule.vb" />
-    <Compile Include="MainWindow.xaml.vb">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ValidationRules\SortierungValidationRule.vb" />
     <Compile Include="XMLDatenLaden.vb" />
-    <Page Include="MainWindow1.xaml">
+    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -353,10 +345,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\TeilnehmerausdruckUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

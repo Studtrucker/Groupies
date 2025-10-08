@@ -144,6 +144,9 @@ Namespace ViewModels
             End If
         End Sub
 
+        Private Function PrintoutInfo(selectedEinteilung As Einteilung, obj As Printversion, printArea As Size, pageMargin As Thickness) As FixedDocument
+            Throw New NotImplementedException()
+        End Function
 
         Private Sub OnWindowClose(obj As Object)
             _windowService.CloseWindow()

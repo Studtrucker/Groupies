@@ -30,7 +30,7 @@ Public Module MappingGeneration2
 
         ' Erste Einteilung füllen
         Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(Gl))
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
+        Skiclub.Gruppenliste.Where(Function(Gl) Gl.Trainer IsNot Nothing).ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
         Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
         NeuerClub.Einteilungsliste(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
         NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer

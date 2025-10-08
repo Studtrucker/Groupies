@@ -7,46 +7,75 @@
         xmlns:uc="clr-namespace:Groupies.UserControls" 
         xmlns:cmd="clr-namespace:Groupies.Commands"
         xmlns:converters="clr-namespace:Groupies.Converters"
+        xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=ViewModels:MainViewModel}"
         mc:Ignorable="d"
-        Loaded="HandleWindowLoaded" Closed="HandleMainWindowClosed" Closing="HandleMainWindowClosing"
-        WindowState="Maximized" Title="Groupies" Height="450" Width="800">
+        WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
     <Window.Resources>
+        
         <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <ObjectDataProvider x:Key="LeistungsstufenProvider" ObjectType="{x:Type ViewModels:MainViewModel}" MethodName="GetLeistungsstufenliste"/>
     </Window.Resources>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Close">
+            <i:InvokeCommandAction Command="{Binding WindowClosedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding WindowClosedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <local:CancelClosingTriggerAction Command="{Binding WindowClosingCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <DockPanel>
-        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="LightSlateGray">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="HotPink">
 
             <MenuItem  Header="_Datei">
-                <MenuItem Header="_Neuer Club" Command="ApplicationCommands.New">
+                <MenuItem Header="_Neuer Club" Command="{Binding ClubNewCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/neueGruppe-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Club ö_ffnen" Command="ApplicationCommands.Open">
+                <MenuItem Header="Club ö_ffnen" Command="{Binding ClubOpenCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/GruppeOeffnen-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Club _speichern" Command="ApplicationCommands.Save">
+                <MenuItem Header="Club _speichern" Command="{Binding ClubSaveCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Club speichern _unter..." Command="ApplicationCommands.SaveAs"/>
+                <MenuItem Header="Club speichern _unter..." Command="{Binding ClubSaveAsCommand}"/>
                 <Separator/>
-                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="ApplicationCommands.Print" CommandParameter="ParticipantInfo">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="{x:Static ViewModels:Printversion.TeilnehmerInfo}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Trainerinfo _drucken..." Command="ApplicationCommands.Print"  CommandParameter="InstructorInfo"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="{x:Static ViewModels:Printversion.TrainerInfo}"/>
                 <Separator/>
-                <MenuItem Header="Zuletzt verwendet" x:Name="mostrecentlyUsedMenuItem" />
+                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Titel}"/>
+                            <Setter Property="Command" Value="{Binding Befehl}"/>
+                            <Setter Property="CommandParameter" Value="{Binding Titel}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="_Beenden" Command="ApplicationCommands.Close" />
+                <MenuItem Header="Club schliesse_n" Command="{Binding ClubCloseCommand}"/>
+
+                <Separator/>
+                <MenuItem Header="_Beenden" Command="{Binding ApplicationCloseCommand}" />
             </MenuItem>
 
 
@@ -55,51 +84,97 @@
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-diversity-48.png"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Übersicht" Click="ZeigeEinteilungenUebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungNeuErstellen}"/>
-               </MenuItem>
-                
+                    <MenuItem Header="Übersicht"  Command="{Binding EinteilungsuebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen" Command="{Binding EinteilungErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
                 <MenuItem Header="Gruppen">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Übersicht" Click="ZeigeGruppenUebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeNeuErstellen}"/>
+                    <MenuItem Header="Übersicht"  Command="{Binding GruppenuebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen"  Command="{Binding GruppeErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
-                
                 <MenuItem Header="Leistungsstufen">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-treppe-rauf-48.png"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Übersicht" Click="ZeigeLeistungsstufenUebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.LeistungsstufeNeuErstellen}"/>
+                    <MenuItem Header="Übersicht"  Command="{Binding LeistungsstufenuebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen" Command="{Binding LeistungsstufeErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
-                
                 <MenuItem Header="Fähigkeiten">
                     <MenuItem.Icon>
                         <Image Source="pack://application:,,,/Images/icons8-trophaee-48.png"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Übersicht" Click="ZeigeFaehigkeitenUebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.FaehigkeitNeuErstellen}"/>
+                    <MenuItem Header="Übersicht"  Command="{Binding FaehigkeitenuebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen" Command="{Binding FaehigkeitErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
                 </MenuItem>
             </MenuItem>
 
             <MenuItem Header="_Personen" >
                 <MenuItem Header="Teilnehmer">
-                    <MenuItem Header="Übersicht" Click="ZeigeTeilnehmerUebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
+                    <MenuItem Header="Übersicht"  Command="{Binding TeilnehmeruebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen" Command="{Binding TeilnehmerErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-person-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Header="Trainer">
+                    <MenuItem Header="Übersicht"  Command="{Binding TraineruebersichtAnzeigenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-uebersichtsliste-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Erstellen" Command="{Binding TrainerErstellenCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Images/icons8-create-48.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/icons8-trainer-48.png"/>
                     </MenuItem.Icon>
-                     <MenuItem Header="Übersicht" Click="ZeigeTraineruebersicht"/>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-               </MenuItem>
+                </MenuItem>
             </MenuItem>
 
             <MenuItem  Header="_Extras" >
@@ -115,15 +190,11 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Hilfe">
-                <MenuItem Header="Test erstellen" Click="HandleTestErstellen"/>
-                <MenuItem Header="Test bearbeiten " Click="HandleTestBearbeiten"/>
-                <MenuItem Header="Test anzeigen" Click="HandleTestAnzeigen"/>
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >
                     <!--Für das Viewitem siehe WhatsApp ChatGPT vom 15.05.2025-->
-
                 </MenuItem>
+                <MenuItem Header="Testwindow" Click="MenuItem_Click"/>
             </MenuItem>
-            <MenuItem Header="Neues MainWindow" Click="HandleNeuesMainWindow"/>
 
         </Menu>
 
@@ -155,24 +226,18 @@
 
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Die Einteilungen" DockPanel.Dock="Top"/>
-                    <!--<DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
-                              ItemsSource="{Binding}" AutoGenerateColumns="False"
-                              IsReadOnly="True" CanUserAddRows="False" >-->
+
                     <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
                                   AutoGenerateColumns="False" 
-                                  ItemsSource="{Binding AlleEinteilungen}"
+                                  ItemsSource="{Binding AlleEinteilungenCV}"
                                   SelectedItem="{Binding SelectedEinteilung}"
                                   DisplayMemberPath="Benennung"
                                   IsReadOnly="True" CanUserAddRows="False" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sortierung"  Binding="{Binding Sortierung}" Width="Auto" />
-                            <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="*" />
+                            <DataGridTextColumn Header="Sortierung"  Binding="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
+                            <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" Width="*" />
                         </DataGrid.Columns>
-                        <!--<DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.EinteilungKopieren}"/>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>-->
+      
 
                     </DataGrid>
                 </DockPanel>
@@ -183,79 +248,17 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
-                    <!--<DataGrid x:Name="GruppenlisteDataGrid" 
-                              ItemsSource="{Binding SelectedEinteilung.Gruppenliste}"  
-                              DisplayMemberPath="Benennung" 
-                              SelectedItem="{Binding SelectedGruppe}">
-
-                    </DataGrid>-->
                     <DataGrid x:Name="GruppenlisteDataGrid" 
                               ItemsSource="{Binding  SelectedEinteilung.EinteilungAlleGruppen}"  
                               SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
-                              IsSynchronizedWithCurrentItem="True"
-                              IsReadOnly="True" DockPanel.Dock="Bottom"
+                              IsReadOnly="False" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
                               AutoGenerateColumns="False" SelectionMode="Single">
 
-                        <DataGrid.Resources>
-                            <!--<DataTemplate x:Key="GruppenlisteDataTemplate3">
-                                <DataGridTemplateColumn Header="Gruppe" SortMemberPath="Sortierung">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Sortierung}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataTemplate>-->
-
-                            <!--<DataTemplate x:Key="GruppenlisteDataTemplate2">
-                                <DataGridTemplateColumn >
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock Text="{Binding Sortierung}"/>
-                                                <TextBlock Text="{Binding Benennung}"/>
-                                                <TextBlock Text="{Binding Leistungsstufe}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataTemplate>-->
-
-
-                            <DataTemplate x:Key="GruppenlisteDataTemplate1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Sortierung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Interne Benennung"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Leistungsstufe"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Anzahl Mitglieder"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Benennung,UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Mitgliederliste.Count,UpdateSourceTrigger=PropertyChanged}"/>
-                                </Grid>
-                            </DataTemplate>
-                       
-                        </DataGrid.Resources>
-                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeLoeschen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.GruppeSortieren}"/>
+                                <MenuItem Header="Löschen" Command="{Binding GruppeLoeschenCommand}" CommandParameter="{Binding SelectedGruppe}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
 
@@ -263,8 +266,15 @@
                             <!--<DataGridTemplateColumn Header="Gruppen" Width="*" CellTemplate="{StaticResource GruppenlisteDataTemplate1}"/>-->
                             <DataGridTextColumn Header="Sort"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
-                            <DataGridTextColumn Header="Anz Teilnehmer"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
-                            <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
+                            <DataGridTextColumn Header="SortStufe"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
+                            <DataGridTextColumn Header="Stufe"      
+                                                Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <DataGridComboBoxColumn Header="Stufe" Width="*" 
+                                                    ItemsSource="{Binding DataContext.LeistungsstufenListe}"                                                   
+                                                    DisplayMemberPath="Benennung"
+                                                    SelectedValuePath="Ident"
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -279,7 +289,7 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Gruppe" />
-                        <uc:GruppendetailUserControl x:Name="GruppeUserControl"/>
+                        <uc:GruppendetailUserControl x:Name="GruppeUserControl" DataContext="{Binding GruppendetailViewModel}"/>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -300,9 +310,14 @@
                               ItemsSource="{Binding SelectedEinteilung.GruppenloseTrainer}"
                               SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTrainer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              IsReadOnly="True" CanUserAddRows="False" 
-                              MouseDoubleClick="GruppenloseTrainer_MouseDoubleClick">
-
+                              IsReadOnly="True" CanUserAddRows="False" >
+                        
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding TrainerEinteilenCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        
                         <DataGrid.Columns>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
@@ -316,9 +331,9 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerInGruppeEinteilen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerNeuErstellen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerLoeschen}"/>
+                                <MenuItem Header="Trainer einteilen" Command="{Binding TeilnehmerEinteilenCommand}"/>
+                                <MenuItem Header="Trainer erstellen" Command="{Binding TeilnehmerEinteilenCommand}"/>
+                                <MenuItem Header="Trainer löschen"   Command="{Binding TeilnehmerEinteilenCommand}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -331,24 +346,37 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
-                              ItemsSource="{Binding SelectedEinteilung.GruppenloseTeilnehmer}" 
+                              ItemsSource="{Binding Source={StaticResource LeistungsstufenProvider}}" 
                               SelectedItem="{Binding SelectedEinteilung.SelectedGruppenloserTeilnehmer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              CanUserAddRows="False" 
-                              MouseDoubleClick="GruppenloseTeilnehmer_MouseDoubleClick">
+                              SelectionMode="Extended" SelectionUnit="FullRow"
+                              local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTeilnehmer}"
+                              CanUserAddRows="False">
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding TeilnehmerEinteilenCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                            <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" SortMemberPath="Leistungsstufe.Benennung"
-                                                    SelectedValueBinding="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                            <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstand}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
+                            <DataGridComboBoxColumn Header="Leistungsstand" Width="*" 
+                                                    DisplayMemberPath="Benennung"
+                                                    ItemsSource="{Binding Leistungsstufenliste, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    SelectedValuePath="LeistungsstufeID"
+                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>
+                                                    <!--SortMemberPath="Leistungsstufe.Benennung"-->
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerInGruppeEinteilen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerNeuErstellen}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}"/>
-                                <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerLoeschen}"/>
+                                <MenuItem Header="Teilnehmer einteilen"  Command="{Binding TeilnehmerEinteilenCommand}"/>
+                                <MenuItem Header="Teilnehmer erstellen"  Command="{Binding TeilnehmerErstellenCommand}"/>
+                                <MenuItem Header="Teilnehmer bearbeiten" Command="{Binding TeilnehmerBearbeitenCommand}"/>
+                                <MenuItem Header="Teilnehmer löschen"    Command="{Binding TeilnehmerLoeschenCommand}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -362,64 +390,3 @@
 
 </Window>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--    <StackPanel>
-
-            <StackPanel Grid.IsSharedSizeScope="True">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80" SharedSizeGroup="meineGruppe"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
-                    <Label Grid.Column="1" Content="Grid1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
-                    <GridSplitter Background="Red" Width="5"/>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition SharedSizeGroup="meineGruppe"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Content="Grid2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
-                    <Label Grid.Column="1" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
-                    <Label Grid.Column="2" Content="Grid2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightCoral"/>
-                </Grid>
-                <Border>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="meineGruppe"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Grid 3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray"/>
-                        <Label Grid.Column="1" Content="gruppiert" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightBlue"/>
-                    </Grid>
-
-                </Border>
-            </StackPanel>-->

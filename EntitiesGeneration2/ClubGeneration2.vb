@@ -108,17 +108,6 @@ Namespace Entities.Generation2
             End Set
         End Property
 
-        ''' <summary>
-        ''' Ewige Teilnehmerliste
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property EwigeTeilnehmerliste() As EwigeTeilnehmerCollection
-
-        ''' <summary>
-        ''' Ewige Trainerliste
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property EwigeTrainerliste() As EwigeTrainerCollection
 
         ''' <summary>
         '''  Teilnehmer, die bereits in Gruppen eingeteilt wurden 

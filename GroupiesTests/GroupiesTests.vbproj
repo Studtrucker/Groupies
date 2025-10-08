@@ -86,7 +86,6 @@
     <Compile Include="DateiServiceTests.vb" />
     <Compile Include="AppControllerTests.vb" />
     <Compile Include="ClubTests.vb" />
-    <Compile Include="EwigeTeilnehmerlisteTest.vb" />
     <Compile Include="ImportServiceTests.vb" />
     <Compile Include="SkiDateienServiceTests.vb" />
     <Compile Include="XmlDatenLadenTests.vb" />

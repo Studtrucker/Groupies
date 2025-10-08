@@ -95,7 +95,7 @@ Namespace Services
             Dim ZuArchivierende = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
 
             ' Teilnehmer in der ewigen Liste archivieren
-            Dim Archiv = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New EwigerTrainer(Tn, Now.Date)))
+            Dim Archiv = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New Trainer(Tn)))
             ' Teilnehmer, die nicht dabei sind, aussortieren
             For Each ArchivTr In ZuArchivierende
                 AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleGruppen.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)

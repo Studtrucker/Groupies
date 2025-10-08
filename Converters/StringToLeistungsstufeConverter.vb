@@ -14,7 +14,7 @@ Namespace Converters
             Else
                 AktuelleLeistungsstufen.Clear()
             End If
-            AppController.AktuellerClub?.AlleLeistungsstufen.ToList.ForEach(Sub(Ls) AktuelleLeistungsstufen.Add(Ls.Benennung))
+            AppController.AktuellerClub?.Leistungsstufenliste.ToList.ForEach(Sub(Ls) AktuelleLeistungsstufen.Add(Ls.Benennung))
         End Sub
 
         Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
@@ -24,7 +24,7 @@ Namespace Converters
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
             If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
-            Dim obj = Services.DateiService.AktuellerClub.AlleLeistungsstufen.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt")).First
+            Dim obj = Services.DateiService.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt")).First
             Return obj
         End Function
     End Class

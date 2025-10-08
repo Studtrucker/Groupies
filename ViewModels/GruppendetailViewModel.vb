@@ -39,7 +39,7 @@ Namespace ViewModels
         Private Sub OnUserControlLoaded(obj As Object)
 
             If DateiService.AktuellerClub IsNot Nothing Then
-                LeistungsstufenListe = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+                LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
             End If
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
@@ -156,7 +156,7 @@ Namespace ViewModels
             Set(value As Guid)
                 If _Gruppe IsNot Nothing Then
                     _Gruppe.LeistungsstufeID = value
-                    _Gruppe.Leistungsstufe = DateiService.AktuellerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Ident = value).First
+                    _Gruppe.Leistungsstufe = DateiService.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Ident = value).First
                     OnPropertyChanged(NameOf(LeistungsstufeID))
                     OnPropertyChanged(NameOf(Leistungsstufe))
                     RaiseEvent ModelChangedEvent(Me, False)

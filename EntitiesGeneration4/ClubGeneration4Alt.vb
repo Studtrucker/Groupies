@@ -8,12 +8,12 @@ Imports System.Xml.Serialization
 Imports System.ComponentModel
 Imports Groupies.Controller
 
-Namespace Entities.Generation4
+Namespace Entities.Generation4Alt
 
 
     Public Class Club
         Inherits BaseModel
-        Implements IClub
+        'Implements IClub
 
 #Region "Fields"
 
@@ -53,7 +53,7 @@ Namespace Entities.Generation4
         ''' Der Clubname
         ''' </summary>
         ''' <returns></returns>
-        Public Property ClubName As String Implements IClub.Name
+        Public Property ClubName As String 'Implements IClub.Name
 
         Private _SelectedEinteilung As Einteilung
         ''' <summary>
@@ -238,12 +238,12 @@ Namespace Entities.Generation4
             Return ClubName
         End Function
 
-        Public Function LadeGroupies(Datei As String) As Club Implements IClub.LadeGroupies
+        Public Function LadeGroupies(Datei As String) As Club 'Implements IClub.LadeGroupies
             Using fs = New FileStream(Datei, FileMode.Open)
-                Dim serializer = New XmlSerializer(GetType(Generation4.Club))
-                Dim loadedSkiclub As Generation4.Club
+                Dim serializer = New XmlSerializer(GetType(Club))
+                Dim loadedSkiclub As Club
                 Try
-                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation4.Club)
+                    loadedSkiclub = TryCast(serializer.Deserialize(fs), Club)
                     Return Map2AktuelleGeneration(loadedSkiclub)
                 Catch ex As InvalidDataException
                     Throw ex
@@ -251,8 +251,9 @@ Namespace Entities.Generation4
             End Using
         End Function
 
-        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Club Implements IClub.Map2AktuelleGeneration
-            Return MappingGeneration4.MapSkiClub2Club(Skiclub)
+        Public Function Map2AktuelleGeneration(Skiclub As IClub) As Club 'Implements IClub.Map2AktuelleGeneration
+            'Return MappingGeneration4.MapSkiClub2Club(Skiclub)
+            Return Nothing
         End Function
 
 

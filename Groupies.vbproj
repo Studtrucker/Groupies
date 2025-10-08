@@ -131,13 +131,14 @@
     <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
+    <Compile Include="EntitiesGeneration4\ClubGeneration4Neu.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
     <Compile Include="Behaviors\DataGridSortBehavior.vb" />
     <Compile Include="Commands\RelayCommand.vb" />
     <Compile Include="Behaviors\DragDropBehavior.vb" />
-    <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
+    <Compile Include="EntitiesGeneration4\ClubGeneration4Alt.vb" />
     <Compile Include="Interfaces\Windows\IWindowService.vb" />
     <Compile Include="Interfaces\Model\IModel.vb" />
     <Compile Include="Enums\DatentypEnum.vb" />

@@ -10,18 +10,18 @@ Public Module MappingGeneration1
 
         Dim NeuerClub = New Generation4.Club With {
             .ClubName = If(Skiclub.Name, "Club"),
-            .AlleTrainer = GetAlleTrainer(Skiclub),
-            .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
-            .AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
-            .AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub),
-            .AlleGruppen = GetAlleGruppen(Skiclub)}
+            .Trainerliste = GetAlleTrainer(Skiclub),
+            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Gruppenliste = GetAlleGruppen(Skiclub)}
 
-        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
-        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.AlleEinteilungen(0).EinteilungAlleGruppen.Add(MapGroup2Gruppe(Gl)))
-        NeuerClub.AlleEinteilungen(0).GruppenloseTrainer = GetGruppenloseTrainer(Skiclub)
-        NeuerClub.AlleEinteilungen(0).GruppenloseTeilnehmer = GetGruppenloseTeilnehmer(Skiclub)
+        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(MapGroup2Gruppe(Gl)))
+        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = GetGruppenloseTrainer(Skiclub)
+        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = GetGruppenloseTeilnehmer(Skiclub)
 
         Return NeuerClub
 

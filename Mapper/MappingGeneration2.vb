@@ -4,37 +4,39 @@ Public Module MappingGeneration2
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation4.Club
 
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        Leistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub)
+        Dim AlleLeistungsstufen = New LeistungsstufeCollection
+        AlleLeistungsstufen = GetAlleLeistungsstufen(Skiclub)
+
 
         Dim Gruppen = New GruppeCollection
-        Gruppen = GetAlleGruppen(Skiclub, Leistungsstufen)
+        Gruppen = GetAlleGruppen(Skiclub, AlleLeistungsstufen)
+
 
         Dim Teilnehmer = New TeilnehmerCollection
-        Teilnehmer = GetAlleTeilnehmer(Skiclub, Leistungsstufen)
+        Teilnehmer = GetAlleTeilnehmer(Skiclub, AlleLeistungsstufen)
 
 
         Dim NeuerClub = New Generation4.Club With {
-            .AlleEinteilungen = New EinteilungCollection,
+            .Einteilungsliste = New EinteilungCollection,
             .ClubName = If(Skiclub.ClubName, "Club"),
-            .AlleTrainer = GetAlleTrainer(Skiclub),
-            .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
-            .AlleLeistungsstufen = Leistungsstufen,
-            .AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub),
-            .AlleGruppen = Gruppen}
+            .Trainerliste = GetAlleTrainer(Skiclub),
+            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Leistungsstufenliste = AlleLeistungsstufen,
+            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Gruppenliste = Gruppen}
 
         ' Einteilung wird neu erstellt
-        NeuerClub.AlleEinteilungen.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.AlleEinteilungen(0).EinteilungAlleGruppen.Add(Gl))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(Gl))
         Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.AlleLeistungsstufen.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
-        NeuerClub.AlleEinteilungen(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
-        NeuerClub.AlleEinteilungen(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
+        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
+        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
 
-        NeuerClub.AlleTeilnehmer.KorrekturLeistungsstufen(NeuerClub.AlleLeistungsstufen)
-        NeuerClub.AlleGruppen.KorrekturLeistungsstufen(NeuerClub.AlleLeistungsstufen)
+        NeuerClub.Teilnehmerliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
+        NeuerClub.Gruppenliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
 
         Return NeuerClub
 
@@ -51,7 +53,8 @@ Public Module MappingGeneration2
 
         For Each g In Skiclub.Gruppenliste
             g.LeistungsstufeID = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
-            g.Leistungsstufe.Ident = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
+            'g.Leistungsstufe.Ident = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
+            g.Leistungsstufe = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung), Nothing)
             g.TrainerID = If(g.Trainer IsNot Nothing, g.Trainer.TrainerID, Guid.Empty)
             Gruppen.Add(g)
         Next
@@ -80,6 +83,62 @@ Public Module MappingGeneration2
         'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g))
         'Gruppen.ToList.ForEach(Sub(G) G.LeistungsstufeID = Skiclub.Gruppenliste.First(Function(G2G) G2G.GruppenID = G.GruppenID).Leistungsstufe.Ident)
         Return Gruppen
+
+    End Function
+
+    ''' <summary>
+    ''' Leistungsstufen werden aus den Leistungsstufen gelesen
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleLeistungsstufen(Skiclub As Generation2.Club) As LeistungsstufeCollection
+
+        Dim Leistungsstufen = New LeistungsstufeCollection
+
+        If Skiclub.Leistungsstufenliste Is Nothing Then
+        Else
+            'Es wird die Liste Skiclub.Leistungsstufen eingelesen
+            Skiclub.Leistungsstufenliste.ToList.ForEach(Sub(Ls) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                    .Benennung = Ls.Benennung,
+                                                                                    .Beschreibung = Ls.Beschreibung,
+                                                                                    .Ident = Ls.Ident,
+                                                                                    .Faehigkeiten = Ls.Faehigkeiten,
+                                                                                    .Sortierung = Ls.Sortierung}))
+        End If
+
+        If Skiclub.AlleTeilnehmer Is Nothing Then
+        Else
+            'Es werden die Leistungsstufen von den Teilnehmern ergänzt
+            Skiclub.AlleTeilnehmer.ToList.ForEach(Sub(Tn) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                            .Benennung = Tn.Leistungsstand.Benennung,
+                                                                                            .Beschreibung = Tn.Leistungsstand.Beschreibung,
+                                                                                            .Ident = Tn.Leistungsstand.Ident,
+                                                                                            .Faehigkeiten = Tn.Leistungsstand.Faehigkeiten,
+                                                                                            .Sortierung = Tn.Leistungsstand.Sortierung}))
+        End If
+
+        If Skiclub.Gruppenliste IsNot Nothing Then
+            'Es werden die Leistungsstufen aus den Gruppenleistungsstufe ergänzt
+            Skiclub.Gruppenliste.ToList.ForEach(Sub(Gr) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                            .Benennung = Gr.Leistungsstufe.Benennung,
+                                                                                            .Beschreibung = Gr.Leistungsstufe.Beschreibung,
+                                                                                            .Ident = Gr.Leistungsstufe.Ident,
+                                                                                            .Faehigkeiten = Gr.Leistungsstufe.Faehigkeiten,
+                                                                                            .Sortierung = Gr.Leistungsstufe.Sortierung}))
+            'Es werden die Leistungsstufen aus den Gruppen von den Teilnehmern ergänzt
+            Skiclub.Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Mitgliederliste.ToList.ForEach(Sub(Tn) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                                        .Benennung = Tn.Leistungsstand.Benennung,
+                                                                                                        .Beschreibung = Tn.Leistungsstand.Beschreibung,
+                                                                                                        .Ident = Tn.Leistungsstand.Ident,
+                                                                                                        .Faehigkeiten = Tn.Leistungsstand.Faehigkeiten,
+                                                                                                        .Sortierung = Tn.Leistungsstand.Sortierung})))
+        End If
+
+
+        ' Entferne doppelte Fähigkeiten
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of String)(Function(L) L.Benennung).Select(Function(L) L.First).ToList)
+
+        Return Leistungsstufen
 
     End Function
 

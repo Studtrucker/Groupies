@@ -22,16 +22,16 @@ Namespace Services
 
         Private Function InstructorsAvailable() As TrainerCollection
             Dim available = New TrainerCollection
-            Club.SelectedEinteilung.GruppenloseTrainer.Where(Function(y) y.IstEinerGruppeZugewiesen = False).ToList.ForEach(Sub(i) available.Add(i))
+            'Club.SelectedEinteilung.GruppenloseTrainer.Where(Function(y) y.IstEinerGruppeZugewiesen = False).ToList.ForEach(Sub(i) available.Add(i))
             Return available
         End Function
 
         Public Sub CreateNewSkiclub()
-            Club = New Club("Club") With {.AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen()}
+            Club = New Club() With {.ClubName = "Club", .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen()}
             If MessageBoxResult.Yes = MessageBox.Show("Neuen Skiclub erstellt, gleich neue Gruppen hinzufügen?", "Achtung", MessageBoxButton.YesNo) Then
                 Dim dlg = New CountOfGroupsDialog
                 If dlg.ShowDialog Then
-                    Club.SelectedEinteilung.EinteilungAlleGruppen = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
+                    'Club.SelectedEinteilung.EinteilungAlleGruppen = TemplateService.StandardGruppenErstellen(dlg.Count.Text)
                 End If
             End If
         End Sub

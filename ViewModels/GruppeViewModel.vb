@@ -26,7 +26,7 @@ Public Class GruppeViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        Dim DropDown = New ListCollectionView(DateiService.AktuellerClub.LeistungsstufenComboBox)
+        Dim DropDown = New ListCollectionView(DateiService.AktuellerClub.Leistungsstufenliste.Sortieren)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
@@ -171,7 +171,7 @@ Public Class GruppeViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.Gruppenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
         MoveNextCommand.RaiseCanExecuteChanged()
@@ -195,9 +195,9 @@ Public Class GruppeViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.AlleGruppen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.Gruppenliste.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleGruppen(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.Gruppenliste(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
 

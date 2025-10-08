@@ -34,12 +34,12 @@ Namespace Services
         ''' </summary>
         Public Shared Function NeuenClubErstellen(Clubname As String) As Generation4.Club
 
-            Dim AktuellerClub = New Generation4.Club(Clubname) With {
+            Dim AktuellerClub = New Generation4.Club() With {
                 .ClubName = Clubname,
-                .AlleGruppen = TemplateService.StandardGruppenErstellen(15),
-                .AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen,
-                .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
-                .AlleEinteilungen = TemplateService.StandardEinteilungenErstellen}
+                .Gruppenliste = TemplateService.StandardGruppenErstellen(15),
+                .Faehigkeitenliste = TemplateService.StandardFaehigkeitenErstellen,
+                .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen,
+                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
             '.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski"),
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")

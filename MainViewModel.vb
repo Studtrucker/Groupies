@@ -70,11 +70,11 @@ Namespace ViewModels
                                                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
                                             End If
                                         End Sub
-            AddHandler DateiService.PropertyChanged, Sub(sender, e)
-                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                                         End If
-                                                     End Sub
+            'AddHandler DateiService.PropertyChanged, Sub(sender, e)
+            '                                             If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
+            '                                                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+            '                                             End If
+            '                                         End Sub
 
             InitializeCommands()
 
@@ -254,8 +254,8 @@ Namespace ViewModels
 
         Public Shared Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
             If DateiService.AktuellerClub IsNot Nothing Then
-                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.AlleLeistungsstufen)
-                Return DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.Leistungsstufenliste)
+                Return DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
             End If
             Return Nothing
         End Function
@@ -468,7 +468,7 @@ Namespace ViewModels
         End Function
 
         Public Function GetLeistungsstufenliste() As LeistungsstufeCollection
-            Return DateiService.AktuellerClub.AlleLeistungsstufen
+            Return DateiService.AktuellerClub.Leistungsstufenliste
         End Function
 
 #End Region
@@ -518,7 +518,7 @@ Namespace ViewModels
 
         Private Sub SetProperties()
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
-            AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.AlleEinteilungen)
+            AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.Einteilungsliste)
         End Sub
         Private Sub ResetProperties()
             WindowTitleText = DefaultWindowTitleText
@@ -533,7 +533,7 @@ Namespace ViewModels
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleFaehigkeiten
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Faehigkeitenliste
 
             fenster.DataContext = mvw
 
@@ -549,7 +549,7 @@ Namespace ViewModels
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
 
             fenster.DataContext = mvw
 
@@ -565,7 +565,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleEinteilungen
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Einteilungsliste
 
             fenster.DataContext = mvw
             fenster.Show()
@@ -580,7 +580,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleGruppen
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Gruppenliste
 
             fenster.DataContext = mvw
 
@@ -597,7 +597,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleTrainer
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Trainerliste
 
             fenster.DataContext = mvw
 
@@ -613,7 +613,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.AlleTeilnehmer
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Teilnehmerliste
 
             fenster.DataContext = mvw
 
@@ -636,7 +636,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Faehigkeitenliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
             End If
         End Sub
@@ -657,7 +657,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
             End If
         End Sub
@@ -679,7 +679,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Gruppenliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
             End If
         End Sub
@@ -700,7 +700,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
             End If
         End Sub
@@ -721,7 +721,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
             End If
         End Sub
@@ -742,7 +742,7 @@ Namespace ViewModels
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                DateiService.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+                DateiService.AktuellerClub.Teilnehmerliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
             End If
         End Sub

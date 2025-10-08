@@ -187,10 +187,10 @@ Namespace Services
 
             AktuellerClub = New Generation4.Club() With {
                 .ClubName = Path.GetFileNameWithoutExtension(AktuelleDatei.Name),
-                .AlleGruppen = TemplateService.StandardGruppenErstellen(15),
-                .AlleFaehigkeiten = TemplateService.StandardFaehigkeitenErstellen,
-                .AlleLeistungsstufen = TemplateService.StandardLeistungsstufenErstellen,
-                .AlleEinteilungen = TemplateService.StandardEinteilungenErstellen}
+                .Gruppenliste = TemplateService.StandardGruppenErstellen(15),
+                .Faehigkeitenliste = TemplateService.StandardFaehigkeitenErstellen,
+                .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen,
+                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
 
             Return ($"Der Club '{Path.GetFileNameWithoutExtension(AktuelleDatei.Name)}' wurde erfolgreich erstellt.")
 

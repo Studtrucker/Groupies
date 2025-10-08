@@ -134,7 +134,7 @@ Public Class EinteilungViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
         MyBase.OnNeu()
@@ -157,9 +157,9 @@ Public Class EinteilungViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.AlleEinteilungen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.Einteilungsliste.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleEinteilungen(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.Einteilungsliste(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
 

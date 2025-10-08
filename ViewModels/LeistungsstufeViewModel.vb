@@ -28,7 +28,7 @@ Public Class LeistungsstufeViewModel
         ' Hier können Sie den Konstruktor anpassen
         OkCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnOk, Function() IstEingabeGueltig)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
-        AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.AlleFaehigkeiten)
+        AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.Faehigkeitenliste)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
     End Sub
@@ -158,7 +158,7 @@ Public Class LeistungsstufeViewModel
             OnPropertyChanged(NameOf(SelectedItem))
             OnPropertyChanged(NameOf(CanBearbeiten))
             CType(BearbeitenCommand, RelayCommand(Of Einteilung)).RaiseCanExecuteChanged()
-            Dim abc = DateiService.AktuellerClub.AlleFaehigkeiten.Except(SelectedItem.Faehigkeiten)
+            Dim abc = DateiService.AktuellerClub.Faehigkeitenliste.Except(SelectedItem.Faehigkeiten)
             AuswahlFaehigkeiten = New ListCollectionView(abc.ToList)
         End Set
     End Property
@@ -179,7 +179,7 @@ Public Class LeistungsstufeViewModel
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
         MoveNextCommand.RaiseCanExecuteChanged()
@@ -203,10 +203,10 @@ Public Class LeistungsstufeViewModel
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.AlleLeistungsstufen.IndexOf(SelectedItem)
+            Dim index = Services.DateiService.AktuellerClub.Leistungsstufenliste.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.AlleLeistungsstufen(index) = mvw.AktuellesViewModel.Model
-            Debug.WriteLine(Services.DateiService.AktuellerClub.AlleLeistungsstufen(index).Beschreibung)
+            Services.DateiService.AktuellerClub.Leistungsstufenliste(index) = mvw.AktuellesViewModel.Model
+            Debug.WriteLine(Services.DateiService.AktuellerClub.Leistungsstufenliste(index).Beschreibung)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
 

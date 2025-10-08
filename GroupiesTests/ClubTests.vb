@@ -22,7 +22,7 @@ Public Class ClubTests
         Assert.AreEqual(0, Stubai2024.Einteilungsliste(0).EingeteilteTeilnehmer.Count)
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).EinteilungAlleTeilnehmer.Count)
 
-        Stubai2024.Einteilungsliste(0).EinteilungAlleGruppen = AppController.AktuellerClub.AlleGruppen
+        Stubai2024.Einteilungsliste(0).EinteilungAlleGruppen = AppController.AktuellerClub.Gruppenliste
 
         Stubai2024.Einteilungsliste(0).TeilnehmerInGruppeEinteilen(Studti, Stubai2024.Einteilungsliste(0).EinteilungAlleGruppen.ElementAt(0))
         Assert.AreEqual(3, Stubai2024.Einteilungsliste(0).EinteilungAlleTeilnehmer.Count)

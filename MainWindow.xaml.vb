@@ -184,7 +184,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_FaehigkeitNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleFaehigkeiten IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Faehigkeitenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_FaehigkeitNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -203,7 +203,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleFaehigkeiten.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Faehigkeitenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
         End If
     End Sub
@@ -383,7 +383,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_PrintClub_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
+        'e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Count > 0
     End Sub
 
 #End Region
@@ -394,11 +394,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
+        'e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.Count > 0
+        'e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.Count > 0
     End Sub
 
     Private Sub Handle_TeilnehmerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -406,7 +406,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleTeilnehmer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Teilnehmerliste IsNot Nothing
     End Sub
 
     Private Sub Handle_TeilnehmerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -426,7 +426,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTeilnehmer.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Teilnehmerliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
         End If
 
@@ -438,7 +438,7 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), AppController.AktuellerClub.SelectedGruppe)
+            'AppController.AktuellerClub.SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), AppController.AktuellerClub.SelectedGruppe)
         Next
     End Sub
 
@@ -448,17 +448,17 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
+            'DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerAusGruppeEntfernen(GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
     Private Sub Handle_TeilnehmerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
         e.CanExecute = GruppeUserControl.MitgliederlisteDataGrid.SelectedItems.Count > 1
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+        ' e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
 
     End Sub
     Private Sub Handle_TeilnehmerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TeilnehmerLoeschen(GruppenloseTeilnehmerDataGrid.SelectedItems(i))
+            'AppController.AktuellerClub.SelectedEinteilung.TeilnehmerLoeschen(GruppenloseTeilnehmerDataGrid.SelectedItems(i))
         Next
     End Sub
 
@@ -513,13 +513,13 @@ Public Class MainWindow
 
     Private Sub Handle_TeilnehmerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
+            'AppController.AktuellerClub.TeilnehmerArchivieren(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i))
         Next
     End Sub
 
     Private Sub GruppenloseTeilnehmer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
         For i = GruppenloseTeilnehmerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
+            'DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TeilnehmerInGruppeEinteilen(GruppenloseTeilnehmerDataGrid.SelectedItems.Item(i), DirectCast(DataContext, Club).SelectedGruppe)
         Next
     End Sub
 
@@ -528,7 +528,7 @@ Public Class MainWindow
 #Region "Trainer"
 
     Private Sub Handle_TrainerlisteImportieren_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing 'AndAlso AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerlisteImportieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -536,7 +536,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing 'AndAlso AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.Count > 0
     End Sub
 
     Private Sub Handle_TrainerlisteExportierenXl_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -544,7 +544,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleTrainer IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Trainerliste IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -564,18 +564,18 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleTrainer.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
         End If
 
     End Sub
 
     Private Sub Handle_TrainerLoeschen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing 'AndAlso AppController.AktuellerClub.SelectedEinteilung IsNot Nothing AndAlso GruppenloseTrainerDataGrid.SelectedItems.Count > 0
     End Sub
     Private Sub Handle_TrainerLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.SelectedEinteilung.TrainerLoeschen(GruppenloseTrainerDataGrid.SelectedItems(i))
+            'AppController.AktuellerClub.SelectedEinteilung.TrainerLoeschen(GruppenloseTrainerDataGrid.SelectedItems(i))
         Next
     End Sub
 
@@ -640,19 +640,19 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppController.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), AppController.AktuellerClub.SelectedGruppe)
+        'AppController.AktuellerClub.SelectedEinteilung.TrainerEinerGruppeZuweisen(GruppenloseTrainerDataGrid.SelectedItems.Item(0), AppController.AktuellerClub.SelectedGruppe)
     End Sub
 
     Private Sub Handle_TrainerInGruppeEinteilen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        Dim HatKeinTrainer = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer Is Nothing
-        e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 AndAlso HatKeinTrainer
+        ' Dim HatKeinTrainer = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer Is Nothing
+        e.CanExecute = GruppenloseTrainerDataGrid.SelectedItems.Count > 0 ' AndAlso HatKeinTrainer
     End Sub
     Private Sub Handle_TrainerAusGruppeEntfernen_CanExecute(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer IsNot Nothing
+        ' e.CanExecute = AppController.AktuellerClub.SelectedGruppe IsNot Nothing AndAlso AppController.AktuellerClub.SelectedGruppe.Trainer IsNot Nothing
     End Sub
 
     Private Sub Handle_TrainerAusGruppeEntfernen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
+        ' AppController.AktuellerClub.TrainerAusGruppeEntfernen(DirectCast(DataContext, ICollectionView).CurrentItem)
     End Sub
 
     Private Sub Handle_TrainerArchivieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
@@ -661,27 +661,27 @@ Public Class MainWindow
 
     Private Sub Handle_TrainerArchivieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
         For i = GruppenloseTrainerDataGrid.SelectedItems.Count - 1 To 0 Step -1
-            AppController.AktuellerClub.TrainerArchivieren(GruppenloseTrainerDataGrid.SelectedItems.Item(i))
+            'AppController.AktuellerClub.TrainerArchivieren(GruppenloseTrainerDataGrid.SelectedItems.Item(i))
         Next
     End Sub
 
     Private Sub GruppenloseTrainer_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs)
-        If DirectCast(DataContext, Generation4.Club).SelectedGruppe Is Nothing Then
-            MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
-            Exit Sub
-        End If
-        If DirectCast(DataContext, Generation4.Club).SelectedGruppe.Trainer IsNot Nothing Then
-            MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
-            Exit Sub
-        End If
-        DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation4.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation4.Club).SelectedGruppe)
+        'If DirectCast(DataContext, Generation4.Club).SelectedGruppe Is Nothing Then
+        '    MessageBox.Show("Es muss erst eine Gruppe ausgewählt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+        '    Exit Sub
+        'End If
+        'If DirectCast(DataContext, Generation4.Club).SelectedGruppe.Trainer IsNot Nothing Then
+        '    MessageBox.Show("Es muss zuerst der aktuelle Trainer aus der Gruppe entfernt werden", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error)
+        '    Exit Sub
+        'End If
+        'DirectCast(DataContext, Generation4.Club).SelectedEinteilung.TrainerEinerGruppeZuweisen(DirectCast(DataContext, Generation4.Club).SelectedEinteilung.SelectedGruppenloserTrainer, DirectCast(DataContext, Generation4.Club).SelectedGruppe)
     End Sub
 
 #End Region
 
 #Region "Gruppe"
     Private Sub Handle_GruppeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.AlleGruppen IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.Gruppenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_GruppeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -701,7 +701,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleGruppen.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Gruppenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
         End If
     End Sub
@@ -712,7 +712,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Handle_GruppeLoeschen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
-        AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Remove(_gruppenlisteCollectionView.CurrentItem)
+        'AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen.Remove(_gruppenlisteCollectionView.CurrentItem)
     End Sub
 
     Private Sub Handle_GruppeSortieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -730,7 +730,7 @@ Public Class MainWindow
 
 #Region "Einteilung"
     Private Sub Handle_EinteilungNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleEinteilungen IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Einteilungsliste IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -750,13 +750,13 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleEinteilungen.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
         End If
     End Sub
 
     Private Sub Handle_EinteilungKopieren_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub.SelectedEinteilung IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub.Einteilungsliste IsNot Nothing
     End Sub
 
     Private Sub Handle_EinteilungKopieren_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -784,7 +784,7 @@ Public Class MainWindow
 
 #Region "Leistungsstufe"
     Private Sub Handle_LeistungsstufeNeuErstellen_CanExecuted(sender As Object, e As CanExecuteRoutedEventArgs)
-        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing
+        e.CanExecute = AppController.AktuellerClub IsNot Nothing AndAlso AppController.AktuellerClub.Leistungsstufenliste IsNot Nothing
     End Sub
 
     Private Sub Handle_LeistungsstufeNeuErstellen_Execute(sender As Object, e As ExecutedRoutedEventArgs)
@@ -803,7 +803,7 @@ Public Class MainWindow
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            AppController.AktuellerClub.AlleLeistungsstufen.Add(mvw.AktuellesViewModel.Model)
+            AppController.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
     End Sub
@@ -831,7 +831,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleTrainer
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Trainerliste
 
         fenster.DataContext = mvw
 
@@ -1001,7 +1001,7 @@ Public Class MainWindow
         Title = "Groupies - " & AppController.AktuellerClub.ClubName & " - " & AppController.GroupiesFile.Name
 
         ' Die allgemeinen Leistungsstufen füllen
-        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.LeistungsstufenComboBox)
+        _LeistungsstufenListCollectionView = New CollectionView(AppController.AktuellerClub.Leistungsstufenliste.Sortieren)
         GruppeUserControl.GruppenleistungsstufeComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
         TeilnehmerLeistungsstandComboBox.ItemsSource = _LeistungsstufenListCollectionView
@@ -1119,50 +1119,50 @@ Public Class MainWindow
 
 
         ' nach AngezeigterName sortierte Liste verwenden
-        Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
-        sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+        'Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
+        'sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
         Dim skikursgruppe As Gruppe
         Dim page As FixedPage = Nothing
 
-        ' durch die Gruppen loopen und Seiten generieren
-        For i As Integer = 0 To sortedGroupView.Count - 1
-            sortedGroupView.MoveCurrentToPosition(i)
-            skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
+        '' durch die Gruppen loopen und Seiten generieren
+        'For i As Integer = 0 To sortedGroupView.Count - 1
+        '    sortedGroupView.MoveCurrentToPosition(i)
+        '    skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
 
-            If i Mod participantsPerPage = 0 Then
-                page = New FixedPage
-                If page IsNot Nothing Then
-                    Dim content = New PageContent()
-                    TryCast(content, IAddChild).AddChild(page)
-                    doc.Pages.Add(content)
-                End If
-            End If
+        '    If i Mod participantsPerPage = 0 Then
+        '        page = New FixedPage
+        '        If page IsNot Nothing Then
+        '            Dim content = New PageContent()
+        '            TryCast(content, IAddChild).AddChild(page)
+        '            doc.Pages.Add(content)
+        '        End If
+        '    End If
 
 
-            ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
-            Dim pSkikursgruppe As IPrintableNotice
-            If Printversion = Printversion.TeilnehmerInfo Then
-                pSkikursgruppe = New TeilnehmerAusdruckUserControl
-            Else
-                pSkikursgruppe = New TrainerausdruckUserControl
-            End If
+        '    ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
+        '    Dim pSkikursgruppe As IPrintableNotice
+        '    If Printversion = Printversion.TeilnehmerInfo Then
+        '        pSkikursgruppe = New TeilnehmerAusdruckUserControl
+        '    Else
+        '        pSkikursgruppe = New TrainerausdruckUserControl
+        '    End If
 
-            DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
-            DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
+        '    DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
+        '    DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
 
-            If String.IsNullOrWhiteSpace(AppController.AktuellerClub.SelectedEinteilung.Benennung) Then
-                AppController.AktuellerClub.SelectedEinteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
-            End If
+        '    If String.IsNullOrWhiteSpace(AppController.AktuellerClub.SelectedEinteilung.Benennung) Then
+        '        AppController.AktuellerClub.SelectedEinteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
+        '    End If
 
-            pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppController.AktuellerClub.SelectedEinteilung.Benennung)
-            Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
-            Dim currentColumn As Integer = i Mod columnsPerPage
+        '    pSkikursgruppe.InitPropsFromGroup(skikursgruppe, AppController.AktuellerClub.SelectedEinteilung.Benennung)
+        '    Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
+        '    Dim currentColumn As Integer = i Mod columnsPerPage
 
-            FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
-            FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
-            page.Children.Add(pSkikursgruppe)
-        Next
+        '    FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
+        '    FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
+        '    page.Children.Add(pSkikursgruppe)
+        'Next
 
         Return doc
 
@@ -1271,7 +1271,7 @@ Public Class MainWindow
 
         Dim Fenster As New BasisDetailWindow()
         Dim vm = New TrainerViewModel 'With {.Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer)}
-        Dim Trainer = AppController.AktuellerClub.AlleEinteilungen(0).EinteilungAlleTrainer(2)
+        Dim Trainer = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer(2)
         vm.Trainer = Trainer
         'vm.Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
 
@@ -1341,7 +1341,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleTeilnehmer
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Teilnehmerliste
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1357,7 +1357,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleFaehigkeiten
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Faehigkeitenliste
 
         fenster.DataContext = mvw
 
@@ -1373,7 +1373,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleEinteilungen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Einteilungsliste
 
         fenster.DataContext = mvw
         fenster.Show()
@@ -1389,7 +1389,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleGruppen
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Gruppenliste
 
         fenster.DataContext = mvw
 
@@ -1406,7 +1406,7 @@ Public Class MainWindow
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
         }
-        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.AlleLeistungsstufen.Sortieren
+        mvw.AktuellesViewModel.Daten = AppController.AktuellerClub.Leistungsstufenliste.Sortieren
 
         fenster.DataContext = mvw
 

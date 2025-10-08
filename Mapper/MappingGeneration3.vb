@@ -14,12 +14,12 @@ Public Module MappingGeneration3
         'Einteilungen laden
         NeuerClub = New Generation4.Club With {
             .ClubName = If(Skiclub.ClubName, "Club"),
-            .AlleTrainer = GetAlleTrainer(Skiclub),
-            .AlleTeilnehmer = GetAlleTeilnehmer(Skiclub),
-            .AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
-            .AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub),
-            .AlleGruppen = GetAlleGruppen(Skiclub),
-            .AlleEinteilungen = GetAlleEinteilungen(Skiclub)}
+            .Trainerliste = GetAlleTrainer(Skiclub),
+            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Gruppenliste = GetAlleGruppen(Skiclub),
+            .Einteilungsliste = GetAlleEinteilungen(Skiclub)}
 
         'NeuerClub = Skiclub
         Return NeuerClub

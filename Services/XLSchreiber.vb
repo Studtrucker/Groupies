@@ -31,36 +31,37 @@ Public Class XLSchreiber
 
         oSheet.Name = Benennungen.Tabelle
 
-        Dim c = 1, r = 1
+        Dim c = 1
         For Each Spalte In Benennungen.Spalten
             oSheet.Columns(c).rows(1).value = Spalte
             c += 1
         Next
-        r = 2
+        Dim r As Integer = 2
 
         If Benennungen.Tabelle = "Trainer" Then
 
-            AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.ToList.ForEach(Sub(Tn)
-                                                                                          oSheet.Columns(1).Rows(r).value = Tn.TrainerID.ToString
-                                                                                          oSheet.Columns(2).Rows(r).value = Tn.Vorname
-                                                                                          oSheet.Columns(3).Rows(r).value = Tn.Nachname
-                                                                                          oSheet.Columns(4).Rows(r).value = Tn.Spitzname
-                                                                                          oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
-                                                                                          oSheet.Columns(6).Rows(r).value = Tn.EMail
-                                                                                          r += 1
-                                                                                      End Sub)
+            'Todo: ViewModel einsetzen
+            'AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.ToList.ForEach(Sub(Tn)
+            '                                                                                        oSheet.Columns(1).Rows(r).value = Tn.TrainerID.ToString
+            '                                                                                        oSheet.Columns(2).Rows(r).value = Tn.Vorname
+            '                                                                                        oSheet.Columns(3).Rows(r).value = Tn.Nachname
+            '                                                                                        oSheet.Columns(4).Rows(r).value = Tn.Spitzname
+            '                                                                                        oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
+            '                                                                                        oSheet.Columns(6).Rows(r).value = Tn.EMail
+            '                                                                                        r += 1
+            '                                                                                    End Sub)
 
         Else
-
-            AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.ToList.ForEach(Sub(Tn)
-                                                                                             oSheet.Columns(1).Rows(r).value = Tn.TeilnehmerID.ToString
-                                                                                             oSheet.Columns(2).Rows(r).value = Tn.Vorname
-                                                                                             oSheet.Columns(3).Rows(r).value = Tn.Nachname
-                                                                                             oSheet.Columns(4).Rows(r).value = Tn.Geburtsdatum
-                                                                                             oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
-                                                                                             oSheet.Columns(6).Rows(r).value = Tn.Leistungsstand.Benennung
-                                                                                             r += 1
-                                                                                         End Sub)
+            'Todo: ViewModel einsetzen
+            'AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTeilnehmer.ToList.ForEach(Sub(Tn)
+            '                                                                                 oSheet.Columns(1).Rows(r).value = Tn.TeilnehmerID.ToString
+            '                                                                                 oSheet.Columns(2).Rows(r).value = Tn.Vorname
+            '                                                                                 oSheet.Columns(3).Rows(r).value = Tn.Nachname
+            '                                                                                 oSheet.Columns(4).Rows(r).value = Tn.Geburtsdatum
+            '                                                                                 oSheet.Columns(5).Rows(r).value = Tn.Telefonnummer
+            '                                                                                 oSheet.Columns(6).Rows(r).value = Tn.Leistungsstand.Benennung
+            '                                                                                 r += 1
+            '                                                                             End Sub)
         End If
 
         oSheet.Columns("A:F").EntireColumn.AutoFit

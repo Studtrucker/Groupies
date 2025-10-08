@@ -7,8 +7,8 @@ Public Class TestWindowViewModel
     Public Property SelectedGruppe As Entities.GruppeCollection
 
     Public Sub New()
-        LeistungsstufenListe = Groupies.Services.DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
-        AlleGruppen = Groupies.Services.DateiService.AktuellerClub.AlleEinteilungen.First.EinteilungAlleGruppen
+        LeistungsstufenListe = Groupies.Services.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        AlleGruppen = Groupies.Services.DateiService.AktuellerClub.Einteilungsliste.First.EinteilungAlleGruppen
     End Sub
 
 End Class

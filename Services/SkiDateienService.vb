@@ -118,9 +118,7 @@ Namespace Services
         Private Shared Function Erkennen(ElementListe As List(Of String)) As IClub
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
-            ElseIf ElementListe.Contains("AlleEinteilungen") AndAlso ElementListe.Contains("AlleTrainer") _
-                AndAlso ElementListe.Contains("AlleTeilnehmer") AndAlso ElementListe.Contains("AlleFaehigkeiten") _
-                AndAlso ElementListe.Contains("AlleGruppen") AndAlso ElementListe.Contains("AlleLeistungsstufen") Then
+            ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("AlleEinteilungen") Then
                 Return New Generation4.Club
             ElseIf ElementListe.Contains("Club") AndAlso ElementListe.Contains("Einteilungsliste") Then
                 Return New Generation3.Club

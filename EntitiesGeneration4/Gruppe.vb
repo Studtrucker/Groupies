@@ -14,7 +14,7 @@ Namespace Entities
         Implements IModel
 
 #Region "Felder"
-        Private _GruppenID As Guid = Guid.NewGuid()
+        Private _Ident As Guid = Guid.NewGuid()
         Private _Sortierung As Integer
         Private _LeistungsstufeID As Guid
         Private _Leistungsstufe As Leistungsstufe
@@ -53,7 +53,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
-            GruppenID = OriginGruppe.GruppenID
+            Ident = OriginGruppe.Ident
             Leistungsstufe = OriginGruppe.Leistungsstufe
             Benennung = OriginGruppe.Benennung
             Sortierung = OriginGruppe.Sortierung
@@ -68,12 +68,12 @@ Namespace Entities
         ''' Eindeutige Gruppenkennung
         ''' </summary>
         ''' <returns></returns>
-        Public Property GruppenID As Guid Implements IModel.Ident
+        Public Property Ident As Guid Implements IModel.Ident
             Get
-                Return _GruppenID
+                Return _Ident
             End Get
             Set(value As Guid)
-                _GruppenID = value
+                _Ident = value
             End Set
         End Property
 

@@ -37,9 +37,10 @@ Namespace ViewModels
 #Region "Command-Methoden"
 
         Private Sub OnUserControlLoaded(obj As Object)
-            'Dim provider = CType(Me.FindResource("LeistungsstufenProvider"), ObjectDataProvider)
-            'provider.Refresh()
-            LeistungsstufenListe = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+
+            If DateiService.AktuellerClub IsNot Nothing Then
+                LeistungsstufenListe = DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
+            End If
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
 

@@ -22,7 +22,7 @@ Namespace ValidationRules
         End Function
 
         Public Function GetEindeutigkeit(Gruppe As Gruppe) As ValidationResult
-            If Services.DateiService.AktuellerClub.AlleGruppen.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.GruppenID <> Gruppe.GruppenID).Any() Then
+            If Services.DateiService.AktuellerClub.AlleGruppen.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult

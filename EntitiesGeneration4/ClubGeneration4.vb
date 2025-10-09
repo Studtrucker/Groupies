@@ -39,8 +39,8 @@ Namespace Entities.Generation4
 
 #Region "Properties"
 
-
-        Public ReadOnly Property DateiGeneration As String Implements IClub.DateiGeneration
+        '<XmlElement("DateiGeneration")>
+        Public Property DateiGeneration As String Implements IClub.DateiGeneration
 
         ''' <summary>
         ''' Der Clubname

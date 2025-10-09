@@ -48,7 +48,7 @@ Namespace Entities.Generation3
         ''' <returns></returns>
         Public Property ClubName As String Implements IClub.Name
 
-        Public ReadOnly Property DateiGeneration As String Implements IClub.DateiGeneration
+        Public Property DateiGeneration As String Implements IClub.DateiGeneration
 
         ''' <summary>
         ''' Die Einteilungen im aktuellen Club

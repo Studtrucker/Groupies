@@ -101,7 +101,15 @@ Namespace Services
         ''' <returns></returns>
         Public Shared Function IdentifiziereDateiGeneration(filePath As String) As IClub
             Dim ElementListe As List(Of String) = LeseXmlDatei(filePath)
-            Return Erkennen(ElementListe)
+            Dim revision = LeseXmlRevision(filePath)
+            Dim Generation = Erkennen(revision)
+
+            If Generation Is Nothing Then
+                Return Erkennen(ElementListe)
+            Else
+                Return Generation
+            End If
+
         End Function
 
 #End Region
@@ -109,12 +117,31 @@ Namespace Services
 #Region "Private Funktionen"
 
         ''' <summary>
-        ''' Werte die Elementliste aus und 
+        ''' Werte den RevisionNode aus und 
         ''' gib die passende Generation
         ''' des Clubs zurück
         ''' </summary>
-        ''' <param name="ElementListe"></param>
+        ''' <param name="RevisionNode"></param>
         ''' <returns></returns>
+        Private Shared Function Erkennen(RevisionNode As XmlNode) As IClub
+            If RevisionNode Is Nothing Then
+                Return Nothing
+            End If
+            Dim Revision = RevisionNode.InnerText
+            Select Case Revision
+                Case 1
+                    Return New Generation1.Skiclub
+                Case 2
+                    Return New Generation2.Club
+                Case 3
+                    Return New Generation3.Club
+                Case 4
+                    Return New Generation4.Club
+                Case Else
+                    Throw New InvalidDataException("Die Datei ist nicht lesbar oder nicht kompatibel.")
+            End Select
+        End Function
+
         Private Shared Function Erkennen(ElementListe As List(Of String)) As IClub
             If ElementListe.Contains("Skiclub") Then
                 Return New Generation1.Skiclub
@@ -158,6 +185,19 @@ Namespace Services
 
         End Function
 
+        Private Shared Function LeseXmlRevision(filePath As String) As XmlNode
+
+            Dim doc As New XmlDocument()
+            doc.Load(filePath)
+            Dim revisionNode As XmlNode = doc.SelectSingleNode("//DateiGeneration")
+
+            If (revisionNode IsNot Nothing) Then
+                Return revisionNode
+            Else
+                Return Nothing
+            End If
+
+        End Function
     End Class
 
 #End Region

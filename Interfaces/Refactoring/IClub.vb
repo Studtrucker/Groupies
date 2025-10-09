@@ -7,6 +7,8 @@ Namespace Interfaces
         Function LadeGroupies(Datei As String) As Generation4.Club
         Function Map2AktuelleGeneration(Skiclub As IClub) As Generation4.Club
         Property Name As String
+        ReadOnly Property DateiGeneration As String
+
 
     End Interface
 

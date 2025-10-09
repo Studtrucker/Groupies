@@ -22,6 +22,8 @@ Namespace Entities.Generation1
 
         Public Property Name As String Implements IClub.Name
 
+        Public ReadOnly Property DateiGeneration As String Implements IClub.DateiGeneration
+
 
         Public Property LeistungsstufenTemplate As LeistungsstufeCollection
 

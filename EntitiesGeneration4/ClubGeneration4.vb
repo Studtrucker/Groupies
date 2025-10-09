@@ -32,11 +32,15 @@ Namespace Entities.Generation4
         ''' Einlesen von XML Dateien notwendig
         ''' </summary>
         Public Sub New()
-
+            DateiGeneration = "4"
         End Sub
 
 #End Region
+
 #Region "Properties"
+
+
+        Public ReadOnly Property DateiGeneration As String Implements IClub.DateiGeneration
 
         ''' <summary>
         ''' Der Clubname

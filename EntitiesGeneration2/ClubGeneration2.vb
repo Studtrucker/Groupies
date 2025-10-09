@@ -73,6 +73,8 @@ Namespace Entities.Generation2
         ''' <returns></returns>
         Public Property ClubName As String Implements IClub.Name
 
+        Public ReadOnly Property DateiGeneration As String Implements IClub.DateiGeneration
+
         ''' <summary>
         ''' Eine Liste aller Gruppen
         ''' </summary>

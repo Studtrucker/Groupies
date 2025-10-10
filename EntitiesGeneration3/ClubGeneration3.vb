@@ -201,17 +201,22 @@ Namespace Entities.Generation3
         End Function
 
         Public Function LadeGroupies(Datei As String) As Generation4.Club Implements IClub.LadeGroupies
+            Dim Dateiname = Path.GetFileNameWithoutExtension(Datei)
             Using fs = New FileStream(Datei, FileMode.Open)
                 Dim serializer = New XmlSerializer(GetType(Club))
                 Dim loadedSkiclub As Club
                 Try
                     loadedSkiclub = TryCast(serializer.Deserialize(fs), Club)
                     'Return MappingGeneration3.MapSkiClub2Club(loadedSkiclub)
-                    Return Map2AktuelleGeneration(loadedSkiclub)
+                    Return Map2AktuelleGeneration(loadedSkiclub, Dateiname)
                 Catch ex As InvalidDataException
                     Throw ex
                 End Try
             End Using
+        End Function
+
+        Public Function Map2AktuelleGeneration(Skiclub As IClub, Dateiname As String) As Generation4.Club Implements IClub.Map2AktuelleGeneration
+            Return MappingGeneration3.MapSkiClub2Club(Skiclub, Dateiname)
         End Function
 
         Public Function Map2AktuelleGeneration(Skiclub As IClub) As Generation4.Club Implements IClub.Map2AktuelleGeneration

@@ -155,7 +155,7 @@ Public Class GruppeViewModel
         End If
     End Sub
 
-    Public Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+    Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
         ' Hier können Sie die Logik für den Neu-Button implementieren
         Dim dialog = New BasisDetailWindow() With {
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}

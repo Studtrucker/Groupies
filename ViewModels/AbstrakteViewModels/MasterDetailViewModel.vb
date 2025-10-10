@@ -175,7 +175,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
-    Friend Sub OnNeu()
+    Friend Overloads Sub OnNeu()
         ' Diese Methode kann in abgeleiteten Klassen überschrieben werden, um die Logik für den Neu-Button zu implementieren.
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()

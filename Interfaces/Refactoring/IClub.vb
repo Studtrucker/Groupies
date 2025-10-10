@@ -6,6 +6,8 @@ Namespace Interfaces
     Public Interface IClub
         Function LadeGroupies(Datei As String) As Generation4.Club
         Function Map2AktuelleGeneration(Skiclub As IClub) As Generation4.Club
+        Function Map2AktuelleGeneration(Skiclub As IClub, Dateiname As String) As Generation4.Club
+
         Property Name As String
         Property DateiGeneration As String
 

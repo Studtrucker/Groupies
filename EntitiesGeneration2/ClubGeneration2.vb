@@ -64,6 +64,10 @@ Namespace Entities.Generation2
             Return MappingGeneration2.MapSkiClub2Club(Skiclub)
         End Function
 
+        Public Function Map2AktuelleGeneration(Skiclub As IClub, Dateiname As String) As Generation4.Club Implements IClub.Map2AktuelleGeneration
+            Return MappingGeneration2.MapSkiClub2Club(Skiclub, Dateiname)
+        End Function
+
 #End Region
 
 #Region "Eigenschaften"

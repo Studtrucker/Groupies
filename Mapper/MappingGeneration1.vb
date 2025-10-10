@@ -26,6 +26,26 @@ Public Module MappingGeneration1
         Return NeuerClub
 
     End Function
+    Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub, Dateiname As String) As Generation4.Club
+
+        Dim NeuerClub = New Generation4.Club With {
+            .ClubName = If(Skiclub.Name, Dateiname),
+            .Trainerliste = GetAlleTrainer(Skiclub),
+            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Gruppenliste = GetAlleGruppen(Skiclub)}
+
+        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+
+        ' Erste Einteilung füllen
+        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(MapGroup2Gruppe(Gl)))
+        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = GetGruppenloseTrainer(Skiclub)
+        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = GetGruppenloseTeilnehmer(Skiclub)
+
+        Return NeuerClub
+
+    End Function
 
     ''' <summary>
     ''' Gruppen werden aus dem Skiclub extrahiert

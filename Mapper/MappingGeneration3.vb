@@ -25,6 +25,27 @@ Public Module MappingGeneration3
         Return NeuerClub
 
     End Function
+    Public Function MapSkiClub2Club(Skiclub As Generation3.Club, Dateiname As String) As Generation4.Club
+
+        ' Trainer laden
+        ' Teilnehmer laden
+        ' Leistungsstufen laden
+        ' Fähigkeiten laden
+        ' Gruppen laden
+        'Einteilungen laden
+        NeuerClub = New Generation4.Club With {
+            .ClubName = If(Skiclub.ClubName, Dateiname),
+            .Trainerliste = GetAlleTrainer(Skiclub),
+            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Gruppenliste = GetAlleGruppen(Skiclub),
+            .Einteilungsliste = GetAlleEinteilungen(Skiclub)}
+
+        'NeuerClub = Skiclub
+        Return NeuerClub
+
+    End Function
 
     ''' <summary>
     ''' Einteilungen werden aus dem Skiclub extrahiert

@@ -5,27 +5,17 @@ Public Module MappingGeneration3
     Private NeuerClub As Generation4.Club
 
     Public Function MapSkiClub2Club(Skiclub As Generation3.Club) As Generation4.Club
-
-        ' Trainer laden
-        ' Teilnehmer laden
-        ' Leistungsstufen laden
-        ' Fähigkeiten laden
-        ' Gruppen laden
-        'Einteilungen laden
-        NeuerClub = New Generation4.Club With {
-            .ClubName = If(Skiclub.ClubName, "Club"),
-            .Trainerliste = GetAlleTrainer(Skiclub),
-            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
-            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
-            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
-            .Gruppenliste = GetAlleGruppen(Skiclub),
-            .Einteilungsliste = GetAlleEinteilungen(Skiclub)}
-
-        'NeuerClub = Skiclub
-        Return NeuerClub
-
+        Return MapSkiClub2Club(Skiclub, "Club Gen3")
     End Function
+
     Public Function MapSkiClub2Club(Skiclub As Generation3.Club, Dateiname As String) As Generation4.Club
+
+
+        Dim Leistungsstufen = GetAlleLeistungsstufen(Skiclub)
+
+        Dim Gruppen = GetAlleGruppen(Skiclub, Leistungsstufen)
+
+        Dim Teilnehmer = GetAlleTeilnehmer(Skiclub, Leistungsstufen)
 
         ' Trainer laden
         ' Teilnehmer laden
@@ -36,10 +26,10 @@ Public Module MappingGeneration3
         NeuerClub = New Generation4.Club With {
             .ClubName = If(Skiclub.ClubName, Dateiname),
             .Trainerliste = GetAlleTrainer(Skiclub),
-            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
-            .Leistungsstufenliste = GetAlleLeistungsstufenVonTeilnehmern(Skiclub),
+            .Teilnehmerliste = Teilnehmer,
+            .Leistungsstufenliste = Leistungsstufen,
             .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
-            .Gruppenliste = GetAlleGruppen(Skiclub),
+            .Gruppenliste = Gruppen,
             .Einteilungsliste = GetAlleEinteilungen(Skiclub)}
 
         'NeuerClub = Skiclub
@@ -65,7 +55,7 @@ Public Module MappingGeneration3
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleGruppen(Skiclub As Generation3.Club) As GruppeCollection
+    Private Function GetAlleGruppen(Skiclub As Generation3.Club, Leistungsstufenliste As LeistungsstufeCollection) As GruppeCollection
         Dim Gruppen = New GruppeCollection
         ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(g) Gruppen.Add(g)))
@@ -101,7 +91,7 @@ Public Module MappingGeneration3
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleTeilnehmer(Skiclub As Generation3.Club) As TeilnehmerCollection
+    Private Function GetAlleTeilnehmer(Skiclub As Generation3.Club, Leistungsstufenliste As LeistungsstufeCollection) As TeilnehmerCollection
 
         Dim Teilnehmer = New TeilnehmerCollection
 
@@ -147,6 +137,33 @@ Public Module MappingGeneration3
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand)))
+
+        ' Entferne doppelte Leistungsstufen
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
+
+        Return Leistungsstufen
+
+    End Function
+
+    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Generation3.Club) As LeistungsstufeCollection
+        ' Eigene Collection initialisieren
+        Dim Leistungsstufen = New LeistungsstufeCollection
+        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.EinteilungAlleGruppen.ToList.ForEach(Sub(Gl) Leistungsstufen.Add(Gl.Leistungsstufe)))
+
+        ' Entferne doppelte Leistungsstufen
+        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
+
+        Return Leistungsstufen
+
+    End Function
+
+    Private Function GetAlleLeistungsstufen(Skiclub As Generation3.Club) As LeistungsstufeCollection
+        ' Eigene Collection initialisieren
+        Dim Leistungsstufen = Skiclub.Leistungsstufenliste
+        ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
+        Leistungsstufen.ToList.AddRange(GetAlleLeistungsstufenVonGruppen(Skiclub))
+        Leistungsstufen.ToList.AddRange(GetAlleLeistungsstufenVonTeilnehmern(Skiclub))
 
         ' Entferne doppelte Leistungsstufen
         Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)

@@ -3,43 +3,7 @@
 Public Module MappingGeneration2
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation4.Club
-
-        Dim AlleLeistungsstufen = New LeistungsstufeCollection
-        AlleLeistungsstufen = GetAlleLeistungsstufen(Skiclub)
-
-
-        Dim Gruppen = New GruppeCollection
-        Gruppen = GetAlleGruppen(Skiclub, AlleLeistungsstufen)
-
-
-        Dim Teilnehmer = New TeilnehmerCollection
-        Teilnehmer = GetAlleTeilnehmer(Skiclub, AlleLeistungsstufen)
-
-
-        Dim NeuerClub = New Generation4.Club With {
-            .Einteilungsliste = New EinteilungCollection,
-            .ClubName = If(Skiclub.ClubName, "Club"),
-            .Trainerliste = GetAlleTrainer(Skiclub),
-            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
-            .Leistungsstufenliste = AlleLeistungsstufen,
-            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
-            .Gruppenliste = Gruppen}
-
-        ' Einteilung wird neu erstellt
-        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
-
-        ' Erste Einteilung füllen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(Gl))
-        Skiclub.Gruppenliste.Where(Function(Gl) Gl.Trainer IsNot Nothing).ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
-        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
-        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
-
-        NeuerClub.Teilnehmerliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
-        NeuerClub.Gruppenliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
-
-        Return NeuerClub
-
+        Return MapSkiClub2Club(Skiclub, "Club Gen2")
     End Function
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club, Dateiname As String) As Generation4.Club

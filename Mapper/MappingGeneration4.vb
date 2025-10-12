@@ -5,32 +5,7 @@ Public Module MappingGeneration4
     Private NeuerClub As Generation4.Club
 
     Public Function MapSkiClub2Club(Skiclub As Generation4.Club) As Generation4.Club
-
-        NeuerClub = Skiclub
-        'NeuerClub.ClubName = If(Skiclub.ClubName, "Club")
-
-        '' Trainer laden
-        'NeuerClub.AlleTrainer = GetAlleTrainer(Skiclub)
-
-        '' Teilnehmer laden
-        'NeuerClub.AlleTeilnehmer = GetAlleTeilnehmer(Skiclub)
-
-        '' Leistungsstufen laden
-        'NeuerClub.AlleLeistungsstufen = GetAlleLeistungsstufenVonTeilnehmern(Skiclub)
-
-        '' Fähigkeiten laden
-        'NeuerClub.AlleFaehigkeiten = GetAlleFaehigkeiten(Skiclub)
-
-        '' Gruppen laden
-        'NeuerClub.AlleGruppen = GetAlleGruppen(Skiclub)
-
-        'Einteilungen laden
-        'NeuerClub.Einteilungsliste = GetAlleEinteilungen(Skiclub)
-
-        'NeuerClub = Skiclub
-
-        Return NeuerClub
-
+        Return Skiclub
     End Function
 
     ''' <summary>
@@ -39,11 +14,7 @@ Public Module MappingGeneration4
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleEinteilungen(Skiclub As Generation4.Club) As EinteilungCollection
-        Dim Einteilungen As EinteilungCollection
-
-        Einteilungen = Skiclub.Einteilungsliste
-
-        Return Einteilungen
+        Return Skiclub.Einteilungsliste
     End Function
 
     ''' <summary>

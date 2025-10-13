@@ -41,14 +41,14 @@ Public Class EinteilungViewModel
         End Set
     End Property
 
-    Public Property EinteilungID As Guid
+    Public Property Ident As Guid
         Get
-            Return _Einteilung.EinteilungID
+            Return _Einteilung.Ident
         End Get
         Set(value As Guid)
-            _Einteilung.EinteilungID = value
-            OnPropertyChanged(NameOf(EinteilungID))
-            ValidateEinteilungID()
+            _Einteilung.Ident = value
+            OnPropertyChanged(NameOf(Ident))
+            ValidateIdent()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
@@ -113,7 +113,7 @@ Public Class EinteilungViewModel
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
         If _Einteilung IsNot Nothing Then
             ValidateBenennung()
-            ValidateEinteilungID()
+            ValidateIdent()
             ValidateSortierung()
         End If
     End Sub
@@ -185,10 +185,10 @@ Public Class EinteilungViewModel
         End If
     End Sub
 
-    Private Sub ValidateEinteilungID()
-        ClearErrors(NameOf(_Einteilung.EinteilungID))
-        If _Einteilung.EinteilungID = Nothing Then
-            AddError(NameOf(_Einteilung.EinteilungID), "Eine EinteilungID muss eingetragen werden.")
+    Private Sub ValidateIdent()
+        ClearErrors(NameOf(_Einteilung.Ident))
+        If _Einteilung.Ident = Nothing Then
+            AddError(NameOf(_Einteilung.Ident), "Eine Ident muss eingetragen werden.")
         End If
     End Sub
 

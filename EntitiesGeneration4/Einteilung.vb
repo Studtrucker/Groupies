@@ -7,12 +7,17 @@ Namespace Entities
         Inherits BaseModel
         Implements IModel
 
+#Region "Felder"
+        Private _Ident As Guid
+
+#End Region
+
 #Region "Konstruktor"
         ''' <summary>
         ''' Erstellt eine Einteilung mit einer eindeutigen ID
         ''' </summary>
         Public Sub New()
-            EinteilungID = Guid.NewGuid()
+            Ident = Guid.NewGuid()
             Sortierung = -1
             'Gruppenliste = New GruppeCollection
             'GruppenloseTeilnehmer = New TeilnehmerCollection
@@ -25,7 +30,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Origin"></param>
         Public Sub New(Origin As Einteilung)
-            EinteilungID = Origin.EinteilungID
+            Ident = Origin.Ident
             Benennung = Origin.Benennung
             Sortierung = Origin.Sortierung
             EinteilungAlleGruppen = New GruppeCollection(Origin.EinteilungAlleGruppen.Select(Function(G) New Gruppe(G)))
@@ -52,7 +57,14 @@ Namespace Entities
 
 #Region "Properties"
 
-        Public Property EinteilungID As Guid Implements IModel.Ident
+        Public Property Ident As Guid Implements IModel.Ident
+            Get
+                Return _Ident
+            End Get
+            Set(value As Guid)
+                _Ident = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Die Einteilungen können beispielsweise

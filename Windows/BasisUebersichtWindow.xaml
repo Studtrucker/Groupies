@@ -434,7 +434,7 @@
                                        
                        <!--Felder-->
                     <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True"
-                             Text="{Binding SelectedItem.EinteilungID}"/>
+                             Text="{Binding SelectedItem.Ident}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True"
                              Text="{Binding SelectedItem.Sortierung}"/>
@@ -732,9 +732,9 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem  Header="Transfer">
-                <MenuItem Header="Tag 1" Command="{Binding TransferToCommand}"  CommandParameter="{Binding EinteilungID}"/>
-                <MenuItem Header="Mittwoch" Command="{Binding TransferToCommand}"  CommandParameter="{Binding EinteilungID}"/>
-                <MenuItem Header="Donnerstag" Command="{Binding TransferToCommand}" CommandParameter="{Binding EinteilungID}"/>
+                <MenuItem Header="Tag 1" Command="{Binding TransferToCommand}"  CommandParameter="{Binding Ident}"/>
+                <MenuItem Header="Mittwoch" Command="{Binding TransferToCommand}"  CommandParameter="{Binding Ident}"/>
+                <MenuItem Header="Donnerstag" Command="{Binding TransferToCommand}" CommandParameter="{Binding Ident}"/>
             </MenuItem>
         </Menu>
 

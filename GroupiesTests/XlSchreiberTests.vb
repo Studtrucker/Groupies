@@ -16,7 +16,7 @@ Public Class XlSchreiberTests
         Dim Andrea As New Teilnehmer("Andrea", "Heintz")
 
         AppController.AktuellerClub = New Club() With {.ClubName = "Stuabi2024"}
-        AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTeilnehmer = New TeilnehmerCollection From {Stephan, Manuela, Manuel, Julia, Jutta, Andrea}
+        AppController.AktuellerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection From {Stephan, Manuela, Manuel, Julia, Jutta, Andrea}
 
         xl.ExportDatenAlsXl(".xlsx", "Teilnehmer")
     End Sub

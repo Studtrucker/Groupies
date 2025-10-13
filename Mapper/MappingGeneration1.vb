@@ -22,9 +22,9 @@ Public Module MappingGeneration1
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
-        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(MapGroup2Gruppe(Gl)))
-        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = GetGruppenloseTrainer(Skiclub)
-        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = GetGruppenloseTeilnehmer(Skiclub)
+        Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).Gruppenliste.Add(MapGroup2Gruppe(Gl)))
+        NeuerClub.Einteilungsliste(0).VerfuegbareTrainerListe = GetGruppenloseTrainer(Skiclub)
+        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerListe = GetGruppenloseTeilnehmer(Skiclub)
 
         Return NeuerClub
 

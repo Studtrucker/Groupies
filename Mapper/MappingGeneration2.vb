@@ -1,4 +1,6 @@
-﻿Imports Groupies.Entities
+﻿Imports System.Collections.ObjectModel
+Imports Groupies.Entities
+Imports Groupies.Entities.Generation1
 
 Public Module MappingGeneration2
 
@@ -29,18 +31,25 @@ Public Module MappingGeneration2
             .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
             .Gruppenliste = Gruppen}
 
+        NeuerClub.Teilnehmerliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
+        NeuerClub.Gruppenliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
+
+
         ' Einteilung wird neu erstellt
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).EinteilungAlleGruppen.Add(Gl))
+        NeuerClub.Einteilungsliste(0).VerfuegbareTrainerListe = Skiclub.GruppenloseTrainer
+        NeuerClub.Einteilungsliste(0).VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTrainer Select T.TrainerID).ToList())
+        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerListe = Skiclub.GruppenloseTeilnehmer
+        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTeilnehmer Select T.TeilnehmerID).ToList())
+        NeuerClub.Einteilungsliste(0).GruppenIDListe = New ObservableCollection(Of Guid)((From g In Skiclub.Gruppenliste Select g.Ident).ToList())
+        NeuerClub.Einteilungsliste(0).Gruppenliste = Skiclub.Gruppenliste
+
+        ' Todo: Statements lesbar optimieren
         Skiclub.Gruppenliste.Where(Function(Gl) Gl.Trainer IsNot Nothing).ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
         Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
-        NeuerClub.Einteilungsliste(0).GruppenloseTrainer = Skiclub.GruppenloseTrainer
-        NeuerClub.Einteilungsliste(0).GruppenloseTeilnehmer = Skiclub.GruppenloseTeilnehmer
 
-        NeuerClub.Teilnehmerliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
-        NeuerClub.Gruppenliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
 
         Return NeuerClub
 

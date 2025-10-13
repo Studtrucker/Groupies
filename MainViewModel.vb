@@ -190,7 +190,7 @@ Namespace ViewModels
 
 
             ' nach AngezeigterName sortierte Liste verwenden
-            Dim sortedGroupView = New ListCollectionView(Einteilung.EinteilungAlleGruppen)
+            Dim sortedGroupView = New ListCollectionView(Einteilung.Gruppenliste)
             'Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
             sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
 
@@ -392,9 +392,10 @@ Namespace ViewModels
             End Set
         End Property
 
-        Public Property GruppenloseTrainer As TrainerCollection
-
-        Public Property GruppenloseTeilnehmer As TeilnehmerCollection
+        Public Property VerfuegbareTrainerListe As TrainerCollection
+        Public Property SelectedVerfuegbareTrainerListe As TrainerCollection
+        Public Property NichtZugewieseneTeilnehmerListe As TeilnehmerCollection
+        Public Property SelectedNichtZugewiesenerTeilnehmerListe As TeilnehmerCollection
 
 
         Public Property CanClubClose() As Boolean

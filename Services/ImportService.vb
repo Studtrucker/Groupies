@@ -51,68 +51,68 @@ Namespace Services
 
         Public Sub ImportTrainer()
 
+            Throw New NotImplementedException()
+            'Dim Pfad = StarteOpenFileDialog()
+            'If Pfad Is Nothing Then Exit Sub
 
-            Dim Pfad = StarteOpenFileDialog()
-            If Pfad Is Nothing Then Exit Sub
+            ''Dim TraineranzahlVorImport = AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.Count
+            'Dim ImportTrainerliste As List(Of DataImport.Trainer)
 
-            'Dim TraineranzahlVorImport = AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer.Count
-            Dim ImportTrainerliste As List(Of DataImport.Trainer)
+            'Try
+            '    ImportTrainerliste = LeseTrainerAusDataset(Pfad)
+            'Catch ex As Exception
+            '    MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
+            '    Exit Sub
+            'End Try
 
-            Try
-                ImportTrainerliste = LeseTrainerAusDataset(Pfad)
-            Catch ex As Exception
-                MessageBox.Show($"{ex.Message}{vbNewLine}{ex.InnerException.Message}", "Fehler beim Datenimport", MessageBoxButton.OK, MessageBoxImage.Error)
-                Exit Sub
-            End Try
+            ''If AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer Is Nothing Then
+            ''    AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer = New TrainerCollection
+            ''End If
 
-            'If AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleTrainer Is Nothing Then
-            '    AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer = New TrainerCollection
-            'End If
+            ''Aus der Importdatei werden bekannte Trainer markiert
+            'For Each aktuellerTr As Trainer In AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer
+            '    ImportTrainerliste.Where(Function(importTr) importTr.TrainerID = aktuellerTr.TrainerID) _
+            '                                    .ToList.ForEach(Sub(neueTrainer) neueTrainer.IstBekannt = True)
+            'Next
 
-            'Aus der Importdatei werden bekannte Trainer markiert
-            For Each aktuellerTr As Trainer In AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer
-                ImportTrainerliste.Where(Function(importTr) importTr.TrainerID = aktuellerTr.TrainerID) _
-                                                .ToList.ForEach(Sub(neueTrainer) neueTrainer.IstBekannt = True)
-            Next
+            '' Aus dem aktuellen Club werden alle Trainer als potentieller Archivkandidat gesetzt
+            'AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.ForEach(Sub(Tr) Tr.Archivieren = True)
+            '' Alle Archivkandidaten werden, wenn sie in der Importdatei gelistet sind, beibehalten
+            'For Each importTn In ImportTrainerliste
+            '    AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) _
+            '                                                              Tn.TrainerID = importTn.TrainerID) _
+            '                                                              .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
+            'Next
 
-            ' Aus dem aktuellen Club werden alle Trainer als potentieller Archivkandidat gesetzt
-            AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.ForEach(Sub(Tr) Tr.Archivieren = True)
-            ' Alle Archivkandidaten werden, wenn sie in der Importdatei gelistet sind, beibehalten
-            For Each importTn In ImportTrainerliste
-                AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) _
-                                                                          Tn.TrainerID = importTn.TrainerID) _
-                                                                          .ToList.ForEach(Sub(Tn) Tn.Archivieren = False)
-            Next
+            '' Alle unbekannten Teilnehmer 
+            'Dim UnbekannteTrainer = ImportTrainerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Trainer(Tn.Vorname, Tn.Nachname))
+            '' Alle bekannten Teilnehmer 
+            'Dim BekannteTeilnehmer = ImportTrainerliste.Where(Function(Tn) Tn.IstBekannt).
+            '    Select(Function(Tn) AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.
+            '    Where(Function(AlterTeilnehmer) Tn.TrainerID = AlterTeilnehmer.TrainerID))
 
-            ' Alle unbekannten Teilnehmer 
-            Dim UnbekannteTrainer = ImportTrainerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Trainer(Tn.Vorname, Tn.Nachname))
-            ' Alle bekannten Teilnehmer 
-            Dim BekannteTeilnehmer = ImportTrainerliste.Where(Function(Tn) Tn.IstBekannt).
-                Select(Function(Tn) AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.
-                Where(Function(AlterTeilnehmer) Tn.TrainerID = AlterTeilnehmer.TrainerID))
+            '' Alle zu archivierenden Teilnehmer 
+            'Dim ZuArchivierende = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
 
-            ' Alle zu archivierenden Teilnehmer 
-            Dim ZuArchivierende = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True)
+            '' Teilnehmer in der ewigen Liste archivieren
+            'Dim Archiv = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New Trainer(Tn)))
+            '' Teilnehmer, die nicht dabei sind, aussortieren
+            'For Each ArchivTr In ZuArchivierende
+            '    AppController.AktuellerClub.Einteilungsliste(0).Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)
+            '    AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer.Remove(ArchivTr)
+            'Next
 
-            ' Teilnehmer in der ewigen Liste archivieren
-            Dim Archiv = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.ToList.Where(Function(Tn) Tn.Archivieren = True).Select((Function(Tn) New Trainer(Tn)))
-            ' Teilnehmer, die nicht dabei sind, aussortieren
-            For Each ArchivTr In ZuArchivierende
-                AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleGruppen.ToList.ForEach(Sub(Gr) Gr.Trainer = Nothing)
-                AppController.AktuellerClub.Einteilungsliste(0).GruppenloseTrainer.Remove(ArchivTr)
-            Next
+            'Dim sb As New StringBuilder
 
-            Dim sb As New StringBuilder
-
-            'sb.Append($"Der Club hatte vor dem Datenimport {TraineranzahlVorImport} Trainer.{vbNewLine}{vbNewLine}")
-            sb.Append($"Die Importdatei enthält {ImportTrainerliste.Count} Trainer, ")
-            sb.Append($"von denen sind {BekannteTeilnehmer.Count} Trainer bereits bekannt.{vbNewLine}{vbNewLine}")
-            sb.Append($"{ZuArchivierende.Count} Trainer werden archiviert und ")
-            sb.Append($"{UnbekannteTrainer.Count} neu hinzugefügt")
-            MessageBox.Show($"{sb}", "Datenimport", MessageBoxButton.OK, MessageBoxImage.Information)
+            ''sb.Append($"Der Club hatte vor dem Datenimport {TraineranzahlVorImport} Trainer.{vbNewLine}{vbNewLine}")
+            'sb.Append($"Die Importdatei enthält {ImportTrainerliste.Count} Trainer, ")
+            'sb.Append($"von denen sind {BekannteTeilnehmer.Count} Trainer bereits bekannt.{vbNewLine}{vbNewLine}")
+            'sb.Append($"{ZuArchivierende.Count} Trainer werden archiviert und ")
+            'sb.Append($"{UnbekannteTrainer.Count} neu hinzugefügt")
+            'MessageBox.Show($"{sb}", "Datenimport", MessageBoxButton.OK, MessageBoxImage.Information)
 
 
-            'UnbekannteTrainer.ToList.ForEach(Sub(Tr) AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Tr))
+            ''UnbekannteTrainer.ToList.ForEach(Sub(Tr) AppController.AktuellerClub.SelectedEinteilung.GruppenloseTrainer.Add(Tr))
 
 
         End Sub

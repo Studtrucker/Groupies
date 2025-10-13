@@ -8,7 +8,7 @@ Public Class TestWindowViewModel
 
     Public Sub New()
         LeistungsstufenListe = Groupies.Services.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
-        AlleGruppen = Groupies.Services.DateiService.AktuellerClub.Einteilungsliste.First.EinteilungAlleGruppen
+        AlleGruppen = Groupies.Services.DateiService.AktuellerClub.Einteilungsliste.First.Gruppenliste
     End Sub
 
 End Class

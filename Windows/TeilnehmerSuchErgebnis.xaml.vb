@@ -46,53 +46,54 @@ Public Class TeilnehmerSuchErgebnis
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        TeilnehmerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.Count
-        TrainerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.Count
-        Dim x = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
-        Dim z = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
-        Dim y As New System.Text.StringBuilder
 
-        For Each Stufengruppe In x
-            y.AppendLine($"{Stufengruppe.Count} Teilnehmer sind {Stufengruppe.Key}")
-        Next
-        GruppierteLeistungsstufe = y.ToString
-        y.Clear()
+        'TeilnehmerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.Count
+        'TrainerAnzahl = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTrainer.Count
+        'Dim x = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung).GroupBy(Function(Tn) Tn.Leistungsstand.Benennung)
+        'Dim z = AppController.AktuellerClub.Einteilungsliste(0).EinteilungAlleTeilnehmer.OrderByDescending(Function(Tn) Tn.Alter).GroupBy(Function(Tn) Tn.Alter)
+        'Dim y As New System.Text.StringBuilder
 
-        For Each Altersgruppe In z
-            y.AppendLine($"{Altersgruppe.Count} Teilnehmer sind {Altersgruppe.Key} Jahre alt")
-        Next
-        GruppiertesAlter = y.ToString
-        y.Clear()
-
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        'Dim liste As New List(Of Object)
-
-        ' in diese Teilnehmerliste kann ein anonymer Typ eingefügt werden
-        Dim Teilnehmerliste As New List(Of Object)
-
-        'Todo: Die Teilnehmer und Gruppeninfo aus den einzelen Gruppen
-        'For Each TnL In AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen
-        '    Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
+        'For Each Stufengruppe In x
+        '    y.AppendLine($"{Stufengruppe.Count} Teilnehmer sind {Stufengruppe.Key}")
         'Next
+        'GruppierteLeistungsstufe = y.ToString
+        'y.Clear()
 
-        'Todo: Noch nicht eingeteilte Teilnehmer
-        'For Each Tn In AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer
-        '    Teilnehmerliste.Add(New With {.Teilnehmer = Tn, .Gruppe = Nothing})
+        'For Each Altersgruppe In z
+        '    y.AppendLine($"{Altersgruppe.Count} Teilnehmer sind {Altersgruppe.Key} Jahre alt")
         'Next
+        'GruppiertesAlter = y.ToString
+        'y.Clear()
 
-        ' Alles in ein CollectionView
-        _teilnehmerCollectionView = New ListCollectionView(Teilnehmerliste)
-        ' Initiale Sortierung
-        If _teilnehmerCollectionView.CanSort Then
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Nachname", ListSortDirection.Ascending))
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Vorname", ListSortDirection.Ascending))
-            _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Gruppe.Sortierung", ListSortDirection.Ascending))
-        End If
-        ' Kann ein Filter eingebaut werden
-        If _teilnehmerCollectionView.CanFilter Then
+        '' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        ''Dim liste As New List(Of Object)
 
-        End If
-        DataContext = _teilnehmerCollectionView
+        '' in diese Teilnehmerliste kann ein anonymer Typ eingefügt werden
+        'Dim Teilnehmerliste As New List(Of Object)
+
+        ''Todo: Die Teilnehmer und Gruppeninfo aus den einzelen Gruppen
+        ''For Each TnL In AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen
+        ''    Teilnehmerliste.AddRange(TnL.Mitgliederliste.Select(Function(Tn) New With {.Teilnehmer = Tn, .Gruppe = TnL}))
+        ''Next
+
+        ''Todo: Noch nicht eingeteilte Teilnehmer
+        ''For Each Tn In AppController.AktuellerClub.SelectedEinteilung.GruppenloseTeilnehmer
+        ''    Teilnehmerliste.Add(New With {.Teilnehmer = Tn, .Gruppe = Nothing})
+        ''Next
+
+        '' Alles in ein CollectionView
+        '_teilnehmerCollectionView = New ListCollectionView(Teilnehmerliste)
+        '' Initiale Sortierung
+        'If _teilnehmerCollectionView.CanSort Then
+        '    _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Nachname", ListSortDirection.Ascending))
+        '    _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Teilnehmer.Vorname", ListSortDirection.Ascending))
+        '    _teilnehmerCollectionView.SortDescriptions.Add(New SortDescription("Gruppe.Sortierung", ListSortDirection.Ascending))
+        'End If
+        '' Kann ein Filter eingebaut werden
+        'If _teilnehmerCollectionView.CanFilter Then
+
+        'End If
+        'DataContext = _teilnehmerCollectionView
 
     End Sub
 

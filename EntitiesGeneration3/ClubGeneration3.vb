@@ -171,7 +171,7 @@ Namespace Entities.Generation3
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
         Public Sub TeilnehmerArchivieren(Teilnehmer As Teilnehmer)
-            SelectedEinteilung.GruppenloseTeilnehmer.Remove(Teilnehmer)
+            SelectedEinteilung.NichtZugewieseneTeilnehmerListe.Remove(Teilnehmer)
             'EwigeTeilnehmerliste.Add(Teilnehmer, Now)
             Throw New NotImplementedException
         End Sub
@@ -181,7 +181,7 @@ Namespace Entities.Generation3
         ''' </summary>
         ''' <param name="Gruppe"></param>
         Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            SelectedEinteilung.GruppenloseTrainer.Add(Gruppe.Trainer)
+            SelectedEinteilung.VerfuegbareTrainerListe.Add(Gruppe.Trainer)
             Gruppe.Trainer = Nothing
         End Sub
 
@@ -191,7 +191,7 @@ Namespace Entities.Generation3
         ''' </summary>
         ''' <param name="Trainer"></param>
         Public Sub TrainerArchivieren(Trainer As Trainer)
-            SelectedEinteilung.GruppenloseTrainer.Remove(Trainer)
+            SelectedEinteilung.VerfuegbareTrainerListe.Remove(Trainer)
             'EwigeTrainerliste.Add(Trainer, Now)
             Throw New NotImplementedException
         End Sub

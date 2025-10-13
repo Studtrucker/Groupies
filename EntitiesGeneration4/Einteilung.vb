@@ -1,4 +1,6 @@
-﻿Imports Groupies.DataImport
+﻿Imports System.Collections.ObjectModel
+Imports System.Xml.Serialization
+Imports Groupies.DataImport
 
 Namespace Entities
 
@@ -9,8 +11,20 @@ Namespace Entities
 
 #Region "Felder"
         Private _Ident As Guid
+        Private _Sortierung As Integer
+        Private _Benennung As String
+
+        Private _GruppenIDListe As ObservableCollection(Of Guid)
+        Private _Gruppenliste = New GruppeCollection
+
+        Private _VerfuegbareTrainerIDListe As ObservableCollection(Of Guid)
+        Private _VerfuegbareTrainerListe As New TrainerCollection
+
+        Private _NichtZugewieseneTeilnehmerIDListe As ObservableCollection(Of Guid)
+        Private _NichtZugewieseneTeilnehmerListe As New TeilnehmerCollection
 
 #End Region
+
 
 #Region "Konstruktor"
         ''' <summary>
@@ -19,10 +33,6 @@ Namespace Entities
         Public Sub New()
             Ident = Guid.NewGuid()
             Sortierung = -1
-            'Gruppenliste = New GruppeCollection
-            'GruppenloseTeilnehmer = New TeilnehmerCollection
-            'GruppenloseTrainer = New TrainerCollection
-
         End Sub
 
         ''' <summary>
@@ -33,30 +43,19 @@ Namespace Entities
             Ident = Origin.Ident
             Benennung = Origin.Benennung
             Sortierung = Origin.Sortierung
-            EinteilungAlleGruppen = New GruppeCollection(Origin.EinteilungAlleGruppen.Select(Function(G) New Gruppe(G)))
-            GruppenloseTeilnehmer = New TeilnehmerCollection(Origin.GruppenloseTeilnehmer.Select(Function(T) New Teilnehmer(T)))
-            GruppenloseTrainer = New TrainerCollection(Origin.GruppenloseTrainer.Select(Function(T) New Trainer(T)))
+            Gruppenliste = New GruppeCollection(Origin.Gruppenliste.Select(Function(G) New Gruppe(G)))
+            NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection(Origin.NichtZugewieseneTeilnehmerListe.Select(Function(T) New Teilnehmer(T)))
+            VerfuegbareTrainerListe = New TrainerCollection(Origin.VerfuegbareTrainerListe.Select(Function(T) New Trainer(T)))
         End Sub
-
-#End Region
-
-#Region "Felder"
-
-        Private _EinteilungAlleGruppen = New GruppeCollection
-
-        Private ReadOnly _EinteilungAlleTrainer As New TrainerCollection
-        Private ReadOnly _EinteilungAlleTeilnehmer As New TeilnehmerCollection
-
-        Private ReadOnly _EingeteilteTrainer As New TrainerCollection
-        Private ReadOnly _EingeteilteTeilnehmer As New TeilnehmerCollection
-
-        Private _GruppenloseTeilnehmer As New TeilnehmerCollection
-        Private _GruppenloseTrainer As New TrainerCollection
 
 #End Region
 
 #Region "Properties"
 
+        ''' <summary>
+        ''' Eindeutige ID der Einteilung
+        ''' </summary>
+        ''' <returns></returns>
         Public Property Ident As Guid Implements IModel.Ident
             Get
                 Return _Ident
@@ -67,143 +66,111 @@ Namespace Entities
         End Property
 
         ''' <summary>
-        ''' Die Einteilungen können beispielsweise
-        ''' mit den Tagen benannt werden
+        ''' Einfache Sortierung der Einteilungen
         ''' </summary>
         ''' <returns></returns>
         Public Property Sortierung() As Integer
+            Get
+                Return _Sortierung
+            End Get
+            Set(value As Integer)
+                _Sortierung = value
+            End Set
+        End Property
 
         ''' <summary>
-        ''' Die Einteilungen können beispielsweise
-        ''' mit den Tagen benannt werden
+        ''' Die Benennung. Es können beispielsweise
+        ''' die Wochentage verwendet werden
         ''' </summary>
         ''' <returns></returns>
         Public Property Benennung() As String
+            Get
+                Return _Benennung
+            End Get
+            Set(value As String)
+                _Benennung = value
+            End Set
+        End Property
 
         ''' <summary>
-        ''' Eine Liste aller Gruppen
+        ''' Liste mit den IDs der verfügbaren Gruppen
         ''' </summary>
         ''' <returns></returns>
-        Public Property EinteilungAlleGruppen() As GruppeCollection
+        Public Property GruppenIDListe() As ObservableCollection(Of Guid)
             Get
-                Return _EinteilungAlleGruppen
+                Return _GruppenIDListe
+            End Get
+            Set(value As ObservableCollection(Of Guid))
+                _GruppenIDListe = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Eine Liste aller Gruppen der Einteilung
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property Gruppenliste() As GruppeCollection
+            Get
+                Return _Gruppenliste
             End Get
             Set(value As GruppeCollection)
-                _EinteilungAlleGruppen = value
+                _Gruppenliste = value
             End Set
         End Property
 
 
         ''' <summary>
-        ''' Teilnehmer ohne Gruppe
-        ''' Alle neuen Teilnehmer werden hier eingetragen
+        ''' TeilnehmerIDs, die keiner Gruppe zugewiesen sind
         ''' </summary>
         ''' <returns></returns>
-        Public Property GruppenloseTeilnehmer() As TeilnehmerCollection
+        Public Property NichtZugewieseneTeilnehmerIDListe() As ObservableCollection(Of Guid)
             Get
-                Return _GruppenloseTeilnehmer
+                Return _NichtZugewieseneTeilnehmerIDListe
+            End Get
+            Set(value As ObservableCollection(Of Guid))
+                _NichtZugewieseneTeilnehmerIDListe = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Teilnehmer, die keiner Gruppe zugewiesen sind
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property NichtZugewieseneTeilnehmerListe() As TeilnehmerCollection
+            Get
+                Return _NichtZugewieseneTeilnehmerListe
             End Get
             Set(value As TeilnehmerCollection)
-                _GruppenloseTeilnehmer = value
+                _NichtZugewieseneTeilnehmerListe = value
             End Set
         End Property
 
-        Private _SelectedGruppenloserTeilnehmer As Teilnehmer
         ''' <summary>
-        ''' Der aktuell ausgewählte gruppenlose Teilnehmer
+        ''' TrainerIDs, die keiner Gruppe zugewiesen sind
         ''' </summary>
         ''' <returns></returns>
-        Public Property SelectedGruppenloserTeilnehmer As Teilnehmer
+        Public Property VerfuegbareTrainerIDListe() As ObservableCollection(Of Guid)
             Get
-                Return _SelectedGruppenloserTeilnehmer
+                Return _VerfuegbareTrainerIDListe
             End Get
-            Set(value As Teilnehmer)
-                _SelectedGruppenloserTeilnehmer = value
+            Set(value As ObservableCollection(Of Guid))
+                _VerfuegbareTrainerIDListe = value
             End Set
         End Property
 
         ''' <summary>
-        ''' Trainer ohne Gruppe
-        ''' Alle neuen Trainer werden hier eingetragen
+        ''' Trainer, die keiner Gruppe zugewiesen sind
         ''' </summary>
         ''' <returns></returns>
-        Public Property GruppenloseTrainer() As TrainerCollection
+        Public Property VerfuegbareTrainerListe() As TrainerCollection
             Get
-                Return _GruppenloseTrainer
+                Return _VerfuegbareTrainerListe
             End Get
             Set(value As TrainerCollection)
-                _GruppenloseTrainer = value
+                _VerfuegbareTrainerListe = value
             End Set
         End Property
-
-        Private _SelectedGruppenloserTrainer As Trainer
-        ''' <summary>
-        ''' Der aktuell ausgewählte Trainer
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property SelectedGruppenloserTrainer As Trainer
-            Get
-                Return _SelectedGruppenloserTrainer
-            End Get
-            Set(value As Trainer)
-                _SelectedGruppenloserTrainer = value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Trainer, die bereits in Gruppen eingeteilt wurden
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property EingeteilteTrainer() As TrainerCollection
-            ' = Gruppenliste.ToList.Select(Function(Gr) Gr.Trainer))
-            Get
-                _EingeteilteTrainer.Clear()
-                EinteilungAlleGruppen?.ToList.Where(Function(Gr) Gr.Trainer IsNot Nothing).ToList.ForEach(Sub(Gr) _EingeteilteTrainer.Add(Gr.Trainer))
-                Return _EingeteilteTrainer
-            End Get
-        End Property
-
-
-        ''' <summary>
-        ''' Liste mit allen Trainern, Eingeteilte und die ohne Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property EinteilungAlleTrainer() As TrainerCollection
-            Get
-                _EinteilungAlleTrainer.Clear()
-                EingeteilteTrainer.ToList.ForEach(Sub(T) _EinteilungAlleTrainer.Add(T))
-                GruppenloseTrainer.ToList.ForEach(Sub(T) _EinteilungAlleTrainer.Add(T))
-                Return _EinteilungAlleTrainer
-            End Get
-        End Property
-
-        ''' <summary>
-        '''  Teilnehmer, die bereits in Gruppen eingeteilt wurden 
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property EingeteilteTeilnehmer As TeilnehmerCollection
-            Get
-                _EingeteilteTeilnehmer.Clear()
-                EinteilungAlleGruppen?.ToList.ForEach(Sub(G) G.Mitgliederliste.ToList.ForEach(Sub(M) _EingeteilteTeilnehmer.Add(M)))
-                Return _EingeteilteTeilnehmer
-            End Get
-        End Property
-
-
-        ''' <summary>
-        ''' Liste mit allen Teilnehmern, Eingeteilte und die ohne Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property EinteilungAlleTeilnehmer As TeilnehmerCollection
-            Get
-                _EinteilungAlleTeilnehmer.Clear()
-                EingeteilteTeilnehmer.ToList.ForEach(Sub(M) _EinteilungAlleTeilnehmer.Add(M))
-                GruppenloseTeilnehmer.ToList.ForEach(Sub(M) _EinteilungAlleTeilnehmer.Add(M))
-                Return _EinteilungAlleTeilnehmer
-            End Get
-
-        End Property
-
 
 #End Region
 
@@ -214,7 +181,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Trainer"></param>
         Public Sub TrainerHinzufuegen(Trainer As Trainer)
-            GruppenloseTrainer.Add(Trainer)
+            VerfuegbareTrainerListe.Add(Trainer)
         End Sub
 
         ''' <summary>
@@ -222,7 +189,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Trainer"></param>
         Public Sub TrainerLoeschen(Trainer As Trainer)
-            GruppenloseTrainer.Remove(Trainer)
+            VerfuegbareTrainerListe.Remove(Trainer)
         End Sub
 
 
@@ -231,7 +198,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
         Public Sub TeilnehmerHinzufuegen(Teilnehmer As Teilnehmer)
-            GruppenloseTeilnehmer.Add(Teilnehmer)
+            NichtZugewieseneTeilnehmerListe.Add(Teilnehmer)
         End Sub
 
         ''' <summary>
@@ -241,7 +208,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TrainerEinerGruppeZuweisen(Trainer As Trainer, Gruppe As Gruppe)
             Gruppe.Trainer = Trainer
-            GruppenloseTrainer.Remove(Trainer)
+            VerfuegbareTrainerListe.Remove(Trainer)
         End Sub
 
         ''' <summary>
@@ -249,7 +216,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Gruppe"></param>
         Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            GruppenloseTrainer.Add(Gruppe.Trainer)
+            VerfuegbareTrainerListe.Add(Gruppe.Trainer)
             Gruppe.Trainer = Nothing
         End Sub
 
@@ -258,7 +225,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Teilnehmer"></param>
         Public Sub TeilnehmerLoeschen(Teilnehmer As Teilnehmer)
-            GruppenloseTeilnehmer.Remove(Teilnehmer)
+            NichtZugewieseneTeilnehmerListe.Remove(Teilnehmer)
         End Sub
 
 
@@ -271,7 +238,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerAusGruppeEntfernen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Remove(Teilnehmer)
-            GruppenloseTeilnehmer.Add(Teilnehmer)
+            NichtZugewieseneTeilnehmerListe.Add(Teilnehmer)
         End Sub
 
         ''' <summary>
@@ -281,7 +248,7 @@ Namespace Entities
         ''' <param name="Gruppe"></param>
         Public Sub TeilnehmerInGruppeEinteilen(Teilnehmer As Teilnehmer, Gruppe As Gruppe)
             Gruppe.Mitgliederliste.Add(Teilnehmer)
-            GruppenloseTeilnehmer.Remove(Teilnehmer)
+            NichtZugewieseneTeilnehmerListe.Remove(Teilnehmer)
         End Sub
 
         Public Sub speichern() Implements IModel.speichern

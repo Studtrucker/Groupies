@@ -7,48 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
 
-     <Grid>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        
+        <Grid Grid.RowSpan="2" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
         <!--Area Einteilungskopf-->
-        <!--<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="10,0,10,0" Margin="4">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock x:Name="AusgabeEinteilungsinfoTextBlock" Text="Einteilung" Grid.Column="0" Grid.Row="0" 
-                           Style="{StaticResource SmallCaption}" />
-                <TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
-                     Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
-                     Style="{StaticResource SmallCaption}" FontWeight="Bold"/>
-            </Grid>
-        </Border>-->
-        <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
-                   FontSize="72"
-                   FontWeight="DemiBold"
-                   Foreground="Gray"
-                   Background="Transparent"
-                   Opacity="0.35"
-                   Grid.Row="3"
-                   
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" Panel.ZIndex="0">
-            <TextBlock.RenderTransform>
-                <RotateTransform Angle="-30"/>
-            </TextBlock.RenderTransform>
-            <!--<TextBlock.IsHitTestVisible>false</TextBlock.IsHitTestVisible>-->
-        </TextBlock>
-
         <!--Area Group Header-->
-        <DockPanel Grid.Row="1" Margin="5">
-            <Grid HorizontalAlignment="Left" DockPanel.Dock="Right">
+        <DockPanel Grid.Row="1" Margin="5" Background="Transparent">
+            <Grid HorizontalAlignment="Left" DockPanel.Dock="Right" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="380"/>
                     <ColumnDefinition Width="115"/>
@@ -71,7 +47,7 @@
         </DockPanel>
 
         <!--Area Instructor Header-->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -80,12 +56,10 @@
                 <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}" />
                 <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
             </DockPanel>
-            <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
-                
-                <!--<TextBlock Text="Leistungsanforderungen" DockPanel.Dock="Top" Style="{StaticResource SmallCaption}"/>-->
-                <!--<TextBlock x:Name="BeschreibungLeistungsanforderungTextblock" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow"/>-->
+            
+            <DockPanel Grid.Row="1" Grid.Column="0" Margin="5" Background="Transparent">
 
-                <Grid>
+                <Grid Background="Transparent" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -102,31 +76,38 @@
                     <TextBlock Text="Anzahl Mitglieder" Grid.Column="2" Grid.Row="0" Style="{StaticResource SmallCaption}" />
                     <TextBlock x:Name="AnzahlGruppenmitgliederTextblock" Grid.Column="3" Grid.Row="0"  Style="{StaticResource SmallCaptionValue}" />
 
+                    
                     <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" Width="Auto"
                               AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource PrintoutSmall}"
-                              Background="Transparent">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Benennung}" Width="Auto" />
-                            <DataGridTextColumn Width="10" />
+                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent"  >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Benennung}" Width="Auto" />
+                            <DataGridTextColumn Width="10"/>
                             <DataGridTextColumn Binding="{Binding Beschreibung}" Width="Auto" MaxWidth="500">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-                  </Grid>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
           </DockPanel>
         </Grid>
 
         <!--Area Teilnehmerliste-->
-        <DockPanel Grid.Row="3" Margin="5">
+        <DockPanel Grid.Row="3" Margin="5" Background="Transparent">
 
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="Column" 
-                      AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  ColumnHeaderStyle="{StaticResource PrintoutTrainerInfoHeaderColumn}"
+            <DataGrid x:Name="MitgliederlisteDataGrid" 
+                      Margin="5" BorderThickness="0" 
+                      HeadersVisibility="Column" 
+                      AutoGenerateColumns="False" 
+                      GridLinesVisibility="None" 
+                      DockPanel.Dock="Top"  
+                      ColumnHeaderStyle="{StaticResource PrintoutTrainerInfoHeaderColumn}"
                       Style="{StaticResource PrintoutTrainerInfo}" MinHeight="30" 
                       Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent" >
                 
@@ -138,6 +119,24 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+        </Grid>
+
+        <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
+                   FontSize="72"
+                   FontWeight="DemiBold"
+                   Foreground="Green"
+                   Background="Transparent"
+                   Opacity="0.35"
+                   Grid.Row="1"
+                   
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" Panel.ZIndex="0">
+            <TextBlock.RenderTransform>
+                <RotateTransform Angle="-30"/>
+            </TextBlock.RenderTransform>
+            <!--<TextBlock.IsHitTestVisible>false</TextBlock.IsHitTestVisible>-->
+        </TextBlock>
+
     </Grid>
 
 </UserControl>

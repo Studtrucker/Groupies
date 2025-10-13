@@ -7,100 +7,106 @@
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="700">
 
-    <DockPanel >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
 
-        <Grid DockPanel.Dock="Bottom" Width="Auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Canvas Grid.Column="0" Grid.Row="1" Height="100" >
-                <Image x:Name="QRWebKroen" Canvas.Left="10" Canvas.Top="8"
+        <DockPanel Grid.Row="0" Grid.RowSpan="2">
+
+            <Grid DockPanel.Dock="Bottom" Width="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Canvas Grid.Column="0" Grid.Row="1" Height="100" >
+                    <Image x:Name="QRWebKroen" Canvas.Left="10" Canvas.Top="8"
                        Height="80" Source="/Images/QRWebsiteSportKroen.png" 
                        Visibility="Hidden"/>
-                <Image x:Name="QRWebSSM" Canvas.Left="10" Canvas.Top="8"
+                    <Image x:Name="QRWebSSM" Canvas.Left="10" Canvas.Top="8"
                        Height="80" Source="/Images/QRWebsiteSkisportMeerbusch.png" 
                        Visibility="Visible"/>
-                <TextBlock Text="Scan Me Web" FontSize="8" Canvas.Left="20" Canvas.Bottom="-3" />
-            </Canvas>
-            <Image x:Name="LogoKroen" Margin="5"  HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"
+                    <TextBlock Text="Scan Me Web" FontSize="8" Canvas.Left="20" Canvas.Bottom="-3" />
+                </Canvas>
+                <Image x:Name="LogoKroen" Margin="5"  HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"
                    Width="Auto" Height="60" Source="/Images/LogoKroen.png"
                    Visibility="Hidden"/>
-            <Image x:Name="LogoSSM" Margin="5"  HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"
+                <Image x:Name="LogoSSM" Margin="5"  HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"
                    Width="Auto" Height="100" Source="/Images/LogoSkisportMeerbusch.png"
                    Visibility="Visible"/>
 
-            <Canvas Grid.Column="2" Grid.Row="1" Height="100">
-                <Image x:Name="QRContactKroen" Height="80" Canvas.Left="10" Canvas.Top="8"
+                <Canvas Grid.Column="2" Grid.Row="1" Height="100">
+                    <Image x:Name="QRContactKroen" Height="80" Canvas.Left="10" Canvas.Top="8"
                        Source="/Images/QRKontaktSportKroen.png" 
                        Visibility="Hidden"/>
-                <Image x:Name="QRContactSSM" Height="80" Canvas.Left="10" Canvas.Top="8"
+                    <Image x:Name="QRContactSSM" Height="80" Canvas.Left="10" Canvas.Top="8"
                        Source="/Images/QRKontaktSkisportMeerbusch.png"
                        Visibility="Visible"/>
-                <TextBlock Text="Scan Me Kontakt"  FontSize="8" Canvas.Left="16" Canvas.Bottom="-3"/>
-            </Canvas>
-        </Grid>
+                    <TextBlock Text="Scan Me Kontakt"  FontSize="8" Canvas.Left="16" Canvas.Bottom="-3"/>
+                </Canvas>
+            </Grid>
 
-        <Grid DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            
-            <!--<TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
+
+                <!--<TextBlock x:Name="BenennungGruppeneinteilungTextblock" 
                      Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
                      Style="{StaticResource SmallCaption}" FontWeight="Bold"/>-->
 
 
-            <!--Area Group Header-->
-            <DockPanel Grid.Row="1" Margin="5">
-                <TextBlock Text="Gruppe" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
-                <TextBlock x:Name="txtAusgabeTeilnehmerinfo"  Style="{StaticResource BigCaptionValue}" />
-            </DockPanel>
+                <!--Area Group Header-->
+                <DockPanel Grid.Row="1" Margin="5">
+                    <TextBlock Text="Gruppe" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
+                    <TextBlock x:Name="txtAusgabeTeilnehmerinfo"  Style="{StaticResource BigCaptionValue}" />
+                </DockPanel>
 
-            <!--Area Instructor Header-->
-            <DockPanel Grid.Row="2" Margin="5">
-                <Image x:Name="imgTrainerFoto" Margin="5" Grid.Column="1" DockPanel.Dock="Right"
+                <!--Area Instructor Header-->
+                <DockPanel Grid.Row="2" Margin="5">
+                    <Image x:Name="imgTrainerFoto" Margin="5" Grid.Column="1" DockPanel.Dock="Right"
                    Width="Auto" Height="Auto" MaxWidth="200" MaxHeight="200"/>
-                <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
-                <TextBlock x:Name="txtTrainer"  Style="{StaticResource BigCaptionValue}"/>
-            </DockPanel>
+                    <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
+                    <TextBlock x:Name="txtTrainer"  Style="{StaticResource BigCaptionValue}"/>
+                </DockPanel>
 
 
-            <!--Area Participants-->
-            <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
+                <!--Area Participants-->
+                <DockPanel Grid.Row="3" Margin="5">
+                    <TextBlock Text="Teilnehmer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
+                    <DataGrid x:Name="lstMitgliederliste" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
+                          GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}" 
+                          MinHeight="30" Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+        </DockPanel>
+        <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
                    FontSize="72"
                    FontWeight="DemiBold"
-                   Foreground="Gray"
+                   Foreground="Green"
                    Background="Transparent"
                    Opacity="0.35"
-                   Grid.Row="4"
+                   Grid.Row="1"
                    
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" Panel.ZIndex="0">
-                <TextBlock.RenderTransform>
-                    <RotateTransform Angle="-30"/>
-                </TextBlock.RenderTransform>
-            </TextBlock>
-
-            <DockPanel Grid.Row="3" Margin="5">
-                <TextBlock Text="Teilnehmer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
-                <DataGrid x:Name="lstMitgliederliste" BorderThickness="0" HeadersVisibility="None" AutoGenerateColumns="False"
-                          GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}" 
-                          MinHeight="30" Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-        </Grid>
-    </DockPanel>
+            <TextBlock.RenderTransform>
+                <RotateTransform Angle="-30"/>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+    </Grid>
 </UserControl>

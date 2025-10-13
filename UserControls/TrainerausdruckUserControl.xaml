@@ -125,8 +125,8 @@
         <DockPanel Grid.Row="3" Margin="5">
 
             <TextBlock Text="Teilnehmer" Style="{StaticResource BigCaption}" DockPanel.Dock="Top"/>
-            <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" 
-                      AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  
+            <DataGrid x:Name="MitgliederlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="Column" 
+                      AutoGenerateColumns="False" GridLinesVisibility="None" DockPanel.Dock="Top"  ColumnHeaderStyle="{StaticResource PrintoutTrainerInfoHeaderColumn}"
                       Style="{StaticResource PrintoutTrainerInfo}" MinHeight="30" 
                       Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent" >
                 

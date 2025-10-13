@@ -160,6 +160,12 @@
                 <Setter Property="FontSize" Value="24"/>
             </Style>
             
+            <Style TargetType="DataGridColumnHeader" x:Key="PrintoutTrainerInfoHeaderColumn">
+                <!--Standard-->
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            
             <Style TargetType="DataGrid" x:Key="PrintoutSmall">
                 <!--Standard-->
                 <Setter Property="FontSize" Value="16"/>

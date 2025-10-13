@@ -2,6 +2,7 @@
 Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports Groupies.Entities
+Imports PropertyChanged
 
 
 ''' <summary>
@@ -188,6 +189,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Sub OnCollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
         OnPropertyChanged(NameOf(AktuelleAnzahlObjekte))
     End Sub
+
 #End Region
 
 End Class

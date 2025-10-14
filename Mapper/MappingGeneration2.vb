@@ -24,6 +24,7 @@ Public Module MappingGeneration2
         EindeutigeGruppen = GetAlleGruppen(Skiclub)
         EindeutigeGruppen = ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(EindeutigeGruppen, EindeutigeLeistungsstufen)
         EindeutigeGruppen = ErsetzeTrainerDurchEindeutigeTrainer(EindeutigeGruppen, EindeutigeTrainer)
+        'Todo: die Liste der MitgliederIDs in den Gruppen füllen
 
         Dim NeuerClub = New Generation4.Club With {
             .Einteilungsliste = New EinteilungCollection,

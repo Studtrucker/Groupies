@@ -3,6 +3,7 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports Microsoft.Office.Interop.Excel
+Imports System.Collections.ObjectModel
 
 
 
@@ -19,7 +20,11 @@ Namespace Entities
 #Region "Felder"
 
         Private _Ident = Guid.NewGuid()
-
+        Private _Sortierung As Integer
+        Private _Benennung As String
+        Private _Beschreibung As String
+        Private _FaehigkeitenListe As FaehigkeitCollection
+        Private _FaehigkeitenIDListe As ObservableCollection(Of Guid)
 #End Region
 
 #Region "Events"
@@ -33,7 +38,7 @@ Namespace Entities
         ''' Erstellt eine Leistungsstufe
         ''' </summary>
         Public Sub New()
-            _Faehigkeiten = New FaehigkeitCollection
+            _FaehigkeitenListe = New FaehigkeitCollection
             Benennung = String.Empty
             Sortierung = -1
         End Sub
@@ -44,7 +49,7 @@ Namespace Entities
         ''' <param name="Benennung"></param>
         Public Sub New(Benennung As String)
             _Benennung = Benennung
-            _Faehigkeiten = New FaehigkeitCollection
+            _FaehigkeitenListe = New FaehigkeitCollection
         End Sub
 
 
@@ -57,7 +62,7 @@ Namespace Entities
             _Benennung = origin.Benennung
             _Sortierung = origin.Sortierung
             _Beschreibung = origin.Beschreibung
-            _Faehigkeiten = origin.Faehigkeiten
+            _FaehigkeitenListe = origin.Faehigkeiten
         End Sub
 
 #End Region
@@ -83,6 +88,13 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Sortierung ist eine Pflichtangabe (Required)")>
         Public Property Sortierung As Integer
+            Get
+                Return _Sortierung
+            End Get
+            Set(value As Integer)
+                _Sortierung = value
+            End Set
+        End Property
 
 
         ''' <summary>
@@ -91,18 +103,49 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe (Required)")>
         Public Property Benennung As String
+            Get
+                Return _Benennung
+            End Get
+            Set(value As String)
+                _Benennung = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Beschreibung der Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
         Public Property Beschreibung As String
+            Get
+                Return _Beschreibung
+            End Get
+            Set(value As String)
+                _Beschreibung = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Ein Liste von erforderlichen Fähigkeiten für diese Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
+        ''' 
         Public Property Faehigkeiten As FaehigkeitCollection
+            Get
+                Return _FaehigkeitenListe
+            End Get
+            Set(value As FaehigkeitCollection)
+                _FaehigkeitenListe = value
+            End Set
+        End Property
+
+        Public Property FaehigkeitenIDListe As ObservableCollection(Of Guid)
+            Get
+                Return _FaehigkeitenIDListe
+            End Get
+            Set(value As ObservableCollection(Of Guid))
+                _FaehigkeitenIDListe = value
+            End Set
+        End Property
 
 
 #End Region
@@ -114,7 +157,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Faehigkeit"></param>
         Public Sub FaehigkeitHinzufuegen(Faehigkeit As Faehigkeit)
-            _Faehigkeiten.Add(Faehigkeit)
+            _FaehigkeitenListe.Add(Faehigkeit)
         End Sub
 
         ''' <summary>
@@ -122,7 +165,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Faehigkeit"></param>
         Public Sub FaehigkeitEntfernen(Faehigkeit As Faehigkeit)
-            _Faehigkeiten.Remove(Faehigkeit)
+            _FaehigkeitenListe.Remove(Faehigkeit)
         End Sub
 
 

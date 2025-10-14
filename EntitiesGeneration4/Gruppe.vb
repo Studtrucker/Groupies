@@ -1,5 +1,6 @@
-﻿Imports System.ComponentModel.DataAnnotations
+﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
+Imports System.ComponentModel.DataAnnotations
 Imports Groupies.Controller
 
 Namespace Entities
@@ -16,12 +17,13 @@ Namespace Entities
 #Region "Felder"
         Private _Ident As Guid = Guid.NewGuid()
         Private _Sortierung As Integer
+        Private _Benennung As String
         Private _LeistungsstufeID As Guid
         Private _Leistungsstufe As Leistungsstufe
+        Private _MitgliederIDListe As ObservableCollection(Of Guid)
         Private _Mitgliederliste = New TeilnehmerCollection
-        Private _Benennung As String
-        Private _Trainer As Trainer
         Private _TrainerID As Guid
+        Private _Trainer As Trainer
 #End Region
 
 #Region "Konstruktor"
@@ -79,6 +81,20 @@ Namespace Entities
 
 
         ''' <summary>
+        ''' Sortierungszahl für die Ausgabeinformationen 
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Sortierung As Integer
+            Get
+                Return _Sortierung
+            End Get
+            Set(value As Integer)
+                _Sortierung = value
+                OnPropertyChanged(NameOf(Sortierung))
+            End Set
+        End Property
+
+        ''' <summary>
         ''' Die globale Benennung der Gruppe
         ''' </summary>
         ''' <returns></returns>
@@ -90,20 +106,6 @@ Namespace Entities
             Set(value As String)
                 _Benennung = value
                 OnPropertyChanged(NameOf(Benennung))
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Sortierungszahl für die Ausgabeinformationen 
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Sortierung As Integer
-            Get
-                Return _Sortierung
-            End Get
-            Set(value As Integer)
-                _Sortierung = value
-                OnPropertyChanged(NameOf(Sortierung))
             End Set
         End Property
 
@@ -161,6 +163,19 @@ Namespace Entities
             Set(value As Trainer)
                 _Trainer = value
                 OnPropertyChanged(NameOf(Trainer))
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Liste der GruppenmitgliederIDs
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property MitgliederIDListe As ObservableCollection(Of Guid)
+            Get
+                Return _MitgliederIDListe
+            End Get
+            Set(value As ObservableCollection(Of Guid))
+                _MitgliederIDListe = value
             End Set
         End Property
 

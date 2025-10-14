@@ -6,6 +6,12 @@ Public Module MappingGeneration4
     Private NeuerClub As Generation4.Club
 
     Public Function MapSkiClub2Club(Skiclub As Generation4.Club) As Generation4.Club
+        ' Schreibe die Club.Gruppenliste.Mitgliederliste anhand der gespeicherten TeilnehmerIDs aus der Liste TeilnehmerIDListe  
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste = New TeilnehmerCollection(
+                                            (From TID In g.MitgliederIDListe
+                                             Let T = Skiclub.Teilnehmerliste.FirstOrDefault(Function(tn) tn.TeilnehmerID = TID)
+                                             Where T IsNot Nothing
+                                             Select T).ToList()))
         ' Schreibe die Club.Einteilungen.Gruppenliste anhand der gespeicherten GruppenIDs aus der Liste GruppenIDListe  
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Gruppenliste.Where(Function(G) E.GruppenIDListe.Contains(G.Ident)).ToList.ForEach(Sub(g) E.Gruppenliste.Add(g)))
         ' Schreibe die Club.Einteilungen.NichtZugewieseneTeilnehmerListe anhand der gespeicherten Teilnehmer IDs aus der Liste NichtZugewieseneTeilnehmerIDListe  

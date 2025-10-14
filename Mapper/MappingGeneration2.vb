@@ -103,19 +103,20 @@ Public Module MappingGeneration2
 
         If Skiclub.Gruppenliste IsNot Nothing Then
             'Es werden die Leistungsstufen aus den Gruppenleistungsstufe ergänzt
-            Skiclub.Gruppenliste.ToList.ForEach(Sub(Gr) Leistungsstufen.Add(New Leistungsstufe With {
-                                                                                            .Benennung = Gr.Leistungsstufe.Benennung,
-                                                                                            .Beschreibung = Gr.Leistungsstufe.Beschreibung,
-                                                                                            .Ident = Gr.Leistungsstufe.Ident,
-                                                                                            .Faehigkeiten = Gr.Leistungsstufe.Faehigkeiten,
-                                                                                            .Sortierung = Gr.Leistungsstufe.Sortierung}))
+            Skiclub.Gruppenliste.Where(Function(G) G.Leistungsstufe IsNot Nothing).ToList.ForEach(Sub(Gr) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                                                              .Benennung = Gr.Leistungsstufe.Benennung,
+                                                                                                                              .Beschreibung = Gr.Leistungsstufe.Beschreibung,
+                                                                                                                              .Ident = Gr.Leistungsstufe.Ident,
+                                                                                                                              .Faehigkeiten = Gr.Leistungsstufe.Faehigkeiten,
+                                                                                                                              .Sortierung = Gr.Leistungsstufe.Sortierung}))
+
             'Es werden die Leistungsstufen aus den Gruppen von den Teilnehmern ergänzt
-            Skiclub.Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Mitgliederliste.ToList.ForEach(Sub(Tn) Leistungsstufen.Add(New Leistungsstufe With {
-                                                                                                        .Benennung = Tn.Leistungsstand.Benennung,
-                                                                                                        .Beschreibung = Tn.Leistungsstand.Beschreibung,
-                                                                                                        .Ident = Tn.Leistungsstand.Ident,
-                                                                                                        .Faehigkeiten = Tn.Leistungsstand.Faehigkeiten,
-                                                                                                        .Sortierung = Tn.Leistungsstand.Sortierung})))
+            Skiclub.Gruppenliste.ToList.ForEach(Sub(Gr) Gr.Mitgliederliste.Where(Function(M) M.Leistungsstand IsNot Nothing).ToList.ForEach(Sub(Tn) Leistungsstufen.Add(New Leistungsstufe With {
+                                                                                                                                                                        .Benennung = Tn.Leistungsstand.Benennung,
+                                                                                                                                                                        .Beschreibung = Tn.Leistungsstand.Beschreibung,
+                                                                                                                                                                        .Ident = Tn.Leistungsstand.Ident,
+                                                                                                                                                                        .Faehigkeiten = Tn.Leistungsstand.Faehigkeiten,
+                                                                                                                                                                        .Sortierung = Tn.Leistungsstand.Sortierung})))
         End If
 
 

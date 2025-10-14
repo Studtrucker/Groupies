@@ -96,10 +96,6 @@ Namespace Entities
             Return SortedList
         End Function
 
-        Friend Sub KorrekturLeistungsstufen(AlleLeistungsstufen As LeistungsstufeCollection)
-            Me.ToList.ForEach(Sub(Tn) Tn.Leistungsstand = AlleLeistungsstufen.Where(Function(LS) LS.Benennung = Tn.Leistungsstand.Benennung).Single)
-        End Sub
-
 #End Region
 
 #Region "Beispiel Gruppierung"

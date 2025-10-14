@@ -5,31 +5,34 @@ Imports Groupies.Entities.Generation1
 Public Module MappingGeneration2
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club) As Generation4.Club
-        Return MapSkiClub2Club(Skiclub, "Club Gen2")
+        Return MapSkiClub2Club(Skiclub, "Club aus Daten-Generation 2")
     End Function
 
     Public Function MapSkiClub2Club(Skiclub As Generation2.Club, Dateiname As String) As Generation4.Club
 
-        Dim AlleLeistungsstufen = New LeistungsstufeCollection
-        AlleLeistungsstufen = GetAlleLeistungsstufen(Skiclub)
+        Dim EindeutigeLeistungsstufen = New LeistungsstufeCollection
+        EindeutigeLeistungsstufen = GetAlleLeistungsstufen(Skiclub)
 
-        Dim Gruppen = New GruppeCollection
-        Gruppen = GetAlleGruppen(Skiclub, AlleLeistungsstufen)
+        Dim EindeutigeTrainer = New TrainerCollection
+        EindeutigeTrainer = GetAlleTrainer(Skiclub)
 
-        Dim Teilnehmer = New TeilnehmerCollection
-        Teilnehmer = GetAlleTeilnehmer(Skiclub, AlleLeistungsstufen)
+        Dim EindeutigeTeilnehmer = New TeilnehmerCollection
+        EindeutigeTeilnehmer = GetAlleTeilnehmer(Skiclub)
+        EindeutigeTeilnehmer = ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(EindeutigeTeilnehmer, EindeutigeLeistungsstufen)
 
-        Teilnehmer.KorrekturLeistungsstufen(AlleLeistungsstufen)
-        Gruppen.KorrekturLeistungsstufen(AlleLeistungsstufen)
+        Dim EindeutigeGruppen = New GruppeCollection
+        EindeutigeGruppen = GetAlleGruppen(Skiclub)
+        EindeutigeGruppen = ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(EindeutigeGruppen, EindeutigeLeistungsstufen)
+        EindeutigeGruppen = ErsetzeTrainerDurchEindeutigeTrainer(EindeutigeGruppen, EindeutigeTrainer)
 
         Dim NeuerClub = New Generation4.Club With {
             .Einteilungsliste = New EinteilungCollection,
             .ClubName = If(Skiclub.ClubName, Dateiname),
-            .Trainerliste = GetAlleTrainer(Skiclub),
-            .Teilnehmerliste = Teilnehmer,
-            .Leistungsstufenliste = AlleLeistungsstufen,
+            .Trainerliste = EindeutigeTrainer,
+            .Teilnehmerliste = EindeutigeTeilnehmer,
+            .Leistungsstufenliste = EindeutigeLeistungsstufen,
             .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
-            .Gruppenliste = Gruppen}
+            .Gruppenliste = EindeutigeGruppen}
 
         ' Einteilung wird neu erstellt
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
@@ -42,11 +45,6 @@ Public Module MappingGeneration2
         NeuerClub.Einteilungsliste(0).GruppenIDListe = New ObservableCollection(Of Guid)((From g In Skiclub.Gruppenliste Select g.Ident).ToList())
         NeuerClub.Einteilungsliste(0).Gruppenliste = Skiclub.Gruppenliste
 
-        ' Todo: Statements lesbar optimieren
-        Skiclub.Gruppenliste.Where(Function(Gl) Gl.Trainer IsNot Nothing).ToList.ForEach(Sub(Gl) Gl.TrainerID = Gl.Trainer.TrainerID)
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.LeistungsstufeID = NeuerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Benennung = G.Leistungsstufe.Benennung).Single.Ident)
-
-
         Return NeuerClub
 
     End Function
@@ -56,47 +54,24 @@ Public Module MappingGeneration2
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleGruppen(Skiclub As Generation2.Club, Leistungsstufen As LeistungsstufeCollection) As GruppeCollection
-        Dim Gruppen = New GruppeCollection
-        ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
-
-        For Each g In Skiclub.Gruppenliste
-            g.LeistungsstufeID = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
-            'g.Leistungsstufe.Ident = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
-            g.Leistungsstufe = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung), Nothing)
-            g.TrainerID = If(g.Trainer IsNot Nothing, g.Trainer.TrainerID, Guid.Empty)
-            Gruppen.Add(g)
-        Next
-
-        'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g))
-        'Gruppen.ToList.ForEach(Sub(G) G.LeistungsstufeID = Skiclub.Gruppenliste.First(Function(G2G) G2G.GruppenID = G.GruppenID).Leistungsstufe.Ident)
-        Return Gruppen
-
-    End Function
-
-    ''' <summary>
-    ''' Gruppen werden aus dem Skiclub extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
     Private Function GetAlleGruppen(Skiclub As Generation2.Club) As GruppeCollection
+
         Dim Gruppen = New GruppeCollection
         ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
-
         For Each g In Skiclub.Gruppenliste
-            g.LeistungsstufeID = If(g.Leistungsstufe IsNot Nothing, Skiclub.Leistungsstufenliste.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
-            g.TrainerID = If(g.Trainer IsNot Nothing, g.Trainer.TrainerID, Guid.Empty)
             Gruppen.Add(g)
         Next
 
-        'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g))
-        'Gruppen.ToList.ForEach(Sub(G) G.LeistungsstufeID = Skiclub.Gruppenliste.First(Function(G2G) G2G.GruppenID = G.GruppenID).Leistungsstufe.Ident)
+        ' Entferne doppelte Gruppen
+        Gruppen = New GruppeCollection(Gruppen.GroupBy(Of String)(Function(L) L.Benennung).Select(Function(L) L.First).ToList)
+
         Return Gruppen
 
     End Function
 
     ''' <summary>
-    ''' Leistungsstufen werden aus den Leistungsstufen gelesen
+    ''' Sammelt alle Leistungsstufen aus den Leistungsstufen des Skiclubs, den Leistungsstufen der Teilnehmer und den Leistungsstufen der Gruppen.
+    ''' Gruppiert über die Benennungen und entfernt doppelte Leistungsstufen.
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
@@ -176,35 +151,20 @@ Public Module MappingGeneration2
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleTeilnehmer(Skiclub As Generation2.Club, Leistungsstufen As LeistungsstufeCollection) As TeilnehmerCollection
-
-        Dim Teilnehmer = New TeilnehmerCollection
-
-        For Each t In Skiclub.AlleTeilnehmer
-            t.LeistungsstandID = If(t.Leistungsstand IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstand.Benennung).Ident, Guid.Empty)
-            t.Leistungsstand.Ident = If(t.Leistungsstand IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstand.Benennung).Ident, Guid.Empty)
-            Teilnehmer.Add(t)
-        Next
-
-        Return Teilnehmer
-
-    End Function
-
-    ''' <summary>
-    ''' Teilnehmer werden aus den Gruppen und der gruppenlose Teilnehmer-Liste extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
     Private Function GetAlleTeilnehmer(Skiclub As Generation2.Club) As TeilnehmerCollection
 
         Dim Teilnehmer = New TeilnehmerCollection
-
+        Skiclub.AlleTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T))
         Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
         Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T))
+
+        ' Entferne doppelte Teilnehmer
+        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of String)(Function(T) T.VorUndNachname).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Teilnehmer
 
     End Function
+
 
     ''' <summary>
     ''' Trainer werden aus den Gruppen und der gruppenlose Trainer-Liste extrahiert
@@ -221,28 +181,56 @@ Public Module MappingGeneration2
         Trainer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Trainer.Remove(O))
 
         ' Entferne doppelte Trainer
-        Trainer = New TrainerCollection(Trainer.GroupBy(Of Guid)(Function(LS) LS.TrainerID).Select(Function(T) T.First).ToList)
+        Trainer = New TrainerCollection(Trainer.GroupBy(Of String)(Function(LS) LS.VorUndNachname).Select(Function(T) T.First).ToList)
 
         Return Trainer
 
     End Function
 
     ''' <summary>
-    ''' Leistungsstufen werden aus den Teilnehmern extrahiert
+    ''' Die Leistungsstufe des Teilnehmers wird durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
     ''' </summary>
-    ''' <param name="Skiclub"></param>
+    ''' <param name="Teilnehmer"></param>
+    ''' <param name="Leistungsstufen"></param>
     ''' <returns></returns>
-    Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation2.Club) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstand)))
-        Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstand))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of String)(Function(LS) LS.Benennung).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
-
+    Private Function ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(Teilnehmer As TeilnehmerCollection, Leistungsstufen As LeistungsstufeCollection) As TeilnehmerCollection
+        For Each t In Teilnehmer
+            ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
+            t.LeistungsstandID = If(t.Leistungsstand IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstand.Benennung).Ident, Guid.Empty)
+            t.Leistungsstand = If(t.Leistungsstand IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstand.Benennung), Nothing)
+        Next
+        Return Teilnehmer
     End Function
+
+    ''' <summary>
+    ''' Die Leistungsstufe der Gruppe wird durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
+    ''' </summary>
+    ''' <param name="Gruppen"></param>
+    ''' <param name="Leistungsstufen"></param>
+    ''' <returns></returns>
+    Private Function ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(Gruppen As GruppeCollection, Leistungsstufen As LeistungsstufeCollection) As GruppeCollection
+        For Each g In Gruppen
+            ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
+            g.LeistungsstufeID = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
+            g.Leistungsstufe = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung), Nothing)
+        Next
+        Return Gruppen
+    End Function
+
+    ''' <summary>
+    ''' Die Trainer der Gruppe wird durch den eindeutige Trainer aus der übergebenen Trainer-Collection ersetzt.
+    ''' </summary>
+    ''' <param name="Gruppen"></param>
+    ''' <param name="Trainer"></param>
+    ''' <returns></returns>
+    Private Function ErsetzeTrainerDurchEindeutigeTrainer(Gruppen As GruppeCollection, Trainer As TrainerCollection) As GruppeCollection
+        For Each g In Gruppen
+            ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
+            g.TrainerID = If(g.Trainer IsNot Nothing, Trainer.First(Function(T) T.VorUndNachname = g.Trainer.VorUndNachname).TrainerID, Guid.Empty)
+            g.Trainer = If(g.Trainer IsNot Nothing, Trainer.First(Function(T) T.VorUndNachname = g.Trainer.VorUndNachname), Nothing)
+        Next
+        Return Gruppen
+    End Function
+
 
 End Module

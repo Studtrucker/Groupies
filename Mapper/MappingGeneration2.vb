@@ -13,27 +13,23 @@ Public Module MappingGeneration2
         Dim AlleLeistungsstufen = New LeistungsstufeCollection
         AlleLeistungsstufen = GetAlleLeistungsstufen(Skiclub)
 
-
         Dim Gruppen = New GruppeCollection
         Gruppen = GetAlleGruppen(Skiclub, AlleLeistungsstufen)
-
 
         Dim Teilnehmer = New TeilnehmerCollection
         Teilnehmer = GetAlleTeilnehmer(Skiclub, AlleLeistungsstufen)
 
+        Teilnehmer.KorrekturLeistungsstufen(AlleLeistungsstufen)
+        Gruppen.KorrekturLeistungsstufen(AlleLeistungsstufen)
 
         Dim NeuerClub = New Generation4.Club With {
             .Einteilungsliste = New EinteilungCollection,
             .ClubName = If(Skiclub.ClubName, Dateiname),
             .Trainerliste = GetAlleTrainer(Skiclub),
-            .Teilnehmerliste = GetAlleTeilnehmer(Skiclub),
+            .Teilnehmerliste = Teilnehmer,
             .Leistungsstufenliste = AlleLeistungsstufen,
             .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
             .Gruppenliste = Gruppen}
-
-        NeuerClub.Teilnehmerliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
-        NeuerClub.Gruppenliste.KorrekturLeistungsstufen(NeuerClub.Leistungsstufenliste)
-
 
         ' Einteilung wird neu erstellt
         NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})

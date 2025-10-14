@@ -1,11 +1,24 @@
-﻿Imports Groupies.Entities
+﻿Imports System.Security.Cryptography
+Imports Groupies.Entities
 
 Public Module MappingGeneration4
 
     Private NeuerClub As Generation4.Club
 
     Public Function MapSkiClub2Club(Skiclub As Generation4.Club) As Generation4.Club
+        ' Schreibe die Club.Einteilungen.Gruppenliste anhand der gespeicherten GruppenIDs aus der Liste GruppenIDListe  
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Gruppenliste.Where(Function(G) E.GruppenIDListe.Contains(G.Ident)).ToList.ForEach(Sub(g) E.Gruppenliste.Add(g)))
+        ' Schreibe die Club.Einteilungen.NichtZugewieseneTeilnehmerListe anhand der gespeicherten Teilnehmer IDs aus der Liste NichtZugewieseneTeilnehmerIDListe  
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Teilnehmerliste.Where(Function(T) E.NichtZugewieseneTeilnehmerIDListe.Contains(T.TeilnehmerID)).ToList.ForEach(Sub(T) E.NichtZugewieseneTeilnehmerListe.Add(T)))
+        ' Schreibe die Club.Einteilungen.VerfuegbareTrainerListe anhand der gespeicherten Trainer IDs aus der Liste VerfuegbareTrainerIDListe  
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Trainerliste.Where(Function(T) E.VerfuegbareTrainerIDListe.Contains(T.TrainerID)).ToList.ForEach(Sub(T) E.VerfuegbareTrainerListe.Add(T)))
         Return Skiclub
+
+    End Function
+
+    Public Function MapSkiClub2Club(Skiclub As Generation4.Club, Dateiname As String) As Generation4.Club
+        Skiclub.ClubName = Dateiname
+        Return MapSkiClub2Club(Skiclub)
     End Function
 
     ''' <summary>

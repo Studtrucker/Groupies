@@ -154,7 +154,7 @@ Namespace Entities.Generation4
         End Function
 
         Public Function Map2AktuelleGeneration(Skiclub As IClub, Dateiname As String) As Club Implements IClub.Map2AktuelleGeneration
-            Return MappingGeneration4.MapSkiClub2Club(Skiclub)
+            Return MappingGeneration4.MapSkiClub2Club(Skiclub, Dateiname)
         End Function
 
 #End Region

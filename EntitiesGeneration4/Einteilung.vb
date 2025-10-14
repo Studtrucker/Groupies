@@ -25,7 +25,6 @@ Namespace Entities
 
 #End Region
 
-
 #Region "Konstruktor"
         ''' <summary>
         ''' Erstellt eine Einteilung mit einer eindeutigen ID
@@ -137,6 +136,7 @@ Namespace Entities
         ''' Teilnehmer, die keiner Gruppe zugewiesen sind
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property NichtZugewieseneTeilnehmerListe() As TeilnehmerCollection
             Get
                 Return _NichtZugewieseneTeilnehmerListe
@@ -163,6 +163,7 @@ Namespace Entities
         ''' Trainer, die keiner Gruppe zugewiesen sind
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property VerfuegbareTrainerListe() As TrainerCollection
             Get
                 Return _VerfuegbareTrainerListe

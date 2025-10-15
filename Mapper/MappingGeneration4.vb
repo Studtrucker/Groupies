@@ -14,11 +14,11 @@ Public Module MappingGeneration4
         '                                     Where T IsNot Nothing
         '                                     Select T).ToList()))
 
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe = New ObservableCollection(Of Guid)(G.Mitgliederliste.Select(Function(T) T.TeilnehmerID).ToList()))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe = New ObservableCollection(Of Guid)(G.Mitgliederliste.Select(Function(T) T.Ident).ToList()))
         ' Schreibe die Club.Einteilungen.Gruppenliste anhand der gespeicherten GruppenIDs aus der Liste GruppenIDListe  
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Gruppenliste.Where(Function(G) E.GruppenIDListe.Contains(G.Ident)).ToList.ForEach(Sub(g) E.Gruppenliste.Add(g)))
         ' Schreibe die Club.Einteilungen.NichtZugewieseneTeilnehmerListe anhand der gespeicherten Teilnehmer IDs aus der Liste NichtZugewieseneTeilnehmerIDListe  
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Teilnehmerliste.Where(Function(T) E.NichtZugewieseneTeilnehmerIDListe.Contains(T.TeilnehmerID)).ToList.ForEach(Sub(T) E.NichtZugewieseneTeilnehmerListe.Add(T)))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Teilnehmerliste.Where(Function(T) E.NichtZugewieseneTeilnehmerIDListe.Contains(T.Ident)).ToList.ForEach(Sub(T) E.NichtZugewieseneTeilnehmerListe.Add(T)))
         ' Schreibe die Club.Einteilungen.VerfuegbareTrainerListe anhand der gespeicherten Trainer IDs aus der Liste VerfuegbareTrainerIDListe  
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Trainerliste.Where(Function(T) E.VerfuegbareTrainerIDListe.Contains(T.TrainerID)).ToList.ForEach(Sub(T) E.VerfuegbareTrainerListe.Add(T)))
         Return Skiclub

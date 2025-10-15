@@ -17,16 +17,15 @@ Namespace Entities
 
 
 #Region "Fields"
-        Private _TeilnehmerID As Guid = Guid.NewGuid()
-
-        Private _LeistungsstandID As Guid
-        Private _Leistungsstand As Leistungsstufe
+        Private _Ident As Guid = Guid.NewGuid()
 
         Private _Nachname As String
         Private _Vorname As String
         Private _Telefonnummer As String
         Private _Geburtsdatum As Date
 
+        Private _LeistungsstandID As Guid
+        Private _Leistungsstand As Leistungsstufe
 #End Region
 
 #Region "Events"
@@ -80,7 +79,7 @@ Namespace Entities
         ''' </summary>
         ''' <param name="Origin"></param>
         Public Sub New(Origin As Teilnehmer)
-            TeilnehmerID = Origin.TeilnehmerID
+            Ident = Origin.Ident
             Nachname = Origin.Nachname
             Vorname = Origin.Vorname
             Geburtsdatum = Origin.Geburtsdatum
@@ -95,13 +94,13 @@ Namespace Entities
         ''' Eindeutige Kennzeichnung des Teilnehmers 
         ''' </summary>
         ''' <returns></returns>
-        Public Property TeilnehmerID As Guid Implements IModel.Ident
+        Public Property Ident As Guid Implements IModel.Ident
             Get
-                Return _TeilnehmerID
+                Return _Ident
             End Get
             Set(value As Guid)
-                _TeilnehmerID = value
-                OnPropertyChanged(NameOf(TeilnehmerID))
+                _Ident = value
+                OnPropertyChanged(NameOf(Ident))
             End Set
         End Property
 

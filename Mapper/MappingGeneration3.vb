@@ -99,7 +99,7 @@ Public Module MappingGeneration3
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
 
         ' Entferne doppelte Teilnehmer
-        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(f) f.TeilnehmerID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(f) f.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Teilnehmer
 

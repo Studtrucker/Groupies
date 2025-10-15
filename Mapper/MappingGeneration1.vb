@@ -93,7 +93,7 @@ Public Module MappingGeneration1
         Teilnehmer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Teilnehmer.Remove(O))
 
         ' Entferne doppelte Trainer
-        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(LS) LS.TeilnehmerID).Select(Function(T) T.First).ToList)
+        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(T) T.First).ToList)
 
         Return Teilnehmer
 
@@ -191,7 +191,7 @@ Public Module MappingGeneration1
 
         Dim Teilnehmer = New Teilnehmer(Participant.ParticipantFirstName, Participant.ParticipantLastName) With {
                                                                              .Leistungsstand = MapLevel2Leistungsstufe(Participant.ParticipantLevel),
-                                                                             .TeilnehmerID = Participant.ParticipantID}
+                                                                             .Ident = Participant.ParticipantID}
 
         Return Teilnehmer
 

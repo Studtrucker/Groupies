@@ -42,7 +42,7 @@ Public Module MappingGeneration2
         NeuerClub.Einteilungsliste(0).VerfuegbareTrainerListe = Skiclub.GruppenloseTrainer
         NeuerClub.Einteilungsliste(0).VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTrainer Select T.TrainerID).ToList())
         NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerListe = Skiclub.GruppenloseTeilnehmer
-        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTeilnehmer Select T.TeilnehmerID).ToList())
+        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTeilnehmer Select T.Ident).ToList())
         NeuerClub.Einteilungsliste(0).GruppenIDListe = New ObservableCollection(Of Guid)((From g In Skiclub.Gruppenliste Select g.Ident).ToList())
         NeuerClub.Einteilungsliste(0).Gruppenliste = Skiclub.Gruppenliste
 

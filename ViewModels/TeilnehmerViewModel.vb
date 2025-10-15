@@ -50,13 +50,13 @@ Public Class TeilnehmerViewModel
         End Set
     End Property
 
-    Public Property TeilnehmerID As Guid
+    Public Property Ident As Guid
         Get
-            Return _Teilnehmer.TeilnehmerID
+            Return _Teilnehmer.Ident
         End Get
         Set(value As Guid)
-            _Teilnehmer.TeilnehmerID = value
-            OnPropertyChanged(NameOf(TeilnehmerID))
+            _Teilnehmer.Ident = value
+            OnPropertyChanged(NameOf(Ident))
             ValidateTeilnehmerID()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
@@ -265,9 +265,9 @@ Public Class TeilnehmerViewModel
         End If
     End Sub
     Private Sub ValidateTeilnehmerID()
-        ClearErrors(NameOf(_Teilnehmer.TeilnehmerID))
-        If _Teilnehmer.TeilnehmerID = Nothing Then
-            AddError(NameOf(_Teilnehmer.TeilnehmerID), "Eine TeilnehmerID muss eingetragen werden.")
+        ClearErrors(NameOf(_Teilnehmer.Ident))
+        If _Teilnehmer.Ident = Nothing Then
+            AddError(NameOf(_Teilnehmer.Ident), "Eine Ident muss eingetragen werden.")
         End If
     End Sub
 #End Region

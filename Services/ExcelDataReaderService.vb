@@ -19,10 +19,10 @@ Public Module ExcelDataReaderService
 
         For Each zeile As DataRow In xl.Tables("Teilnehmer").Rows
             Dim guid As Guid
-            If IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID"))) Then
+            If IsDBNull(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Ident"))) Then
                 guid = Nothing
             Else
-                Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("TeilnehmerID")), guid)
+                Guid.TryParse(zeile.ItemArray(xl.Tables("Teilnehmer").Columns.IndexOf("Ident")), guid)
             End If
 
             Dim Tn = New Teilnehmer With {

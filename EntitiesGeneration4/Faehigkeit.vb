@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
 
-Namespace Entities
+Namespace Entities.Generation4
 
     ''' <summary>
     ''' Fähigkeit zur Beschreibung von Leistungsstufen 
@@ -64,7 +64,7 @@ Namespace Entities
         ''' <returns></returns>
         Public Property FaehigkeitID As Guid Implements IModel.Ident
             Get
-                Return _FaehigkeitId
+                Return _FaehigkeitID
             End Get
             Set(value As Guid)
                 _FaehigkeitID = value

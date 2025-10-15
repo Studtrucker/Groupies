@@ -1,6 +1,6 @@
 ﻿Imports System.Globalization
 Imports Groupies.Controller
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 Namespace ValidationRules
 

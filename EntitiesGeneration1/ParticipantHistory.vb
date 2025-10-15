@@ -6,7 +6,7 @@ Namespace Entities
     Public Class ParticipantHistory
         Inherits BaseModel
 
-        Public Property Teilnehmer As Entities.Teilnehmer
+        Public Property Teilnehmer As Generation4.Teilnehmer
 
         Public Property Eintrag As String
 

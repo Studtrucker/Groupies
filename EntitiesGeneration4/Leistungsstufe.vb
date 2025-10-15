@@ -7,7 +7,7 @@ Imports System.Collections.ObjectModel
 
 
 
-Namespace Entities
+Namespace Entities.Generation4
 
 
     '''' <summary>

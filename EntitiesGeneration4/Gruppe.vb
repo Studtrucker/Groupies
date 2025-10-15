@@ -3,7 +3,7 @@ Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
 Imports Groupies.Controller
 
-Namespace Entities
+Namespace Entities.Generation4
 
 
     ''' <summary>

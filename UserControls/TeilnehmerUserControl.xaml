@@ -52,7 +52,7 @@
         <Label Content="Geburtsdatum" Grid.Column="1" Grid.Row="4"/>
         <Label Content="Telefon" Grid.Column="1" Grid.Row="5"/>
         <Label Grid.Column="1" Grid.Row="6" Style="{StaticResource PflichtangabeLabel}">
-            <TextBlock>Leistungsstand <Run Foreground="Red">*</Run></TextBlock>
+            <TextBlock>Leistungsstufe <Run Foreground="Red">*</Run></TextBlock>
         </Label>
 
         <TextBox x:Name="TeilnehmerIDTextBox" Grid.Column="2" Grid.Row="1" IsReadOnly="True" 
@@ -69,9 +69,9 @@
          Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}"/>
 
         <ComboBox Grid.Column="2" Grid.Row="6" IsSynchronizedWithCurrentItem="True"
-                  x:Name="LeistungsstandComboBox"
+                  x:Name="LeistungsstufeComboBox"
                   ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                  SelectedValue="{Binding Leistungsstand, UpdateSourceTrigger=PropertyChanged,
+                  SelectedValue="{Binding Leistungsstufe, UpdateSourceTrigger=PropertyChanged,
                     ValidatesOnNotifyDataErrors=True,Converter={StaticResource StringToLeistungsstufeConverter}}"/>
 
     </Grid>

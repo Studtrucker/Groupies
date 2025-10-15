@@ -2,7 +2,7 @@
 Imports System.Collections.ObjectModel
 Imports System.Text
 
-Namespace Entities
+Namespace Entities.Generation4
 
     Public Class LeistungsstufeCollection
         Inherits ObservableCollection(Of Leistungsstufe)

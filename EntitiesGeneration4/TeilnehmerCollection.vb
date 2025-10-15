@@ -2,7 +2,7 @@
 Imports System.Collections.ObjectModel
 Imports System.Text
 
-Namespace Entities
+Namespace Entities.Generation4
 
     Public Class TeilnehmerCollection
         Inherits ObservableCollection(Of Teilnehmer)
@@ -48,7 +48,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TrainerinfoGeordnet As IEnumerable(Of String) =
-            OrderByDescending(Function(Tr) Tr.Leistungsstand.Sortierung) _
+            OrderByDescending(Function(Tr) Tr.Leistungsstufe.Sortierung) _
             .ThenBy(Function(Tr) Tr.Nachname) _
             .ThenBy(Function(Tr) Tr.Vorname) _
             .Select(Function(Tn) Tn.AusgabeTrainerinfo)
@@ -83,7 +83,7 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property TeilnehmerMitLeistungsstufeGeordnet As IEnumerable(Of Teilnehmer) =
-            OrderByDescending(Function(Tn) Tn.Leistungsstand.Sortierung) _
+            OrderByDescending(Function(Tn) Tn.Leistungsstufe.Sortierung) _
             .ThenBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname)
 
@@ -103,7 +103,7 @@ Namespace Entities
         Public Property GruppeLeistungNachnameVorname =
             OrderBy(Function(TN) TN.Nachname) _
             .ThenBy(Function(TN) TN.Vorname) _
-            .GroupBy(Function(TN) TN.Leistungsstand.Sortierung) _
+            .GroupBy(Function(TN) TN.Leistungsstufe.Sortierung) _
             .OrderByDescending(Function(TN) TN.Key) _
             .Select(Function(TNG) TNG.ToList.Select(Function(Tt) Tt))
 

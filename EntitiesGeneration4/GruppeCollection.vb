@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
 
-Namespace Entities
+Namespace Entities.Generation4
 
     Public Class GruppeCollection
         Inherits ObservableCollection(Of Gruppe)

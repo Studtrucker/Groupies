@@ -104,8 +104,8 @@
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstandComboBox" Header="Leistungsstand" Width="*" 
-                                                SelectedValueBinding="{Binding Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
+                <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstufeComboBox" Header="Leistungsstufe" Width="*" 
+                                                SelectedValueBinding="{Binding Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
             </DataGrid.Columns>
 
                 

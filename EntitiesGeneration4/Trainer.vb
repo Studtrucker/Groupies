@@ -1,12 +1,12 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 
-Namespace Entities
+Namespace Entities.Generation4
 
     ''' <summary>
     ''' Trainer, verantwortlich für eine Gruppe
     ''' </summary>
     Public Class Trainer
-        'Inherits BaseModel
+        Inherits BaseModel
         Implements IModel
 
 

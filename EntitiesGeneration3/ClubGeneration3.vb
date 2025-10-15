@@ -13,192 +13,15 @@ Namespace Entities.Generation3
         Inherits BaseModel
         Implements IClub
 
-#Region "Fields"
-
-        Private _Einteilungsliste = New EinteilungCollection
-
-#End Region
-
-#Region "Konstruktor"
-
-        ''' <summary>
-        ''' Parameterloser Konstruktor für das
-        ''' Einlesen von XML Dateien notwendig
-        ''' </summary>
-        Public Sub New()
-
-        End Sub
-
-        ''' <summary>
-        ''' Erstellung eines neuen Clubs
-        ''' Gruppenliste, Teilnehmerliste und Trainerliste werden instanziiert
-        ''' </summary>
-        Public Sub New(Clubname As String)
-            _ClubName = Clubname
-        End Sub
-
-#End Region
 
 #Region "Properties"
 
 
-        ''' <summary>
-        ''' Der Clubname
-        ''' </summary>
-        ''' <returns></returns>
         Public Property ClubName As String Implements IClub.Name
-
         Public Property DateiGeneration As String Implements IClub.DateiGeneration
-
-        ''' <summary>
-        ''' Die Einteilungen im aktuellen Club
-        ''' Es kann hiermit eine Historie verwaltet werden
-        ''' </summary>
-        ''' <returns></returns>
         Public Property Einteilungsliste() As EinteilungCollection
-            Get
-                Return _Einteilungsliste
-            End Get
-            Set(value As EinteilungCollection)
-                _Einteilungsliste = value
-            End Set
-        End Property
-
-
-        Private _SelectedEinteilung As Einteilung
-        ''' <summary>
-        ''' Die aktuell ausgewählte Einteilung
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property SelectedEinteilung As Einteilung
-            Get
-                Return _SelectedEinteilung
-            End Get
-            Set(value As Einteilung)
-                _SelectedEinteilung = value
-                SelectedGruppe = Nothing
-            End Set
-        End Property
-
-        Private _SelectedGruppe As Gruppe
-        ''' <summary>
-        ''' Die aktuell ausgewählte Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property SelectedGruppe As Gruppe
-            Get
-                Return _SelectedGruppe
-            End Get
-            Set(value As Gruppe)
-                _SelectedGruppe = value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Eine Liste aller Leistungsstufen
-        ''' </summary>
-        ''' <returns></returns>
         Public Property Leistungsstufenliste() As LeistungsstufeCollection = New LeistungsstufeCollection
 
-
-        ''' <summary>
-        ''' Eine Liste aller  Leistungsstufen
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AlleValidenLeistungsstufen() As LeistungsstufeCollection
-            Get
-                Return New LeistungsstufeCollection(Leistungsstufenliste.ToList.Where(Function(l) l.Sortierung > 0))
-            End Get
-        End Property
-
-        Public ReadOnly Property LeistungsstufenTextliste As IEnumerable(Of String)
-            Get
-                Return Leistungsstufenliste.OrderBy(Function(LS) LS.Sortierung).ToList.Select(Function(LS) LS.Benennung)
-            End Get
-        End Property
-
-
-        '''' <summary>
-        '''' Eine Liste aller Faehigkeiten
-        '''' als Vorlage für die Leistungsstufen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleFaehigkeiten() As FaehigkeitCollection = New FaehigkeitCollection
-
-        '''' <summary>
-        '''' Eine Liste aller Faehigkeiten
-        '''' als Vorlage für die Leistungsstufen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public ReadOnly Property AlleValidenFaehigkeiten() As FaehigkeitCollection
-        '    Get
-        '        Return New FaehigkeitCollection(AlleFaehigkeiten.Where(Function(f) f.Sortierung > -1))
-        '    End Get
-        'End Property
-
-        '''' <summary>
-        '''' Eine Liste der aller Trainer
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleTrainer() As TrainerCollection = New TrainerCollection
-
-        '''' <summary>
-        '''' Eine Liste der aller Teilnehmer
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleTeilnehmer() As TeilnehmerCollection = New TeilnehmerCollection
-
-
-        '''' <summary>
-        '''' Eine Liste der aller Gruppen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleGruppen() As GruppeCollection = New GruppeCollection
-
-        '''' <summary>
-        '''' Eine Liste der aller Einteilungen
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property AlleEinteilungen() As EinteilungCollection = New EinteilungCollection
-
-#End Region
-
-#Region "Funktionen und Methoden"
-
-        ''' <summary>
-        ''' Teilnehmer wird aus dem Club entfernt und 
-        ''' in der Ewigen Teilnehmerliste archiviert
-        ''' </summary>
-        ''' <param name="Teilnehmer"></param>
-        Public Sub TeilnehmerArchivieren(Teilnehmer As Teilnehmer)
-            SelectedEinteilung.NichtZugewieseneTeilnehmerListe.Remove(Teilnehmer)
-            'EwigeTeilnehmerliste.Add(Teilnehmer, Now)
-            Throw New NotImplementedException
-        End Sub
-
-        ''' <summary>
-        ''' Ein Trainer wird aus der angegebenen Gruppe entfernt
-        ''' </summary>
-        ''' <param name="Gruppe"></param>
-        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe)
-            SelectedEinteilung.VerfuegbareTrainerListe.Add(Gruppe.Trainer)
-            Gruppe.Trainer = Nothing
-        End Sub
-
-        ''' <summary>
-        ''' Trainer wird aus dem Club entfernt und 
-        ''' in der Ewigen Trainerliste archiviert
-        ''' </summary>
-        ''' <param name="Trainer"></param>
-        Public Sub TrainerArchivieren(Trainer As Trainer)
-            SelectedEinteilung.VerfuegbareTrainerListe.Remove(Trainer)
-            'EwigeTrainerliste.Add(Trainer, Now)
-            Throw New NotImplementedException
-        End Sub
-
-        Public Overrides Function ToString() As String
-            Return ClubName
-        End Function
 
         Public Function LadeGroupies(Datei As String) As Generation4.Club Implements IClub.LadeGroupies
             Dim Dateiname = Path.GetFileNameWithoutExtension(Datei)
@@ -207,7 +30,6 @@ Namespace Entities.Generation3
                 Dim loadedSkiclub As Club
                 Try
                     loadedSkiclub = TryCast(serializer.Deserialize(fs), Club)
-                    'Return MappingGeneration3.MapSkiClub2Club(loadedSkiclub)
                     Return Map2AktuelleGeneration(loadedSkiclub, Dateiname)
                 Catch ex As InvalidDataException
                     Throw ex

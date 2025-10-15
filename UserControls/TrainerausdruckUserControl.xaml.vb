@@ -1,4 +1,4 @@
-﻿Imports Groupies.Entities
+﻿Imports Groupies.Entities.Generation4
 Imports System.IO
 Imports System.Windows.Markup
 Imports Groupies.Interfaces

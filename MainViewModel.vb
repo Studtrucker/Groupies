@@ -6,7 +6,7 @@ Imports System.Reflection
 Imports System.Windows.Markup
 Imports System.Windows.Shell
 Imports Groupies.Controller
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 Imports Groupies.Interfaces
 Imports Groupies.MainWindow
 Imports Groupies.Services

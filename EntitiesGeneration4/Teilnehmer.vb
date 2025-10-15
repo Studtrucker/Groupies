@@ -3,11 +3,11 @@ Imports System.ComponentModel
 Imports Groupies.Controller
 
 
-Namespace Entities
+Namespace Entities.Generation4
 
 
     ''' <summary>
-    ''' Teilnehmer mit Angabe seines Leistungsstandes mit Hilfe einer Leistungsstufe
+    ''' Teilnehmer mit Angabe seines Leistungsstufees mit Hilfe einer Leistungsstufe
     ''' </summary>
     <DefaultBindingProperty("Vorname")>
     <DefaultProperty("VorUndNachname")>
@@ -24,8 +24,8 @@ Namespace Entities
         Private _Telefonnummer As String
         Private _Geburtsdatum As Date
 
-        Private _LeistungsstandID As Guid
-        Private _Leistungsstand As Leistungsstufe
+        Private _LeistungsstufeID As Guid
+        Private _Leistungsstufe As Leistungsstufe
 #End Region
 
 #Region "Events"
@@ -40,12 +40,12 @@ Namespace Entities
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
             'If AppController.AktuellerClub IsNot Nothing OrElse AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
-            '    Leistungsstand = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
+            '    Leistungsstufe = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
             'End If
         End Sub
 
         ''' <summary>
-        ''' Erstellt einen neuen Teilnehmer mit Vorname und Nachname unter Angabe seines Leistungsstandes
+        ''' Erstellt einen neuen Teilnehmer mit Vorname und Nachname unter Angabe seines Leistungsstufees
         ''' </summary>
         ''' <param name="Vorname"></param>
         ''' <param name="Nachname"></param>
@@ -53,7 +53,7 @@ Namespace Entities
         Public Sub New(Vorname As String, Nachname As String, Leistungsstufe As Leistungsstufe)
             _Vorname = Vorname
             _Nachname = Nachname
-            _Leistungsstand = Leistungsstufe
+            _Leistungsstufe = Leistungsstufe
         End Sub
 
         ''' <summary>
@@ -84,7 +84,7 @@ Namespace Entities
             Vorname = Origin.Vorname
             Geburtsdatum = Origin.Geburtsdatum
             Telefonnummer = Origin.Telefonnummer
-            Leistungsstand = Origin.Leistungsstand
+            Leistungsstufe = Origin.Leistungsstufe
         End Sub
 
 #End Region
@@ -212,29 +212,29 @@ Namespace Entities
 
 
         ''' <summary>
-        ''' Der FK zum Leistungsstand
+        ''' Der FK zum Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        Public Property LeistungsstandID As Guid
+        Public Property LeistungsstufeID As Guid
             Get
-                Return _LeistungsstandID
+                Return _LeistungsstufeID
             End Get
             Set(value As Guid)
-                _LeistungsstandID = value
+                _LeistungsstufeID = value
             End Set
         End Property
 
 
         ''' <summary>
-        ''' Setzt und liest den Leistungsstand des Teilnehmers
+        ''' Setzt und liest den Leistungsstufe des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
-        Public Property Leistungsstand As Leistungsstufe
+        Public Property Leistungsstufe As Leistungsstufe
             Get
-                Return _Leistungsstand
+                Return _Leistungsstufe
             End Get
             Set(value As Leistungsstufe)
-                _Leistungsstand = value
+                _Leistungsstufe = value
             End Set
         End Property
 
@@ -252,7 +252,7 @@ Namespace Entities
 
 
         ''' <summary>
-        ''' Gibt den Vor-, Nachnamen und Leistungsstand für die Trainerinformation zurück
+        ''' Gibt den Vor-, Nachnamen und Leistungsstufe für die Trainerinformation zurück
         ''' </summary>
         ''' <returns></returns>
         Public ReadOnly Property AusgabeTrainerinfo As String
@@ -268,10 +268,10 @@ Namespace Entities
 #Region "Funktionen und Methoden"
 
         Private Function GetAusgabeTrainerInfo() As String
-            If Leistungsstand Is Nothing Then
-                Return $"{VorUndNachname}, {Telefonnummer}, Leistungsstand unbekannt"
+            If Leistungsstufe Is Nothing Then
+                Return $"{VorUndNachname}, {Telefonnummer}, Leistungsstufe unbekannt"
             Else
-                Return $"{VorUndNachname}, {Telefonnummer}, {Leistungsstand.Benennung}"
+                Return $"{VorUndNachname}, {Telefonnummer}, {Leistungsstufe.Benennung}"
             End If
         End Function
 

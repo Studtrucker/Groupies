@@ -5,22 +5,22 @@ Namespace Entities
     Public Class ParticipantRelationship
         Implements INotifyPropertyChanged
 
-        Private _teilnemer As Entities.Teilnehmer
-        Public Property Teilnehmer() As Entities.Teilnehmer
+        Private _teilnemer As Generation4.Teilnehmer
+        Public Property Teilnehmer() As Generation4.Teilnehmer
             Get
                 Return _teilnemer
             End Get
-            Set(ByVal value As Entities.Teilnehmer)
+            Set(ByVal value As Generation4.Teilnehmer)
                 _teilnemer = value
             End Set
         End Property
 
-        Private _partner As Entities.Teilnehmer
-        Public Property Partner() As Entities.Teilnehmer
+        Private _partner As Generation4.Teilnehmer
+        Public Property Partner() As Generation4.Teilnehmer
             Get
                 Return _partner
             End Get
-            Set(ByVal value As Entities.Teilnehmer)
+            Set(ByVal value As Generation4.Teilnehmer)
                 _partner = value
             End Set
         End Property
@@ -49,9 +49,10 @@ Namespace Entities
 
         Private Sub Changed(propertyName As String)
             Dim handler = PropertyChangedEvent
-            If handler IsNot Nothing Then
-                handler(Me, New PropertyChangedEventArgs(propertyName))
+            If handler Is Nothing Then
+                Return
             End If
+            handler(Me, New PropertyChangedEventArgs(propertyName))
         End Sub
 
         Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged

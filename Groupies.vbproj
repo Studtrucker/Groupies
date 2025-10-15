@@ -131,6 +131,28 @@
     <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
+    <Compile Include="EntitiesGeneration2\Faehigkeit.vb" />
+    <Compile Include="EntitiesGeneration2\FaehigkeitCollection.vb" />
+    <Compile Include="EntitiesGeneration2\Gruppe.vb" />
+    <Compile Include="EntitiesGeneration2\GruppeCollection.vb" />
+    <Compile Include="EntitiesGeneration2\Leistungsstufe.vb" />
+    <Compile Include="EntitiesGeneration2\LeistungsstufeCollection.vb" />
+    <Compile Include="EntitiesGeneration2\Teilnehmer.vb" />
+    <Compile Include="EntitiesGeneration2\TeilnehmerCollection.vb" />
+    <Compile Include="EntitiesGeneration2\Trainer.vb" />
+    <Compile Include="EntitiesGeneration2\TrainerCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Einteilung.vb" />
+    <Compile Include="EntitiesGeneration3\Faehigkeit.vb" />
+    <Compile Include="EntitiesGeneration3\FaehigkeitCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Gruppe.vb" />
+    <Compile Include="EntitiesGeneration3\GruppeCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Leistungsstufe.vb" />
+    <Compile Include="EntitiesGeneration3\LeistungsstufeCollection.vb" />
+    <Compile Include="EntitiesGeneration3\EinteilungCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Teilnehmer.vb" />
+    <Compile Include="EntitiesGeneration3\TeilnehmerCollection.vb" />
+    <Compile Include="EntitiesGeneration3\Trainer.vb" />
+    <Compile Include="EntitiesGeneration3\TrainerCollection.vb" />
     <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
@@ -372,7 +394,7 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntitiesGeneration2\ClubGeneration2.vb" />
+    <Compile Include="EntitiesGeneration2\Club.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>

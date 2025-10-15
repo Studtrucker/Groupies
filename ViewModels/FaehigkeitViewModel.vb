@@ -1,5 +1,5 @@
 ﻿Imports Groupies.Controller
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 Public Class FaehigkeitViewModel
     Inherits MasterDetailViewModel(Of Faehigkeit)

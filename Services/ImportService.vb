@@ -158,7 +158,7 @@ Namespace Services
             Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {
                                                                                                               .Geburtsdatum = Tn.Geburtsdatum,
                                                                                                               .Telefonnummer = Tn.Telefonnummer,
-                                                                                                              .Leistungsstand = Converter.ConvertBack(Tn.Leistungsstand, GetType(Entities.Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)})
+                                                                                                              .Leistungsstufe = Converter.ConvertBack(Tn.Leistungsstand, GetType(Entities.Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)})
 
 
             ' Alle bekannten Teilnehmer 
@@ -264,7 +264,7 @@ Namespace Services
                 Dim Teilnehmer As New Teilnehmer With {
                 .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
                 .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .Leistungsstand = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
+                .Leistungsstufe = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
 
                 _skischule.Participantlist.Add(Teilnehmer)
                 '.MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}

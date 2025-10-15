@@ -1,9 +1,10 @@
 ﻿Imports Groupies
+Imports Groupies.Entities.Generation4
 
 Namespace DataImport
 
     Public Class Teilnehmer
-        Implements IEquatable(Of Entities.Teilnehmer)
+        Implements IEquatable(Of Teilnehmer)
 
         Public Property TeilnehmerID As Guid
         Public Property Vorname() As String
@@ -14,13 +15,13 @@ Namespace DataImport
 
         Public Property IstBekannt As Boolean = False
 
-        Public Overloads Function Equals(other As Entities.Teilnehmer) As Boolean Implements IEquatable(Of Entities.Teilnehmer).Equals
+        Public Overloads Function Equals(other As Teilnehmer) As Boolean Implements IEquatable(Of Teilnehmer).Equals
             Return Vorname = other.Vorname AndAlso Nachname = other.Nachname
         End Function
     End Class
 
     Public Class Trainer
-        Implements IEquatable(Of Entities.Trainer)
+        Implements IEquatable(Of Trainer)
         Public Property TrainerID() As Guid
         Public Property Vorname() As String
         Public Property Nachname() As String
@@ -29,7 +30,7 @@ Namespace DataImport
         Public Property eMail() As String
         Public Property IstBekannt As Boolean = False
 
-        Public Overloads Function Equals(other As Entities.Trainer) As Boolean Implements IEquatable(Of Entities.Trainer).Equals
+        Public Overloads Function Equals(other As Trainer) As Boolean Implements IEquatable(Of Trainer).Equals
             Return Vorname = other.Vorname AndAlso Nachname = other.Nachname
         End Function
 

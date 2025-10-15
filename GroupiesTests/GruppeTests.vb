@@ -22,7 +22,7 @@ Public Class GruppeTests
         Dim g1 = New Gruppe("Enzian", 1)
         Dim Koenner = New Leistungsstufe()
         Dim Manu = New Teilnehmer("Manuela", "Ramm", Koenner)
-        Dim Willi = New Teilnehmer("Willi", "Sensmeier") With {.Leistungsstand = Koenner}
+        Dim Willi = New Teilnehmer("Willi", "Sensmeier") With {.Leistungsstufe = Koenner}
         g1.Mitgliederliste.Add(Manu)
         g1.Mitgliederliste.Add(Willi)
         Assert.AreEqual(2, g1.Mitgliederliste.Count)

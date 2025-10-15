@@ -63,7 +63,7 @@ Public Class TeilnehmerTests
 
         Dim Willi As New Teilnehmer("Willi", "Steiner", New Leistungsstufe("Experte") With {.Sortierung = 2})
         Dim Lothar As New Teilnehmer("Lothar", "Hötger", New Leistungsstufe("Experte") With {.Sortierung = 2})
-        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = New Leistungsstufe("Anfänger")}
+        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstufe = New Leistungsstufe("Anfänger")}
 
         Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane, Elke, Lothar}
         'tnL.Add(Elke)
@@ -92,12 +92,12 @@ Public Class TeilnehmerTests
         Dim Anfaenger = New Leistungsstufe("Anfänger")
         Dim Experte = New Leistungsstufe("Experte")
 
-        Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstand = Experte}
-        Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
-        Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
-        Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstand = Experte}
-        Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstand = Experte}
-        Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstand = Anfaenger}
+        Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstufe = Experte}
+        Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstufe = Experte}
+        Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstufe = Experte}
+        Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstufe = Anfaenger}
         Dim tnl1 = New TeilnehmerCollection From {FrankAnf, MarwinAnf, AndreasHEx, StefanAnf, AndreasZEx, AndreasStEx}
 
         CollectionAssert.AreEqual(New List(Of Teilnehmer) From {
@@ -123,7 +123,7 @@ Public Class TeilnehmerTests
         Dim Manu As New Teilnehmer("Manuela", "Ramm", Koenner)
         Dim Willi As New Teilnehmer("Willi", "Sensmeier", Experte)
         Dim Lothar As New Teilnehmer("Lothar", "Hötger", Experte)
-        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstand = Anfaenger}
+        Dim Liane As New Teilnehmer("Liane", "Hötger") With {.Leistungsstufe = Anfaenger}
 
         Dim tnL = New TeilnehmerCollection From {Manu, Willi, Liane, Elke, Lothar}
         'tnL.Add(Elke)
@@ -152,12 +152,12 @@ Public Class TeilnehmerTests
 
 
 
-        Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstand = Experte}
-        Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
-        Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstand = Anfaenger}
-        Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstand = Experte}
-        Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstand = Experte}
-        Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstand = Anfaenger}
+        Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstufe = Experte}
+        Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstufe = Experte}
+        Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstufe = Experte}
+        Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstufe = Anfaenger}
         Dim tnl1 = New TeilnehmerCollection From {FrankAnf, MarwinAnf, AndreasHEx, StefanAnf, AndreasZEx, AndreasStEx}
 
         CollectionAssert.AreEqual(New List(Of Teilnehmer) From {

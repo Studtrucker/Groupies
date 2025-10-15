@@ -115,7 +115,7 @@
                     <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="Auto"/>
                     <DataGridTextColumn Header="Alter" Binding="{Binding Alter}" Width="Auto"/>
                     <DataGridTextColumn Header="Telefon" Binding="{Binding Telefonnummer}" Width="Auto" />
-                    <DataGridTextColumn Header="Stufe" Binding="{Binding Leistungsstand.Benennung}" Width="Auto"/>
+                    <DataGridTextColumn Header="Stufe" Binding="{Binding Leistungsstufe.Benennung}" Width="Auto"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

@@ -44,7 +44,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Teilnehmer.Vorname}" Width="Auto"/>
                 <DataGridTextColumn Header="Nachname" Binding="{Binding Teilnehmer.Nachname}" Width="Auto"/>
-                <DataGridTextColumn Header="Leistungsstand Teilnehmer" Binding="{Binding Teilnehmer.Leistungsstand.Benennung}" Width="Auto"/>
+                <DataGridTextColumn Header="Leistungsstufe Teilnehmer" Binding="{Binding Teilnehmer.Leistungsstufe.Benennung}" Width="Auto"/>
                 <DataGridTextColumn Header="Sort Gruppe" Binding="{Binding Gruppe.Sortierung}" Width="Auto"/>
                 <DataGridTextColumn Header="Interner Name" Binding="{Binding Gruppe.Benennung}" Width="Auto"/>
                 <DataGridTextColumn Header="Ausgabename" Binding="{Binding Gruppe.AusgabeTeilnehmerinfo}" Width="Auto"/>

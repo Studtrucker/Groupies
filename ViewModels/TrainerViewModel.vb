@@ -1,15 +1,15 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports Groupies.Controller
-Imports Groupies.DataImport
-Imports Groupies.Entities
+'Imports Groupies.DataImport
+Imports Groupies.Entities.Generation4
 
 Public Class TrainerViewModel
-    Inherits MasterDetailViewModel(Of Entities.Trainer)
+    Inherits MasterDetailViewModel(Of Trainer)
     Implements IViewModelSpecial
 
 #Region "Felder"
-    Private _Trainer As Entities.Trainer
+    Private _Trainer As Trainer
     Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
 #End Region
 
@@ -38,8 +38,8 @@ Public Class TrainerViewModel
         DragOverCommand = New RelayCommand(Of DragEventArgs)(AddressOf OnDragOver)
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
 
-        NeuCommand = New RelayCommand(Of Entities.Trainer)(AddressOf OnNeu, Function() CanNeu())
-        BearbeitenCommand = New RelayCommand(Of Entities.Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
+        NeuCommand = New RelayCommand(Of Trainer)(AddressOf OnNeu, Function() CanNeu())
+        BearbeitenCommand = New RelayCommand(Of Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
     End Sub
 
 
@@ -52,7 +52,7 @@ Public Class TrainerViewModel
             Return _Trainer
         End Get
         Set(value As IModel)
-            _Trainer = DirectCast(value, Entities.Trainer)
+            _Trainer = DirectCast(value, Trainer)
         End Set
     End Property
 
@@ -235,7 +235,7 @@ Public Class TrainerViewModel
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
 
-        mvw.AktuellesViewModel.Model = New Entities.Trainer
+        mvw.AktuellesViewModel.Model = New Trainer
         dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
@@ -243,7 +243,7 @@ Public Class TrainerViewModel
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
             Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
         End If
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
@@ -260,7 +260,7 @@ Public Class TrainerViewModel
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
 
-        mvw.AktuellesViewModel.Model = New Entities.Trainer(SelectedItem)
+        mvw.AktuellesViewModel.Model = New Trainer(SelectedItem)
         dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
@@ -269,7 +269,7 @@ Public Class TrainerViewModel
             Dim index = Services.DateiService.AktuellerClub.Trainerliste.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
             Services.DateiService.AktuellerClub.Trainerliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Entities.Trainer).Spitzname} wurde gespeichert")
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
         End If
 
     End Sub

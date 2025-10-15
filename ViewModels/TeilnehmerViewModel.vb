@@ -1,7 +1,7 @@
 ﻿Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports Groupies.Controller
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 Public Class TeilnehmerViewModel
     Inherits MasterDetailViewModel(Of Teilnehmer)
@@ -115,14 +115,14 @@ Public Class TeilnehmerViewModel
         End Get
     End Property
 
-    Public Property Leistungsstand As Leistungsstufe
+    Public Property Leistungsstufe As Leistungsstufe
         Get
-            Return _Teilnehmer.Leistungsstand
+            Return _Teilnehmer.Leistungsstufe
         End Get
         Set(value As Leistungsstufe)
-            _Teilnehmer.Leistungsstand = value
-            OnPropertyChanged(NameOf(Leistungsstand))
-            ValidateLeistungsstand()
+            _Teilnehmer.Leistungsstufe = value
+            OnPropertyChanged(NameOf(Leistungsstufe))
+            ValidateLeistungsstufe()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
     End Property
@@ -167,7 +167,7 @@ Public Class TeilnehmerViewModel
         If _Teilnehmer IsNot Nothing Then
             ValidateVorname()
             ValidateNachname()
-            ValidateLeistungsstand()
+            ValidateLeistungsstufe()
             ValidateTeilnehmerID()
         End If
     End Sub
@@ -258,10 +258,10 @@ Public Class TeilnehmerViewModel
         End If
     End Sub
 
-    Private Sub ValidateLeistungsstand()
-        ClearErrors(NameOf(_Teilnehmer.Leistungsstand))
-        If _Teilnehmer.Leistungsstand Is Nothing OrElse _Teilnehmer.Leistungsstand.Sortierung = -1 Then
-            AddError(NameOf(_Teilnehmer.Leistungsstand), "Leistungsstand muss ausgewählt werden.")
+    Private Sub ValidateLeistungsstufe()
+        ClearErrors(NameOf(_Teilnehmer.Leistungsstufe))
+        If _Teilnehmer.Leistungsstufe Is Nothing OrElse _Teilnehmer.Leistungsstufe.Sortierung = -1 Then
+            AddError(NameOf(_Teilnehmer.Leistungsstufe), "Leistungsstufe muss ausgewählt werden.")
         End If
     End Sub
     Private Sub ValidateTeilnehmerID()

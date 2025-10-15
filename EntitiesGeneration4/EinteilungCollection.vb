@@ -2,7 +2,7 @@
 Imports System.Collections.ObjectModel
 Imports System.Linq
 
-Namespace Entities
+Namespace Entities.Generation4
 
     Public Class EinteilungCollection
         Inherits ObservableCollection(Of Einteilung)

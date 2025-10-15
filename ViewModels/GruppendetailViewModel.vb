@@ -1,8 +1,8 @@
 ﻿Imports System.Collections.ObjectModel
-Imports Groupies.DataImport
-Imports Groupies.Entities
+'imports Groupies.DataImport
+Imports Groupies.Entities.Generation4
 Imports Groupies.Services
-Imports Trainer = Groupies.Entities.Trainer
+'Imports Trainer = Groupies.Entities.Trainer
 
 Namespace ViewModels
 

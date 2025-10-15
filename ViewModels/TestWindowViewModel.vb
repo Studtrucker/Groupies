@@ -1,10 +1,10 @@
 ﻿Imports System.Collections.ObjectModel
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 Public Class TestWindowViewModel
-    Public Property LeistungsstufenListe As ObservableCollection(Of Entities.Leistungsstufe)
-    Public Property AlleGruppen As Entities.GruppeCollection
-    Public Property SelectedGruppe As Entities.GruppeCollection
+    Public Property LeistungsstufenListe As ObservableCollection(Of Leistungsstufe)
+    Public Property AlleGruppen As GruppeCollection
+    Public Property SelectedGruppe As GruppeCollection
 
     Public Sub New()
         LeistungsstufenListe = Groupies.Services.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren

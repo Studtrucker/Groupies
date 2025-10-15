@@ -1,5 +1,5 @@
 ﻿Imports System.Text
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 Imports Groupies.Controller
 
 Namespace Services

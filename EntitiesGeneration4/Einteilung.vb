@@ -2,7 +2,7 @@
 Imports System.Xml.Serialization
 Imports Groupies.DataImport
 
-Namespace Entities
+Namespace Entities.Generation4
 
 
     Public Class Einteilung

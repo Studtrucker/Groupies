@@ -19,7 +19,7 @@ Public Module MappingGeneration1
             .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
             .Gruppenliste = GetAlleGruppen(Skiclub)}
 
-        NeuerClub.Einteilungsliste.Add(New Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
+        NeuerClub.Einteilungsliste.Add(New Generation4.Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
 
         ' Erste Einteilung füllen
         Skiclub.Grouplist.ToList.ForEach(Sub(Gl) NeuerClub.Einteilungsliste(0).Gruppenliste.Add(MapGroup2Gruppe(Gl)))
@@ -35,8 +35,8 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleGruppen(Skiclub As Generation1.Skiclub) As GruppeCollection
-        Dim Gruppen = New GruppeCollection
+    Private Function GetAlleGruppen(Skiclub As Generation1.Skiclub) As Generation4.GruppeCollection
+        Dim Gruppen = New Generation4.GruppeCollection
         ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(g) Gruppen.Add(MapGroup2Gruppe(g)))
 
@@ -49,14 +49,14 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleFaehigkeiten(Skiclub As Generation1.Skiclub) As FaehigkeitCollection
+    Private Function GetAlleFaehigkeiten(Skiclub As Generation1.Skiclub) As Generation4.FaehigkeitCollection
 
-        Dim Faehigkeiten = New FaehigkeitCollection
+        Dim Faehigkeiten = New Generation4.FaehigkeitCollection
         ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(M) M.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f)))))
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) T.ParticipantLevel.LevelSkills.ToList.ForEach(Sub(f) Faehigkeiten.Add(MapSkill2Faehigkeit(f))))
         ' Entferne doppelte Fähigkeiten
-        Faehigkeiten = New FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
+        Faehigkeiten = New Generation4.FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Faehigkeiten
 
@@ -67,9 +67,9 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleTeilnehmer(Skiclub As Generation1.Skiclub) As TeilnehmerCollection
+    Private Function GetAlleTeilnehmer(Skiclub As Generation1.Skiclub) As Generation4.TeilnehmerCollection
 
-        Dim Teilnehmer = New TeilnehmerCollection
+        Dim Teilnehmer = New Generation4.TeilnehmerCollection
 
         Skiclub.Grouplist.ToList.ForEach(Sub(g) g.GroupMembers.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T))))
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T)))
@@ -83,9 +83,9 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' 
-    Private Function GetGruppenloseTeilnehmer(Skiclub As Generation1.Skiclub) As TeilnehmerCollection
+    Private Function GetGruppenloseTeilnehmer(Skiclub As Generation1.Skiclub) As Generation4.TeilnehmerCollection
 
-        Dim Teilnehmer = New TeilnehmerCollection
+        Dim Teilnehmer = New Generation4.TeilnehmerCollection
 
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Teilnehmer.Add(MapParticipant2Teilnehmer(T)))
 
@@ -93,7 +93,7 @@ Public Module MappingGeneration1
         Teilnehmer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Teilnehmer.Remove(O))
 
         ' Entferne doppelte Trainer
-        Teilnehmer = New TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(T) T.First).ToList)
+        Teilnehmer = New Generation4.TeilnehmerCollection(Teilnehmer.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(T) T.First).ToList)
 
         Return Teilnehmer
 
@@ -105,9 +105,9 @@ Public Module MappingGeneration1
     ''' Die gruppenlose Trainer-Liste wird extrahiert: alle Trainer ausser die eingeteilten Trainer.
     ''' </summary>
     ''' <param name="Skiclub"></param>
-    Private Function GetAlleTrainer(Skiclub As Generation1.Skiclub) As TrainerCollection
+    Private Function GetAlleTrainer(Skiclub As Generation1.Skiclub) As Generation4.TrainerCollection
 
-        Dim Trainer = New TrainerCollection
+        Dim Trainer = New Generation4.TrainerCollection
 
         Skiclub.Grouplist.ToList.ForEach(Sub(g) Trainer.Add(MapInstructor2Trainer(g.GroupLeader)))
 
@@ -115,7 +115,7 @@ Public Module MappingGeneration1
         Trainer.Where(Function(T) T Is Nothing).ToList.ForEach(Function(O) Trainer.Remove(O))
 
         ' Entferne doppelte Trainer
-        Trainer = New TrainerCollection(Trainer.GroupBy(Of Guid)(Function(LS) LS.TrainerID).Select(Function(T) T.First).ToList)
+        Trainer = New Generation4.TrainerCollection(Trainer.GroupBy(Of Guid)(Function(LS) LS.TrainerID).Select(Function(T) T.First).ToList)
 
         Return Trainer
 
@@ -126,7 +126,7 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetGruppenloseTrainer(Skiclub As Generation1.Skiclub) As TrainerCollection
+    Private Function GetGruppenloseTrainer(Skiclub As Generation1.Skiclub) As Generation4.TrainerCollection
 
         Dim AlleTrainer = New Generation1.InstructorCollection
         Dim EingeteilteTrainer = New Generation1.InstructorCollection
@@ -136,7 +136,7 @@ Public Module MappingGeneration1
 
         Dim GefilterteTrainer = AlleTrainer.Where(Function(T) Not EingeteilteTrainer.Any(Function(ET) ET.InstructorID = T.InstructorID))
 
-        Dim NeueTrainer = New TrainerCollection
+        Dim NeueTrainer = New Generation4.TrainerCollection
         GefilterteTrainer.ToList.ForEach(Sub(T) NeueTrainer.Add(MapInstructor2Trainer(T)))
 
         Return NeueTrainer
@@ -148,25 +148,25 @@ Public Module MappingGeneration1
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As LeistungsstufeCollection
+    Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Generation1.Skiclub) As Generation4.LeistungsstufeCollection
         ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
+        Dim Leistungsstufen = New Generation4.LeistungsstufeCollection
 
         ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
         Skiclub.Grouplist.ToList.ForEach(Sub(Gl) Gl.GroupMembers.ToList.ForEach(Sub(M) Leistungsstufen.Add(MapLevel2Leistungsstufe(M.ParticipantLevel))))
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Leistungsstufen.Add(MapLevel2Leistungsstufe(T.ParticipantLevel)))
 
         ' Entferne doppelte Leistungsstufen über ID
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New Generation4.LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 
     End Function
 
-    Private Function MapGroup2Gruppe(Group As Generation1.Group) As Gruppe
+    Private Function MapGroup2Gruppe(Group As Generation1.Group) As Generation4.Gruppe
 
         ' Die Gruppe mappen
-        Dim Gruppe = New Gruppe(Group.GroupPrintNaming) With {
+        Dim Gruppe = New Generation4.Gruppe(Group.GroupPrintNaming) With {
             .Benennung = Group.GroupNaming,
             .Sortierung = Group.GroupSort,
             .Ident = Group.GroupID,
@@ -183,27 +183,27 @@ Public Module MappingGeneration1
 
     End Function
 
-    Private Function MapParticipant2Teilnehmer(Participant As Generation1.Participant) As Teilnehmer
+    Private Function MapParticipant2Teilnehmer(Participant As Generation1.Participant) As Generation4.Teilnehmer
 
         If Participant Is Nothing Then
             Return Nothing
         End If
 
-        Dim Teilnehmer = New Teilnehmer(Participant.ParticipantFirstName, Participant.ParticipantLastName) With {
-                                                                             .Leistungsstand = MapLevel2Leistungsstufe(Participant.ParticipantLevel),
+        Dim Teilnehmer = New Generation4.Teilnehmer(Participant.ParticipantFirstName, Participant.ParticipantLastName) With {
+                                                                             .Leistungsstufe = MapLevel2Leistungsstufe(Participant.ParticipantLevel),
                                                                              .Ident = Participant.ParticipantID}
 
         Return Teilnehmer
 
     End Function
 
-    Private Function MapInstructor2Trainer(Instructor As Generation1.Instructor) As Trainer
+    Private Function MapInstructor2Trainer(Instructor As Generation1.Instructor) As Generation4.Trainer
 
         If Instructor Is Nothing Then
             Return Nothing
         End If
 
-        Dim Trainer = New Trainer(Instructor.InstructorFirstName) With {
+        Dim Trainer = New Generation4.Trainer(Instructor.InstructorFirstName) With {
             .EMail = Instructor.eMail,
             .Foto = Instructor.InstructorPicture,
             .Nachname = Instructor.InstructorLastName,
@@ -214,21 +214,21 @@ Public Module MappingGeneration1
 
     End Function
 
-    Private Function MapLevel2Leistungsstufe(Level As Generation1.Level) As Leistungsstufe
+    Private Function MapLevel2Leistungsstufe(Level As Generation1.Level) As Generation4.Leistungsstufe
 
         If Level Is Nothing Then
             Return Nothing
         End If
 
         ' Eine Collection instanziieren
-        Dim FaehigkeitCollection = New FaehigkeitCollection
+        Dim FaehigkeitCollection = New Generation4.FaehigkeitCollection
         ' Eine Liste aus neuen Klassen aus den veralterten Klassen erstellen
         Dim Faehigkeitliste = (From Skill In Level.LevelSkills
                                Select MapSkill2Faehigkeit(Skill)).ToList
         ' Jedes Mitglied der neuen Klasse aus der Liste der Collection hinzufügen
         Faehigkeitliste.ForEach(Sub(f) FaehigkeitCollection.Add(f))
 
-        Dim Leistungsstufe = New Leistungsstufe(Level.LevelNaming) With {
+        Dim Leistungsstufe = New Generation4.Leistungsstufe(Level.LevelNaming) With {
             .Beschreibung = Level.LevelDescription,
             .Ident = Level.LevelID,
             .Sortierung = Level.SortNumber,
@@ -238,13 +238,13 @@ Public Module MappingGeneration1
 
     End Function
 
-    Private Function MapSkill2Faehigkeit(Skill As Generation1.Skill) As Faehigkeit
+    Private Function MapSkill2Faehigkeit(Skill As Generation1.Skill) As Generation4.Faehigkeit
 
         If Skill Is Nothing Then
             Return Nothing
         End If
 
-        Dim Faehigkeit = New Faehigkeit(Skill.SkillNaming) With {
+        Dim Faehigkeit = New Generation4.Faehigkeit(Skill.SkillNaming) With {
                                 .Beschreibung = Skill.Description,
                                 .FaehigkeitID = Skill.SkillID,
                                 .Sortierung = Skill.SortNumber}

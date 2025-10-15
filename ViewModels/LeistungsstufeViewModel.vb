@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Groupies.Controller
 Imports Groupies.DataImport
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 Imports Groupies.Services
 
 Public Class LeistungsstufeViewModel
@@ -44,7 +44,7 @@ Public Class LeistungsstufeViewModel
             Return _Leistungsstufe
         End Get
         Set(value As IModel)
-            _Leistungsstufe = DirectCast(value, Entities.Leistungsstufe)
+            _Leistungsstufe = DirectCast(value, Leistungsstufe)
         End Set
     End Property
 

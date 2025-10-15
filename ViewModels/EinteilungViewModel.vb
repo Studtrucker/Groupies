@@ -1,6 +1,6 @@
 ﻿Imports Groupies.Controller
 Imports Groupies.DataImport
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 Public Class EinteilungViewModel
     Inherits MasterDetailViewModel(Of Einteilung)

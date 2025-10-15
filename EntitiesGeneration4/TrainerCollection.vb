@@ -3,7 +3,7 @@ Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Data.SqlClient
 
-Namespace Entities
+Namespace Entities.Generation4
 
     Public Class TrainerCollection
         Inherits ObservableCollection(Of Trainer)

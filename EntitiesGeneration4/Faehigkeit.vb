@@ -12,6 +12,9 @@ Namespace Entities
 
 #Region "Felder"
         Private _FaehigkeitID = Guid.NewGuid
+        Private _Benennung As String
+        Private _Beschreibung As String
+        Private _Sortierung As Integer
 #End Region
 
 #Region "Konstruktor"
@@ -75,6 +78,13 @@ Namespace Entities
 
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist eine Pflichtangabe")>
         Public Property Benennung As String
+            Get
+                Return _Benennung
+            End Get
+            Set(value As String)
+                _Benennung = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Beschreibung der Fähigkeit
@@ -82,13 +92,31 @@ Namespace Entities
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Beschreibung ist ein Pflichtfeld")>
         Public Property Beschreibung As String
+            Get
+                Return _Beschreibung
+            End Get
+            Set(value As String)
+                _Beschreibung = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Sortierungszahl für die Ausgabeinformationen 
         ''' </summary>
         ''' <returns></returns>
         Public Property Sortierung As Integer
+            Get
+                Return _Sortierung
+            End Get
+            Set(value As Integer)
+                _Sortierung = value
+            End Set
+        End Property
 
+        ''' <summary>
+        ''' Gibt die Benennung und Beschreibung für die Trainerinformation zurück
+        ''' </summary>
+        ''' <returns></returns>
         Public ReadOnly Property AusgabeAnTrainerInfo As String
             Get
                 If Beschreibung Is Nothing Then
@@ -102,18 +130,6 @@ Namespace Entities
 #End Region
 
 #Region "Funktionen und Methoden"
-
-        ''' <summary>
-        ''' Gibt die Benennung und Beschreibung für die Trainerinformation zurück
-        ''' </summary>
-        ''' <returns></returns>
-        Private Function LeseAusgabeAnTrainerinfo() As String
-            If Beschreibung Is Nothing Then
-                Return $"{Sortierung}. {Benennung}"
-            Else
-                Return $"{Sortierung}. {Benennung}{Environment.NewLine}{Beschreibung}."
-            End If
-        End Function
 
         Public Overrides Function ToString() As String
             Return Benennung

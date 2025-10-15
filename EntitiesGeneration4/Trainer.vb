@@ -16,6 +16,7 @@ Namespace Entities
         Private _TrainerID = Guid.NewGuid()
         Private _Spitzname As String
         Private _Vorname As String
+        Private _Nachname As String
 
 #End Region
 
@@ -115,6 +116,13 @@ Namespace Entities
         ''' </summary>
         ''' <returns></returns>
         Public Property Nachname As String
+            Get
+                Return _Nachname
+            End Get
+            Set(value As String)
+                _Nachname = value
+            End Set
+        End Property
 
         '
         ''' <summary>

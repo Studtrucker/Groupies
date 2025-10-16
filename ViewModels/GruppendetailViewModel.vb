@@ -36,8 +36,16 @@ Namespace ViewModels
 
 #Region "Command-Methoden"
 
-        Private Sub OnUserControlLoaded(obj As Object)
+        Private Sub OnDateiGeaendert(obj As Object)
+            ' Logik zum Umgang mit der Änderung der Datei
+            ' Zum Beispiel: Aktualisieren der Leistungsstufenliste
+            If DateiService.AktuellerClub IsNot Nothing Then
+                LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+            End If
+            OnPropertyChanged(NameOf(LeistungsstufenListe))
+        End Sub
 
+        Private Sub OnUserControlLoaded(obj As Object)
             If DateiService.AktuellerClub IsNot Nothing Then
                 LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
             End If
@@ -100,6 +108,7 @@ Namespace ViewModels
                 OnPropertyChanged(NameOf(LeistungsstufeID))
                 OnPropertyChanged(NameOf(Trainer))
                 OnPropertyChanged(NameOf(Mitgliederliste))
+                OnPropertyChanged(NameOf(LeistungsstufenListe))
             End Set
         End Property
 
@@ -227,9 +236,6 @@ Namespace ViewModels
 
         Public Property LeistungsstufenListe As LeistungsstufeCollection
             Get
-                'If _leistungsstufenListe Is Nothing Then
-                '    _leistungsstufenListe = New LeistungsstufeCollection()
-                'End If
                 Return _leistungsstufenListe
             End Get
             Set(value As LeistungsstufeCollection)

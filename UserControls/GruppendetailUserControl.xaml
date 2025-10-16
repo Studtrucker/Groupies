@@ -16,7 +16,7 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
     </UserControl.Resources>
-    
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding UserControlLoadedCommand}"/>
@@ -119,7 +119,7 @@
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="StufeSort"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
+                        <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
                         <DataGridComboBoxColumn Header="Stufe" Width="*"
                                                 SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                                                 SelectedValuePath="Ident" 

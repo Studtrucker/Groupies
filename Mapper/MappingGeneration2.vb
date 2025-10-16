@@ -25,34 +25,20 @@ Public Module MappingGeneration2
             .Trainerliste = EindeutigeTrainer,
             .Teilnehmerliste = EindeutigeTeilnehmer,
             .Leistungsstufenliste = EindeutigeLeistungsstufen,
-            .Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub),
+            .Faehigkeitenliste = EindeutigeFaehigkeiten,
             .Gruppenliste = EindeutigeGruppen}
 
         ' Einteilung wird neu erstellt
-        NeuerClub.Einteilungsliste.Add(New Generation4.Einteilung With {.Benennung = "Tag 1", .Sortierung = 1})
-
-        ' Erste Einteilung füllen
-        NeuerClub.Einteilungsliste(0).VerfuegbareTrainerListe = New Generation4.TrainerCollection(Skiclub.GruppenloseTrainer.Select(Of Generation4.Trainer)(Function(T)
-                                                                                                                                                                Return New Generation4.Trainer With {
-                                                                                                                                                                .TrainerID = T.TrainerID,
-                                                                                                                                                                .Vorname = T.Vorname,
-                                                                                                                                                                .Nachname = T.Nachname,
-                                                                                                                                                                .Spitzname = T.Spitzname,
-                                                                                                                                                                .Foto = T.Foto}
-                                                                                                                                                            End Function).ToList())
-
-        NeuerClub.Einteilungsliste(0).VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTrainer Select T.TrainerID).ToList())
-
-        NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerListe = New Generation4.TeilnehmerCollection(Skiclub.GruppenloseTeilnehmer.Select(Of Generation4.Teilnehmer)(Function(T)
-                                                                                                                                                                                 Return New Generation4.Teilnehmer With {
-                                                                                                                                                                                 .Ident = T.TeilnehmerID,
-                                                                                                                                                                                 .Vorname = T.Vorname,
-                                                                                                                                                                                 .Nachname = T.Nachname}
-                                                                                                                                                                             End Function).ToList())
-
-        'NeuerClub.Einteilungsliste(0).NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)((From T In Skiclub.GruppenloseTeilnehmer Select T.Ident).ToList())
-        'NeuerClub.Einteilungsliste(0).GruppenIDListe = New ObservableCollection(Of Guid)((From g In Skiclub.Gruppenliste Select g.Ident).ToList())
-        'NeuerClub.Einteilungsliste(0).Gruppenliste = Skiclub.Gruppenliste
+        NeuerClub.Einteilungsliste.Add(New Generation4.Einteilung With {
+                                       .Benennung = "Tag 1",
+                                       .Sortierung = 1,
+                                       .Ident = Guid.NewGuid,
+                                       .GruppenIDListe = New ObservableCollection(Of Guid)(From G In EindeutigeGruppen Select G.Ident),
+                                       .Gruppenliste = EindeutigeGruppen,
+                                       .VerfuegbareTrainerListe = GetVerfuegbareTrainer(Skiclub),
+                                       .VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)(From T In GetVerfuegbareTrainer(Skiclub) Select T.TrainerID),
+                                       .NichtZugewieseneTeilnehmerListe = NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen),
+                                       .NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)(From T In NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen) Select T.Ident)})
 
         Return NeuerClub
 
@@ -122,25 +108,47 @@ Public Module MappingGeneration2
         Skiclub.EingeteilteTrainer.ToList.ForEach(Sub(T) TrainerG2.Add(T))
         Skiclub.AlleTrainer.ToList.ForEach(Sub(T) TrainerG2.Add(T))
 
+        Return GetGeneration4TrainerListe(TrainerG2)
+
+    End Function
+
+    ''' <summary>
+    ''' Trainer werden aus dem Skiclub extrahiert.
+    ''' Dazu werden die gruppenlosen Trainer gesammelt.
+    ''' Doppelte Trainer werden nach einer Gruppierung über den Namen entfernt.
+    ''' Die Trainer werden dann in Generation 4 Trainer umgewandelt.   
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetVerfuegbareTrainer(Skiclub As Generation2.Club) As Generation4.TrainerCollection
+        Dim TrainerG2 = New Generation2.TrainerCollection
+        Skiclub.GruppenloseTrainer.ToList.ForEach(Sub(T) TrainerG2.Add(T))
+
+        Return GetGeneration4TrainerListe(TrainerG2)
+
+    End Function
+
+    Private Function GetGeneration4TrainerListe(Trainer As Generation2.TrainerCollection) As Generation4.TrainerCollection
+
         ' Entferne doppelte Trainer und wandle in Generation 4 Trainer um
         ' Erklärung:
         ' 1. GroupBy: Gruppiere die Trainer über die Namen
         ' 2. Select: Wähle aus jeder Gruppe das erste Element (der erste Trainer)
         ' 3. ToList: Konvertiere das Ergebnis in eine Liste
         ' 4. Select: Wandle jede Trainer in eine Generation4.Fähigkeit um
-        Dim TrainerG4 = New Generation4.TrainerCollection(TrainerG2.GroupBy(Function(T)
-                                                                                Return T.VorUndNachname
-                                                                            End Function).Select(Function(G)
-                                                                                                     Return G.First
-                                                                                                 End Function).ToList.Select(Function(T)
-                                                                                                                                 Return New Generation4.Trainer With {
+
+        Dim TrainerG4 = New Generation4.TrainerCollection(Trainer.GroupBy(Function(T)
+                                                                              Return T.VorUndNachname
+                                                                          End Function).Select(Function(G)
+                                                                                                   Return G.First
+                                                                                               End Function).ToList.Select(Function(T)
+                                                                                                                               Return New Generation4.Trainer With {
                                                                                                                                  .TrainerID = T.TrainerID,
                                                                                                                                  .Vorname = T.Vorname,
                                                                                                                                  .Nachname = T.Nachname,
                                                                                                                                  .Spitzname = T.Spitzname,
                                                                                                                                  .Foto = T.Foto}
-                                                                                                                             End Function))
-
+                                                                                                                           End Function))
         Return TrainerG4
 
     End Function
@@ -202,103 +210,121 @@ Public Module MappingGeneration2
 
 
     ''' <summary>
-    ''' Sammelt alle Teilnehmer
-    ''' Teilnehmer werden aus den Gruppen
-    ''' und den gruppenlosen Teilnehmern extrahiert
-    ''' 
+    ''' Teilnehmer werden aus dem Skiclub extrahiert.
+    ''' Dazu werden die Teilnehmer der Gruppen, 
+    ''' die Teilnehmer aus allenTeilnehmer,
+    ''' die gruppenlosen Teilnehmer, 
+    ''' und die einegteilten Teilnehmer gesammelt.
+    ''' Doppelte Teilnehmer werden nach einer Gruppierung über die Vor, Nachname und Geburtsdatum entfernt.
+    ''' Die Teilnehmer werden dann in Generation 4 Teilnehmer umgewandelt.
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleTeilnehmer(Skiclub As Generation2.Club, Leistunggstufen As Generation4.LeistungsstufeCollection) As Generation4.TeilnehmerCollection
+    Private Function GetAlleTeilnehmer(Skiclub As Generation2.Club, EindeutigeLeistunggstufen As Generation4.LeistungsstufeCollection) As Generation4.TeilnehmerCollection
 
-        Dim Teilnehmer = New Generation4.TeilnehmerCollection
-        'Skiclub.AlleTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T))
-        'Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T))
-        'Skiclub.EingeteilteTeilnehmer.ToList.ForEach(Sub(T) Teilnehmer.Add(T))
-        'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
+        Dim TeilnehmerG2 = New Generation2.TeilnehmerCollection
+        Skiclub.AlleTeilnehmer.ToList.ForEach(Sub(T) TeilnehmerG2.Add(T))
+        Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) TeilnehmerG2.Add(T))
+        Skiclub.EingeteilteTeilnehmer.ToList.ForEach(Sub(T) TeilnehmerG2.Add(T))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) TeilnehmerG2.Add(T)))
 
-        '' Entferne doppelte Teilnehmer
-        'Teilnehmer = New Generation4.TeilnehmerCollection(Teilnehmer.GroupBy(Of String)(Function(T) T.VorUndNachname).Select(Function(Gruppe) Gruppe.First).SelectMany(Of Generation2.Teilnehmer)(Function(T)
-        '                                                                                                                                                                                              Return New Generation4.Teilnehmer With {
-        '                                                                                                                                                                      .Ident = T.TeilnehmerID,
-        '                                                                                                                                                                      .Vorname = T.Vorname,
-        '                                                                                                                                                                      .Nachname = T.Nachname}
-        '                                                                                                                                                                                          End Function).ToList)
+        Return GetGeneration4TeilnehmerListe(TeilnehmerG2, EindeutigeLeistunggstufen)
 
-        Return Teilnehmer
+    End Function
+
+
+
+    Private Function NichtZugewieseneTeilnehmerListe(Skiclub As Generation2.Club, EindeutigeLeistunggstufen As Generation4.LeistungsstufeCollection) As Generation4.TeilnehmerCollection
+
+        Dim TeilnehmerG2 = New Generation2.TeilnehmerCollection
+        Skiclub.GruppenloseTeilnehmer.ToList.ForEach(Sub(T) TeilnehmerG2.Add(T))
+
+        Return GetGeneration4TeilnehmerListe(TeilnehmerG2, EindeutigeLeistunggstufen)
+
+    End Function
+
+    Private Function GetGeneration4TeilnehmerListe(Teilnehmer As Generation2.TeilnehmerCollection, EindeutigeLeistunggstufen As Generation4.LeistungsstufeCollection) As Generation4.TeilnehmerCollection
+        ' Entferne doppelte Teilnehmer
+        ' Entferne doppelte Teilnehmer und wandle in Generation 4 Teilnehmer um
+        ' Erklärung:
+        ' 1. GroupBy: Gruppiere die Teilnehmer über den Vor, Nachname und Geburtsdatum
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element (den ersten Teilnehmer)
+        ' 3. ToList: Konvertiere das Ergebnis in eine Liste
+        ' 4. Select: Wandle jede Teilnehmer in eine Generation4.Teilnehmer um
+        ' 5. Dabei werden die Leistungsstufe durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
+        Dim TeilnehmerG4 = New Generation4.TeilnehmerCollection(Teilnehmer.GroupBy(Function(T) New With {Key T.Nachname, Key T.Vorname, Key T.Geburtsdatum}).Select(Function(Gruppe)
+                                                                                                                                                                        Return Gruppe.First
+                                                                                                                                                                    End Function).ToList.Select(Function(T)
+                                                                                                                                                                                                    Dim T4L4 = If(T.Leistungsstand IsNot Nothing, EindeutigeLeistunggstufen.FirstOrDefault(Function(L) L.Benennung = T.Leistungsstand.Benennung), Nothing)
+                                                                                                                                                                                                    Dim T4L4ID = If(T4L4 IsNot Nothing, T4L4.Ident, Guid.Empty)
+                                                                                                                                                                                                    Dim T4 = New Generation4.Teilnehmer With {
+                                                                                                                                                                                                      .Ident = T.TeilnehmerID,
+                                                                                                                                                                                                      .Vorname = T.Vorname,
+                                                                                                                                                                                                      .Nachname = T.Nachname,
+                                                                                                                                                                                                      .Geburtsdatum = T.Geburtsdatum,
+                                                                                                                                                                                                      .Leistungsstufe = T4L4,
+                                                                                                                                                                                                      .LeistungsstufeID = T4L4ID}
+                                                                                                                                                                                                    Return T4
+                                                                                                                                                                                                End Function).ToList)
+
+        Return TeilnehmerG4
 
     End Function
 
     ''' <summary>
     ''' Gruppen werden aus dem Skiclub extrahiert
+    ''' Dazu werden die Gruppen der Gruppenliste gesammelt.
+    ''' Doppelte Gruppen werden nach einer Gruppierung über die Benennung entfernt.
+    ''' Die Gruppen werden dann in Generation 4 Gruppen umgewandelt.
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleGruppen(Skiclub As Generation2.Club, Leistungsstufen As Generation4.LeistungsstufeCollection, Trainer As Generation4.TrainerCollection, Teilnehmer As Generation4.TeilnehmerCollection) As Generation4.GruppeCollection
+    Private Function GetAlleGruppen(Skiclub As Generation2.Club, EindeutigeLeistunggstufen As Generation4.LeistungsstufeCollection, EindeutigeTrainer As Generation4.TrainerCollection, EindeutigeTeilnehmer As Generation4.TeilnehmerCollection) As Generation4.GruppeCollection
 
-        Dim Gruppen = New Generation4.GruppeCollection
+        Dim GruppenG2 = New Generation2.GruppeCollection
         ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
-        'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) GruppenG2.Add(G))
 
-        ' Entferne doppelte Gruppen
-        'Gruppen = Gruppen.GroupBy(Of String)(Function(L) L.Benennung).Select(Function(L) L.First)
+        ' Entferne doppelte Gruppen und wandle in Generation 4 Gruppen um
+        ' Erklärung:
+        ' 1. GroupBy: Gruppiere die Gruppen über die Benennung
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element (den ersten Teilnehmer)
+        ' 3. ToList: Konvertiere das Ergebnis in eine Liste
+        ' 4. Select: Wandle jede Teilnehmer in eine Generation4.Teilnehmer um
+        ' 5. Dabei werden die Leistungsstufe durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
+        Dim GruppenG4 = New Generation4.GruppeCollection(GruppenG2.GroupBy(Function(G)
+                                                                               Return G.Benennung
+                                                                           End Function).Select(Function(G) G.First).ToList.Select(Function(G2)
+                                                                                                                                       Dim G4L4 = If(G2.Leistungsstufe IsNot Nothing, EindeutigeLeistunggstufen.FirstOrDefault(Function(L) L.Benennung = G2.Leistungsstufe.Benennung), Nothing)
+                                                                                                                                       Dim G4L4ID = If(G4L4 IsNot Nothing, G4L4.Ident, Guid.Empty)
+                                                                                                                                       Dim G4T4 = If(G2.Trainer IsNot Nothing, EindeutigeTrainer.FirstOrDefault(Function(L) L.VorUndNachname = G2.Trainer.VorUndNachname), Nothing)
+                                                                                                                                       Dim G4T4ID = If(G4L4 IsNot Nothing, G4L4.Ident, Guid.Empty)
 
-        Return Gruppen
+                                                                                                                                       Dim M4IDListe = New ObservableCollection(Of Guid)(From T In G2.Mitgliederliste.Select(Function(T2)
+                                                                                                                                                                                                                                 Return EindeutigeTeilnehmer.FirstOrDefault(Function(T4) T4.Vorname = T2.Vorname And T4.Nachname = T2.Nachname And T4.Geburtsdatum = T2.Geburtsdatum)
+                                                                                                                                                                                                                             End Function).ToList.Select(Function(T)
+                                                                                                                                                                                                                                                             Return If(T IsNot Nothing, T.Ident, Guid.Empty)
+                                                                                                                                                                                                                                                         End Function).ToList)
+                                                                                                                                       Dim M4Liste = New Generation4.TeilnehmerCollection(From T In G2.Mitgliederliste.Select(Function(T2)
+                                                                                                                                                                                                                                  Return EindeutigeTeilnehmer.FirstOrDefault(Function(T4) T4.Vorname = T2.Vorname And T4.Nachname = T2.Nachname And T4.Geburtsdatum = T2.Geburtsdatum)
+                                                                                                                                                                                                                              End Function).ToList.Select(Function(T)
+                                                                                                                                                                                                                                                              Return If(T IsNot Nothing, T, Nothing)
+                                                                                                                                                                                                                                                          End Function).Where(Function(T) T IsNot Nothing).ToList)
+                                                                                                                                       Dim G4 = New Generation4.Gruppe With {
+                                                                                                                                       .Ident = G2.GruppenID,
+                                                                                                                                       .Benennung = G2.Benennung,
+                                                                                                                                       .MitgliederIDListe = M4IDListe,
+                                                                                                                                       .Mitgliederliste = M4Liste,
+                                                                                                                                       .Leistungsstufe = G4L4,
+                                                                                                                                       .LeistungsstufeID = G4L4ID,
+                                                                                                                                       .Sortierung = G2.Sortierung,
+                                                                                                                                       .Trainer = G4T4,
+                                                                                                                                       .TrainerID = G4T4ID}
+                                                                                                                                       Return G4
+                                                                                                                                   End Function))
+
+        Return GruppenG4
 
     End Function
-
-
-
-
-
-
-
-
-
-    '''' <summary>
-    '''' Die Leistungsstufe des Teilnehmers wird durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
-    '''' </summary>
-    '''' <param name="Teilnehmer"></param>
-    '''' <param name="Leistungsstufen"></param>
-    '''' <returns></returns>
-    'Private Function ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(Teilnehmer As TeilnehmerCollection, Leistungsstufen As LeistungsstufeCollection) As TeilnehmerCollection
-    '    For Each t In Teilnehmer
-    '        ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
-    '        t.LeistungsstufeID = If(t.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstufe.Benennung).Ident, Guid.Empty)
-    '        t.Leistungsstufe = If(t.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = t.Leistungsstufe.Benennung), Nothing)
-    '    Next
-    '    Return Teilnehmer
-    'End Function
-
-    '''' <summary>
-    '''' Die Leistungsstufe der Gruppe wird durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
-    '''' </summary>
-    '''' <param name="Gruppen"></param>
-    '''' <param name="Leistungsstufen"></param>
-    '''' <returns></returns>
-    'Private Function ErsetzeLeistungsstufeDurchEindeutigeLeistungsstufe(Gruppen As GruppeCollection, Leistungsstufen As LeistungsstufeCollection) As GruppeCollection
-    '    For Each g In Gruppen
-    '        ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
-    '        g.LeistungsstufeID = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung).Ident, Guid.Empty)
-    '        g.Leistungsstufe = If(g.Leistungsstufe IsNot Nothing, Leistungsstufen.First(Function(Ls) Ls.Benennung = g.Leistungsstufe.Benennung), Nothing)
-    '    Next
-    '    Return Gruppen
-    'End Function
-
-    '''' <summary>
-    '''' Die Trainer der Gruppe wird durch den eindeutige Trainer aus der übergebenen Trainer-Collection ersetzt.
-    '''' </summary>
-    '''' <param name="Gruppen"></param>
-    '''' <param name="Trainer"></param>
-    '''' <returns></returns>
-    'Private Function ErsetzeTrainerDurchEindeutigeTrainer(Gruppen As GruppeCollection, Trainer As TrainerCollection) As GruppeCollection
-    '    For Each g In Gruppen
-    '        ' Hier wird dem Teilnehmer die LeistungsstufenID aus der übergebenen Leistungsstufen-Collection zugewiesen oder Guid.Empty, wenn keine Leistungsstufe vorhanden ist.
-    '        g.TrainerID = If(g.Trainer IsNot Nothing, Trainer.First(Function(T) T.VorUndNachname = g.Trainer.VorUndNachname).TrainerID, Guid.Empty)
-    '        g.Trainer = If(g.Trainer IsNot Nothing, Trainer.First(Function(T) T.VorUndNachname = g.Trainer.VorUndNachname), Nothing)
-    '    Next
-    '    Return Gruppen
-    'End Function
-
 
 End Module

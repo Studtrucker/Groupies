@@ -346,12 +346,13 @@
                 <DockPanel Grid.Row="2">
                     <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
-                              ItemsSource="{Binding Source={StaticResource LeistungsstufenProvider}}" 
-                              SelectedItem="{Binding SelectedEinteilung.NichtZugewieseneTeilnehmerListe}"
-                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                              ItemsSource="{Binding SelectedEinteilung.NichtZugewieseneTeilnehmerListe}" 
+                              AutoGenerateColumns="False"  IsReadOnly="True">
+                    <!--SelectedItem="{Binding SelectedEinteilung.NichtZugewieseneTeilnehmerListe}"
+                              IsSynchronizedWithCurrentItem="True"
                               SelectionMode="Extended" SelectionUnit="FullRow"
                               local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTeilnehmer}"
-                              CanUserAddRows="False">
+                              CanUserAddRows="False">-->
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">

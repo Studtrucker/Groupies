@@ -261,8 +261,6 @@ Namespace Entities.Generation4
             End Get
         End Property
 
-        Public Property Archivieren As Boolean
-
 #End Region
 
 #Region "Funktionen und Methoden"

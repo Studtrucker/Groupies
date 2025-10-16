@@ -64,9 +64,9 @@ Namespace ValidationRules
 
         Public Function GetEindeutigkeit(Objekt As Trainer) As ValidationResult
 
-            If Objekt.Spitzname IsNot Nothing Then
-                If Services.DateiService.AktuellerClub.Trainerliste.Where(Function(o) o.Spitzname.ToLower = Objekt.Spitzname.ToLower AndAlso o.TrainerID <> Objekt.TrainerID).Any() Then
-                    Return New ValidationResult(False, $"{Objekt.Spitzname} wird bereits verwendet. Der Alias muss aber eindeutig sein.")
+            If Objekt.Alias IsNot Nothing Then
+                If Services.DateiService.AktuellerClub.Trainerliste.Where(Function(o) o.Alias.ToLower = Objekt.Alias.ToLower AndAlso o.TrainerID <> Objekt.TrainerID).Any() Then
+                    Return New ValidationResult(False, $"{Objekt.Alias} wird bereits verwendet. Der Alias muss aber eindeutig sein.")
                 End If
             End If
 

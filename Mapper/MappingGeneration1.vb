@@ -207,7 +207,7 @@ Public Module MappingGeneration1
             .EMail = Instructor.eMail,
             .Foto = Instructor.InstructorPicture,
             .Nachname = Instructor.InstructorLastName,
-            .Spitzname = Instructor.InstructorPrintName,
+            .[Alias] = Instructor.InstructorPrintName,
             .TrainerID = Instructor.InstructorID}
 
         Return Trainer

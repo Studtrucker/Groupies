@@ -29,7 +29,7 @@ Namespace UserControls
                 'BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
             End If
             If Gruppe.Trainer IsNot Nothing Then
-                TrainerSpitzname = Gruppe.Trainer.Spitzname
+                TrainerSpitzname = Gruppe.Trainer.Alias
             End If
 
             ' For Style setting

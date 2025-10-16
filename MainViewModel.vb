@@ -820,7 +820,7 @@ Namespace ViewModels
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
                 DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
             End If
         End Sub
 

@@ -22,7 +22,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vorname" Width="Auto" Binding="{Binding Vorname}"/>
                     <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Nachname}"/>
-                    <DataGridTextColumn Header="Spitzname" Width="*" Binding="{Binding Spitzname}"/>
+                    <DataGridTextColumn Header="Alias" Width="*" Binding="{Binding [Alias]}"/>
                </DataGrid.Columns>
             </DataGrid>
         </Grid>

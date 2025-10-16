@@ -38,7 +38,7 @@
                     </i:Interaction.Triggers>
                                        
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Spitzname" Binding="{Binding Spitzname}" SortMemberPath="Spitzname" Width="Auto"/>
+                        <DataGridTextColumn Header="Alias" Binding="{Binding [Alias]}" SortMemberPath="[Alias]" Width="Auto"/>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                     </DataGrid.Columns>
@@ -99,7 +99,7 @@
                         </TextBlock>
                     </Label>
                     <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock>Spitzname
+                        <TextBlock>Alias
                             <Run Foreground="Red">*</Run>
                         </TextBlock>
                     </Label>
@@ -117,7 +117,7 @@
                              Text="{Binding SelectedItem.TrainerID}" />
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Spitzname}"/>
+                             Text="{Binding SelectedItem.[Alias]}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"                           
                              Text="{Binding SelectedItem.Vorname}"/>

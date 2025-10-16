@@ -91,13 +91,13 @@ Public Class TrainerViewModel
         End Set
     End Property
 
-    Public Property Spitzname As String
+    Public Property [Alias] As String
         Get
-            Return _Trainer.Spitzname
+            Return _Trainer.Alias
         End Get
         Set(value As String)
-            _Trainer.Spitzname = value
-            OnPropertyChanged(NameOf(Spitzname))
+            _Trainer.Alias = value
+            OnPropertyChanged(NameOf([Alias]))
             ValidateSpitzname()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set
@@ -243,7 +243,7 @@ Public Class TrainerViewModel
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
             Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
         End If
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
@@ -269,7 +269,7 @@ Public Class TrainerViewModel
             Dim index = Services.DateiService.AktuellerClub.Trainerliste.IndexOf(SelectedItem)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
             Services.DateiService.AktuellerClub.Trainerliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Spitzname} wurde gespeichert")
+            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
         End If
 
     End Sub
@@ -284,16 +284,16 @@ Public Class TrainerViewModel
     End Sub
 
     Private Sub ValidateSpitzname()
-        ClearErrors(NameOf(_Trainer.Spitzname))
-        If _Trainer.Spitzname Is Nothing OrElse String.IsNullOrWhiteSpace(_Trainer.Spitzname) Then
-            AddError(NameOf(_Trainer.Spitzname), "Spitzname darf nicht leer sein.")
+        ClearErrors(NameOf(_Trainer.Alias))
+        If _Trainer.Alias Is Nothing OrElse String.IsNullOrWhiteSpace(_Trainer.Alias) Then
+            AddError(NameOf(_Trainer.Alias), "Alias darf nicht leer sein.")
         End If
 
         Dim result = New ValidationRules.BenennungValidationRule().Validate(_Trainer, Nothing)
 
         If Not result = ValidationResult.ValidResult Then
             ' Fehler hinzufügen, wenn die Validierung fehlschlägt
-            AddError(NameOf(_Trainer.Spitzname), result.ErrorContent.ToString())
+            AddError(NameOf(_Trainer.Alias), result.ErrorContent.ToString())
         End If
     End Sub
 

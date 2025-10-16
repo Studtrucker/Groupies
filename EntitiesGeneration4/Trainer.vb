@@ -16,7 +16,7 @@ Namespace Entities.Generation4
         'Todo:Standardfoto festlegen
         Private _Foto As Byte()
         Private _TrainerID = Guid.NewGuid()
-        Private _Spitzname As String
+        Private _Alias As String
         Private _Vorname As String
         Private _Nachname As String
 
@@ -36,13 +36,13 @@ Namespace Entities.Generation4
         End Sub
 
         ''' <summary>
-        ''' Trainer mit Angabe von Vorname, Nachname und Spitzname
+        ''' Trainer mit Angabe von Vorname, Nachname und Alias
         ''' </summary>
         ''' <param name="Vorname"></param>
         ''' <param name="Nachname"></param>
-        ''' <param name="Spitzname"></param>
-        Public Sub New(Vorname As String, Nachname As String, Spitzname As String)
-            _Spitzname = Spitzname
+        ''' <param name="[Alias]"></param>
+        Public Sub New(Vorname As String, Nachname As String, [Alias] As String)
+            _Alias = [Alias]
             _Vorname = Vorname
             _Nachname = Nachname
         End Sub
@@ -74,7 +74,7 @@ Namespace Entities.Generation4
             _Vorname = origin.Vorname
             _Foto = origin.Foto
             _Nachname = origin.Nachname
-            _Spitzname = origin.Spitzname
+            _Alias = origin.Alias
             _TrainerID = origin.TrainerID
             _Telefonnummer = origin.Telefonnummer
             _EMail = origin.EMail
@@ -128,16 +128,16 @@ Namespace Entities.Generation4
 
         '
         ''' <summary>
-        ''' Spitzname des Trainers
+        ''' Alias des Trainers
         ''' </summary>
         ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Spitzname ist eine Pflichtangabe")>
-        Public Property Spitzname As String
+        <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Alias ist eine Pflichtangabe")>
+        Public Property [Alias] As String
             Get
-                Return _Spitzname
+                Return _Alias
             End Get
             Set(value As String)
-                _Spitzname = value
+                _Alias = value
             End Set
         End Property
 
@@ -175,12 +175,12 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public ReadOnly Property VorNachnameAlias As String
             Get
-                If _Spitzname Is Nothing And Nachname Is Nothing Then
+                If _Alias Is Nothing And Nachname Is Nothing Then
                     Return Vorname
-                ElseIf _Spitzname Is Nothing Then
+                ElseIf _Alias Is Nothing Then
                     Return $"{Vorname} {Nachname}"
                 Else
-                    Return Spitzname
+                    Return [Alias]
                 End If
             End Get
         End Property

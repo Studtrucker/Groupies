@@ -84,7 +84,7 @@
             </TextBlock>
         </Label>
         <TextBox x:Name="SpitznameTextBox" Grid.Column="3" Grid.Row="2"           
-            Text="{Binding Spitzname, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+            Text="{Binding [Alias], UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
       
         <Label Grid.Column="2" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
             <TextBlock>Vorname

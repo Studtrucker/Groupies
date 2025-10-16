@@ -25,7 +25,7 @@ Namespace Entities.Generation4
         End Sub
 
         Public Function Sortieren() As TrainerCollection
-            Dim SortedList As New TrainerCollection(Me.OrderBy(Function(x) x.Spitzname))
+            Dim SortedList As New TrainerCollection(Me.OrderBy(Function(x) x.Alias))
             Return SortedList
         End Function
 

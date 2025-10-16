@@ -146,7 +146,7 @@ Public Module MappingGeneration2
                                                                                                                                  .TrainerID = T.TrainerID,
                                                                                                                                  .Vorname = T.Vorname,
                                                                                                                                  .Nachname = T.Nachname,
-                                                                                                                                 .Spitzname = T.Spitzname,
+                                                                                                                                 .[Alias] = T.Spitzname,
                                                                                                                                  .Foto = T.Foto}
                                                                                                                            End Function))
         Return TrainerG4

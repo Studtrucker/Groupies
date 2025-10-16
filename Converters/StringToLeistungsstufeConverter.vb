@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports Groupies.Controller
+Imports Groupies.Entities.Generation4
 
 Namespace Converters
 
@@ -18,13 +19,13 @@ Namespace Converters
         End Sub
 
         Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-            If TypeOf value IsNot Entities.Leistungsstufe Then Return DependencyProperty.UnsetValue
-            Return DirectCast(value, Entities.Leistungsstufe).Benennung
+            If TypeOf value IsNot Leistungsstufe Then Return DependencyProperty.UnsetValue
+            Return DirectCast(value, Leistungsstufe).Benennung
         End Function
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
             If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
-            Dim obj = Services.DateiService.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Entities.Leistungsstufe("Level unbekannt")).First
+            Dim obj = Services.DateiService.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Leistungsstufe("Level unbekannt")).First
             Return obj
         End Function
     End Class

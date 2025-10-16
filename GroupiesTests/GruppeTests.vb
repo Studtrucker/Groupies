@@ -1,6 +1,6 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports Groupies
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 '<TestClass>
 Public Class GruppeTests

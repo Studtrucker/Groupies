@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 
 '<TestClass>
 Public Class TrainerTests

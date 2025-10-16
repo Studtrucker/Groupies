@@ -2,7 +2,6 @@
 Imports Excel = Microsoft.Office.Interop.Excel
 Imports System.Collections.ObjectModel
 Imports Microsoft.Win32
-Imports Groupies.Entities
 Imports Groupies.Entities.Generation4
 Imports System.Text
 Imports Groupies.Controller
@@ -158,7 +157,7 @@ Namespace Services
             Dim UnbekannteTeilnehmer = ImportTeilnehmerliste.Where(Function(Tn) Not Tn.IstBekannt).Select(Function(Tn) New Teilnehmer(Tn.Vorname, Tn.Nachname) With {
                                                                                                               .Geburtsdatum = Tn.Geburtsdatum,
                                                                                                               .Telefonnummer = Tn.Telefonnummer,
-                                                                                                              .Leistungsstufe = Converter.ConvertBack(Tn.Leistungsstand, GetType(Entities.Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)})
+                                                                                                              .Leistungsstufe = Converter.ConvertBack(Tn.Leistungsstand, GetType(Leistungsstufe), Nothing, Globalization.CultureInfo.CurrentCulture)})
 
 
             ' Alle bekannten Teilnehmer 

@@ -1,4 +1,5 @@
 ﻿Imports Groupies.Interfaces
+Imports Groupies.Entities.Generation4
 
 Namespace Fabriken
 
@@ -25,17 +26,17 @@ Namespace Fabriken
 
         Public Function ErzeugeDatentyp(Datenobjekt As IModel) As Interfaces.IDatentyp
             Select Case Datenobjekt.GetType
-                Case GetType(Entities.Trainer)
+                Case GetType(Trainer)
                     Return New TrainerDatentyp
-                Case GetType(Entities.Teilnehmer)
+                Case GetType(Teilnehmer)
                     Return New TeilnehmerDatentyp
-                Case GetType(Entities.Gruppe)
+                Case GetType(Gruppe)
                     Return New GruppeDatentyp
-                Case GetType(Entities.Faehigkeit)
+                Case GetType(Faehigkeit)
                     Return New FaehigkeitDatentyp
-                Case GetType(Entities.Leistungsstufe)
+                Case GetType(Leistungsstufe)
                     Return New LeistungsstufeDatentyp
-                Case GetType(Entities.Einteilung)
+                Case GetType(Einteilung)
                     Return New EinteilungDatentyp
                 Case Else
                     Return New Exception("Unbekannter Datentyp")

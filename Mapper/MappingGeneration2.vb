@@ -87,15 +87,15 @@ Public Module MappingGeneration2
         ' 3. ToList: Konvertiere das Ergebnis in eine Liste
         ' 4. Select: Wandle jede Fähigkeit in eine Generation4.Fähigkeit um
         Dim FaehigkeitenG4 = New Generation4.FaehigkeitCollection(FaehigkeitenG2.GroupBy(Function(f)
-                                                                                             Return f.Benennung
+                                                                                             Return New With {Key f.Benennung, Key f.Beschreibung}
                                                                                          End Function).Select(Function(G)
                                                                                                                   Return G.First
                                                                                                               End Function).ToList.Select(Function(f)
                                                                                                                                               Return New Generation4.Faehigkeit With {
-                                                                                                         .FaehigkeitID = f.FaehigkeitID,
-                                                                                                         .Benennung = f.Benennung,
-                                                                                                         .Beschreibung = f.Beschreibung,
-                                                                                                         .Sortierung = f.Sortierung}
+                                                                                                                                              .FaehigkeitID = IIf(f.FaehigkeitID = Guid.Empty, Guid.NewGuid, f.FaehigkeitID),
+                                                                                                                                              .Benennung = f.Benennung,
+                                                                                                                                              .Beschreibung = f.Beschreibung,
+                                                                                                                                              .Sortierung = f.Sortierung}
                                                                                                                                           End Function))
 
         Return FaehigkeitenG4
@@ -122,12 +122,12 @@ Public Module MappingGeneration2
         Skiclub.EingeteilteTrainer.ToList.ForEach(Sub(T) TrainerG2.Add(T))
         Skiclub.AlleTrainer.ToList.ForEach(Sub(T) TrainerG2.Add(T))
 
-        ' Entferne doppelte Fähigkeiten und wandle in Generation 4 Fähigkeiten um
+        ' Entferne doppelte Trainer und wandle in Generation 4 Trainer um
         ' Erklärung:
-        ' 1. GroupBy: Gruppiere die Fähigkeiten über die Benennung
-        ' 2. Select: Wähle aus jeder Gruppe das erste Element (die erste Fähigkeit)
+        ' 1. GroupBy: Gruppiere die Trainer über die Namen
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element (der erste Trainer)
         ' 3. ToList: Konvertiere das Ergebnis in eine Liste
-        ' 4. Select: Wandle jede Fähigkeit in eine Generation4.Fähigkeit um
+        ' 4. Select: Wandle jede Trainer in eine Generation4.Fähigkeit um
         Dim TrainerG4 = New Generation4.TrainerCollection(TrainerG2.GroupBy(Function(T)
                                                                                 Return T.VorUndNachname
                                                                             End Function).Select(Function(G)
@@ -146,40 +146,57 @@ Public Module MappingGeneration2
     End Function
 
     ''' <summary>
-    ''' Sammelt alle Leistungsstufen.
-    ''' Leistungsstufen des Skiclubs, 
-    ''' den Leistungsstufen der Teilnehmer 
-    ''' und die Leistungsstufen der Gruppen.
-    ''' Gruppiert über die Benennungen und entfernt doppelte Leistungsstufen.
+    ''' Leistungsstufen werden aus dem Skiclub extrahiert.
+    ''' Dazu werden die Leistungsstufen der Gruppen, 
+    ''' die Leistungsstufen der Teilnehmer 
+    ''' und alle Leistungsstufen aus der Leistungsstufenliste gesammelt.
+    ''' Doppelte Leistungsstufen werden nach einer Gruppierung über die Benennung entfernt.
+    ''' Die Leistungsstufen werden dann in Generation 4 Leistungsstufen umgewandelt.   
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleLeistungsstufen(Skiclub As Generation2.Club, EindeutigeFaehigkeiten As Generation4.FaehigkeitCollection) As Generation4.LeistungsstufeCollection
 
-        Dim Leistungsstufen = New Generation4.LeistungsstufeCollection
+        Dim LeistungsstufenG2 = New Generation2.LeistungsstufeCollection
 
-        '' Erklärung:
-        '' 1. Where: Leistungsstufe ist nicht Nothing, FähigkeitenListe ist nicht Nothing und FähigkeitenListe hat mindestens ein Element = Liste<Leistungsstufe>
-        '' 2. ForEach: Für jede Leistungsstufe in Skiclub.Leistungsstufenliste
-        '' 3. ForEach: Für jede Fähigkeit in der Leistungsstufe.Fähigkeitenliste
-        '' 4. Zuweisung: Weise der Fähigkeit die eindeutige Fähigkeit aus der eindeutigen Fähigkeitenliste zu, die den gleichen Namen hat.
-        'Skiclub.Leistungsstufenliste.Where(Function(G2L)
-        '                                       Return G2L IsNot Nothing AndAlso G2L.Faehigkeiten IsNot Nothing AndAlso G2L.Faehigkeiten.Count > 0
-        '                                   End Function).ToList.ForEach(Sub(G2L)
-        '                                                                    G2L.Faehigkeiten.ToList.ForEach(Sub(G2F)
-        '                                                                                                        G2F = EindeutigeFaehigkeiten.Where(Function(G4F) G2F.Benennung = G4F.Benennung).Single
-        '                                                                                                    End Sub)
-        '                                                                    Leistungsstufen.Add(G2L)
-        '                                                                End Sub)
+        Skiclub.Gruppenliste.Where(Function(G) G.Leistungsstufe IsNot Nothing).ToList.ForEach(Sub(G) LeistungsstufenG2.Add(G.Leistungsstufe))
+        Skiclub.AlleTeilnehmer.Where(Function(T) T.Leistungsstand IsNot Nothing).ToList.ForEach(Sub(T) LeistungsstufenG2.Add(T.Leistungsstand))
+        Skiclub.GruppenloseTeilnehmer.Where(Function(T) T.Leistungsstand IsNot Nothing).ToList.ForEach(Sub(T) LeistungsstufenG2.Add(T.Leistungsstand))
+        Skiclub.EingeteilteTeilnehmer.Where(Function(T) T.Leistungsstand IsNot Nothing).ToList.ForEach(Sub(T) LeistungsstufenG2.Add(T.Leistungsstand))
+        Skiclub.Leistungsstufenliste.ToList.ForEach(Sub(L) LeistungsstufenG2.Add(L))
 
-        'Skiclub.AlleTeilnehmer.Where(Function(T) T.Leistungsstufe IsNot Nothing).ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstufe))
-        'Skiclub.Gruppenliste.Where(Function(G) G.Leistungsstufe IsNot Nothing).ToList.ForEach(Sub(G) Leistungsstufen.Add(G.Leistungsstufe))
-        'Skiclub.Gruppenliste.Where(Function(g) g.Mitgliederliste IsNot Nothing).ToList.Where(Function(M) M.Leistungsstufe IsNot Nothing).Select(Function(M) M.Leistungsstufe).ToList.ForEach(Sub(L) Leistungsstufen.Add(L))
-
-        '' Entferne doppelte Fähigkeiten
-        'Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of String)(Function(L) L.Benennung).Select(Function(L) L.First))
-
-        Return Leistungsstufen
+        ' Entferne doppelte Leistungsstufen und wandle in Generation 4 Leistungsstufen um
+        ' Erklärung:
+        ' 1. GroupBy: Gruppiere die Leistungsstufen über die Benennung
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element (die erste Leistungsstufe)
+        ' 3. ToList: Konvertiere das Ergebnis in eine Liste
+        ' 4. Select: Wandle jede Leistungsstufen in eine Generation4.Leistungsstufen um
+        ' 5. Dabei werden die Fähigkeiten der Leistungsstufe durch die eindeutigen Fähigkeiten aus der übergebenen Fähigkeiten-Collection ersetzt.
+        ' 6. Es wird auch eine Liste der Fähigkeiten-IDs erstellt.
+        Dim LeistungsstufenG4 = New Generation4.LeistungsstufeCollection(LeistungsstufenG2.GroupBy(Function(L)
+                                                                                                       Return L.Benennung
+                                                                                                   End Function).Select(Function(G)
+                                                                                                                            Return G.First
+                                                                                                                        End Function).ToList.Select(Function(L)
+                                                                                                                                                        ' Hier ist L eine Generation2.Leistungsstufe
+                                                                                                                                                        Dim FL4 = New Generation4.FaehigkeitCollection(From T In L.Faehigkeiten.Select(Function(F)
+                                                                                                                                                                                                                                           ' Suche die Fähigkeit in der übergebenen Fähigkeiten-Collection
+                                                                                                                                                                                                                                           Return EindeutigeFaehigkeiten.FirstOrDefault(Function(EF) EF.Benennung = F.Benennung And EF.Beschreibung = F.Beschreibung)
+                                                                                                                                                                                                                                       End Function).ToList)
+                                                                                                                                                        Dim FID4Liste = New ObservableCollection(Of Guid)(From T In L.Faehigkeiten.Select(Function(F)
+                                                                                                                                                                                                                                              ' Suche die Fähigkeit in der übergebenen Fähigkeiten-Collection
+                                                                                                                                                                                                                                              Return EindeutigeFaehigkeiten.FirstOrDefault(Function(EF) EF.Benennung = F.Benennung And EF.Beschreibung = F.Beschreibung).FaehigkeitID
+                                                                                                                                                                                                                                          End Function).ToList)
+                                                                                                                                                        Dim L4 = New Generation4.Leistungsstufe With {
+                                                                                                                                                        .Ident = L.LeistungsstufeID,
+                                                                                                                                                        .Benennung = L.Benennung,
+                                                                                                                                                        .Beschreibung = L.Beschreibung,
+                                                                                                                                                        .Faehigkeiten = FL4,
+                                                                                                                                                        .Sortierung = L.Sortierung,
+                                                                                                                                                        .FaehigkeitenIDListe = FID4Liste}
+                                                                                                                                                        Return L4
+                                                                                                                                                    End Function))
+        Return LeistungsstufenG4
 
     End Function
 

@@ -11,7 +11,7 @@ Namespace Entities.Generation4
         Implements IModel
 
 #Region "Felder"
-        Private _FaehigkeitID = Guid.NewGuid
+        Private _FaehigkeitID As Guid
         Private _Benennung As String
         Private _Beschreibung As String
         Private _Sortierung As Integer

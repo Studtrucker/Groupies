@@ -53,12 +53,12 @@ Public Class TeilnehmerTests
         Dim Elke As New Teilnehmer("Elke", "Steiner")
         Assert.AreEqual("Elke Steiner", Elke.ToString)
         Assert.AreEqual("Elke Steiner", Elke.VorUndNachname)
-        Assert.AreEqual("Elke Steiner, , Leistungsstand unbekannt", Elke.AusgabeTrainerinfo)
+        Assert.AreEqual("Elke Steiner, , Leistungsstand unbekannt", Elke.VorUndNachname)
 
         ' Vor-, Nachname und Leistungsstufe
         Dim Manu As New Teilnehmer("Manuela", "Ramm", New Leistungsstufe("Könner") With {.Sortierung = 1})
-        Assert.AreEqual("Manuela Ramm, , Könner", Manu.AusgabeTrainerinfo)
-        Assert.AreEqual("Manuela Ramm", Manu.AusgabeTeilnehmerinfo)
+        Assert.AreEqual("Manuela Ramm, , Könner", Manu.VorUndNachname)
+        Assert.AreEqual("Manuela Ramm", Manu.VorUndNachname)
 
 
         Dim Willi As New Teilnehmer("Willi", "Steiner", New Leistungsstufe("Experte") With {.Sortierung = 2})

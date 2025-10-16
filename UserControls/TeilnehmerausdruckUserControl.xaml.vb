@@ -31,7 +31,7 @@ Namespace UserControls
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
 
             If Gruppe.Trainer IsNot Nothing Then
-                Trainer = Gruppe.Trainer.AusgabeTeilnehmerInfo
+                Trainer = Gruppe.Trainer.VorNachnameAlias
                 If Gruppe.Trainer.HatFoto Then
                     Dim bi = New BitmapImage
                     bi.BeginInit()

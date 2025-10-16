@@ -37,7 +37,7 @@ Namespace Entities.Generation4
         Public Property TeilnehmerinfoGeordnet As IEnumerable(Of String) =
             OrderBy(Function(Tn) Tn.Nachname) _
             .ThenBy(Function(Tn) Tn.Vorname) _
-            .Select(Function(Tn) Tn.AusgabeTeilnehmerinfo)
+            .Select(Function(Tn) Tn.VorUndNachname)
 
         ''' <summary>
         '''  Die Teilnehmer mit VorUndNachname, Leistungsstufe
@@ -51,7 +51,7 @@ Namespace Entities.Generation4
             OrderByDescending(Function(Tr) Tr.Leistungsstufe.Sortierung) _
             .ThenBy(Function(Tr) Tr.Nachname) _
             .ThenBy(Function(Tr) Tr.Vorname) _
-            .Select(Function(Tn) Tn.AusgabeTrainerinfo)
+            .Select(Function(Tn) Tn.VorUndNachname)
 
 
 #End Region

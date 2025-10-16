@@ -4,144 +4,87 @@ Imports Groupies.Entities.Generation4
 
 Public Module MappingGeneration4
 
-    Private ReadOnly NeuerClub As Club
-
-    Public Function MapSkiClub2Club(Skiclub As Club) As Club
-        ' Schreibe die Club.Gruppenliste.Gruppe.Mitgliederliste anhand der gespeicherten TeilnehmerIDs aus der Liste TeilnehmerIDListe  
-        'Skiclub.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste = New TeilnehmerCollection(
-        '                                    (From TID In g.MitgliederIDListe
-        '                                     Let T = Skiclub.Teilnehmerliste.FirstOrDefault(Function(tn) tn.TeilnehmerID = TID)
-        '                                     Where T IsNot Nothing
-        '                                     Select T).ToList()))
-
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe = New ObservableCollection(Of Guid)(G.Mitgliederliste.Select(Function(T) T.Ident).ToList()))
-        ' Schreibe die Club.Einteilungen.Gruppenliste anhand der gespeicherten GruppenIDs aus der Liste GruppenIDListe  
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Gruppenliste.Where(Function(G) E.GruppenIDListe.Contains(G.Ident)).ToList.ForEach(Sub(g) E.Gruppenliste.Add(g)))
-        ' Schreibe die Club.Einteilungen.NichtZugewieseneTeilnehmerListe anhand der gespeicherten Teilnehmer IDs aus der Liste NichtZugewieseneTeilnehmerIDListe  
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Teilnehmerliste.Where(Function(T) E.NichtZugewieseneTeilnehmerIDListe.Contains(T.Ident)).ToList.ForEach(Sub(T) E.NichtZugewieseneTeilnehmerListe.Add(T)))
-        ' Schreibe die Club.Einteilungen.VerfuegbareTrainerListe anhand der gespeicherten Trainer IDs aus der Liste VerfuegbareTrainerIDListe  
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) Skiclub.Trainerliste.Where(Function(T) E.VerfuegbareTrainerIDListe.Contains(T.TrainerID)).ToList.ForEach(Sub(T) E.VerfuegbareTrainerListe.Add(T)))
-        Return Skiclub
-
-    End Function
-
     Public Function MapSkiClub2Club(Skiclub As Club, Dateiname As String) As Club
         Skiclub.ClubName = Dateiname
         Return MapSkiClub2Club(Skiclub)
     End Function
 
-    ''' <summary>
-    ''' Einteilungen werden aus dem Skiclub extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
-    Private Function GetAlleEinteilungen(Skiclub As Club) As EinteilungCollection
-        Return Skiclub.Einteilungsliste
-    End Function
+    Public Function MapSkiClub2Club(Skiclub As Club) As Club
 
-    ''' <summary>
-    ''' Gruppen werden aus den Einteilungen des Skiclubs extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    ''' <returns></returns>
-    Private Function GetAlleGruppen(Skiclub As Club) As GruppeCollection
-        Dim Gruppen = New GruppeCollection
-        ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Gruppen.Add(g)))
+        ' Ladereihenfolge nicht ändern, da Abhängigkeiten bestehen
+        Skiclub.Faehigkeitenliste = GetAlleFaehigkeiten(Skiclub)
+        Skiclub.Trainerliste = GetAlleTrainer(Skiclub)
+        Skiclub.Leistungsstufenliste = GetAlleLeistungsstufen(Skiclub)
+        Skiclub.Teilnehmerliste = GetAlleTeilnehmer(Skiclub)
+        Skiclub.Gruppenliste = GetAlleGruppen(Skiclub)
+        Skiclub.Einteilungsliste = GetAlleEinteilungen(Skiclub)
 
-        ' Entferne doppelte Gruppen
-        Gruppen = New GruppeCollection(Gruppen.GroupBy(Of Guid)(Function(G) G.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Gruppen
+        Return Skiclub
 
     End Function
 
+
     ''' <summary>
-    ''' Faehigkeiten werden aus den Teilnehmern extrahiert
+    ''' Faehigkeiten hat alle Daten
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleFaehigkeiten(Skiclub As Club) As FaehigkeitCollection
-
-        Dim Faehigkeiten = New FaehigkeitCollection
-        ' Fähigkeiten aus den Leistungsstufen der Teilnehmer entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(M) M.Leistungsstufe.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f)))))
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(e) e.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(T) T.Leistungsstufe.Faehigkeiten.ToList.ForEach(Sub(f) Faehigkeiten.Add(f))))
+        Return Skiclub.Faehigkeitenliste
+    End Function
 
 
-        ' Entferne doppelte Fähigkeiten
-        Faehigkeiten = New FaehigkeitCollection(Faehigkeiten.GroupBy(Of Guid)(Function(f) f.FaehigkeitID).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Faehigkeiten
-
+    ''' <summary>
+    ''' Trainer hat alle Daten
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    Private Function GetAlleTrainer(Skiclub As Club) As TrainerCollection
+        Return Skiclub.Trainerliste
     End Function
 
     ''' <summary>
-    ''' Teilnehmer werden aus den Gruppen und der gruppenlose Teilnehmer-Liste extrahiert
+    ''' Leistungsstufen und deren Fähigkeitenlisten füllen
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleLeistungsstufen(Skiclub As Club) As LeistungsstufeCollection
+        Skiclub.Leistungsstufenliste.ToList.ForEach(Sub(L) L.FaehigkeitenIDListe.ToList.ForEach(Sub(FID) L.Faehigkeiten.Add(Skiclub.Faehigkeitenliste.FirstOrDefault(Function(F) F.FaehigkeitID = FID))))
+        Return Skiclub.Leistungsstufenliste
+    End Function
+
+
+    ''' <summary>
+    ''' Teilnehmer und deren Leistungsstufen füllen
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleTeilnehmer(Skiclub As Club) As TeilnehmerCollection
-
-        Dim Teilnehmer = New TeilnehmerCollection
-
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) g.Mitgliederliste.ToList.ForEach(Sub(T) Teilnehmer.Add(T))))
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(T) Teilnehmer.Add(T)))
-
-        Return Teilnehmer
-
+        Skiclub.Teilnehmerliste.Where(Function(T) Not T.LeistungsstufeID = Guid.Empty).ToList.ForEach(Sub(T) T.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = T.LeistungsstufeID))
+        Return Skiclub.Teilnehmerliste
     End Function
 
     ''' <summary>
-    ''' Trainer werden aus den Gruppen und der gruppenlose Trainer-Liste extrahiert
-    ''' </summary>
-    ''' <param name="Skiclub"></param>
-    Private Function GetAlleTrainer(Skiclub As Club) As TrainerCollection
-
-        Dim Trainer = New TrainerCollection
-
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Trainer.Add(g.Trainer)))
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.VerfuegbareTrainerListe.ToList.ForEach(Sub(T) Trainer.Add(T)))
-
-        Return Trainer
-
-    End Function
-
-    ''' <summary>
-    ''' Leistungsstufen werden aus den Gruppen extrahiert
+    ''' Gruppen und deren Leistungsstufen, Trainer und Mitgliederliste füllen
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    <Obsolete>
-    Private Function GetAlleLeistungsstufenVonGruppen(Skiclub As Club) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Gruppen entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(g) Leistungsstufen.Add(g.Leistungsstufe)))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
-
+    Private Function GetAlleGruppen(Skiclub As Club) As GruppeCollection
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = G.LeistungsstufeID))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Trainer = Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = G.TrainerID))
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe.ToList.ForEach(Sub(TID) G.Mitgliederliste.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID))))
+        Return Skiclub.Gruppenliste
     End Function
 
     ''' <summary>
-    ''' Leistungsstufen werden aus den Teilnehmern extrahiert
+    ''' Einteilungen und deren Gruppenliste, NichtZugewieseneTeilnehmerListe und VerfuegbareTrainerListe füllen
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
-    Private Function GetAlleLeistungsstufenVonTeilnehmern(Skiclub As Club) As LeistungsstufeCollection
-        ' Eigene Collection initialisieren
-        Dim Leistungsstufen = New LeistungsstufeCollection
-        ' Leistungsstufen aus den Teilnehmern entnehmen und in die Collection einfügen
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(Gl) Gl.Mitgliederliste.ToList.ForEach(Sub(M) Leistungsstufen.Add(M.Leistungsstufe))))
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(T) Leistungsstufen.Add(T.Leistungsstufe)))
-        ' Entferne doppelte Leistungsstufen
-        Leistungsstufen = New LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
-
-        Return Leistungsstufen
-
+    Private Function GetAlleEinteilungen(Skiclub As Club) As EinteilungCollection
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenIDListe.ToList.ForEach(Sub(GID) E.Gruppenliste.Add(Skiclub.Gruppenliste.FirstOrDefault(Function(G) G.Ident = GID))))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.NichtZugewieseneTeilnehmerIDListe.ToList.ForEach(Sub(TID) E.NichtZugewieseneTeilnehmerListe.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID))))
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.VerfuegbareTrainerIDListe.ToList.ForEach(Sub(TID) E.VerfuegbareTrainerListe.Add(Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = TID))))
+        Return Skiclub.Einteilungsliste
     End Function
-
 
 End Module

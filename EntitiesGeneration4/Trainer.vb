@@ -1,4 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
+Imports System.Xml.Serialization
+
 
 Namespace Entities.Generation4
 
@@ -168,29 +170,10 @@ Namespace Entities.Generation4
         Public Property EMail() As String
 
         ''' <summary>
-        ''' Ausgabe von Vor- und Nachname
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property VorUndNachname As String
-            Get
-                If Vorname Is Nothing Then
-                    Return Nachname
-                ElseIf Nachname Is Nothing Then
-                    Return Vorname
-                Else
-                    Return String.Format("{0} {1}", Vorname, Nachname)
-                End If
-            End Get
-            Set(value As String)
-
-            End Set
-        End Property
-
-        ''' <summary>
         ''' Ausgabe des Trainernamens auf der Information
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property AusgabeTeilnehmerInfo As String
+        Public ReadOnly Property VorNachnameAlias As String
             Get
                 If _Spitzname Is Nothing And Nachname Is Nothing Then
                     Return Vorname
@@ -202,30 +185,18 @@ Namespace Entities.Generation4
             End Get
         End Property
 
-        'todo: Hier muss die Property ins ViewModel verlagert werden 
-        Public ReadOnly Property IstEinerGruppeZugewiesen As Boolean
-
         Public ReadOnly Property HatFoto As Boolean
             Get
                 Return _Foto IsNot Nothing AndAlso Foto.Length > 0
             End Get
         End Property
 
-        Public ReadOnly Property HatKeinFoto As Boolean
-            Get
-                Return _Foto Is Nothing AndAlso Foto.Length = 0
-            End Get
-        End Property
-
-        'todo: Hier muss die Property ins ViewModel verlagert werden 
-        Public Property Archivieren As Boolean
-
 #End Region
 
 #Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
-            Return VorUndNachname
+            Return VorNachnameAlias
         End Function
 
         Public Sub speichern() Implements IModel.speichern

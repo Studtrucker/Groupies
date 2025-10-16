@@ -88,7 +88,7 @@
                           GridLinesVisibility="None" DockPanel.Dock="Top" Style="{StaticResource PrintoutInfo}" 
                           MinHeight="30" Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding AusgabeTeilnehmerinfo}" />
+                            <DataGridTextColumn Binding="{Binding VorUndNachname}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

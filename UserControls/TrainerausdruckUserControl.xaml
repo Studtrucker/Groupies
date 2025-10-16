@@ -77,7 +77,7 @@
                     <TextBlock x:Name="AnzahlGruppenmitgliederTextblock" Grid.Column="3" Grid.Row="0"  Style="{StaticResource SmallCaptionValue}" />
 
                     
-                    <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5" BorderThickness="0" HeadersVisibility="None" Width="Auto"
+                    <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5,7,5,3" BorderThickness="0" HeadersVisibility="None" Width="Auto"
                               AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource PrintoutSmall}"
                               Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="Transparent"  >
                         <DataGrid.Columns>

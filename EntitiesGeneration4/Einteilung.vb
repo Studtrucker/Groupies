@@ -15,7 +15,7 @@ Namespace Entities.Generation4
         Private _Benennung As String
 
         Private _GruppenIDListe As ObservableCollection(Of Guid)
-        Private _Gruppenliste = New GruppeCollection
+        Private _Gruppenliste As New GruppeCollection
 
         Private _VerfuegbareTrainerIDListe As ObservableCollection(Of Guid)
         Private _VerfuegbareTrainerListe As New TrainerCollection

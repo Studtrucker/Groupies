@@ -1,10 +1,6 @@
-﻿Imports System.ComponentModel
-Imports System.ComponentModel.DataAnnotations
-Imports System.Runtime.InteropServices
-Imports System.Text
-Imports Microsoft.Office.Interop.Excel
+﻿Imports System.ComponentModel.DataAnnotations
 Imports System.Collections.ObjectModel
-
+Imports System.Xml.Serialization
 
 
 Namespace Entities.Generation4
@@ -128,7 +124,7 @@ Namespace Entities.Generation4
         ''' Ein Liste von erforderlichen Fähigkeiten für diese Leistungsstufe
         ''' </summary>
         ''' <returns></returns>
-        ''' 
+        <XmlIgnore>
         Public Property Faehigkeiten As FaehigkeitCollection
             Get
                 Return _FaehigkeitenListe

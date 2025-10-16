@@ -307,10 +307,10 @@
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
-                              SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"
                               IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                               IsReadOnly="True" CanUserAddRows="False" >
-                        
+                                <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
+                      
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding TrainerEinteilenCommand}"/>
@@ -325,7 +325,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding VorUndNachname}" Width="*"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding VorNachnameAlias}" Width="*"/>
                         </DataGrid.Columns>
 
                         <DataGrid.ContextMenu>

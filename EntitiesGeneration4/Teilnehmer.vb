@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel
-Imports Groupies.Controller
-
+Imports System.Xml.Serialization
 
 Namespace Entities.Generation4
 
@@ -229,6 +228,7 @@ Namespace Entities.Generation4
         ''' Setzt und liest den Leistungsstufe des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property Leistungsstufe As Leistungsstufe
             Get
                 Return _Leistungsstufe
@@ -236,29 +236,6 @@ Namespace Entities.Generation4
             Set(value As Leistungsstufe)
                 _Leistungsstufe = value
             End Set
-        End Property
-
-
-
-        ''' <summary>
-        ''' Gibt den Vor- und Nachnamen für die Teilnehmerinformation zurück
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AusgabeTeilnehmerinfo As String
-            Get
-                Return VorUndNachname
-            End Get
-        End Property
-
-
-        ''' <summary>
-        ''' Gibt den Vor-, Nachnamen und Leistungsstufe für die Trainerinformation zurück
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property AusgabeTrainerinfo As String
-            Get
-                Return GetAusgabeTrainerInfo()
-            End Get
         End Property
 
 #End Region

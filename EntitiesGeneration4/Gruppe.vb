@@ -1,7 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.ComponentModel.DataAnnotations
-Imports Groupies.Controller
+Imports System.Xml.Serialization
 
 Namespace Entities.Generation4
 
@@ -128,6 +128,7 @@ Namespace Entities.Generation4
         ''' Die Leistungsstufe der Gruppe
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property Leistungsstufe As Leistungsstufe
             Get
                 Return _Leistungsstufe
@@ -156,6 +157,7 @@ Namespace Entities.Generation4
         ''' Der Trainer der Gruppe
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property Trainer As Trainer
             Get
                 Return _Trainer
@@ -183,6 +185,7 @@ Namespace Entities.Generation4
         ''' Liste der Gruppenmitglieder
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property Mitgliederliste As TeilnehmerCollection
             Get
                 Return _Mitgliederliste

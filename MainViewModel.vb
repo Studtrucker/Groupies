@@ -29,11 +29,6 @@ Namespace ViewModels
 
 #Region "Konstruktor"
 
-        Private Sub New()
-            DateiService = New DateiService
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-        End Sub
-
         Public Sub New(windowService As IWindowService)
             MyBase.New()
             _windowService = windowService
@@ -45,40 +40,60 @@ Namespace ViewModels
 
 #Region "Window Events"
 
+        Private Sub DateiService_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+            ' Es wird geprüft, ob die Property DateiService.AktuellerClub das Event ausgelöst hat.
+            If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
+                ' Commands sind hier als ICommand definiert, deshalb wird es in RelayCommand gecastet.
+                ' Die generische Klasse Relay Command, beinhaltet das Ereignis CanExecuteChanged und dieses wird hiermit ausgelöst
+                DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            End If
+        End Sub
+
+        Private Sub Me_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+            If e.PropertyName = NameOf(SelectedEinteilung) Then
+                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+            End If
+        End Sub
+
+
         Private Sub OnWindowLoaded(obj As Object)
 
-            AddHandler DateiService.PropertyChanged, Sub(sender, e)
-                                                         If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
-                                                             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                                             DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                             DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                                                         End If
-                                                     End Sub
-            AddHandler PropertyChanged, Sub(sender, e)
-                                            If e.PropertyName = NameOf(SelectedEinteilung) Then
-                                                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                                            End If
-                                        End Sub
-            'AddHandler DateiService.PropertyChanged, Sub(sender, e)
-            '                                             If e.PropertyName = NameOf(DateiService.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen) Then
-            '                                                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-            '                                             End If
-            '                                         End Sub
+            ' 1. Registriert einen Ereignis‑Handler für das PropertyChanged‑Event (INotifyPropertyChanged).
+            '    Wenn eine Property im ViewModel geändert wird, wird der Handler Me_PropertyChanged aufgerufen.
+            ' 2. Me_PropertyChanged(sender, e):
+            '    Sub ) als Handler.
+            '    Sender ist das Objekt, das das Event ausgelöst hat (hier das ViewModel).
+            '    e ist ein PropertyChangedEventArgs mit der Property‑Information.
+            ' 3. If e.PropertyName = NameOf(SelectedEinteilung) Then
+            '    Prüft, ob die geänderte Property genau SelectedEinteilung ist.
+            '    NameOf(SelectedEinteilung)
+            '    liefert den String "SelectedEinteilung" sicher zur Compile‑Zeit.
+            ' 4. DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion))
+            '    Wandelt die Property ClubInfoPrintCommand vom Interface‑Typ ICommand in den konkreten Typ RelayCommand(Of Printversion) um.
+            '    DirectCast schlägt mit einer Exception fehl, wenn der Cast ungültig ist.
+            ' 5. .RaiseCanExecuteChanged()
+            '    Ruft eine Methode des RelayCommand auf, die die CanExecute‑Auswertung auslöst
+            '    (benachrichtigt die UI, dass der Ausführbarkeitszustand neu berechnet werden soll).
+            '    Dadurch werden z. B. Buttons aktiviert/deaktiviert, die an dieses Command gebunden sind.
+            AddHandler Me.PropertyChanged, AddressOf Me_PropertyChanged
+            AddHandler DateiService.PropertyChanged, AddressOf DateiService_PropertyChanged
 
             InitializeCommands()
 
@@ -603,6 +618,7 @@ Namespace ViewModels
         End Sub
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
+
             ResetProperties()
         End Sub
 
@@ -628,9 +644,9 @@ Namespace ViewModels
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
-        }
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+            }
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Faehigkeitenliste
 
             fenster.DataContext = mvw

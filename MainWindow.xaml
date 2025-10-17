@@ -14,7 +14,7 @@
 
     <Window.Resources>
         <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
-        <ObjectDataProvider x:Key="LeistungsstufenProvider" ObjectType="{x:Type ViewModels:MainViewModel}" MethodName="GetLeistungsstufenliste"/>
+        <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
     </Window.Resources>
 
     <i:Interaction.Triggers>
@@ -33,6 +33,8 @@
     </i:Interaction.Triggers>
     
     <DockPanel>
+        
+        <!--Menus-->
         <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="HotPink">
 
             <MenuItem  Header="_Datei">
@@ -192,7 +194,6 @@
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >
                     <!--Für das Viewitem siehe WhatsApp ChatGPT vom 15.05.2025-->
                 </MenuItem>
-                <MenuItem Header="Testwindow" Click="MenuItem_Click"/>
             </MenuItem>
 
         </Menu>

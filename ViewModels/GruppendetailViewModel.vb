@@ -2,7 +2,6 @@
 'imports Groupies.DataImport
 Imports Groupies.Entities.Generation4
 Imports Groupies.Services
-'Imports Trainer = Groupies.Entities.Trainer
 
 Namespace ViewModels
 
@@ -11,7 +10,16 @@ Namespace ViewModels
         Inherits BaseModel
         Implements IViewModelSpecial
 
+#Region "Felder"
         Private _leistungsstufenListe As LeistungsstufeCollection
+        Private _Gruppe As Gruppe
+
+#End Region
+
+#Region "Ereignisse"
+        Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
+
+#End Region
 
 #Region "Kontruktor"
         Public Sub New()
@@ -91,9 +99,6 @@ Namespace ViewModels
 
 #Region "Properties"
 
-        Private _Gruppe As Gruppe
-        Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
-
         Public Property Gruppe As IModel Implements IViewModelSpecial.Model
             Get
                 Return _Gruppe
@@ -172,6 +177,10 @@ Namespace ViewModels
             End Set
         End Property
 
+        ''' <summary>
+        ''' DropDownliste für die Combobobox
+        ''' </summary>
+        ''' <returns></returns>
         Public Property LeistungsstufenListe As LeistungsstufeCollection
             Get
                 Return _leistungsstufenListe

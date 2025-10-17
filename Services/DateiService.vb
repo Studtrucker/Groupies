@@ -106,7 +106,7 @@ Namespace Services
             AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
             SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
 
-            Return $"Der Club '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
+            Return $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
 
         End Function
 
@@ -170,6 +170,7 @@ Namespace Services
         Public Sub DateiSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
+
         End Sub
 
 #End Region

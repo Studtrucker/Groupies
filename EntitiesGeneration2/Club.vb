@@ -19,9 +19,7 @@ Namespace Entities.Generation2
                 Dim loadedSkiclub As Generation2.Club
                 Try
                     loadedSkiclub = TryCast(serializer.Deserialize(fs), Generation2.Club)
-                    'Return MappingGeneration2.MapSkiClub2Club(loadedSkiclub)
                     Return Map2AktuelleGeneration(loadedSkiclub, Dateiname)
-
                 Catch ex As InvalidDataException
                     Throw ex
                 End Try

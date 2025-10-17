@@ -12,11 +12,4 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        Dim dc = New TestWindowViewModel
-        Dim tw = New TestWindow With {
-            .DataContext = dc
-        }
-        tw.Show()
-    End Sub
 End Class

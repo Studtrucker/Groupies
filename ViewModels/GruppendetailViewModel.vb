@@ -11,7 +11,6 @@ Namespace ViewModels
         Inherits BaseModel
         Implements IViewModelSpecial
 
-        Private _LeistungsstufeID As Guid
         Private _leistungsstufenListe As LeistungsstufeCollection
 
 #Region "Kontruktor"
@@ -173,6 +172,16 @@ Namespace ViewModels
             End Set
         End Property
 
+        Public Property LeistungsstufenListe As LeistungsstufeCollection
+            Get
+                Return _leistungsstufenListe
+            End Get
+            Set(value As LeistungsstufeCollection)
+                _leistungsstufenListe = value
+                OnPropertyChanged(NameOf(LeistungsstufenListe))
+            End Set
+        End Property
+
         Property Trainer As Trainer
             Get
                 If _Gruppe Is Nothing Then
@@ -234,15 +243,6 @@ Namespace ViewModels
             End Get
         End Property
 
-        Public Property LeistungsstufenListe As LeistungsstufeCollection
-            Get
-                Return _leistungsstufenListe
-            End Get
-            Set(value As LeistungsstufeCollection)
-                _leistungsstufenListe = value
-                OnPropertyChanged(NameOf(LeistungsstufenListe))
-            End Set
-        End Property
 #End Region
 
 #Region "Methoden"

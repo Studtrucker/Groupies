@@ -179,7 +179,8 @@
     <Compile Include="Services\DateiEventArgs.vb" />
     <Compile Include="Services\DateiService.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
-    <Compile Include="Services\TrainerServiceEventArgs.vb" />
+    <Compile Include="Services\TeilnehmerService.vb" />
+    <Compile Include="Services\TrainerEventArgs.vb" />
     <Compile Include="Services\TrainerService.vb" />
     <Compile Include="Services\WindowService.vb" />
     <Compile Include="SkiDatenLaden.vb" />

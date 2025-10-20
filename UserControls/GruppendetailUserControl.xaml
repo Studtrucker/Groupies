@@ -84,14 +84,14 @@
                     
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding TrainerEntfernen}"/>
+                            <!--<i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand}"/>-->
+                            <i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
                     <TextBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerBearbeiten}" />
-                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TrainerAusGruppeEntfernen}" />
+                            <MenuItem Header="Trainer entfernen" Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
@@ -110,8 +110,8 @@
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
-                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
+                            <!--<MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
+                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />-->
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 

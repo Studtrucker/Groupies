@@ -308,13 +308,14 @@
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
-                              IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
-                              IsReadOnly="True" CanUserAddRows="False" >
+                              SelectedItem="{Binding SelectedGruppenloserTrainer}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" >
                                 <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
                       
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding TrainerEinteilenCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding Path= TrainerInGruppeEinteilenCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         
@@ -331,8 +332,8 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Trainer einteilen" Command="{Binding TrainerInGruppeEinteilenCommand}"/>
-                                <MenuItem Header="Trainer löschen"   Command="{Binding TrainerAusEinteilungEntfernenCommand}"/>
+                                <MenuItem Header="Trainer einteilen" Command="{Binding Path=TrainerInGruppeEinteilenCommand}"/>
+                                <MenuItem Header="Trainer aus Einteilung entfernen"   Command="{Binding Path=TrainerAusEinteilungEntfernenCommand}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

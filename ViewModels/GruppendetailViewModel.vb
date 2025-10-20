@@ -16,13 +16,12 @@ Namespace ViewModels
 
 #End Region
 
+#Region "Properties"
+        Private TrainerAusGruppeEntfernenCommand As ICommand
+#End Region
+
 #Region "Ereignisse"
         Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
-        'Private Sub OnModelChangedE()
-        '    RaiseEvent ModelChangedEvent(Me, False)
-        'End Sub
-
-
 #End Region
 
 #Region "Kontruktor"
@@ -30,14 +29,15 @@ Namespace ViewModels
 
             UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
 
-            TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
-            TrainerEntfernen = New RelayCommand(Of Object)(AddressOf OnTrainerEntfernen, Function() CanTrainerEntfernen())
+            'TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
+            'TrainerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusGruppeEntfernenCommand, Function() CanTrainerAusGruppeEntfernenCommand())
+
 
             AddHandler DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
             AddHandler DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
+            AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
 
         End Sub
-
 
         Private Sub OnDateiGeOeffnet()
             Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
@@ -58,6 +58,8 @@ Namespace ViewModels
 
 #Region "Command-Methoden"
 
+
+
         Private Sub OnDateiGeaendert(obj As Object)
             ' Logik zum Umgang mit der Änderung der Datei
             ' Zum Beispiel: Aktualisieren der Leistungsstufenliste
@@ -74,33 +76,36 @@ Namespace ViewModels
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
 
-        Private Sub OnTeilnehmerEntfernen(obj As Object)
-            ' Logik zum Entfernen eines Teilnehmers aus der Gruppe
-            ' Zum Beispiel:
-            ' Dim teilnehmer As Teilnehmer = CType(obj, Teilnehmer)
-            ' Gruppe.TeilnehmerListe.Remove(teilnehmer)
+
+        Private Sub OnTrainerGeaendert(sender As Object, e As TrainerEventArgs)
+            OnPropertyChanged(NameOf(Trainer))
         End Sub
 
-        Private Function CanTeilnehmerEntfernen() As Boolean
-            ' Logik zur Überprüfung, ob ein Teilnehmer entfernt werden kann
-            ' Zum Beispiel:
-            ' Return Gruppe.TeilnehmerListe.Count > 0
-            Return True ' Platzhalter
-        End Function
+        'Private Sub OnTeilnehmerEntfernen(obj As Object)
+        '    ' Logik zum Entfernen eines Teilnehmers aus der Gruppe
+        '    ' Zum Beispiel:
+        '    ' Dim teilnehmer As Teilnehmer = CType(obj, Teilnehmer)
+        '    ' Gruppe.TeilnehmerListe.Remove(teilnehmer)
+        'End Sub
 
-        Private Sub OnTrainerEntfernen(obj As Object)
-            ' Logik zum Entfernen eines Trainers aus der Gruppe
-            ' Zum Beispiel:
-            ' Dim trainer As Trainer = CType(obj, Trainer)
-            ' Gruppe.TrainerListe.Remove(trainer)
-        End Sub
+        'Private Function CanTeilnehmerEntfernen() As Boolean
+        '    ' Logik zur Überprüfung, ob ein Teilnehmer entfernt werden kann
+        '    ' Zum Beispiel:
+        '    ' Return Gruppe.TeilnehmerListe.Count > 0
+        '    Return True ' Platzhalter
+        'End Function
 
-        Private Function CanTrainerEntfernen() As Boolean
-            ' Logik zur Überprüfung, ob ein Trainer entfernt werden kann
-            ' Zum Beispiel:
-            ' Return Gruppe.TrainerListe.Count > 0
-            Return True ' Platzhalter
-        End Function
+        'Private Sub OnTrainerAusGruppeEntfernenCommand(obj As Object)
+        '    Dim TrainerService As New TrainerService
+        '    TrainerService.TrainerAusGruppeEntfernen()
+        'End Sub
+
+        'Private Function CanTrainerAusGruppeEntfernenCommand() As Boolean
+        '    ' Logik zur Überprüfung, ob ein Trainer entfernt werden kann
+        '    ' Zum Beispiel:
+        '    ' Return Gruppe.TrainerListe.Count > 0
+        '    Return True ' Platzhalter
+        'End Function
 
         Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
             Throw New NotImplementedException()

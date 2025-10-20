@@ -48,6 +48,8 @@ Namespace ViewModels
         Public Property ClubInfoPrintCommand As ICommand
         Public Property ClubCloseCommand As ICommand
 
+        Public Property OpenHomepageCommand As ICommand
+
         ' Einteilung Commands
         Public Property EinteilungErstellenCommand As ICommand
         Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
@@ -175,11 +177,11 @@ Namespace ViewModels
             LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
 
-            TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
-            TrainerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
-            TrainerAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusEinteilungEntfernen, Function() CanTrainerAusEinteilungEntfernen())
-            TrainerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
-            TrainerInEinteilungHinzufuegenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInEinteilungHinzufuegen, Function() CanTrainerInEinteilungHinzufuegen())
+            TrainerErstellenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
+            TrainerInGruppeEinteilenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
+            TrainerAusEinteilungEntfernenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerAusEinteilungEntfernen, Function() CanTrainerAusEinteilungEntfernen())
+            TrainerAusGruppeEntfernenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
+            TrainerInEinteilungHinzufuegenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerInEinteilungHinzufuegen, Function() CanTrainerInEinteilungHinzufuegen())
 
             TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
             TeilnehmerEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEinteilen, Function() CanTeilnehmerEinteilen())
@@ -200,25 +202,26 @@ Namespace ViewModels
         End Function
 
         Private Sub OnTrainerAusGruppeEntfernen(obj As Object)
-            Dim TrainerIDliste As New List(Of Guid) From {SelectedGruppe.TrainerID}
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerAusGruppeEntfernen(New TrainerServiceEventArgs(TrainerIDliste, SelectedEinteilung.Ident, SelectedGruppe.Ident))
+            TrainerService.TrainerAusGruppeEntfernen(SelectedGruppe.TrainerID, SelectedGruppe.Ident, SelectedEinteilung.Ident)
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
-            Throw New NotImplementedException()
+            Return SelectedGruppenloserTrainer IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
-            Throw New NotImplementedException()
+            Dim TrainerService As New TrainerService()
+            TrainerService.TrainerAusEinteilungEntfernen(SelectedGruppenloserTrainer.TrainerID, SelectedEinteilung.Ident)
         End Sub
 
         Private Function CanTrainerInGruppeEinteilen() As Boolean
-            Throw New NotImplementedException()
+            Return SelectedGruppenloserTrainer IsNot Nothing AndAlso SelectedGruppe IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerInGruppeEinteilen(obj As Object)
-            Throw New NotImplementedException()
+            Dim TrainerService As New TrainerService()
+            TrainerService.TrainerInGruppeEinteilen(SelectedGruppenloserTrainer.TrainerID, SelectedGruppe.Ident, SelectedEinteilung.Ident)
         End Sub
 
         Private Sub Handler_DateiService_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
@@ -231,24 +234,28 @@ Namespace ViewModels
                 DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             End If
         End Sub
 
         Private Sub Handler_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+            DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
+            DirectCast(TrainerInGruppeEinteilenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
+            DirectCast(TrainerAusEinteilungEntfernenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
+            DirectCast(TrainerErstellenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
+
+            DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
         End Sub
 
 
@@ -281,7 +288,7 @@ Namespace ViewModels
 
         Private ReadOnly DefaultWindowTitleText As String = "Groupies - Ski Club Management"
 
-        Private _WindowTitleText As String
+        Private _WindowTitleText As String = String.Empty
 
         Public Property WindowTitleText As String
             Get
@@ -332,6 +339,7 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
+                SelectedGruppenloserTrainer = Nothing
                 'OnPropertyChanged(NameOf(LeistungsstufenListe))
             End Set
         End Property
@@ -345,9 +353,21 @@ Namespace ViewModels
             Set(value As Gruppe)
                 _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
+                _SelectedGruppenloserTrainer = Nothing
                 'OnPropertyChanged(NameOf(SelectedGruppe))
             End Set
         End Property
+
+        Private _SelectedGruppenloserTrainer As Trainer
+        Public Property SelectedGruppenloserTrainer As Trainer
+            Get
+                Return _SelectedGruppenloserTrainer
+            End Get
+            Set(value As Trainer)
+                _SelectedGruppenloserTrainer = value
+            End Set
+        End Property
+
 
         Private _GruppendetailViewModel As GruppendetailViewModel
         Public Property GruppendetailViewModel As GruppendetailViewModel

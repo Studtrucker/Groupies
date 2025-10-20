@@ -14,7 +14,7 @@
 
     <Window.Resources>
         <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
-        <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
+        <!--<CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />-->
     </Window.Resources>
 
     <i:Interaction.Triggers>
@@ -331,9 +331,8 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Trainer einteilen" Command="{Binding TeilnehmerEinteilenCommand}"/>
-                                <MenuItem Header="Trainer erstellen" Command="{Binding TeilnehmerEinteilenCommand}"/>
-                                <MenuItem Header="Trainer löschen"   Command="{Binding TeilnehmerEinteilenCommand}"/>
+                                <MenuItem Header="Trainer einteilen" Command="{Binding TrainerInGruppeEinteilenCommand}"/>
+                                <MenuItem Header="Trainer löschen"   Command="{Binding TrainerAusEinteilungEntfernenCommand}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

@@ -25,7 +25,7 @@ Public Class DateiServiceTests
 
         Dim DateiService = New DateiService()
 
-        DateiService.DateiLaden()
+        DateiService.DateipfadAuswaehlen()
         DateiService.DateiSpeichern()
 
         Assert.IsTrue(DateiService.AktuelleDatei.Exists)
@@ -37,7 +37,7 @@ Public Class DateiServiceTests
 
         Dim DateiService = New DateiService()
 
-        DateiService.DateiLaden()
+        DateiService.DateipfadAuswaehlen()
         Dim Filename = "MeinClub1.ski"
         DateiService.DateiSpeichernAls(Filename)
 
@@ -53,7 +53,7 @@ Public Class DateiServiceTests
 
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei laden", GetFileInfoMode.Laden)
 
-        DateiService.DateiLaden(mFileInfo.FullName)
+        DateiService.DateiLaden(mFileInfo)
         DateiService.DateiSchliessen()
 
         Assert.IsNull(DateiService.AktuelleDatei)
@@ -68,7 +68,7 @@ Public Class DateiServiceTests
 
         Dim mFileInfo = DateiService.GetFileInfo(String.Empty, "Test Datei schliessen", GetFileInfoMode.Laden)
 
-        DateiService.DateiLaden(mFileInfo.FullName)
+        DateiService.DateiLaden(mFileInfo)
 
         Assert.AreEqual(mFileInfo.FullName, DateiService.AktuelleDatei.FullName)
 

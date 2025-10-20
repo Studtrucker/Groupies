@@ -14,6 +14,10 @@ Imports Groupies.UserControls
 Imports Microsoft.Win32
 
 Namespace ViewModels
+    Public Enum Printversion
+        TrainerInfo
+        TeilnehmerInfo
+    End Enum
 
     ''' <summary>
     ''' ViewModel für die Hauptansicht der Anwendung.
@@ -25,6 +29,59 @@ Namespace ViewModels
 #Region "Felder"
         Private ReadOnly _windowService As IWindowService
         Private ReadOnly DateiService As DateiService
+#End Region
+
+
+#Region "Command Properties"
+
+        'Window Commands
+        Public Property WindowLoadedCommand As ICommand
+        Public Property WindowClosedCommand As ICommand
+        Public Property WindowClosingCommand As ICommand
+
+        'Application Commands
+        Public Property ApplicationCloseCommand As ICommand
+        Public Property ClubNewCommand As ICommand
+        Public Property ClubOpenCommand As ICommand
+        Public Property ClubSaveCommand As ICommand
+        Public Property ClubSaveAsCommand As ICommand
+        Public Property ClubInfoPrintCommand As ICommand
+        Public Property ClubCloseCommand As ICommand
+
+        ' Einteilung Commands
+        Public Property EinteilungErstellenCommand As ICommand
+        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
+
+        ' Gruppen Commands
+        Public Property GruppeErstellenCommand As ICommand
+        Public Property GruppeLoeschenCommand As ICommand
+        Public Property GruppenuebersichtAnzeigenCommand As ICommand
+
+        ' Leistungsstufen Commands
+        Public Property LeistungsstufeErstellenCommand As ICommand
+        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
+
+        ' Faehigkeiten Commands
+        Public Property FaehigkeitErstellenCommand As ICommand
+        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
+
+        ' Teilnehmer Commands
+        Public Property TeilnehmerErstellenCommand As ICommand
+        Public Property TeilnehmerEinteilenCommand As ICommand
+        Public Property TeilnehmerBearbeitenCommand As ICommand
+        Public Property TeilnehmerLoeschenCommand As ICommand
+        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
+
+        ' Trainer Commands
+        Public Property TrainerErstellenCommand As ICommand
+        Public Property TrainerBearbeitenCommand As ICommand
+        Public Property TrainerLoeschenCommand As ICommand
+        Public Property TraineruebersichtAnzeigenCommand As ICommand
+        Public Property TrainerInGruppeEinteilenCommand As ICommand
+        Public Property TrainerAusGruppeEntfernenCommand As ICommand
+        Public Property TrainerInEinteilungHinzufuegenCommand As ICommand
+        Public Property TrainerAusEinteilungEntfernenCommand As ICommand
+
 #End Region
 
 #Region "Konstruktor"
@@ -39,39 +96,6 @@ Namespace ViewModels
 #End Region
 
 #Region "Window Events"
-
-        Private Sub DateiService_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
-            ' Es wird geprüft, ob die Property DateiService.AktuellerClub das Event ausgelöst hat.
-            If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
-                ' Commands sind hier als ICommand definiert, deshalb wird es in RelayCommand gecastet.
-                ' Die generische Klasse Relay Command, beinhaltet das Ereignis CanExecuteChanged und dieses wird hiermit ausgelöst
-                DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-                DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            End If
-        End Sub
-
-        Private Sub Me_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
-            If e.PropertyName = NameOf(SelectedEinteilung) Then
-                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-            End If
-        End Sub
-
 
         Private Sub OnWindowLoaded(obj As Object)
 
@@ -92,10 +116,14 @@ Namespace ViewModels
             '    Ruft eine Methode des RelayCommand auf, die die CanExecute‑Auswertung auslöst
             '    (benachrichtigt die UI, dass der Ausführbarkeitszustand neu berechnet werden soll).
             '    Dadurch werden z. B. Buttons aktiviert/deaktiviert, die an dieses Command gebunden sind.
-            AddHandler Me.PropertyChanged, AddressOf Me_PropertyChanged
-            AddHandler DateiService.PropertyChanged, AddressOf DateiService_PropertyChanged
 
             InitializeCommands()
+            AddHandler DateiService.DateiGeoeffnet, AddressOf SetProperties
+            AddHandler DateiService.DateiGeschlossen, AddressOf ResetProperties
+            AddHandler DateiService.DateiOeffnenIstFehlgeschlagen, AddressOf ZeigeFehlerMeldung
+
+            AddHandler Me.PropertyChanged, AddressOf Handler_PropertyChanged
+            AddHandler DateiService.PropertyChanged, AddressOf Handler_DateiService_PropertyChanged
 
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
@@ -105,20 +133,20 @@ Namespace ViewModels
             If (Environment.GetCommandLineArgs().Length = 2) Then
                 Dim args = Environment.GetCommandLineArgs
                 Dim filename = args(1)
-                DateiService.DateiLaden(filename)
+                DateiService.DateiLaden(New FileInfo(filename))
             Else
                 Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
                 If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
-                    DateiService.DateiLaden(LetzteDatei)
+                    DateiService.DateiLaden(New FileInfo(LetzteDatei))
                 End If
             End If
 
             If DateiService.AktuellerClub IsNot Nothing Then
                 RefreshMostRecentMenu()
                 RefreshJumpListInWinTaskbar()
-                SetProperties()
+                SetProperties(Me, EventArgs.Empty)
             Else
-                ResetProperties()
+                ResetProperties(Me, EventArgs.Empty)
             End If
 
         End Sub
@@ -146,115 +174,82 @@ Namespace ViewModels
             GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
             LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
+
             TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
+            TrainerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
+            TrainerAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusEinteilungEntfernen, Function() CanTrainerAusEinteilungEntfernen())
+            TrainerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
+            TrainerInEinteilungHinzufuegenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInEinteilungHinzufuegen, Function() CanTrainerInEinteilungHinzufuegen())
+
             TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
             TeilnehmerEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEinteilen, Function() CanTeilnehmerEinteilen())
 
         End Sub
 
-        Private Sub OnClubInfoPrint(obj As Printversion)
-            Dim dlg = New PrintDialog()
-            If dlg.ShowDialog = True Then
-                Dim doc As FixedDocument
-                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-                Dim pageMargin = New Thickness(30, 30, 30, 60)
-                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
-                dlg.PrintDocument(doc.DocumentPaginator, obj)
+        Private Function CanTrainerInEinteilungHinzufuegen() As Boolean
+            Return False
+        End Function
+
+        Private Sub OnTrainerInEinteilungHinzufuegen(obj As Object)
+            'Dim args As New TrainerEventArgs(TrainerIDList, EinteilungID)
+            'TrainerService.TrainerInEinteilungHinzufuegen(args)
+        End Sub
+
+        Private Function CanTrainerAusGruppeEntfernen() As Boolean
+            Return SelectedGruppe IsNot Nothing AndAlso SelectedGruppe.Trainer IsNot Nothing
+        End Function
+
+        Private Sub OnTrainerAusGruppeEntfernen(obj As Object)
+            Dim TrainerIDliste As New List(Of Guid) From {SelectedGruppe.TrainerID}
+            Dim TrainerService As New TrainerService()
+            TrainerService.TrainerAusGruppeEntfernen(New TrainerServiceEventArgs(TrainerIDliste, SelectedEinteilung.Ident, SelectedGruppe.Ident))
+        End Sub
+
+        Private Function CanTrainerAusEinteilungEntfernen() As Boolean
+            Throw New NotImplementedException()
+        End Function
+
+        Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
+            Throw New NotImplementedException()
+        End Sub
+
+        Private Function CanTrainerInGruppeEinteilen() As Boolean
+            Throw New NotImplementedException()
+        End Function
+
+        Private Sub OnTrainerInGruppeEinteilen(obj As Object)
+            Throw New NotImplementedException()
+        End Sub
+
+        Private Sub Handler_DateiService_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+            ' Es wird geprüft, ob die Property DateiService.AktuellerClub das Event ausgelöst hat.
+            If e.PropertyName = NameOf(DateiService.AktuellerClub) Then
+                ' Commands sind hier als ICommand definiert, deshalb wird es in RelayCommand gecastet.
+                ' Die generische Klasse Relay Command, beinhaltet das Ereignis CanExecuteChanged und dieses wird hiermit ausgelöst
+                DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                DirectCast(EinteilungsuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(GruppenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(LeistungsstufenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(FaehigkeitenuebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TraineruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmeruebersichtAnzeigenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(EinteilungErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(GruppeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(LeistungsstufeErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TrainerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             End If
         End Sub
 
-
-
-        Public Shared Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
-
-            ' ein paar Variablen setzen
-            Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
-            Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
-
-            ' ermitteln der tatsächlich verfügbaren Seitengröße
-            Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
-            Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
-
-            ' ermitteln der Anzahl Spalten und Zeilen
-            Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
-            Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
-
-            ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
-            If rowsPerPage = 0 Then rowsPerPage = 1
-            If columnsPerPage = 0 Then columnsPerPage = 1
-
-            Dim participantsPerPage As Integer = rowsPerPage * columnsPerPage
-
-
-            ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
-            Dim vMarginBetweenFriends As Double = 0
-            If rowsPerPage > 1 Then
-                Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
-                vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
-            End If
-
-            Dim hMarginBetweenFriends As Double = 0
-            If columnsPerPage > 1 Then
-                Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
-                hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
-            End If
-
-            'Todo: Berechnen, wie viele Teilnehmer auf einer Seite gedruckt werden können
-            Dim doc = New FixedDocument()
-            doc.DocumentPaginator.PageSize = pageSize
-            ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
-
-
-            ' nach AngezeigterName sortierte Liste verwenden
-            Dim sortedGroupView = New ListCollectionView(Einteilung.Gruppenliste)
-            'Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
-            sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
-
-            Dim skikursgruppe As Gruppe
-            Dim page As FixedPage = Nothing
-
-            ' durch die Gruppen loopen und Seiten generieren
-            For i As Integer = 0 To sortedGroupView.Count - 1
-                sortedGroupView.MoveCurrentToPosition(i)
-                skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
-
-                If i Mod participantsPerPage = 0 Then
-                    page = New FixedPage
-                    If page IsNot Nothing Then
-                        Dim content = New PageContent()
-                        TryCast(content, IAddChild).AddChild(page)
-                        doc.Pages.Add(content)
-                    End If
-                End If
-
-
-                ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
-                Dim pSkikursgruppe As IPrintableNotice
-                If Printversion = Printversion.TeilnehmerInfo Then
-                    pSkikursgruppe = New TeilnehmerAusdruckUserControl
-                Else
-                    pSkikursgruppe = New TrainerausdruckUserControl
-                End If
-
-                DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
-                DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
-
-                If String.IsNullOrWhiteSpace(Einteilung.Benennung) Then
-                    Einteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
-                End If
-
-                pSkikursgruppe.InitPropsFromGroup(skikursgruppe, Einteilung.Benennung)
-                Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
-                Dim currentColumn As Integer = i Mod columnsPerPage
-
-                FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
-                FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
-                page.Children.Add(pSkikursgruppe)
-            Next
-
-            Return doc
-
-        End Function
+        Private Sub Handler_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+            DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+        End Sub
 
 
         Private Sub OnWindowClose(obj As Object)
@@ -275,49 +270,6 @@ Namespace ViewModels
             DateiService.SpeicherZuletztVerwendeteDateienSortedList()
 
         End Sub
-
-#End Region
-
-#Region "Command Properties"
-        Public Property ApplicationCloseCommand As ICommand
-        Public Property WindowLoadedCommand As ICommand
-        Public Property WindowClosedCommand As ICommand
-        Public Property WindowClosingCommand As ICommand
-        Public Property ClubNewCommand As ICommand
-        Public Property ClubOpenCommand As ICommand
-        Public Property ClubSaveCommand As ICommand
-        Public Property ClubSaveAsCommand As ICommand
-        Public Property ClubInfoPrintCommand As ICommand
-        Public Property ClubCloseCommand As ICommand
-
-        Public Property EinteilungErstellenCommand As ICommand
-        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
-
-        Public Property GruppeErstellenCommand As ICommand
-        Public Property GruppeLoeschenCommand As ICommand
-        Public Property GruppenuebersichtAnzeigenCommand As ICommand
-
-        Public Property LeistungsstufeErstellenCommand As ICommand
-        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
-
-        Public Property FaehigkeitErstellenCommand As ICommand
-        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
-
-        Public Property TeilnehmerErstellenCommand As ICommand
-        Public Property TeilnehmerEinteilenCommand As ICommand
-        Public Property TeilnehmerBearbeitenCommand As ICommand
-        Public Property TeilnehmerLoeschenCommand As ICommand
-        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
-
-
-        Public Property TrainerErstellenCommand As ICommand
-        Public Property TrainerEinteilenCommand As ICommand
-        Public Property TrainerLoeschenCommand As ICommand
-        Public Property TrainerBearbeitenCommand As ICommand
-        Public Property TraineruebersichtAnzeigenCommand As ICommand
-
-
-
 
 #End Region
 
@@ -358,19 +310,18 @@ Namespace ViewModels
         ''' Alle Leistungsstufen des aktuellen Clubs.
         ''' </summary>
         ''' <remarks>Diese Property wird in der View für die Anzeige der Einteilungen verwendet.</remarks>
-        Public ReadOnly Property LeistungsstufenListe As LeistungsstufeCollection
+        Public Property LeistungsstufenListe As LeistungsstufeCollection
             Get
-                Return GetLeistungsstufen()
+                If DateiService.AktuellerClub IsNot Nothing Then
+                    Return DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+                End If
+                Return Nothing
             End Get
+            Set(value As LeistungsstufeCollection)
+                DateiService.AktuellerClub.Leistungsstufenliste = value
+            End Set
         End Property
 
-        Public Shared Function GetLeistungsstufen() As ObservableCollection(Of Leistungsstufe)
-            If DateiService.AktuellerClub IsNot Nothing Then
-                'Return New ObservableCollection(Of Leistungsstufe)(DateiService.AktuellerClub.Leistungsstufenliste)
-                Return DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
-            End If
-            Return Nothing
-        End Function
 
         Private _SelectedEinteilung As Einteilung
 
@@ -381,7 +332,7 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
-                OnPropertyChanged(NameOf(LeistungsstufenListe))
+                'OnPropertyChanged(NameOf(LeistungsstufenListe))
             End Set
         End Property
 
@@ -394,7 +345,7 @@ Namespace ViewModels
             Set(value As Gruppe)
                 _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
-                OnPropertyChanged(NameOf(SelectedGruppe))
+                'OnPropertyChanged(NameOf(SelectedGruppe))
             End Set
         End Property
 
@@ -595,7 +546,7 @@ Namespace ViewModels
         Private Sub OnClubNew(obj As Object)
             DateiService.NeueDateiErstellen()
             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            SetProperties()
+            SetProperties(Me, EventArgs.Empty)
         End Sub
 
         ''' <summary>
@@ -604,8 +555,7 @@ Namespace ViewModels
         ''' </summary>
         ''' <param name="obj"></param>
         Private Sub OnClubOpen(obj As Object)
-            MessageBox.Show(DateiService.DateiLaden())
-            SetProperties()
+            DateiService.DateiOeffnen()
         End Sub
 
         Private Sub OnClubSave(obj As Object)
@@ -614,12 +564,10 @@ Namespace ViewModels
 
         Private Sub OnClubSaveAs(obj As Object)
             DateiService.DateiSpeichernAls()
-            SetProperties()
+            SetProperties(Me, EventArgs.Empty)
         End Sub
         Private Sub OnClubClose(obj As Object)
             DateiService.DateiSchliessen()
-
-            ResetProperties()
         End Sub
 
         ''' <summary>
@@ -630,12 +578,39 @@ Namespace ViewModels
             MessageBox.Show(DateiService.DateiLaden(sender))
         End Sub
 
-        Private Sub SetProperties()
+        Private Sub SetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.Einteilungsliste)
+
+            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+
+            ZeigeErfolgsMeldung(Me, e)
+
         End Sub
-        Private Sub ResetProperties()
+
+        Private Sub ResetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText
+            AlleEinteilungenCV = Nothing
+
+            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+
+        End Sub
+        Private Sub ZeigeFehlerMeldung(sender As Object, e As DateiEventArgs)
+            MessageBox.Show(e.DateiPfad, "Fehler beim Öffnen der Datei", MessageBoxButton.OK, MessageBoxImage.Error)
+        End Sub
+        Private Sub ZeigeErfolgsMeldung(sender As Object, e As DateiEventArgs)
+            MessageBox.Show(e.DateiPfad, "Datei öffnen erfolgreich", MessageBoxButton.OK, MessageBoxImage.Information)
+        End Sub
+        Private Sub ZeigeErfolgsMeldung(sender As Object, e As EventArgs)
+            ' Nur eine leere Methode, um den Aufruf konsistent zu halten.
         End Sub
 
         Private Sub OnFaehigkeitenuebersichtAnzeigen(obj As Object)
@@ -867,6 +842,108 @@ Namespace ViewModels
             Next
         End Sub
 
+        Private Sub OnClubInfoPrint(obj As Printversion)
+            Dim dlg = New PrintDialog()
+            If dlg.ShowDialog = True Then
+                Dim doc As FixedDocument
+                Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+                Dim pageMargin = New Thickness(30, 30, 30, 60)
+                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
+                dlg.PrintDocument(doc.DocumentPaginator, obj)
+            End If
+        End Sub
+
+        Public Shared Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
+
+            ' ein paar Variablen setzen
+            Dim printFriendHeight As Double = 1000 ' Breite einer Gruppe
+            Dim printFriendWidth As Double = 730 '  Höhe einer Gruppe
+
+            ' ermitteln der tatsächlich verfügbaren Seitengröße
+            Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom
+            Dim availablePageWidth As Double = pageSize.Width - pageMargin.Left - pageMargin.Right
+
+            ' ermitteln der Anzahl Spalten und Zeilen
+            Dim rowsPerPage As Integer = CType(Math.Floor(availablePageHeight / printFriendHeight), Integer)
+            Dim columnsPerPage As Integer = CType(Math.Floor(availablePageWidth / printFriendWidth), Integer)
+
+            ' mindestens eine Zeile und Spalte verwenden, damit beim späteren Loop keine Endlos-Schleife entsteht
+            If rowsPerPage = 0 Then rowsPerPage = 1
+            If columnsPerPage = 0 Then columnsPerPage = 1
+
+            Dim participantsPerPage As Integer = rowsPerPage * columnsPerPage
+
+
+            ' ermitteln der vertikalen und horizontalen Abstände zwischen Freunden
+            Dim vMarginBetweenFriends As Double = 0
+            If rowsPerPage > 1 Then
+                Dim vLeftOverSpace As Double = availablePageHeight - (printFriendHeight * rowsPerPage)
+                vMarginBetweenFriends = vLeftOverSpace / (rowsPerPage - 1)
+            End If
+
+            Dim hMarginBetweenFriends As Double = 0
+            If columnsPerPage > 1 Then
+                Dim hLeftOverSpace As Double = availablePageWidth - (printFriendWidth * columnsPerPage)
+                hMarginBetweenFriends = hLeftOverSpace / (columnsPerPage - 1)
+            End If
+
+            'Todo: Berechnen, wie viele Teilnehmer auf einer Seite gedruckt werden können
+            Dim doc = New FixedDocument()
+            doc.DocumentPaginator.PageSize = pageSize
+            ' Objekte in der Skischule neu lesen, falls etwas geändert wurde
+
+
+            ' nach AngezeigterName sortierte Liste verwenden
+            Dim sortedGroupView = New ListCollectionView(Einteilung.Gruppenliste)
+            'Dim sortedGroupView = New ListCollectionView(AppController.AktuellerClub.SelectedEinteilung.EinteilungAlleGruppen)
+            sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+
+            Dim skikursgruppe As Gruppe
+            Dim page As FixedPage = Nothing
+
+            ' durch die Gruppen loopen und Seiten generieren
+            For i As Integer = 0 To sortedGroupView.Count - 1
+                sortedGroupView.MoveCurrentToPosition(i)
+                skikursgruppe = CType(sortedGroupView.CurrentItem, Gruppe)
+
+                If i Mod participantsPerPage = 0 Then
+                    page = New FixedPage
+                    If page IsNot Nothing Then
+                        Dim content = New PageContent()
+                        TryCast(content, IAddChild).AddChild(page)
+                        doc.Pages.Add(content)
+                    End If
+                End If
+
+
+                ' Printable-Control mit Group-Objekt initialisieren und zur Page hinzufügen
+                Dim pSkikursgruppe As IPrintableNotice
+                If Printversion = Printversion.TeilnehmerInfo Then
+                    pSkikursgruppe = New TeilnehmerAusdruckUserControl
+                Else
+                    pSkikursgruppe = New TrainerausdruckUserControl
+                End If
+
+                DirectCast(pSkikursgruppe, UserControl).Height = printFriendHeight
+                DirectCast(pSkikursgruppe, UserControl).Width = printFriendWidth
+
+                If String.IsNullOrWhiteSpace(Einteilung.Benennung) Then
+                    Einteilung.Benennung = InputBox("Bitte diese Einteilung benennen")
+                End If
+
+                pSkikursgruppe.InitPropsFromGroup(skikursgruppe, Einteilung.Benennung)
+                Dim currentRow As Integer = (i Mod participantsPerPage) / columnsPerPage
+                Dim currentColumn As Integer = i Mod columnsPerPage
+
+                FixedPage.SetTop(pSkikursgruppe, pageMargin.Top + ((DirectCast(pSkikursgruppe, UserControl).Height + vMarginBetweenFriends) * currentRow))
+                FixedPage.SetLeft(pSkikursgruppe, pageMargin.Left + ((DirectCast(pSkikursgruppe, UserControl).Width + hMarginBetweenFriends) * currentColumn))
+                page.Children.Add(pSkikursgruppe)
+            Next
+
+            Return doc
+
+        End Function
+
 #End Region
 
 #Region "Methoden zum Laden der meist genutzten Groupies und der letzten Groupies Datei"
@@ -945,8 +1022,4 @@ Namespace ViewModels
 
     End Class
 
-    Public Enum Printversion
-        TrainerInfo
-        TeilnehmerInfo
-    End Enum
 End Namespace

@@ -18,6 +18,10 @@ Namespace ViewModels
 
 #Region "Ereignisse"
         Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
+        'Private Sub OnModelChangedE()
+        '    RaiseEvent ModelChangedEvent(Me, False)
+        'End Sub
+
 
 #End Region
 
@@ -29,8 +33,19 @@ Namespace ViewModels
             TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
             TrainerEntfernen = New RelayCommand(Of Object)(AddressOf OnTrainerEntfernen, Function() CanTrainerEntfernen())
 
+            AddHandler DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
+            AddHandler DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
+
         End Sub
 
+
+        Private Sub OnDateiGeOeffnet()
+            Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        End Sub
+
+        Private Sub OnDateiGeschlossen()
+            Me.LeistungsstufenListe = Nothing
+        End Sub
 
 #End Region
 

@@ -38,7 +38,7 @@
                     </i:Interaction.Triggers>
                                        
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Alias" Binding="{Binding [Alias]}" SortMemberPath="[Alias]" Width="Auto"/>
+                        <DataGridTextColumn Header="Alias" Binding="{Binding Alias}" SortMemberPath="Alias" Width="Auto"/>
                         <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname}" SortMemberPath="Vorname" Width="Auto"/>
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                     </DataGrid.Columns>

@@ -3,6 +3,7 @@ Imports System.IO.IsolatedStorage
 Imports System.Xml.Serialization
 Imports Groupies.Controller
 Imports Groupies.Entities
+Imports Groupies.ViewModels
 Imports Microsoft.Win32
 
 
@@ -20,6 +21,92 @@ Namespace Services
     Public Class DateiService
         Inherits BaseModel
 
+#Region "Events und EventArgs"
+        ''' <summary>
+        ''' Datei-bezogene Events.
+        ''' </summary>
+        Public Shared Event DateiGeoeffnet As EventHandler(Of DateiEventArgs)
+        Public Shared Event DateiOeffnenIstFehlgeschlagen As EventHandler(Of DateiEventArgs)
+        Public Shared Event DateiGeschlossen As EventHandler(Of EventArgs)
+
+#End Region
+
+        ' Methoden zum sicheren Auslösen des Events (protected/overridable wenn nötig)
+        Protected Overridable Sub OnDateiGeoeffnet(e As DateiEventArgs)
+            RaiseEvent DateiGeoeffnet(Me, e)
+        End Sub
+
+        Protected Overridable Sub OnDateiOeffnenIstFehlgeschlagen(e As DateiEventArgs)
+            RaiseEvent DateiOeffnenIstFehlgeschlagen(Me, e)
+        End Sub
+
+        Protected Overridable Sub OnDateiGeschlossen(e As EventArgs)
+            RaiseEvent DateiGeschlossen(Me, e)
+        End Sub
+
+
+        ''' <summary>
+        ''' Schliesst eine Datei und löst das DateiGeschlossen Event aus.
+        ''' </summary>
+        ''' <param name="Dateipfad"></param>
+        Public Sub DateiOeffnen(Dateipfad As String)
+            DateiService.AktuelleDatei = New FileInfo(Dateipfad)
+            'DateiService.AktuellerClub = 
+            Dim args As New DateiEventArgs(Dateipfad)
+            OnDateiGeoeffnet(args)
+        End Sub
+
+        ''' <summary>
+        ''' Schliesst eine Datei und löst das DateiGeschlossen Event aus.
+        ''' </summary>
+        Public Sub DateiOeffnen()
+            Dim AusgewaehlterPfad = DateipfadAuswaehlen()
+
+            ' Bekommt das Ergebnis der Prüfung zurück
+            Dim Result As String = String.Empty
+            Dim IsValid = DateiPruefenUndOeffnen(AusgewaehlterPfad, Result)
+
+            Dim args As New DateiEventArgs(Result)
+
+            If IsValid Then
+                DateiLaden(AusgewaehlterPfad)
+                OnDateiGeoeffnet(args)
+            Else
+                OnDateiOeffnenIstFehlgeschlagen(args)
+            End If
+
+        End Sub
+
+        Private Function DateiPruefenUndOeffnen(Dateipfad As FileInfo, ByRef Meldung As String) As Boolean
+            ' Hier können weitere Prüfungen hinzugefügt werden, z.B. Dateiformat, Zugriffsrechte, etc.
+            If Dateipfad Is Nothing Then
+                Meldung = "Datei öffnen wurde abgebrochen"
+                Return False
+            End If
+            If String.IsNullOrEmpty(Dateipfad.FullName) OrElse Not File.Exists(Dateipfad.FullName) Then
+                Meldung = "Datei existiert nicht"
+                Return False
+            End If
+            If Not Path.GetExtension(Dateipfad.FullName) = ".ski" Then
+                Meldung = "Datei ist keine Groupies Datei"
+                Return False
+            End If
+
+            If AktuelleDatei IsNot Nothing AndAlso Dateipfad.FullName = AktuelleDatei.FullName Then
+                Meldung = $"Der Club '{AktuellerClub.ClubName}' ist bereits geöffnet"
+                Return False
+            End If
+
+            Meldung = $"Die Datei {Dateipfad.Name} wurde erfolgreich geladen"
+
+            ' Weitere Prüfungen können hier hinzugefügt werden
+            Return True
+        End Function
+
+        ''' <summary>
+        ''' Konstruktor der DateiService Klasse.
+        ''' Initialisiert die ZuletztVerwendeteDateienSortedList.
+        ''' </summary>
         Public Sub New()
             ZuletztVerwendeteDateienSortedList = New SortedList(Of Integer, String)()
         End Sub
@@ -35,7 +122,7 @@ Namespace Services
         ''' Wenn keine Datei geladen ist, ist dieser Wert Nothing.
         ''' </summary>
         ''' <returns></returns>
-        Public Property AktuelleDatei As FileInfo
+        Public Shared Property AktuelleDatei As FileInfo
 
         ''' <summary>
         ''' Ist der aktuell geladene Club.
@@ -80,29 +167,21 @@ Namespace Services
 
         End Sub
 
-        Public Function DateiLaden() As String
-
-            Dim mAktuelleDatei = GetFileInfo(String.Empty, "Club laden", GetFileInfoMode.Laden)
-
-            If mAktuelleDatei IsNot Nothing Then
-                Return DateiLaden(mAktuelleDatei.FullName)
-            End If
-
-            Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
-
+        Public Function DateipfadAuswaehlen() As FileInfo
+            Return GetFileInfo(String.Empty, "Club öffnen", GetFileInfoMode.Laden)
         End Function
 
-        Public Function DateiLaden(FileFullname As String) As String
+        Public Function DateiLaden(File As FileInfo) As String
 
-            If FileFullname Is Nothing OrElse String.IsNullOrEmpty(FileFullname) Then
+            If File Is Nothing OrElse String.IsNullOrEmpty(File.FullName) Then
                 Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
             End If
 
-            If AktuelleDatei IsNot Nothing AndAlso FileFullname.Equals(AktuelleDatei.FullName) Then
+            If AktuelleDatei IsNot Nothing AndAlso File.FullName.Equals(AktuelleDatei.FullName) Then
                 Return $"Der Club '{AktuellerClub.ClubName}' ist bereits geöffnet"
             End If
 
-            AktuelleDatei = New FileInfo(FileFullname)
+            AktuelleDatei = New FileInfo(File.FullName)
             AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
             SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
 
@@ -163,14 +242,12 @@ Namespace Services
 
 
         ''' <summary>
-        ''' Schliesst die aktuell geöffnete Datei und setzt den aktuellen Club auf Nothing.
-        ''' Dies wird aufgerufen, wenn der Benutzer eine Datei schließt.
+        ''' Schliesst eine Datei und löst das DateiGeschlossen Event aus.
         ''' </summary>
-        ''' <remarks>Die Datei wird nicht gespeichert, wenn sie nicht explizit gespeichert wurde.</remarks>
         Public Sub DateiSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
-
+            OnDateiGeschlossen(EventArgs.Empty)
         End Sub
 
 #End Region

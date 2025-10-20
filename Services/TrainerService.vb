@@ -6,6 +6,9 @@ Namespace Services
 
         Public Event TrainerInGruppeEingeteilt As EventHandler(Of TrainerServiceEventArgs)
         Public Event TrainerAusGruppeEntfernt As EventHandler(Of TrainerServiceEventArgs)
+        Public Event TrainerEinteilungHinzugefuegt As EventHandler(Of TrainerServiceEventArgs)
+        Public Event TrainerAusEinteilungEntfernt As EventHandler(Of TrainerServiceEventArgs)
+
 
         ''' <summary>
         ''' Club-Instanz
@@ -13,12 +16,18 @@ Namespace Services
         Public Sub New()
         End Sub
 
-
         Protected Overridable Sub OnTrainerInGruppeEingeteilt(e As TrainerServiceEventArgs)
             RaiseEvent TrainerInGruppeEingeteilt(Me, e)
         End Sub
         Protected Overridable Sub OnTrainerAusGruppeEntfernt(e As TrainerServiceEventArgs)
             RaiseEvent TrainerAusGruppeEntfernt(Me, e)
+        End Sub
+
+        Protected Overridable Sub OnTrainerEinteilungHinzugefuegt(e As TrainerServiceEventArgs)
+            RaiseEvent TrainerAusEinteilungEntfernt(Me, e)
+        End Sub
+        Protected Overridable Sub OnTrainerAusEinteilungEntfernt(e As TrainerServiceEventArgs)
+            RaiseEvent TrainerAusEinteilungEntfernt(Me, e)
         End Sub
 
         ''' <summary>
@@ -74,7 +83,7 @@ Namespace Services
             Club.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Add(AktuellerTrainer)
             Club.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Add(AktuellerTrainerID)
 
-            OnTrainerInGruppeEingeteilt(EventArgs.Empty)
+            OnTrainerAusGruppeEntfernt(EventArgs.Empty)
 
         End Sub
 
@@ -95,7 +104,7 @@ Namespace Services
                                                                                           End If
                                                                                       End Sub))
 
-            OnTrainerInGruppeEingeteilt(EventArgs.Empty)
+            OnTrainerAusEinteilungEntfernt(EventArgs.Empty)
 
         End Sub
 
@@ -104,13 +113,48 @@ Namespace Services
         ''' </summary>
         ''' <param name="TrainerID"></param>
         ''' <param name="EinteilungID"></param>
-        Public Sub TrainerInEinteilungHinzufuegen(TrainerID As Guid, EinteilungID As Guid)
+        Public Sub TrainerEinteilungHinzufuegen(TrainerID As Guid, EinteilungID As Guid)
 
             Club.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Add(TrainerLesen(TrainerID))
             Club.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Add(TrainerID)
 
-            OnTrainerInGruppeEingeteilt(EventArgs.Empty)
+            OnTrainerEinteilungHinzugefuegt(EventArgs.Empty)
 
+        End Sub
+
+        ''' <summary>
+        ''' Vorhandener Trainer wird bearbeitet
+        ''' </summary>
+        ''' <param name="e"></param>
+        Public Sub TrainerBearbeiten(e As TrainerServiceEventArgs)
+            Dim ZuBearbeitenderTrainer = TrainerLesen(e.TrainerIDListe(0))
+            ZuBearbeitenderTrainer.Vorname = e.NeueTrainerdaten.Vorname
+            ZuBearbeitenderTrainer.Nachname = e.NeueTrainerdaten.Nachname
+            ZuBearbeitenderTrainer.Telefonnummer = e.NeueTrainerdaten.Telefonnummer
+            ZuBearbeitenderTrainer.EMail = e.NeueTrainerdaten.EMail
+            ZuBearbeitenderTrainer.Alias = e.NeueTrainerdaten.Alias
+            ZuBearbeitenderTrainer.Foto = e.NeueTrainerdaten.Foto
+
+            ' den Trainer in allen Gruppen austauschen
+        End Sub
+
+        Public Sub TrainerHinzufuegen(e As TrainerServiceEventArgs)
+            Club.Trainerliste.Add(e.NeueTrainerdaten)
+        End Sub
+
+        Public Sub TrainerLoeschen(e As TrainerServiceEventArgs)
+            Dim TrainerID = e.TrainerIDListe(0)
+            Dim Trainer = TrainerLesen(TrainerID)
+            ' Zuerst aus allen Einteilungen entfernen
+            Club.Einteilungsliste.ToList.ForEach(Sub(El) El.VerfuegbareTrainerListe.Remove(Trainer))
+            Club.Einteilungsliste.ToList.ForEach(Sub(El) El.Gruppenliste.ToList.ForEach(Sub(G)
+                                                                                            If G.TrainerID = TrainerID Then
+                                                                                                G.Trainer = Nothing
+                                                                                                G.TrainerID = Nothing
+                                                                                            End If
+                                                                                        End Sub))
+            ' Dann aus der Trainerliste entfernen
+            Club.Trainerliste.Remove(Trainer)
         End Sub
 
         Private Function TrainerLesen(TrainerID As Guid) As Trainer

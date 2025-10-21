@@ -35,7 +35,7 @@ Public Module MappingGeneration2
                                        .Ident = Guid.NewGuid,
                                        .GruppenIDListe = New ObservableCollection(Of Guid)(From G In EindeutigeGruppen Select G.Ident),
                                        .Gruppenliste = EindeutigeGruppen,
-                                       .VerfuegbareTrainerListe = GetVerfuegbareTrainer(Skiclub),
+                                       .VerfuegbareTrainerListe = GetGeneration4TrainerlisteAusG4Trainerliste(Skiclub),
                                        .VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)(From T In GetVerfuegbareTrainer(Skiclub) Select T.TrainerID),
                                        .NichtZugewieseneTeilnehmerListe = NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen),
                                        .NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)(From T In NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen) Select T.Ident)})
@@ -128,6 +128,12 @@ Public Module MappingGeneration2
 
     End Function
 
+
+    ''' <summary>
+    ''' Zur Erstellung der allgemeinen Groupies.Services.DateiService.AktuellerClub.Trainerliste
+    ''' </summary>
+    ''' <param name="Trainer"></param>
+    ''' <returns></returns>
     Private Function GetGeneration4TrainerListe(Trainer As Generation2.TrainerCollection) As Generation4.TrainerCollection
 
         ' Entferne doppelte Trainer und wandle in Generation 4 Trainer um
@@ -149,6 +155,27 @@ Public Module MappingGeneration2
                                                                                                                                  .[Alias] = T.Spitzname,
                                                                                                                                  .Foto = T.Foto}
                                                                                                                            End Function))
+        Return TrainerG4
+
+    End Function
+
+
+    ''' <summary>
+    ''' Zur Erstellung der Einteilung.VerfuegbareTrainerliste.
+    ''' Die entnimmt die bereits erstellten Objekte aus der Trainerliste
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetGeneration4TrainerlisteAusG4Trainerliste(Skiclub As Generation2.Club) As Generation4.TrainerCollection
+
+        Dim TrainerG2 = Skiclub.GruppenloseTrainer
+
+        Dim GlobaleTrainerliste = Groupies.Services.DateiService.AktuellerClub.Trainerliste
+        Dim TrainerG4 = New Generation4.TrainerCollection
+
+        For Each G2T In TrainerG2
+            TrainerG4.Add(GlobaleTrainerliste.Where(Function(TG4) TG4.TrainerID = G2T.TrainerID).SingleOrDefault)
+        Next
         Return TrainerG4
 
     End Function

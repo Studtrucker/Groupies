@@ -80,7 +80,7 @@
                           DisplayMemberPath="Benennung"/>
    
                 <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
-                          Text="{Binding Trainer.VorNachnameAlias, Mode=OneWay}">
+                          Text="{Binding Trainer.VorNachname, Mode=OneWay}">
                     
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">

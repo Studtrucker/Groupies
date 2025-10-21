@@ -24,6 +24,8 @@ Namespace Services
             ' Aktuellen Trainer und Neuer Trainer auslesen
             Dim NeuerTrainer = TrainerLesen(NeuerTrainerID)
             Dim AktuellerTrainer = TrainerLesen(DateiService.AktuellerClub.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.TrainerID)
+            Dim AktuelleGruppe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single
+            Dim AktuelleEinteilung = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single
 
             ' Wenn bereits ein Trainer zugewiesen ist, diesen zuerst entfernen
             If AktuellerTrainer IsNot Nothing Then
@@ -32,12 +34,14 @@ Namespace Services
             End If
 
             ' In TrainerID und Trainer in Gruppe schreiben ...
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.TrainerID = NeuerTrainerID
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.Trainer = NeuerTrainer
+            AktuelleGruppe.TrainerID = NeuerTrainerID
+            AktuelleGruppe.Trainer = NeuerTrainer
 
             ' ... aus VerfügbareTrainer entfernen
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Remove(NeuerTrainer)
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Remove(NeuerTrainerID)
+            AktuelleEinteilung.VerfuegbareTrainerListe.Remove(AktuelleEinteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = NeuerTrainerID).Single)
+            ' Todo: nächste Zeile wieder aktivieren. Warum wird der neueTrainer nicht aus der Auflistung entfernt? Unterschiedliche Objekte?
+            'AktuelleEinteilung.VerfuegbareTrainerListe.Remove(NeuerTrainer)
+            AktuelleEinteilung.VerfuegbareTrainerIDListe.Remove(NeuerTrainerID)
 
             OnTrainerGeaendert(New TrainerEventArgs(NeuerTrainer))
 

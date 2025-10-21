@@ -175,12 +175,24 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public ReadOnly Property VorNachnameAlias As String
             Get
-                If _Alias Is Nothing And Nachname Is Nothing Then
-                    Return Vorname
-                ElseIf _Alias Is Nothing Then
-                    Return $"{Vorname} {Nachname}"
+                If _Alias Is Nothing Then
+                    Return VorNachname
                 Else
                     Return [Alias]
+                End If
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Zusammengefasster Vor- und Nachname. Ist der Nachname unbekannt, wird nur der Vorname geliefert.
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property VorNachname As String
+            Get
+                If Nachname Is Nothing Then
+                    Return Vorname
+                Else
+                    Return $"{Vorname} {Nachname}"
                 End If
             End Get
         End Property

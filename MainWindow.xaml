@@ -306,10 +306,9 @@
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
                               AutoGenerateColumns="False" SelectionUnit="FullRow"
                               SelectedItem="{Binding SelectedGruppenloserTrainer}"  
-                              local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTrainer}"
                               IsReadOnly="True" CanUserAddRows="False" SelectionMode="Extended" >
-                                <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
-                        <!---->
+                        <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
+                        <!--local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTrainer}"-->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding Path= TrainerInGruppeEinteilenCommand}"/>
@@ -324,7 +323,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding VorNachnameAlias}" Width="*"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding VorNachname}" Width="*"/>
                         </DataGrid.Columns>
 
                         <DataGrid.ContextMenu>

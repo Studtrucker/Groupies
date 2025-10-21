@@ -126,6 +126,7 @@ Namespace ViewModels
 
             AddHandler Me.PropertyChanged, AddressOf Handler_PropertyChanged
             AddHandler DateiService.PropertyChanged, AddressOf Handler_DateiService_PropertyChanged
+            AddHandler TrainerService.TrainerGeaendert, AddressOf Handler_TrainerService_TrainerGeaendert
 
 
             ' 3. SortedList für meist genutzte Skischulen befüllen
@@ -151,6 +152,10 @@ Namespace ViewModels
                 ResetProperties(Me, EventArgs.Empty)
             End If
 
+        End Sub
+
+        Private Sub Handler_TrainerService_TrainerGeaendert(sender As Object, e As TrainerEventArgs)
+            OnPropertyChanged(NameOf(VerfuegbareTrainerListe))
         End Sub
 
         Private Sub InitializeCommands()
@@ -207,13 +212,13 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
-            Return True
+            Return SelectedGruppenloserTrainer IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
             Return SelectedAlleGruppenloserTrainer IsNot Nothing AndAlso SelectedAlleGruppenloserTrainer.Count > 0 AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerAusEinteilungEntfernen(SelectedAlleGruppenloserTrainer, SelectedEinteilung.Ident)
+            TrainerService.TrainerAusEinteilungEntfernen(SelectedGruppenloserTrainer, SelectedEinteilung.Ident)
         End Sub
 
         Private Function CanTrainerInGruppeEinteilen() As Boolean

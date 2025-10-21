@@ -208,7 +208,7 @@ Namespace ViewModels
 
         Private Sub OnTrainerAusGruppeEntfernen(obj As Object)
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerAusGruppeEntfernen(SelectedGruppe.TrainerID, SelectedGruppe.Ident, SelectedEinteilung.Ident)
+            TrainerService.TrainerAusGruppeEntfernen(SelectedGruppe, SelectedEinteilung)
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
@@ -218,7 +218,7 @@ Namespace ViewModels
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerAusEinteilungEntfernen(SelectedGruppenloserTrainer, SelectedEinteilung.Ident)
+            TrainerService.TrainerAusEinteilungEntfernen(SelectedGruppenloserTrainer, SelectedEinteilung)
         End Sub
 
         Private Function CanTrainerInGruppeEinteilen() As Boolean
@@ -227,7 +227,7 @@ Namespace ViewModels
 
         Private Sub OnTrainerInGruppeEinteilen(obj As Object)
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerInGruppeEinteilen(SelectedGruppenloserTrainer.TrainerID, SelectedGruppe.Ident, SelectedEinteilung.Ident)
+            TrainerService.TrainerInGruppeEinteilen(SelectedGruppenloserTrainer, SelectedGruppe, SelectedEinteilung)
         End Sub
 
         Private Sub Handler_DateiService_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)

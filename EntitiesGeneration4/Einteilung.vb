@@ -252,6 +252,11 @@ Namespace Entities.Generation4
             NichtZugewieseneTeilnehmerListe.Remove(Teilnehmer)
         End Sub
 
+        Public Overrides Function ToString() As String
+            Return Benennung
+        End Function
+
+
         Public Sub speichern() Implements IModel.speichern
             Throw New NotImplementedException()
         End Sub

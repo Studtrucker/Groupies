@@ -5,116 +5,93 @@ Namespace Services
     Public Class TeilnehmerService
 
         Public Shared Event TeilnehmerGeaendert As EventHandler(Of EventArgs)
+
         Public Sub New()
         End Sub
 
-        Protected Overridable Sub OnTrainerGeaendert(e As EventArgs)
+        Protected Overridable Sub OnTeilnehmerGeaendert(e As EventArgs)
             RaiseEvent TeilnehmerGeaendert(Me, e)
         End Sub
 
         ''' <summary>
-        ''' Teilnehmer in Gruppe einteilen und aus NichtZugewieseneTeilnehmer entfernen
+        ''' Eine Liste von Teilnehmern in eine Gruppe einteilen und aus der Liste nicht zugewiesene Teilnehmer entfernen
         ''' </summary>
-        ''' <param name="NeuerTeilnehmerIDListe"></param>
-        ''' <param name="GruppenID"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TeilnehmerInGruppeEinteilen(NeuerTeilnehmerIDListe As List(Of Guid), GruppenID As Guid, EinteilungID As Guid)
+        ''' <param name="NeueTeilnehmerListe"></param>
+        ''' <param name="Gruppe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TeilnehmerInGruppeEinteilen(NeueTeilnehmerListe As List(Of Teilnehmer), Gruppe As Gruppe, Einteilung As Einteilung)
 
             ' In Teilnehmerliste in Gruppe schreiben ...
-            Dim Gruppe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single
-            For Each ID In NeuerTeilnehmerIDListe
-                Gruppe.Mitgliederliste.Add(TeilnehmerLesen(ID))
-                Gruppe.MitgliederIDListe.Add(ID)
+            For Each Item In NeueTeilnehmerListe
+                Gruppe.Mitgliederliste.Add(Item)
+                Gruppe.MitgliederIDListe.Add(Item.Ident)
             Next
 
             ' ... aus NichtZugewieseneTeilnehmer entfernen
-            Dim NichtZugewieseneTeilnehmerListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerListe
-            Dim NichtZugewieseneTeilnehmerIDListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerIDListe
-            For Each ID In NeuerTeilnehmerIDListe
-                NichtZugewieseneTeilnehmerListe.Remove(TeilnehmerLesen(ID))
-                NichtZugewieseneTeilnehmerIDListe.Remove(ID)
+            For Each Teilnehmer In NeueTeilnehmerListe
+                Einteilung.NichtZugewieseneTeilnehmerIDListe.Remove(Teilnehmer.Ident)
+                Einteilung.NichtZugewieseneTeilnehmerListe.Remove(Einteilung.NichtZugewieseneTeilnehmerListe.Where(Function(T) T.Ident = Teilnehmer.Ident).Single)
             Next
 
-            OnTrainerGeaendert(EventArgs.Empty)
+            OnTeilnehmerGeaendert(EventArgs.Empty)
 
         End Sub
 
-        Public Sub TeilnehmerAusGruppeEntfernen(TeilnehmerIDListe As List(Of Guid), GruppenID As Guid, EinteilungID As Guid)
+        ''' <summary>
+        ''' Eine Liste von Teilnehmern aus einer Gruppe eintfernen und in die Liste nicht zugewiesene Teilnehmer hinzufügen.
+        ''' </summary>
+        ''' <param name="TeilnehmerListe"></param>
+        ''' <param name="Gruppe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TeilnehmerAusGruppeEntfernen(TeilnehmerListe As List(Of Teilnehmer), Gruppe As Gruppe, Einteilung As Einteilung)
 
             ' Teilnehmerliste aus Gruppe entfernen ...
-            Dim Gruppe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single
-            For Each ID In TeilnehmerIDListe
-                Gruppe.Mitgliederliste.Remove(TeilnehmerLesen(ID))
-                Gruppe.MitgliederIDListe.Remove(ID)
+            For Each Tn In TeilnehmerListe
+                Gruppe.Mitgliederliste.Remove(Gruppe.Mitgliederliste.Where(Function(M) M.Ident = Tn.Ident).Single)
+                Gruppe.MitgliederIDListe.Remove(Tn.Ident)
             Next
 
             ' ... in NichtZugewieseneTeilnehmer schreiben
-            Dim NichtZugewieseneTeilnehmerListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerListe
-            Dim NichtZugewieseneTeilnehmerIDListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerIDListe
-            For Each ID In TeilnehmerIDListe
-                NichtZugewieseneTeilnehmerListe.Add(TeilnehmerLesen(ID))
-                NichtZugewieseneTeilnehmerIDListe.Add(ID)
+            For Each Tn In TeilnehmerListe
+                Einteilung.NichtZugewieseneTeilnehmerListe.Add(Tn)
+                Einteilung.NichtZugewieseneTeilnehmerIDListe.Add(Tn.Ident)
             Next
 
-            OnTrainerGeaendert(EventArgs.Empty)
-
-        End Sub
-        Public Sub TeilnehmerAusEinteilungEntfernen(TeilnehmerIDListe As List(Of Guid), GruppenID As Guid, EinteilungID As Guid)
+            OnTeilnehmerGeaendert(EventArgs.Empty)
 
         End Sub
 
-        Private Function TeilnehmerLesen(NeuerTeilnehmerIDListe As List(Of Guid)) As List(Of Teilnehmer)
+        ''' <summary>
+        ''' Eine Liste von Teilnehmern wird aus der Einteilung entfernt
+        ''' </summary>
+        ''' <param name="TeilnehmerListe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TeilnehmerEinteilungHinzufuegen(TeilnehmerListe As List(Of Teilnehmer), Einteilung As Einteilung)
 
-            ' Guard: keine IDs
-            If NeuerTeilnehmerIDListe Is Nothing OrElse NeuerTeilnehmerIDListe.Count = 0 Then
-                Return New List(Of Teilnehmer)()
-            End If
-
-            Dim alleTeilnehmer = If(DateiService.AktuellerClub, Nothing)?.Teilnehmerliste
-            If alleTeilnehmer Is Nothing Then
-                ' Wenn keine Teilnehmerliste vorhanden ist, die gleiche Anzahl an Nothing-Einträgen zurückgeben
-                Dim empties As New List(Of Teilnehmer)(NeuerTeilnehmerIDListe.Count)
-                For Each id In NeuerTeilnehmerIDListe
-                    empties.Add(Nothing)
-                Next
-                Return empties
-            End If
-
-            ' Dictionary einmal aufbauen für O(1)-Lookups
-            Dim lookup As New Dictionary(Of Guid, Teilnehmer)(alleTeilnehmer.Count)
-            For Each t In alleTeilnehmer
-                If Not lookup.ContainsKey(t.Ident) Then
-                    lookup.Add(t.Ident, t)
-                End If
+            For Each Tn In TeilnehmerListe
+                Einteilung.NichtZugewieseneTeilnehmerIDListe.Add(Tn.Ident)
+                Einteilung.NichtZugewieseneTeilnehmerListe.Add(Tn)
             Next
 
-            Dim result As New List(Of Teilnehmer)(NeuerTeilnehmerIDListe.Count)
-            Dim tmp As Teilnehmer = Nothing
-            For Each id In NeuerTeilnehmerIDListe
-                If lookup.TryGetValue(id, tmp) Then
-                    result.Add(tmp)
-                Else
-                    result.Add(Nothing)
-                End If
+            OnTeilnehmerGeaendert(EventArgs.Empty)
+
+        End Sub
+
+        ''' <summary>
+        ''' Eine Liste von Teilnehmern wird aus der Einteilung entfernt
+        ''' </summary>
+        ''' <param name="TeilnehmerListe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TeilnehmerAusEinteilungEntfernen(TeilnehmerListe As List(Of Teilnehmer), Einteilung As Einteilung)
+
+            For Each Tn In TeilnehmerListe
+                Einteilung.NichtZugewieseneTeilnehmerIDListe.Remove(Tn.Ident)
+                Einteilung.NichtZugewieseneTeilnehmerListe.Remove(Einteilung.NichtZugewieseneTeilnehmerListe.Where(Function(NZT) NZT.Ident = Tn.Ident).Single)
             Next
 
-            Return result
-        End Function
+            OnTeilnehmerGeaendert(EventArgs.Empty)
 
-        Private Function TeilnehmerLesen(ID As Guid) As Teilnehmer
-            ' Guard: keine ID
-            If ID = Guid.Empty Then
-                Return New Teilnehmer
-            End If
-
-            Dim alleTeilnehmer = If(DateiService.AktuellerClub, Nothing)?.Teilnehmerliste
-            If alleTeilnehmer Is Nothing Then
-                ' Wenn keine Teilnehmerliste vorhanden ist, die gleiche Anzahl an Nothing-Einträgen zurückgeben
-                Dim empty As New Teilnehmer
-                Return empty
-            End If
-            Return DateiService.AktuellerClub.Teilnehmerliste.Where(Function(T) T.Ident = ID).SingleOrDefault
-        End Function
+        End Sub
 
     End Class
 End Namespace

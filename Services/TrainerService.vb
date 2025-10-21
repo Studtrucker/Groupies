@@ -14,92 +14,82 @@ Namespace Services
         End Sub
 
         ''' <summary>
-        ''' Trainer in Gruppe einteilen und aus VerfügbareTrainer entfernen
+        ''' Ein Trainer in eine Gruppe einteilen und aus der Liste der verfügbaren Trainern entfernen
         ''' </summary>
-        ''' <param name="NeuerTrainerID"></param>
-        ''' <param name="GruppenID"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TrainerInGruppeEinteilen(NeuerTrainerID As Guid, GruppenID As Guid, EinteilungID As Guid)
+        ''' <param name="NeuerTrainer"></param>
+        ''' <param name="Gruppe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TrainerInGruppeEinteilen(NeuerTrainer As Trainer, Gruppe As Gruppe, Einteilung As Einteilung)
 
             ' Aktuellen Trainer und Neuer Trainer auslesen
-            Dim NeuerTrainer = TrainerLesen(NeuerTrainerID)
-            Dim AktuellerTrainer = TrainerLesen(DateiService.AktuellerClub.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.TrainerID)
-            Dim AktuelleGruppe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single
-            Dim AktuelleEinteilung = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single
+            Dim AktuellerTrainer = Gruppe.Trainer
 
-            ' Wenn bereits ein Trainer zugewiesen ist, diesen zuerst entfernen
+            ' Wenn die Gruppe einen aktuellen Trainer hatte,
             If AktuellerTrainer IsNot Nothing Then
-                ' Aktueller Trainer ist nun entfernt und befindet sich in der VerfügbarenTrainerliste
-                TrainerAusGruppeEntfernen(AktuellerTrainer.TrainerID, GruppenID, EinteilungID)
+                ' dann wird der aktueller Trainer der verfügbaren Trainerliste hinzugefügt.
+                Einteilung.VerfuegbareTrainerListe.Add(AktuellerTrainer)
+                Einteilung.VerfuegbareTrainerIDListe.Add(AktuellerTrainer.TrainerID)
             End If
 
-            ' In TrainerID und Trainer in Gruppe schreiben ...
-            AktuelleGruppe.TrainerID = NeuerTrainerID
-            AktuelleGruppe.Trainer = NeuerTrainer
+            ' Neue TrainerID und Trainer der Gruppe zuweisen ...
+            Gruppe.TrainerID = NeuerTrainer.TrainerID
+            Gruppe.Trainer = NeuerTrainer
 
-            ' ... aus VerfügbareTrainer entfernen
-            AktuelleEinteilung.VerfuegbareTrainerListe.Remove(AktuelleEinteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = NeuerTrainerID).Single)
-            ' Todo: nächste Zeile wieder aktivieren. Warum wird der neueTrainer nicht aus der Auflistung entfernt? Unterschiedliche Objekte?
-            'AktuelleEinteilung.VerfuegbareTrainerListe.Remove(NeuerTrainer)
-            AktuelleEinteilung.VerfuegbareTrainerIDListe.Remove(NeuerTrainerID)
+            ' ... neue TrainerID und Trainer aus der Liste Verfügbare Trainer entfernen.
+            Einteilung.VerfuegbareTrainerListe.Remove(Einteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = NeuerTrainer.TrainerID).Single)
+            Einteilung.VerfuegbareTrainerIDListe.Remove(NeuerTrainer.TrainerID)
 
             OnTrainerGeaendert(New TrainerEventArgs(NeuerTrainer))
 
         End Sub
 
         ''' <summary>
-        ''' Trainer aus Gruppe entfernen und in VerfügbareTrainer kopieren
+        ''' Ein Trainer aus einer Gruppe entfernen und den verfügbaren Trainern hinzufügen
         ''' </summary>
-        ''' <param name="TrainerID"></param>
-        ''' <param name="GruppenID"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TrainerAusGruppeEntfernen(TrainerID As Guid, GruppenID As Guid, EinteilungID As Guid)
-            'Public Sub TrainerAusGruppeEntfernen(AktuellerTrainerID As Guid, GruppenID As Guid, EinteilungID As Guid)
+        ''' <param name="Gruppe"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TrainerAusGruppeEntfernen(Gruppe As Gruppe, Einteilung As Einteilung)
 
-            ' Trainer auslesen
-            Dim AktuellerTrainer = TrainerLesen(TrainerID)
-            ' Trainer entfernen
+            Dim Trainer = Gruppe.Trainer
 
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.Trainer = Nothing
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single.TrainerID = Nothing
+            ' Trainer aus der Gruppe entfernen
+            Gruppe.Trainer = Nothing
+            Gruppe.TrainerID = Nothing
 
             ' In VerfügbareTrainer kopieren
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Add(AktuellerTrainer)
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Add(AktuellerTrainer.TrainerID)
+            Einteilung.VerfuegbareTrainerListe.Add(Trainer)
+            Einteilung.VerfuegbareTrainerIDListe.Add(Trainer.TrainerID)
 
             OnTrainerGeaendert(TrainerEventArgs.Empty)
 
         End Sub
 
-
         ''' <summary>
-        ''' Trainer aus Einteilung und aus den Gruppen entfernen
+        ''' Ein Trainer aus einer Einteilung entfernen
         ''' </summary>
-        ''' <param name="TrainerID"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TrainerAusEinteilungEntfernen(TrainerID As Guid, EinteilungID As Guid)
+        ''' <param name="Trainer"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TrainerAusEinteilungEntfernen(Trainer As Trainer, Einteilung As Einteilung)
 
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Remove(TrainerLesen(TrainerID))
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Remove(TrainerID)
-            DateiService.AktuellerClub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.ToList.ForEach(Sub(G)
-                                                                                                                If G.TrainerID = TrainerID Then
-                                                                                                                    G.Trainer = Nothing
-                                                                                                                    G.TrainerID = Nothing
-                                                                                                                End If
-                                                                                                            End Sub))
+            ' (Der ausgewählte Trainer kann sich ja nur in der verfügbaren Trainerliste befinden)
+            ' (Sollte ein zugewiesener Gruppentrainer entfernt werden, dann erst aus der Gruppe entfernen)
+
+            Einteilung.VerfuegbareTrainerListe.Remove(Einteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = Trainer.TrainerID).Single)
+            Einteilung.VerfuegbareTrainerIDListe.Remove(Trainer.TrainerID)
 
             OnTrainerGeaendert(TrainerEventArgs.Empty)
 
         End Sub
 
         ''' <summary>
-        ''' Trainerliste aus Einteilung und aus den Gruppen entfernen
+        ''' Eine Liste von Trainern aus einer Einteilung entfernen
         ''' </summary>
         ''' <param name="TrainerListe"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TrainerAusEinteilungEntfernen(TrainerListe As IList(Of Trainer), EinteilungID As Guid)
-            ' Todo: warum Trainerliste beinhaltet keine Trainer
-            Dim Einteilung = DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single
+        ''' <param name="Einteilung"></param>
+        Public Sub TrainerAusEinteilungEntfernen(TrainerListe As IList(Of Trainer), Einteilung As Einteilung)
+
+            ' (Der ausgewählte Trainer kann sich ja nur in der verfügbaren Trainerliste befinden)
+            ' (Sollte ein zugewiesener Gruppentrainer entfernt werden, dann erst aus der Gruppe entfernen)
 
             Dim alleTrainer = If(DateiService.AktuellerClub, Nothing)?.Trainerliste
             If alleTrainer Is Nothing Then
@@ -121,12 +111,7 @@ Namespace Services
             ' Aus der VerfuegbareTrainerListe entfernen
             For Each t In TrainerListe
                 Einteilung.VerfuegbareTrainerIDListe.Remove(t.TrainerID)
-                Einteilung.VerfuegbareTrainerListe.Remove(t)
-                ' ... und aus allen Gruppen entfernen
-                For Each g In Einteilung.Gruppenliste
-                    g.TrainerID = Nothing
-                    g.Trainer = Nothing
-                Next
+                Einteilung.VerfuegbareTrainerListe.Remove(Einteilung.VerfuegbareTrainerListe.Where(Function(VTL) VTL.TrainerID = t.TrainerID).Single)
             Next
 
             OnTrainerGeaendert(TrainerEventArgs.Empty)
@@ -134,16 +119,16 @@ Namespace Services
         End Sub
 
         ''' <summary>
-        ''' Trainer aus Trainerliste in Einteilung.VerfügbareTrainerListe hinzugefügt.
+        ''' Trainer aus der allgemeinen Trainerliste der verfügbaren TrainerListe einer Einteilung hinzugefügen.
         ''' </summary>
-        ''' <param name="TrainerID"></param>
-        ''' <param name="EinteilungID"></param>
-        Public Sub TrainerEinteilungHinzufuegen(TrainerID As Guid, EinteilungID As Guid)
+        ''' <param name="Trainer"></param>
+        ''' <param name="Einteilung"></param>
+        Public Sub TrainerEinteilungHinzufuegen(Trainer As Trainer, Einteilung As Einteilung)
 
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerListe.Add(TrainerLesen(TrainerID))
-            DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single.VerfuegbareTrainerIDListe.Add(TrainerID)
+            Einteilung.VerfuegbareTrainerListe.Add(Trainer)
+            Einteilung.VerfuegbareTrainerIDListe.Add(Trainer.TrainerID)
 
-            OnTrainerGeaendert(New TrainerEventArgs(TrainerLesen(TrainerID)))
+            OnTrainerGeaendert(TrainerEventArgs.Empty)
 
         End Sub
 
@@ -183,10 +168,6 @@ Namespace Services
         '    ' Dann aus der Trainerliste entfernen
         '    Club.Trainerliste.Remove(Trainer)
         'End Sub
-
-        Private Function TrainerLesen(TrainerID As Guid) As Trainer
-            Return DateiService.AktuellerClub.Trainerliste.Where(Function(T) T.TrainerID = TrainerID).SingleOrDefault
-        End Function
 
     End Class
 End Namespace

@@ -39,6 +39,30 @@ Namespace Services
 
         End Sub
 
+        Public Sub TeilnehmerAusGruppeEntfernen(TeilnehmerIDListe As List(Of Guid), GruppenID As Guid, EinteilungID As Guid)
+
+            ' Teilnehmerliste aus Gruppe entfernen ...
+            Dim Gruppe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.Gruppenliste.Where(Function(G) G.Ident = GruppenID).Single
+            For Each ID In TeilnehmerIDListe
+                Gruppe.Mitgliederliste.Remove(TeilnehmerLesen(ID))
+                Gruppe.MitgliederIDListe.Remove(ID)
+            Next
+
+            ' ... in NichtZugewieseneTeilnehmer schreiben
+            Dim NichtZugewieseneTeilnehmerListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerListe
+            Dim NichtZugewieseneTeilnehmerIDListe = DateiService.AktuellerClub.Einteilungsliste.Where(Function(EL) EL.Ident = EinteilungID).Single.NichtZugewieseneTeilnehmerIDListe
+            For Each ID In TeilnehmerIDListe
+                NichtZugewieseneTeilnehmerListe.Add(TeilnehmerLesen(ID))
+                NichtZugewieseneTeilnehmerIDListe.Add(ID)
+            Next
+
+            OnTrainerGeaendert(EventArgs.Empty)
+
+        End Sub
+        Public Sub TeilnehmerAusEinteilungEntfernen(TeilnehmerIDListe As List(Of Guid), GruppenID As Guid, EinteilungID As Guid)
+
+        End Sub
+
         Private Function TeilnehmerLesen(NeuerTeilnehmerIDListe As List(Of Guid)) As List(Of Teilnehmer)
 
             ' Guard: keine IDs
@@ -78,6 +102,17 @@ Namespace Services
         End Function
 
         Private Function TeilnehmerLesen(ID As Guid) As Teilnehmer
+            ' Guard: keine ID
+            If ID = Guid.Empty Then
+                Return New Teilnehmer
+            End If
+
+            Dim alleTeilnehmer = If(DateiService.AktuellerClub, Nothing)?.Teilnehmerliste
+            If alleTeilnehmer Is Nothing Then
+                ' Wenn keine Teilnehmerliste vorhanden ist, die gleiche Anzahl an Nothing-Einträgen zurückgeben
+                Dim empty As New Teilnehmer
+                Return empty
+            End If
             Return DateiService.AktuellerClub.Teilnehmerliste.Where(Function(T) T.Ident = ID).SingleOrDefault
         End Function
 

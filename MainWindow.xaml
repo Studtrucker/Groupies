@@ -12,10 +12,6 @@
         mc:Ignorable="d"
         WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
-    <Window.Resources>
-        <converters:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
-        <!--<CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />-->
-    </Window.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -308,11 +304,12 @@
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
-                              SelectedItem="{Binding SelectedGruppenloserTrainer}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" >
+                              AutoGenerateColumns="False" SelectionUnit="FullRow"
+                              SelectedItem="{Binding SelectedGruppenloserTrainer}"  
+                              local:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTrainer}"
+                              IsReadOnly="True" CanUserAddRows="False" SelectionMode="Extended" >
                                 <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
-                      
+                        <!---->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding Path= TrainerInGruppeEinteilenCommand}"/>

@@ -207,12 +207,13 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
-            Return SelectedGruppenloserTrainer IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
+            Return True
+            Return SelectedAlleGruppenloserTrainer IsNot Nothing AndAlso SelectedAlleGruppenloserTrainer.Count > 0 AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerAusEinteilungEntfernen(SelectedGruppenloserTrainer.TrainerID, SelectedEinteilung.Ident)
+            TrainerService.TrainerAusEinteilungEntfernen(SelectedAlleGruppenloserTrainer, SelectedEinteilung.Ident)
         End Sub
 
         Private Function CanTrainerInGruppeEinteilen() As Boolean
@@ -368,6 +369,15 @@ Namespace ViewModels
             End Set
         End Property
 
+        Private _SelectedAlleGruppenloserTrainer As IList(Of Trainer)
+        Public Property SelectedAlleGruppenloserTrainer As IList(Of Trainer)
+            Get
+                Return _SelectedAlleGruppenloserTrainer
+            End Get
+            Set(value As IList(Of Trainer))
+                _SelectedAlleGruppenloserTrainer = value
+            End Set
+        End Property
 
         Private _GruppendetailViewModel As GruppendetailViewModel
         Public Property GruppendetailViewModel As GruppendetailViewModel

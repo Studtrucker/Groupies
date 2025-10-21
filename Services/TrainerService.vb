@@ -89,6 +89,47 @@ Namespace Services
         End Sub
 
         ''' <summary>
+        ''' Trainerliste aus Einteilung und aus den Gruppen entfernen
+        ''' </summary>
+        ''' <param name="TrainerListe"></param>
+        ''' <param name="EinteilungID"></param>
+        Public Sub TrainerAusEinteilungEntfernen(TrainerListe As IList(Of Trainer), EinteilungID As Guid)
+            ' Todo: warum Trainerliste beinhaltet keine Trainer
+            Dim Einteilung = DateiService.AktuellerClub.Einteilungsliste.Where(Function(E) E.Ident = EinteilungID).Single
+
+            Dim alleTrainer = If(DateiService.AktuellerClub, Nothing)?.Trainerliste
+            If alleTrainer Is Nothing Then
+                ' Wenn keine Teilnehmerliste vorhanden ist, die gleiche Anzahl an Nothing-Einträgen zurückgeben
+                Dim empties As New List(Of Trainer)(TrainerListe.Count)
+                For Each item In TrainerListe
+                    empties.Add(Nothing)
+                Next
+            End If
+
+            ' Dictionary einmal aufbauen für O(1)-Lookups
+            Dim lookup As New Dictionary(Of Guid, Trainer)(alleTrainer.Count)
+            For Each t In alleTrainer
+                If Not lookup.ContainsKey(t.TrainerID) Then
+                    lookup.Add(t.TrainerID, t)
+                End If
+            Next
+
+            ' Aus der VerfuegbareTrainerListe entfernen
+            For Each t In TrainerListe
+                Einteilung.VerfuegbareTrainerIDListe.Remove(t.TrainerID)
+                Einteilung.VerfuegbareTrainerListe.Remove(t)
+                ' ... und aus allen Gruppen entfernen
+                For Each g In Einteilung.Gruppenliste
+                    g.TrainerID = Nothing
+                    g.Trainer = Nothing
+                Next
+            Next
+
+            OnTrainerGeaendert(TrainerEventArgs.Empty)
+
+        End Sub
+
+        ''' <summary>
         ''' Trainer aus Trainerliste in Einteilung.VerfügbareTrainerListe hinzugefügt.
         ''' </summary>
         ''' <param name="TrainerID"></param>

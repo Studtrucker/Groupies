@@ -12,6 +12,7 @@ Imports Groupies.Interfaces
 Imports Groupies.MainWindow
 Imports Groupies.Services
 Imports Groupies.UserControls
+Imports Microsoft.Office.Interop.Excel
 Imports Microsoft.Win32
 
 Namespace ViewModels
@@ -130,21 +131,58 @@ Namespace ViewModels
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
 
             TrainerErstellenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
-            TrainerInGruppeEinteilenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
+            TrainerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
             TrainerAusEinteilungEntfernenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerAusEinteilungEntfernen, Function() CanTrainerAusEinteilungEntfernen())
             TrainerAusGruppeEntfernenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
             TrainerInEinteilungHinzufuegenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerInEinteilungHinzufuegen, Function() CanTrainerInEinteilungHinzufuegen())
 
             TeilnehmerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerAusGruppeEntfernen, Function() CanTeilnehmerAusGruppeEntfernen())
+            TeilnehmerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerInGruppeEinteilen, Function() CanTeilnehmerInGruppeEinteilen())
             TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
             TeilnehmerEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEinteilen, Function() CanTeilnehmerEinteilen())
 
         End Sub
 
+        Private Function CanTeilnehmerInGruppeEinteilen() As Boolean
+            Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
+        End Function
+
+        Private Sub OnTeilnehmerInGruppeEinteilen(obj As Object)
+            ' obj erwartet eine IEnumerable(Of Teilnehmer) (z. B. GruppendetailViewModel.SelectedAlleMitglieder)
+            Dim selectedList As New List(Of Teilnehmer)
+
+            If obj IsNot Nothing Then
+                Dim asEnumerable = TryCast(obj, System.Collections.IEnumerable)
+                If asEnumerable IsNot Nothing Then
+                    For Each item In asEnumerable
+                        Dim t = TryCast(item, Teilnehmer)
+                        If t IsNot Nothing Then selectedList.Add(t)
+                    Next
+                Else
+                    ' Falls ein einzelnes Teilnehmer-Objekt übergeben wurde
+                    Dim [single] = TryCast(obj, Teilnehmer)
+                    If [single] IsNot Nothing Then selectedList.Add([single])
+                End If
+            End If
+
+            ' Fallback: falls kein Parameter übergeben wurde, benutze ggf. die alte globale Collection (optional)
+            If selectedList.Count = 0 AndAlso SelectedAlleMitglieder IsNot Nothing Then
+                For Each t In SelectedAlleMitglieder
+                    selectedList.Add(t)
+                Next
+            End If
+
+            If selectedList.Count = 0 OrElse SelectedGruppe Is Nothing OrElse SelectedEinteilung Is Nothing Then
+                Return
+            End If
+            Dim TService As New TeilnehmerService
+            TService.TeilnehmerInGruppeEinteilen(selectedList, SelectedGruppe, SelectedEinteilung)
+        End Sub
+
         Private Sub Handler_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
             DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
             DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
-            DirectCast(TrainerInGruppeEinteilenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
+            DirectCast(TrainerInGruppeEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             DirectCast(TrainerAusEinteilungEntfernenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
             DirectCast(TrainerErstellenCommand, RelayCommand(Of TrainerEventArgs)).RaiseCanExecuteChanged()
 
@@ -160,6 +198,8 @@ Namespace ViewModels
             DirectCast(FaehigkeitErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             DirectCast(TeilnehmerErstellenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             DirectCast(TeilnehmerEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            DirectCast(TeilnehmerInGruppeEinteilenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
         End Sub
 
 
@@ -245,6 +285,7 @@ Namespace ViewModels
         ' Teilnehmer Commands
         Public Property TeilnehmerAusGruppeEntfernenCommand As ICommand
         Public Property TeilnehmerErstellenCommand As ICommand
+        Public Property TeilnehmerInGruppeEinteilenCommand As ICommand
         Public Property TeilnehmerEinteilenCommand As ICommand
         Public Property TeilnehmerBearbeitenCommand As ICommand
         Public Property TeilnehmerLoeschenCommand As ICommand
@@ -351,7 +392,6 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
-                SelectedGruppenloserTrainer = Nothing
                 OnPropertyChanged(NameOf(SelectedEinteilung))
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
@@ -368,7 +408,6 @@ Namespace ViewModels
             Set(value As Gruppe)
                 _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
-                _SelectedGruppenloserTrainer = Nothing
                 OnPropertyChanged(NameOf(SelectedGruppe))
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
@@ -386,25 +425,20 @@ Namespace ViewModels
             End Set
         End Property
 
-        Private _SelectedAlleGruppenloserTrainer As IList(Of Trainer)
-        Public Property SelectedAlleGruppenloserTrainer As IList(Of Trainer)
+        ' Bindbare SelectedItems-Property (vom Attached-Behavior gesetzt)
+        Private _selectedAlleGruppenloserTrainer As IList
+        Public Property SelectedAlleGruppenloserTrainer As IList
             Get
-                Return _SelectedAlleGruppenloserTrainer
+                Return _selectedAlleGruppenloserTrainer
             End Get
-            Set(value As IList(Of Trainer))
-                _SelectedAlleGruppenloserTrainer = value
+            Set(value As IList)
+                If _selectedAlleGruppenloserTrainer IsNot value Then
+                    _selectedAlleGruppenloserTrainer = value
+                    OnPropertyChanged(NameOf(SelectedAlleGruppenloserTrainer))
+                End If
             End Set
         End Property
 
-        'Private _SelectedAlleGruppenloserTeilnehmer As IList(Of Teilnehmer)
-        'Public Property SelectedAlleGruppenloserTeilnehmer As IList(Of Teilnehmer)
-        '    Get
-        '        Return _SelectedAlleGruppenloserTeilnehmer
-        '    End Get
-        '    Set(value As IList(Of Teilnehmer))
-        '        _SelectedAlleGruppenloserTeilnehmer = value
-        '    End Set
-        'End Property
 
         Private _GruppendetailViewModel As GruppendetailViewModel
         Public Property GruppendetailViewModel As GruppendetailViewModel
@@ -419,7 +453,7 @@ Namespace ViewModels
         Public Property VerfuegbareTrainerListe As TrainerCollection
         Public Property SelectedVerfuegbareTrainerListe As TrainerCollection
         Public Property NichtZugewieseneTeilnehmerListe As TeilnehmerCollection
-        Public Property SelectedNichtZugewiesenerTeilnehmerListe As TeilnehmerCollection
+        Public Property SelectedNichtZugewiesenerTeilnehmerListe As New TeilnehmerCollection
 
 
         Public Property CanClubClose() As Boolean
@@ -930,8 +964,7 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
-            Return SelectedGruppenloserTrainer IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
-            Return SelectedAlleGruppenloserTrainer IsNot Nothing AndAlso SelectedAlleGruppenloserTrainer.Count > 0 AndAlso SelectedEinteilung IsNot Nothing
+            Return SelectedGruppe IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
@@ -940,27 +973,80 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerInGruppeEinteilen() As Boolean
-            Return SelectedAlleGruppenloserTrainer IsNot Nothing _
-                AndAlso SelectedAlleGruppenloserTrainer.Count = 1 _
-                AndAlso SelectedGruppe IsNot Nothing _
+            Return SelectedGruppe IsNot Nothing _
                 AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerInGruppeEinteilen(obj As Object)
+            ' obj erwartet eine IEnumerable(Of Teilnehmer) (z. B. GruppendetailViewModel.SelectedAlleMitglieder)
+            Dim selectedList As New List(Of Trainer)
+
+            If obj IsNot Nothing Then
+                Dim asEnumerable = TryCast(obj, System.Collections.IEnumerable)
+                If asEnumerable IsNot Nothing Then
+                    For Each item In asEnumerable
+                        Dim t = TryCast(item, Trainer)
+                        If t IsNot Nothing Then selectedList.Add(t)
+                    Next
+                Else
+                    ' Falls ein einzelnes Teilnehmer-Objekt übergeben wurde
+                    Dim [single] = TryCast(obj, Trainer)
+                    If [single] IsNot Nothing Then selectedList.Add([single])
+                End If
+            End If
+
+            ' Fallback: falls kein Parameter übergeben wurde, benutze ggf. die alte globale Collection (optional)
+            If selectedList.Count = 0 AndAlso SelectedAlleGruppenloserTrainer IsNot Nothing Then
+                For Each t In SelectedAlleGruppenloserTrainer
+                    selectedList.Add(t)
+                Next
+            End If
+
+            If selectedList.Count = 0 OrElse SelectedGruppe Is Nothing OrElse SelectedEinteilung Is Nothing Then
+                Return
+            End If
+
             Dim TrainerService As New TrainerService()
-            TrainerService.TrainerInGruppeEinteilen(SelectedAlleGruppenloserTrainer(0), SelectedGruppe, SelectedEinteilung)
+            TrainerService.TrainerInGruppeEinteilen(selectedList, SelectedGruppe, SelectedEinteilung)
         End Sub
 
         Private Function CanTeilnehmerAusGruppeEntfernen() As Boolean
-            Return SelectedGruppe IsNot Nothing _
-                AndAlso SelectedEinteilung IsNot Nothing _
-                AndAlso SelectedAlleMitglieder IsNot Nothing _
-                AndAlso SelectedAlleMitglieder.Count > 0
+            ' Aktivierbar, wenn eine Gruppe und eine Einteilung ausgewählt sind.
+            ' Die konkrete Auswahl kommt als CommandParameter vom UserControl.
+            Return SelectedGruppe IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTeilnehmerAusGruppeEntfernen(obj As Object)
-            Dim TnS As New TeilnehmerService
-            TnS.TeilnehmerAusGruppeEntfernen(SelectedAlleMitglieder.ToList, SelectedGruppe, SelectedEinteilung)
+            ' obj erwartet eine IEnumerable(Of Teilnehmer) (z. B. GruppendetailViewModel.SelectedAlleMitglieder)
+            Dim selectedList As New List(Of Teilnehmer)
+
+            If obj IsNot Nothing Then
+                Dim asEnumerable = TryCast(obj, System.Collections.IEnumerable)
+                If asEnumerable IsNot Nothing Then
+                    For Each item In asEnumerable
+                        Dim t = TryCast(item, Teilnehmer)
+                        If t IsNot Nothing Then selectedList.Add(t)
+                    Next
+                Else
+                    ' Falls ein einzelnes Teilnehmer-Objekt übergeben wurde
+                    Dim [single] = TryCast(obj, Teilnehmer)
+                    If [single] IsNot Nothing Then selectedList.Add([single])
+                End If
+            End If
+
+            ' Fallback: falls kein Parameter übergeben wurde, benutze ggf. die alte globale Collection (optional)
+            If selectedList.Count = 0 AndAlso SelectedAlleMitglieder IsNot Nothing Then
+                For Each t In SelectedAlleMitglieder
+                    selectedList.Add(t)
+                Next
+            End If
+
+            If selectedList.Count = 0 OrElse SelectedGruppe Is Nothing OrElse SelectedEinteilung Is Nothing Then
+                Return
+            End If
+
+            Dim TnS As New TeilnehmerService()
+            TnS.TeilnehmerAusGruppeEntfernen(selectedList, SelectedGruppe, SelectedEinteilung)
         End Sub
 
         Public Shared Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
@@ -1133,3 +1219,5 @@ Namespace ViewModels
     End Class
 
 End Namespace
+
+

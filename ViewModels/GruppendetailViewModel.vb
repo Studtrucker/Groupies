@@ -59,17 +59,6 @@ Namespace ViewModels
 
 #Region "Command-Methoden"
 
-
-
-        'Private Sub OnDateiGeaendert(obj As Object)
-        '    ' Logik zum Umgang mit der Änderung der Datei
-        '    ' Zum Beispiel: Aktualisieren der Leistungsstufenliste
-        '    If DateiService.AktuellerClub IsNot Nothing Then
-        '        LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
-        '    End If
-        '    OnPropertyChanged(NameOf(LeistungsstufenListe))
-        'End Sub
-
         Private Sub OnUserControlLoaded(obj As Object)
             If DateiService.AktuellerClub IsNot Nothing Then
                 LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
@@ -77,39 +66,13 @@ Namespace ViewModels
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
 
-        Private Sub OnTeilnehmerGeaendert(sender As Object, e As TrainerEventArgs)
+        Private Sub OnTeilnehmerGeaendert(sender As Object, e As EventArgs)
             OnPropertyChanged(NameOf(Mitgliederliste))
         End Sub
 
         Private Sub OnTrainerGeaendert(sender As Object, e As TrainerEventArgs)
             OnPropertyChanged(NameOf(Trainer))
         End Sub
-
-        'Private Sub OnTeilnehmerEntfernen(obj As Object)
-        '    ' Logik zum Entfernen eines Teilnehmers aus der Gruppe
-        '    ' Zum Beispiel:
-        '    ' Dim teilnehmer As Teilnehmer = CType(obj, Teilnehmer)
-        '    ' Gruppe.TeilnehmerListe.Remove(teilnehmer)
-        'End Sub
-
-        'Private Function CanTeilnehmerEntfernen() As Boolean
-        '    ' Logik zur Überprüfung, ob ein Teilnehmer entfernt werden kann
-        '    ' Zum Beispiel:
-        '    ' Return Gruppe.TeilnehmerListe.Count > 0
-        '    Return True ' Platzhalter
-        'End Function
-
-        'Private Sub OnTrainerAusGruppeEntfernenCommand(obj As Object)
-        '    Dim TrainerService As New TrainerService
-        '    TrainerService.TrainerAusGruppeEntfernen()
-        'End Sub
-
-        'Private Function CanTrainerAusGruppeEntfernenCommand() As Boolean
-        '    ' Logik zur Überprüfung, ob ein Trainer entfernt werden kann
-        '    ' Zum Beispiel:
-        '    ' Return Gruppe.TrainerListe.Count > 0
-        '    Return True ' Platzhalter
-        'End Function
 
         Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
             Throw New NotImplementedException()
@@ -123,7 +86,7 @@ Namespace ViewModels
 
 #Region "Properties"
 
-        Public Property SelectedAlleMitglieder As TeilnehmerCollection
+        Public Property SelectedAlleMitglieder As IList(Of Teilnehmer)
 
         Public Property Gruppe As IModel Implements IViewModelSpecial.Model
             Get
@@ -281,12 +244,7 @@ Namespace ViewModels
 #End Region
 
 #Region "Methoden"
-        'Public Function GetLeistungsstufen() As LeistungsstufeCollection
-        '    If DateiService.AktuellerClub IsNot Nothing Then
-        '        Return DateiService.AktuellerClub.AlleLeistungsstufen.Sortieren
-        '    End If
-        '    Return New LeistungsstufeCollection()
-        'End Function
+
 #End Region
 
     End Class

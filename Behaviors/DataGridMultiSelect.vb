@@ -7,8 +7,8 @@ Imports System.Windows.Threading
 
 
 Namespace Behaviors
-#Region "Ermöglicht die Bindung von DataGrid.SelectedItems an eine ViewModel-Collection"
 
+#Region "Ermöglicht die Bindung von DataGrid.SelectedItems an eine ViewModel-Collection"
 
     Public NotInheritable Class DataGridMultiSelect
 

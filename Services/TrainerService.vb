@@ -32,16 +32,23 @@ Namespace Services
             End If
 
             ' Neue TrainerID und Trainer der Gruppe zuweisen ...
-            Gruppe.TrainerID = NeuerTrainer.TrainerID
-            Gruppe.Trainer = NeuerTrainer
+            Gruppe.TrainerID = neuerTrainer.TrainerID
+            Gruppe.Trainer = neuerTrainer
 
             ' ... neue TrainerID und Trainer aus der Liste Verfügbare Trainer entfernen.
-            Einteilung.VerfuegbareTrainerListe.Remove(Einteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = NeuerTrainer.TrainerID).Single)
-            Einteilung.VerfuegbareTrainerIDListe.Remove(NeuerTrainer.TrainerID)
+            Einteilung.VerfuegbareTrainerListe.Remove(Einteilung.VerfuegbareTrainerListe.Where(Function(T) T.TrainerID = neuerTrainer.TrainerID).Single)
+            Einteilung.VerfuegbareTrainerIDListe.Remove(neuerTrainer.TrainerID)
 
-            OnTrainerGeaendert(New TrainerEventArgs(NeuerTrainer))
+            OnTrainerGeaendert(New TrainerEventArgs(neuerTrainer))
 
         End Sub
+
+        Public Sub TrainerInGruppeEinteilen(NeuerTrainerListe As List(Of Trainer), Gruppe As Gruppe, Einteilung As Einteilung)
+            'For Each NeuerTrainer In NeuerTrainerListe
+            TrainerInGruppeEinteilen(NeuerTrainerListe(0), Gruppe, Einteilung)
+            'Next
+        End Sub
+
 
         ''' <summary>
         ''' Ein Trainer aus einer Gruppe entfernen und den verfügbaren Trainern hinzufügen

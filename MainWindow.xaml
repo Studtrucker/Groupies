@@ -32,14 +32,11 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
         </i:EventTrigger>
-        <i:EventTrigger EventName="Close">
-            <i:InvokeCommandAction Command="{Binding WindowClosedCommand}"/>
+        <i:EventTrigger EventName="Closing">
+            <local:CancelClosingTriggerAction Command="{Binding WindowClosingCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Closed">
             <i:InvokeCommandAction Command="{Binding WindowClosedCommand}"/>
-        </i:EventTrigger>
-        <i:EventTrigger EventName="Closing">
-            <local:CancelClosingTriggerAction Command="{Binding WindowClosingCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -269,7 +266,9 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Löschen" Command="{Binding GruppeLoeschenCommand}" CommandParameter="{Binding SelectedGruppe}"/>
+                                <MenuItem Header="Löschen" 
+                                          Command="{Binding PlacementTarget.DataContext.GruppeLoeschenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
 
@@ -319,17 +318,27 @@
                     <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
-                              AutoGenerateColumns="False" SelectionUnit="FullRow"                              
-                              behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTrainer}"
-                              IsReadOnly="True" CanUserAddRows="False" SelectionMode="Extended" >
-                        <!--SelectedItem="{Binding SelectedEinteilung.SelectedVerfuegbareTrainer}"-->
-                        <!--SelectedItem="{Binding SelectedGruppenloserTrainer}"  -->
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding Path= TrainerInGruppeEinteilenCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        
+                              behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding DataContext.SelectedAlleGruppenloserTrainer, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
+                              AutoGenerateColumns="False" SelectionUnit="FullRow"
+                              IsReadOnly="True" CanUserAddRows="False" SelectionMode="Extended">
+                        <!--                              SelectedItem="{Binding SelectedGruppenloserTrainer}"-->
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Trainer einteilen"  
+                                          Command="{Binding TrainerInGruppeEinteilenCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                            
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <i:Interaction.Behaviors>
+                            <behaviors:DataGridRowDoubleClickBehavior 
+                                Command="{Binding Path=DataContext.TrainerInGruppeEinteilenCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding SelectedAlleGruppenloserTreiner, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </i:Interaction.Behaviors>
+
+                       
                         <DataGrid.Columns>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
@@ -341,12 +350,6 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding VorNachname}" Width="*"/>
                         </DataGrid.Columns>
 
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Trainer einteilen" Command="{Binding Path=TrainerInGruppeEinteilenCommand}"/>
-                                <MenuItem Header="Trainer aus Einteilung entfernen"   Command="{Binding Path=TrainerAusEinteilungEntfernenCommand}"/>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
                     </DataGrid>
 
                 </DockPanel>
@@ -360,31 +363,28 @@
                               ItemsSource="{Binding SelectedEinteilung.NichtZugewieseneTeilnehmerListe}"
                               IsSynchronizedWithCurrentItem="True"
                               AutoGenerateColumns="False"
-                              behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleGruppenloserTeilnehmer}"
+                              behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding DataContext.SelectedNichtZugewiesenerTeilnehmerListe, RelativeSource={RelativeSource AncestorType=Window}}"
                               SelectionMode="Extended"   IsReadOnly="True">
                               <!---->
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding TeilnehmerEinteilenCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        
+                        <i:Interaction.Behaviors>
+                            <behaviors:DataGridRowDoubleClickBehavior 
+                            Command="{Binding Path=DataContext.TeilnehmerInGruppeEinteilenCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </i:Interaction.Behaviors>
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
                             <!--<DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>-->
                             <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe.Benennung}" Width="*" />
-                            <!--<DataGridComboBoxColumn Header="Leistungsstufe" Width="*" 
-                                                    DisplayMemberPath="Benennung"
-                                                    ItemsSource="{Binding Leistungsstufenliste, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                    SelectedValuePath="LeistungsstufeID"
-                                                    SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}"/>-->
-                                                    <!--SortMemberPath="Leistungsstufe.Benennung"-->
+
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Teilnehmer einteilen"  Command="{Binding TeilnehmerEinteilenCommand}"/>
+                                <MenuItem Header="Teilnehmer einteilen"  
+                                          Command="{Binding TeilnehmerInGruppeEinteilenCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                 <MenuItem Header="Teilnehmer erstellen"  Command="{Binding TeilnehmerErstellenCommand}"/>
                                 <MenuItem Header="Teilnehmer bearbeiten" Command="{Binding TeilnehmerBearbeitenCommand}"/>
                                 <MenuItem Header="Teilnehmer löschen"    Command="{Binding TeilnehmerLoeschenCommand}"/>

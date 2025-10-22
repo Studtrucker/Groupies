@@ -10,6 +10,7 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:cmd="clr-namespace:Groupies.Commands"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Groupies.Behaviors" xmlns:generation4="clr-namespace:Groupies.Entities.Generation4" d:DataContext="{d:DesignInstance Type=generation4:Teilnehmer}"
              mc:Ignorable="d"
              Width="Auto" Height="Auto">
 
@@ -84,14 +85,14 @@
                     
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <!--<i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand}"/>-->
                             <i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
                     <TextBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Trainer entfernen" Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
+                            <MenuItem Header="Trainer entfernen" 
+                                      Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
@@ -99,19 +100,20 @@
                 <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
-                          ItemsSource="{Binding Mitgliederliste}" 
+                          ItemsSource="{Binding Mitgliederliste}"
+                          behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding Path=MainWindow.DataContext.SelectedAlleMitglieder, Source={x:Static Application.Current}}"                          
                           SelectionMode="Extended" >
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding TeilnehmerEntfernen}"/>
+                            <i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TeilnehmerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <!--<MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
-                            <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />-->
+                            <MenuItem Header="Teilnehmer entfernen" 
+                                      Command="{Binding Path=MainWindow.DataContext.TeilnehmerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 

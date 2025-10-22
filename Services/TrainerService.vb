@@ -119,14 +119,16 @@ Namespace Services
         End Sub
 
         ''' <summary>
-        ''' Trainer aus der allgemeinen Trainerliste der verfügbaren TrainerListe einer Einteilung hinzugefügen.
+        ''' Ausgewählte Trainer zur Liste der verfügbaren Trainer einer Einteilung hinzufügen.
         ''' </summary>
-        ''' <param name="Trainer"></param>
+        ''' <param name="Trainerliste"></param>
         ''' <param name="Einteilung"></param>
-        Public Sub TrainerEinteilungHinzufuegen(Trainer As Trainer, Einteilung As Einteilung)
+        Public Sub TrainerEinteilungHinzufuegen(Trainerliste As IList(Of Trainer), Einteilung As Einteilung)
 
-            Einteilung.VerfuegbareTrainerListe.Add(Trainer)
-            Einteilung.VerfuegbareTrainerIDListe.Add(Trainer.TrainerID)
+            For Each T In Trainerliste
+                Einteilung.VerfuegbareTrainerListe.Add(T)
+                Einteilung.VerfuegbareTrainerIDListe.Add(T.TrainerID)
+            Next
 
             OnTrainerGeaendert(TrainerEventArgs.Empty)
 

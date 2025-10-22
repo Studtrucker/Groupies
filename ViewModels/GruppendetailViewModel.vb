@@ -17,7 +17,7 @@ Namespace ViewModels
 #End Region
 
 #Region "Properties"
-        Private TrainerAusGruppeEntfernenCommand As ICommand
+
 #End Region
 
 #Region "Ereignisse"
@@ -29,13 +29,14 @@ Namespace ViewModels
 
             UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
 
-            'TeilnehmerEntfernen = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEntfernen, Function() CanTeilnehmerEntfernen())
-            'TrainerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusGruppeEntfernenCommand, Function() CanTrainerAusGruppeEntfernenCommand())
 
 
             AddHandler DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
             AddHandler DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
             AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
+            AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnTeilnehmerGeaendert
+
+            SelectedAlleMitglieder = New TeilnehmerCollection()
 
         End Sub
 
@@ -60,14 +61,14 @@ Namespace ViewModels
 
 
 
-        Private Sub OnDateiGeaendert(obj As Object)
-            ' Logik zum Umgang mit der Änderung der Datei
-            ' Zum Beispiel: Aktualisieren der Leistungsstufenliste
-            If DateiService.AktuellerClub IsNot Nothing Then
-                LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
-            End If
-            OnPropertyChanged(NameOf(LeistungsstufenListe))
-        End Sub
+        'Private Sub OnDateiGeaendert(obj As Object)
+        '    ' Logik zum Umgang mit der Änderung der Datei
+        '    ' Zum Beispiel: Aktualisieren der Leistungsstufenliste
+        '    If DateiService.AktuellerClub IsNot Nothing Then
+        '        LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        '    End If
+        '    OnPropertyChanged(NameOf(LeistungsstufenListe))
+        'End Sub
 
         Private Sub OnUserControlLoaded(obj As Object)
             If DateiService.AktuellerClub IsNot Nothing Then
@@ -76,6 +77,9 @@ Namespace ViewModels
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
 
+        Private Sub OnTeilnehmerGeaendert(sender As Object, e As TrainerEventArgs)
+            OnPropertyChanged(NameOf(Mitgliederliste))
+        End Sub
 
         Private Sub OnTrainerGeaendert(sender As Object, e As TrainerEventArgs)
             OnPropertyChanged(NameOf(Trainer))
@@ -118,6 +122,8 @@ Namespace ViewModels
 #End Region
 
 #Region "Properties"
+
+        Public Property SelectedAlleMitglieder As TeilnehmerCollection
 
         Public Property Gruppe As IModel Implements IViewModelSpecial.Model
             Get

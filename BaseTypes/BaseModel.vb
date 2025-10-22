@@ -6,14 +6,10 @@ Imports Groupies.Annotations
 Imports Microsoft.Office.Interop.Excel
 
 ''' <summary>
-''' Abstrakte Basisklasse für alle Modelle  
+''' Abstrakte Basisklasse für alle Modelle 
 ''' </summary>
 Public MustInherit Class BaseModel
     Implements INotifyPropertyChanged
-
-#Region "Felder"
-
-#End Region
 
 #Region "Events"
 
@@ -33,10 +29,6 @@ Public MustInherit Class BaseModel
     Public Sub New()
         InitCommands()
     End Sub
-#End Region
-
-#Region "Schnittstellen"
-
 #End Region
 
 #Region "Methoden"
@@ -62,16 +54,8 @@ Public MustInherit Class BaseModel
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
-
 #End Region
 
-#Region "Eigenschaften"
-
-#End Region
-
-#Region "Property Attribute"
-
-#End Region
 
 #Region "Dekativiert: ExceptionValidationRule"
     ' Um Validierungen mit der ExceptionValidationRule zu prüfen, muss die Property in der

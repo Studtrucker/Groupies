@@ -117,7 +117,7 @@
                              Text="{Binding SelectedItem.TrainerID}" />
 
                     <TextBox Grid.Column="2" Grid.Row="2" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.[Alias]}"/>
+                             Text="{Binding SelectedItem.Alias}"/>
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"                           
                              Text="{Binding SelectedItem.Vorname}"/>

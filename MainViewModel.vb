@@ -1,4 +1,5 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.IO
 Imports System.IO.IsolatedStorage
@@ -32,61 +33,6 @@ Namespace ViewModels
         Private ReadOnly DateiService As DateiService
 #End Region
 
-#Region "Properties"
-
-        'Window Commands
-        Public Property WindowLoadedCommand As ICommand
-        Public Property WindowClosedCommand As ICommand
-        Public Property WindowClosingCommand As ICommand
-
-        'Application Commands
-        Public Property ApplicationCloseCommand As ICommand
-        Public Property ClubNewCommand As ICommand
-        Public Property ClubOpenCommand As ICommand
-        Public Property ClubSaveCommand As ICommand
-        Public Property ClubSaveAsCommand As ICommand
-        Public Property ClubInfoPrintCommand As ICommand
-        Public Property ClubCloseCommand As ICommand
-
-        Public Property OpenHomepageCommand As ICommand
-
-        ' Einteilung Commands
-        Public Property EinteilungErstellenCommand As ICommand
-        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
-
-        ' Gruppen Commands
-        Public Property GruppeErstellenCommand As ICommand
-        Public Property GruppeLoeschenCommand As ICommand
-        Public Property GruppenuebersichtAnzeigenCommand As ICommand
-
-        ' Leistungsstufen Commands
-        Public Property LeistungsstufeErstellenCommand As ICommand
-        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
-
-        ' Faehigkeiten Commands
-        Public Property FaehigkeitErstellenCommand As ICommand
-        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
-
-        ' Teilnehmer Commands
-        Public Property TeilnehmerAusGruppeEntfernenCommand As ICommand
-        Public Property TeilnehmerErstellenCommand As ICommand
-        Public Property TeilnehmerEinteilenCommand As ICommand
-        Public Property TeilnehmerBearbeitenCommand As ICommand
-        Public Property TeilnehmerLoeschenCommand As ICommand
-        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
-
-        ' Trainer Commands
-        Public Property TrainerErstellenCommand As ICommand
-        Public Property TrainerBearbeitenCommand As ICommand
-        Public Property TrainerLoeschenCommand As ICommand
-        Public Property TraineruebersichtAnzeigenCommand As ICommand
-        Public Property TrainerInGruppeEinteilenCommand As ICommand
-        Public Property TrainerAusGruppeEntfernenCommand As ICommand
-        Public Property TrainerInEinteilungHinzufuegenCommand As ICommand
-        Public Property TrainerAusEinteilungEntfernenCommand As ICommand
-
-#End Region
-
 #Region "Konstruktor"
 
         Public Sub New(windowService As IWindowService)
@@ -95,6 +41,9 @@ Namespace ViewModels
             DateiService = New DateiService
             WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
             GruppendetailViewModel = New GruppendetailViewModel()
+
+            ' Sicherstellen, dass CollectionChanged initial überwacht wird (prüfen, ob der AddHandler in OnWindowLoaded verlagert werden kann)
+            AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf SelectedAlleMitglieder_CollectionChanged
         End Sub
 
 #End Region
@@ -186,7 +135,7 @@ Namespace ViewModels
             TrainerAusGruppeEntfernenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
             TrainerInEinteilungHinzufuegenCommand = New RelayCommand(Of TrainerEventArgs)(AddressOf OnTrainerInEinteilungHinzufuegen, Function() CanTrainerInEinteilungHinzufuegen())
 
-            TeilnehmerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerAusGruppeEntfernen, Function() CanTeilnehmerAusGruppeEntfernen)
+            TeilnehmerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerAusGruppeEntfernen, Function() CanTeilnehmerAusGruppeEntfernen())
             TeilnehmerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerErstellen, Function() CanTeilnehmerErstellen())
             TeilnehmerEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerEinteilen, Function() CanTeilnehmerEinteilen())
 
@@ -257,6 +206,64 @@ Namespace ViewModels
 #End Region
 
 #Region "Properties"
+
+#Region "Commands"
+
+        'Window Commands
+        Public Property WindowLoadedCommand As ICommand
+        Public Property WindowClosedCommand As ICommand
+        Public Property WindowClosingCommand As ICommand
+
+        'Application Commands
+        Public Property ApplicationCloseCommand As ICommand
+        Public Property ClubNewCommand As ICommand
+        Public Property ClubOpenCommand As ICommand
+        Public Property ClubSaveCommand As ICommand
+        Public Property ClubSaveAsCommand As ICommand
+        Public Property ClubInfoPrintCommand As ICommand
+        Public Property ClubCloseCommand As ICommand
+
+        Public Property OpenHomepageCommand As ICommand
+
+        ' Einteilung Commands
+        Public Property EinteilungErstellenCommand As ICommand
+        Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
+
+        ' Gruppen Commands
+        Public Property GruppeErstellenCommand As ICommand
+        Public Property GruppeLoeschenCommand As ICommand
+        Public Property GruppenuebersichtAnzeigenCommand As ICommand
+
+        ' Leistungsstufen Commands
+        Public Property LeistungsstufeErstellenCommand As ICommand
+        Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
+
+        ' Faehigkeiten Commands
+        Public Property FaehigkeitErstellenCommand As ICommand
+        Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
+
+        ' Teilnehmer Commands
+        Public Property TeilnehmerAusGruppeEntfernenCommand As ICommand
+        Public Property TeilnehmerErstellenCommand As ICommand
+        Public Property TeilnehmerEinteilenCommand As ICommand
+        Public Property TeilnehmerBearbeitenCommand As ICommand
+        Public Property TeilnehmerLoeschenCommand As ICommand
+        Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
+
+        ' Trainer Commands
+        Public Property TrainerErstellenCommand As ICommand
+        Public Property TrainerBearbeitenCommand As ICommand
+        Public Property TrainerLoeschenCommand As ICommand
+        Public Property TraineruebersichtAnzeigenCommand As ICommand
+        Public Property TrainerInGruppeEinteilenCommand As ICommand
+        Public Property TrainerAusGruppeEntfernenCommand As ICommand
+        Public Property TrainerInEinteilungHinzufuegenCommand As ICommand
+        Public Property TrainerAusEinteilungEntfernenCommand As ICommand
+
+#End Region
+
+#Region "Ausgewählte Objekte"
+
         Public Property SelectedAlleGruppenloserTeilnehmer As New TeilnehmerCollection
         Public Property MostRecentlyUsedMenuItem As New ObservableCollection(Of MenuEintragViewModel)
 
@@ -275,7 +282,35 @@ Namespace ViewModels
 
         Private _AlleEinteilungenCV As CollectionView
 
-        Public Property SelectedAlleMitglieder As New TeilnehmerCollection
+        Private _SelectedAlleMitglieder As New TeilnehmerCollection
+
+        Public Property SelectedAlleMitglieder As TeilnehmerCollection
+            Get
+                Return _SelectedAlleMitglieder
+            End Get
+            Set(value As TeilnehmerCollection)
+                If _SelectedAlleMitglieder IsNot Nothing Then
+                    RemoveHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf SelectedAlleMitglieder_CollectionChanged
+                End If
+
+                _SelectedAlleMitglieder = If(value, New TeilnehmerCollection())
+
+                AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf SelectedAlleMitglieder_CollectionChanged
+
+                OnPropertyChanged(NameOf(SelectedAlleMitglieder))
+                If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
+                    DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                End If
+            End Set
+        End Property
+
+
+        Private Sub SelectedAlleMitglieder_CollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+            OnPropertyChanged(NameOf(SelectedAlleMitglieder))
+            If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
+                DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+            End If
+        End Sub
 
         ''' <summary>
         ''' Alle Einteilungen des aktuellen Clubs.
@@ -317,7 +352,10 @@ Namespace ViewModels
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
                 SelectedGruppenloserTrainer = Nothing
-                'OnPropertyChanged(NameOf(LeistungsstufenListe))
+                OnPropertyChanged(NameOf(SelectedEinteilung))
+                If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
+                    DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                End If
             End Set
         End Property
 
@@ -331,7 +369,10 @@ Namespace ViewModels
                 _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
                 _SelectedGruppenloserTrainer = Nothing
-                'OnPropertyChanged(NameOf(SelectedGruppe))
+                OnPropertyChanged(NameOf(SelectedGruppe))
+                If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
+                    DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                End If
             End Set
         End Property
 
@@ -537,6 +578,8 @@ Namespace ViewModels
         End Property
 #End Region
 
+#End Region
+
 #Region "Functions"
 
         Public Function KopiereListeMitNeuenObjekten(Of T)(originalList As List(Of T), copyConstructor As Func(Of T, T)) As List(Of T)
@@ -700,7 +743,7 @@ Namespace ViewModels
 
             Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)
             }
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Trainerliste
 

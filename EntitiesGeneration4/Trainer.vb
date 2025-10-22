@@ -167,7 +167,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <returns></returns>
         <EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
-        Public Property EMail() As String
+        Public Property EMail As String
 
         ''' <summary>
         ''' Ausgabe des Trainernamens auf der Information

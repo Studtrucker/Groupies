@@ -57,11 +57,14 @@
                     <RowDefinition MinHeight="250" Height="Auto"/>
                     <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 </Grid.RowDefinitions>
+                
+                
                 <Label Grid.Column="1" Grid.Row="1" Content="Sortierung" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="Gruppenname" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="3" Content="LeistungsstufeID" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="4" Content="Leistungsstufe" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="5" Content="Trainer" Margin="2"/>
+                
                 <StackPanel Grid.Column="1" Grid.Row="6">
                     <Label Grid.Column="1" Grid.Row="6" Content="Mitgliederliste" Margin="2"/>
                     <Grid HorizontalAlignment="Center">
@@ -85,14 +88,14 @@
                     
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
+                            <i:InvokeCommandAction Command="{Binding Path=DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
                     <TextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Trainer entfernen" 
-                                      Command="{Binding Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
+                                      Command="{Binding Path=DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
@@ -101,19 +104,19 @@
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="False" CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}"
-                          behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding Path=MainWindow.DataContext.SelectedAlleMitglieder, Source={x:Static Application.Current}}"                          
+                          behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding Path=DataContext.SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=Window}}"                          
                           SelectionMode="Extended" >
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding Path=MainWindow.DataContext.TeilnehmerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
+                            <i:InvokeCommandAction Command="{Binding Path=DataContext.TeilnehmerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Teilnehmer entfernen" 
-                                      Command="{Binding Path=MainWindow.DataContext.TeilnehmerAusGruppeEntfernenCommand, Source={x:Static Application.Current}}"/>
+                                      Command="{Binding Path=DataContext.TeilnehmerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 

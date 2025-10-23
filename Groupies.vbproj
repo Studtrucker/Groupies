@@ -192,7 +192,6 @@
     <Compile Include="Converters\StringToLeistungsstufeConverter.vb" />
     <Compile Include="EntitiesGeneration4\Einteilung.vb" />
     <Compile Include="EntitiesGeneration4\EinteilungCollection.vb" />
-    <Compile Include="MainViewModel.vb" />
     <Compile Include="TestWindow.xaml.vb">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
@@ -226,6 +225,7 @@
     <Compile Include="ViewModels\FaehigkeitViewModel.vb" />
     <Compile Include="ViewModels\GruppendetailViewModel.vb" />
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
+    <Compile Include="ViewModels\MainViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\DetailViewModel.vb" />

@@ -328,7 +328,9 @@
                                 <MenuItem Header="Trainer einteilen"  
                                           Command="{Binding TrainerInGruppeEinteilenCommand}"
                                           CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                            
+                                <MenuItem Header="Trainer entfernen"  
+                                          Command="{Binding TrainerAusEinteilungEntfernenCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
 
@@ -385,9 +387,9 @@
                                 <MenuItem Header="Teilnehmer einteilen"  
                                           Command="{Binding TeilnehmerInGruppeEinteilenCommand}"
                                           CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                <MenuItem Header="Teilnehmer erstellen"  Command="{Binding TeilnehmerErstellenCommand}"/>
-                                <MenuItem Header="Teilnehmer bearbeiten" Command="{Binding TeilnehmerBearbeitenCommand}"/>
-                                <MenuItem Header="Teilnehmer löschen"    Command="{Binding TeilnehmerLoeschenCommand}"/>
+                                <MenuItem Header="Teilnehmer entfernen"    
+                                          Command="{Binding TeilnehmerAusEinteilungEntfernenCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

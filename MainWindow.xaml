@@ -43,7 +43,7 @@
     <DockPanel>
         
         <!--Menus-->
-        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="HotPink">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="LightGray">
 
             <MenuItem  Header="_Datei">
                 <MenuItem Header="_Neuer Club" Command="{Binding ClubNewCommand}">

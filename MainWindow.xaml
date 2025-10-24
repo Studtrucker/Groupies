@@ -40,10 +40,10 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
-    <DockPanel>
+    <DockPanel >
         
         <!--Menus-->
-        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="HotPink" Background="LightGray">
+        <Menu DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Yellow" Background="LightGray">
 
             <MenuItem  Header="_Datei">
                 <MenuItem Header="_Neuer Club" Command="{Binding ClubNewCommand}">
@@ -235,7 +235,7 @@
                 <DockPanel Grid.Row="0">
                     <TextBlock Text="Die Einteilungen" DockPanel.Dock="Top"/>
 
-                    <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom"
+                    <DataGrid x:Name="EinteilungenDataGrid" DockPanel.Dock="Bottom" 
                                   AutoGenerateColumns="False" 
                                   ItemsSource="{Binding AlleEinteilungenCV}"
                                   SelectedItem="{Binding SelectedEinteilung}"
@@ -277,7 +277,7 @@
                             <DataGridTextColumn Header="Nr"  Binding="{Binding Sortierung}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung}" Width="Auto" />
                             <DataGridTextColumn Header="Anz"  Binding="{Binding Mitgliederliste.Count}" SortMemberPath="Mitgliederliste.Count" Width="Auto" />
-                            <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="*" />
+                            <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" SortMemberPath="Leistungsstufe.Sortierung" Width="Auto" />
                             <DataGridTextColumn Header="Stufe"      
                                                 Binding="{Binding Leistungsstufe.Benennung}" SortMemberPath="Leistungsstufe.Benennung" Width="*" />
                             <!--<DataGridComboBoxColumn Header="Stufe" Width="*" 

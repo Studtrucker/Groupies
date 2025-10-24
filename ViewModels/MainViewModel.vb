@@ -285,7 +285,7 @@ Namespace ViewModels
         End Sub
 
         Private Function CanFaehigkeitErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub OnFaehigkeitErstellen(obj As Object)
@@ -293,11 +293,11 @@ Namespace ViewModels
         End Sub
 
         Private Function CanFaehigkeitenuebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanLeistungsstufeErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub OnLeistungsstufeErstellen(obj As Object)
@@ -305,19 +305,19 @@ Namespace ViewModels
         End Sub
 
         Private Function CanLeistungsstufenuebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanTrainerErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanTraineruebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanTeilnehmerErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub OnTeilnehmerErstellen(obj As Object)
@@ -325,11 +325,11 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTeilnehmeruebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanGruppeAusEinteilungEntfernen() As Boolean
-            Throw New NotImplementedException()
+            Return SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnGruppeAusEinteilungEntfernen(obj As Object)
@@ -337,7 +337,7 @@ Namespace ViewModels
         End Sub
 
         Private Function CanGruppeErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub OnGruppeErstellen(obj As Object)
@@ -345,11 +345,11 @@ Namespace ViewModels
         End Sub
 
         Private Function CanGruppenuebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanEinteilungErstellen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub OnEinteilungErstellen(obj As Object)
@@ -357,23 +357,23 @@ Namespace ViewModels
         End Sub
 
         Private Function CanEinteilungsuebersichtAnzeigen() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanClubClose() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanClubInfoPrint() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Function CanClubSaveAs() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Function CanClubSave() As Boolean
-            Throw New NotImplementedException()
+            Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
         Private Sub InitializeHandlers()

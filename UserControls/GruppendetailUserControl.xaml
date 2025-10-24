@@ -17,6 +17,7 @@
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
+        <Converters:InvertableBoolToVisibleConverter x:Key="BooleanToVisibilityInverted"/>
     </UserControl.Resources>
 
     <i:Interaction.Triggers>
@@ -55,6 +56,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition MinHeight="250" Height="Auto"/>
                     <RowDefinition Style="{StaticResource RandRowDefinition}"/>
                 </Grid.RowDefinitions>
@@ -62,12 +64,12 @@
                 
                 <Label Grid.Column="1" Grid.Row="1" Content="Sortierung" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="Gruppenname" Margin="2"/>
-                <Label Grid.Column="1" Grid.Row="3" Content="LeistungsstufeID" Margin="2"/>
+                <!--<Label Grid.Column="1" Grid.Row="3" Content="LeistungsstufeID" Margin="2"/>-->
                 <Label Grid.Column="1" Grid.Row="4" Content="Leistungsstufe" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="5" Content="Trainer" Margin="2"/>
                 
-                <StackPanel Grid.Column="1" Grid.Row="6">
-                    <Label Grid.Column="1" Grid.Row="6" Content="Mitgliederliste" Margin="2"/>
+                <StackPanel Grid.Column="1" Grid.Row="7">
+                    <Label Content="Mitgliederliste" Margin="2"/>
                     <Grid HorizontalAlignment="Center">
                         <TextBlock Grid.Row="0"  Text="{Binding Mitgliederliste.Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" FontSize="35"/>
                     </Grid>
@@ -75,7 +77,7 @@
 
                 <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}"  />
                 <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}"  />
-                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<TextBox Grid.Column="2" Grid.Row="3" Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"/>-->
 
                 <ComboBox Grid.Column="2" Grid.Row="4" x:Name="GruppenleistungsstufeComboBox"
                           IsSynchronizedWithCurrentItem="True"
@@ -83,27 +85,44 @@
                           ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}"
                           SelectedValuePath="Ident"
                           DisplayMemberPath="Benennung"/>
-   
-                <TextBox  Grid.Column="2" Grid.Row="5" x:Name="GroupLeaderTextblock"  
-                          Text="{Binding Trainer.VorNachname, Mode=OneWay}">
-                    
-                    <!--Funktionsprüfung okay-->
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
 
-                    <!--Funktionsprüfung okay-->
-                    <TextBox.ContextMenu>
+                    <TextBox  Grid.Column="2" Grid.Row="6"
+                              IsReadOnly="True" 
+                              x:Name="GroupLeaderTextblock"  
+                              Text="{Binding Trainer.VorNachname, Mode=OneWay}">
+                        <!--Funktionsprüfung okay-->
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <!--Funktionsprüfung okay-->
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Trainer entfernen"
+                                          Command="{Binding Source={x:Static Application.Current}, Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand}"/>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
+
+                <Border  Grid.Column="2"   Grid.Row="5" BorderThickness="1"
+                         HorizontalAlignment="left" Margin="3">
+                    <Grid Height="Auto">
+                        <Rectangle Fill="Transparent"/>
+                        <Image Height="180" VerticalAlignment="Center" Source="/Images/icons8-trainer-96.png"  Opacity="0.3"
+                               Visibility="{Binding Trainer.HatKeinFoto, Converter={StaticResource BooleanToVisibilityInverted}}"/>
+                        <Image x:Name="FotoImage" Height="180"  Source="{Binding Trainer.Foto}" />
+                    </Grid>
+                    <Border.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Trainer entfernen"
-                                      Command="{Binding Source={x:Static Application.Current}, Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand}"/>
+                        <MenuItem Header="Trainer entfernen"
+                                          Command="{Binding Source={x:Static Application.Current}, Path=MainWindow.DataContext.TrainerAusGruppeEntfernenCommand}"/>
                         </ContextMenu>
-                    </TextBox.ContextMenu>
-                </TextBox>
-                
-                <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
+                    </Border.ContextMenu>
+                </Border>
+
+                <DataGrid Grid.Column="2" Grid.Row="7" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="True" CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}"

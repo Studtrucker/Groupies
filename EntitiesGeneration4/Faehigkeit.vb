@@ -24,6 +24,7 @@ Namespace Entities.Generation4
         ''' Erstellt eine neue Fähigkeit
         ''' </summary>
         Public Sub New()
+            _FaehigkeitID = Guid.NewGuid
             _Sortierung = -1
         End Sub
 
@@ -32,6 +33,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="Benennung"></param>
         Sub New(Benennung As String)
+            _FaehigkeitID = Guid.NewGuid
             _Sortierung = -1
             _Benennung = Benennung
         End Sub
@@ -41,6 +43,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="Benennung"></param>
         Sub New(Benennung As String, Sortierung As Integer)
+            _FaehigkeitID = Guid.NewGuid
             _Benennung = Benennung
             _Sortierung = Sortierung
         End Sub

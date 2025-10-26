@@ -335,7 +335,7 @@ Namespace ViewModels
 
         Private Sub OnGruppeAusEinteilungEntfernen(obj As Object)
             Dim GS As New GruppenService
-            GS.GruppeAusEinteilungEntfernen
+            GS.GruppeAusEinteilungEntfernen(SelectedGruppe, SelectedEinteilung)
         End Sub
 
         Private Function CanGruppeErstellen() As Boolean
@@ -442,7 +442,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Leistungsstufenliste
 
             fenster.DataContext = mvw
             fenster.Show()

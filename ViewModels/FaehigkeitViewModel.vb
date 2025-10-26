@@ -27,6 +27,7 @@ Public Class FaehigkeitViewModel
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+        LoeschenCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnLoeschen, Function() CanLoeschen)
     End Sub
 
 #End Region
@@ -132,52 +133,29 @@ Public Class FaehigkeitViewModel
     End Sub
 
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim FS As New FaehigkeitenService
+        FS.FaehigkeitErstellen()
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-        mvw.AktuellesViewModel.Model = New Faehigkeit
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Faehigkeitenliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
-        End If
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
 
-
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Faehigkeit),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-        mvw.AktuellesViewModel.Model = New Faehigkeit(SelectedItem)
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Faehigkeitenliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Faehigkeitenliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
-        End If
+        Dim FS As New FaehigkeitenService
+        FS.FaehigkeitBearbeiten(DirectCast(SelectedItem, Faehigkeit))
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
 
     End Sub
+
+    Public Overloads Sub OnLoeschen(obj As Object)
+        Dim FS As New FaehigkeitenService
+        FS.FaehigkeitLoeschen(DirectCast(SelectedItem, Faehigkeit))
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
+    End Sub
+
 #End Region
 
 #Region "Validation"

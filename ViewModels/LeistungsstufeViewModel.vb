@@ -31,7 +31,14 @@ Public Class LeistungsstufeViewModel
         AuswahlFaehigkeiten = New ListCollectionView(DateiService.AktuellerClub.Faehigkeitenliste)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+        LoeschenCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoeschen, Function() CanLoeschen)
+        AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
     End Sub
+
+    Private Sub OnLeistungsstufeBearbeitet(sender As Object, e As EventArgs)
+        OnPropertyChanged(NameOf(Items))
+    End Sub
+
 
 #End Region
 
@@ -158,59 +165,35 @@ Public Class LeistungsstufeViewModel
             OnPropertyChanged(NameOf(SelectedItem))
             OnPropertyChanged(NameOf(CanBearbeiten))
             CType(BearbeitenCommand, RelayCommand(Of Einteilung)).RaiseCanExecuteChanged()
-            Dim abc = DateiService.AktuellerClub.Faehigkeitenliste.Except(SelectedItem.Faehigkeiten)
-            AuswahlFaehigkeiten = New ListCollectionView(abc.ToList)
+
         End Set
     End Property
 
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
         ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim LS As New LeistungsstufenService
+        LS.LeistungsstufeErstellen()
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-        mvw.AktuellesViewModel.Model = New Leistungsstufe
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
-        End If
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
 
-
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Leistungsstufe),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-        mvw.AktuellesViewModel.Model = New Leistungsstufe(SelectedItem)
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Leistungsstufenliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Leistungsstufenliste(index) = mvw.AktuellesViewModel.Model
-            Debug.WriteLine(Services.DateiService.AktuellerClub.Leistungsstufenliste(index).Beschreibung)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
-        End If
-
+        Dim LS As New LeistungsstufenService
+        LS.LeistungsstufeBearbeiten(DirectCast(SelectedItem, Leistungsstufe))
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
+
+    Public Overloads Sub OnLoeschen(obj As Object)
+        Dim LS As New LeistungsstufenService
+        LS.LeistungsstufeLoeschen(DirectCast(SelectedItem, Leistungsstufe))
+
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
+    End Sub
+
 #End Region
 
 #Region "Validation"

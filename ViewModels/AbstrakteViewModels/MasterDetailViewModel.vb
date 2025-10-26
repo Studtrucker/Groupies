@@ -31,6 +31,12 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
         'NeuCommand = New RelayCommand(Of T)(AddressOf OnNeu)
+        AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
+    End Sub
+
+    Private Sub OnLeistungsstufeBearbeitet(sender As Object, e As EventArgs)
+        OnPropertyChanged(NameOf(Items))
+        ItemsView.Refresh()
     End Sub
 
 #End Region

@@ -32,14 +32,12 @@ Public Class GruppeViewModel
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+        LoeschenCommand = New RelayCommand(Of Gruppe)(AddressOf OnLoeschen, Function() CanLoeschen)
 
-        AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
-
-    End Sub
-
-    Private Sub TeilnehmerBearbeitet(sender As Object, e As EventArgs)
 
     End Sub
+
+
 
 #End Region
 
@@ -163,51 +161,30 @@ Public Class GruppeViewModel
     End Sub
 
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim GS As New GruppenService
+        GS.GruppeErstellen()
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-        mvw.AktuellesViewModel.Model = New Gruppe
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Gruppenliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
-        End If
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
 
+        Dim GS As New GruppenService
+        GS.GruppeBearbeiten(DirectCast(SelectedItem, Gruppe))
 
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+    End Sub
 
-        mvw.AktuellesViewModel.Model = New Gruppe(SelectedItem)
-        dialog.DataContext = mvw
+    Public Overloads Sub OnLoeschen(obj As Object)
 
-        Dim result As Boolean = dialog.ShowDialog()
+        Dim GS As New GruppenService
+        GS.GruppeLoeschen(DirectCast(SelectedItem, Gruppe))
 
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Gruppenliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Gruppenliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
-        End If
-
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
 #End Region

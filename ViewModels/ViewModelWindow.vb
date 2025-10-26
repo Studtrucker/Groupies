@@ -235,6 +235,7 @@ Public Class ViewModelWindow
         ' Objekt wurde geändert, hier können Sie Logik hinzufügen, die auf Änderungen reagiert
         ' Zum Beispiel: Aktualisieren der Ansicht oder Validierung
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+
     End Sub
 
 #End Region

@@ -565,16 +565,16 @@
                             </Style>
                         </DataGrid.RowStyle>-->
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" />
-                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}">
-                                <DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}" Width="Auto" />
+                            <DataGridTextColumn Header="Fähigkeit" Binding="{Binding Benennung}" Width="Auto" >
+                                <!--<DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
                                         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
                                     </Style>
-                                </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn.ElementStyle>-->
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="Auto">
+                            <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" Width="*">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis"/>
@@ -589,8 +589,8 @@
                               AutoGenerateColumns="False" IsReadOnly="True"
                               ItemsSource="{Binding AuswahlFaehigkeiten}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sort" Binding="{Binding Sortierung}"/>
-                            <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}"/>
+                            <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}" Width="Auto"/>
+                            <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -619,7 +619,7 @@
                     </i:Interaction.Triggers>
 
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung"/>
+                        <DataGridTextColumn Header="Nr" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
                         <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="Benennung"/>
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>

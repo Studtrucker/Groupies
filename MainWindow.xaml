@@ -266,8 +266,8 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Löschen" 
-                                          Command="{Binding PlacementTarget.DataContext.GruppeLoeschenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                <MenuItem Header="Gruppe entfernen" 
+                                          Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>

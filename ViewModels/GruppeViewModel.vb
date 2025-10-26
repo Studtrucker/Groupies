@@ -32,6 +32,13 @@ Public Class GruppeViewModel
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+
+        AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
+
+    End Sub
+
+    Private Sub TeilnehmerBearbeitet(sender As Object, e As EventArgs)
+
     End Sub
 
 #End Region

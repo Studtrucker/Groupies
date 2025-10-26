@@ -3,6 +3,7 @@ Imports System.IO
 Imports Groupies.Controller
 'Imports Groupies.DataImport
 Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Public Class TrainerViewModel
     Inherits MasterDetailViewModel(Of Trainer)
@@ -40,6 +41,10 @@ Public Class TrainerViewModel
 
         NeuCommand = New RelayCommand(Of Trainer)(AddressOf OnNeu, Function() CanNeu())
         BearbeitenCommand = New RelayCommand(Of Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
+        LoeschenCommand = New RelayCommand(Of Trainer)(AddressOf OnLoeschen, Function() CanLoeschen())
+
+        AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
+
     End Sub
 
 
@@ -226,53 +231,80 @@ Public Class TrainerViewModel
         End If
     End Sub
 
+
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-        mvw.AktuellesViewModel.Model = New Trainer
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
-        End If
-        MoveNextCommand.RaiseCanExecuteChanged()
-        MovePreviousCommand.RaiseCanExecuteChanged()
+        Dim ts As New TrainerService
+        ts.TrainerErstellen()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
-
-
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-        mvw.AktuellesViewModel.Model = New Trainer(SelectedItem)
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Trainerliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Trainerliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
-        End If
-
+        Dim trainerToEdit = DirectCast(SelectedItem, Trainer)
+        Dim ts As New TrainerService
+        ts.TrainerBearbeiten(trainerToEdit)
     End Sub
+
+    Public Overloads Sub OnLoeschen(obj As Object)
+        Dim trainerToDelete = DirectCast(SelectedItem, Trainer)
+        Dim TS As New TrainerService()
+        TS.TrainerLoeschen(trainerToDelete)
+    End Sub
+
+
+    'Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
+
+    '    'Dim ts As New TrainerService
+    '    'ts.TrainerErstellen()
+
+    '    ' Hier können Sie die Logik für den Neu-Button implementieren
+    '    Dim dialog = New BasisDetailWindow() With {
+    '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+    '    Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+    '        .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+    '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+    '    mvw.AktuellesViewModel.Model = New Trainer
+    '    dialog.DataContext = mvw
+
+    '    Dim result As Boolean = dialog.ShowDialog()
+
+    '    If result = True Then
+    '        ' Todo: Das Speichern muss im ViewModel erledigt werden
+    '        Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
+    '        MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
+    '    End If
+
+
+    '    MoveNextCommand.RaiseCanExecuteChanged()
+    '    MovePreviousCommand.RaiseCanExecuteChanged()
+    'End Sub
+
+    'Public Sub OnBearbeiten(obj As Object)
+
+    '    ' Hier können Sie die Logik für den Neu-Button implementieren
+    '    Dim dialog = New BasisDetailWindow() With {
+    '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+    '    Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+    '        .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+    '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+    '    mvw.AktuellesViewModel.Model = New Trainer(SelectedItem)
+    '    dialog.DataContext = mvw
+
+    '    Dim result As Boolean = dialog.ShowDialog()
+
+    '    If result = True Then
+    '        Dim index = Services.DateiService.AktuellerClub.Trainerliste.IndexOf(SelectedItem)
+    '        ' Todo: Das Speichern muss im ViewModel erledigt werden
+    '        Services.DateiService.AktuellerClub.Trainerliste(index) = mvw.AktuellesViewModel.Model
+    '        MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
+    '    End If
+
+    'End Sub
+
+
+
 #End Region
 
 #Region "Validation"
@@ -319,6 +351,11 @@ Public Class TrainerViewModel
 
         End If
 
+    End Sub
+
+    Private Sub OnTrainerGeaendert(sender As Object, e As EventArgs)
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub
 
     Private Sub ValidateTrainerID()

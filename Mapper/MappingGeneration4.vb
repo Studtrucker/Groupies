@@ -48,7 +48,14 @@ Public Module MappingGeneration4
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleLeistungsstufen(Skiclub As Club) As LeistungsstufeCollection
-        Skiclub.Leistungsstufenliste.ToList.ForEach(Sub(L) L.FaehigkeitenIDListe.ToList.ForEach(Sub(FID) L.Faehigkeiten.Add(Skiclub.Faehigkeitenliste.FirstOrDefault(Function(F) F.FaehigkeitID = FID))))
+        'Skiclub.Leistungsstufenliste.ToList.ForEach(Sub(L) L.FaehigkeitenIDListe.ToList.ForEach(Sub(FID) L.Faehigkeiten.Add(Skiclub.Faehigkeitenliste.FirstOrDefault(Function(F) F.FaehigkeitID = FID))))
+
+        For Each L In Skiclub.Leistungsstufenliste
+            For Each FID In L.FaehigkeitenIDListe
+                L.Faehigkeiten.Add(Skiclub.Faehigkeitenliste.Where(Function(F) F.FaehigkeitID = FID).SingleOrDefault)
+            Next
+        Next
+
         Return Skiclub.Leistungsstufenliste
     End Function
 

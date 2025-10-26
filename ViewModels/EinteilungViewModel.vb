@@ -1,6 +1,7 @@
 ﻿Imports Groupies.Controller
 Imports Groupies.DataImport
 Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Public Class EinteilungViewModel
     Inherits MasterDetailViewModel(Of Einteilung)
@@ -26,6 +27,7 @@ Public Class EinteilungViewModel
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+        LoeschenCommand = New RelayCommand(Of Einteilung)(AddressOf OnLoeschen, Function() CanLoeschen())
     End Sub
 
 #End Region
@@ -119,56 +121,44 @@ Public Class EinteilungViewModel
     End Sub
 
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+        Dim ES As New EinteilungService
+        ES.EinteilungErstellen()
 
-        mvw.AktuellesViewModel.Model = New Einteilung
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Einteilungsliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
-        End If
         MyBase.OnNeu()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
+        Dim ES As New EinteilungService
+        ES.EinteilungBearbeiten(SelectedItem)
+    End Sub
 
-
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Einteilung),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-        mvw.AktuellesViewModel.Model = New Einteilung(SelectedItem)
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Einteilungsliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Einteilungsliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
-        End If
-
+    Public Overloads Sub OnLoeschen(obj As Object)
+        Dim einteilungToDelete = DirectCast(SelectedItem, Einteilung)
+        Dim TS As New EinteilungService()
+        TS.EinteilungLoeschen(einteilungToDelete)
     End Sub
 
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Einteilung.speichern()
     End Sub
+
+    Private Overloads Property CanLoeschen() As Boolean
+        Get
+            ' Anzahl der Einteilungen mit Gruppenliste ermitteln
+            Dim AnzahlEinteilungenMitGruppen As Integer = DateiService.AktuellerClub.Einteilungsliste.Where(Function(e) e.Gruppenliste IsNot Nothing AndAlso e.Gruppenliste.Count > 0).Count
+            Dim ItemToDeleteHatGruppen As Boolean = SelectedItem.Gruppenliste IsNot Nothing AndAlso SelectedItem.Gruppenliste.Count > 0
+            If ItemToDeleteHatGruppen Then
+                Return DateiService.AktuellerClub.Einteilungsliste.Count > 1 AndAlso AnzahlEinteilungenMitGruppen > 1
+            Else
+                Return True
+            End If
+        End Get
+        Set(value As Boolean)
+            OnPropertyChanged(NameOf(CanLoeschen))
+        End Set
+    End Property
 
 #End Region
 

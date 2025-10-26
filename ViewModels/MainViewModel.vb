@@ -39,14 +39,11 @@ Namespace ViewModels
         Private _AlleEinteilungenCV As CollectionView
         Private _SelectedEinteilung As Einteilung
         Private _SelectedGruppe As Gruppe
-
         Private _SelectedAlleMitglieder As New TeilnehmerCollection
-
         Private _SelectedGruppenloserTrainer As Trainer
-
         Private _selectedAlleGruppenloserTrainer As IList
-
         Private _GruppendetailViewModel As GruppendetailViewModel
+
 #End Region
 
 #Region "Konstruktor"
@@ -65,6 +62,7 @@ Namespace ViewModels
 
             ' CollectionChanged-Handler für SelectedAlleMitglieder vorbereiten
             AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf OnSelectedAlleMitgliederCollectionChanged
+            AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
         End Sub
 #End Region
 
@@ -289,7 +287,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnFaehigkeitErstellen(obj As Object)
-            Throw New NotImplementedException()
+            Dim FS As New FaehigkeitenService
+            FS.FaehigkeitErstellen
         End Sub
 
         Private Function CanFaehigkeitenuebersichtAnzeigen() As Boolean
@@ -301,7 +300,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnLeistungsstufeErstellen(obj As Object)
-            Throw New NotImplementedException()
+            Dim LS As New LeistungsstufenService
+            LS.LeistungsstufeErstellen
         End Sub
 
         Private Function CanLeistungsstufenuebersichtAnzeigen() As Boolean
@@ -321,7 +321,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnTeilnehmerErstellen(obj As Object)
-            Throw New NotImplementedException()
+            Dim ts As New TeilnehmerService
+            ts.TeilnehmerErstellen()
         End Sub
 
         Private Function CanTeilnehmeruebersichtAnzeigen() As Boolean
@@ -333,7 +334,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnGruppeAusEinteilungEntfernen(obj As Object)
-            Throw New NotImplementedException()
+            Dim GS As New GruppenService
+            GS.GruppeAusEinteilungEntfernen
         End Sub
 
         Private Function CanGruppeErstellen() As Boolean
@@ -341,7 +343,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnGruppeErstellen(obj As Object)
-            Throw New NotImplementedException()
+            Dim GS As New GruppenService
+            GS.GruppeErstellen()
         End Sub
 
         Private Function CanGruppenuebersichtAnzeigen() As Boolean
@@ -353,7 +356,8 @@ Namespace ViewModels
         End Function
 
         Private Sub OnEinteilungErstellen(obj As Object)
-            Throw New NotImplementedException()
+            Dim ES As New EinteilungService
+            ES.EinteilungErstellen
         End Sub
 
         Private Function CanEinteilungsuebersichtAnzeigen() As Boolean
@@ -806,7 +810,7 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean
-            Return SelectedEinteilung IsNot Nothing
+            Return SelectedEinteilung IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusEinteilungEntfernen(obj As Object)
@@ -916,6 +920,11 @@ Namespace ViewModels
                 DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             End If
         End Sub
+
+        Private Sub OnMitgliederlisteGeaendert(sender As Object, e As EventArgs)
+            OnPropertyChanged(NameOf(SelectedAlleMitglieder))
+        End Sub
+
 #End Region
 
 #Region "Helpers / Utilities"

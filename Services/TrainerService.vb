@@ -13,6 +13,107 @@ Namespace Services
             RaiseEvent TrainerGeaendert(Me, e)
         End Sub
 
+        Public Sub TrainerErstellen()
+
+            Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
+            mvw.AktuellesViewModel.Model = New Trainer()
+            dialog.DataContext = mvw
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                ' Todo: Das Speichern muss im ViewModel erledigt werden
+                Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).VorNachname} wurde gespeichert")
+            End If
+            OnTrainerGeaendert(EventArgs.Empty)
+        End Sub
+
+
+        Public Sub TrainerBearbeiten(TrainerToEdit As Trainer)
+
+            ' Hier können Sie die Logik für den Neu-Button implementieren
+            Dim dialog = New BasisDetailWindow() With {
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+            Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
+
+            mvw.AktuellesViewModel.Model = New Trainer(TrainerToEdit)
+            dialog.DataContext = mvw
+
+            Dim result As Boolean = dialog.ShowDialog()
+
+            If result = True Then
+                Dim club = DateiService.AktuellerClub
+
+                Dim index = club.Trainerliste.IndexOf(TrainerAusListeLesen(club.Trainerliste.ToList, TrainerToEdit.TrainerID))
+                ' 1) in Club-Trainerliste austauschen
+                club.Trainerliste(index) = mvw.AktuellesViewModel.Model
+
+                ' 2) in allen Einteilungen: VerfuegbareTrainerListe austauschen
+                For Each el In club.Einteilungsliste
+                    Dim toChangeVT = el.VerfuegbareTrainerListe.Where(Function(N) N.TrainerID = mvw.AktuellesViewModel.Model.Ident).ToList()
+                    For Each n In toChangeVT
+                        index = el.VerfuegbareTrainerListe.IndexOf(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, TrainerToEdit.TrainerID))
+                        el.VerfuegbareTrainerListe(index) = mvw.AktuellesViewModel.Model
+                    Next
+                Next
+
+                ' 3) in allen Gruppen: Mitgliederliste korrekt entfernen
+                For Each E In club.Einteilungsliste.Where(Function(el) el IsNot Nothing).ToList()
+                    Dim toChangeTrainers = E.Gruppenliste.Where(Function(GT) GT.TrainerID = TrainerToEdit.TrainerID).ToList()
+                    'index = E.Gruppenliste.IndexOf(TrainerAusListeLesen(E.Gruppenliste.ToList, TrainerToEdit))
+                    For Each t In toChangeTrainers
+                        t.Trainer = mvw.AktuellesViewModel.Model
+                    Next
+                Next
+
+                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).VorNachname} wurde gespeichert")
+            End If
+
+            OnTrainerGeaendert(New TrainerEventArgs(mvw.AktuellesViewModel.Model))
+
+        End Sub
+
+        Public Sub TrainerLoeschen(TrainerToDelete As Trainer)
+            Dim result = MessageBox.Show($"Möchten Sie {TrainerToDelete.VorNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Trainer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+            If result = MessageBoxResult.Yes Then
+
+                ' aus Club Trainerliste entfernen
+                DateiService.AktuellerClub.Trainerliste.Remove(TrainerAusListeLesen(DateiService.AktuellerClub.Trainerliste.ToList, TrainerToDelete.TrainerID))
+                ' in allen Einteilungen aus verfügbare Trainerliste entfernen
+                For Each el In DateiService.AktuellerClub.Einteilungsliste
+                    For Each t In el.VerfuegbareTrainerListe.Where(Function(Gl) Gl.TrainerID = TrainerToDelete.TrainerID)
+                        't.TrainerID = Nothing
+                        't = Nothing
+                        el.VerfuegbareTrainerListe.Remove(t)
+                    Next
+                Next
+
+                ' in allen Einteilungen, in allen Gruppen die TrainerID und den Trainer auf Nothing setzen
+                For Each E In DateiService.AktuellerClub.Einteilungsliste.Where(Function(el) el.VerfuegbareTrainerIDListe.Count > 0).ToList
+                    For Each G In E.Gruppenliste.Where(Function(GT) GT.TrainerID = TrainerToDelete.TrainerID)
+                        G.TrainerID = Nothing
+                        G.Trainer = Nothing
+                    Next
+                Next
+
+                MessageBox.Show($"{TrainerToDelete.VorNachname} wurde gelöscht")
+                OnTrainerGeaendert(New TrainerEventArgs(TrainerToDelete))
+            End If
+        End Sub
+
+        Private Function TrainerAusListeLesen(List As List(Of Trainer), TrainerID As Guid) As Trainer
+            Return List.Where(Function(T) T.TrainerID = TrainerID).Single
+        End Function
+
         ''' <summary>
         ''' Ein Trainer in eine Gruppe einteilen und aus der Liste der verfügbaren Trainern entfernen
         ''' </summary>
@@ -141,42 +242,6 @@ Namespace Services
 
         End Sub
 
-        '''' <summary>
-        '''' Vorhandener Trainer wird bearbeitet
-        '''' </summary>
-        '''' <param name="OriginalTrainerID"></param>
-        'Public Sub TrainerBearbeiten(OriginalTrainerID As Guid, NeueTrainerdaten As Trainer)
-        '    Dim ZuBearbeitenderTrainer = TrainerLesen(OriginalTrainerID)
-        '    ZuBearbeitenderTrainer.Vorname = NeueTrainerdaten.Vorname
-        '    ZuBearbeitenderTrainer.Nachname = NeueTrainerdaten.Nachname
-        '    ZuBearbeitenderTrainer.Telefonnummer = NeueTrainerdaten.Telefonnummer
-        '    ZuBearbeitenderTrainer.EMail = NeueTrainerdaten.EMail
-        '    ZuBearbeitenderTrainer.Alias = NeueTrainerdaten.Alias
-        '    ZuBearbeitenderTrainer.Foto = NeueTrainerdaten.Foto
-
-
-        '    OnTrainerGeaendert(New TrainerEventArgs(TrainerLesen(ZuBearbeitenderTrainer)))
-        '    ' den Trainer in allen Gruppen austauschen
-        'End Sub
-
-        'Public Sub TrainerHinzufuegen(e As TrainerEventArgs)
-        '    Club.Trainerliste.Add(e.NeueTrainerdaten)
-        'End Sub
-
-        'Public Sub TrainerLoeschen(e As TrainerEventArgs)
-        '    Dim TrainerID = e.TrainerIDListe(0)
-        '    Dim Trainer = TrainerLesen(TrainerID)
-        '    ' Zuerst aus allen Einteilungen entfernen
-        '    Club.Einteilungsliste.ToList.ForEach(Sub(El) El.VerfuegbareTrainerListe.Remove(Trainer))
-        '    Club.Einteilungsliste.ToList.ForEach(Sub(El) El.Gruppenliste.ToList.ForEach(Sub(G)
-        '                                                                                    If G.TrainerID = TrainerID Then
-        '                                                                                        G.Trainer = Nothing
-        '                                                                                        G.TrainerID = Nothing
-        '                                                                                    End If
-        '                                                                                End Sub))
-        '    ' Dann aus der Trainerliste entfernen
-        '    Club.Trainerliste.Remove(Trainer)
-        'End Sub
 
     End Class
 End Namespace

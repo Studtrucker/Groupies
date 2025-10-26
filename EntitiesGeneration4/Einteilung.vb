@@ -42,9 +42,9 @@ Namespace Entities.Generation4
             Ident = Origin.Ident
             Benennung = Origin.Benennung
             Sortierung = Origin.Sortierung
-            Gruppenliste = New GruppeCollection(Origin.Gruppenliste.Select(Function(G) New Gruppe(G)))
-            NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection(Origin.NichtZugewieseneTeilnehmerListe.Select(Function(T) New Teilnehmer(T)))
-            VerfuegbareTrainerListe = New TrainerCollection(Origin.VerfuegbareTrainerListe.Select(Function(T) New Trainer(T)))
+            Gruppenliste = Origin.Gruppenliste
+            NichtZugewieseneTeilnehmerListe = Origin.NichtZugewieseneTeilnehmerListe
+            VerfuegbareTrainerListe = Origin.VerfuegbareTrainerListe
         End Sub
 
 #End Region

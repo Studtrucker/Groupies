@@ -21,8 +21,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Private _ItemsView As ICollectionView
 #End Region
 
-
-
 #Region "Konstruktoren"
     Public Sub New()
         MyBase.New
@@ -137,8 +135,6 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Public Property MoveNextCommand As RelayCommand(Of T)
     Public Property MovePreviousCommand As RelayCommand(Of T)
     Public Property LoeschenCommand As RelayCommand(Of T)
-    'Public Property NeuCommand As RelayCommand(Of T)
-
 
 #End Region
 
@@ -171,7 +167,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     End Sub
 
     Public Sub OnLoeschen()
-        Items.Remove(SelectedItem)
+        'Items.Remove(SelectedItem)
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()
     End Sub

@@ -2,6 +2,7 @@
 Imports System.ComponentModel
 Imports Groupies.Controller
 Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Public Class TeilnehmerViewModel
     Inherits MasterDetailViewModel(Of Teilnehmer)
@@ -34,7 +35,11 @@ Public Class TeilnehmerViewModel
         LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+
+        AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
+
     End Sub
+
 
 #End Region
 
@@ -157,6 +162,12 @@ Public Class TeilnehmerViewModel
 
 #Region "Methoden"
 
+    Private Sub TeilnehmerBearbeitet(sender As Object, e As EventArgs)
+        MoveNextCommand.RaiseCanExecuteChanged()
+        MovePreviousCommand.RaiseCanExecuteChanged()
+    End Sub
+
+
     Public Sub OnOk(obj As Object) Implements IViewModelSpecial.OnOk
         ' Hier können Sie die Logik für den OK-Button implementieren
         _Teilnehmer.speichern()
@@ -172,57 +183,23 @@ Public Class TeilnehmerViewModel
         End If
     End Sub
 
-    Private Overloads Sub OnLoeschen(obj As Object)
-        MyBase.OnLoeschen()
-    End Sub
 
     Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-        mvw.AktuellesViewModel.Model = New Teilnehmer
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Teilnehmerliste.Add(mvw.AktuellesViewModel.Model)
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
-        End If
-        MoveNextCommand.RaiseCanExecuteChanged()
-        MovePreviousCommand.RaiseCanExecuteChanged()
+        Dim ts As New TeilnehmerService
+        ts.TeilnehmerErstellen()
     End Sub
 
     Public Sub OnBearbeiten(obj As Object) 'Implements IViewModelSpecial.OnNeu
-
-
-        ' Hier können Sie die Logik für den Neu-Button implementieren
-        Dim dialog = New BasisDetailWindow() With {
-            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Teilnehmer),
-            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-        mvw.AktuellesViewModel.Model = New Teilnehmer(SelectedItem)
-        dialog.DataContext = mvw
-
-        Dim result As Boolean = dialog.ShowDialog()
-
-        If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Teilnehmerliste.IndexOf(SelectedItem)
-            ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Teilnehmerliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
-        End If
-
+        Dim ts As New TeilnehmerService
+        ts.TeilnehmerBearbeiten(SelectedItem)
     End Sub
+
+    Private Overloads Sub OnLoeschen(obj As Object)
+        Dim teilnehmerToDelete = DirectCast(SelectedItem, Teilnehmer)
+        Dim TS As New TeilnehmerService()
+        TS.TeilnehmerLoeschen(teilnehmerToDelete)
+    End Sub
+
 #End Region
 
 #Region "Validation"

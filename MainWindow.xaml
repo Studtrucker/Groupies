@@ -390,6 +390,9 @@
                                 <MenuItem Header="Teilnehmer entfernen"    
                                           Command="{Binding TeilnehmerAusEinteilungEntfernenCommand}"
                                           CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <Separator/>
+                                <MenuItem Header="Teilnehmer suchen"    
+                                          Command="{Binding TeilnehmerSuchenCommand}"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

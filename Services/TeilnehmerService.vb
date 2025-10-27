@@ -203,6 +203,11 @@ Namespace Services
 
         End Sub
 
+        Public Sub TeilnehmerSuchen(Name As String)
+            Throw New NotImplementedException
+        End Sub
+
+
         Private Function TeilnehmerAusListeLesen(Liste As List(Of Teilnehmer), TeilnehmerToFind As Teilnehmer) As Teilnehmer
 
             Return Liste.Where(Function(T) T.Ident = TeilnehmerToFind.Ident).SingleOrDefault()

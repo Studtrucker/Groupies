@@ -98,6 +98,7 @@ Namespace ViewModels
         Public Property TeilnehmerAusEinteilungEntfernenCommand As ICommand
         Public Property TeilnehmeruebersichtAnzeigenCommand As ICommand
         Public Property TeilnehmerErstellenCommand As ICommand
+        Public Property TeilnehmerSuchenCommand As ICommand
 
         ' Trainer Commands
         Public Property TrainerInGruppeEinteilenCommand As ICommand
@@ -265,13 +266,14 @@ Namespace ViewModels
             TeilnehmerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerAusGruppeEntfernen, Function() CanTeilnehmerAusGruppeEntfernen())
             TeilnehmerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerInGruppeEinteilen, Function() CanTeilnehmerInGruppeEinteilen())
             TeilnehmerAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerAusEinteilungEntfernen, Function() CanTeilnehmerAusEinteilungEntfernen())
+            TeilnehmerSuchenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmerSuchen, Function() CanTeilnehmerSuchen())
 
             ' Trainer Commands
             TraineruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTraineruebersichtAnzeigen, Function() CanTraineruebersichtAnzeigen())
-            TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
             TrainerAusGruppeEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusGruppeEntfernen, Function() CanTrainerAusGruppeEntfernen())
             TrainerInGruppeEinteilenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerInGruppeEinteilen, Function() CanTrainerInGruppeEinteilen())
             TrainerAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerAusEinteilungEntfernen, Function() CanTrainerAusEinteilungEntfernen())
+            TrainerErstellenCommand = New RelayCommand(Of Object)(AddressOf OnTrainerErstellen, Function() CanTrainerErstellen())
 
             ' Leistungsstufen Commands
             LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
@@ -281,6 +283,7 @@ Namespace ViewModels
             FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
         End Sub
+
 
         Private Function CanFaehigkeitErstellen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
@@ -701,8 +704,26 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTeilnehmerAusEinteilungEntfernen() As Boolean
-            Return True
+            Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
         End Function
+        Private Function CanTeilnehmerSuchen() As Boolean
+            Return DateiService.AktuellerClub IsNot Nothing
+        End Function
+
+        Private Sub OnTeilnehmerSuchen(obj As Object)
+            Dim dlg As New UserControls.InputDialog()
+            Dim vm As New ViewModels.InputDialogViewModel()
+            dlg.DataContext = vm
+            dlg.Owner = _windowService.Window
+            If dlg.ShowDialog() = True Then
+                Dim suchname = vm.ResponseText
+                If Not String.IsNullOrWhiteSpace(suchname) Then
+                    Dim ts As New TeilnehmerService()
+                    ts.TeilnehmerSuchen(suchname) ' Implementieren Sie die Suche entsprechend
+                End If
+            End If
+
+        End Sub
 
         Private Sub OnTeilnehmerAusEinteilungEntfernen(obj As Object)
 

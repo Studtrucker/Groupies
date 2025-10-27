@@ -13,7 +13,6 @@ Namespace ViewModels
 #Region "Felder"
         Private _leistungsstufenListe As LeistungsstufeCollection
         Private _Gruppe As Gruppe
-
 #End Region
 
 #Region "Properties"
@@ -199,6 +198,7 @@ Namespace ViewModels
                 If _Gruppe Is Nothing Then
                     Return Nothing
                 End If
+
                 Return _Gruppe.Mitgliederliste
             End Get
             Set(value As TeilnehmerCollection)

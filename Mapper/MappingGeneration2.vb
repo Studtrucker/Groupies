@@ -168,19 +168,21 @@ Public Module MappingGeneration2
     ''' <returns></returns>
     Private Function GetGeneration4TrainerlisteAusG4Trainerliste(G2Trainerliste As List(Of Generation2.Trainer)) As Generation4.TrainerCollection
 
+        If Groupies.Services.DateiService.AktuellerClub IsNot Nothing Then
 
-        Dim GlobaleTrainerliste = Groupies.Services.DateiService.AktuellerClub.Trainerliste
+            Dim GlobaleTrainerliste = Groupies.Services.DateiService.AktuellerClub.Trainerliste
 
-        Dim TrainerG4 = New Generation4.TrainerCollection
-        For Each G2T In G2Trainerliste
-            TrainerG4.Add(GlobaleTrainerliste.Where(Function(TG4) TG4.TrainerID = G2T.TrainerID).SingleOrDefault)
-        Next
+            Dim TrainerG4 = New Generation4.TrainerCollection
+            For Each G2T In G2Trainerliste
+                TrainerG4.Add(GlobaleTrainerliste.Where(Function(TG4) TG4.TrainerID = G2T.TrainerID).SingleOrDefault)
+            Next
 
-        For Each item In TrainerG4
-            Debug.Print(GlobaleTrainerliste.Contains(item))
-        Next
+            For Each item In TrainerG4
+                Debug.Print(GlobaleTrainerliste.Contains(item))
+            Next
 
-        Return TrainerG4
+            Return TrainerG4
+        End If
 
     End Function
 

@@ -126,6 +126,7 @@
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           IsReadOnly="True" CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}"
+                          SelectedItem="{Binding SelectedTeilnehmer}"
                           SelectionUnit="FullRow"
                           behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=UserControl}}"                          
                           SelectionMode="Extended" >

@@ -39,6 +39,7 @@ Namespace ViewModels
         Private _AlleEinteilungenCV As CollectionView
         Private _SelectedEinteilung As Einteilung
         Private _SelectedGruppe As Gruppe
+        Private _SelectedTeilnehmer As Teilnehmer
         Private _SelectedAlleMitglieder As New TeilnehmerCollection
         Private _SelectedGruppenloserTrainer As Trainer
         Private _selectedAlleGruppenloserTrainer As IList
@@ -145,6 +146,7 @@ Namespace ViewModels
             Set(value As Einteilung)
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
+                SelectedTeilnehmer = Nothing
                 OnPropertyChanged(NameOf(SelectedEinteilung))
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
@@ -159,10 +161,21 @@ Namespace ViewModels
             Set(value As Gruppe)
                 _GruppendetailViewModel.Gruppe = value
                 _SelectedGruppe = value
+                SelectedTeilnehmer = Nothing
                 OnPropertyChanged(NameOf(SelectedGruppe))
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
+            End Set
+        End Property
+
+        Public Property SelectedTeilnehmer As Teilnehmer
+            Get
+                Return _SelectedTeilnehmer
+            End Get
+            Set(value As Teilnehmer)
+                _SelectedTeilnehmer = value
+                OnPropertyChanged(NameOf(SelectedTeilnehmer))
             End Set
         End Property
 
@@ -531,6 +544,7 @@ Namespace ViewModels
         Private Sub OnTeilnehmerSuchErgebnisOpenTargetRequested(sender As Object, e As NavigationRequest)
             Me.SelectedEinteilung = e.ZielEinteilung
             Me.SelectedGruppe = e.ZielGruppe
+            Me.SelectedTeilnehmer = e.Teilnehmer
         End Sub
 
 #End Region

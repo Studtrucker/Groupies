@@ -204,7 +204,21 @@ Namespace Services
         End Sub
 
         Public Sub TeilnehmerSuchen(Name As String)
-            Throw New NotImplementedException
+            Dim TeilnehmerVollerNameListe = DateiService.AktuellerClub.Teilnehmerliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower()) Or T.Nachname.ToLower().Contains(Name.ToLower())).ToList()
+            DateiService.AktuellerClub.Einteilungsliste.ToList.ForEach(Sub(E)
+                                                                           ' Der GefundeneTeilnehmer muss so definiert werden,
+                                                                           ' dass er sowohl aus der NichtZugewieseneTeilnehmerListe als auch aus den Gruppenmitgliedern kommt.
+                                                                           ' Zurückgegeben wird ein anonymes Objekt mit den Eigenschaften Einteilung, Gruppe und Teilnehmer.
+                                                                           Dim GefundeneTeilnehmer = E.NichtZugewieseneTeilnehmerListe.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower())).Select()(New() With (.Einteilung = E, .Teilnehmer = T)).ToList()))
+                                                                           GefundeneTeilnehmer.AddRange(E.Gruppenliste.SelectMany(Function(G) G.Mitgliederliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower())).ToList()).ToList())
+                                                                           If GefundeneTeilnehmer.Count > 0 Then
+                                                                               Dim Meldung As String = "Gefundene Teilnehmer:" & Environment.NewLine
+                                                                               'For Each Tn In GefundeneTeilnehmer
+                                                                               '    Meldung &= Tn.VorUndNachname & Environment.NewLine
+                                                                               'Next
+                                                                               MessageBox.Show(Meldung, $"In Einteilung '{E.Benennung}'")
+                                                                           End If
+                                                                       End Sub)
         End Sub
 
 

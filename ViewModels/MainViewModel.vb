@@ -60,9 +60,6 @@ Namespace ViewModels
             InitializeCommands()
             InitializeHandlers()
 
-            ' CollectionChanged-Handler für SelectedAlleMitglieder vorbereiten
-            AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf OnSelectedAlleMitgliederCollectionChanged
-            AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
         End Sub
 #End Region
 
@@ -390,7 +387,13 @@ Namespace ViewModels
             AddHandler DateiService.DateiOeffnenIstFehlgeschlagen, AddressOf HandlerZeigeFehlerMeldung
             AddHandler DateiService.PropertyChanged, AddressOf HandlerDateiServicePropertyChanged
             AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerServiceTrainerGeaendert
+            ' CollectionChanged-Handler für SelectedAlleMitglieder vorbereiten
+            AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf OnSelectedAlleMitgliederCollectionChanged
+            AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
+            AddHandler TeilnehmerSuchErgebnisViewModel.OpenTargetRequested, AddressOf OnTeilnehmerSuchErgebnisOpenTargetRequested
         End Sub
+
+
 #End Region
 
 #Region "Window Lifecycle"
@@ -525,6 +528,11 @@ Namespace ViewModels
             fenster.DataContext = mvw
             fenster.Show()
         End Sub
+        Private Sub OnTeilnehmerSuchErgebnisOpenTargetRequested(sender As Object, e As NavigationRequest)
+            Me.SelectedEinteilung = e.ZielEinteilung
+            Me.SelectedGruppe = e.ZielGruppe
+        End Sub
+
 #End Region
 
 #Region "Club / File Handling"
@@ -713,15 +721,26 @@ Namespace ViewModels
         Private Sub OnTeilnehmerSuchen(obj As Object)
             Dim dlg As New UserControls.InputDialog()
             Dim vm As New ViewModels.InputDialogViewModel()
+            Dim Ergebnisliste As New List(Of TeilnehmerSuchErgebnisItem)
             dlg.DataContext = vm
             dlg.Owner = _windowService.Window
             If dlg.ShowDialog() = True Then
                 Dim suchname = vm.ResponseText
                 If Not String.IsNullOrWhiteSpace(suchname) Then
                     Dim ts As New TeilnehmerService()
-                    ts.TeilnehmerSuchen(suchname) ' Implementieren Sie die Suche entsprechend
+                    Ergebnisliste = ts.TeilnehmerSuchen(suchname) ' Implementieren Sie die Suche entsprechend
                 End If
             End If
+
+            Dim vmr As TeilnehmerSuchErgebnisViewModel = Nothing
+            If Ergebnisliste IsNot Nothing Then
+                ' Ergebnis-VM erzeugen und anzeigen (wie zuvor)
+                vmr = New TeilnehmerSuchErgebnisViewModel(Ergebnisliste)
+            End If
+            Dim view = New TeilnehmerSuchErgebnis()
+            view.DataContext = vmr
+            view.Owner = _windowService.Window
+            view.Show()
 
         End Sub
 

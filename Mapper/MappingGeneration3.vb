@@ -5,11 +5,13 @@ Public Module MappingGeneration3
     Private NeuerClub As Generation4.Club
 
     Public Function MapSkiClub2Club(Skiclub As Generation3.Club) As Generation4.Club
+
         Return MapSkiClub2Club(Skiclub, "Club Gen3")
     End Function
 
     Public Function MapSkiClub2Club(Skiclub As Generation3.Club, Dateiname As String) As Generation4.Club
-
+        MsgBox("Achtung: Ein Skiclub der Generation 3 kann zur Zeit nicht geöffnet werden!", MsgBoxStyle.Exclamation, "Warten Sie auf ein Update")
+        Return Nothing
 
         Dim Leistungsstufen = GetAlleLeistungsstufen(Skiclub)
 

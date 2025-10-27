@@ -6,49 +6,62 @@
         xmlns:local="clr-namespace:Groupies"
         mc:Ignorable="d"
         Title="Gefundene Teilnehmer" Height="450" Width="800">
+    <Window.Resources>
+        <!-- Gleiche Hintergrund-/Foreground-Farben für ausgewählte und nicht ausgewählte Zeilen -->
+        <Style x:Key="DataGridRowFlatStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+                <!-- optional: Fokusanzeige entfernen -->
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Gleiche Behandlung auf Zellenebene (vermeidet andersfarbige Zellen wenn Zeile selektiert) -->
+        <Style x:Key="DataGridCellFlatStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition  Style="{StaticResource RandColumnDefinition}"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition  Style="{StaticResource RandColumnDefinition}"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Style="{StaticResource RandRowDefinition}"/>
-        </Grid.RowDefinitions>
-        <!--<Label Content="Suche nach"/>
-        <TextBox  Grid.Column="1"/>-->
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Label Content="Anzahl Teilnehmer" Grid.Row="0"/>
-            <Label Content="Anzahl Trainer" Grid.Row="1"/>
-            <Label Content="Gruppiert nach Leistungsstufen" Grid.Row="2"/>
-            <Label Content="Gruppiert nach Alter" Grid.Row="3"/>
-            <TextBlock x:Name="TeilnehmerAnzahlTextBlock"  Grid.Row="0" Grid.Column="1"/>
-            <TextBlock x:Name="TrainerAnzahlTextBlock"  Grid.Row="1" Grid.Column="1"/>
-            <TextBlock x:Name="GruppierteLeistungsstufeTextBlock"  Grid.Row="2" Grid.Column="1"/>
-            <TextBlock x:Name="GruppiertesAlterTextBlock" Grid.Row="3" Grid.Column="1"/>
-        </Grid>
-        <DataGrid x:Name="SuchergebnisDataGrid" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Items}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  RowStyle="{StaticResource DataGridRowFlatStyle}"
+                  CellStyle="{StaticResource DataGridCellFlatStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Teilnehmer.Vorname}" Width="Auto"/>
                 <DataGridTextColumn Header="Nachname" Binding="{Binding Teilnehmer.Nachname}" Width="Auto"/>
-                <DataGridTextColumn Header="Leistungsstufe Teilnehmer" Binding="{Binding Teilnehmer.Leistungsstufe.Benennung}" Width="Auto"/>
-                <DataGridTextColumn Header="Sort Gruppe" Binding="{Binding Gruppe.Sortierung}" Width="Auto"/>
-                <DataGridTextColumn Header="Interner Name" Binding="{Binding Gruppe.Benennung}" Width="Auto"/>
-                <DataGridTextColumn Header="Ausgabename" Binding="{Binding Gruppe.AusgabeTeilnehmerinfo}" Width="Auto"/>
-                <DataGridTextColumn Header="Leistungsstufe Gruppe" Binding="{Binding Gruppe.Leistungsstufe.Benennung}" Width="*"/>
+                <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Teilnehmer.Leistungsstufe.Benennung}" Width="Auto"/>
+                <DataGridTemplateColumn Header="Fundort" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontFamily="Segoe UI" FontSize="14">
+                                <Hyperlink
+                                    Command="{Binding DataContext.OpenTargetCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" >
+                                    <Run Text="{Binding FundortText}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

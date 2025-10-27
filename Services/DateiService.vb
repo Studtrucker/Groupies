@@ -183,10 +183,11 @@ Namespace Services
 
             AktuelleDatei = New FileInfo(File.FullName)
             AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
-            SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
-
-            Return $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
-
+            If AktuellerClub IsNot Nothing Then
+                SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
+                Return $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
+            End If
+            Return "Die Datei konnte nicht geladen werden."
         End Function
 
         ''' <summary>

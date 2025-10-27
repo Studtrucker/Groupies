@@ -1,4 +1,6 @@
 ﻿Imports Groupies.Entities.Generation4
+Imports Groupies.ViewModels
+
 
 Namespace Services
 
@@ -166,7 +168,8 @@ Namespace Services
 
         Public Sub TeilnehmerLoeschen(TeilnehmerToDelete As Teilnehmer)
 
-            Dim result = MessageBox.Show($"Möchten Sie {TeilnehmerToDelete.VorUndNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Teilnehmer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+            Dim result = MessageBox.Show($"Möchten Sie {TeilnehmerToDelete.VorUndNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Trainer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+
             If result = MessageBoxResult.Yes Then
 
                 Dim club = DateiService.AktuellerClub
@@ -203,22 +206,97 @@ Namespace Services
 
         End Sub
 
-        Public Sub TeilnehmerSuchen(Name As String)
-            Dim TeilnehmerVollerNameListe = DateiService.AktuellerClub.Teilnehmerliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower()) Or T.Nachname.ToLower().Contains(Name.ToLower())).ToList()
-            DateiService.AktuellerClub.Einteilungsliste.ToList.ForEach(Sub(E)
-                                                                           ' Der GefundeneTeilnehmer muss so definiert werden,
-                                                                           ' dass er sowohl aus der NichtZugewieseneTeilnehmerListe als auch aus den Gruppenmitgliedern kommt.
-                                                                           ' Zurückgegeben wird ein anonymes Objekt mit den Eigenschaften Einteilung, Gruppe und Teilnehmer.
-                                                                           Dim GefundeneTeilnehmer = E.NichtZugewieseneTeilnehmerListe.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower())).Select()(New() With (.Einteilung = E, .Teilnehmer = T)).ToList()))
-                                                                           GefundeneTeilnehmer.AddRange(E.Gruppenliste.SelectMany(Function(G) G.Mitgliederliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower())).ToList()).ToList())
-                                                                           If GefundeneTeilnehmer.Count > 0 Then
-                                                                               Dim Meldung As String = "Gefundene Teilnehmer:" & Environment.NewLine
-                                                                               'For Each Tn In GefundeneTeilnehmer
-                                                                               '    Meldung &= Tn.VorUndNachname & Environment.NewLine
-                                                                               'Next
-                                                                               MessageBox.Show(Meldung, $"In Einteilung '{E.Benennung}'")
-                                                                           End If
-                                                                       End Sub)
+        Public Function TeilnehmerSuchen(Name As String) As List(Of TeilnehmerSuchErgebnisItem)
+
+            Dim Club = DateiService.AktuellerClub
+            Dim GefundeneTeilnehmerListe = Club.Teilnehmerliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower()) Or T.Nachname.ToLower().Contains(Name.ToLower())).ToList()
+
+            If GefundeneTeilnehmerListe.Count = 0 Then
+                MessageBox.Show("Keine Treffer")
+                Return Nothing
+            End If
+
+
+            ' LINQ: Treffer in Gruppen
+            Dim groupMatches =
+                From e In Club.Einteilungsliste.Where(Function(el) el IsNot Nothing)
+                From g In e.Gruppenliste.Where(Function(gl) gl IsNot Nothing)
+                From m In g.Mitgliederliste.Where(Function(ml) ml IsNot Nothing)
+                Join t In GefundeneTeilnehmerListe On m.Ident Equals t.Ident
+                Select New TeilnehmerSuchErgebnisItem(
+                    t,
+                    $"{e.Benennung} / {g.Benennung}",
+                    g,
+                    e,
+                    SuchResultTargetType.Gruppe)
+
+            ' LINQ: Treffer in NichtZugewieseneTeilnehmer
+            Dim nonAssignedMatches =
+                From e In Club.Einteilungsliste.Where(Function(el) el IsNot Nothing)
+                From n In e.NichtZugewieseneTeilnehmerListe.Where(Function(nl) nl IsNot Nothing)
+                Join t In GefundeneTeilnehmerListe On n.Ident Equals t.Ident
+                Select New TeilnehmerSuchErgebnisItem(
+                    t,
+                    $"{e.Benennung} / Nicht zugewiesen",
+                    Nothing,
+                    e,
+                    SuchResultTargetType.NichtZugewiesen)
+
+            ' Gesamtergebnis zusammenstellen
+            Dim items = groupMatches.Concat(nonAssignedMatches).ToList()
+
+            ' Falls ein Teilnehmer weder in Gruppen noch in NichtZugewiesene gefunden wurde,
+            ' trotzdem als Treffer mit leerem Fundort hinzufügen
+            For Each t In GefundeneTeilnehmerListe
+                If Not items.Any(Function(it) it.Teilnehmer.Ident = t.Ident) Then
+                    items.Add(New TeilnehmerSuchErgebnisItem(t, "In den Einteilungen nicht gefunden", Nothing, Nothing, SuchResultTargetType.NichtZugewiesen))
+                End If
+            Next
+
+            ' Ergebnis-VM erzeugen und anzeigen (wie zuvor)
+            Dim vm As New TeilnehmerSuchErgebnisViewModel(items)
+
+            AddHandler vm.OpenTargetRequested, Sub(sender, req)
+                                                   ' DataContext des MainWindow (MainViewModel) holen
+                                                   Dim mainVm = TryCast(Application.Current?.MainWindow?.DataContext, ViewModels.MainViewModel)
+                                                   If mainVm Is Nothing Then Return
+
+                                                   ' Auf UI‑Thread navigieren und Selection setzen
+                                                   If Application.Current.Dispatcher.CheckAccess() Then
+                                                       PerformNavigation(mainVm, req)
+                                                   Else
+                                                       Application.Current.Dispatcher.BeginInvoke(Sub() PerformNavigation(mainVm, req))
+                                                   End If
+                                               End Sub
+
+            Return items
+
+        End Function
+
+        ' Hilfsmethode lokal in dieser Klasse (oder als Private Shared in Service)
+        Private Sub PerformNavigation(mainVm As ViewModels.MainViewModel, req As ViewModels.NavigationRequest)
+            ' Setze Einteilung
+            mainVm.SelectedEinteilung = req.ZielEinteilung
+
+            If req.TargetType = SuchResultTargetType.Gruppe Then
+                ' Springe in die Gruppe
+                mainVm.SelectedGruppe = req.ZielGruppe
+
+                ' Markiere den Teilnehmer in der aktuellen Gruppen‑Selection (SelectedAlleMitglieder)
+                If req.Teilnehmer IsNot Nothing Then
+                    ' clear + add sorgt dafür, dass die Bound SelectedItems aktualisiert werden
+                    mainVm.SelectedAlleMitglieder.Clear()
+                    mainVm.SelectedAlleMitglieder.Add(req.Teilnehmer)
+                End If
+            Else
+                ' Springe zur Nicht‑Zugewiesenen‑Liste der Einteilung
+                mainVm.SelectedGruppe = Nothing
+
+                If req.Teilnehmer IsNot Nothing Then
+                    mainVm.SelectedNichtZugewiesenerTeilnehmerListe.Clear()
+                    mainVm.SelectedNichtZugewiesenerTeilnehmerListe.Add(req.Teilnehmer)
+                End If
+            End If
         End Sub
 
 
@@ -227,5 +305,6 @@ Namespace Services
             Return Liste.Where(Function(T) T.Ident = TeilnehmerToFind.Ident).SingleOrDefault()
 
         End Function
+
     End Class
 End Namespace

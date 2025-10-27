@@ -155,6 +155,7 @@
     <Compile Include="EntitiesGeneration3\Trainer.vb" />
     <Compile Include="EntitiesGeneration3\TrainerCollection.vb" />
     <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
+    <Compile Include="EntitiesGeneration4\TeilnehmerSuchergebnisItem.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
     <Compile Include="Behaviors\DataGridScrollBehavior.vb" />
@@ -231,6 +232,7 @@
     <Compile Include="ViewModels\InputDialogViewModel.vb" />
     <Compile Include="ViewModels\LeistungsstufeViewModel.vb" />
     <Compile Include="ViewModels\MainViewModel.vb" />
+    <Compile Include="ViewModels\TeilnehmerSuchErgebnisViewModel.vb" />
     <Compile Include="ViewModels\TeilnehmerViewModel.vb" />
     <Compile Include="ViewModels\GruppeViewModel.vb" />
     <Compile Include="ViewModels\TestWindowViewModel.vb" />

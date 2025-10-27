@@ -7,9 +7,13 @@ Public Module MappingGeneration1
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub) As Generation4.Club
+
         Return MapSkiClub2Club(Skiclub, "Club Gen1")
     End Function
     Public Function MapSkiClub2Club(Skiclub As Generation1.Skiclub, Dateiname As String) As Generation4.Club
+
+        MsgBox("Achtung: Ein Skiclub der Generation 1 kann zur Zeit nicht geöffnet werden!", MsgBoxStyle.Exclamation, "Warten Sie auf ein Update")
+        Return Nothing
 
         Dim NeuerClub = New Generation4.Club With {
             .ClubName = If(Skiclub.Name, Dateiname),
@@ -157,7 +161,7 @@ Public Module MappingGeneration1
         Skiclub.ParticipantsNotInGroup.ToList.ForEach(Sub(T) Leistungsstufen.Add(MapLevel2Leistungsstufe(T.ParticipantLevel)))
 
         ' Entferne doppelte Leistungsstufen über ID
-        Leistungsstufen = New Generation4.LeistungsstufeCollection(Leistungsstufen.GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
+        Leistungsstufen = New Generation4.LeistungsstufeCollection(Leistungsstufen.Where(Function(LS) LS IsNot Nothing).GroupBy(Of Guid)(Function(LS) LS.Ident).Select(Function(Gruppe) Gruppe.First).ToList)
 
         Return Leistungsstufen
 

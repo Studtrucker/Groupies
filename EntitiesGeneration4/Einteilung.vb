@@ -15,13 +15,13 @@ Namespace Entities.Generation4
         Private _Benennung As String
 
         Private _GruppenIDListe As ObservableCollection(Of Guid)
-        Private _Gruppenliste As New GruppeCollection
+        Private _Gruppenliste As GruppeCollection
 
         Private _VerfuegbareTrainerIDListe As ObservableCollection(Of Guid)
-        Private _VerfuegbareTrainerListe As New TrainerCollection
+        Private _VerfuegbareTrainerListe As TrainerCollection
 
         Private _NichtZugewieseneTeilnehmerIDListe As ObservableCollection(Of Guid)
-        Private _NichtZugewieseneTeilnehmerListe As New TeilnehmerCollection
+        Private _NichtZugewieseneTeilnehmerListe As TeilnehmerCollection
 
 #End Region
 
@@ -32,6 +32,12 @@ Namespace Entities.Generation4
         Public Sub New()
             Ident = Guid.NewGuid()
             Sortierung = -1
+            Gruppenliste = New GruppeCollection()
+            GruppenIDListe = New ObservableCollection(Of Guid)
+            NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection()
+            NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)()
+            VerfuegbareTrainerListe = New TrainerCollection()
+            VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)()
         End Sub
 
         ''' <summary>
@@ -42,9 +48,12 @@ Namespace Entities.Generation4
             Ident = Origin.Ident
             Benennung = Origin.Benennung
             Sortierung = Origin.Sortierung
-            Gruppenliste = Origin.Gruppenliste
-            NichtZugewieseneTeilnehmerListe = Origin.NichtZugewieseneTeilnehmerListe
-            VerfuegbareTrainerListe = Origin.VerfuegbareTrainerListe
+            Gruppenliste = If(Origin.Gruppenliste, New GruppeCollection())
+            GruppenIDListe = If(Origin.GruppenIDListe, New ObservableCollection(Of Guid)())
+            NichtZugewieseneTeilnehmerListe = If(Origin.NichtZugewieseneTeilnehmerListe, New TeilnehmerCollection())
+            NichtZugewieseneTeilnehmerIDListe = If(Origin.NichtZugewieseneTeilnehmerIDListe, New ObservableCollection(Of Guid)())
+            VerfuegbareTrainerListe = If(Origin.VerfuegbareTrainerListe, New TrainerCollection())
+            VerfuegbareTrainerIDListe = If(Origin.VerfuegbareTrainerIDListe, New ObservableCollection(Of Guid)())
         End Sub
 
 #End Region

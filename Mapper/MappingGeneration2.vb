@@ -35,10 +35,10 @@ Public Module MappingGeneration2
                                        .Ident = Guid.NewGuid,
                                        .GruppenIDListe = New ObservableCollection(Of Guid)(From G In EindeutigeGruppen Select G.Ident),
                                        .Gruppenliste = EindeutigeGruppen,
-                                       .VerfuegbareTrainerListe = GetGeneration4TrainerlisteAusG4Trainerliste(Skiclub.GruppenloseTrainer),
-                                       .VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)(From T In GetVerfuegbareTrainer(Skiclub) Select T.TrainerID),
-                                       .NichtZugewieseneTeilnehmerListe = NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen),
-                                       .NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)(From T In NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen) Select T.Ident)})
+                                       .VerfuegbareTrainerListe = If(GetGeneration4TrainerlisteAusG4Trainerliste(Skiclub.GruppenloseTrainer), New Generation4.TrainerCollection),
+                                       .VerfuegbareTrainerIDListe = If(New ObservableCollection(Of Guid)(From T In GetVerfuegbareTrainer(Skiclub) Select T.TrainerID), New ObservableCollection(Of Guid)),
+                                       .NichtZugewieseneTeilnehmerListe = If(NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen), New Generation4.TeilnehmerCollection),
+                                       .NichtZugewieseneTeilnehmerIDListe = If(New ObservableCollection(Of Guid)(From T In NichtZugewieseneTeilnehmerListe(Skiclub, EindeutigeLeistungsstufen) Select T.Ident), New ObservableCollection(Of Guid))})
 
         Return NeuerClub
 

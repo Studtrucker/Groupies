@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
+Imports System.Runtime.CompilerServices
 Imports Groupies.Entities
 Imports PropertyChanged
 
@@ -19,6 +20,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
     Private _selectedItem As T
     Private ReadOnly _items As ObservableCollection(Of T)
     Private _ItemsView As ICollectionView
+    Private _AlleEinteilungenCV As ICollectionView
 #End Region
 
 #Region "Konstruktoren"
@@ -32,6 +34,7 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
         'NeuCommand = New RelayCommand(Of T)(AddressOf OnNeu)
         AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
+        AlleEinteilungenCV = New CollectionView(Services.DateiService.AktuellerClub.Einteilungsliste)
     End Sub
 
     Private Sub OnLeistungsstufeBearbeitet(sender As Object, e As EventArgs)
@@ -46,6 +49,17 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 #End Region
 
 #Region "Properties"
+
+    Public Property AlleEinteilungenCV As ICollectionView
+        Get
+            Return _AlleEinteilungenCV
+        End Get
+        Set(value As ICollectionView)
+            _AlleEinteilungenCV = value
+            OnPropertyChanged(NameOf(AlleEinteilungenCV))
+        End Set
+    End Property
+
     Friend Property CanBearbeiten() As Boolean
         Get
             Return SelectedItem IsNot Nothing
@@ -134,6 +148,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
             End If
         End Set
     End Property
+
+
 
 #End Region
 

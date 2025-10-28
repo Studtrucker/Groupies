@@ -732,10 +732,16 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem  Header="Transfer">
-                <MenuItem Header="Tag 1" Command="{Binding TransferToCommand}"  CommandParameter="{Binding Ident}"/>
-                <MenuItem Header="Mittwoch" Command="{Binding TransferToCommand}"  CommandParameter="{Binding Ident}"/>
-                <MenuItem Header="Donnerstag" Command="{Binding TransferToCommand}" CommandParameter="{Binding Ident}"/>
+            <MenuItem  Name="TransferToMenuItem" Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <!-- Überschrift aus der Bound-Einteilung -->
+                        <Setter Property="Header" Value="{Binding Benennung}"/>
+                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                        <Setter Property="Command" Value="{Binding DataContext.TransferToEinteilungCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
             </MenuItem>
         </Menu>
 

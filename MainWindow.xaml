@@ -269,6 +269,17 @@
                                 <MenuItem Header="Gruppe entfernen" 
                                           Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <!-- Überschrift aus der Bound-Einteilung -->
+                                            <Setter Property="Header" Value="{Binding Benennung}"/>
+                                            <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                            <Setter Property="Command" Value="{Binding DataContext.TransferToEinteilungCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
 

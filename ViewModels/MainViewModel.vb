@@ -686,6 +686,7 @@ Namespace ViewModels
 
         Private Sub OnClubSave(obj As Object)
             DateiService.DateiSpeichern()
+            MsgBox($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
         End Sub
 
         Private Sub OnClubSaveAs(obj As Object)

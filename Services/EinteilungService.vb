@@ -58,7 +58,7 @@ Public Class EinteilungService
             Dim index = club.Einteilungsliste.IndexOf(EinteilungAusListeLesen(club.Einteilungsliste.ToList, EinteilungToEdit.Ident))
             ' 1) in Club-Einteilungsliste austauschen
             club.Einteilungsliste(index) = mvw.AktuellesViewModel.Model
-            MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde gespeichert")
+            MessageBox.Show($"Die Änderung {DirectCast(mvw.AktuellesViewModel.Model, Einteilung).Benennung} wurde übernommen")
             OnEinteilungBearbeitet(EventArgs.Empty)
 
         End If

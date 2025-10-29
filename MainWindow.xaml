@@ -28,6 +28,10 @@
         </Style>
     </Window.Resources>
     
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding ClubSaveCommand}"/>
+    </Window.InputBindings>
+    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
@@ -57,7 +61,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Club _speichern" Command="{Binding ClubSaveCommand}">
+                <MenuItem Header="Club _speichern" Command="{Binding ClubSaveCommand}" InputGestureText="Strg+S">
                     <MenuItem.Icon>
                         <Image Source="Images/speichern-48.png"/>
                     </MenuItem.Icon>

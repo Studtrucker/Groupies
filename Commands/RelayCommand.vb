@@ -6,54 +6,54 @@ Public Class RelayCommand(Of T)
 
     Private ReadOnly _execute As Action(Of T)
     Private ReadOnly _canExecute As Func(Of Boolean)
-
+    Private ReadOnly _canExecuteWithParam As Func(Of T, Boolean)
 
     ''' <summary>
-    ''' Kontruktor mit der Möglichkeit, die Ausführbarkeit zu steuern.
+    ''' Konstruktor mit parameterlosem CanExecute (bestehendes Verhalten).
     ''' </summary>
-    ''' <param name="execute"></param>
-    ''' <param name="canExecute"></param>
     Public Sub New(execute As Action(Of T), Optional canExecute As Func(Of Boolean) = Nothing)
-        ' Hier wird der Delegate für die Ausführung des Befehls gesetzt.
+        If execute Is Nothing Then Throw New ArgumentNullException(NameOf(execute))
         _execute = execute
-        ' Hier wird der Delegate für die Ausführbarkeit gesetzt.
         _canExecute = If(canExecute, Function() True)
     End Sub
 
     ''' <summary>
-    ''' Dieses Event wird ausgelöst, wenn sich die Ausführbarkeit des Befehls ändert.
+    ''' Konstruktor mit parameterisiertem CanExecute (wird verwendet, wenn CanExecute vom CommandParameter abhängen soll).
     ''' </summary>
-    ''' <remarks>Das Event muss in der ViewModel-Klasse aufgerufen werden, wenn sich die Ausführbarkeit ändert.</remarks>
-    ''' <example>RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)</example>
-    ''' <example>RaiseEvent CanExecuteChanged(Me, New EventArgs())</example>
+    Public Sub New(execute As Action(Of T), canExecute As Func(Of T, Boolean))
+        If execute Is Nothing Then Throw New ArgumentNullException(NameOf(execute))
+        _execute = execute
+        _canExecuteWithParam = canExecute
+    End Sub
+
     Public Event CanExecuteChanged As EventHandler Implements ICommand.CanExecuteChanged
 
-
-    ''' <summary>
-    ''' Diese Methode wird aufgerufen, um zu prüfen, ob der Befehl ausgeführt werden kann.
-    ''' </summary>
-    ''' <param name="parameter"></param>
-    ''' <returns></returns>
-    ''' <remarks>Hier wird die Ausführbarkeit des Befehls geprüft.</remarks>
     Public Function CanExecute(parameter As Object) As Boolean Implements ICommand.CanExecute
-        Return _canExecute()
+        ' Wenn ein parameterisiertes CanExecute existiert, verwende es (üblicher Fall für MenuItems mit CommandParameter)
+        If _canExecuteWithParam IsNot Nothing Then
+            Dim param As T = Nothing
+            If parameter IsNot Nothing Then
+                Try
+                    param = CType(parameter, T)
+                Catch ex As Exception
+                    ' fallback: wenn Cast fehlschlägt, param bleibt Nothing
+                End Try
+            End If
+            Return _canExecuteWithParam(param)
+        End If
+
+        ' sonst das parameterlose CanExecute
+        If _canExecute IsNot Nothing Then
+            Return _canExecute()
+        End If
+
+        Return True
     End Function
 
-    ''' <summary>
-    ''' Diese Methode wird aufgerufen, um den Befehl auszuführen.
-    ''' </summary>
-    ''' <remarks>Hier wird der Befehl ausgeführt.</remarks>
     Public Sub Execute(parameter As Object) Implements ICommand.Execute
         _execute(CType(parameter, T))
     End Sub
 
-    ''' <summary>
-    ''' Diese Methode wird aufgerufen, um das CanExecuteChanged-Event auszulösen.
-    ''' </summary>
-    ''' <remarks>
-    ''' Diese Methode sollte in der ViewModel-Klasse aufgerufen werden, 
-    ''' wenn sich die Ausführbarkeit des Befehls ändert.
-    ''' </remarks>
     Public Sub RaiseCanExecuteChanged()
         RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)
     End Sub

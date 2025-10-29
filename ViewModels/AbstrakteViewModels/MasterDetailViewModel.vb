@@ -17,8 +17,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
 
 #Region "Felder"
-    Private _selectedItem As T
     Private ReadOnly _items As ObservableCollection(Of T)
+    Private _selectedItem As T
     Private _ItemsView As ICollectionView
     Private _AlleEinteilungenCV As ICollectionView
 #End Region
@@ -29,12 +29,21 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         Items = New ObservableCollection(Of T)()
         ItemsView = New ListCollectionView(Items)
 
-        MoveNextCommand = New RelayCommand(Of T)(Sub() OnMoveNext(), Function() CanMoveNext)
-        MovePreviousCommand = New RelayCommand(Of T)(Sub() OnMovePrevious(), Function() CanMovePrevious)
+        MoveNextCommand = New RelayCommand(Of T)(Sub(t) OnMoveNext(t), Function() CanMoveNext)
+        MovePreviousCommand = New RelayCommand(Of T)(Sub(t) OnMovePrevious(t), Function() CanMovePrevious)
         LoeschenCommand = New RelayCommand(Of T)(AddressOf OnLoeschen, Function() CanLoeschen)
-        'NeuCommand = New RelayCommand(Of T)(AddressOf OnNeu)
         AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
-        AlleEinteilungenCV = New CollectionView(Services.DateiService.AktuellerClub.Einteilungsliste)
+        ' Sicher und kompatibel: DefaultView verwenden; DateiService bzw. Club kann beim Konstruktoraufruf noch Nothing sein
+        Try
+            If Services.DateiService.AktuellerClub IsNot Nothing AndAlso Services.DateiService.AktuellerClub.Einteilungsliste IsNot Nothing Then
+                AlleEinteilungenCV = CollectionViewSource.GetDefaultView(Services.DateiService.AktuellerClub.Einteilungsliste)
+            Else
+                ' leere View statt null → Bindings funktionieren zur Laufzeit sicher
+                AlleEinteilungenCV = CollectionViewSource.GetDefaultView(New ObservableCollection(Of Object)())
+            End If
+        Catch ex As Exception
+            AlleEinteilungenCV = CollectionViewSource.GetDefaultView(New ObservableCollection(Of Object)())
+        End Try
     End Sub
 
     Private Sub OnLeistungsstufeBearbeitet(sender As Object, e As EventArgs)
@@ -180,15 +189,15 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         ItemsView.Refresh()
     End Sub
 
-    Private Sub OnMovePrevious()
+    Private Sub OnMovePrevious(obj As Object)
         ItemsView.MoveCurrentToPrevious()
     End Sub
 
-    Private Sub OnMoveNext()
+    Private Sub OnMoveNext(obj As Object)
         ItemsView.MoveCurrentToNext()
     End Sub
 
-    Public Sub OnLoeschen()
+    Public Sub OnLoeschen(obj As Object)
         'Items.Remove(SelectedItem)
         MoveNextCommand.RaiseCanExecuteChanged()
         MovePreviousCommand.RaiseCanExecuteChanged()

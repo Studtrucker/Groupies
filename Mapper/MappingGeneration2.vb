@@ -183,6 +183,7 @@ Public Module MappingGeneration2
 
             Return TrainerG4
         End If
+        Return Nothing
 
     End Function
 

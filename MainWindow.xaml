@@ -245,7 +245,22 @@
                             <DataGridTextColumn Header="Nr"  Binding="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
                             <DataGridTextColumn Header="Benennung"  Binding="{Binding Benennung, UpdateSourceTrigger=PropertyChanged}" Width="*" />
                         </DataGrid.Columns>
-      
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+
+                                <MenuItem Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <!-- Überschrift aus der Bound-Einteilung -->
+                                            <Setter Property="Header" Value="{Binding Benennung}"/>
+                                            <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                            <Setter Property="Command" Value="{Binding DataContext.EinteilungTransferToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
 
                     </DataGrid>
                 </DockPanel>
@@ -275,7 +290,7 @@
                                             <!-- Überschrift aus der Bound-Einteilung -->
                                             <Setter Property="Header" Value="{Binding Benennung}"/>
                                             <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                                            <Setter Property="Command" Value="{Binding DataContext.TransferToEinteilungCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                            <Setter Property="Command" Value="{Binding DataContext.GruppeTransferToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             <Setter Property="CommandParameter" Value="{Binding}"/>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
@@ -326,7 +341,7 @@
                 </Grid.RowDefinitions>
 
                 <DockPanel Grid.Row="0">
-                    <TextBlock Text="Gruppenlose Skilehrer" DockPanel.Dock="Top"/>
+                    <TextBlock Text="Verfügbare Trainer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTrainerDataGrid" DockPanel.Dock="Top"
                               ItemsSource="{Binding SelectedEinteilung.VerfuegbareTrainerListe}"
                               behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding DataContext.SelectedAlleGruppenloserTrainer, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
@@ -371,7 +386,7 @@
                               VerticalAlignment="Center"  Background="WhiteSmoke"/>
 
                 <DockPanel Grid.Row="2">
-                    <TextBlock Text="Gruppenlose Teilnehmer" DockPanel.Dock="Top"/>
+                    <TextBlock Text="Nicht zugewiesene Teilnehmer" DockPanel.Dock="Top"/>
                     <DataGrid x:Name="GruppenloseTeilnehmerDataGrid" DockPanel.Dock="Top" 
                               ItemsSource="{Binding SelectedEinteilung.NichtZugewieseneTeilnehmerListe}"
                               IsSynchronizedWithCurrentItem="True"

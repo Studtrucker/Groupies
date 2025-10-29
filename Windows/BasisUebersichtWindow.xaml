@@ -9,8 +9,6 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Width="Auto" MaxHeight="800" Height="600" MinWidth="800"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}">
-
-    <!--erstelle dynamische menuitems für das mainwindow und das BasisUebersichtWindow in abhängigkeit von den vorhandenen einteilungen -->
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -734,7 +732,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem  Name="TransferToMenuItem" Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+            <MenuItem  Name="TransferToMenuItem" Header="Transfer to" ItemsSource="{Binding AktuellesViewModel.AlleEinteilungenCV}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="MenuItem">
                         <!-- Überschrift aus der Bound-Einteilung -->

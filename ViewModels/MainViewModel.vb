@@ -44,8 +44,8 @@ Namespace ViewModels
         Private _SelectedGruppenloserTrainer As Trainer
         Private _selectedAlleGruppenloserTrainer As IList
         Private _GruppendetailViewModel As GruppendetailViewModel
-        Private _gruppeTransferToCommand As RelayCommand(Of Einteilung)
-        Private _einteilungTransferToCommand As RelayCommand(Of Einteilung)
+        'Private _gruppeTransferToCommand As RelayCommand(Of Einteilung)
+        Private _einteilungCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 
@@ -86,12 +86,24 @@ Namespace ViewModels
         ' Einteilung Commands
         Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
         Public Property EinteilungErstellenCommand As ICommand
-        Public ReadOnly Property EinteilungTransferToCommand As RelayCommand(Of Einteilung)
+        Public ReadOnly Property EinteilungCopyToCommand As RelayCommand(Of Einteilung)
             Get
-                If _einteilungTransferToCommand Is Nothing Then
-                    _einteilungTransferToCommand = New RelayCommand(Of Einteilung)(AddressOf OnEinteilungTransferTo, Function(t) CanEinteilungTransferTo(t))
+                If _einteilungCopyToCommand Is Nothing Then
+                    _einteilungCopyToCommand = New RelayCommand(Of Einteilung)(
+                Sub(target)
+                    If target Is Nothing OrElse SelectedEinteilung Is Nothing Then Return
+                    Dim svc As New EinteilungService()
+                    svc.EinteilungKopieren(SelectedEinteilung, target)
+                    ' Auswahl auf Ziel setzen und UI refreshen
+                    SelectedEinteilung = target
+                    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
+                End Sub,
+                Function(target)
+                    Dim Esvc As New EinteilungService()
+                    Return Esvc.CanEinteilungKopieren(SelectedEinteilung, target)
+                End Function)
                 End If
-                Return _einteilungTransferToCommand
+                Return _einteilungCopyToCommand
             End Get
         End Property
 
@@ -99,14 +111,7 @@ Namespace ViewModels
         Public Property GruppenuebersichtAnzeigenCommand As ICommand
         Public Property GruppeErstellenCommand As ICommand
         Public Property GruppeAusEinteilungEntfernenCommand As ICommand
-        Public ReadOnly Property GruppeTransferToCommand As RelayCommand(Of Einteilung)
-            Get
-                If _gruppeTransferToCommand Is Nothing Then
-                    _gruppeTransferToCommand = New RelayCommand(Of Einteilung)(AddressOf OnGruppeTransferTo, Function(t) CanGruppeTransferTo(t))
-                End If
-                Return _gruppeTransferToCommand
-            End Get
-        End Property
+        Public Property GruppeCopyToCommand As RelayCommand(Of Einteilung)
 
         ' Teilnehmer Commands
         Public Property TeilnehmerInGruppeEinteilenCommand As ICommand
@@ -285,10 +290,17 @@ Namespace ViewModels
             EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
             EinteilungErstellenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungErstellen, Function() CanEinteilungErstellen())
 
+
             ' Gruppen Commands
             GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
             GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
             GruppeAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeAusEinteilungEntfernen, Function() CanGruppeAusEinteilungEntfernen())
+            GruppeCopyToCommand = CopyCommandFactory.CreateGruppeCopyCommand(Function() SelectedGruppe, Sub()
+                                                                                                            ' UI refresh / CanExecute neu auswerten
+                                                                                                            RaiseTransferCommandsCanExecute()
+                                                                                                            If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
+                                                                                                        End Sub)
+
 
             ' Teilnehmer Commands
             TeilnehmeruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmeruebersichtAnzeigen, Function() CanTeilnehmeruebersichtAnzeigen())
@@ -413,64 +425,64 @@ Namespace ViewModels
             Return DateiService.AktuellerClub IsNot Nothing
         End Function
 
-        Private Function CanEinteilungTransferTo(target As Einteilung) As Boolean
-            If target Is Nothing Then Return False
-            If SelectedEinteilung Is Nothing Then Return False
-            Dim club = DateiService.AktuellerClub
-            If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
+        'Private Function CanEinteilungTransferTo(target As Einteilung) As Boolean
+        '    If target Is Nothing Then Return False
+        '    If SelectedEinteilung Is Nothing Then Return False
+        '    Dim club = DateiService.AktuellerClub
+        '    If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
 
-            ' Quelle ermitteln (Einteilung, die die aktuell ausgewählte Gruppe enthält)
-            Dim source = SelectedEinteilung
-            If source Is Nothing Then Return False
-            If target.GruppenIDListe.Count > 0 OrElse target.NichtZugewieseneTeilnehmerIDListe.Count > 0 OrElse target.VerfuegbareTrainerIDListe.Count > 0 Then Return False
-            Return source.Ident <> target.Ident
-        End Function
+        '    ' Quelle ermitteln (Einteilung, die die aktuell ausgewählte Gruppe enthält)
+        '    Dim source = SelectedEinteilung
+        '    If source Is Nothing Then Return False
+        '    If target.GruppenIDListe.Count > 0 OrElse target.NichtZugewieseneTeilnehmerIDListe.Count > 0 OrElse target.VerfuegbareTrainerIDListe.Count > 0 Then Return False
+        '    Return source.Ident <> target.Ident
+        'End Function
 
-        Private Sub OnEinteilungTransferTo(target As Einteilung)
-            If target Is Nothing OrElse SelectedEinteilung Is Nothing Then Return
-            Dim club = DateiService.AktuellerClub
-            If club Is Nothing Then Return
+        'Private Sub OnEinteilungTransferTo(target As Einteilung)
+        '    If target Is Nothing OrElse SelectedEinteilung Is Nothing Then Return
+        '    Dim club = DateiService.AktuellerClub
+        '    If club Is Nothing Then Return
 
-            Dim source = SelectedEinteilung
-            If source Is Nothing Then Return
-            If source.Ident = target.Ident Then Return
+        '    Dim source = SelectedEinteilung
+        '    If source Is Nothing Then Return
+        '    If source.Ident = target.Ident Then Return
 
-            SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub(g)
-                                                               If target.Gruppenliste Is Nothing Then
-                                                                   target.Gruppenliste = New GruppeCollection()
-                                                               End If
-                                                               target.Gruppenliste.Add(g)
-                                                               target.GruppenIDListe.Add(g.Ident)
-                                                           End Sub)
+        '    SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub(g)
+        '                                                       If target.Gruppenliste Is Nothing Then
+        '                                                           target.Gruppenliste = New GruppeCollection()
+        '                                                       End If
+        '                                                       target.Gruppenliste.Add(g)
+        '                                                       target.GruppenIDListe.Add(g.Ident)
+        '                                                   End Sub)
 
-            SelectedEinteilung.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(t)
-                                                                                  If target.NichtZugewieseneTeilnehmerListe Is Nothing Then
-                                                                                      target.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection
-                                                                                      target.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)
-                                                                                  End If
-                                                                                  target.NichtZugewieseneTeilnehmerListe.Add(t)
-                                                                                  target.NichtZugewieseneTeilnehmerIDListe.Add(t.Ident)
-                                                                              End Sub)
+        '    SelectedEinteilung.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(t)
+        '                                                                          If target.NichtZugewieseneTeilnehmerListe Is Nothing Then
+        '                                                                              target.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection
+        '                                                                              target.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)
+        '                                                                          End If
+        '                                                                          target.NichtZugewieseneTeilnehmerListe.Add(t)
+        '                                                                          target.NichtZugewieseneTeilnehmerIDListe.Add(t.Ident)
+        '                                                                      End Sub)
 
-            SelectedEinteilung.VerfuegbareTrainerListe.ToList.ForEach(Sub(t)
-                                                                          If target.VerfuegbareTrainerListe Is Nothing Then
-                                                                              target.VerfuegbareTrainerListe = New TrainerCollection
-                                                                              target.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)
-                                                                          End If
-                                                                          target.VerfuegbareTrainerListe.Add(t)
-                                                                          target.VerfuegbareTrainerIDListe.Add(t.TrainerID)
-                                                                      End Sub)
+        '    SelectedEinteilung.VerfuegbareTrainerListe.ToList.ForEach(Sub(t)
+        '                                                                  If target.VerfuegbareTrainerListe Is Nothing Then
+        '                                                                      target.VerfuegbareTrainerListe = New TrainerCollection
+        '                                                                      target.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)
+        '                                                                  End If
+        '                                                                  target.VerfuegbareTrainerListe.Add(t)
+        '                                                                  target.VerfuegbareTrainerIDListe.Add(t.TrainerID)
+        '                                                              End Sub)
 
-            ' Auswahl aktualisieren: wähle Ziel-Einteilung und Gruppe
-            SelectedEinteilung = target
-            ' SelectedGruppe bleibt auf der gleichen Instanz; UI-Refresh erzwingen
-            OnPropertyChanged(NameOf(SelectedEinteilung))
+        '    ' Auswahl aktualisieren: wähle Ziel-Einteilung und Gruppe
+        '    SelectedEinteilung = target
+        '    ' SelectedGruppe bleibt auf der gleichen Instanz; UI-Refresh erzwingen
+        '    OnPropertyChanged(NameOf(SelectedEinteilung))
 
-            ' CollectionViews / Menüs aktualisieren
-            If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-            ' Optional: weitere Views refreshen (Gruppenliste-View etc.)
+        '    ' CollectionViews / Menüs aktualisieren
+        '    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
+        '    ' Optional: weitere Views refreshen (Gruppenliste-View etc.)
 
-        End Sub
+        'End Sub
 
         Private Function CanGruppeTransferTo(target As Einteilung) As Boolean
             If target Is Nothing Then Return False
@@ -527,8 +539,8 @@ Namespace ViewModels
 
         ' Aufruf in Setter von SelectedGruppe/SelectedEinteilung, damit CanExecute sofort neu evaluiert wird:
         Private Sub RaiseTransferCommandsCanExecute()
-            If _gruppeTransferToCommand IsNot Nothing Then _gruppeTransferToCommand.RaiseCanExecuteChanged()
-            If _einteilungTransferToCommand IsNot Nothing Then _einteilungTransferToCommand.RaiseCanExecuteChanged()
+            If _GruppeCopyToCommand IsNot Nothing Then _GruppeCopyToCommand.RaiseCanExecuteChanged()
+            If _EinteilungCopyToCommand IsNot Nothing Then _EinteilungCopyToCommand.RaiseCanExecuteChanged()
         End Sub
 
 #End Region

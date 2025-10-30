@@ -15,13 +15,13 @@ Namespace Entities.Generation4
         Implements IModel
 
 #Region "Felder"
-        Private _Ident As Guid = Guid.NewGuid()
+        Private _Ident As Guid
         Private _Sortierung As Integer
         Private _Benennung As String
         Private _LeistungsstufeID As Guid
         Private _Leistungsstufe As Leistungsstufe
         Private _MitgliederIDListe As ObservableCollection(Of Guid)
-        Private _Mitgliederliste = New TeilnehmerCollection
+        Private _Mitgliederliste As TeilnehmerCollection
         Private _TrainerID As Guid
         Private _Trainer As Trainer
 #End Region
@@ -29,6 +29,9 @@ Namespace Entities.Generation4
 #Region "Konstruktor"
 
         Public Sub New()
+            Ident = Guid.NewGuid()
+            MitgliederIDListe = New ObservableCollection(Of Guid)
+            Mitgliederliste = New TeilnehmerCollection
             Sortierung = -1
         End Sub
 
@@ -38,6 +41,7 @@ Namespace Entities.Generation4
         ''' <param name="Ausgabename"></param>
         ''' <param name="Sortierung"></param>
         Public Sub New(Ausgabename As String, Sortierung As Integer)
+            Me.New
             _Benennung = Ausgabename
             _Sortierung = Sortierung
         End Sub
@@ -47,6 +51,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="Benennung"></param>
         Public Sub New(Benennung As String)
+            Me.New
             _Benennung = Benennung
         End Sub
 
@@ -55,12 +60,20 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
-            Ident = OriginGruppe.Ident
-            Leistungsstufe = OriginGruppe.Leistungsstufe
+            Ident = Guid.NewGuid()
+            Leistungsstufe = New Leistungsstufe(OriginGruppe.Leistungsstufe)
+            LeistungsstufeID = OriginGruppe.LeistungsstufeID
             Benennung = OriginGruppe.Benennung
             Sortierung = OriginGruppe.Sortierung
-            Trainer = OriginGruppe.Trainer
-            Mitgliederliste = OriginGruppe.Mitgliederliste
+            Trainer = New Trainer(OriginGruppe.Trainer)
+            TrainerID = OriginGruppe.TrainerID
+            MitgliederIDListe = OriginGruppe.MitgliederIDListe
+            Mitgliederliste = New TeilnehmerCollection()
+            For Each m In OriginGruppe.Mitgliederliste
+                If m IsNot Nothing Then
+                    Mitgliederliste.Add(New Teilnehmer(m))
+                End If
+            Next
         End Sub
 
 #End Region

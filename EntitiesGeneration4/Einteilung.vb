@@ -14,7 +14,7 @@ Namespace Entities.Generation4
         Private _Sortierung As Integer
         Private _Benennung As String
 
-        Private _GruppenIDListe As ObservableCollection(Of Guid)
+        Private _EinteilungsspezifischeGruppenIDListe As ObservableCollection(Of Guid)
         Private _Gruppenliste As GruppeCollection
 
         Private _VerfuegbareTrainerIDListe As ObservableCollection(Of Guid)
@@ -22,6 +22,7 @@ Namespace Entities.Generation4
 
         Private _NichtZugewieseneTeilnehmerIDListe As ObservableCollection(Of Guid)
         Private _NichtZugewieseneTeilnehmerListe As TeilnehmerCollection
+
 
 #End Region
 
@@ -106,10 +107,10 @@ Namespace Entities.Generation4
         ''' <returns></returns>
         Public Property GruppenIDListe() As ObservableCollection(Of Guid)
             Get
-                Return _GruppenIDListe
+                Return _EinteilungsspezifischeGruppenIDListe
             End Get
             Set(value As ObservableCollection(Of Guid))
-                _GruppenIDListe = value
+                _EinteilungsspezifischeGruppenIDListe = value
             End Set
         End Property
 

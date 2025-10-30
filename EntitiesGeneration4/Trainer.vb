@@ -15,7 +15,7 @@ Namespace Entities.Generation4
 #Region "Felder"
         'Todo:Standardfoto festlegen
         Private _Foto As Byte()
-        Private _TrainerID = Guid.NewGuid()
+        Private _TrainerID As Guid
         Private _Alias As String
         Private _Vorname As String
         Private _Nachname As String
@@ -33,6 +33,7 @@ Namespace Entities.Generation4
         ''' Erstellt einen neuen Trainer
         ''' </summary>
         Public Sub New()
+            TrainerID = Guid.NewGuid()
         End Sub
 
         ''' <summary>
@@ -42,6 +43,7 @@ Namespace Entities.Generation4
         ''' <param name="Nachname"></param>
         ''' <param name="[Alias]"></param>
         Public Sub New(Vorname As String, Nachname As String, [Alias] As String)
+            Me.New()
             _Alias = [Alias]
             _Vorname = Vorname
             _Nachname = Nachname
@@ -53,6 +55,7 @@ Namespace Entities.Generation4
         ''' <param name="Vorname"></param>
         ''' <param name="Nachname"></param>
         Public Sub New(Vorname As String, Nachname As String)
+            Me.New()
             _Vorname = Vorname
             _Nachname = Nachname
         End Sub
@@ -62,6 +65,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="Vorname"></param>
         Public Sub New(Vorname As String)
+            Me.New()
             _Vorname = Vorname
         End Sub
 

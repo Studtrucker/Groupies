@@ -252,13 +252,11 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
 
-                                <MenuItem Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
                                     <MenuItem.ItemContainerStyle>
                                         <Style TargetType="MenuItem">
-                                            <!-- Überschrift aus der Bound-Einteilung -->
                                             <Setter Property="Header" Value="{Binding Benennung}"/>
-                                            <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                                            <Setter Property="Command" Value="{Binding DataContext.EinteilungTransferToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <Setter Property="Command" Value="{Binding DataContext.EinteilungCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             <Setter Property="CommandParameter" Value="{Binding}"/>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
@@ -288,13 +286,13 @@
                                 <MenuItem Header="Gruppe entfernen" 
                                           Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                <MenuItem Header="Transfer to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
                                     <MenuItem.ItemContainerStyle>
                                         <Style TargetType="MenuItem">
                                             <!-- Überschrift aus der Bound-Einteilung -->
                                             <Setter Property="Header" Value="{Binding Benennung}"/>
                                             <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                                            <Setter Property="Command" Value="{Binding DataContext.GruppeTransferToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <Setter Property="Command" Value="{Binding DataContext.GruppeCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             <Setter Property="CommandParameter" Value="{Binding}"/>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
@@ -328,7 +326,8 @@
             <DockPanel x:Name="DockPanelSpalte3"  Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0,0,20" Grid.RowSpan="2">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="Gruppe" />
+                        <TextBlock Text="{Binding SelectedEinteilung.Benennung}" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Gruppe"/>
                         <uc:GruppendetailUserControl x:Name="GruppeUserControl" DataContext="{Binding GruppendetailViewModel}"/>
                     </StackPanel>
                 </ScrollViewer>

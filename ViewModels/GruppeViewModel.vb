@@ -16,6 +16,23 @@ Public Class GruppeViewModel
     Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
 #End Region
 
+
+    Private _gruppeTransferToCommand As RelayCommand(Of Einteilung)
+
+    Public ReadOnly Property GruppeTransferToCommand As RelayCommand(Of Einteilung)
+        Get
+            If _gruppeTransferToCommand Is Nothing Then
+                _gruppeTransferToCommand = CopyCommandFactory.CreateGruppeCopyCommand(
+                    Function() SelectedItem,
+                    Sub()
+                        ' Refresh der View/Collections nach erfolgreichem Transfer
+                        If ItemsView IsNot Nothing Then ItemsView.Refresh()
+                    End Sub)
+            End If
+            Return _gruppeTransferToCommand
+        End Get
+    End Property
+
 #Region "Konstruktor"
 
     ''' <summary>
@@ -33,10 +50,14 @@ Public Class GruppeViewModel
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Gruppe)(AddressOf OnLoeschen, Function() CanLoeschen)
-
+        AddHandler Me.PropertyChanged, AddressOf OnOwnPropertyChanged
 
     End Sub
-
+    Private Sub OnOwnPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        If e.PropertyName = NameOf(SelectedItem) Then
+            If _gruppeTransferToCommand IsNot Nothing Then _gruppeTransferToCommand.RaiseCanExecuteChanged()
+        End If
+    End Sub
 
 
 #End Region

@@ -16,7 +16,7 @@ Namespace Entities.Generation4
 
 
 #Region "Fields"
-        Private _Ident As Guid = Guid.NewGuid()
+        Private _Ident As Guid
 
         Private _Nachname As String
         Private _Vorname As String
@@ -38,6 +38,7 @@ Namespace Entities.Generation4
         ''' </summary>
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
+            Ident = Guid.NewGuid()
             'If AppController.AktuellerClub IsNot Nothing OrElse AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
             '    Leistungsstufe = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
             'End If
@@ -50,6 +51,7 @@ Namespace Entities.Generation4
         ''' <param name="Nachname"></param>
         ''' <param name="Leistungsstufe"></param>
         Public Sub New(Vorname As String, Nachname As String, Leistungsstufe As Leistungsstufe)
+            Me.New
             _Vorname = Vorname
             _Nachname = Nachname
             _Leistungsstufe = Leistungsstufe
@@ -61,6 +63,7 @@ Namespace Entities.Generation4
         ''' <param name="Vorname"></param>
         ''' <param name="Nachname"></param>
         Public Sub New(Vorname As String, Nachname As String)
+            Me.New
             _Vorname = Vorname
             _Nachname = Nachname
         End Sub
@@ -70,6 +73,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <param name="Vorname"></param>
         Public Sub New(Vorname As String)
+            Me.New
             _Vorname = Vorname
         End Sub
 
@@ -84,6 +88,7 @@ Namespace Entities.Generation4
             Geburtsdatum = Origin.Geburtsdatum
             Telefonnummer = Origin.Telefonnummer
             Leistungsstufe = Origin.Leistungsstufe
+            LeistungsstufeID = Origin.LeistungsstufeID
         End Sub
 
 #End Region

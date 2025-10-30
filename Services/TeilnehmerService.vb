@@ -49,8 +49,8 @@ Namespace Services
 
             ' Teilnehmerliste aus Gruppe entfernen ...
             For Each Tn In TeilnehmerListe
-                Gruppe.Mitgliederliste.Remove(TeilnehmerAusListeLesen(Gruppe.Mitgliederliste.ToList, Tn))
-                Gruppe.MitgliederIDListe.Remove(Tn.Ident)
+                Einteilung.Gruppenliste.Where(Function(G) G.Ident = Gruppe.Ident).Single.Mitgliederliste.Remove(TeilnehmerAusListeLesen(Gruppe.Mitgliederliste.ToList, Tn))
+                Einteilung.Gruppenliste.Where(Function(G) G.Ident = Gruppe.Ident).Single.MitgliederIDListe.Remove(Tn.Ident)
             Next
 
             ' ... in NichtZugewieseneTeilnehmer schreiben

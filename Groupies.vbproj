@@ -155,6 +155,7 @@
     <Compile Include="EntitiesGeneration3\Trainer.vb" />
     <Compile Include="EntitiesGeneration3\TrainerCollection.vb" />
     <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
+    <Compile Include="EntitiesGeneration4\EinteilungsspezifischeGruppe.vb" />
     <Compile Include="EntitiesGeneration4\TeilnehmerSuchergebnisItem.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />
@@ -190,6 +191,7 @@
     <Compile Include="Services\TeilnehmerService.vb" />
     <Compile Include="Services\TrainerEventArgs.vb" />
     <Compile Include="Services\TrainerService.vb" />
+    <Compile Include="Services\CopyCommandFactory.vb" />
     <Compile Include="Services\WindowService.vb" />
     <Compile Include="SkiDatenLaden.vb" />
     <Compile Include="BaseTypes\BaseModel.vb" />

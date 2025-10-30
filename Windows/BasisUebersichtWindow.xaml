@@ -44,6 +44,18 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <!-- Überschrift aus der Bound-Einteilung -->
+                                        <Setter Property="Header" Value="{Binding Benennung}"/>
+                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                        <Setter Property="Command" Value="{Binding DataContext.TrainerCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -162,6 +174,18 @@
                         </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <!-- Überschrift aus der Bound-Einteilung -->
+                                        <Setter Property="Header" Value="{Binding Benennung}"/>
+                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                        <Setter Property="Command" Value="{Binding DataContext.TeilnehmerCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -274,6 +298,18 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <!-- Überschrift aus der Bound-Einteilung -->
+                                        <Setter Property="Header" Value="{Binding Benennung}"/>
+                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                        <Setter Property="Command" Value="{Binding DataContext.GruppeCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -382,6 +418,16 @@
 
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <Setter Property="Header" Value="{Binding Benennung}"/>
+                                        <Setter Property="Command" Value="{Binding DataContext.EinteilungCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -731,17 +777,6 @@
                         <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-            </MenuItem>
-            <MenuItem  Name="TransferToMenuItem" Header="Transfer to" ItemsSource="{Binding AktuellesViewModel.AlleEinteilungenCV}">
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="MenuItem">
-                        <!-- Überschrift aus der Bound-Einteilung -->
-                        <Setter Property="Header" Value="{Binding Benennung}"/>
-                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                        <Setter Property="Command" Value="{Binding DataContext.TransferToEinteilungCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                    </Style>
-                </MenuItem.ItemContainerStyle>
             </MenuItem>
         </Menu>
 

@@ -95,6 +95,7 @@ Namespace Entities.Generation4
         ''' Sortierungszahl für die Ausgabeinformationen 
         ''' </summary>
         ''' <returns></returns>
+        <XmlIgnore>
         Public Property Sortierung As Integer
             Get
                 Return If(_Gruppenstamm Is Nothing, 0, _Gruppenstamm.Sortierung)
@@ -110,6 +111,7 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist ein Pflichtfeld")>
+        <XmlIgnore>
         Public Property Benennung As String
             Get
                 Return If(_Gruppenstamm Is Nothing, String.Empty, _Gruppenstamm.Benennung)
@@ -180,33 +182,6 @@ Namespace Entities.Generation4
         End Property
 
         ''' <summary>
-        ''' Liste der GruppenmitgliederIDs
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property MitgliederIDListe As ObservableCollection(Of Guid)
-            Get
-                Return _MitgliederIDListe
-            End Get
-            Set(value As ObservableCollection(Of Guid))
-                _MitgliederIDListe = value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Liste der Gruppenmitglieder
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore>
-        Public Property Mitgliederliste As TeilnehmerCollection
-            Get
-                Return _Mitgliederliste
-            End Get
-            Set(value As TeilnehmerCollection)
-                _Mitgliederliste = value
-            End Set
-        End Property
-
-        ''' <summary>
         ''' Gruppenstammdaten
         ''' </summary>
         ''' <returns></returns>
@@ -233,6 +208,32 @@ Namespace Entities.Generation4
             End Set
         End Property
 
+        ''' <summary>
+        ''' Liste der GruppenmitgliederIDs
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property MitgliederIDListe As ObservableCollection(Of Guid)
+            Get
+                Return _MitgliederIDListe
+            End Get
+            Set(value As ObservableCollection(Of Guid))
+                _MitgliederIDListe = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Liste der Gruppenmitglieder
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property Mitgliederliste As TeilnehmerCollection
+            Get
+                Return _Mitgliederliste
+            End Get
+            Set(value As TeilnehmerCollection)
+                _Mitgliederliste = value
+            End Set
+        End Property
 #End Region
 
 #Region "Funktionen und Methoden"

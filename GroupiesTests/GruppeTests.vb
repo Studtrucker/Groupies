@@ -2,7 +2,7 @@
 Imports Groupies
 Imports Groupies.Entities.Generation4
 
-'<TestClass>
+<TestClass>
 Public Class GruppeTests
 
     '<TestMethod>
@@ -29,4 +29,21 @@ Public Class GruppeTests
         g1.Mitgliederliste.Remove(Willi)
         Assert.AreEqual(1, g1.Mitgliederliste.Count)
     End Sub
+
+    <TestMethod>
+    Public Sub testGruppenstammErstellen()
+        'Dim gs = New Gruppenstamm("Anfänger") With {.Sortierung = 10, .Benennung = "Anfänger", .Leistungsstufe = New Leistungsstufe With {.Benennung = "Beginner", .Sortierung = 10}}
+
+        Dim Gs As New GruppenService
+        Gs.GruppenstammErstellen()
+
+
+        'Assert.AreEqual("Anfänger", gs.Benennung)
+        'Assert.AreEqual("Beginner", gs.Leistungsstufe.Benennung)
+        'Assert.AreNotEqual(Guid.Empty, gs.Ident)
+        'Assert.AreNotEqual(Guid.Empty, gs.Leistungsstufe.Ident)
+        'Assert.AreEqual(gs.LeistungsstufeID, gs.Leistungsstufe.Ident)
+
+    End Sub
+
 End Class

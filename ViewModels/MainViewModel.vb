@@ -389,7 +389,7 @@ Namespace ViewModels
 
         Private Sub OnGruppeErstellen(obj As Object)
             Dim GS As New GruppenService
-            GS.GruppeErstellen()
+            GS.GruppenstammErstellen()
         End Sub
 
         Private Function CanGruppenuebersichtAnzeigen() As Boolean
@@ -535,7 +535,9 @@ Namespace ViewModels
             AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf OnSelectedAlleMitgliederCollectionChanged
             AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
             AddHandler TeilnehmerSuchErgebnisViewModel.OpenTargetRequested, AddressOf OnTeilnehmerSuchErgebnisOpenTargetRequested
+            AddHandler DateiService.DateiGespeichert, AddressOf HandlerDateiGespeichert
         End Sub
+
 
         ' Aufruf in Setter von SelectedGruppe/SelectedEinteilung, damit CanExecute sofort neu evaluiert wird:
         Private Sub RaiseTransferCommandsCanExecute()
@@ -1080,6 +1082,11 @@ Namespace ViewModels
                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
             End If
         End Sub
+
+        Private Sub HandlerDateiGespeichert(sender As Object, e As DateiEventArgs)
+            WindowTitleText = DefaultWindowTitleText & " - " & e.Clubname
+        End Sub
+
 
         Private Sub HandlerSetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName

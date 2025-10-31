@@ -13,6 +13,21 @@ Public Class GruppenService
         RaiseEvent GruppeBearbeitet(Me, e)
     End Sub
 
+    Public Sub GruppenstammErstellen()
+        ' Hier können Sie die Logik für den Neu-Button implementieren
+        Dim dialog = New BasisDetailWindow() With {
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
+            .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppenstamm),
+            .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+        mvw.AktuellesViewModel.Model = New Gruppenstamm
+        dialog.DataContext = mvw
+        Dim result As Boolean = dialog.ShowDialog()
+        If result = True Then
+
+        End If
+    End Sub
+
     Public Sub GruppeErstellen()
         ' Hier können Sie die Logik für den Neu-Button implementieren
         Dim dialog = New BasisDetailWindow() With {

@@ -4,6 +4,7 @@
         Trainer
         Teilnehmer
         Gruppe
+        Gruppenstamm
         Faehigkeit
         Leistungsstufe
         Einteilung

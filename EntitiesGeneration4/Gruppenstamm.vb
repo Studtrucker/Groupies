@@ -95,7 +95,7 @@ Namespace Entities.Generation4
         End Property
 
         ''' <summary>
-        ''' Der Fk für die Leistungsstufe der Gruppe
+        ''' Der Fk für die Leistungsstufe der Gruppe, einmal fetsgelegt, nicht mehr änderbar
         ''' </summary>
         ''' <returns></returns>
         Public Property LeistungsstufeID As Guid
@@ -110,7 +110,7 @@ Namespace Entities.Generation4
 
 
         ''' <summary>
-        ''' Die Leistungsstufe der Gruppe
+        ''' Die Leistungsstufe der Gruppe, einmal fetsgelegt, nicht mehr änderbar
         ''' </summary>
         ''' <returns></returns>
         <XmlIgnore>

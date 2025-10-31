@@ -13,6 +13,8 @@ Namespace Fabriken
                     Return New TrainerDatentyp
                 Case Enums.DatentypEnum.Gruppe
                     Return New GruppeDatentyp
+                Case Enums.DatentypEnum.Gruppenstamm
+                    Return New GruppenstammDatentyp
                 Case Enums.DatentypEnum.Faehigkeit
                     Return New FaehigkeitDatentyp
                 Case Enums.DatentypEnum.Leistungsstufe
@@ -115,6 +117,33 @@ Namespace Fabriken
         Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
             Get
                 Return New GruppeViewModel
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesDetailViewModel As IViewModelSpecial Implements IDatentyp.AktuellesDetailViewModel
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
+
+    End Class
+
+    Public Class GruppenstammDatentyp
+        Implements Interfaces.IDatentyp
+
+        Public Property DatentypText As String = "Gruppenstammdaten" Implements Interfaces.IDatentyp.DatentypText
+        Public Property DatentypenText As String = "Gruppenstammdaten" Implements Interfaces.IDatentyp.DatentypenText
+        Public Property DatentypIcon As String = "pack://application:,,,/Images/icons8-konferenz-vordergrund-ausgewaehlte-48.png" Implements IDatentyp.DatentypIcon
+        Public ReadOnly Property DatentypDetailUserControl As UserControl Implements IDatentyp.DatentypDetailUserControl
+            Get
+
+                Return New UserControls.GruppenstammUserControl
+            End Get
+        End Property
+
+        Public ReadOnly Property AktuellesUebersichtViewModel As IViewModelSpecial Implements IDatentyp.AktuellesUebersichtViewModel
+            Get
+                Return New GruppenstammViewModel
             End Get
         End Property
 

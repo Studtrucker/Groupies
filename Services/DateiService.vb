@@ -28,6 +28,7 @@ Namespace Services
         Public Shared Event DateiGeoeffnet As EventHandler(Of DateiEventArgs)
         Public Shared Event DateiOeffnenIstFehlgeschlagen As EventHandler(Of DateiEventArgs)
         Public Shared Event DateiGeschlossen As EventHandler(Of EventArgs)
+        Public Shared Event DateiGespeichert As EventHandler(Of DateiEventArgs)
 
 #End Region
 
@@ -44,6 +45,9 @@ Namespace Services
             RaiseEvent DateiGeschlossen(Me, e)
         End Sub
 
+        Protected Overridable Sub OnDateiGespeichert(e As DateiEventArgs)
+            RaiseEvent DateiGespeichert(Me, e)
+        End Sub
 
         ''' <summary>
         ''' Schliesst eine Datei und löst das DateiGeschlossen Event aus.
@@ -206,7 +210,10 @@ Namespace Services
                 serializer.Serialize(fs, AktuellerClub)
             End Using
 
+            OnDateiGespeichert(New DateiEventArgs(AktuelleDatei.DirectoryName, AktuelleDatei.Name))
+
             Return $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."
+
 
         End Function
 
@@ -232,10 +239,13 @@ Namespace Services
             Dim mFileInfo = Path.Combine(Path.GetDirectoryName(AktuelleDatei.FullName), Dateiname)
 
             AktuelleDatei = New FileInfo(mFileInfo)
+            AktuellerClub.ClubName = AktuelleDatei.Name
 
             DateiSpeichern()
             SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
 
+            ' Event wird bereits in DateiSpeichern gefeuert
+            ' OnDateiGespeichert(New DateiEventArgs(AktuelleDatei.DirectoryName, AktuelleDatei.Name))
 
             Return $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."
 

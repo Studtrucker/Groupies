@@ -265,11 +265,7 @@ Namespace Services
             AktuellerClub = Nothing
 
             AktuellerClub = New Generation4.Club() With {
-                .ClubName = Path.GetFileNameWithoutExtension(AktuelleDatei.Name),
-                .Gruppenliste = TemplateService.StandardGruppenErstellen(15),
-                .Faehigkeitenliste = TemplateService.StandardFaehigkeitenErstellen,
-                .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen,
-                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
+                .ClubName = Path.GetFileNameWithoutExtension(AktuelleDatei.Name)}
 
             Return ($"Der Club '{Path.GetFileNameWithoutExtension(AktuelleDatei.Name)}' wurde erfolgreich erstellt.")
 

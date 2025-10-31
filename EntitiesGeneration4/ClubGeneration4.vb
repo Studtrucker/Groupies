@@ -16,12 +16,7 @@ Namespace Entities.Generation4
 #Region "Fields"
         Private _DateiGeneration As String
         Private _Clubname As String
-        'Private _GruppenIDListe As ObservableCollection(Of Guid)
-        'Private _TeilnehmerIDListe As ObservableCollection(Of Guid)
-        'Private _TrainerIDListe As ObservableCollection(Of Guid)
-        'Private _EinteilungIDListe As ObservableCollection(Of Guid)
-        'Private _LeistungsstufenIDListe As ObservableCollection(Of Guid)
-        'Private _FaehigkeitenIDListe As ObservableCollection(Of Guid)
+        Private _Gruppenstammliste As GruppenstammCollection
         Private _Gruppenliste As GruppeCollection
         Private _Teilnehmerliste As TeilnehmerCollection
         Private _Trainerliste As TrainerCollection
@@ -70,17 +65,6 @@ Namespace Entities.Generation4
             End Set
         End Property
 
-        '''' <summary>
-        '''' Liste der Tages-Einteilung IDs
-        '''' </summary>
-        'Public Property EinteilungIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _EinteilungIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _EinteilungIDListe = value
-        '    End Set
-        'End Property
 
         ''' <summary>
         ''' Die Tages-Einteilungen
@@ -94,20 +78,6 @@ Namespace Entities.Generation4
                 _Einteilungsliste = value
             End Set
         End Property
-
-        '''' <summary>
-        '''' Liste der LeistungsstufenIDs im aktuellen Club
-        '''' </summary>
-        '''' 
-        '''' <returns></returns>
-        'Public Property LeistungsstufenIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _LeistungsstufenIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _LeistungsstufenIDListe = value
-        '    End Set
-        'End Property
 
         ''' <summary>
         ''' Liste aller Leistungsstufen, 
@@ -123,20 +93,6 @@ Namespace Entities.Generation4
             End Set
         End Property
 
-        '''' <summary>
-        '''' Eine Liste der FaehigkeitenIDs im aktuellen Club
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property FaehigkeitenIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _FaehigkeitenIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _FaehigkeitenIDListe = value
-        '    End Set
-        'End Property
-
-
         ''' <summary>
         ''' Liste aller Fähigkeiten,
         ''' Basis für die Beschreibung der Leistungsstufen
@@ -150,19 +106,6 @@ Namespace Entities.Generation4
                 _Faehigkeitenliste = value
             End Set
         End Property
-
-        '''' <summary>
-        '''' Eine Liste der TrainerIDs im aktuellen Club
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property TrainerIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _TrainerIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _TrainerIDListe = value
-        '    End Set
-        'End Property
 
         ''' <summary>
         ''' Liste aller Trainer,
@@ -179,18 +122,6 @@ Namespace Entities.Generation4
             End Set
         End Property
 
-        '''' <summary>
-        '''' Liste der TeilnehmerIDs im aktuellen Club
-        '''' </summary>
-        'Public Property TeilnehmerIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _TeilnehmerIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _TeilnehmerIDListe = value
-        '    End Set
-        'End Property
-
         ''' <summary>
         ''' Liste aller Teilnehmer.
         ''' Basis für die Mitgliederliste in den Gruppen.
@@ -206,24 +137,22 @@ Namespace Entities.Generation4
             End Set
         End Property
 
-
-        '''' <summary>
-        '''' Liste der TeilnehmerIDs im aktuellen Club
-        '''' </summary>
-        '''' <returns></returns>
-        'Public Property GruppenIDListe As ObservableCollection(Of Guid)
-        '    Get
-        '        Return _GruppenIDListe
-        '    End Get
-        '    Set(value As ObservableCollection(Of Guid))
-        '        _GruppenIDListe = value
-        '    End Set
-        'End Property
-
+        ''' <summary>
+        ''' Liste der Gruppenstammdaten.
+        ''' Basis für die Gruppen in den Einteilungen.
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Gruppenstammliste() As GruppenstammCollection
+            Get
+                Return _Gruppenstammliste
+            End Get
+            Set(value As GruppenstammCollection)
+                _Gruppenstammliste = value
+            End Set
+        End Property
 
         ''' <summary>
-        ''' Liste der aller Gruppen.
-        ''' Basis für die Gruppen in den Einteilungen.
+        ''' Liste der Gruppendaten aus den Einteilungen.
         ''' </summary>
         ''' <returns></returns>
         Public Property Gruppenliste() As GruppeCollection

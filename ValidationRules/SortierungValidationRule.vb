@@ -9,8 +9,8 @@ Namespace ValidationRules
 
         Public Overrides Function Validate(value As Object, cultureInfo As CultureInfo) As ValidationResult
 
-            If value.Sortierung < 0 Then
-                Return New ValidationResult(False, "Sortierung darf nicht negativ sein.")
+            If value.Sortierung < 1 Then
+                Return New ValidationResult(False, "Sortierung muss größer Null sein.")
             End If
             If String.IsNullOrWhiteSpace(value.Sortierung) Then
                 Return New ValidationResult(False, "Sortierung muss eingetragen sein.")
@@ -22,7 +22,7 @@ Namespace ValidationRules
         End Function
 
         Public Function GetEindeutigkeit(Gruppe As Gruppe) As ValidationResult
-            If Services.DateiService.AktuellerClub.Gruppenliste.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
+            If Services.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult

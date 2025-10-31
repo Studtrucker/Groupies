@@ -35,11 +35,7 @@ Namespace Services
         Public Shared Function NeuenClubErstellen(Clubname As String) As Generation4.Club
 
             Dim AktuellerClub = New Generation4.Club() With {
-                .ClubName = Clubname,
-                .Gruppenliste = TemplateService.StandardGruppenErstellen(15),
-                .Faehigkeitenliste = TemplateService.StandardFaehigkeitenErstellen,
-                .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen,
-                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
+                .ClubName = Clubname}
             '.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski"),
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")

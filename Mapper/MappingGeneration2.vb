@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
 Imports Groupies.Entities
+Imports Groupies.Entities.Generation1
 
 Public Module MappingGeneration2
 
@@ -17,7 +18,9 @@ Public Module MappingGeneration2
 
         Dim EindeutigeTeilnehmer = GetAlleTeilnehmer(Skiclub, EindeutigeLeistungsstufen)
 
-        Dim EindeutigeGruppen = GetAlleGruppen(Skiclub, EindeutigeLeistungsstufen, EindeutigeTrainer, EindeutigeTeilnehmer)
+        Dim EindeutigeGruppenstammdaten = getGruppenstammdaten(Skiclub, EindeutigeLeistungsstufen)
+
+        Dim EindeutigeGruppen = GetAlleGruppen(Skiclub, EindeutigeGruppenstammdaten, EindeutigeTrainer, EindeutigeTeilnehmer)
 
         Dim NeuerClub = New Generation4.Club With {
             .Einteilungsliste = New Generation4.EinteilungCollection,
@@ -26,6 +29,7 @@ Public Module MappingGeneration2
             .Teilnehmerliste = EindeutigeTeilnehmer,
             .Leistungsstufenliste = EindeutigeLeistungsstufen,
             .Faehigkeitenliste = EindeutigeFaehigkeiten,
+            .Gruppenstammliste = EindeutigeGruppenstammdaten,
             .Gruppenliste = EindeutigeGruppen}
 
         ' Einteilung wird neu erstellt
@@ -321,6 +325,37 @@ Public Module MappingGeneration2
 
     End Function
 
+    Private Function getGruppenstammdaten(Skiclub As Generation2.Club, EindeutigeLeistunggstufen As Generation4.LeistungsstufeCollection) As Generation4.GruppenstammCollection
+        Dim GruppenG2 = New Generation2.GruppeCollection
+        ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) GruppenG2.Add(G))
+
+        ' Entferne doppelte Gruppen und wandle in Generation 4 Gruppen um
+        ' Erklärung:
+        ' 1. GroupBy: Gruppiere die Gruppen über die Benennung
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element 
+        ' 3. ToList: Konvertiere das Ergebnis in eine Liste
+        ' 4. Select: Wandle jede Gruppe in eine Generation4.Gruppenstamm um
+        ' 5. Dabei werden die Leistungsstufe durch die eindeutige Leistungsstufe aus der übergebenen Leistungsstufen-Collection ersetzt.
+        Dim GruppenG4 = New Generation4.GruppenstammCollection(GruppenG2.GroupBy(Function(G)
+                                                                                     Return G.Benennung
+                                                                                 End Function).Select(Function(G) G.First).ToList.Select(Function(G2)
+                                                                                                                                             Dim G4LS4 = If(G2.Leistungsstufe IsNot Nothing, EindeutigeLeistunggstufen.FirstOrDefault(Function(L) L.Benennung = G2.Leistungsstufe.Benennung), Nothing)
+                                                                                                                                             Dim G4L4ID = If(G2.Leistungsstufe IsNot Nothing, EindeutigeLeistunggstufen.FirstOrDefault(Function(L) L.Benennung = G2.Leistungsstufe.Benennung).Ident, Nothing)
+
+                                                                                                                                             Dim G4 = New Generation4.Gruppenstamm With {
+                                                                                                                                             .Ident = G2.GruppenID,
+                                                                                                                                             .Benennung = G2.Benennung,
+                                                                                                                                             .Leistungsstufe = G4LS4,
+                                                                                                                                             .LeistungsstufeID = G4L4ID,
+                                                                                                                                             .Sortierung = G2.Sortierung}
+                                                                                                                                             Return G4
+                                                                                                                                         End Function))
+
+        Return GruppenG4
+
+    End Function
+
     ''' <summary>
     ''' Gruppen werden aus dem Skiclub extrahiert
     ''' Dazu werden die Gruppen der Gruppenliste gesammelt.
@@ -370,6 +405,59 @@ Public Module MappingGeneration2
                                                                                                                                        .Sortierung = G2.Sortierung,
                                                                                                                                        .Trainer = G4Tr4,
                                                                                                                                        .TrainerID = G4Tr4ID}
+                                                                                                                                       Return G4
+                                                                                                                                   End Function))
+
+        Return GruppenG4
+
+    End Function
+    ''' <summary>
+    ''' Gruppen werden aus dem Skiclub extrahiert
+    ''' Dazu werden die Gruppen der Gruppenliste gesammelt.
+    ''' Doppelte Gruppen werden nach einer Gruppierung über die Benennung entfernt.
+    ''' Die Gruppen werden dann in Generation 4 Gruppen umgewandelt.
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetAlleGruppen(Skiclub As Generation2.Club, EindeutigeGruppenstammdaten As Generation4.GruppenstammCollection, EindeutigeTrainer As Generation4.TrainerCollection, EindeutigeTeilnehmer As Generation4.TeilnehmerCollection) As Generation4.GruppeCollection
+
+        Dim GruppenG2 = New Generation2.GruppeCollection
+        ' Gruppen aus dem Skiclub entnehmen und in die Collection einfügen
+        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) GruppenG2.Add(G))
+
+        ' Entferne doppelte Gruppen und wandle in Generation 4 Gruppen um
+        ' Erklärung:
+        ' 1. GroupBy: Gruppiere die Gruppen über die Benennung
+        ' 2. Select: Wähle aus jeder Gruppe das erste Element
+        ' 3. ToList: Konvertiere das Ergebnis in eine Liste
+        ' 4. Select: Wandle jede Gruppe in eine Generation4.Gruppe um
+        ' 5. Dabei wird der Trainer durch die eindeutigen Trainer aus der übergebenen Trainer-Collection ersetzt.
+        ' 6. Es wird auch eine Liste der Mitglieder-IDs und eine Mitgliederliste erstellt.
+        ' 7. Die Leistungsstufe wird aus den übergebenen Gruppenstammdaten entnommen.
+        Dim GruppenG4 = New Generation4.GruppeCollection(GruppenG2.GroupBy(Function(G)
+                                                                               Return G.Benennung
+                                                                           End Function).Select(Function(G) G.First).ToList.Select(Function(G2)
+                                                                                                                                       Dim G4Tr4 = If(G2.Trainer IsNot Nothing, EindeutigeTrainer.FirstOrDefault(Function(L) String.Format("{0} {1}", L.Vorname, L.Nachname) = G2.Trainer.VorUndNachname), Nothing)
+                                                                                                                                       Dim G4Tr4ID = If(G2.Trainer IsNot Nothing, EindeutigeTrainer.FirstOrDefault(Function(L) String.Format("{0} {1}", L.Vorname, L.Nachname) = G2.Trainer.VorUndNachname).TrainerID, Nothing)
+
+                                                                                                                                       Dim M4IDListe = New ObservableCollection(Of Guid)(From T In G2.Mitgliederliste.Select(Function(T2)
+                                                                                                                                                                                                                                 Return EindeutigeTeilnehmer.FirstOrDefault(Function(T4) T4.Vorname = T2.Vorname And T4.Nachname = T2.Nachname And T4.Geburtsdatum = T2.Geburtsdatum)
+                                                                                                                                                                                                                             End Function).ToList.Select(Function(T)
+                                                                                                                                                                                                                                                             Return If(T IsNot Nothing, T.Ident, Guid.Empty)
+                                                                                                                                                                                                                                                         End Function).ToList)
+                                                                                                                                       Dim M4Liste = New Generation4.TeilnehmerCollection(From T In G2.Mitgliederliste.Select(Function(T2)
+                                                                                                                                                                                                                                  Return EindeutigeTeilnehmer.FirstOrDefault(Function(T4) T4.Vorname = T2.Vorname And T4.Nachname = T2.Nachname And T4.Geburtsdatum = T2.Geburtsdatum)
+                                                                                                                                                                                                                              End Function).ToList.Select(Function(T)
+                                                                                                                                                                                                                                                              Return If(T IsNot Nothing, T, Nothing)
+                                                                                                                                                                                                                                                          End Function).Where(Function(T) T IsNot Nothing).ToList)
+                                                                                                                                       Dim G4 = New Generation4.Gruppe With {
+                                                                                                                                       .Ident = G2.GruppenID,
+                                                                                                                                       .MitgliederIDListe = M4IDListe,
+                                                                                                                                       .Mitgliederliste = M4Liste,
+                                                                                                                                       .Trainer = G4Tr4,
+                                                                                                                                       .TrainerID = G4Tr4ID,
+                                                                                                                                       .Gruppenstamm = EindeutigeGruppenstammdaten.FirstOrDefault(Function(GS) GS.Benennung = G2.Benennung),
+                                                                                                                                       .GruppenstammID = EindeutigeGruppenstammdaten.FirstOrDefault(Function(GS) GS.Benennung = G2.Benennung).Ident}
                                                                                                                                        Return G4
                                                                                                                                    End Function))
 

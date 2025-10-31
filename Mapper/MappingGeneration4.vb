@@ -16,6 +16,7 @@ Public Module MappingGeneration4
         Skiclub.Trainerliste = GetAlleTrainer(Skiclub)
         Skiclub.Leistungsstufenliste = GetAlleLeistungsstufen(Skiclub)
         Skiclub.Teilnehmerliste = GetAlleTeilnehmer(Skiclub)
+        Skiclub.Gruppenstammliste = GetGruppenstammdaten(Skiclub)
         Skiclub.Gruppenliste = GetAlleGruppen(Skiclub)
         Skiclub.Einteilungsliste = GetAlleEinteilungen(Skiclub)
 
@@ -71,15 +72,33 @@ Public Module MappingGeneration4
     End Function
 
     ''' <summary>
-    ''' Gruppen und deren Leistungsstufen, Trainer und Mitgliederliste füllen
+    ''' Gruppenstammdaten und deren Leistungsstufen
+    ''' </summary>
+    ''' <param name="Skiclub"></param>
+    ''' <returns></returns>
+    Private Function GetGruppenstammdaten(Skiclub As Club) As GruppenstammCollection
+        ' Es werden die Leistungsstufenobjekte zugeordnet
+        Skiclub.Gruppenstammliste.ToList.ForEach(Sub(G) G.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = G.LeistungsstufeID))
+        Return Skiclub.Gruppenstammliste
+    End Function
+
+    ''' <summary>
+    ''' Gruppen und deren Trainer und Mitgliederliste füllen
     ''' </summary>
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleGruppen(Skiclub As Club) As GruppeCollection
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = G.LeistungsstufeID))
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Trainer = Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = G.TrainerID))
-        Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe.ToList.ForEach(Sub(TID) G.Mitgliederliste.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID))))
-        Return Skiclub.Gruppenliste
+        'Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenIDListe.ToList.ForEach(Sub(GID)
+        '                                                                                   Dim G = Skiclub.Gruppenliste.FirstOrDefault(Function(G) G.Ident = GID)
+        '                                                                                   If G IsNot Nothing Then
+        '                                                                                       G.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = G.LeistungsstufeID)
+        '                                                                                       G.Trainer = Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = G.TrainerID)
+        '                                                                                       G.MitgliederIDListe.ToList.ForEach(Sub(TID) G.Mitgliederliste.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID)))
+        '                                                                                   End If
+        '                                                                                   Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Leistungsstufe = Skiclub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = G.LeistungsstufeID))
+        ''Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.Trainer = Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = G.TrainerID))
+        ''Skiclub.Gruppenliste.ToList.ForEach(Sub(G) G.MitgliederIDListe.ToList.ForEach(Sub(TID) G.Mitgliederliste.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID))))
+        'Return Skiclub.Gruppenliste
     End Function
 
     ''' <summary>
@@ -88,7 +107,8 @@ Public Module MappingGeneration4
     ''' <param name="Skiclub"></param>
     ''' <returns></returns>
     Private Function GetAlleEinteilungen(Skiclub As Club) As EinteilungCollection
-        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenIDListe.ToList.ForEach(Sub(GID) E.Gruppenliste.Add(Skiclub.Gruppenliste.FirstOrDefault(Function(G) G.Ident = GID))))
+
+        Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.GruppenIDListe.ToList.ForEach(Sub(GID) E.Gruppenliste.Add(New Gruppe)))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.NichtZugewieseneTeilnehmerIDListe.ToList.ForEach(Sub(TID) E.NichtZugewieseneTeilnehmerListe.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID))))
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E) E.VerfuegbareTrainerIDListe.ToList.ForEach(Sub(TID) E.VerfuegbareTrainerListe.Add(Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = TID))))
         Return Skiclub.Einteilungsliste

@@ -41,7 +41,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Gruppe) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
-                If Services.DateiService.AktuellerClub.Gruppenliste.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.Ident <> Objekt.Ident).Any() Then
+                If Services.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.Ident <> Objekt.Ident).Any() Then
                     Return New ValidationResult(False, $"{Objekt.Benennung} wird bereits verwendet. Die Benennung muss aber eindeutig sein.")
                 End If
             End If

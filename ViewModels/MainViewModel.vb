@@ -642,7 +642,7 @@ Namespace ViewModels
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
-            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Gruppenliste
+            mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Gruppenstammliste
 
             fenster.DataContext = mvw
             fenster.Show()

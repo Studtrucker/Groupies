@@ -29,7 +29,7 @@ Public Class GruppenService
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Gruppenliste.Add(mvw.AktuellesViewModel.Model)
+            Services.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
 
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
             OnGruppeBearbeitet(EventArgs.Empty)
@@ -50,7 +50,7 @@ Public Class GruppenService
         dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
-        Dim Gruppenliste = Services.DateiService.AktuellerClub.Gruppenliste
+        Dim Gruppenliste = Services.DateiService.AktuellerClub.Gruppenstammliste
 
         If result = True Then
             ' 1) in Club-Gruppenliste austauschen
@@ -67,7 +67,7 @@ Public Class GruppenService
                 Next
             Next
 
-            Services.DateiService.AktuellerClub.Gruppenliste(index) = mvw.AktuellesViewModel.Model
+            Services.DateiService.AktuellerClub.Gruppenstammliste(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
             OnGruppeBearbeitet(EventArgs.Empty)
         End If
@@ -82,7 +82,7 @@ Public Class GruppenService
 
             Dim club = DateiService.AktuellerClub
             ' aus Club Gruppenliste entfernen
-            DateiService.AktuellerClub.Gruppenliste.Remove(GruppeAusListeLesen(club.Gruppenliste.ToList, GruppeToDelete.TrainerID))
+            DateiService.AktuellerClub.Gruppenstammliste.Remove(GruppeAusListeLesen(club.Gruppenstammliste.ToList, GruppeToDelete.TrainerID))
             ' in allen Einteilungen aus Gruppenliste entfernen
             For Each el In club.Einteilungsliste
                 For Each Gruppe In el.Gruppenliste.Where(Function(G) G.Ident = GruppeToDelete.Ident)
@@ -105,8 +105,10 @@ Public Class GruppenService
     End Sub
 
     Private Function GruppeAusListeLesen(Liste As List(Of Gruppe), Ident As Guid) As Gruppe
-        Return Services.DateiService.AktuellerClub.Gruppenliste.Where(Function(g) g.Ident = Ident).SingleOrDefault
+        Return Liste.Where(Function(g) g.Ident = Ident).SingleOrDefault
     End Function
-
+    Private Function GruppeAusListeLesen(Liste As List(Of Gruppenstamm), Ident As Guid) As Gruppenstamm
+        Return Liste.Where(Function(g) g.Ident = Ident).SingleOrDefault
+    End Function
 
 End Class

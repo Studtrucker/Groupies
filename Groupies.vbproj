@@ -156,6 +156,8 @@
     <Compile Include="EntitiesGeneration3\TrainerCollection.vb" />
     <Compile Include="EntitiesGeneration4\ClubGeneration4.vb" />
     <Compile Include="EntitiesGeneration4\EinteilungsspezifischeGruppe.vb" />
+    <Compile Include="EntitiesGeneration4\Gruppenstamm.vb" />
+    <Compile Include="EntitiesGeneration4\GruppenstammCollection.vb" />
     <Compile Include="EntitiesGeneration4\TeilnehmerSuchergebnisItem.vb" />
     <Compile Include="Services\AppService.vb" />
     <Compile Include="AppController.vb" />

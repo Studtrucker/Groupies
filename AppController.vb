@@ -84,11 +84,7 @@ Namespace Controller
             'AktuellerClub = Nothing
 
             AktuellerClub = New Club() With {
-                .ClubName = Clubname,
-                .Gruppenliste = TemplateService.StandardGruppenErstellen(15),
-                .Faehigkeitenliste = TemplateService.StandardFaehigkeitenErstellen,
-                .Leistungsstufenliste = TemplateService.StandardLeistungsstufenErstellen,
-                .Einteilungsliste = TemplateService.StandardEinteilungenErstellen}
+                .ClubName = Clubname}
 
             AppController.GroupiesFile = New FileInfo(Environment.CurrentDirectory & "\" & Clubname & ".ski")
 

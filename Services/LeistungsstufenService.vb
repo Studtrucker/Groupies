@@ -72,7 +72,7 @@ Public Class LeistungsstufenService
             Dim index = Club.Leistungsstufenliste.IndexOf(LeistungsstufeAusListeLesen(Club.Leistungsstufenliste.ToList, LeistungsstufeToDelete.Ident))
             Club.Leistungsstufenliste.RemoveAt(index)
             ' 1a) in allen Gruppen löschen
-            For Each Gruppe In Club.Gruppenliste.Where(Function(G) G.LeistungsstufeID = LeistungsstufeToDelete.Ident)
+            For Each Gruppe In Club.Gruppenstammliste.Where(Function(G) G.LeistungsstufeID = LeistungsstufeToDelete.Ident)
                 Gruppe.Leistungsstufe = Nothing
                 Gruppe.LeistungsstufeID = Guid.Empty
             Next

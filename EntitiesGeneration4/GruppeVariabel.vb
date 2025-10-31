@@ -7,21 +7,20 @@ Namespace Entities.Generation4
 
 
     ''' <summary>
-    ''' Gruppe mit Angabe seiner Leistungsstufe
+    ''' Einteilungsspezifische Gruppendaten
     ''' </summary>
-    <DefaultProperty("GruppenName")>
-    Public Class Gruppe
+    Public Class GruppeVariable
         Inherits BaseModel
         Implements IModel
 
 #Region "Felder"
         Private _Ident As Guid
-        Private _GruppenstammID As Guid
-        Private _Gruppenstamm As Gruppenstamm
         Private _MitgliederIDListe As ObservableCollection(Of Guid)
         Private _Mitgliederliste As TeilnehmerCollection
         Private _TrainerID As Guid
         Private _Trainer As Trainer
+        Private _GruppenstammID As Guid
+        Private _Gruppenstamm As Gruppenstamm
 #End Region
 
 #Region "Konstruktor"
@@ -30,27 +29,6 @@ Namespace Entities.Generation4
             Ident = Guid.NewGuid()
             MitgliederIDListe = New ObservableCollection(Of Guid)
             Mitgliederliste = New TeilnehmerCollection
-            'Sortierung = -1
-        End Sub
-
-        ''' <summary>
-        ''' Erstellt eine Gruppe unter Angabe des Namens für die Information und einer Sortierungszahl
-        ''' </summary>
-        ''' <param name="Ausgabename"></param>
-        ''' <param name="Sortierung"></param>
-        Public Sub New(Ausgabename As String, Sortierung As Integer)
-            Me.New
-            _Gruppenstamm.Benennung = Ausgabename
-            _Gruppenstamm.Sortierung = Sortierung
-        End Sub
-
-        ''' <summary>
-        ''' Erstellt eine Gruppe unter Angabe des Namens für die Information und der Benennung
-        ''' </summary>
-        ''' <param name="Benennung"></param>
-        Public Sub New(Benennung As String)
-            Me.New
-            _Gruppenstamm.Benennung = Benennung
         End Sub
 
         ''' <summary>
@@ -59,11 +37,7 @@ Namespace Entities.Generation4
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
             Ident = Guid.NewGuid()
-            Leistungsstufe = New Leistungsstufe(OriginGruppe.Leistungsstufe)
-            LeistungsstufeID = OriginGruppe.LeistungsstufeID
-            Benennung = OriginGruppe.Benennung
-            Sortierung = OriginGruppe.Sortierung
-            Trainer = New Trainer(OriginGruppe.Trainer)
+            Trainer = OriginGruppe.Trainer
             TrainerID = OriginGruppe.TrainerID
             MitgliederIDListe = OriginGruppe.MitgliederIDListe
             Mitgliederliste = New TeilnehmerCollection()
@@ -87,66 +61,6 @@ Namespace Entities.Generation4
             End Get
             Set(value As Guid)
                 _Ident = value
-            End Set
-        End Property
-
-
-        ''' <summary>
-        ''' Sortierungszahl für die Ausgabeinformationen 
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Sortierung As Integer
-            Get
-                Return If(_Gruppenstamm Is Nothing, 0, _Gruppenstamm.Sortierung)
-            End Get
-            Set(value As Integer)
-                '    _Gruppenstamm.Sortierung = value
-                OnPropertyChanged(NameOf(Sortierung))
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Die globale Benennung der Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        <Required(AllowEmptyStrings:=False, ErrorMessage:="Die Benennung ist ein Pflichtfeld")>
-        Public Property Benennung As String
-            Get
-                Return If(_Gruppenstamm Is Nothing, String.Empty, _Gruppenstamm.Benennung)
-            End Get
-            Set(value As String)
-                '_Gruppenstamm.Benennung = value
-                OnPropertyChanged(NameOf(Benennung))
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Der Fk für die Leistungsstufe der Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property LeistungsstufeID As Guid
-            Get
-                Return If(_Gruppenstamm Is Nothing, Guid.Empty, _Gruppenstamm.LeistungsstufeID)
-            End Get
-            Set(value As Guid)
-                '_Gruppenstamm.LeistungsstufeID = value
-                OnPropertyChanged(NameOf(LeistungsstufeID))
-            End Set
-        End Property
-
-
-        ''' <summary>
-        ''' Die Leistungsstufe der Gruppe
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore>
-        Public Property Leistungsstufe As Leistungsstufe
-            Get
-                Return If(_Gruppenstamm Is Nothing, Nothing, _Gruppenstamm.Leistungsstufe)
-            End Get
-            Set(value As Leistungsstufe)
-                _Gruppenstamm.Leistungsstufe = value
-                OnPropertyChanged(NameOf(Leistungsstufe))
             End Set
         End Property
 
@@ -207,6 +121,19 @@ Namespace Entities.Generation4
         End Property
 
         ''' <summary>
+        ''' Gruppenstamm ID 
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property GruppenstammID As Guid
+            Get
+                Return _GruppenstammID
+            End Get
+            Set(value As Guid)
+                _GruppenstammID = value
+            End Set
+        End Property
+
+        ''' <summary>
         ''' Gruppenstammdaten
         ''' </summary>
         ''' <returns></returns>
@@ -220,25 +147,12 @@ Namespace Entities.Generation4
             End Set
         End Property
 
-        ''' <summary>
-        ''' GruppenstammdatenID
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property GruppenstammID As Guid
-            Get
-                Return _GruppenstammID
-            End Get
-            Set(value As Guid)
-                _GruppenstammID = value
-            End Set
-        End Property
-
 #End Region
 
 #Region "Funktionen und Methoden"
 
         Public Overrides Function ToString() As String
-            Return Benennung
+            Return Gruppenstamm.Benennung
         End Function
 
         Public Sub speichern() Implements IModel.speichern

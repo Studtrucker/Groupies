@@ -45,7 +45,6 @@ Namespace ViewModels
         Private _selectedAlleGruppenloserTrainer As IList
         Private _GruppendetailViewModel As GruppendetailViewModel
         'Private _gruppeTransferToCommand As RelayCommand(Of Einteilung)
-        Private _einteilungCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 

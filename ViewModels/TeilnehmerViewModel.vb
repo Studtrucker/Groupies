@@ -1,4 +1,5 @@
-﻿Imports System.Collections.Specialized
+﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports Groupies.Controller
 Imports Groupies.Entities.Generation4
@@ -35,10 +36,69 @@ Public Class TeilnehmerViewModel
         LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
+        TeilnehmerCopyToCommand = New RelayCommand(Of Einteilung)(AddressOf OnCopyTo, AddressOf CanCopyTo)
 
         AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
 
     End Sub
+
+    Private Function CanCopyTo(target As Einteilung) As Boolean
+        ' Grundprüfungen
+        If target Is Nothing Then Return False
+
+        ' Verwende SelectedItem (MasterDetailBase) als aktuell ausgewählten Teilnehmer
+        Dim selected = TryCast(SelectedItem, Teilnehmer)
+        If selected Is Nothing Then Return False
+
+        ' Stelle sicher, dass ein Club geladen ist und das Ziel in der Liste des Clubs liegt
+        Dim club = DateiService.AktuellerClub
+        If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
+        If Not club.Einteilungsliste.Contains(target) Then Return False
+
+        Dim tnId = selected.Ident
+
+        ' Prüfe, ob der Teilnehmer bereits in den gruppenlosen Teilnehmern der Zieleinteilung ist
+        If target.NichtZugewieseneTeilnehmerIDListe IsNot Nothing AndAlso target.NichtZugewieseneTeilnehmerIDListe.Contains(tnId) Then
+            Return False
+        End If
+
+        ' Prüfe, ob der Teilnehmer bereits in einer Gruppe der Zieleinteilung enthalten ist
+        If target.Gruppenliste IsNot Nothing Then
+            For Each g In target.Gruppenliste
+                If g IsNot Nothing AndAlso g.MitgliederIDListe IsNot Nothing AndAlso g.MitgliederIDListe.Contains(tnId) Then
+                    Return False
+                End If
+            Next
+        End If
+
+        ' Optional: weitere Regeln (z. B. Leistungsstufen/Trainer-Konflikte) hier ergänzen
+
+        Return True
+    End Function
+
+    Private Sub OnCopyTo(einteilung As Einteilung)
+        If einteilung Is Nothing Then Return
+        Dim selected = TryCast(SelectedItem, Teilnehmer)
+        If selected Is Nothing Then Return
+
+        ' Sicherstellen, dass Ziel-Listen initialisiert sind
+        If einteilung.NichtZugewieseneTeilnehmerListe Is Nothing Then
+            einteilung.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection()
+        End If
+        If einteilung.NichtZugewieseneTeilnehmerIDListe Is Nothing Then
+            einteilung.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)()
+        End If
+
+        ' Teilnehmer nur hinzufügen, wenn noch nicht vorhanden
+        If Not einteilung.NichtZugewieseneTeilnehmerIDListe.Contains(selected.Ident) Then
+            einteilung.NichtZugewieseneTeilnehmerListe.Add(selected)
+            einteilung.NichtZugewieseneTeilnehmerIDListe.Add(selected.Ident)
+        End If
+
+        ' Optional: entferne Teilnehmer aus vorheriger Einteilung / Gruppe hier, falls erwünscht
+        ' Optional: Benachrichtige Services / UI
+    End Sub
+
 
 
 #End Region
@@ -157,6 +217,8 @@ Public Class TeilnehmerViewModel
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
 
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
+
+    Public ReadOnly Property TeilnehmerCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 

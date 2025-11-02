@@ -1,4 +1,5 @@
-﻿<Window x:Class="BasisUebersichtWindow"
+﻿<!-- Fensterkopf: SizeToContent setzen und MaxWidth an Arbeitsfläche binden -->
+<Window x:Class="BasisUebersichtWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +8,10 @@
         mc:Ignorable="d"
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        Width="Auto" MaxHeight="800" Height="600" MinWidth="800"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
+        MaxHeight="800" MinWidth="800"
         Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}">
     
     <i:Interaction.Triggers>
@@ -18,7 +22,7 @@
     
     <Window.Resources>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
-        <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <!--<convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>-->
 
         <!--Data Template Trainer-->
         <DataTemplate DataType="{x:Type local:TrainerViewModel}">
@@ -264,133 +268,11 @@
                     <TextBox Grid.Column="2" Grid.Row="7" IsReadOnly="True"
                              Text="{Binding SelectedItem.Leistungsstufe.Benennung}" />
 
-                    <!--<ComboBox Grid.Column="2" Grid.Row="7" IsReadOnly="True" 
-                              SelectedValuePath="Benennung"
-                              ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                              SelectedValue="{Binding SelectedItem.Leistungsstand, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
-
                 </Grid>
             </DockPanel>
 
         </DataTemplate>
         
-        <!--Data Template Gruppe-->
-        <DataTemplate DataType="{x:Type local:GruppeViewModel}">
-            <DockPanel>
- 
-                <!--Objektliste-->
-                <DataGrid Grid.Column="0" CanUserAddRows="False" CanUserDeleteRows="False"
-                          AutoGenerateColumns="False"
-                          ItemsSource="{Binding ItemsView}"
-                          SelectedItem="{Binding SelectedItem}" IsReadOnly="True"
-                          local:DataGridScrollBehavior.AutoScrollIntoView="True">
-                    
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Sorting">
-                            <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-
-                    <DataGrid.Columns >
-                        <DataGridTextColumn Header="Sortierung" Binding="{Binding Sortierung}" SortMemberPath="Sortierung" Width="Auto"/>
-                        <DataGridTextColumn Header="Benennung" Binding="{Binding Benennung}" SortMemberPath="AusgabeTeilnehmerinfo" Width="Auto"/>
-                        <DataGridTextColumn Header="Leistungsstufe" Binding="{Binding Leistungsstufe}" SortMemberPath="Leistungsstufe.Benennung" Width="Auto"/>
-                    </DataGrid.Columns>
-                    <DataGrid.ContextMenu>
-                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
-                                <MenuItem.ItemContainerStyle>
-                                    <Style TargetType="MenuItem">
-                                        <!-- Überschrift aus der Bound-Einteilung -->
-                                        <Setter Property="Header" Value="{Binding Benennung}"/>
-                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                                        <Setter Property="Command" Value="{Binding DataContext.GruppeCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                                    </Style>
-                                </MenuItem.ItemContainerStyle>
-                            </MenuItem>
-                            <Separator/>
-                            <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
-                                <MenuItem.Icon>
-                                    <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Bearbeiten" Command="{Binding BearbeitenCommand}">
-                                <MenuItem.Icon>
-                                    <Image Source="pack://application:,,,/Images/icons8-pencil-48.png"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Löschen" Command="{Binding LoeschenCommand}">
-                                <MenuItem.Icon>
-                                    <Image Source="pack://application:,,,/Images/icons8-remove-48.png"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                </DataGrid>
-
-                <!-- Detailansicht-->
-                <Grid Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" MinWidth="405"/>
-                        <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!--Labels-->
-                    <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock >Gruppen ID
-                    <Run Foreground="Red">*</Run>
-                        </TextBlock>
-                    </Label>
-
-                    <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock >Sortierung
-                    <Run Foreground="Red">*</Run>
-                        </TextBlock>
-                    </Label>
-
-                    <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock>Benennung
-                    <Run Foreground="Red">*</Run>
-                        </TextBlock>
-                    </Label>
-
-
-                    <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
-                        <TextBlock >Leistungsstufe
-                    <Run Foreground="Red">*</Run>
-                        </TextBlock>
-                    </Label>
-
-                    <!--Felder-->
-                    <TextBox Grid.Column="2" Grid.Row="0" IsReadOnly="True" 
-                             Text="{Binding SelectedItem.Ident}"/>
-
-                    <TextBox Grid.Column="2" Grid.Row="1" IsReadOnly="True"
-                             Text="{Binding SelectedItem.Sortierung}"/>
-
-                    <TextBox Grid.Column="2" Grid.Row="2"  IsReadOnly="True"
-                             Text="{Binding SelectedItem.Benennung}" />
-
-                    <!--<ComboBox Grid.Column="2" Grid.Row="3" 
-                              SelectedValuePath="Benennung"
-                              ItemsSource="{Binding LeistungsstufenListCollectionView}"
-                              SelectedValue="{Binding SelectedItem.Leistungsstufe, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource StringToLeistungsstufeConverter}}"/>-->
-                    <TextBox Grid.Column="2" Grid.Row="3"  IsReadOnly="True"
-                             Text="{Binding SelectedItem.Leistungsstufe.Benennung}" />
-
-                </Grid>
-            </DockPanel>
-        </DataTemplate>
-
         <!--Data Template Gruppenstamm-->
         <DataTemplate DataType="{x:Type local:GruppenstammViewModel}">
             <DockPanel>
@@ -415,18 +297,6 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
-                                <MenuItem.ItemContainerStyle>
-                                    <Style TargetType="MenuItem">
-                                        <!-- Überschrift aus der Bound-Einteilung -->
-                                        <Setter Property="Header" Value="{Binding Benennung}"/>
-                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
-                                        <Setter Property="Command" Value="{Binding DataContext.GruppeCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                                    </Style>
-                                </MenuItem.ItemContainerStyle>
-                            </MenuItem>
-                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -507,7 +377,6 @@
                 </Grid>
             </DockPanel>
         </DataTemplate>
-
 
         <!--Data Template Einteilung-->
         <DataTemplate DataType="{x:Type local:EinteilungViewModel}">
@@ -536,7 +405,7 @@
 
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                            <!--<MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
                                 <MenuItem.ItemContainerStyle>
                                     <Style TargetType="MenuItem">
                                         <Setter Property="Header" Value="{Binding Benennung}"/>
@@ -545,7 +414,7 @@
                                     </Style>
                                 </MenuItem.ItemContainerStyle>
                             </MenuItem>
-                            <Separator/>
+                            <Separator/>-->
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>
@@ -658,8 +527,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" MinWidth="405"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MaxWidth="550"/>
+                        <ColumnDefinition MaxWidth="300"/>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -716,14 +585,25 @@
 
                     <TextBox Grid.Column="2" Grid.Row="3" IsReadOnly="True"
                              Text="{Binding SelectedItem.Beschreibung}"
-                             Style="{StaticResource BeschreibungTextBoxStyle}"/>
+                             Style="{StaticResource BeschreibungTextBoxStyle}"
+                             AcceptsReturn="True" TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                             MaxHeight="150">
+                    </TextBox>
 
-                    <DataGrid x:Name="FaehigkeitenDataGrid"
+                    <!--<DataGrid x:Name="FaehigkeitenDataGrid"
                               AutoGenerateColumns="False" IsReadOnly="True"
                               ItemsSource="{Binding SelectedItem.Faehigkeiten}"
-                              CanUserAddRows="False"
-                              Grid.Column="2" Grid.Row="4">
-                        <!--<DataGrid.RowStyle>
+                              >-->
+                    <DataGrid Grid.Column="2" Grid.Row="4"
+                              CanUserAddRows="False" CanUserDeleteRows="False" DockPanel.Dock="Left"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              ItemsSource="{Binding SelectedItem.Faehigkeiten}"
+                              local:DataGridScrollBehavior.AutoScrollIntoView="True"
+                              HorizontalScrollBarVisibility="Auto"
+                              MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
+                        
+                            <!--<DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
                                 <Setter Property="Height" Value="Auto"/>
                             </Style>

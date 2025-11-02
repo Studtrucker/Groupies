@@ -93,7 +93,7 @@ Public Class EinteilungService
                     target.Gruppenliste.Add(clonedGruppe)
                     If target.GruppenIDListe Is Nothing Then target.GruppenIDListe = New ObservableCollection(Of Guid)
                     If Not target.GruppenIDListe.Contains(clonedGruppe.Ident) Then target.GruppenIDListe.Add(clonedGruppe.Ident)
-                    'club.Gruppenliste.Add(clonedGruppe)
+                    club.Gruppenliste.Add(clonedGruppe)
                 End If
             Next
         End If

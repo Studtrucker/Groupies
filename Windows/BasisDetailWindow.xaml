@@ -18,8 +18,7 @@
 
     <Window.Resources>
 
-        <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
-        <convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>
+        <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
 
         <!--Data Template Teilnehmer-->
         <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">
@@ -272,6 +271,71 @@
 
         </DataTemplate>
 
+        <!--Data Template Gruppenstamm-->
+        <DataTemplate DataType="{x:Type local:GruppenstammViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Labels-->
+                <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock >Gruppenstamm ID
+                    <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock >Sortierer
+                    <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock>Benennung
+                    <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource PflichtangabeLabel}">
+                    <TextBlock >Leistungsstufe
+                    <Run Foreground="Red">*</Run>
+                    </TextBlock>
+                </Label>
+
+
+                <!--Felder-->
+                <TextBox Text="{Binding Ident, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                         IsReadOnly="True" x:Name="GruppenIDTextBox" Grid.Column="2" Grid.Row="0"/>
+
+                <TextBox Text="{Binding Sortierung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                         x:Name="SortierungTextBox" Grid.Column="2" Grid.Row="1"/>
+
+                <TextBox Text="{Binding Benennung, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
+                         x:Name="BenennungTextBox" Grid.Column="2" Grid.Row="2" />
+
+ 
+                <ComboBox Grid.Column="2" Grid.Row="4" x:Name="GruppenleistungsstufeComboBox"
+                          IsSynchronizedWithCurrentItem="True"
+                          SelectedValue="{Binding LeistungsstufeID, Mode=TwoWay}"
+                          ItemsSource="{Binding LeistungsstufenListe}"
+                          SelectedValuePath="Ident"
+                          DisplayMemberPath="Benennung"/>
+                <!--ItemsSource="{Binding Source={StaticResource LeistungsstufenListe}}"-->
+
+            </Grid>
+
+        </DataTemplate>
+
         <!--Date Template Leistungsstufe-->
         <DataTemplate DataType="{x:Type local:LeistungsstufeViewModel}">
             
@@ -398,6 +462,7 @@
             </Grid>
 
         </DataTemplate>
+
 
     </Window.Resources>
 

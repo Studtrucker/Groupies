@@ -32,18 +32,13 @@ Namespace ViewModels
             AddHandler DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
             AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
             AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnTeilnehmerGeaendert
+            AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf OnGruppeGeaendert
 
             SelectedAlleMitglieder = New TeilnehmerCollection()
 
         End Sub
 
-        Private Sub OnDateiGeOeffnet()
-            Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
-        End Sub
 
-        Private Sub OnDateiGeschlossen()
-            Me.LeistungsstufenListe = Nothing
-        End Sub
 
 #End Region
 
@@ -61,6 +56,23 @@ Namespace ViewModels
                 LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
             End If
             OnPropertyChanged(NameOf(LeistungsstufenListe))
+        End Sub
+
+        Private Sub OnGruppeGeaendert(sender As Object, e As GruppenstammEventArgs)
+            'DirectCast(Gruppe, Gruppe).Gruppenstamm = e.ChangedGruppenstamm
+            'DirectCast(Gruppe, Gruppe).GruppenstammID = e.ChangedGruppenstamm.Ident
+            OnPropertyChanged(NameOf(Leistungsstufe))
+            OnPropertyChanged(NameOf(LeistungsstufeID))
+            OnPropertyChanged(NameOf(Benennung))
+            OnPropertyChanged(NameOf(Sortierung))
+        End Sub
+
+        Private Sub OnDateiGeOeffnet()
+            Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        End Sub
+
+        Private Sub OnDateiGeschlossen()
+            Me.LeistungsstufenListe = Nothing
         End Sub
 
         Private Sub OnTeilnehmerGeaendert(sender As Object, e As EventArgs)

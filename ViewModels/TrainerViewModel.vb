@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports System.IO
 Imports Groupies.Controller
 'Imports Groupies.DataImport
@@ -42,12 +43,70 @@ Public Class TrainerViewModel
         NeuCommand = New RelayCommand(Of Trainer)(AddressOf OnNeu, Function() CanNeu())
         BearbeitenCommand = New RelayCommand(Of Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
         LoeschenCommand = New RelayCommand(Of Trainer)(AddressOf OnLoeschen, Function() CanLoeschen())
+        TrainerCopyToCommand = New RelayCommand(Of Einteilung)(AddressOf OnCopyTo, AddressOf CanCopyTo)
 
         AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
 
     End Sub
 
+    Private Function CanCopyTo(target As Einteilung) As Boolean
+        ' Grundprüfungen
+        If target Is Nothing Then Return False
 
+        ' Verwende SelectedItem (MasterDetailBase) als aktuell ausgewählten Teilnehmer
+        Dim selected = TryCast(SelectedItem, Trainer)
+        If selected Is Nothing Then Return False
+
+        ' Stelle sicher, dass ein Club geladen ist und das Ziel in der Liste des Clubs liegt
+        Dim club = DateiService.AktuellerClub
+        If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
+        If Not club.Einteilungsliste.Contains(target) Then Return False
+
+        Dim tnId = selected.TrainerID
+
+        ' Prüfe, ob der Trainer bereits in den gruppenlosen Teilnehmern der Zieleinteilung ist
+        If target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Contains(tnId) Then
+            Return False
+        End If
+
+        ' Prüfe, ob der Trainer bereits in einer Gruppe der Zieleinteilung enthalten ist
+        If target.Gruppenliste IsNot Nothing Then
+            For Each g In target.Gruppenliste
+                If g IsNot Nothing AndAlso g.Trainer IsNot Nothing AndAlso g.TrainerID = tnId Then
+                    Return False
+                End If
+            Next
+        End If
+
+        ' Optional: weitere Regeln (z. B. Leistungsstufen/Trainer-Konflikte) hier ergänzen
+
+        Return True
+    End Function
+
+    Private Sub OnCopyTo(einteilung As Einteilung)
+        If einteilung Is Nothing Then Return
+        Dim selected = TryCast(SelectedItem, Trainer)
+        If selected Is Nothing Then Return
+
+        ' Sicherstellen, dass Ziel-Listen initialisiert sind
+        If einteilung.VerfuegbareTrainerListe Is Nothing Then
+            einteilung.VerfuegbareTrainerListe = New TrainerCollection()
+        End If
+        If einteilung.VerfuegbareTrainerIDListe Is Nothing Then
+            einteilung.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)()
+        End If
+
+
+        ' Trainer nur hinzufügen, wenn noch nicht vorhanden
+        If Not einteilung.VerfuegbareTrainerIDListe.Contains(selected.TrainerID) Then
+            einteilung.VerfuegbareTrainerListe.Add(selected)
+            einteilung.VerfuegbareTrainerIDListe.Add(selected.TrainerID)
+        End If
+    End Sub
+
+    Private Sub RaiseCopyCommandsCanExecute()
+        If _TrainerCopyToCommand IsNot Nothing Then _TrainerCopyToCommand.RaiseCanExecuteChanged()
+    End Sub
 #End Region
 
 #Region "Properties"
@@ -177,6 +236,8 @@ Public Class TrainerViewModel
 
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
+
+    Public ReadOnly Property TrainerCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 

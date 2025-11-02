@@ -21,7 +21,7 @@ Namespace ValidationRules
 
         End Function
 
-        Public Function GetEindeutigkeit(Gruppe As Gruppe) As ValidationResult
+        Public Function GetEindeutigkeit(Gruppe As Gruppenstamm) As ValidationResult
             If Services.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If

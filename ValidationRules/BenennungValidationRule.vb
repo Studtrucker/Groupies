@@ -38,7 +38,7 @@ Namespace ValidationRules
 
         End Function
 
-        Public Function GetEindeutigkeit(Objekt As Gruppe) As ValidationResult
+        Public Function GetEindeutigkeit(Objekt As Gruppenstamm) As ValidationResult
 
             If Objekt.Benennung IsNot Nothing Then
                 If Services.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(o) o.Benennung.ToLower = Objekt.Benennung.ToLower AndAlso o.Ident <> Objekt.Ident).Any() Then

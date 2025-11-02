@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Input
+Imports System.Windows.Threading
 Imports Groupies.Interfaces
 Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
@@ -30,13 +31,8 @@ Public Class ViewModelWindow
     End Sub
 
     Public Sub New(windowService As IWindowService)
-        MyBase.New()
+        Me.New()
         _windowService = windowService
-        OkCommand = New RelayCommand(Of Object)(AddressOf OnOk, Function() CanOk())
-        CancelCommand = New RelayCommand(Of Object)(AddressOf OnCancel)
-        CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
-        UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
-        DetailWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnDetailWindowLoaded)
     End Sub
 
 
@@ -223,6 +219,7 @@ Public Class ViewModelWindow
         Dim screenWidth = SystemParameters.WorkArea.Width
         Dim screenHeight = SystemParameters.WorkArea.Height
         AddHandler _AktuellesViewModel.ModelChangedEvent, AddressOf OnModelChanged
+        AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf OnGruppeGeaendert
         ' Fenster wurde geladen
         AktuellesViewModel.OnLoaded(obj)
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
@@ -231,11 +228,15 @@ Public Class ViewModelWindow
         _windowService.Top = (screenHeight - _windowService.ActualHeight) / 2
     End Sub
 
+    Private Sub OnGruppeGeaendert(sender As Object, e As GruppenstammEventArgs)
+
+        'Me.AktuellesViewModel.Model = e.ChangedGruppenstamm
+    End Sub
+
     Private Sub OnModelChanged(sender As Object, e As Boolean)
         ' Objekt wurde geändert, hier können Sie Logik hinzufügen, die auf Änderungen reagiert
         ' Zum Beispiel: Aktualisieren der Ansicht oder Validierung
         CType(OkCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-
     End Sub
 
 #End Region

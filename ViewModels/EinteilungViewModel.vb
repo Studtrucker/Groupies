@@ -94,29 +94,33 @@ Public Class EinteilungViewModel
     Public ReadOnly Property EinteilungCopyToCommand As RelayCommand(Of Einteilung)
         Get
             If _einteilungCopyToCommand Is Nothing Then
-                _einteilungCopyToCommand = New RelayCommand(Of Einteilung)(
-                Sub(target) OnEinteilungCopyTo(target),
-                Function(target) CanEinteilungCopyTo(target))
+                _einteilungCopyToCommand = CopyCommandFactory.CreateEinteilungCopyCommand(Function() SelectedItem,
+                Sub(target As Einteilung)
+                    If target Is Nothing Then Return
+                    ' Optional: setze Selection oder UI-Refresh entsprechend diesem ViewModel
+                    SelectedItem = target
+                    ' ggf. zusätzliche Aktionen, z.B. RaiseTransferCommandsCanExecute() wenn vorhanden
+                End Sub)
             End If
             Return _einteilungCopyToCommand
         End Get
     End Property
 
-    Private Sub OnEinteilungCopyTo(target As Einteilung)
-        Dim source = TryCast(SelectedItem, Einteilung)
-        If source Is Nothing OrElse target Is Nothing Then Return
-        Dim svc As New EinteilungService()
-        svc.EinteilungKopieren(source, target)
-        ' UI‑Refresh
-        If ItemsView IsNot Nothing Then ItemsView.Refresh()
-    End Sub
+    'Private Sub OnEinteilungCopyTo(target As Einteilung)
+    '    Dim source = TryCast(SelectedItem, Einteilung)
+    '    If source Is Nothing OrElse target Is Nothing Then Return
+    '    Dim svc As New EinteilungService()
+    '    svc.EinteilungKopieren(source, target)
+    '    ' UI‑Refresh
+    '    If ItemsView IsNot Nothing Then ItemsView.Refresh()
+    'End Sub
 
 
     ' MVVM-konforme Can-Funktion für Einteilungs-Transfer (kann z.B. von Tests genutzt werden)
-    Private Function CanEinteilungCopyTo(target As Einteilung) As Boolean
-        Dim ESvc As New EinteilungService()
-        Return ESvc.CanEinteilungKopieren(SelectedItem, target)
-    End Function
+    'Private Function CanEinteilungCopyTo(target As Einteilung) As Boolean
+    '    Dim ESvc As New EinteilungService()
+    '    Return ESvc.CanEinteilungKopieren(SelectedItem, target)
+    'End Function
 
     Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get

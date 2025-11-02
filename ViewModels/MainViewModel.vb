@@ -44,7 +44,8 @@ Namespace ViewModels
         Private _SelectedGruppenloserTrainer As Trainer
         Private _selectedAlleGruppenloserTrainer As IList
         Private _GruppendetailViewModel As GruppendetailViewModel
-        'Private _gruppeTransferToCommand As RelayCommand(Of Einteilung)
+        Private _GruppeCopyToCommand As RelayCommand(Of Einteilung)
+        Private _einteilungCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 
@@ -85,22 +86,18 @@ Namespace ViewModels
         ' Einteilung Commands
         Public Property EinteilungsuebersichtAnzeigenCommand As ICommand
         Public Property EinteilungErstellenCommand As ICommand
+
         Public ReadOnly Property EinteilungCopyToCommand As RelayCommand(Of Einteilung)
             Get
                 If _einteilungCopyToCommand Is Nothing Then
-                    _einteilungCopyToCommand = New RelayCommand(Of Einteilung)(
-                Sub(target)
-                    If target Is Nothing OrElse SelectedEinteilung Is Nothing Then Return
-                    Dim svc As New EinteilungService()
-                    svc.EinteilungKopieren(SelectedEinteilung, target)
+                    _einteilungCopyToCommand = CopyCommandFactory.CreateEinteilungCopyCommand(Function() SelectedEinteilung,
+                Sub(target As Einteilung)
+                    If target Is Nothing Then Return
                     ' Auswahl auf Ziel setzen und UI refreshen
                     SelectedEinteilung = target
                     If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-                End Sub,
-                Function(target)
-                    Dim Esvc As New EinteilungService()
-                    Return Esvc.CanEinteilungKopieren(SelectedEinteilung, target)
-                End Function)
+                    RaiseCopyCommandsCanExecute()
+                End Sub)
                 End If
                 Return _einteilungCopyToCommand
             End Get
@@ -110,7 +107,20 @@ Namespace ViewModels
         Public Property GruppenuebersichtAnzeigenCommand As ICommand
         Public Property GruppeErstellenCommand As ICommand
         Public Property GruppeAusEinteilungEntfernenCommand As ICommand
-        Public Property GruppeCopyToCommand As RelayCommand(Of Einteilung)
+
+        Public ReadOnly Property GruppeCopyToCommand As RelayCommand(Of Einteilung)
+            Get
+                If _GruppeCopyToCommand Is Nothing Then
+                    _GruppeCopyToCommand = CopyCommandFactory.CreateGruppeCopyCommand(Function() SelectedGruppe,
+                Sub()
+                    ' UI refresh / CanExecute neu auswerten
+                    RaiseCopyCommandsCanExecute()
+                    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
+                End Sub)
+                End If
+                Return _GruppeCopyToCommand
+            End Get
+        End Property
 
         ' Teilnehmer Commands
         Public Property TeilnehmerInGruppeEinteilenCommand As ICommand
@@ -173,7 +183,7 @@ Namespace ViewModels
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
-                RaiseTransferCommandsCanExecute()
+                RaiseCopyCommandsCanExecute()
             End Set
         End Property
 
@@ -189,7 +199,7 @@ Namespace ViewModels
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
-                RaiseTransferCommandsCanExecute()
+                RaiseCopyCommandsCanExecute()
             End Set
         End Property
 
@@ -289,17 +299,10 @@ Namespace ViewModels
             EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
             EinteilungErstellenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungErstellen, Function() CanEinteilungErstellen())
 
-
             ' Gruppen Commands
             GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
             GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
             GruppeAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeAusEinteilungEntfernen, Function() CanGruppeAusEinteilungEntfernen())
-            GruppeCopyToCommand = CopyCommandFactory.CreateGruppeCopyCommand(Function() SelectedGruppe, Sub()
-                                                                                                            ' UI refresh / CanExecute neu auswerten
-                                                                                                            RaiseTransferCommandsCanExecute()
-                                                                                                            If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-                                                                                                        End Sub)
-
 
             ' Teilnehmer Commands
             TeilnehmeruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmeruebersichtAnzeigen, Function() CanTeilnehmeruebersichtAnzeigen())
@@ -387,7 +390,7 @@ Namespace ViewModels
         End Function
 
         Private Sub OnGruppeErstellen(obj As Object)
-            Dim GS As New GruppenService
+            Dim GS As New GruppenstammService
             GS.GruppenstammErstellen()
         End Sub
 
@@ -535,13 +538,18 @@ Namespace ViewModels
             AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
             AddHandler TeilnehmerSuchErgebnisViewModel.OpenTargetRequested, AddressOf OnTeilnehmerSuchErgebnisOpenTargetRequested
             AddHandler DateiService.DateiGespeichert, AddressOf HandlerDateiGespeichert
+            AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf onGruppenstammGeaendert
+        End Sub
+
+        Private Sub onGruppenstammGeaendert(sender As Object, e As GruppenstammEventArgs)
+            'OnPropertyChanged(NameOf(AlleEinteilungenCV))
         End Sub
 
 
         ' Aufruf in Setter von SelectedGruppe/SelectedEinteilung, damit CanExecute sofort neu evaluiert wird:
-        Private Sub RaiseTransferCommandsCanExecute()
+        Private Sub RaiseCopyCommandsCanExecute()
             If _GruppeCopyToCommand IsNot Nothing Then _GruppeCopyToCommand.RaiseCanExecuteChanged()
-            If _EinteilungCopyToCommand IsNot Nothing Then _EinteilungCopyToCommand.RaiseCanExecuteChanged()
+            If _einteilungCopyToCommand IsNot Nothing Then _einteilungCopyToCommand.RaiseCanExecuteChanged()
         End Sub
 
 #End Region
@@ -640,7 +648,7 @@ Namespace ViewModels
                 .WindowStartupLocation = WindowStartupLocation.CenterOwner}
 
             Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
-                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppe),
+                .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppenstamm),
                 .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Gruppenstammliste
@@ -1203,3 +1211,4 @@ Namespace ViewModels
 
     End Class
 End Namespace
+

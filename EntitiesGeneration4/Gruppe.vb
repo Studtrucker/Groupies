@@ -59,19 +59,17 @@ Namespace Entities.Generation4
         ''' <param name="OriginGruppe"></param>
         Public Sub New(OriginGruppe As Gruppe)
             Ident = Guid.NewGuid()
-            Leistungsstufe = New Leistungsstufe(OriginGruppe.Leistungsstufe)
-            LeistungsstufeID = OriginGruppe.LeistungsstufeID
-            Benennung = OriginGruppe.Benennung
-            Sortierung = OriginGruppe.Sortierung
-            Trainer = New Trainer(OriginGruppe.Trainer)
+            Gruppenstamm = OriginGruppe.Gruppenstamm
+            GruppenstammID = OriginGruppe.GruppenstammID
+            Trainer = OriginGruppe.Trainer
             TrainerID = OriginGruppe.TrainerID
             MitgliederIDListe = OriginGruppe.MitgliederIDListe
-            Mitgliederliste = New TeilnehmerCollection()
-            For Each m In OriginGruppe.Mitgliederliste
-                If m IsNot Nothing Then
-                    Mitgliederliste.Add(New Teilnehmer(m))
-                End If
-            Next
+            Mitgliederliste = New TeilnehmerCollection(OriginGruppe.Mitgliederliste)
+            'For Each m In OriginGruppe.Mitgliederliste
+            '    If m IsNot Nothing Then
+            '        Mitgliederliste.Add(m)
+            '    End If
+            'Next
         End Sub
 
 #End Region

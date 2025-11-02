@@ -186,7 +186,9 @@
     <Compile Include="Services\DateiService.vb" />
     <Compile Include="Services\EinteilungService.vb" />
     <Compile Include="Services\FaehigkeitenService.vb" />
+    <Compile Include="Services\GruppenstammEventArgs.vb" />
     <Compile Include="Services\GruppenService.vb" />
+    <Compile Include="Services\GruppenstammService.vb" />
     <Compile Include="Services\LeistungsstufenService.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="Services\TeilnehmerEventArgs.vb" />

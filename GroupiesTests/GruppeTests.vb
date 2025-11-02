@@ -34,7 +34,7 @@ Public Class GruppeTests
     Public Sub testGruppenstammErstellen()
         'Dim gs = New Gruppenstamm("Anfänger") With {.Sortierung = 10, .Benennung = "Anfänger", .Leistungsstufe = New Leistungsstufe With {.Benennung = "Beginner", .Sortierung = 10}}
 
-        Dim Gs As New GruppenService
+        Dim Gs As New GruppenstammService
         Gs.GruppenstammErstellen()
 
 

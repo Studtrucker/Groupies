@@ -32,6 +32,8 @@ Namespace Fabriken
                     Return New TrainerDatentyp
                 Case GetType(Teilnehmer)
                     Return New TeilnehmerDatentyp
+                Case GetType(Gruppenstamm)
+                    Return New GruppenstammDatentyp
                 Case GetType(Gruppe)
                     Return New GruppeDatentyp
                 Case GetType(Faehigkeit)

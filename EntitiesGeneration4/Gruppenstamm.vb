@@ -48,6 +48,18 @@ Namespace Entities.Generation4
             _Benennung = Benennung
         End Sub
 
+        ''' <summary>
+        ''' Kopierkonstruktor für tiefes Kopieren
+        ''' </summary>
+        ''' <param name="OriginItem"></param>
+        Public Sub New(OriginItem As Gruppenstamm)
+            Ident = OriginItem.Ident
+            Leistungsstufe = OriginItem.Leistungsstufe
+            LeistungsstufeID = OriginItem.LeistungsstufeID
+            Benennung = OriginItem.Benennung
+            Sortierung = OriginItem.Sortierung
+        End Sub
+
 #End Region
 
 #Region "Properties"

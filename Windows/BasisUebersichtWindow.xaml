@@ -48,7 +48,16 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                            
                             <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <MenuItem.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2,0">
+                                            <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="{Binding Benennung}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </MenuItem.ItemTemplate>
                                 <MenuItem.ItemContainerStyle>
                                     <Style TargetType="MenuItem">
                                         <!-- Überschrift aus der Bound-Einteilung -->

@@ -86,24 +86,20 @@ Namespace Services
             Dim result = MessageBox.Show($"Möchten Sie {TrainerToDelete.VorNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Trainer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
             If result = MessageBoxResult.Yes Then
 
-                ' aus Club Trainerliste entfernen
-                DateiService.AktuellerClub.Trainerliste.Remove(TrainerAusListeLesen(DateiService.AktuellerClub.Trainerliste.ToList, TrainerToDelete.TrainerID))
-                ' in allen Einteilungen aus verfügbare Trainerliste entfernen
-                For Each el In DateiService.AktuellerClub.Einteilungsliste
-                    For Each t In el.VerfuegbareTrainerListe.Where(Function(Gl) Gl.TrainerID = TrainerToDelete.TrainerID)
-                        't.TrainerID = Nothing
-                        't = Nothing
-                        el.VerfuegbareTrainerListe.Remove(t)
-                    Next
-                Next
+                Dim club = DateiService.AktuellerClub
 
-                ' in allen Einteilungen, in allen Gruppen die TrainerID und den Trainer auf Nothing setzen
-                For Each E In DateiService.AktuellerClub.Einteilungsliste.Where(Function(el) el.VerfuegbareTrainerIDListe.Count > 0).ToList
-                    For Each G In E.Gruppenliste.Where(Function(GT) GT.TrainerID = TrainerToDelete.TrainerID)
-                        G.TrainerID = Nothing
-                        G.Trainer = Nothing
-                    Next
-                Next
+                ' Aus allen Einteilungen entfernen
+                club.Einteilungsliste.ToList.ForEach(Sub(el)
+                                                         el.VerfuegbareTrainerIDListe.Remove(TrainerToDelete.TrainerID)
+                                                         el.VerfuegbareTrainerListe.Remove(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, TrainerToDelete.TrainerID))
+                                                         el.Gruppenliste.Where(Function(GT) GT IsNot Nothing AndAlso GT.TrainerID = TrainerToDelete.TrainerID).ToList.ForEach(Sub(G)
+                                                                                                                                                                                  G.TrainerID = Nothing
+                                                                                                                                                                                  G.Trainer = Nothing
+                                                                                                                                                                              End Sub)
+                                                     End Sub)
+
+                ' aus Club Trainerliste entfernen
+                club.Trainerliste.Remove(TrainerAusListeLesen(club.Trainerliste.ToList, TrainerToDelete.TrainerID))
 
                 MessageBox.Show($"{TrainerToDelete.VorNachname} wurde gelöscht")
                 OnTrainerGeaendert(New TrainerEventArgs(TrainerToDelete))
@@ -111,7 +107,7 @@ Namespace Services
         End Sub
 
         Private Function TrainerAusListeLesen(List As List(Of Trainer), TrainerID As Guid) As Trainer
-            Return List.Where(Function(T) T.TrainerID = TrainerID).Single
+            Return List.Where(Function(T) T.TrainerID = TrainerID).SingleOrDefault
         End Function
 
         ''' <summary>

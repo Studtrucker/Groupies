@@ -892,15 +892,19 @@ Namespace ViewModels
                 End If
             End If
 
-            Dim vmr As TeilnehmerSuchErgebnisViewModel = Nothing
-            If Ergebnisliste IsNot Nothing Then
-                ' Ergebnis-VM erzeugen und anzeigen (wie zuvor)
-                vmr = New TeilnehmerSuchErgebnisViewModel(Ergebnisliste)
+            If Ergebnisliste IsNot Nothing OrElse Ergebnisliste.Count > 0 Then
+
+                Dim vmr As TeilnehmerSuchErgebnisViewModel = Nothing
+                If Ergebnisliste IsNot Nothing Then
+                    ' Ergebnis-VM erzeugen und anzeigen (wie zuvor)
+                    vmr = New TeilnehmerSuchErgebnisViewModel(Ergebnisliste)
+                End If
+
+                Dim view = New TeilnehmerSuchErgebnis()
+                view.DataContext = vmr
+                view.Owner = _windowService.Window
+                view.Show()
             End If
-            Dim view = New TeilnehmerSuchErgebnis()
-            view.DataContext = vmr
-            view.Owner = _windowService.Window
-            view.Show()
 
         End Sub
 

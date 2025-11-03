@@ -310,6 +310,15 @@ Public Class TrainerViewModel
         TS.TrainerLoeschen(trainerToDelete)
     End Sub
 
+    Public Property IconPath
+        Set(value)
+            Throw New NotImplementedException()
+        End Set
+        Get
+            Throw New NotImplementedException()
+        End Get
+    End Property
+
 
     'Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
 

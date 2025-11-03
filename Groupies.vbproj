@@ -614,6 +614,15 @@
   <ItemGroup>
     <Resource Include="Images\icons8-uebersichtsliste-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-erase-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-trash-can-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-plus-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

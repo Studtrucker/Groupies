@@ -68,7 +68,7 @@ Namespace Services
         ''' </summary>
         ''' <param name="TeilnehmerListe"></param>
         ''' <param name="Einteilung"></param>
-        Public Sub TeilnehmerEinteilungHinzufuegen(TeilnehmerListe As List(Of Teilnehmer), Gruppe As Gruppe, Einteilung As Einteilung)
+        Public Sub TeilnehmerEinteilungHinzufuegen(TeilnehmerListe As List(Of Teilnehmer), Einteilung As Einteilung)
 
             For Each Tn In TeilnehmerListe
                 Einteilung.NichtZugewieseneTeilnehmerIDListe.Add(Tn.Ident)

@@ -29,9 +29,9 @@ Public Class TeilnehmerViewModel
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
 
-        Dim DropDown = New ListCollectionView(Services.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren)
-        DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
-        LeistungsstufenListCollectionView = DropDown
+        'Dim DropDown = New ListCollectionView(Services.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren)
+        'DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
+        'LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
         LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
@@ -39,6 +39,7 @@ Public Class TeilnehmerViewModel
         TeilnehmerCopyToCommand = New RelayCommand(Of Einteilung)(AddressOf OnCopyTo, AddressOf CanCopyTo)
 
         AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
+
 
     End Sub
 
@@ -208,6 +209,7 @@ Public Class TeilnehmerViewModel
             Return MyBase.IstEingabeGueltig
         End Get
     End Property
+
 #End Region
 
 #Region "Command-Properties"

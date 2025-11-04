@@ -243,6 +243,38 @@ Namespace Entities.Generation4
             End Set
         End Property
 
+        ''' <summary>
+        ''' Flag, ob der Teilnehmer im Import enthalten ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstImImport As Boolean
+
+        ''' <summary>
+        ''' Flag, ob der Teilnehmer nicht im Import enthalten ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public ReadOnly Property IstNichtImImport As Boolean
+            Get
+                Return Not IstImImport
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Flag, ob der Teilnehmer in diesem Club neu ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstNeuImClub As Boolean
+
+        ''' <summary>
+        ''' Flag, ob der Teilnehmer ein Rückkehrer ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstRueckkehrer As Boolean
+
 #End Region
 
 #Region "Funktionen und Methoden"

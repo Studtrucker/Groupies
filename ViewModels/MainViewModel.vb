@@ -72,6 +72,7 @@ Namespace ViewModels
         Public Property WindowLoadedCommand As ICommand
         Public Property WindowClosedCommand As ICommand
         Public Property WindowClosingCommand As ICommand
+        Public Property ExcelDatenImportCommand As ICommand
 
         ' Application Commands
         Public Property ApplicationCloseCommand As ICommand
@@ -294,6 +295,7 @@ Namespace ViewModels
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
             ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
             ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
+            ExcelDatenImportCommand = New RelayCommand(Of Object)(AddressOf OnExcelDatenImport, Function() CanExcelDatenImport)
 
             ' Einteilung Commands
             EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
@@ -328,6 +330,13 @@ Namespace ViewModels
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
         End Sub
 
+        Private Function CanExcelDatenImport() As Boolean
+            Return DateiService.AktuellerClub IsNot Nothing
+        End Function
+
+        Private Sub OnExcelDatenImport(obj As Object)
+            ImportService.ImportTrainerUndTeilnehmerdaten()
+        End Sub
 
         Private Function CanFaehigkeitErstellen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing

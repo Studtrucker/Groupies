@@ -15,7 +15,7 @@ Namespace Entities.Generation4
 
 #Region "Felder"
 
-        Private _Ident = Guid.NewGuid()
+        Private _Ident As Guid
         Private _Sortierung As Integer
         Private _Benennung As String
         Private _Beschreibung As String
@@ -35,6 +35,7 @@ Namespace Entities.Generation4
         ''' </summary>
         Public Sub New()
             _FaehigkeitenListe = New FaehigkeitCollection
+            _Ident = Guid.NewGuid()
             Benennung = String.Empty
             Sortierung = -1
         End Sub

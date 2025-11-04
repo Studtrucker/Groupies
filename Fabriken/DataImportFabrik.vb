@@ -99,7 +99,7 @@ Public Class SpaltennamenTrainer
     Implements IImportSpaltennamen
 
     Sub New()
-        _Spalten = New List(Of String) From {"TrainerID", "Vorname", "Nachname", "[Alias]", "Telefonnummer", "E-Mail"}
+        _Spalten = New List(Of String) From {"Ident", "Vorname", "Nachname", "Alias", "Telefonnummer", "E-Mail"}
     End Sub
 
     Public ReadOnly Property Spalten As List(Of String) Implements IImportSpaltennamen.Spalten

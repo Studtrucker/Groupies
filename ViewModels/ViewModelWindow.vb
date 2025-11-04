@@ -3,8 +3,10 @@ Imports System.Runtime.CompilerServices
 Imports System.Windows.Input
 Imports System.Windows.Threading
 Imports Groupies.Interfaces
+Imports Groupies.Services
 Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
+Imports Groupies.Entities.Generation4
 
 ''' <summary>
 ''' Abstrakte Basisklasse für ViewModels, die in einem Fenster angezeigt werden.
@@ -17,6 +19,7 @@ Public Class ViewModelWindow
     Private ReadOnly _windowService As IWindowService
     Private _Datentyp As IDatentyp
     Private _AktuellesViewModel As IViewModelSpecial
+    Private _Leistungsstufenliste As LeistungsstufeCollection
 #End Region
 
 #Region "Konstruktor"
@@ -28,6 +31,7 @@ Public Class ViewModelWindow
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
         DetailWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnDetailWindowLoaded)
+        LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
     End Sub
 
     Public Sub New(windowService As IWindowService)
@@ -130,6 +134,17 @@ Public Class ViewModelWindow
                 Return "Modell"
             End If
         End Get
+    End Property
+
+
+    Public Property LeistungsstufenListe As LeistungsstufeCollection
+        Get
+            Return _Leistungsstufenliste
+        End Get
+        Set(value As LeistungsstufeCollection)
+            _Leistungsstufenliste = value
+            OnPropertyChanged(NameOf(LeistungsstufenListe))
+        End Set
     End Property
 
     ''' <summary>

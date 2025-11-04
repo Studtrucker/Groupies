@@ -19,7 +19,6 @@ Namespace Entities.Generation4
         Private _Alias As String
         Private _Vorname As String
         Private _Nachname As String
-
 #End Region
 
 #Region "Events"
@@ -164,6 +163,38 @@ Namespace Entities.Generation4
         ''' </summary>
         ''' <returns></returns>
         Public Property Telefonnummer As String
+
+        ''' <summary>
+        ''' Flag, ob der Trainer in einem Import enthalten ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstImImport As Boolean
+
+        ''' <summary>
+        ''' Flag, ob der Trainer in einem Import enthalten ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public ReadOnly Property IstNichtImImport As Boolean
+            Get
+                Return Not IstImImport
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Flag, ob der Trainer in diesem Club neu ist
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstNeuImClub As Boolean
+
+        ''' <summary>
+        ''' Flag, ob der Trainer bekannt war
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore>
+        Public Property IstRueckkehrer As Boolean
 
 
         ''' <summary>

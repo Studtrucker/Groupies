@@ -64,7 +64,6 @@
                 
                 <Label Grid.Column="1" Grid.Row="1" Content="Sortierung" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="Gruppenname" Margin="2"/>
-                <!--<Label Grid.Column="1" Grid.Row="3" Content="LeistungsstufeID" Margin="2"/>-->
                 <Label Grid.Column="1" Grid.Row="4" Content="Leistungsstufe" Margin="2"/>
                 <Label Grid.Column="1" Grid.Row="5" Content="Trainer" Margin="2"/>
                 
@@ -80,11 +79,26 @@
                 <!--<TextBox Grid.Column="2" Grid.Row="3" Text="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}"/>-->
 
                 <ComboBox Grid.Column="2" Grid.Row="4" x:Name="GruppenleistungsstufeComboBox"
-                          IsSynchronizedWithCurrentItem="True"
                           SelectedValue="{Binding LeistungsstufeID, Mode=TwoWay}"
-                          ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}"
                           SelectedValuePath="Ident"
-                          DisplayMemberPath="Benennung"/>
+                          DisplayMemberPath="Benennung" 
+                          IsReadOnly="True">
+                    
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing -->
+                            <ComboBoxItem Content="{x:Null}">
+                                <ComboBoxItem.ContentTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="(keine)" Foreground="Gray"/>
+                                    </DataTemplate>
+                                </ComboBoxItem.ContentTemplate>
+                            </ComboBoxItem>
+                            <!-- die eigentlichen Leistungsstufen aus der Window-Resource -->
+                            <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
 
                     <TextBox  Grid.Column="2" Grid.Row="6"
                               IsReadOnly="True" 
@@ -124,10 +138,11 @@
 
                 <DataGrid Grid.Column="2" Grid.Row="7" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
-                          IsReadOnly="True" CanUserAddRows="False" 
+                          CanUserAddRows="False" 
                           ItemsSource="{Binding Mitgliederliste}"
                           SelectedItem="{Binding SelectedTeilnehmer}"
                           SelectionUnit="FullRow"
+                          IsReadOnly="True"
                           behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=UserControl}}"                          
                           SelectionMode="Extended" >
 
@@ -153,10 +168,25 @@
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                         <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
                         <DataGridComboBoxColumn Header="Stufe" Width="*"
-                                                SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                                SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}" 
                                                 SelectedValuePath="Ident" 
-                                                DisplayMemberPath="Benennung"
-                                                ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
+                                                DisplayMemberPath="Benennung">
+                                                <!--ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}">-->
+                            <DataGridComboBoxColumn.ItemsSource>
+                                <CompositeCollection>
+                                    <!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing -->
+                                    <ComboBoxItem Content="{x:Null}">
+                                        <ComboBoxItem.ContentTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="(keine)" Foreground="Gray"/>
+                                            </DataTemplate>
+                                        </ComboBoxItem.ContentTemplate>
+                                    </ComboBoxItem>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
+                                </CompositeCollection>
+                            </DataGridComboBoxColumn.ItemsSource>
+                        </DataGridComboBoxColumn>
+                        
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

@@ -237,6 +237,7 @@ Namespace Entities.Generation4
                 Return _Foto IsNot Nothing AndAlso Foto.Length > 0
             End Get
         End Property
+
         Public ReadOnly Property HatKeinFoto As Boolean
             Get
                 Return Not HatFoto

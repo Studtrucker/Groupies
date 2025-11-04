@@ -86,6 +86,7 @@ Namespace Services
                         Rueckkehrer.Alias = ImportedTrainer.Spitzname
                         Rueckkehrer.Telefonnummer = ImportedTrainer.Telefonnummer
                         Rueckkehrer.EMail = ImportedTrainer.eMail
+                        Rueckkehrer.Foto = Nothing
                         Rueckkehrer.IstImImport = True
                         Rueckkehrer.IstRueckkehrer = True
                         Rueckkehrer.IstNeuImClub = True
@@ -110,6 +111,7 @@ Namespace Services
                             .Alias = ImportedTrainer.Spitzname,
                             .Telefonnummer = ImportedTrainer.Telefonnummer,
                             .EMail = ImportedTrainer.eMail,
+                            .Foto = Nothing,
                             .IstNeuImClub = True,
                             .IstImImport = True}
                         club.Trainerliste.Add(NewTrainer)

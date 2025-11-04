@@ -142,7 +142,6 @@
                           ItemsSource="{Binding Mitgliederliste}"
                           SelectedItem="{Binding SelectedTeilnehmer}"
                           SelectionUnit="FullRow"
-                          IsReadOnly="True"
                           behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=UserControl}}"                          
                           SelectionMode="Extended" >
 
@@ -163,12 +162,12 @@
                     </DataGrid.ContextMenu>
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Nachname, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                         <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
                         <DataGridComboBoxColumn Header="Stufe" Width="*"
-                                                SelectedValueBinding="{Binding LeistungsstufeID, Mode=TwoWay}" 
+                                                SelectedValueBinding="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}" 
                                                 SelectedValuePath="Ident" 
                                                 DisplayMemberPath="Benennung">
                                                 <!--ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}">-->

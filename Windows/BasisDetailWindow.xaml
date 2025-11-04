@@ -7,7 +7,8 @@
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="{Binding WindowTitleText}" Icon="{Binding WindowTitleIcon}"
+        Title="{Binding WindowTitleText}" 
+        Icon="{Binding WindowTitleIcon, Converter={StaticResource StringToImageSourceConverter}}"
         MinHeight="300" MinWidth="600">
     
     <i:Interaction.Triggers>
@@ -19,6 +20,7 @@
     <Window.Resources>
 
         <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
+        <convert:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
 
         <!--Data Template Teilnehmer-->
         <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">
@@ -76,6 +78,13 @@
                           SelectedItem="{Binding Leistungsstufe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           DisplayMemberPath="Benennung"
                           SelectedValuePath="Ident">
+                    <!-- Vermeidet Ancestor-Bind-Fehler -->
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
                     <ComboBox.ItemsSource>
                         <CompositeCollection>
                             <!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing -->

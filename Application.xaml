@@ -233,9 +233,12 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" 
-                                        Focusable="False" HorizontalAlignment="Left" Margin="3,0" Grid.Row="0" 
-                                        VerticalAlignment="Top" Width="20">
+                                    <Button x:Name="PART_Button" 
+                                            Grid.Column="1" 
+                                            Foreground="{TemplateBinding Foreground}" 
+                                            Focusable="False" 
+                                            HorizontalAlignment="Left" Margin="3,0" 
+                                            VerticalAlignment="Top" Width="20">
                                         <Button.Template>
                                             <ControlTemplate TargetType="{x:Type Button}">
                                                 <Grid Background="#11FFFFFF" FlowDirection="LeftToRight" 
@@ -286,13 +289,14 @@
                                             </ControlTemplate>
                                         </Button.Template>
                                     </Button>
-                                    <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" 
-                                                   Foreground="{TemplateBinding Foreground}" 
-                                                   Focusable="{TemplateBinding Focusable}" 
+                                    <DatePickerTextBox x:Name="PART_TextBox" 
+                                                       Grid.Column="0" Grid.Row="0"
                                                        FontSize="16"
-                                                   HorizontalContentAlignment="Stretch"
-                                                   Grid.Row="0" VerticalContentAlignment="Stretch" 
-                                                   Background="{TemplateBinding Background}"/>
+                                                       HorizontalContentAlignment="Stretch"
+                                                       VerticalContentAlignment="Stretch" 
+                                                       Foreground="{TemplateBinding Foreground}" 
+                                                       Focusable="{TemplateBinding Focusable}"      
+                                                       Background="{TemplateBinding Background}"/>
                                     <Grid x:Name="PART_DisabledVisual" Grid.ColumnSpan="2" Grid.Column="0" IsHitTestVisible="False" Opacity="0" Grid.Row="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>

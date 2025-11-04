@@ -132,6 +132,7 @@
     <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
+    <Compile Include="Converters\StringToImageSourceConverter.vb" />
     <Compile Include="EntitiesGeneration2\Faehigkeit.vb" />
     <Compile Include="EntitiesGeneration2\FaehigkeitCollection.vb" />
     <Compile Include="EntitiesGeneration2\Gruppe.vb" />

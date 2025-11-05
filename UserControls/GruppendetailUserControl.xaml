@@ -3,26 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Groupies"
              xmlns:rules="clr-namespace:Groupies.ValidationRules"
              xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
              xmlns:Converters="clr-namespace:Groupies.Converters"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:cmd="clr-namespace:Groupies.Commands"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Groupies.Behaviors"
              xmlns:generation4="clr-namespace:Groupies.Entities.Generation4" d:DataContext="{d:DesignInstance Type=generation4:Teilnehmer}"
              mc:Ignorable="d"
              Width="Auto" Height="Auto">
 
     <UserControl.Resources>
+        <!-- Quell-Liste -->
         <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
+
+        <!-- Wiederverwendbare CompositeCollection (erstes Element = (keine)) -->
+        <CompositeCollection x:Key="LeistungsstufenComposite">
+            <ComboBoxItem Content="{x:Null}">
+                <ComboBoxItem.ContentTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="(keine)" Foreground="Gray"/>
+                    </DataTemplate>
+                </ComboBoxItem.ContentTemplate>
+            </ComboBoxItem>
+            <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
+        </CompositeCollection>
+
         <Converters:InvertableBoolToVisibleConverter x:Key="BooleanToVisibilityInverted"/>
     </UserControl.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding UserControlLoadedCommand}"/>
+            <!--Original <i:InvokeCommandAction Command="{Binding UserControlLoadedCommand}"/>-->
+            <!-- Binde an das ViewModel des UserControls -->
+            <i:InvokeCommandAction Command="{Binding DataContext.UserControlLoadedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -82,11 +98,12 @@
                           SelectedValue="{Binding LeistungsstufeID, Mode=TwoWay}"
                           SelectedValuePath="Ident"
                           DisplayMemberPath="Benennung" 
-                          IsReadOnly="True">
+                          IsEditable="False"
+                          ItemsSource="{StaticResource LeistungsstufenComposite}" >
                     
-                    <ComboBox.ItemsSource>
+                    <!--<ComboBox.ItemsSource>
                         <CompositeCollection>
-                            <!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing -->
+                            --><!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing --><!--
                             <ComboBoxItem Content="{x:Null}">
                                 <ComboBoxItem.ContentTemplate>
                                     <DataTemplate>
@@ -94,24 +111,27 @@
                                     </DataTemplate>
                                 </ComboBoxItem.ContentTemplate>
                             </ComboBoxItem>
-                            <!-- die eigentlichen Leistungsstufen aus der Window-Resource -->
+                            --><!-- die eigentlichen Leistungsstufen aus der Window-Resource --><!--
                             <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
                         </CompositeCollection>
-                    </ComboBox.ItemsSource>
+                    </ComboBox.ItemsSource>-->
                 </ComboBox>
 
                     <TextBox  Grid.Column="2" Grid.Row="6"
                               IsReadOnly="True" 
                               x:Name="GroupLeaderTextblock"  
                               Text="{Binding Trainer.VorNachname, Mode=OneWay}">
-                        <!--Funktionsprüfung okay-->
+                        <!--Funktionsprüfung okay -->
+                        <!-- DoubleClick entfernt Trainer via ViewModel (UserControl DataContext)-->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                <!-- original <i:InvokeCommandAction Command="{Binding DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>-->
+                                <i:InvokeCommandAction Command="{Binding DataContext.TrainerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
                         <!--Funktionsprüfung okay-->
+                        <!-- ContextMenu: bindet an das ViewModel der Platzierung (PlacementTarget) -->
                         <TextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Trainer entfernen"
@@ -119,8 +139,8 @@
                             </ContextMenu>
                         </TextBox.ContextMenu>
                     </TextBox>
-
-                <Border  Grid.Column="2"   Grid.Row="5" BorderThickness="1"
+                
+                <Border  Grid.Column="2" Grid.Row="5" BorderThickness="1"
                          HorizontalAlignment="left" Margin="3">
                     <Grid Height="Auto">
                         <Rectangle Fill="Transparent"/>
@@ -143,9 +163,15 @@
                           SelectedItem="{Binding SelectedTeilnehmer}"
                           SelectionUnit="FullRow"
                           behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=UserControl}}"                          
-                          SelectionMode="Extended" >
+                          SelectionMode="Extended" 
+                          
+                          EnableRowVirtualization="True"
+                          EnableColumnVirtualization="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling">
 
                     <!--Funktionsprüfung okay-->
+                    <!-- DataGrid Row DoubleClick: Command auf Window/ViewModel ausführen -->
                     <i:Interaction.Behaviors>
                         <behaviors:DataGridRowDoubleClickBehavior 
                             Command="{Binding Path=DataContext.TeilnehmerAusGruppeEntfernenCommand, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -167,23 +193,18 @@
                         <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
                         <DataGridTextColumn Header="StufeNr"  Binding="{Binding Leistungsstufe.Sortierung}" Width="Auto" />
                         <DataGridComboBoxColumn Header="Stufe" Width="*"
-                                                SelectedValueBinding="{Binding LeistungsstufeID, UpdateSourceTrigger=PropertyChanged}" 
+                                                IsReadOnly="True"
+                                                SelectedValueBinding="{Binding LeistungsstufeID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                 SelectedValuePath="Ident" 
-                                                DisplayMemberPath="Benennung">
-                                                <!--ItemsSource="{Binding Source={StaticResource LeistungsstufenListeSource}}">-->
-                            <DataGridComboBoxColumn.ItemsSource>
-                                <CompositeCollection>
-                                    <!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing -->
-                                    <ComboBoxItem Content="{x:Null}">
-                                        <ComboBoxItem.ContentTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="(keine)" Foreground="Gray"/>
-                                            </DataTemplate>
-                                        </ComboBoxItem.ContentTemplate>
-                                    </ComboBoxItem>
-                                    <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
-                                </CompositeCollection>
-                            </DataGridComboBoxColumn.ItemsSource>
+                                                DisplayMemberPath="Benennung"
+                                                ItemsSource="{StaticResource LeistungsstufenComposite}">
+                            <!--<DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Leistungsstufe.Benennung}" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Padding" Value="4,0,4,0" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>-->
                         </DataGridComboBoxColumn>
                         
                     </DataGrid.Columns>

@@ -8,10 +8,9 @@
              Startup="Skikurs_Startup"
              StartupUri="MainWindow.xaml">
 
-    
     <Application.Resources>
         <ResourceDictionary>
-            
+
             <!--Allgemeine Styles-->
             <Style TargetType="Control">
                 <Setter Property="FontSize" Value="18"/>

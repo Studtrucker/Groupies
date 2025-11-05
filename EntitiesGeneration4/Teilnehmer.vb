@@ -28,7 +28,7 @@ Namespace Entities.Generation4
 #End Region
 
 #Region "Events"
-        Public Event ChangeGroup(Participant As Teilnehmer)
+        Public Event ChangeGroup(Teilnehmer As Teilnehmer)
 #End Region
 
 #Region "Konstruktor"
@@ -39,9 +39,6 @@ Namespace Entities.Generation4
         Public Sub New()
             Geburtsdatum = DateAndTime.Now.ToLongDateString
             Ident = Guid.NewGuid()
-            'If AppController.AktuellerClub IsNot Nothing OrElse AppController.AktuellerClub.AlleLeistungsstufen IsNot Nothing Then
-            '    Leistungsstufe = AppController.AktuellerClub.AlleLeistungsstufen.Single(Function(Ls) Ls.Sortierung = -1)
-            'End If
         End Sub
 
         ''' <summary>
@@ -211,6 +208,7 @@ Namespace Entities.Generation4
             End Get
             Set(value As String)
                 _Telefonnummer = value
+                OnPropertyChanged(NameOf(Telefonnummer))
             End Set
         End Property
 
@@ -225,6 +223,8 @@ Namespace Entities.Generation4
             End Get
             Set(value As Guid)
                 _LeistungsstufeID = value
+                OnPropertyChanged(NameOf(LeistungsstufeID))
+                OnPropertyChanged(NameOf(Leistungsstufe))
             End Set
         End Property
 
@@ -240,6 +240,14 @@ Namespace Entities.Generation4
             End Get
             Set(value As Leistungsstufe)
                 _Leistungsstufe = value
+                _Leistungsstufe = value
+                If value IsNot Nothing Then
+                    _LeistungsstufeID = value.Ident
+                Else
+                    _LeistungsstufeID = Guid.Empty
+                End If
+                OnPropertyChanged(NameOf(Leistungsstufe))
+                OnPropertyChanged(NameOf(LeistungsstufeID))
             End Set
         End Property
 

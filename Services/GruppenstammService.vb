@@ -92,7 +92,7 @@ Public Class GruppenstammService
             'Next
 
             MessageBox.Show($"{ItemToDelete.Benennung} wurde gelöscht")
-            OnGruppenstammBearbeitet(EventArgs.Empty)
+            OnGruppenstammBearbeitet(New GruppenstammEventArgs(ItemToDelete))
         End If
 
     End Sub

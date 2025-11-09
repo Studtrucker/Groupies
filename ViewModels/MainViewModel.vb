@@ -766,7 +766,7 @@ Namespace ViewModels
             Dim doc = New FixedDocument()
             doc.DocumentPaginator.PageSize = pageSize
             Dim sortedGroupView = New ListCollectionView(Einteilung.Gruppenliste)
-            sortedGroupView.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Descending))
+            sortedGroupView.SortDescriptions.Add(New SortDescription(NameOf(Gruppe.Benennung), ListSortDirection.Ascending))
 
             Dim skikursgruppe As Gruppe
             Dim page As FixedPage = Nothing
@@ -1049,7 +1049,7 @@ Namespace ViewModels
                 Next
             End If
 
-            If selectedList.Count = 0 OrElse SelectedGruppe Is Nothing OrElse SelectedEinteilung Is Nothing Then
+            If selectedList.Count = 0 OrElse SelectedEinteilung Is Nothing Then
                 Return
             End If
 

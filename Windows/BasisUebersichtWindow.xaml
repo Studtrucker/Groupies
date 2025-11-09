@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         xmlns:convert="clr-namespace:Groupies.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:beh="clr-namespace:Groupies.Behaviors"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
@@ -21,6 +22,7 @@
     </i:Interaction.Triggers>
     
     <Window.Resources>
+        <convert:SelectedItemsAndTargetConverter x:Key="SelectedItemsAndTargetConverter"/>
         <convert:InvertableBoolToVisibleConverter Inverted="True" x:Key="BooleanToVisibilityInverted"/>
         <!--<convert:StringToLeistungsstufeConverter x:Key="StringToLeistungsstufeConverter"/>-->
 
@@ -33,6 +35,7 @@
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ItemsView}"
                           SelectedItem="{Binding SelectedItem}" 
+                          SelectionMode="Extended"
                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
  
                     <i:Interaction.Triggers>
@@ -47,24 +50,59 @@
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
-                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                            
-                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+                                     beh:ContextMenuBehaviors.EnableRequeryForCommands="True">
+                            <!--<MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
                                 <MenuItem.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2,0">
+                                            <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="{Binding Benennung, TargetNullValue='(ohne Name)', FallbackValue='(ohne Name)'}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </MenuItem.ItemTemplate>
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        --><!--<Setter Property="Header" Value="{Binding Benennung}"/>--><!--
+                                        <Setter Property="Command" Value="{Binding DataContext.TrainerCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <Setter Property="CommandParameter">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource SelectedItemsAndTargetConverter}">
+                                                    --><!-- SelectedItems der DataGrid (PlacementTarget ist das DataGrid) --><!--
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=ContextMenu}" Path="PlacementTarget.SelectedItems"/>
+                                                    --><!-- aktuelles Einteilung-Item (DataContext des MenuItem) --><!--
+                                                    <Binding />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>-->
+                            <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
+                                <!--<MenuItem.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="2,0">
                                             <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="0,0,6,0" />
                                             <TextBlock Text="{Binding Benennung}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
-                                </MenuItem.ItemTemplate>
+                                </MenuItem.ItemTemplate>-->
                                 <MenuItem.ItemContainerStyle>
                                     <Style TargetType="MenuItem">
-                                        <!-- Überschrift aus der Bound-Einteilung -->
+                                         <!--Überschrift aus der Bound-Einteilung--> 
                                         <Setter Property="Header" Value="{Binding Benennung}"/>
-                                        <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
+                                         <!--Command im MainViewModel ausführen, Parameter ist die Einteilung selbst--> 
                                         <Setter Property="Command" Value="{Binding DataContext.TrainerCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                        <Setter Property="CommandParameter">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource SelectedItemsAndTargetConverter}">
+                                                <!-- SelectedItems der DataGrid (PlacementTarget ist das DataGrid) -->
+                                                <Binding RelativeSource="{RelativeSource AncestorType=ContextMenu}" Path="PlacementTarget.SelectedItems"/>
+                                                <!-- aktuelles Einteilung-Item (DataContext des MenuItem) -->
+                                                <Binding />
+                                            </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
                                     </Style>
                                 </MenuItem.ItemContainerStyle>
                             </MenuItem>

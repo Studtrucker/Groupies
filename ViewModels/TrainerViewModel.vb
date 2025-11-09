@@ -12,7 +12,7 @@ Public Class TrainerViewModel
 
 #Region "Felder"
     Private _Trainer As Trainer
-    Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".gif", ".png"}
+    Private ReadOnly _zulaessigeEndungen As String() = {".jpg", ".jpeg", ".gif", ".png"}
 #End Region
 
 #Region "Events"
@@ -43,70 +43,102 @@ Public Class TrainerViewModel
         NeuCommand = New RelayCommand(Of Trainer)(AddressOf OnNeu, Function() CanNeu())
         BearbeitenCommand = New RelayCommand(Of Trainer)(AddressOf OnBearbeiten, Function() CanBearbeiten())
         LoeschenCommand = New RelayCommand(Of Trainer)(AddressOf OnLoeschen, Function() CanLoeschen())
-        TrainerCopyToCommand = New RelayCommand(Of Einteilung)(AddressOf OnCopyTo, AddressOf CanCopyTo)
+        TrainerCopyToCommand = New RelayCommand(Of Object)(AddressOf TrainerCopyTo, AddressOf CanTrainerCopyTo)
 
         AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
 
     End Sub
 
-    Private Function CanCopyTo(target As Einteilung) As Boolean
-        ' Grundprüfungen
-        If target Is Nothing Then Return False
-
-        ' Verwende SelectedItem (MasterDetailBase) als aktuell ausgewählten Teilnehmer
-        Dim selected = TryCast(SelectedItem, Trainer)
-        If selected Is Nothing Then Return False
-
-        ' Stelle sicher, dass ein Club geladen ist und das Ziel in der Liste des Clubs liegt
-        Dim club = DateiService.AktuellerClub
-        If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
-        If Not club.Einteilungsliste.Contains(target) Then Return False
-
-        Dim tnId = selected.TrainerID
-
-        ' Prüfe, ob der Trainer bereits in den gruppenlosen Teilnehmern der Zieleinteilung ist
-        If target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Contains(tnId) Then
-            Return False
+    ' Innerhalb des ViewModels / Command-Handlers
+    Public Sub TrainerCopyTo(param As Object)
+        ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
+        Dim arr = TryCast(param, Object())
+        If arr Is Nothing OrElse arr.Length < 2 Then
+            Return
         End If
 
-        ' Prüfe, ob der Trainer bereits in einer Gruppe der Zieleinteilung enthalten ist
-        If target.Gruppenliste IsNot Nothing Then
-            For Each g In target.Gruppenliste
-                If g IsNot Nothing AndAlso g.Trainer IsNot Nothing AndAlso g.TrainerID = tnId Then
-                    Return False
+        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        Dim targetEinteilung = arr(1) ' typisiere hier auf dein Modell, z.B. EinteilungViewModel oder Einteilung
+
+        If selectedItemsEnumerable Is Nothing OrElse targetEinteilung Is Nothing Then
+            Return
+        End If
+
+
+        Dim TrainerlisteToCopy As New List(Of Trainer)
+        For Each t As Trainer In selectedItemsEnumerable
+            Dim e = DateiService.AktuellerClub.Einteilungsliste.FirstOrDefault(Function(el) el.Ident = targetEinteilung.ident)
+            If e.VerfuegbareTrainerListe IsNot Nothing AndAlso Not e.VerfuegbareTrainerIDListe.Contains(t.TrainerID) Then
+                If e.Gruppenliste.Count > 0 Then
+                    For Each G In e.Gruppenliste
+
+                        If G.Trainer IsNot Nothing AndAlso Not G.TrainerID = t.TrainerID Then
+                            TrainerlisteToCopy.Add(t)
+                        End If
+                    Next
+                Else
+                    TrainerlisteToCopy.Add(t)
                 End If
-            Next
-        End If
+            End If
+        Next
 
-        ' Optional: weitere Regeln (z. B. Leistungsstufen/Trainer-Konflikte) hier ergänzen
+        Dim TS As New TrainerService
+        TS.TrainerEinteilungHinzufuegen(TrainerlisteToCopy, targetEinteilung)
+
+    End Sub
+
+    Private Function CanTrainerCopyTo(param As Object) As Boolean
 
         Return True
+
+        Dim arr = TryCast(param, Object())
+        If arr Is Nothing OrElse arr.Length < 2 Then Return False
+
+        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        Dim target = TryCast(arr(1), Einteilung)
+        If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then Return False
+
+
+
+        Dim club = DateiService.AktuellerClub
+        If club Is Nothing OrElse club.Einteilungsliste Is Nothing OrElse Not club.Einteilungsliste.Contains(target) Then Return False
+
+        For Each o In selectedItemsEnumerable
+            Dim selTrainer = TryCast(o, Trainer)
+            If selTrainer Is Nothing AndAlso o IsNot Nothing Then
+                Dim prop = o.GetType().GetProperty("Model")
+                If prop IsNot Nothing Then
+                    selTrainer = TryCast(prop.GetValue(o, Nothing), Trainer)
+                End If
+            End If
+            If selTrainer Is Nothing Then Continue For
+
+            Dim tnId = selTrainer.TrainerID
+            If target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Contains(tnId) Then
+                Return True
+            End If
+
+            Dim alreadyInGroup As Boolean = False
+            If target.Gruppenliste IsNot Nothing Then
+                For Each g In target.Gruppenliste
+                    If g IsNot Nothing AndAlso g.TrainerID = tnId Then
+                        alreadyInGroup = True
+                        Exit For
+                    End If
+                Next
+            End If
+            If alreadyInGroup Then Continue For
+
+            Return True ' mindestens ein passender Trainer
+        Next
+
+        Return False
     End Function
 
-    Private Sub OnCopyTo(einteilung As Einteilung)
-        If einteilung Is Nothing Then Return
-        Dim selected = TryCast(SelectedItem, Trainer)
-        If selected Is Nothing Then Return
-
-        ' Sicherstellen, dass Ziel-Listen initialisiert sind
-        If einteilung.VerfuegbareTrainerListe Is Nothing Then
-            einteilung.VerfuegbareTrainerListe = New TrainerCollection()
-        End If
-        If einteilung.VerfuegbareTrainerIDListe Is Nothing Then
-            einteilung.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)()
-        End If
-
-
-        ' Trainer nur hinzufügen, wenn noch nicht vorhanden
-        If Not einteilung.VerfuegbareTrainerIDListe.Contains(selected.TrainerID) Then
-            einteilung.VerfuegbareTrainerListe.Add(selected)
-            einteilung.VerfuegbareTrainerIDListe.Add(selected.TrainerID)
-        End If
-    End Sub
-
     Private Sub RaiseCopyCommandsCanExecute()
-        If _TrainerCopyToCommand IsNot Nothing Then _TrainerCopyToCommand.RaiseCanExecuteChanged()
+        If TrainerCopyToCommand IsNot Nothing Then TrainerCopyToCommand.RaiseCanExecuteChanged()
     End Sub
+
 #End Region
 
 #Region "Properties"
@@ -237,7 +269,7 @@ Public Class TrainerViewModel
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
-    Public ReadOnly Property TrainerCopyToCommand As RelayCommand(Of Einteilung)
+    Public ReadOnly Property TrainerCopyToCommand As RelayCommand(Of Object)
 
 #End Region
 
@@ -318,62 +350,6 @@ Public Class TrainerViewModel
             Throw New NotImplementedException()
         End Get
     End Property
-
-
-    'Public Overloads Sub OnNeu(obj As Object) 'Implements IViewModelSpecial.OnNeu
-
-    '    'Dim ts As New TrainerService
-    '    'ts.TrainerErstellen()
-
-    '    ' Hier können Sie die Logik für den Neu-Button implementieren
-    '    Dim dialog = New BasisDetailWindow() With {
-    '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-    '    Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-    '        .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-    '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
-
-    '    mvw.AktuellesViewModel.Model = New Trainer
-    '    dialog.DataContext = mvw
-
-    '    Dim result As Boolean = dialog.ShowDialog()
-
-    '    If result = True Then
-    '        ' Todo: Das Speichern muss im ViewModel erledigt werden
-    '        Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-    '        MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
-    '    End If
-
-
-    '    MoveNextCommand.RaiseCanExecuteChanged()
-    '    MovePreviousCommand.RaiseCanExecuteChanged()
-    'End Sub
-
-    'Public Sub OnBearbeiten(obj As Object)
-
-    '    ' Hier können Sie die Logik für den Neu-Button implementieren
-    '    Dim dialog = New BasisDetailWindow() With {
-    '        .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-    '    Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
-    '        .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-    '        .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)}
-
-    '    mvw.AktuellesViewModel.Model = New Trainer(SelectedItem)
-    '    dialog.DataContext = mvw
-
-    '    Dim result As Boolean = dialog.ShowDialog()
-
-    '    If result = True Then
-    '        Dim index = Services.DateiService.AktuellerClub.Trainerliste.IndexOf(SelectedItem)
-    '        ' Todo: Das Speichern muss im ViewModel erledigt werden
-    '        Services.DateiService.AktuellerClub.Trainerliste(index) = mvw.AktuellesViewModel.Model
-    '        MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
-    '    End If
-
-    'End Sub
-
-
 
 #End Region
 

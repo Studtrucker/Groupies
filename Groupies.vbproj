@@ -128,10 +128,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\ContextMenuBehaviors.vb" />
     <Compile Include="Behaviors\DataGridRowDoubleClickBehavior.vb" />
     <Compile Include="Behaviors\DataGridMultiSelect.vb" />
     <Compile Include="Commands\Triggers\CancelClosingTriggerAction.vb" />
     <Compile Include="Controls\MenuEintragViewModel.vb" />
+    <Compile Include="Converters\SelectedItemsAndTargetConverter.vb" />
     <Compile Include="Converters\StringToImageSourceConverter.vb" />
     <Compile Include="EntitiesGeneration2\Faehigkeit.vb" />
     <Compile Include="EntitiesGeneration2\FaehigkeitCollection.vb" />

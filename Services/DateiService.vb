@@ -160,7 +160,7 @@ Namespace Services
             AktuelleDatei = GetFileInfo("MeinClub.ski", "Club speichern", GetFileInfoMode.Speichern)
 
             If AktuelleDatei Is Nothing Then
-                MessageBox.Show("Die Datei wurde nicht erstellt, da kein Dateiname angegeben wurde.")
+                'MessageBox.Show("Die Datei wurde nicht erstellt, da kein Dateiname angegeben wurde.")
                 Return
             End If
 

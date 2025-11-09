@@ -22,6 +22,7 @@
 
         <CollectionViewSource x:Key="LeistungsstufenListeSource" Source="{Binding LeistungsstufenListe}" />
         <convert:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
+        <convert:InvertableBoolToVisibleConverter x:Key="BooleanToVisibilityInverted"/>
 
         <!--Data Template Teilnehmer-->
         <DataTemplate DataType="{x:Type local:TeilnehmerViewModel}">

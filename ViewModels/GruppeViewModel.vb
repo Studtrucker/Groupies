@@ -16,7 +16,6 @@ Public Class GruppeViewModel
     Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
 #End Region
 
-
 #Region "Konstruktor"
 
     ''' <summary>

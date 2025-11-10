@@ -86,54 +86,94 @@ Public Class TrainerViewModel
         TS.TrainerEinteilungHinzufuegen(TrainerlisteToCopy, targetEinteilung)
 
     End Sub
-
     Private Function CanTrainerCopyTo(param As Object) As Boolean
-
-        Return True
-
-        Dim arr = TryCast(param, Object())
-        If arr Is Nothing OrElse arr.Length < 2 Then Return False
-
-        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
-        Dim target = TryCast(arr(1), Einteilung)
-        If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then Return False
-
-
-
-        Dim club = DateiService.AktuellerClub
-        If club Is Nothing OrElse club.Einteilungsliste Is Nothing OrElse Not club.Einteilungsliste.Contains(target) Then Return False
-
-        For Each o In selectedItemsEnumerable
-            Dim selTrainer = TryCast(o, Trainer)
-            If selTrainer Is Nothing AndAlso o IsNot Nothing Then
-                Dim prop = o.GetType().GetProperty("Model")
-                If prop IsNot Nothing Then
-                    selTrainer = TryCast(prop.GetValue(o, Nothing), Trainer)
-                End If
-            End If
-            If selTrainer Is Nothing Then Continue For
-
-            Dim tnId = selTrainer.TrainerID
-            If target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Contains(tnId) Then
-                Return True
+        Try
+            Dim arr = TryCast(param, Object())
+            If arr Is Nothing OrElse arr.Length < 2 Then
+                Debug.WriteLine("CanTrainerCopyTo: param null oder zu kurz")
+                Return False
             End If
 
-            Dim alreadyInGroup As Boolean = False
-            If target.Gruppenliste IsNot Nothing Then
-                For Each g In target.Gruppenliste
-                    If g IsNot Nothing AndAlso g.TrainerID = tnId Then
-                        alreadyInGroup = True
-                        Exit For
-                    End If
+            Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+            Dim target = TryCast(arr(1), Einteilung)
+
+            Dim selCount As Integer = 0
+            If selectedItemsEnumerable IsNot Nothing Then
+                For Each item In selectedItemsEnumerable
+                    selCount += 1
                 Next
             End If
-            If alreadyInGroup Then Continue For
 
-            Return True ' mindestens ein passender Trainer
-        Next
+            Debug.WriteLine($"CanTrainerCopyTo: targetType={(If(arr(1) IsNot Nothing, arr(1).GetType().FullName, "NULL"))}, targetName={(If(target IsNot Nothing, target.Benennung, "(not Einteilung)"))}, selectedCount={selCount}")
 
-        Return False
+            If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then
+                Debug.WriteLine("CanTrainerCopyTo: target oder selectedItemsEnumerable ist Nothing -> False")
+                Return False
+            End If
+
+            If target.Benennung = "Montag" Then
+                Debug.WriteLine("CanTrainerCopyTo: Ziel 'Montag' -> False")
+                Return False
+            End If
+
+            Debug.WriteLine("CanTrainerCopyTo: returning True")
+            Return True
+        Catch ex As Exception
+            Debug.WriteLine("CanTrainerCopyTo Exception: " & ex.ToString())
+            Return False
+        End Try
     End Function
+
+    'Private Function CanTrainerCopyTo(param As Object) As Boolean
+
+
+    '    Dim arr = TryCast(param, Object())
+    '    If arr Is Nothing OrElse arr.Length < 2 Then Return False
+
+    '    Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+    '    Dim target = TryCast(arr(1), Einteilung)
+    '    If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then Return False
+
+    '    If target.Benennung = "Montag" Then
+    '        Return False
+    '    Else
+    '        Return True
+    '    End If
+
+    '    'Dim club = DateiService.AktuellerClub
+    '    'If club Is Nothing OrElse club.Einteilungsliste Is Nothing OrElse Not club.Einteilungsliste.Contains(target) Then Return False
+
+    '    'For Each o In selectedItemsEnumerable
+    '    '    Dim selTrainer = TryCast(o, Trainer)
+    '    '    If selTrainer Is Nothing AndAlso o IsNot Nothing Then
+    '    '        Dim prop = o.GetType().GetProperty("Model")
+    '    '        If prop IsNot Nothing Then
+    '    '            selTrainer = TryCast(prop.GetValue(o, Nothing), Trainer)
+    '    '        End If
+    '    '    End If
+    '    '    If selTrainer Is Nothing Then Continue For
+
+    '    '    Dim tnId = selTrainer.TrainerID
+    '    '    If target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Contains(tnId) Then
+    '    '        Return True
+    '    '    End If
+
+    '    '    Dim alreadyInGroup As Boolean = False
+    '    '    If target.Gruppenliste IsNot Nothing Then
+    '    '        For Each g In target.Gruppenliste
+    '    '            If g IsNot Nothing AndAlso g.TrainerID = tnId Then
+    '    '                alreadyInGroup = True
+    '    '                Exit For
+    '    '            End If
+    '    '        Next
+    '    '    End If
+    '    '    If alreadyInGroup Then Continue For
+
+    '    '    Return True ' mindestens ein passender Trainer
+    '    'Next
+
+    '    'Return False
+    'End Function
 
     Private Sub RaiseCopyCommandsCanExecute()
         If TrainerCopyToCommand IsNot Nothing Then TrainerCopyToCommand.RaiseCanExecuteChanged()

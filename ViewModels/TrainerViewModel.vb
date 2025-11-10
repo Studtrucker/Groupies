@@ -86,6 +86,8 @@ Public Class TrainerViewModel
         TS.TrainerEinteilungHinzufuegen(TrainerlisteToCopy, targetEinteilung)
 
     End Sub
+
+
     Private Function CanTrainerCopyTo(param As Object) As Boolean
         Try
             Dim arr = TryCast(param, Object())

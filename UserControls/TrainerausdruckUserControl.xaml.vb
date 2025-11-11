@@ -21,15 +21,19 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Gruppe As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
             Benennung = Gruppe.Benennung
             'AusgabeTrainerinfo = Gruppe.Alias
+
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
-            Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
-                Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung
-                AnzahlGruppenmitglieder = Gruppe.Mitgliederliste.Count
-                'BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
+                If Gruppe.Leistungsstufe IsNot Nothing Then
+                    Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung
+                    AnzahlGruppenmitglieder = Gruppe.Mitgliederliste.Count
+                    'BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
+                    If Gruppe.Leistungsstufe.Faehigkeiten IsNot Nothing Then Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
+                End If
             End If
             If Gruppe.Trainer IsNot Nothing Then
                 TrainerSpitzname = Gruppe.Trainer.Alias
+                TrainerTelefon = Gruppe.Trainer.Telefonnummer
             End If
 
             ' For Style setting
@@ -97,6 +101,15 @@ Namespace UserControls
             End Get
             Set(value As String)
                 TrainerSpitznameTextBox.Text = value
+            End Set
+        End Property
+
+        Public Property TrainerTelefon As String
+            Get
+                Return TrainerTelefonTextBox.Text
+            End Get
+            Set(value As String)
+                TrainerTelefonTextBox.Text = value
             End Set
         End Property
 

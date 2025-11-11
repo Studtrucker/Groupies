@@ -55,7 +55,8 @@
             <DockPanel Grid.Row="0" Grid.Column="0" Margin="5">
                 <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}" />
                 <TextBlock x:Name="TrainerSpitznameTextBox"  Style="{StaticResource BigCaptionValue}"/>
-            </DockPanel>
+                <TextBlock x:Name="TrainerTelefonTextBox" />
+                </DockPanel>
             
             <DockPanel Grid.Row="1" Grid.Column="0" Margin="5" Background="Transparent">
 

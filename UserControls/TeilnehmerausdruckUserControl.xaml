@@ -75,8 +75,8 @@
                 <!--Area Instructor Header-->
                 <DockPanel Grid.Row="2" Margin="5">
                     <Image x:Name="imgTrainerFoto" Margin="5" Grid.Column="1" DockPanel.Dock="Right"
-                   Width="Auto" Height="Auto" MaxWidth="200" MaxHeight="200"/>
-                    <TextBlock Text="Skilehrer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
+                           Width="Auto" Height="Auto" MaxWidth="200" MaxHeight="200"/>
+                    <TextBlock Text="Trainer" DockPanel.Dock="Top" Style="{StaticResource BigCaption}"/>
                     <TextBlock x:Name="txtTrainer"  Style="{StaticResource BigCaptionValue}"/>
                 </DockPanel>
 
@@ -97,15 +97,14 @@
         <TextBlock x:Name="BenennungGruppeneinteilungTextblock" Text="Einteilung"
                    FontSize="72"
                    FontWeight="DemiBold"
-                   Foreground="Green"
+                   Foreground="OrangeRed"
                    Background="Transparent"
                    Opacity="0.35"
                    Grid.Row="1"
-                   
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" Panel.ZIndex="0">
             <TextBlock.RenderTransform>
-                <RotateTransform Angle="-30"/>
+                <RotateTransform Angle="-45"/>
             </TextBlock.RenderTransform>
         </TextBlock>
     </Grid>

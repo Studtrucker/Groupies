@@ -86,15 +86,6 @@ Namespace UserControls
             End Set
         End Property
 
-        'Public Property AusgabeTeilnehmerinfo As String
-        '    Get
-        '        Return AliasTextBlock.Text
-        '    End Get
-        '    Set(value As String)
-        '        AliasTextBlock.Text = value
-        '    End Set
-        'End Property
-
         Public Property TrainerSpitzname As String
             Get
                 Return TrainerSpitznameTextBox.Text

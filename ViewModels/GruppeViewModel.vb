@@ -33,7 +33,6 @@ Public Class GruppeViewModel
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Gruppe)(AddressOf OnLoeschen, Function() CanLoeschen)
-
     End Sub
 
 #End Region

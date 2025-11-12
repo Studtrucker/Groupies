@@ -306,5 +306,24 @@ Namespace Services
 
         End Function
 
+        Public Function TeilnehmerInEinteilungVorhanden(TeilnehmerToCheck As Teilnehmer, EinteilungToCheck As Einteilung) As Boolean
+            Dim VorhandenInEinteilung = EinteilungToCheck.NichtZugewieseneTeilnehmerIDListe.Any(Function(T) T = TeilnehmerToCheck.Ident)
+
+            ' LINQ: Prüfen, ob Teilnehmer in einer Gruppen-MitgliederIDListe vorhanden ist
+            VorhandenInEinteilung = VorhandenInEinteilung OrElse EinteilungToCheck.Gruppenliste.Any(Function(G) G.MitgliederIDListe.Any(Function(M) M = TeilnehmerToCheck.Ident))
+
+            Return VorhandenInEinteilung
+        End Function
+
+        Public Sub TeilnehmerCopyToEinteilung(TeilnehmerToCopy As Teilnehmer, Einteilung As Einteilung)
+            ' 1. Prüfen, ob der Teilnehmer in der Einteilung schon vorhanden ist
+            If TeilnehmerInEinteilungVorhanden(TeilnehmerToCopy, Einteilung) Then
+                Return
+            End If
+            ' 2. Teilnehmer in die Einteilung einfügen
+            Einteilung.NichtZugewieseneTeilnehmerListe.Add(TeilnehmerToCopy)
+            Einteilung.NichtZugewieseneTeilnehmerIDListe.Add(TeilnehmerToCopy.Ident)
+        End Sub
+
     End Class
 End Namespace

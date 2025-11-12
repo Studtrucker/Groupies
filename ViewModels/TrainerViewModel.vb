@@ -67,63 +67,52 @@ Public Class TrainerViewModel
 
         Dim TrainerlisteToCopy As New List(Of Trainer)
         For Each t As Trainer In selectedItemsEnumerable
-            Dim e = DateiService.AktuellerClub.Einteilungsliste.FirstOrDefault(Function(el) el.Ident = targetEinteilung.ident)
-            If e.VerfuegbareTrainerListe IsNot Nothing AndAlso Not e.VerfuegbareTrainerIDListe.Contains(t.TrainerID) Then
-                If e.Gruppenliste.Count > 0 Then
-                    For Each G In e.Gruppenliste
-
-                        If G.Trainer IsNot Nothing AndAlso Not G.TrainerID = t.TrainerID Then
-                            TrainerlisteToCopy.Add(t)
-                        End If
-                    Next
-                Else
-                    TrainerlisteToCopy.Add(t)
-                End If
-            End If
+            TrainerlisteToCopy.Add(t)
         Next
 
         Dim TS As New TrainerService
-        TS.TrainerEinteilungHinzufuegen(TrainerlisteToCopy, targetEinteilung)
+        TrainerlisteToCopy.ForEach(Sub(t) TS.TrainerCopyToEinteilung(t, targetEinteilung))
 
     End Sub
 
 
     Private Function CanTrainerCopyTo(param As Object) As Boolean
-        Try
-            Dim arr = TryCast(param, Object())
-            If arr Is Nothing OrElse arr.Length < 2 Then
-                Debug.WriteLine("CanTrainerCopyTo: param null oder zu kurz")
-                Return False
-            End If
+        Return True
+        'Try
+        '    Dim arr = TryCast(param, Object())
+        '    If arr Is Nothing OrElse arr.Length < 2 Then
+        '        Debug.WriteLine("CanTrainerCopyTo: param null oder zu kurz")
+        '        Return False
+        '    End If
 
-            Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
-            Dim target = TryCast(arr(1), Einteilung)
+        '    Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        '    Dim target = TryCast(arr(1), Einteilung)
 
-            Dim selCount As Integer = 0
-            If selectedItemsEnumerable IsNot Nothing Then
-                For Each item In selectedItemsEnumerable
-                    selCount += 1
-                Next
-            End If
+        '    Dim selCount As Integer = 0
+        '    If selectedItemsEnumerable IsNot Nothing Then
+        '        For Each item In selectedItemsEnumerable
+        '            selCount += 1
+        '        Next
+        '    End If
 
-            Debug.WriteLine($"CanTrainerCopyTo: targetType={(If(arr(1) IsNot Nothing, arr(1).GetType().FullName, "NULL"))}, targetName={(If(target IsNot Nothing, target.Benennung, "(not Einteilung)"))}, selectedCount={selCount}")
+        '    Debug.WriteLine($"CanTrainerCopyTo: targetType={(If(arr(1) IsNot Nothing, arr(1).GetType().FullName, "NULL"))}, targetName={(If(target IsNot Nothing, target.Benennung, "(not Einteilung)"))}, selectedCount={selCount}")
 
-            If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then
-                Debug.WriteLine("CanTrainerCopyTo: target oder selectedItemsEnumerable ist Nothing -> False")
-                Return False
-            End If
+        '    If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then
+        '        Debug.WriteLine("CanTrainerCopyTo: target oder selectedItemsEnumerable ist Nothing -> False")
+        '        Return False
+        '    End If
 
-            If target.Benennung = "Montag" Then
-                Debug.WriteLine("CanTrainerCopyTo: Ziel 'Montag' -> False")
-                Return False
-            End If
+        '    If target.Benennung = "Montag" Then
+        '        Debug.WriteLine("CanTrainerCopyTo: Ziel 'Montag' -> False")
+        '        Return False
+        '    End If
 
-            Debug.WriteLine("CanTrainerCopyTo: returning True")
-            Return True
-        Catch ex As Exception
-            Debug.WriteLine("CanTrainerCopyTo Exception: " & ex.ToString())
-            Return False
-        End Try
+        '    Debug.WriteLine("CanTrainerCopyTo: returning True")
+        '    Return True
+        'Catch ex As Exception
+        '    Debug.WriteLine("CanTrainerCopyTo Exception: " & ex.ToString())
+        '    Return False
+        'End Try
     End Function
 
     'Private Function CanTrainerCopyTo(param As Object) As Boolean

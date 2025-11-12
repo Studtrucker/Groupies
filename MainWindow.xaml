@@ -15,6 +15,7 @@
         WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
     <Window.Resources>
+        <converters:SelectedItemsAndTargetConverter x:Key="SelectedItemsAndTargetConverter"/>
         <Style x:Key="DataGridRowAlwaysSelectedStyle" TargetType="DataGridRow">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -279,7 +280,7 @@
                               DisplayMemberPath="Benennung" 
                               IsReadOnly="True" DockPanel.Dock="Bottom"
                               Margin="6"  Foreground="Black" 
-                              AutoGenerateColumns="False" SelectionMode="Single">
+                              AutoGenerateColumns="False" SelectionMode="Extended">
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -298,7 +299,17 @@
                                             <Setter Property="Header" Value="{Binding Benennung}"/>
                                             <!-- Command im MainViewModel ausführen, Parameter ist die Einteilung selbst -->
                                             <Setter Property="Command" Value="{Binding DataContext.GruppeCopyToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                                            <!--<Setter Property="CommandParameter" Value="{Binding}"/>-->
+                                            <Setter Property="CommandParameter">
+                                                <Setter.Value>
+                                                    <MultiBinding Converter="{StaticResource SelectedItemsAndTargetConverter}">
+                                                        <!-- SelectedItems der DataGrid (PlacementTarget ist das DataGrid) -->
+                                                        <Binding RelativeSource="{RelativeSource AncestorType=ContextMenu}" Path="PlacementTarget.SelectedItems"/>
+                                                        <!-- aktuelles Einteilung-Item (DataContext des MenuItem) -->
+                                                        <Binding />
+                                                    </MultiBinding>
+                                                </Setter.Value>
+                                            </Setter>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                 </MenuItem>

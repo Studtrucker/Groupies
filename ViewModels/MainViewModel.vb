@@ -44,7 +44,6 @@ Namespace ViewModels
         Private _SelectedGruppenloserTrainer As Trainer
         Private _selectedAlleGruppenloserTrainer As IList
         Private _GruppendetailViewModel As GruppendetailViewModel
-        Private _GruppeCopyToCommand As RelayCommand(Of Einteilung)
         Private _einteilungCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
@@ -92,13 +91,13 @@ Namespace ViewModels
             Get
                 If _einteilungCopyToCommand Is Nothing Then
                     _einteilungCopyToCommand = CopyCommandFactory.CreateEinteilungCopyCommand(Function() SelectedEinteilung,
-                Sub(target As Einteilung)
-                    If target Is Nothing Then Return
-                    ' Auswahl auf Ziel setzen und UI refreshen
-                    SelectedEinteilung = target
-                    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-                    RaiseCopyCommandsCanExecute()
-                End Sub)
+                                                                                              Sub(target As Einteilung)
+                                                                                                  If target Is Nothing Then Return
+                                                                                                  ' Auswahl auf Ziel setzen und UI refreshen
+                                                                                                  SelectedEinteilung = target
+                                                                                                  If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
+                                                                                                  RaiseCopyCommandsCanExecute()
+                                                                                              End Sub)
                 End If
                 Return _einteilungCopyToCommand
             End Get
@@ -109,19 +108,8 @@ Namespace ViewModels
         Public Property GruppeErstellenCommand As ICommand
         Public Property GruppeAusEinteilungEntfernenCommand As ICommand
 
-        Public ReadOnly Property GruppeCopyToCommand As RelayCommand(Of Einteilung)
-            Get
-                If _GruppeCopyToCommand Is Nothing Then
-                    _GruppeCopyToCommand = CopyCommandFactory.CreateGruppeCopyCommand(Function() SelectedGruppe,
-                Sub()
-                    ' UI refresh / CanExecute neu auswerten
-                    RaiseCopyCommandsCanExecute()
-                    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-                End Sub)
-                End If
-                Return _GruppeCopyToCommand
-            End Get
-        End Property
+        Public Property GruppeCopyToCommand As RelayCommand(Of Object)
+
 
         ' Teilnehmer Commands
         Public Property TeilnehmerInGruppeEinteilenCommand As ICommand
@@ -305,6 +293,7 @@ Namespace ViewModels
             GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
             GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
             GruppeAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeAusEinteilungEntfernen, Function() CanGruppeAusEinteilungEntfernen())
+            GruppeCopyToCommand = New RelayCommand(Of Object)(AddressOf GruppeCopyTo, AddressOf CanGruppeCopyTo)
 
             ' Teilnehmer Commands
             TeilnehmeruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmeruebersichtAnzeigen, Function() CanTeilnehmeruebersichtAnzeigen())
@@ -329,6 +318,35 @@ Namespace ViewModels
             FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
         End Sub
+
+        Private Sub GruppeCopyTo(param As Object)
+            ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
+            Dim arr = TryCast(param, Object())
+            If arr Is Nothing OrElse arr.Length < 2 Then
+                Return
+            End If
+
+            Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+            Dim targetEinteilung = TryCast(arr(1), Einteilung) ' typisiere hier auf dein Modell, z.B. EinteilungViewModel oder Einteilung
+
+            If selectedItemsEnumerable Is Nothing OrElse targetEinteilung Is Nothing Then
+                Return
+            End If
+
+
+            Dim ListeToCopyTo As New List(Of Gruppe)
+            For Each t As Gruppe In selectedItemsEnumerable
+                ListeToCopyTo.Add(t)
+            Next
+
+            Dim TS As New GruppenService
+            ListeToCopyTo.ForEach(Sub(t) TS.GruppeCopyToEinteilung(t, targetEinteilung))
+
+        End Sub
+
+        Private Function CanGruppeCopyTo(obj As Object) As Boolean
+            Return True
+        End Function
 
         Private Function CanExcelDatenImport() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
@@ -881,7 +899,8 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTeilnehmerAusEinteilungEntfernen() As Boolean
-            Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
+            Return SelectedEinteilung IsNot Nothing
+            'Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
         End Function
         Private Function CanTeilnehmerSuchen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
@@ -892,6 +911,7 @@ Namespace ViewModels
             Dim vm As New ViewModels.InputDialogViewModel()
             Dim Ergebnisliste As New List(Of TeilnehmerSuchErgebnisItem)
             dlg.DataContext = vm
+            dlg.SucheNach.Focus()
             dlg.Owner = _windowService.Window
             If dlg.ShowDialog() = True Then
                 Dim suchname = vm.ResponseText
@@ -901,7 +921,7 @@ Namespace ViewModels
                 End If
             End If
 
-            If Ergebnisliste IsNot Nothing OrElse Ergebnisliste.Count > 0 Then
+            If Ergebnisliste IsNot Nothing AndAlso Ergebnisliste.Count > 0 Then
 
                 Dim vmr As TeilnehmerSuchErgebnisViewModel = Nothing
                 If Ergebnisliste IsNot Nothing Then
@@ -940,12 +960,13 @@ Namespace ViewModels
                 Next
             End If
 
-            If selectedList.Count = 0 OrElse SelectedGruppe Is Nothing OrElse SelectedEinteilung Is Nothing Then
+            If selectedList.Count = 0 Then
                 Return
             End If
 
             Dim ts As New TeilnehmerService
             ts.TeilnehmerAusEinteilungEntfernen(selectedList, SelectedEinteilung)
+
         End Sub
 #End Region
 

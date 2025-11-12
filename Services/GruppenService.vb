@@ -107,8 +107,48 @@ Public Class GruppenService
     Private Function GruppeAusListeLesen(Liste As List(Of Gruppe), Ident As Guid) As Gruppe
         Return Liste.Where(Function(g) g.Ident = Ident).SingleOrDefault
     End Function
+
     Private Function GruppeAusListeLesen(Liste As List(Of Gruppenstamm), Ident As Guid) As Gruppenstamm
         Return Liste.Where(Function(g) g.Ident = Ident).SingleOrDefault
     End Function
+
+    Public Function GruppeInEinteilungVorhanden(GruppeToCheck As Gruppe, Einteilung As Einteilung) As Boolean
+        Return Einteilung.Gruppenliste.Any(Function(g) g.GruppenstammID = GruppeToCheck.GruppenstammID)
+    End Function
+
+    Public Sub GruppeCopyToEinteilung(GruppeToCopy As Gruppe, Einteilung As Einteilung)
+
+        ' 1. Prüfen, ob die Gruppe in der Einteilung schon vorhanden ist
+        If GruppeInEinteilungVorhanden(GruppeToCopy, Einteilung) Then
+            Return
+        End If
+
+        ' 2. Prüfen, ob Gruppenmitglieder in der Einteilung vorhanden sind
+        If GruppeToCopy.Mitgliederliste IsNot Nothing Then
+            Dim TnService As New TeilnehmerService
+            For Each tn In GruppeToCopy.Mitgliederliste
+                If TnService.TeilnehmerInEinteilungVorhanden(tn, Einteilung) Then
+                    GruppeToCopy.Mitgliederliste.Remove(tn)
+                    GruppeToCopy.MitgliederIDListe.Remove(tn.Ident)
+                End If
+            Next
+        End If
+
+        ' 3. Prüfen, ob der Trainer in der Einteilung vorhanden ist
+        Dim TrService As New TrainerService
+        If GruppeToCopy.Trainer IsNot Nothing Then
+            If TrService.TrainerInEinteilungVorhanden(GruppeToCopy.Trainer, Einteilung) Then
+                GruppeToCopy.Trainer = Nothing
+                GruppeToCopy.TrainerID = Guid.Empty
+            End If
+        End If
+
+        ' 4. Gruppe kopieren und in die Einteilung einfügen
+
+        Dim neueGruppe As New Gruppe(GruppeToCopy)
+        Einteilung.Gruppenliste.Add(neueGruppe)
+        Einteilung.GruppenIDListe.Add(neueGruppe.Ident)
+
+    End Sub
 
 End Class

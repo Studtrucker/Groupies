@@ -19,7 +19,6 @@ Public Class GruppenstammViewModel
     Public Event ModelChangedEvent As EventHandler(Of Boolean) Implements IViewModelSpecial.ModelChangedEvent
 #End Region
 
-
 #Region "Konstruktor"
 
     ''' <summary>
@@ -37,15 +36,7 @@ Public Class GruppenstammViewModel
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Gruppenstamm)(AddressOf OnLoeschen, Function() CanLoeschen)
-        'AddHandler Me.PropertyChanged, AddressOf OnOwnPropertyChanged
-
     End Sub
-    'Private Sub OnOwnPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
-    '    If e.PropertyName = NameOf(SelectedItem) Then
-    '        If _gruppeTransferToCommand IsNot Nothing Then _gruppeTransferToCommand.RaiseCanExecuteChanged()
-    '    End If
-    'End Sub
-
 
 #End Region
 

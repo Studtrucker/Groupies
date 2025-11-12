@@ -36,41 +36,41 @@ Public Class TeilnehmerViewModel
         LoeschenCommand = New RelayCommand(Of Teilnehmer)(AddressOf OnLoeschen, Function() MyBase.CanLoeschen)
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
-        TeilnehmerCopyToCommand = New RelayCommand(Of Einteilung)(AddressOf OnCopyTo, AddressOf CanCopyTo)
+        TeilnehmerCopyToCommand = New RelayCommand(Of Object)(AddressOf TeilnehmerCopyTo, AddressOf CanTeilnehmerCopyTo)
 
         AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
 
 
     End Sub
 
-    Private Function CanCopyTo(target As Einteilung) As Boolean
-        ' Grundprüfungen
-        If target Is Nothing Then Return False
+    Private Function CanTeilnehmerCopyTo(target As Object) As Boolean
+        '' Grundprüfungen
+        'If target Is Nothing Then Return False
 
-        ' Verwende SelectedItem (MasterDetailBase) als aktuell ausgewählten Teilnehmer
-        Dim selected = TryCast(SelectedItem, Teilnehmer)
-        If selected Is Nothing Then Return False
+        '' Verwende SelectedItem (MasterDetailBase) als aktuell ausgewählten Teilnehmer
+        'Dim selected = TryCast(SelectedItem, Teilnehmer)
+        'If selected Is Nothing Then Return False
 
-        ' Stelle sicher, dass ein Club geladen ist und das Ziel in der Liste des Clubs liegt
-        Dim club = DateiService.AktuellerClub
-        If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
-        If Not club.Einteilungsliste.Contains(target) Then Return False
+        '' Stelle sicher, dass ein Club geladen ist und das Ziel in der Liste des Clubs liegt
+        'Dim club = DateiService.AktuellerClub
+        'If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
+        'If Not club.Einteilungsliste.Contains(target) Then Return False
 
-        Dim tnId = selected.Ident
+        'Dim tnId = selected.Ident
 
-        ' Prüfe, ob der Teilnehmer bereits in den gruppenlosen Teilnehmern der Zieleinteilung ist
-        If target.NichtZugewieseneTeilnehmerIDListe IsNot Nothing AndAlso target.NichtZugewieseneTeilnehmerIDListe.Contains(tnId) Then
-            Return False
-        End If
+        '' Prüfe, ob der Teilnehmer bereits in den gruppenlosen Teilnehmern der Zieleinteilung ist
+        'If target.NichtZugewieseneTeilnehmerIDListe IsNot Nothing AndAlso target.NichtZugewieseneTeilnehmerIDListe.Contains(tnId) Then
+        '    Return False
+        'End If
 
-        ' Prüfe, ob der Teilnehmer bereits in einer Gruppe der Zieleinteilung enthalten ist
-        If target.Gruppenliste IsNot Nothing Then
-            For Each g In target.Gruppenliste
-                If g IsNot Nothing AndAlso g.MitgliederIDListe IsNot Nothing AndAlso g.MitgliederIDListe.Contains(tnId) Then
-                    Return False
-                End If
-            Next
-        End If
+        '' Prüfe, ob der Teilnehmer bereits in einer Gruppe der Zieleinteilung enthalten ist
+        'If target.Gruppenliste IsNot Nothing Then
+        '    For Each g In target.Gruppenliste
+        '        If g IsNot Nothing AndAlso g.MitgliederIDListe IsNot Nothing AndAlso g.MitgliederIDListe.Contains(tnId) Then
+        '            Return False
+        '        End If
+        '    Next
+        'End If
 
         ' Optional: weitere Regeln (z. B. Leistungsstufen/Trainer-Konflikte) hier ergänzen
 
@@ -100,7 +100,30 @@ Public Class TeilnehmerViewModel
         ' Optional: Benachrichtige Services / UI
     End Sub
 
+    Public Sub TeilnehmerCopyTo(param As Object)
+        ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
+        Dim arr = TryCast(param, Object())
+        If arr Is Nothing OrElse arr.Length < 2 Then
+            Return
+        End If
 
+        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        Dim targetEinteilung = TryCast(arr(1), Einteilung) ' typisiere hier auf dein Modell, z.B. EinteilungViewModel oder Einteilung
+
+        If selectedItemsEnumerable Is Nothing OrElse targetEinteilung Is Nothing Then
+            Return
+        End If
+
+
+        Dim ListeToCopyTo As New List(Of Teilnehmer)
+        For Each t As Teilnehmer In selectedItemsEnumerable
+            ListeToCopyTo.Add(t)
+        Next
+
+        Dim TS As New TeilnehmerService
+        ListeToCopyTo.ForEach(Sub(t) TS.TeilnehmerCopyToEinteilung(t, targetEinteilung))
+
+    End Sub
 
 #End Region
 
@@ -220,7 +243,7 @@ Public Class TeilnehmerViewModel
 
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
 
-    Public ReadOnly Property TeilnehmerCopyToCommand As RelayCommand(Of Einteilung)
+    Public ReadOnly Property TeilnehmerCopyToCommand As RelayCommand(Of Object)
 
 #End Region
 

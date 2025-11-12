@@ -238,6 +238,22 @@ Namespace Services
 
         End Sub
 
+        Public Function TrainerInEinteilungVorhanden(TrainerToCheck As Trainer, EinteilungToCheck As Einteilung) As Boolean
+            Dim VorhandenInEinteilung = EinteilungToCheck.VerfuegbareTrainerIDListe.Any(Function(T) T = TrainerToCheck.TrainerID)
+            VorhandenInEinteilung = VorhandenInEinteilung OrElse EinteilungToCheck.Gruppenliste.Any(Function(G) G.TrainerID = TrainerToCheck.TrainerID)
+            Return VorhandenInEinteilung
+        End Function
+
+
+        Public Sub TrainerCopyToEinteilung(TrainerToCopy As Trainer, Einteilung As Einteilung)
+            ' 1. Prüfen, ob der Teilnehmer in der Einteilung schon vorhanden ist
+            If TrainerInEinteilungVorhanden(TrainerToCopy, Einteilung) Then
+                Return
+            End If
+            ' 2. Teilnehmer in die Einteilung einfügen
+            Einteilung.VerfuegbareTrainerListe.Add(TrainerToCopy)
+            Einteilung.VerfuegbareTrainerIDListe.Add(TrainerToCopy.TrainerID)
+        End Sub
 
     End Class
 End Namespace

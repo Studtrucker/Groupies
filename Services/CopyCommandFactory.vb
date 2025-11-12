@@ -144,32 +144,38 @@ Namespace Services
 
                     If source.Ident = target.Ident Then Return
 
+                    Dim GS As New GruppenService
                     ' Verschiebe alle Gruppen
                     source.Gruppenliste?.ToList.ForEach(Sub(g)
-                                                            If target.Gruppenliste Is Nothing Then target.Gruppenliste = New GruppeCollection()
-                                                            target.Gruppenliste.Add(g)
-                                                            If target.GruppenIDListe Is Nothing Then target.GruppenIDListe = New ObservableCollection(Of Guid)
-                                                            If Not target.GruppenIDListe.Contains(g.Ident) Then target.GruppenIDListe.Add(g.Ident)
+                                                            GS.GruppeCopyToEinteilung(g, target)
+                                                            'If target.Gruppenliste Is Nothing Then target.Gruppenliste = New GruppeCollection()
+                                                            'target.Gruppenliste.Add(g)
+                                                            'If target.GruppenIDListe Is Nothing Then target.GruppenIDListe = New ObservableCollection(Of Guid)
+                                                            'If Not target.GruppenIDListe.Contains(g.Ident) Then target.GruppenIDListe.Add(g.Ident)
                                                         End Sub)
 
+                    Dim TnService As New TeilnehmerService
                     ' Verschiebe gruppenlose Teilnehmer
                     source.NichtZugewieseneTeilnehmerListe?.ToList.ForEach(Sub(t)
-                                                                               If target.NichtZugewieseneTeilnehmerListe Is Nothing Then
-                                                                                   target.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection
-                                                                                   target.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)
-                                                                               End If
-                                                                               target.NichtZugewieseneTeilnehmerListe.Add(t)
-                                                                               If Not target.NichtZugewieseneTeilnehmerIDListe.Contains(t.Ident) Then target.NichtZugewieseneTeilnehmerIDListe.Add(t.Ident)
+                                                                               TnService.TeilnehmerCopyToEinteilung(t, target)
+                                                                               'If target.NichtZugewieseneTeilnehmerListe Is Nothing Then
+                                                                               '    target.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection
+                                                                               '    target.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)
+                                                                               'End If
+                                                                               'target.NichtZugewieseneTeilnehmerListe.Add(t)
+                                                                               'If Not target.NichtZugewieseneTeilnehmerIDListe.Contains(t.Ident) Then target.NichtZugewieseneTeilnehmerIDListe.Add(t.Ident)
                                                                            End Sub)
 
+                    Dim TrService As New TrainerService
                     ' Verschiebe verfügbare Trainer
                     source.VerfuegbareTrainerListe?.ToList.ForEach(Sub(t)
-                                                                       If target.VerfuegbareTrainerListe Is Nothing Then
-                                                                           target.VerfuegbareTrainerListe = New TrainerCollection
-                                                                           target.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)
-                                                                       End If
-                                                                       target.VerfuegbareTrainerListe.Add(t)
-                                                                       If Not target.VerfuegbareTrainerIDListe.Contains(t.TrainerID) Then target.VerfuegbareTrainerIDListe.Add(t.TrainerID)
+                                                                       TrService.TrainerCopyToEinteilung(t, target)
+                                                                       'If target.VerfuegbareTrainerListe Is Nothing Then
+                                                                       '    target.VerfuegbareTrainerListe = New TrainerCollection
+                                                                       '    target.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)
+                                                                       'End If
+                                                                       'target.VerfuegbareTrainerListe.Add(t)
+                                                                       'If Not target.VerfuegbareTrainerIDListe.Contains(t.TrainerID) Then target.VerfuegbareTrainerIDListe.Add(t.TrainerID)
                                                                    End Sub)
 
                     onCopied?.Invoke(target)
@@ -179,13 +185,15 @@ Namespace Services
                     Dim source = getSource()
                     If source Is Nothing Then Return False
                     If source.Ident = target.Ident Then Return False
+                    If source.VerfuegbareTrainerListe Is Nothing And source.NichtZugewieseneTeilnehmerListe Is Nothing And source.Gruppenliste Is Nothing Then Return False
+                    If source.Gruppenliste.Count = 0 Then Return False
 
-                    ' Verhindere Transfer, wenn Ziel schon IDs enthält (heuristische Prüfung wie in VM gewünscht)
-                    If (target.GruppenIDListe IsNot Nothing AndAlso target.GruppenIDListe.Count > 0) OrElse
-                       (target.NichtZugewieseneTeilnehmerIDListe IsNot Nothing AndAlso target.NichtZugewieseneTeilnehmerIDListe.Count > 0) OrElse
-                       (target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Count > 0) Then
-                        Return False
-                    End If
+                    '' Verhindere Transfer, wenn Ziel schon IDs enthält (heuristische Prüfung wie in VM gewünscht)
+                    'If (target.GruppenIDListe IsNot Nothing AndAlso target.GruppenIDListe.Count > 0) OrElse
+                    '   (target.NichtZugewieseneTeilnehmerIDListe IsNot Nothing AndAlso target.NichtZugewieseneTeilnehmerIDListe.Count > 0) OrElse
+                    '   (target.VerfuegbareTrainerIDListe IsNot Nothing AndAlso target.VerfuegbareTrainerIDListe.Count > 0) Then
+                    '    Return False
+                    'End If
 
                     Return True
                 End Function)

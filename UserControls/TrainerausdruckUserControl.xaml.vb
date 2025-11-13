@@ -29,6 +29,7 @@ Namespace UserControls
                     AnzahlGruppenmitglieder = Gruppe.Mitgliederliste.Count
                     'BeschreibungLeistungsanforderung = Gruppe.Leistungsstufe.Beschreibungstext
                     If Gruppe.Leistungsstufe.Faehigkeiten IsNot Nothing Then Faehigkeitenliste = New FaehigkeitCollection(Gruppe.Leistungsstufe.Faehigkeiten.ToList)
+                    BeschreibungLeistungsstufe = Gruppe.Gruppenstamm.Leistungsstufe.Beschreibung
                 End If
             End If
             If Gruppe.Trainer IsNot Nothing Then
@@ -74,6 +75,14 @@ Namespace UserControls
             End Get
             Set(value As String)
                 GruppenleistungsstufeTextBlock.Text = value
+            End Set
+        End Property
+        Public Property BeschreibungLeistungsstufe As String
+            Get
+                Return BeschreibungLeistungsstufeTextblock.Text
+            End Get
+            Set(value As String)
+                BeschreibungLeistungsstufeTextblock.Text = value
             End Set
         End Property
 

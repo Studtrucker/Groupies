@@ -64,15 +64,18 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Trainer" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource BigCaption}" />
                     <TextBlock x:Name="TrainerSpitznameTextBox" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource BigCaptionValue}"/>
                     <TextBlock Text="Telefon" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource BigCaption}" />
                     <TextBlock x:Name="TrainerTelefonTextBox"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Style="{StaticResource BigCaption}"/>
-                    <TextBlock Text="Leistungsstufe" Grid.Column="0" Grid.Row="3" Style="{StaticResource SmallCaption}" />
-                    <TextBlock Text="Anzahl Mitglieder" Grid.Column="2" Grid.Row="3" Style="{StaticResource SmallCaption}" />
+                    <TextBlock Text="Stufe" Grid.Column="0" Grid.Row="3" Style="{StaticResource SmallCaption}" />
                     <TextBlock x:Name="GruppenleistungsstufeTextBlock" Grid.Column="1" Grid.Row="3"  Style="{StaticResource SmallCaptionValue}" />
+                    <TextBlock Text="Anzahl Mitglieder" Grid.Column="2" Grid.Row="3" Style="{StaticResource SmallCaption}" />
                     <TextBlock x:Name="AnzahlGruppenmitgliederTextblock" Grid.Column="3" Grid.Row="3"  Style="{StaticResource SmallCaptionValue}" />
+                    <TextBlock Text="Beschreibung" Grid.Column="0" Grid.Row="4" Style="{StaticResource SmallCaption}" />
+                    <TextBlock x:Name="BeschreibungLeistungsstufeTextblock" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Style="{StaticResource SmallCaptionValue}" />
                 </Grid>
                 <DataGrid x:Name="FaehigkeitenlisteDataGrid" Margin="5,7,5,3" BorderThickness="0" HeadersVisibility="None" Width="Auto"
                           AutoGenerateColumns="False" GridLinesVisibility="None" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource PrintoutSmall}"

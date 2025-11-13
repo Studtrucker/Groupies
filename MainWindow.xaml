@@ -76,7 +76,7 @@
                 </MenuItem>
                 <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="{x:Static ViewModels:Printversion.TrainerInfo}"/>
                 <Separator/>
-                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" >
+                <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" Visibility="Collapsed">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <Setter Property="Header" Value="{Binding Titel}"/>
@@ -85,7 +85,7 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
-                <Separator/>
+                <Separator Visibility="Collapsed"/>
                 <MenuItem Header="Club schliesse_n" Command="{Binding ClubCloseCommand}"/>
 
                 <Separator/>

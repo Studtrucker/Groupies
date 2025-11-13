@@ -4,7 +4,6 @@ Imports System.Windows.Input
 Imports Groupies.Entities.Generation4
 Imports Groupies.ViewModels
 
-
 Namespace ViewModels
 
     Public Enum SuchResultTargetType
@@ -31,6 +30,9 @@ Namespace ViewModels
         ' Liefert ein NavigationRequest; Aufrufer (z. B. MainViewModel) muss damit navigieren.
         Public Shared Event OpenTargetRequested As EventHandler(Of NavigationRequest)
 
+        ' Neues Instanz-Ereignis damit die View sich selbst schließen kann.
+        Public Event RequestClose As EventHandler
+
         Public Sub New(suchergebnis As IEnumerable(Of TeilnehmerSuchErgebnisItem))
             Me.Items = New ObservableCollection(Of TeilnehmerSuchErgebnisItem)(suchergebnis)
             OpenTargetCommand = New RelayCommand(Of Object)(AddressOf OnOpenTarget)
@@ -56,10 +58,11 @@ Namespace ViewModels
                 .TargetType = item.TargetType
             }
 
+            ' 1) Informiere Subscriber (z. B. MainViewModel) über Navigation
             RaiseEvent OpenTargetRequested(Me, req)
 
-
-
+            ' 2) Signalisiere der View, dass sie sich schließen soll
+            RaiseEvent RequestClose(Me, EventArgs.Empty)
         End Sub
 
         Protected Sub OnPropertyChanged(name As String)

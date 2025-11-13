@@ -253,6 +253,7 @@
     <Compile Include="ViewModels\TestWindowViewModel.vb" />
     <Compile Include="ViewModels\ViewModelWindow.vb" />
     <Compile Include="ViewModels\TrainerViewModel.vb" />
+    <Compile Include="Views\TeilnehmerSuchErgebnis.xaml.vb" />
     <Compile Include="Windows\BasisDetailWindow.xaml.vb">
       <DependentUpon>BasisDetailWindow.xaml</DependentUpon>
     </Compile>

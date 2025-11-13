@@ -69,39 +69,41 @@ Public Class GruppenstammService
 
     Public Sub GruppenstammLoeschen(ItemToDelete As Gruppenstamm)
 
+        Dim club = DateiService.AktuellerClub
+
         ' Prüfung, ob das ItemToDelete in irgendeiner Gruppe in Einteilungen verwendet.
         ' Dann darf das Item nicht gelöscht werden.
-        Dim Gruppenliste = DateiService.AktuellerClub.Gruppenliste.Where(Function(G) G.GruppenstammID = ItemToDelete.Ident)
-        'Dim istEnthalten = DateiService.AktuellerClub.Einteilungsliste.ToList.ForEach(Sub(E) E.Gruppenliste.Contains(Gruppenliste))
+        For Each el In club.Einteilungsliste
+            If GruppenstammInEinteilungVorhanden(ItemToDelete, el) Then
+                MessageBox.Show($"{ItemToDelete.Benennung} kann nicht gelöscht werden, da es in einer oder mehreren Einteilungen verwendet wird.", "Löschen nicht möglich", MessageBoxButton.OK, MessageBoxImage.Exclamation)
+                Return
+            End If
+        Next
 
-
-        Dim result = MessageBox.Show($"Möchten Sie {ItemToDelete.Benennung} wirklich aus dem gesamten Club - auch in den Einteilungen - löschen?", "Gruppe löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+        Dim result = MessageBox.Show($"Möchten Sie {ItemToDelete.Benennung} wirklich aus dem gesamten Club löschen?", "Gruppenstamm löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
 
         If result = MessageBoxResult.Yes Then
-
-
-            'Dim club = DateiService.AktuellerClub
-            '' aus Club Gruppenliste entfernen
-            'DateiService.AktuellerClub.Gruppenstammliste.Remove(GruppeAusListeLesen(club.Gruppenstammliste.ToList, ItemToDelete.TrainerID))
-            '' in allen Einteilungen aus Gruppenliste entfernen
-            'For Each el In club.Einteilungsliste
-            '    For Each Gruppe In el.Gruppenliste.Where(Function(G) G.Ident = ItemToDelete.Ident)
-            '        el.Gruppenliste.Remove(Gruppe)
-            '        el.GruppenIDListe.Remove(Gruppe.Ident)
-            '    Next
-            'Next
-
-            MessageBox.Show($"{ItemToDelete.Benennung} wurde gelöscht")
+            ' aus Club Gruppenliste entfernen
+            club.Gruppenstammliste.Remove(GruppenstammAusListeLesen(club.Gruppenstammliste.ToList, ItemToDelete.Ident))
             OnGruppenstammBearbeitet(New GruppenstammEventArgs(ItemToDelete))
+            MessageBox.Show($"{ItemToDelete.Benennung} wurde gelöscht")
         End If
 
     End Sub
 
     Private Function GruppenstammAusListeLesen(Liste As List(Of Gruppenstamm), Guid As Guid) As Gruppenstamm
-        Return Liste.FirstOrDefault(Function(L) L.LeistungsstufeID = Guid)
+        Return Liste.FirstOrDefault(Function(L) L.Ident = Guid)
     End Function
     Private Function GruppenstammAusListeLesen(Liste As List(Of Gruppe), Guid As Guid) As Gruppe
         Return Liste.FirstOrDefault(Function(L) L.Gruppenstamm.Ident = Guid)
+    End Function
+
+    Public Function GruppenstammInEinteilungVorhanden(GruppenstammToCheck As Gruppenstamm, EinteilungToCheck As Einteilung) As Boolean
+
+        Dim VorhandenInEinteilung = EinteilungToCheck.Gruppenliste.Any(Function(G) G.GruppenstammID = GruppenstammToCheck.Ident)
+
+        Return VorhandenInEinteilung
+
     End Function
 
 End Class

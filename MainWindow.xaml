@@ -284,13 +284,7 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Gruppe entfernen"  
-                                          Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                          CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                    <MenuItem.Icon>
-                                        <Image Source="/Images/icons8-erase-50.png" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+
                                 <MenuItem Header="Copy to" ItemsSource="{Binding AlleEinteilungenCV}">
 
                                     <MenuItem.ItemContainerStyle>
@@ -312,6 +306,13 @@
                                             </Setter>
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
+                                </MenuItem>
+                                <MenuItem Header="Gruppe entfernen"  
+                                          Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Images/icons8-erase-50.png" />
+                                    </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
                         </DataGrid.ContextMenu>

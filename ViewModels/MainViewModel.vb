@@ -33,6 +33,7 @@ Namespace ViewModels
 #Region "Felder"
         Private ReadOnly _windowService As IWindowService
         Private ReadOnly DateiService As DateiService
+        Private ReadOnly _msgService As IViewMessageService
 
         Private _WindowTitleText As String = String.Empty
 
@@ -49,10 +50,11 @@ Namespace ViewModels
 #End Region
 
 #Region "Konstruktor"
-        Public Sub New(windowService As IWindowService)
+        Public Sub New(windowService As IWindowService, Optional msgService As IViewMessageService = Nothing)
             MyBase.New()
             _windowService = windowService
             DateiService = New DateiService
+            _msgService = If(msgService, New DefaultViewMessageService())
 
             ' ViewModel-Sub-ViewModels initialisieren
             GruppendetailViewModel = New GruppendetailViewModel()
@@ -609,8 +611,8 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
-            Dim result = MessageBox.Show("Möchten Sie die Anwendung wirklich schließen?", "Achtung", MessageBoxButton.YesNo)
-            e.Cancel = (result = MessageBoxResult.No)
+            Dim confirmed = _msgService.ShowConfirmation("Möchten Sie die Anwendung wirklich schließen?", "Achtung")
+            e.Cancel = Not confirmed
         End Sub
 
         Private Sub OnWindowClosed(obj As Object)
@@ -734,12 +736,27 @@ Namespace ViewModels
 
         Private Sub OnClubSave(obj As Object)
             DateiService.DateiSpeichern()
-            MsgBox($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
+            _msgService.ShowInformation($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
         End Sub
 
         Private Sub OnClubSaveAs(obj As Object)
-            DateiService.DateiSpeichernAls()
+            Dim result As String = DateiService.DateiSpeichernAls()
+
+            If String.IsNullOrWhiteSpace(result) Then
+                _msgService.ShowError("Speichern fehlgeschlagen: Unbekannter Fehler", "Fehler")
+                Return
+            End If
+
+            If result.StartsWith("Fehler", StringComparison.OrdinalIgnoreCase) Then
+                _msgService.ShowError(result, "Fehler")
+                Return
+            End If
+
+            ' Erfolgsmeldung anzeigen und View-Properties aktualisieren
+            _msgService.ShowInformation(result, "Speichern")
             HandlerSetProperties(Me, EventArgs.Empty)
+            'DateiService.DateiSpeichernAls()
+            'HandlerSetProperties(Me, EventArgs.Empty)
         End Sub
 
         Private Sub OnClubClose(obj As Object)
@@ -900,7 +917,7 @@ Namespace ViewModels
 
         Private Function CanTeilnehmerAusEinteilungEntfernen() As Boolean
             Return SelectedEinteilung IsNot Nothing
-            'Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
+            'Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe Is Not Nothing
         End Function
         Private Function CanTeilnehmerSuchen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
@@ -987,7 +1004,7 @@ Namespace ViewModels
 
             If result = True Then
                 DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
-                MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
+                _msgService.ShowInformation($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).Alias} wurde gespeichert")
             End If
         End Sub
 
@@ -1168,11 +1185,11 @@ Namespace ViewModels
 
 #Region "Helpers / Utilities"
         Private Sub HandlerZeigeFehlerMeldung(sender As Object, e As DateiEventArgs)
-            MessageBox.Show(e.DateiPfad, "Fehler beim Öffnen der Datei", MessageBoxButton.OK, MessageBoxImage.Error)
+            _msgService.ShowError(e.DateiPfad, "Fehler beim Öffnen der Datei")
         End Sub
 
         Private Sub ZeigeErfolgsMeldung(sender As Object, e As DateiEventArgs)
-            MessageBox.Show(e.DateiPfad, "Datei öffnen erfolgreich", MessageBoxButton.OK, MessageBoxImage.Information)
+            _msgService.ShowInformation(e.DateiPfad, "Datei öffnen erfolgreich")
         End Sub
 
         Private Sub ZeigeErfolgsMeldung(sender As Object, e As EventArgs)
@@ -1227,7 +1244,8 @@ Namespace ViewModels
         End Sub
 
         Private Sub HandleMostRecentClick(sender As Object)
-            MessageBox.Show(DateiService.DateiLaden(sender))
+            Dim result = DateiService.DateiLaden(New FileInfo(sender))
+            _msgService.ShowInformation(If(result Is Nothing, String.Empty, result.ToString()))
         End Sub
 
         Public Function KopiereListeMitNeuenObjekten(Of T)(originalList As List(Of T), copyConstructor As Func(Of T, T)) As List(Of T)
@@ -1244,5 +1262,45 @@ Namespace ViewModels
 #End Region
 
     End Class
+
+    ' Kleiner, testfreundlicher Message/Dialog-Service (Default verwendet MessageBox/InputBox).
+    ' Kann bei Tests oder Erweiterungen injiziert werden.
+    Public Interface IViewMessageService
+        Function Show(message As String, caption As String, buttons As MessageBoxButton, icon As MessageBoxImage) As MessageBoxResult
+        Function ShowInformation(message As String, Optional caption As String = "") As MessageBoxResult
+        Function ShowWarning(message As String, Optional caption As String = "") As MessageBoxResult
+        Function ShowError(message As String, Optional caption As String = "") As MessageBoxResult
+        Function ShowConfirmation(message As String, Optional caption As String = "") As Boolean
+        Function PromptForText(prompt As String, Optional title As String = "", Optional defaultValue As String = "") As String
+    End Interface
+
+    Public Class DefaultViewMessageService
+        Implements IViewMessageService
+
+        Public Function Show(message As String, caption As String, buttons As MessageBoxButton, icon As MessageBoxImage) As MessageBoxResult Implements IViewMessageService.Show
+            Return MessageBox.Show(message, caption, buttons, icon)
+        End Function
+
+        Public Function ShowInformation(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowInformation
+            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information)
+        End Function
+
+        Public Function ShowWarning(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowWarning
+            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning)
+        End Function
+
+        Public Function ShowError(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowError
+            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error)
+        End Function
+
+        Public Function ShowConfirmation(message As String, Optional caption As String = "") As Boolean Implements IViewMessageService.ShowConfirmation
+            Return Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) = MessageBoxResult.Yes
+        End Function
+
+        Public Function PromptForText(prompt As String, Optional title As String = "", Optional defaultValue As String = "") As String Implements IViewMessageService.PromptForText
+            Return Interaction.InputBox(prompt, title, defaultValue)
+        End Function
+    End Class
+
 End Namespace
 

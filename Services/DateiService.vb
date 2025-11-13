@@ -223,11 +223,14 @@ Namespace Services
         ''' </summary>
         ''' <returns>Eine Erfolgsmeldung, dass die Datei gespeichert wurde.</returns>
         Public Function DateiSpeichernAls() As String
-
+            Dim SicherungAktuelleDatei = AktuelleDatei
             AktuelleDatei = GetFileInfo(String.Empty, "Club speichern als", GetFileInfoMode.Speichern)
 
+            If AktuelleDatei Is Nothing Then
+                AktuelleDatei = SicherungAktuelleDatei
+                Return "Speichern als wurde abgebrochen"
+            End If
             Return DateiSpeichernAls(AktuelleDatei?.FullName)
-
         End Function
 
         Public Function DateiSpeichernAls(Dateiname As String) As String

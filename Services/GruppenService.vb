@@ -123,13 +123,16 @@ Public Class GruppenService
             Return
         End If
 
+        Dim NeueGruppe As New Gruppe(GruppeToCopy)
+
+
         ' 2. Prüfen, ob Gruppenmitglieder in der Einteilung vorhanden sind
         If GruppeToCopy.Mitgliederliste IsNot Nothing Then
             Dim TnService As New TeilnehmerService
             For Each tn In GruppeToCopy.Mitgliederliste
                 If TnService.TeilnehmerInEinteilungVorhanden(tn, Einteilung) Then
-                    GruppeToCopy.Mitgliederliste.Remove(tn)
-                    GruppeToCopy.MitgliederIDListe.Remove(tn.Ident)
+                    NeueGruppe.Mitgliederliste.Remove(tn)
+                    NeueGruppe.MitgliederIDListe.Remove(tn.Ident)
                 End If
             Next
         End If
@@ -138,14 +141,12 @@ Public Class GruppenService
         Dim TrService As New TrainerService
         If GruppeToCopy.Trainer IsNot Nothing Then
             If TrService.TrainerInEinteilungVorhanden(GruppeToCopy.Trainer, Einteilung) Then
-                GruppeToCopy.Trainer = Nothing
-                GruppeToCopy.TrainerID = Guid.Empty
+                NeueGruppe.Trainer = Nothing
+                NeueGruppe.TrainerID = Guid.Empty
             End If
         End If
 
         ' 4. Gruppe kopieren und in die Einteilung einfügen
-
-        Dim neueGruppe As New Gruppe(GruppeToCopy)
         Einteilung.Gruppenliste.Add(neueGruppe)
         Einteilung.GruppenIDListe.Add(neueGruppe.Ident)
 

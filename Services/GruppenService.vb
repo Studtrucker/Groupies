@@ -150,6 +150,11 @@ Public Class GruppenService
         Einteilung.Gruppenliste.Add(neueGruppe)
         Einteilung.GruppenIDListe.Add(neueGruppe.Ident)
 
+
+        ' 5. Gruppe in die Gruppenliste schreiben
+        Services.DateiService.AktuellerClub.Gruppenliste.Add(NeueGruppe)
+
+
     End Sub
 
 End Class

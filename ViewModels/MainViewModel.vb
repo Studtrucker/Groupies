@@ -295,7 +295,7 @@ Namespace ViewModels
             GruppenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnGruppenuebersichtAnzeigen, Function() CanGruppenuebersichtAnzeigen())
             GruppeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeErstellen, Function() CanGruppeErstellen())
             GruppeAusEinteilungEntfernenCommand = New RelayCommand(Of Object)(AddressOf OnGruppeAusEinteilungEntfernen, Function() CanGruppeAusEinteilungEntfernen())
-            GruppeCopyToCommand = New RelayCommand(Of Object)(AddressOf GruppeCopyTo, AddressOf CanGruppeCopyTo)
+            GruppeCopyToCommand = New RelayCommand(Of Object)(AddressOf OnGruppeCopyTo, AddressOf CanGruppeCopyTo)
 
             ' Teilnehmer Commands
             TeilnehmeruebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnTeilnehmeruebersichtAnzeigen, Function() CanTeilnehmeruebersichtAnzeigen())
@@ -321,7 +321,7 @@ Namespace ViewModels
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
         End Sub
 
-        Private Sub GruppeCopyTo(param As Object)
+        Private Sub OnGruppeCopyTo(param As Object)
             ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
             Dim arr = TryCast(param, Object())
             If arr Is Nothing OrElse arr.Length < 2 Then

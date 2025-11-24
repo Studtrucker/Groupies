@@ -312,6 +312,11 @@ Namespace Services
             ' LINQ: Prüfen, ob Teilnehmer in einer Gruppen-MitgliederIDListe vorhanden ist
             VorhandenInEinteilung = VorhandenInEinteilung OrElse EinteilungToCheck.Gruppenliste.Any(Function(G) G.MitgliederIDListe.Any(Function(M) M = TeilnehmerToCheck.Ident))
 
+            If VorhandenInEinteilung Then
+                Dim message As New DefaultViewMessageService
+                message.ShowInformation($"{TeilnehmerToCheck.VorUndNachname} ist bereits in der Einteilung {EinteilungToCheck} vorhanden", "Teilnehmer an Einteilung senden")
+            End If
+
             Return VorhandenInEinteilung
         End Function
 

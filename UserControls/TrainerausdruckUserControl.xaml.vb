@@ -22,7 +22,7 @@ Namespace UserControls
             Benennung = Gruppe.Benennung
             'AusgabeTrainerinfo = Gruppe.Alias
 
-            Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.Geordnet.ToList)
+            Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.TeilnehmernameOrderByNachname.ToList)
             If Gruppe.Leistungsstufe IsNot Nothing Then
                 If Gruppe.Leistungsstufe IsNot Nothing Then
                     Gruppenleistungsstufe = Gruppe.Leistungsstufe.Benennung

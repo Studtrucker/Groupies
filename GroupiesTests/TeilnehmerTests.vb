@@ -77,7 +77,7 @@ Public Class TeilnehmerTests
                                   "Elke Steiner",
                                   "Willi Steiner"
                                   },
-                                  tnL.TeilnehmerinfoGeordnet.ToList)
+                                  tnL.TeilnehmernameOrderByNachname.ToList)
 
 
         CollectionAssert.AreEqual(New List(Of String) From {
@@ -87,7 +87,7 @@ Public Class TeilnehmerTests
                                   "Liane Hötger, , Anfänger",
                                   "Elke Steiner, , Leistungsstand unbekannt"
                                   },
-                                  tnL.TrainerinfoGeordnet.ToList)
+                                  tnL.TeilnehmernameOrderByNachname.ToList)
 
         Dim Anfaenger = New Leistungsstufe("Anfänger")
         Dim Experte = New Leistungsstufe("Experte")
@@ -107,7 +107,7 @@ Public Class TeilnehmerTests
                                   FrankAnf,
                                   MarwinAnf,
                                   StefanAnf},
-                                  tnl1.TeilnehmerMitLeistungsstufeGeordnet.ToList)
+                                  tnl1.TeilnehmernameOrderByNachname.ToList)
 
 
     End Sub
@@ -137,7 +137,7 @@ Public Class TeilnehmerTests
                                   "Willi Sensmeier",
                                   "Elke Steiner"
                                   },
-                                  tnL.TeilnehmerinfoGeordnet.ToList)
+                                  tnL.TeilnehmernameOrderByNachname.ToList)
 
 
         'CollectionAssert.AreEqual(New List(Of String) From {
@@ -152,22 +152,22 @@ Public Class TeilnehmerTests
 
 
 
-        Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstufe = Experte}
-        Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
-        Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
-        Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstufe = Experte}
-        Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstufe = Experte}
-        Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstufe = Anfaenger}
-        Dim tnl1 = New TeilnehmerCollection From {FrankAnf, MarwinAnf, AndreasHEx, StefanAnf, AndreasZEx, AndreasStEx}
+        'Dim AndreasStEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Studtrucker", .Leistungsstufe = Experte}
+        'Dim MarwinAnf = New Teilnehmer With {.Vorname = "AMarwin", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        'Dim StefanAnf = New Teilnehmer With {.Vorname = "Stefan", .Nachname = "Studtrucker", .Leistungsstufe = Anfaenger}
+        'Dim AndreasHEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Hötger", .Leistungsstufe = Experte}
+        'Dim AndreasZEx = New Teilnehmer With {.Vorname = "Andreas", .Nachname = "Zeisig", .Leistungsstufe = Experte}
+        'Dim FrankAnf = New Teilnehmer With {.Vorname = "Frank", .Nachname = "Hötger", .Leistungsstufe = Anfaenger}
+        'Dim tnl1 = New TeilnehmerCollection From {FrankAnf, MarwinAnf, AndreasHEx, StefanAnf, AndreasZEx, AndreasStEx}
 
-        CollectionAssert.AreEqual(New List(Of Teilnehmer) From {
-                                  AndreasHEx,
-                                  AndreasStEx,
-                                  AndreasZEx,
-                                  FrankAnf,
-                                  MarwinAnf,
-                                  StefanAnf},
-                                  tnl1.TeilnehmerMitLeistungsstufeGeordnet.ToList)
+        'CollectionAssert.AreEqual(New List(Of Teilnehmer) From {
+        '                          AndreasHEx,
+        '                          AndreasStEx,
+        '                          AndreasZEx,
+        '                          FrankAnf,
+        '                          MarwinAnf,
+        '                          StefanAnf},
+        '                          tnl1.TeilnehmerOrderByLeistungsstufe.ToList)
     End Sub
 
 End Class

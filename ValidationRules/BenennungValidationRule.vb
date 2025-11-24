@@ -1,5 +1,5 @@
 ﻿Imports Groupies.Entities.Generation4
-Imports Groupies.Controller
+Imports Groupies.ServiceproviderNamespace
 
 Namespace ValidationRules
 
@@ -82,7 +82,7 @@ Namespace ValidationRules
         Public Function GetEindeutigkeit(Objekt As Teilnehmer) As ValidationResult
 
             If Objekt.VorUndNachname IsNot Nothing Then
-                Dim DS As New Services.DateiService
+                Dim DS = Groupies.Services.ServiceProvider.DateiService
                 If DS.AktuellerClub.Teilnehmerliste.Where(Function(o) o.VorUndNachname.ToLower = Objekt.VorUndNachname.ToLower AndAlso o.Ident <> Objekt.Ident).Any() Then
                     Return New ValidationResult(False, $"{Objekt.VorUndNachname} wird bereits verwendet. Die Kombination Vor- und Nachname muss aber eindeutig sein.")
                 End If

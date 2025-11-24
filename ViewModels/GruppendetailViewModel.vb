@@ -1,5 +1,5 @@
 ﻿Imports System.Collections.ObjectModel
-'imports Groupies.DataImport
+Imports System.Collections.Specialized
 Imports Groupies.Entities.Generation4
 Imports Groupies.Services
 
@@ -13,6 +13,7 @@ Namespace ViewModels
 #Region "Felder"
         Private _leistungsstufenListe As LeistungsstufeCollection
         Private _Gruppe As Gruppe
+        Private _mitgliederCollectionNotifier As INotifyCollectionChanged
 #End Region
 
 #Region "Properties"
@@ -251,10 +252,26 @@ Namespace ViewModels
             End Get
         End Property
 
+        ' Read-only Property, die die sortierte Teilnehmerliste liefert
+        Public ReadOnly Property MitgliederSortiert As TeilnehmerCollection
+            Get
+                If Gruppe Is Nothing OrElse _Gruppe.Mitgliederliste Is Nothing Then
+                    Return New TeilnehmerCollection()
+                End If
+                Return _Gruppe.Mitgliederliste.TeilnehmerOrderByNachname
+            End Get
+        End Property
+
 #End Region
 
 #Region "Methoden"
 
+        Private Sub OnMitgliederlisteChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+            ' Wenn sich die zugrunde liegende Collection ändert, UI darüber informieren
+            OnPropertyChanged(NameOf(MitgliederSortiert))
+        End Sub
+
+        ' Rest der Klasse...
 #End Region
 
     End Class

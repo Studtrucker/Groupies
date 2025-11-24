@@ -101,20 +101,6 @@
                           IsEditable="False"
                           ItemsSource="{StaticResource LeistungsstufenComposite}" >
                     
-                    <!--<ComboBox.ItemsSource>
-                        <CompositeCollection>
-                            --><!-- erster Eintrag: (keine) -> bewirkt SelectedItem = Nothing --><!--
-                            <ComboBoxItem Content="{x:Null}">
-                                <ComboBoxItem.ContentTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="(keine)" Foreground="Gray"/>
-                                    </DataTemplate>
-                                </ComboBoxItem.ContentTemplate>
-                            </ComboBoxItem>
-                            --><!-- die eigentlichen Leistungsstufen aus der Window-Resource --><!--
-                            <CollectionContainer Collection="{Binding Source={StaticResource LeistungsstufenListeSource}}"/>
-                        </CompositeCollection>
-                    </ComboBox.ItemsSource>-->
                 </ComboBox>
 
                     <TextBox  Grid.Column="2" Grid.Row="6"
@@ -159,7 +145,7 @@
                 <DataGrid Grid.Column="2" Grid.Row="7" x:Name="MitgliederlisteDataGrid" 
                           IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
                           CanUserAddRows="False" 
-                          ItemsSource="{Binding Mitgliederliste}"
+                          ItemsSource="{Binding MitgliederSortiert}"
                           SelectedItem="{Binding SelectedTeilnehmer}"
                           SelectionUnit="FullRow"
                           behaviors:DataGridMultiSelect.BindableSelectedItems="{Binding SelectedAlleMitglieder, RelativeSource={RelativeSource AncestorType=UserControl}}"                          

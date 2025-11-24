@@ -26,7 +26,7 @@ Public Class GruppeViewModel
     Public Sub New()
         MyBase.New()
         ' Hier können Sie den Konstruktor anpassen
-        Dim DropDown = New ListCollectionView(DateiService.AktuellerClub.Leistungsstufenliste.Sortieren)
+        Dim DropDown = New ListCollectionView(ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren)
         DropDown.SortDescriptions.Add(New SortDescription("Sortierung", ListSortDirection.Ascending))
         LeistungsstufenListCollectionView = DropDown
         DataGridSortingCommand = New RelayCommand(Of DataGridSortingEventArgs)(AddressOf MyBase.OnDataGridSorting)
@@ -109,7 +109,7 @@ Public Class GruppeViewModel
         End Set
     End Property
     Public Function GetLeistungsstufenliste() As LeistungsstufeCollection
-        Return DateiService.AktuellerClub.Leistungsstufenliste
+        Return ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste
     End Function
 
     Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten

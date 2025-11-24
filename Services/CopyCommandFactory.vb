@@ -19,7 +19,7 @@ Namespace Services
                     Dim source = getSource()
                     If source Is Nothing OrElse target Is Nothing Then Return
 
-                    Dim club = DateiService.AktuellerClub
+                    Dim club = ServiceProvider.DateiService.AktuellerClub
                     If club Is Nothing Then Return
 
                     Dim sourceE = club.Einteilungsliste.FirstOrDefault(Function(e) e.Gruppenliste IsNot Nothing AndAlso e.Gruppenliste.Contains(source))
@@ -38,7 +38,7 @@ Namespace Services
                     Dim source = getSource()
                     If source Is Nothing Then Return False
 
-                    Dim club = DateiService.AktuellerClub
+                    Dim club = ServiceProvider.DateiService.AktuellerClub
                     If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
 
                     Dim sourceE = club.Einteilungsliste.FirstOrDefault(Function(e) e.Gruppenliste IsNot Nothing AndAlso e.Gruppenliste.Contains(source))
@@ -77,7 +77,7 @@ Namespace Services
                     Dim source = getSource()
                     If source Is Nothing OrElse target Is Nothing Then Return
 
-                    Dim club = DateiService.AktuellerClub
+                    Dim club = ServiceProvider.DateiService.AktuellerClub
                     If club Is Nothing Then Return
 
                     onCopied?.Invoke()
@@ -90,7 +90,7 @@ Namespace Services
                     Dim GruppenstammID = source.Ident
                     'Dim GruppenID = source.GruppenID
 
-                    Dim club = DateiService.AktuellerClub
+                    Dim club = ServiceProvider.DateiService.AktuellerClub
                     If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
 
 
@@ -109,7 +109,7 @@ Namespace Services
                     Dim source = getSource()
                     If source Is Nothing OrElse target Is Nothing Then Return
 
-                    Dim club = DateiService.AktuellerClub
+                    Dim club = ServiceProvider.DateiService.AktuellerClub
                     If club Is Nothing Then Return
 
                     If source.Ident = target.Ident Then Return

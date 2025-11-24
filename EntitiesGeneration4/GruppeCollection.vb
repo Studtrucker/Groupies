@@ -15,21 +15,19 @@ Namespace Entities.Generation4
             Gruppenliste.ToList.ForEach(Sub(x) Add(x))
         End Sub
 
-        Public Property BenennungGruppeneinteilung As String
-
-        Public ReadOnly Property GruppenListeSortierungNachName As ObservableCollection(Of Gruppe)
+        Public ReadOnly Property GruppenListeOrderByName As GruppeCollection
             Get
-                Return New ObservableCollection(Of Gruppe)(Me.OrderBy(Of String)(Function(x) x.Benennung))
+                Return New GruppeCollection(Me.OrderBy(Of String)(Function(x) x.Benennung))
+            End Get
+        End Property
+
+        Public ReadOnly Property GruppenListeOrderByNumber As GruppeCollection
+            Get
+                Return New GruppeCollection(Me.OrderBy(Of Integer)(Function(x) x.Sortierung))
             End Get
         End Property
 
 #Region "Funktionen und Methoden"
-
-
-        Public Function Sortieren() As GruppeCollection
-            Dim SortedList As New GruppeCollection(Me.OrderBy(Function(x) x.Sortierung))
-            Return SortedList
-        End Function
 
 #End Region
 

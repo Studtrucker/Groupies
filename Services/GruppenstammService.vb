@@ -22,7 +22,7 @@ Public Class GruppenstammService
         Dim result As Boolean = dialog.ShowDialog()
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
+            ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
 
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppenstamm).Benennung} wurde gespeichert")
             OnGruppenstammBearbeitet(EventArgs.Empty)
@@ -42,13 +42,13 @@ Public Class GruppenstammService
         dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
-        Dim Gruppenstammliste = Services.DateiService.AktuellerClub.Gruppenstammliste
+        Dim Gruppenstammliste = ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste
 
         If result = True Then
             ' 1) in Club-Gruppenstammliste austauschen
             Dim index = Gruppenstammliste.IndexOf(GruppenstammAusListeLesen(Gruppenstammliste.ToList, ItemToEdit.Ident))
 
-            Dim Club = Services.DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
 
             ' 2) in allen Einteilungen: Gruppe austauschen
             For Each el In Club.Einteilungsliste
@@ -59,7 +59,7 @@ Public Class GruppenstammService
                 Next
             Next
 
-            Services.DateiService.AktuellerClub.Gruppenstammliste(index) = mvw.AktuellesViewModel.Model
+            ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppenstamm).Benennung} wurde gespeichert")
             OnGruppenstammBearbeitet(New GruppenstammEventArgs(DirectCast(mvw.AktuellesViewModel.Model, Gruppenstamm)))
         Else
@@ -69,7 +69,7 @@ Public Class GruppenstammService
 
     Public Sub GruppenstammLoeschen(ItemToDelete As Gruppenstamm)
 
-        Dim club = DateiService.AktuellerClub
+        Dim club = ServiceProvider.DateiService.AktuellerClub
 
         ' Prüfung, ob das ItemToDelete in irgendeiner Gruppe in Einteilungen verwendet.
         ' Dann darf das Item nicht gelöscht werden.

@@ -61,7 +61,7 @@ Namespace Services
                 Exit Sub
             End Try
 
-            Dim club = Services.DateiService.AktuellerClub
+            Dim club = ServiceProvider.DateiService.AktuellerClub
 
             ' ALle Trainer mit gültiger ID durchgehen
             For Each ImportedTrainer In ImportTrainerliste
@@ -148,7 +148,7 @@ Namespace Services
                 Exit Sub
             End Try
 
-            Dim club = Services.DateiService.AktuellerClub
+            Dim club = ServiceProvider.DateiService.AktuellerClub
             If club Is Nothing Then
                 MessageBox.Show("Kein Club geladen. Import abgebrochen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning)
                 Exit Sub
@@ -300,9 +300,9 @@ Namespace Services
                 Exit Sub
             End Try
 
-            Dim LSListe = If(Services.DateiService.AktuellerClub.Leistungsstufenliste, New LeistungsstufeCollection())
+            Dim LSListe = If(ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste, New LeistungsstufeCollection())
 
-            Dim Teilnehmerliste = Services.DateiService.AktuellerClub.Teilnehmerliste
+            Dim Teilnehmerliste = ServiceProvider.DateiService.AktuellerClub.Teilnehmerliste
             ' ALle Teilnehmer mit gültiger ID durchgehen
             For Each ImportedTeilnehmer In ImportTeilnehmerliste
                 If ImportedTeilnehmer.TeilnehmerID <> Guid.Empty Then
@@ -380,7 +380,7 @@ Namespace Services
 
             ' Neue Teilnehmer in allen Einteilungen hinzufügen (falls gewünscht)
             Dim y = Teilnehmerliste.Where(Function(Tn) Tn.IstNeuImClub).ToList
-            For Each e In Services.DateiService.AktuellerClub.Einteilungsliste
+            For Each e In ServiceProvider.DateiService.AktuellerClub.Einteilungsliste
                 ' Neue Trainer den Einteilungen hinzufügen
                 TS.TeilnehmerEinteilungHinzufuegen(y, e)
             Next

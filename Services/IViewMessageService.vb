@@ -8,5 +8,8 @@ Namespace Services
         Function ShowError(message As String, Optional caption As String = "") As MessageBoxResult
         Function ShowConfirmation(message As String, Optional caption As String = "") As Boolean
         Function PromptForText(prompt As String, Optional title As String = "", Optional defaultValue As String = "") As String
+
+        ' Convenience: spezifische Bestätigung für Datei-Überschreiben
+        Function ConfirmOverwrite(fileName As String, Optional caption As String = "Datei überschreiben") As Boolean
     End Interface
 End Namespace

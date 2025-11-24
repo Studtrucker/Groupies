@@ -28,8 +28,8 @@ Namespace ViewModels
 
             UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
 
-            AddHandler DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
-            AddHandler DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
+            AddHandler ServiceProvider.DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
+            AddHandler ServiceProvider.DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
             AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
             AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnTeilnehmerGeaendert
             AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf OnGruppeGeaendert
@@ -52,8 +52,8 @@ Namespace ViewModels
 #Region "Command-Methoden"
 
         Private Sub OnUserControlLoaded(obj As Object)
-            If DateiService.AktuellerClub IsNot Nothing Then
-                LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+            If ServiceProvider.DateiService.AktuellerClub IsNot Nothing Then
+                LeistungsstufenListe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
             End If
             OnPropertyChanged(NameOf(LeistungsstufenListe))
         End Sub
@@ -68,7 +68,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnDateiGeOeffnet()
-            Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+            Me.LeistungsstufenListe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
         End Sub
 
         Private Sub OnDateiGeschlossen()
@@ -167,7 +167,7 @@ Namespace ViewModels
             Set(value As Guid)
                 If _Gruppe IsNot Nothing Then
                     _Gruppe.LeistungsstufeID = value
-                    _Gruppe.Leistungsstufe = DateiService.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Ident = value).First
+                    _Gruppe.Leistungsstufe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Ident = value).First
                     OnPropertyChanged(NameOf(LeistungsstufeID))
                     OnPropertyChanged(NameOf(Leistungsstufe))
                     RaiseEvent ModelChangedEvent(Me, False)

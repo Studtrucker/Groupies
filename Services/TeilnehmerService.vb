@@ -111,7 +111,7 @@ Namespace Services
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                Services.DateiService.AktuellerClub.Teilnehmerliste.Add(mvw.AktuellesViewModel.Model)
+                ServiceProvider.DateiService.AktuellerClub.Teilnehmerliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Teilnehmer).VorUndNachname} wurde gespeichert")
             End If
             OnTeilnehmerGeaendert(EventArgs.Empty)
@@ -134,7 +134,7 @@ Namespace Services
             Dim result As Boolean = dialog.ShowDialog()
 
             If result = True Then
-                Dim club = DateiService.AktuellerClub
+                Dim club = ServiceProvider.DateiService.AktuellerClub
 
                 Dim index = club.Teilnehmerliste.IndexOf(TeilnehmerAusListeLesen(club.Teilnehmerliste.ToList, TeilnehmerToEdit))
                 ' 1) in Club-Teilnehmerliste austauschen
@@ -172,7 +172,7 @@ Namespace Services
 
             If result = MessageBoxResult.Yes Then
 
-                Dim club = DateiService.AktuellerClub
+                Dim club = ServiceProvider.DateiService.AktuellerClub
 
                 ' 1) aus Club-Teilnehmerliste entfernen (sichere Suche)
                 Dim foundInClub = TeilnehmerAusListeLesen(club.Teilnehmerliste.ToList(), TeilnehmerToDelete)
@@ -208,7 +208,7 @@ Namespace Services
 
         Public Function TeilnehmerSuchen(Name As String) As List(Of TeilnehmerSuchErgebnisItem)
 
-            Dim Club = DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
             Dim GefundeneTeilnehmerListe = Club.Teilnehmerliste.Where(Function(T) T.Vorname.ToLower().Contains(Name.ToLower()) Or T.Nachname.ToLower().Contains(Name.ToLower())).ToList()
 
             If GefundeneTeilnehmerListe.Count = 0 Then

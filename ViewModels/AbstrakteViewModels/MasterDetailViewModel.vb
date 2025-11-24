@@ -3,6 +3,7 @@ Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports Groupies.Entities
+Imports Groupies.Services
 Imports PropertyChanged
 
 
@@ -35,8 +36,8 @@ Public MustInherit Class MasterDetailViewModel(Of T)
         AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
         ' Sicher und kompatibel: DefaultView verwenden; DateiService bzw. Club kann beim Konstruktoraufruf noch Nothing sein
         Try
-            If Services.DateiService.AktuellerClub IsNot Nothing AndAlso Services.DateiService.AktuellerClub.Einteilungsliste IsNot Nothing Then
-                AlleEinteilungenCV = CollectionViewSource.GetDefaultView(Services.DateiService.AktuellerClub.Einteilungsliste)
+            If ServiceProvider.DateiService.AktuellerClub IsNot Nothing AndAlso ServiceProvider.DateiService.AktuellerClub.Einteilungsliste IsNot Nothing Then
+                AlleEinteilungenCV = CollectionViewSource.GetDefaultView(ServiceProvider.DateiService.AktuellerClub.Einteilungsliste)
             Else
                 ' leere View statt null → Bindings funktionieren zur Laufzeit sicher
                 AlleEinteilungenCV = CollectionViewSource.GetDefaultView(New ObservableCollection(Of Object)())

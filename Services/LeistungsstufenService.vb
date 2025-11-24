@@ -1,4 +1,5 @@
 ﻿Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 Public Class LeistungsstufenService
 
     Public Shared Event LeistungsstufeBearbeitet As EventHandler(Of EventArgs)
@@ -26,7 +27,7 @@ Public Class LeistungsstufenService
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
+            ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
 
@@ -50,10 +51,10 @@ Public Class LeistungsstufenService
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim index = Services.DateiService.AktuellerClub.Leistungsstufenliste.IndexOf(LeistungsstufeToEdit)
+            Dim index = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.IndexOf(LeistungsstufeToEdit)
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Leistungsstufenliste(index) = mvw.AktuellesViewModel.Model
-            Debug.WriteLine(Services.DateiService.AktuellerClub.Leistungsstufenliste(index).Beschreibung)
+            ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste(index) = mvw.AktuellesViewModel.Model
+            Debug.WriteLine(ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste(index).Beschreibung)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Leistungsstufe).Benennung} wurde gespeichert")
         End If
 
@@ -66,7 +67,7 @@ Public Class LeistungsstufenService
         Dim result = MessageBox.Show($"Möchten Sie die Leistungsstufe {LeistungsstufeToDelete.Benennung} wirklich aus dem gesamten Club - auch die Einstufung der Gruppen und Teilnehmer - löschen?", "Leistungsstufe löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
         If result = MessageBoxResult.Yes Then
 
-            Dim Club = Services.DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
 
             ' 1) in Club-Leistungsstufenliste löschen
             Dim index = Club.Leistungsstufenliste.IndexOf(LeistungsstufeAusListeLesen(Club.Leistungsstufenliste.ToList, LeistungsstufeToDelete.Ident))

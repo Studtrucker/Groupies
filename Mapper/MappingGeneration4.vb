@@ -112,6 +112,7 @@ Public Module MappingGeneration4
     Private Function GetAlleEinteilungen(Skiclub As Club) As EinteilungCollection
         Skiclub.Einteilungsliste.ToList.ForEach(Sub(E)
                                                     E.GruppenIDListe.ToList.ForEach(Sub(GID) E.Gruppenliste.Add(Skiclub.Gruppenliste.FirstOrDefault(Function(G) G.Ident = GID)))
+                                                    E.Gruppenliste = E.Gruppenliste
                                                     E.NichtZugewieseneTeilnehmerIDListe.ToList.ForEach(Sub(TID) E.NichtZugewieseneTeilnehmerListe.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID)))
                                                     E.VerfuegbareTrainerIDListe.ToList.ForEach(Sub(TID) E.VerfuegbareTrainerListe.Add(Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = TID)))
                                                 End Sub)

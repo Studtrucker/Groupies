@@ -195,6 +195,7 @@
     <Compile Include="Services\IViewMessageService.vb" />
     <Compile Include="Services\LeistungsstufenService.vb" />
     <Compile Include="Services\DefaultViewMessageService.vb" />
+    <Compile Include="Services\ServiceProvider.vb" />
     <Compile Include="Services\SkiDateienService.vb" />
     <Compile Include="Services\TeilnehmerEventArgs.vb" />
     <Compile Include="Services\TeilnehmerService.vb" />

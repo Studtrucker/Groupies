@@ -29,7 +29,7 @@ Public Class GruppenService
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
+            ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
 
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
             OnGruppeBearbeitet(EventArgs.Empty)
@@ -50,13 +50,13 @@ Public Class GruppenService
         dialog.DataContext = mvw
 
         Dim result As Boolean = dialog.ShowDialog()
-        Dim Gruppenliste = Services.DateiService.AktuellerClub.Gruppenstammliste
+        Dim Gruppenliste = ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste
 
         If result = True Then
             ' 1) in Club-Gruppenliste austauschen
             Dim index = Gruppenliste.IndexOf(GruppeAusListeLesen(Gruppenliste.ToList, GruppeToEdit.Ident))
 
-            Dim Club = Services.DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
 
             ' 2) in allen Einteilungen: Gruppe austauschen
             For Each el In Club.Einteilungsliste
@@ -67,7 +67,7 @@ Public Class GruppenService
                 Next
             Next
 
-            Services.DateiService.AktuellerClub.Gruppenstammliste(index) = mvw.AktuellesViewModel.Model
+            ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste(index) = mvw.AktuellesViewModel.Model
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppe).Benennung} wurde gespeichert")
             OnGruppeBearbeitet(EventArgs.Empty)
         End If
@@ -80,9 +80,9 @@ Public Class GruppenService
         If result = MessageBoxResult.Yes Then
 
 
-            Dim club = DateiService.AktuellerClub
+            Dim club = ServiceProvider.DateiService.AktuellerClub
             ' aus Club Gruppenliste entfernen
-            DateiService.AktuellerClub.Gruppenstammliste.Remove(GruppeAusListeLesen(club.Gruppenstammliste.ToList, GruppeToDelete.TrainerID))
+            ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste.Remove(GruppeAusListeLesen(club.Gruppenstammliste.ToList, GruppeToDelete.TrainerID))
             ' in allen Einteilungen aus Gruppenliste entfernen
             For Each el In club.Einteilungsliste
                 For Each Gruppe In el.Gruppenliste.Where(Function(G) G.Ident = GruppeToDelete.Ident)
@@ -101,6 +101,8 @@ Public Class GruppenService
 
         Einteilung.Gruppenliste.Remove(GruppeAusListeLesen(Einteilung.Gruppenliste.ToList, GruppeToRemove.Ident))
         Einteilung.GruppenIDListe.Remove(GruppeToRemove.Ident)
+
+        ServiceProvider.DateiService.AktuellerClub.Gruppenliste.Remove(GruppeAusListeLesen(ServiceProvider.DateiService.AktuellerClub.Gruppenliste.ToList, GruppeToRemove.Ident))
 
     End Sub
 
@@ -152,7 +154,7 @@ Public Class GruppenService
 
 
         ' 5. Gruppe in die Gruppenliste schreiben
-        Services.DateiService.AktuellerClub.Gruppenliste.Add(NeueGruppe)
+        ServiceProvider.DateiService.AktuellerClub.Gruppenliste.Add(NeueGruppe)
 
     End Sub
 

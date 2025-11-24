@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports Groupies.Controller
 Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Namespace ValidationRules
 
@@ -22,28 +23,28 @@ Namespace ValidationRules
         End Function
 
         Public Function GetEindeutigkeit(Gruppe As Gruppenstamm) As ValidationResult
-            If Services.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
+            If ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste.Where(Function(Gr) Gr.Sortierung = Gruppe.Sortierung AndAlso Gr.Ident <> Gruppe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult
         End Function
 
         Public Function GetEindeutigkeit(Faehigkeit As Faehigkeit) As ValidationResult
-            If Services.DateiService.AktuellerClub.Faehigkeitenliste.Where(Function(Fk) Fk.Sortierung = Faehigkeit.Sortierung AndAlso Fk.FaehigkeitID <> Faehigkeit.FaehigkeitID).Any() Then
+            If ServiceProvider.DateiService.AktuellerClub.Faehigkeitenliste.Where(Function(Fk) Fk.Sortierung = Faehigkeit.Sortierung AndAlso Fk.FaehigkeitID <> Faehigkeit.FaehigkeitID).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult
         End Function
 
         Public Function GetEindeutigkeit(Leistungsstufe As Leistungsstufe) As ValidationResult
-            If Services.DateiService.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Sortierung = Leistungsstufe.Sortierung AndAlso Ls.Ident <> Leistungsstufe.Ident).Any() Then
+            If ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Where(Function(Ls) Ls.Sortierung = Leistungsstufe.Sortierung AndAlso Ls.Ident <> Leistungsstufe.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult
         End Function
 
         Public Function GetEindeutigkeit(Einteilung As Einteilung) As ValidationResult
-            If Services.DateiService.AktuellerClub.Einteilungsliste.Where(Function(Ls) Ls.Sortierung = Einteilung.Sortierung AndAlso Ls.Ident <> Einteilung.Ident).Any() Then
+            If ServiceProvider.DateiService.AktuellerClub.Einteilungsliste.Where(Function(Ls) Ls.Sortierung = Einteilung.Sortierung AndAlso Ls.Ident <> Einteilung.Ident).Any() Then
                 Return New ValidationResult(False, "Die Sortierung muss eindeutig sein.")
             End If
             Return ValidationResult.ValidResult

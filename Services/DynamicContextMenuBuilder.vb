@@ -89,7 +89,7 @@ Namespace Services
                 End Function)
 
             ' An ein FrameworkElement (z.B. ListView namens lvEinteilungen) anhängen:
-            builder.AttachTo(lvEinteilungen, Function() DateiService.AktuellerClub?.Einteilungsliste)
+            builder.AttachTo(lvEinteilungen, Function() ServiceProvider.DateiService.AktuellerClub?.Einteilungsliste)
         End Sub
         ' Hinweise / Empfehlungen
         ' •	Verwende in der Factory keine direkten UI-Operationen, die das MenuItem später beim Klick verändern; stattdessen Command-Handler mit den benötigten Referenzen übergeben (z. B. RelayCommand).

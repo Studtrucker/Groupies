@@ -96,7 +96,7 @@ Public Class GruppenstammViewModel
         End Get
         Set(value As Guid)
             _Gruppenstamm.LeistungsstufeID = value
-            _Gruppenstamm.Leistungsstufe = DateiService.AktuellerClub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = value)
+            _Gruppenstamm.Leistungsstufe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.FirstOrDefault(Function(L) L.Ident = value)
             OnPropertyChanged(NameOf(LeistungsstufeID))
             ValidateLeistungsstufe()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
@@ -165,7 +165,7 @@ Public Class GruppenstammViewModel
 
     Public Overloads Sub OnLoaded(obj As Object) Implements IViewModelSpecial.OnLoaded
 
-        Me.LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        Me.LeistungsstufenListe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
 
         If _Gruppenstamm IsNot Nothing Then
             ValidateGruppenID()

@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports Groupies.Controller
 Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Namespace Converters
 
@@ -25,7 +26,7 @@ Namespace Converters
 
         Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
             If TypeOf value IsNot String Then Return DependencyProperty.UnsetValue
-            Dim obj = Services.DateiService.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Leistungsstufe("Level unbekannt")).First
+            Dim obj = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.ToList.Where(Function(Ls) Ls.Benennung = value).DefaultIfEmpty(New Leistungsstufe("Level unbekannt")).First
             Return obj
         End Function
     End Class

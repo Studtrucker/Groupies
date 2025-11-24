@@ -28,7 +28,7 @@ Namespace Services
 
             If result = True Then
                 ' Todo: Das Speichern muss im ViewModel erledigt werden
-                Services.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
+                ServiceProvider.DateiService.AktuellerClub.Trainerliste.Add(mvw.AktuellesViewModel.Model)
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).VorNachname} wurde gespeichert")
             End If
             OnTrainerGeaendert(EventArgs.Empty)
@@ -51,7 +51,7 @@ Namespace Services
             Dim result As Boolean = dialog.ShowDialog()
 
             If result = True Then
-                Dim club = DateiService.AktuellerClub
+                Dim club = ServiceProvider.DateiService.AktuellerClub
 
                 Dim index = club.Trainerliste.IndexOf(TrainerAusListeLesen(club.Trainerliste.ToList, TrainerToEdit.TrainerID))
                 ' 1) in Club-Trainerliste austauschen
@@ -86,7 +86,7 @@ Namespace Services
             Dim result = MessageBox.Show($"Möchten Sie {TrainerToDelete.VorNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Trainer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
             If result = MessageBoxResult.Yes Then
 
-                Dim club = DateiService.AktuellerClub
+                Dim club = ServiceProvider.DateiService.AktuellerClub
 
                 ' Aus allen Einteilungen entfernen
                 club.Einteilungsliste.ToList.ForEach(Sub(el)
@@ -195,7 +195,7 @@ Namespace Services
             ' (Der ausgewählte Trainer kann sich ja nur in der verfügbaren Trainerliste befinden)
             ' (Sollte ein zugewiesener Gruppentrainer entfernt werden, dann erst aus der Gruppe entfernen)
 
-            Dim alleTrainer = If(DateiService.AktuellerClub, Nothing)?.Trainerliste
+            Dim alleTrainer = If(ServiceProvider.DateiService.AktuellerClub, Nothing)?.Trainerliste
             If alleTrainer Is Nothing Then
                 ' Wenn keine Teilnehmerliste vorhanden ist, die gleiche Anzahl an Nothing-Einträgen zurückgeben
                 Dim empties As New List(Of Trainer)(TrainerListe.Count)

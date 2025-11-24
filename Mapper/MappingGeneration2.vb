@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation1
+Imports Groupies.Services
 
 Public Module MappingGeneration2
 
@@ -172,9 +173,9 @@ Public Module MappingGeneration2
     ''' <returns></returns>
     Private Function GetGeneration4TrainerlisteAusG4Trainerliste(G2Trainerliste As List(Of Generation2.Trainer)) As Generation4.TrainerCollection
 
-        If Groupies.Services.DateiService.AktuellerClub IsNot Nothing Then
+        If ServiceProvider.DateiService.AktuellerClub IsNot Nothing Then
 
-            Dim GlobaleTrainerliste = Groupies.Services.DateiService.AktuellerClub.Trainerliste
+            Dim GlobaleTrainerliste = ServiceProvider.DateiService.AktuellerClub.Trainerliste
 
             Dim TrainerG4 = New Generation4.TrainerCollection
             For Each G2T In G2Trainerliste

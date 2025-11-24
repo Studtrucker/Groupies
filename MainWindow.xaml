@@ -275,7 +275,7 @@
                     <TextBlock Text="Die Gruppen" DockPanel.Dock="Top"/>
 
                     <DataGrid x:Name="GruppenlisteDataGrid" 
-                              ItemsSource="{Binding  SelectedEinteilung.Gruppenliste}"  
+                              ItemsSource="{Binding  SelectedEinteilungGruppenSortiert}"  
                               SelectedItem="{Binding SelectedGruppe}"                             
                               DisplayMemberPath="Benennung" 
                               IsReadOnly="True" DockPanel.Dock="Bottom"

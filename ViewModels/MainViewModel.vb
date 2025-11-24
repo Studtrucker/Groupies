@@ -15,7 +15,6 @@ Imports Groupies.UserControls
 Imports Microsoft.Office.Interop.Excel
 Imports Microsoft.Win32
 
-
 Namespace ViewModels
 
     Public Enum Printversion
@@ -53,8 +52,11 @@ Namespace ViewModels
         Public Sub New(windowService As IWindowService, Optional msgService As IViewMessageService = Nothing)
             MyBase.New()
             _windowService = windowService
-            DateiService = New DateiService
             _msgService = If(msgService, New DefaultViewMessageService())
+
+            ' zentrale DateiService-Instanz über Provider initialisieren (mit dem MessageService)
+            ServiceProvider.DateiService = New DateiService(_msgService)
+            DateiService = ServiceProvider.DateiService
 
             ' ViewModel-Sub-ViewModels initialisieren
             GruppendetailViewModel = New GruppendetailViewModel()
@@ -162,21 +164,61 @@ Namespace ViewModels
             End Set
         End Property
 
+        Private _currentGruppenNotify As INotifyCollectionChanged
+
+        Public ReadOnly Property SelectedEinteilungGruppenSortiert As GruppeCollection
+            Get
+                If SelectedEinteilung Is Nothing OrElse SelectedEinteilung.Gruppenliste Is Nothing Then
+                    Return New GruppeCollection()
+                End If
+                Return SelectedEinteilung.Gruppenliste.GruppenListeOrderByNumber
+            End Get
+        End Property
+
         Public Property SelectedEinteilung As Einteilung
             Get
                 Return _SelectedEinteilung
             End Get
             Set(value As Einteilung)
+                If _SelectedEinteilung Is value Then Return
+
+                ' alten CollectionChanged-Handler entfernen
+                If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
+                    Dim prev = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
+                    If prev IsNot Nothing Then
+                        RemoveHandler prev.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
+                    End If
+                    _currentGruppenNotify = Nothing
+                End If
+
                 _SelectedEinteilung = value
                 SelectedGruppe = Nothing
                 SelectedTeilnehmer = Nothing
                 OnPropertyChanged(NameOf(SelectedEinteilung))
+
+                ' neuen CollectionChanged-Handler hinzufügen
+                If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
+                    Dim cur = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
+                    If cur IsNot Nothing Then
+                        AddHandler cur.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
+                        _currentGruppenNotify = cur
+                    End If
+                End If
+
+                ' Property-Changed für die sortierte Ansicht auslösen
+                OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
+
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
                 RaiseCopyCommandsCanExecute()
             End Set
         End Property
+
+        Private Sub OnSelectedEinteilungGruppenChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+            ' Gruppe-Liste hat sich geändert -> sorted-Property neu melden
+            OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
+        End Sub
 
         Public Property SelectedGruppe As Gruppe
             Get
@@ -285,7 +327,7 @@ Namespace ViewModels
             ClubSaveAsCommand = New RelayCommand(Of Object)(AddressOf OnClubSaveAs, Function() CanClubSaveAs())
             ClubInfoPrintCommand = New RelayCommand(Of Printversion)(AddressOf OnClubInfoPrint, Function() CanClubInfoPrint())
             ClubCloseCommand = New RelayCommand(Of Object)(AddressOf OnClubClose, Function() CanClubClose())
-            ExcelDatenImportCommand = New RelayCommand(Of Object)(AddressOf OnExcelDatenImport, Function() CanExcelDatenImport)
+            ExcelDatenImportCommand = New RelayCommand(Of Object)(AddressOf OnExcelDatenImport, Function() CanExcelDatenImport())
 
             ' Einteilung Commands
             EinteilungsuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnEinteilungsuebersichtAnzeigen, Function() CanEinteilungsuebersichtAnzeigen())
@@ -725,7 +767,7 @@ Namespace ViewModels
 
 #Region "Club / File Handling"
         Private Sub OnClubNew(obj As Object)
-            DateiService.NeueDateiErstellen()
+            DateiService.NeuenClubErstellen()
             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             HandlerSetProperties(Me, EventArgs.Empty)
         End Sub
@@ -736,7 +778,9 @@ Namespace ViewModels
 
         Private Sub OnClubSave(obj As Object)
             DateiService.DateiSpeichern()
-            _msgService.ShowInformation($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
+            '_msgService.ShowInformation($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
+            ' Todo: Erfolgsmeldung anzeigen und View-Properties aktualisieren
+            ' Hier DateiEventArgs nutzen, um Dateipfad etc. zu übergeben
         End Sub
 
         Private Sub OnClubSaveAs(obj As Object)
@@ -917,7 +961,7 @@ Namespace ViewModels
 
         Private Function CanTeilnehmerAusEinteilungEntfernen() As Boolean
             Return SelectedEinteilung IsNot Nothing
-            'Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe Is Not Nothing
+            'Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing
         End Function
         Private Function CanTeilnehmerSuchen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
@@ -1261,45 +1305,6 @@ Namespace ViewModels
         End Function
 #End Region
 
-    End Class
-
-    ' Kleiner, testfreundlicher Message/Dialog-Service (Default verwendet MessageBox/InputBox).
-    ' Kann bei Tests oder Erweiterungen injiziert werden.
-    Public Interface IViewMessageService
-        Function Show(message As String, caption As String, buttons As MessageBoxButton, icon As MessageBoxImage) As MessageBoxResult
-        Function ShowInformation(message As String, Optional caption As String = "") As MessageBoxResult
-        Function ShowWarning(message As String, Optional caption As String = "") As MessageBoxResult
-        Function ShowError(message As String, Optional caption As String = "") As MessageBoxResult
-        Function ShowConfirmation(message As String, Optional caption As String = "") As Boolean
-        Function PromptForText(prompt As String, Optional title As String = "", Optional defaultValue As String = "") As String
-    End Interface
-
-    Public Class DefaultViewMessageService
-        Implements IViewMessageService
-
-        Public Function Show(message As String, caption As String, buttons As MessageBoxButton, icon As MessageBoxImage) As MessageBoxResult Implements IViewMessageService.Show
-            Return MessageBox.Show(message, caption, buttons, icon)
-        End Function
-
-        Public Function ShowInformation(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowInformation
-            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information)
-        End Function
-
-        Public Function ShowWarning(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowWarning
-            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning)
-        End Function
-
-        Public Function ShowError(message As String, Optional caption As String = "") As MessageBoxResult Implements IViewMessageService.ShowError
-            Return Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error)
-        End Function
-
-        Public Function ShowConfirmation(message As String, Optional caption As String = "") As Boolean Implements IViewMessageService.ShowConfirmation
-            Return Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) = MessageBoxResult.Yes
-        End Function
-
-        Public Function PromptForText(prompt As String, Optional title As String = "", Optional defaultValue As String = "") As String Implements IViewMessageService.PromptForText
-            Return Interaction.InputBox(prompt, title, defaultValue)
-        End Function
     End Class
 
 End Namespace

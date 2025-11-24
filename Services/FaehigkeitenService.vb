@@ -1,4 +1,5 @@
 ﻿Imports Groupies.Entities.Generation4
+Imports Groupies.Services
 
 Public Class FaehigkeitenService
     Public Shared Event FaehigkeitBearbeitet As EventHandler(Of EventArgs)
@@ -26,7 +27,7 @@ Public Class FaehigkeitenService
 
         If result = True Then
             ' Todo: Das Speichern muss im ViewModel erledigt werden
-            Services.DateiService.AktuellerClub.Faehigkeitenliste.Add(mvw.AktuellesViewModel.Model)
+            ServiceProvider.DateiService.AktuellerClub.Faehigkeitenliste.Add(mvw.AktuellesViewModel.Model)
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Faehigkeit).Benennung} wurde gespeichert")
             OnFaehigkeitBearbeitet(EventArgs.Empty)
         End If
@@ -48,7 +49,7 @@ Public Class FaehigkeitenService
         Dim result As Boolean = dialog.ShowDialog()
 
         If result = True Then
-            Dim Club = Services.DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
             Dim index = Club.Faehigkeitenliste.IndexOf(FaehigkeitToEdit)
             Club.Faehigkeitenliste(index) = mvw.AktuellesViewModel.Model
 
@@ -68,7 +69,7 @@ Public Class FaehigkeitenService
     Public Sub FaehigkeitLoeschen(FaehigkeitToDelete As Faehigkeit)
         Dim result = MessageBox.Show($"Möchten Sie die Fähigkeit {FaehigkeitToDelete.Benennung} wirklich aus dem gesamten Club - auch in den Leistungsstufen - löschen?", "Fähigkeit löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
         If result = MessageBoxResult.Yes Then
-            Dim Club = Services.DateiService.AktuellerClub
+            Dim Club = ServiceProvider.DateiService.AktuellerClub
             Club.Faehigkeitenliste.Remove(FaehigkeitAusListeLesen(Club.Faehigkeitenliste.ToList, FaehigkeitToDelete.FaehigkeitID))
             Club.Leistungsstufenliste.ToList.ForEach(Sub(ls)
                                                          ls.Faehigkeiten.Remove(FaehigkeitAusListeLesen(Club.Faehigkeitenliste.ToList, FaehigkeitToDelete.FaehigkeitID))

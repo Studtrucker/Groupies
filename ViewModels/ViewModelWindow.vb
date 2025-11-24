@@ -31,7 +31,7 @@ Public Class ViewModelWindow
         CloseCommand = New RelayCommand(Of Object)(AddressOf OnClose)
         UebersichtWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUebersichtWindowLoaded)
         DetailWindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnDetailWindowLoaded)
-        LeistungsstufenListe = DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
+        LeistungsstufenListe = ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste.Sortieren
     End Sub
 
     Public Sub New(windowService As IWindowService)

@@ -154,7 +154,6 @@ Public Class GruppenService
         ' 5. Gruppe in die Gruppenliste schreiben
         Services.DateiService.AktuellerClub.Gruppenliste.Add(NeueGruppe)
 
-
     End Sub
 
 End Class

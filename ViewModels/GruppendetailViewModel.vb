@@ -103,7 +103,28 @@ Namespace ViewModels
                 Return _Gruppe
             End Get
             Set(value As IModel)
+                If _Gruppe Is value Then Return
+
+                ' alten CollectionChanged-Handler entfernen
+                If _mitgliederCollectionNotifier IsNot Nothing Then
+                    RemoveHandler _mitgliederCollectionNotifier.CollectionChanged, AddressOf OnMitgliederlisteChanged
+                    _mitgliederCollectionNotifier = Nothing
+                End If
+
                 _Gruppe = value
+                OnPropertyChanged(NameOf(Gruppe))
+
+                ' neuen CollectionChanged-Handler hinzufügen (falls vorhanden)
+                If _Gruppe IsNot Nothing AndAlso _Gruppe.Mitgliederliste IsNot Nothing Then
+                    Dim notifier = TryCast(_Gruppe.Mitgliederliste, INotifyCollectionChanged)
+                    If notifier IsNot Nothing Then
+                        AddHandler notifier.CollectionChanged, AddressOf OnMitgliederlisteChanged
+                        _mitgliederCollectionNotifier = notifier
+                    End If
+                End If
+
+                ' UI-Updates für gebundene Properties
+                OnPropertyChanged(NameOf(MitgliederSortiert))
                 OnPropertyChanged(NameOf(Gruppe))
                 OnPropertyChanged(NameOf(Sortierung))
                 OnPropertyChanged(NameOf(Benennung))

@@ -63,7 +63,7 @@ Namespace Entities.Generation4
             GruppenstammID = OriginGruppe.GruppenstammID
             Trainer = OriginGruppe.Trainer
             TrainerID = OriginGruppe.TrainerID
-            MitgliederIDListe = OriginGruppe.MitgliederIDListe
+            MitgliederIDListe = New ObservableCollection(Of Guid)(OriginGruppe.MitgliederIDListe)
             Mitgliederliste = New TeilnehmerCollection(OriginGruppe.Mitgliederliste)
             'For Each m In OriginGruppe.Mitgliederliste
             '    If m IsNot Nothing Then

@@ -97,6 +97,14 @@ Public Class GruppenService
 
     End Sub
 
+    Public Sub GruppeAusEinteilungEntfernen(GruppenToRemove As List(Of Gruppe), Einteilung As Einteilung)
+
+        For Each gruppe In GruppenToRemove
+            GruppeAusEinteilungEntfernen(gruppe, Einteilung)
+        Next
+
+    End Sub
+
     Public Sub GruppeAusEinteilungEntfernen(GruppeToRemove As Gruppe, Einteilung As Einteilung)
 
         Einteilung.Gruppenliste.Remove(GruppeAusListeLesen(Einteilung.Gruppenliste.ToList, GruppeToRemove.Ident))

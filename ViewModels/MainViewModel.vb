@@ -452,8 +452,35 @@ Namespace ViewModels
         End Function
 
         Private Sub OnGruppeAusEinteilungEntfernen(obj As Object)
+
+            Dim selectedList As New List(Of Gruppe)
+
+            If obj IsNot Nothing Then
+                Dim asEnumerable = TryCast(obj, System.Collections.IEnumerable)
+                If asEnumerable IsNot Nothing Then
+                    For Each item In asEnumerable
+                        Dim t = TryCast(item, Gruppe)
+                        If t IsNot Nothing Then selectedList.Add(t)
+                    Next
+                Else
+                    Dim [single] = TryCast(obj, Gruppe)
+                    If [single] IsNot Nothing Then selectedList.Add([single])
+                End If
+            End If
+
+            If selectedList.Count = 0 AndAlso SelectedAlleMitglieder IsNot Nothing Then
+                For Each t In obj
+                    selectedList.Add(t)
+                Next
+            End If
+
+            If selectedList.Count = 0 Then
+                Return
+            End If
+
             Dim GS As New GruppenService
-            GS.GruppeAusEinteilungEntfernen(SelectedGruppe, SelectedEinteilung)
+            GS.GruppeAusEinteilungEntfernen(selectedList, SelectedEinteilung)
+
         End Sub
 
         Private Function CanGruppeErstellen() As Boolean
@@ -497,65 +524,6 @@ Namespace ViewModels
         Private Function CanClubSave() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing
         End Function
-
-        'Private Function CanEinteilungTransferTo(target As Einteilung) As Boolean
-        '    If target Is Nothing Then Return False
-        '    If SelectedEinteilung Is Nothing Then Return False
-        '    Dim club = DateiService.AktuellerClub
-        '    If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
-
-        '    ' Quelle ermitteln (Einteilung, die die aktuell ausgewählte Gruppe enthält)
-        '    Dim source = SelectedEinteilung
-        '    If source Is Nothing Then Return False
-        '    If target.GruppenIDListe.Count > 0 OrElse target.NichtZugewieseneTeilnehmerIDListe.Count > 0 OrElse target.VerfuegbareTrainerIDListe.Count > 0 Then Return False
-        '    Return source.Ident <> target.Ident
-        'End Function
-
-        'Private Sub OnEinteilungTransferTo(target As Einteilung)
-        '    If target Is Nothing OrElse SelectedEinteilung Is Nothing Then Return
-        '    Dim club = DateiService.AktuellerClub
-        '    If club Is Nothing Then Return
-
-        '    Dim source = SelectedEinteilung
-        '    If source Is Nothing Then Return
-        '    If source.Ident = target.Ident Then Return
-
-        '    SelectedEinteilung.Gruppenliste.ToList.ForEach(Sub(g)
-        '                                                       If target.Gruppenliste Is Nothing Then
-        '                                                           target.Gruppenliste = New GruppeCollection()
-        '                                                       End If
-        '                                                       target.Gruppenliste.Add(g)
-        '                                                       target.GruppenIDListe.Add(g.Ident)
-        '                                                   End Sub)
-
-        '    SelectedEinteilung.NichtZugewieseneTeilnehmerListe.ToList.ForEach(Sub(t)
-        '                                                                          If target.NichtZugewieseneTeilnehmerListe Is Nothing Then
-        '                                                                              target.NichtZugewieseneTeilnehmerListe = New TeilnehmerCollection
-        '                                                                              target.NichtZugewieseneTeilnehmerIDListe = New ObservableCollection(Of Guid)
-        '                                                                          End If
-        '                                                                          target.NichtZugewieseneTeilnehmerListe.Add(t)
-        '                                                                          target.NichtZugewieseneTeilnehmerIDListe.Add(t.Ident)
-        '                                                                      End Sub)
-
-        '    SelectedEinteilung.VerfuegbareTrainerListe.ToList.ForEach(Sub(t)
-        '                                                                  If target.VerfuegbareTrainerListe Is Nothing Then
-        '                                                                      target.VerfuegbareTrainerListe = New TrainerCollection
-        '                                                                      target.VerfuegbareTrainerIDListe = New ObservableCollection(Of Guid)
-        '                                                                  End If
-        '                                                                  target.VerfuegbareTrainerListe.Add(t)
-        '                                                                  target.VerfuegbareTrainerIDListe.Add(t.TrainerID)
-        '                                                              End Sub)
-
-        '    ' Auswahl aktualisieren: wähle Ziel-Einteilung und Gruppe
-        '    SelectedEinteilung = target
-        '    ' SelectedGruppe bleibt auf der gleichen Instanz; UI-Refresh erzwingen
-        '    OnPropertyChanged(NameOf(SelectedEinteilung))
-
-        '    ' CollectionViews / Menüs aktualisieren
-        '    If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
-        '    ' Optional: weitere Views refreshen (Gruppenliste-View etc.)
-
-        'End Sub
 
         Private Function CanGruppeTransferTo(target As Einteilung) As Boolean
             If target Is Nothing Then Return False
@@ -1193,6 +1161,10 @@ Namespace ViewModels
         Private Sub HandlerSetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText & " - " & DateiService.AktuellerClub.ClubName
             AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.Einteilungsliste)
+            If AlleEinteilungenCV IsNot Nothing AndAlso AlleEinteilungenCV.CanSort Then
+                AlleEinteilungenCV.SortDescriptions.Clear()
+                AlleEinteilungenCV.SortDescriptions.Add(New SortDescription(NameOf(Einteilung.Sortierung), ListSortDirection.Ascending))
+            End If
 
             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
             DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()

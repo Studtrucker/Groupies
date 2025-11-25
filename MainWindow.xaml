@@ -308,8 +308,11 @@
                                     </MenuItem.ItemContainerStyle>
                                 </MenuItem>
                                 <MenuItem Header="Gruppe entfernen"  
-                                          Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                          CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                          Command="{Binding GruppeAusEinteilungEntfernenCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}">           
+                                    <!-- Command="{Binding PlacementTarget.DataContext.GruppeAusEinteilungEntfernenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                    CommandParameter="{Binding PlacementTarget.DataContext.SelectedGruppe, RelativeSource={RelativeSource AncestorType=ContextMenu}}"-->
+
                                     <MenuItem.Icon>
                                         <Image Source="/Images/icons8-erase-50.png" />
                                     </MenuItem.Icon>
@@ -432,6 +435,7 @@
                             <DataGridTextColumn Header="Stufe"  Binding="{Binding Leistungsstufe.Benennung}" Width="*" />
 
                         </DataGrid.Columns>
+                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Teilnehmer einteilen"  

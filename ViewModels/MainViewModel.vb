@@ -703,7 +703,7 @@ Namespace ViewModels
 
             Dim mvw = New ViewModelWindow(New WindowService(fenster)) With {
                 .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Trainer),
-                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Bearbeiten)
+                .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Anzeigen)
             }
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Trainerliste
 

@@ -28,16 +28,24 @@
 
         <!--Data Template Trainer-->
         <DataTemplate DataType="{x:Type local:TrainerViewModel}">
-            <DockPanel>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
 
                 <!--Objektliste-->
-                <DataGrid CanUserAddRows="False" CanUserSortColumns="True"  IsReadOnly="True"
-                          AutoGenerateColumns="False"
-                          ItemsSource="{Binding ItemsView}"
-                          SelectedItem="{Binding SelectedItem}" 
-                          SelectionMode="Extended"
-                          local:DataGridScrollBehavior.AutoScrollIntoView="True">
- 
+                <DataGrid   Grid.Column="0"
+                           CanUserAddRows="False" 
+                           CanUserSortColumns="True"  IsReadOnly="True"
+                           AutoGenerateColumns="False"
+                           ItemsSource="{Binding ItemsView}"
+                           SelectedItem="{Binding SelectedItem}" 
+                           SelectionMode="Extended"
+                           local:DataGridScrollBehavior.AutoScrollIntoView="True">
+                    
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Sorting">
                             <i:InvokeCommandAction Command="{Binding DataGridSortingCommand}"  PassEventArgsToCommand="True"/>
@@ -49,6 +57,7 @@
                         <DataGridTextColumn Header="Nachname" Binding="{Binding Nachname}" SortMemberPath="Nachname" Width="Auto"/>
                         <DataGridTextColumn Header="Alias" Binding="{Binding Alias}" SortMemberPath="Alias" Width="Auto"/>
                     </DataGrid.Columns>
+                    
                     <DataGrid.ContextMenu>
                         <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
                                      beh:ContextMenuBehaviors.EnableRequeryForCommands="True">
@@ -92,9 +101,11 @@
                     </DataGrid.ContextMenu>
                 </DataGrid>
 
+                <GridSplitter x:Name="GridSplitterSpalte2" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" 
+                          Width="5" Background="WhiteSmoke" Margin="0,0,0,20" Grid.RowSpan="2"/>
 
                 <!-- Detailansicht-->
-                <Grid>
+                <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
                         <ColumnDefinition Width="Auto"/>
@@ -161,7 +172,7 @@
                              Text="{Binding SelectedItem.EMail}" />
                 
                 </Grid>
-            </DockPanel>
+            </Grid>
 
         </DataTemplate>
 
@@ -845,8 +856,11 @@
         </Border>
 
         <!--Liste und Detailfeld-->
-        <ContentControl  Content="{Binding AktuellesViewModel}" Margin="20,10" />
-        
+        <ContentControl  Content="{Binding AktuellesViewModel}"
+                         Margin="20,10" 
+                         Height="Auto" Width="Auto">
+        </ContentControl>
+
     </DockPanel>
     
 </Window>

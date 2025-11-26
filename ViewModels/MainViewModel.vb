@@ -708,7 +708,9 @@ Namespace ViewModels
             mvw.AktuellesViewModel.Daten = DateiService.AktuellerClub.Trainerliste
 
             fenster.DataContext = mvw
+
             fenster.Show()
+
         End Sub
 
         Private Sub OnTeilnehmeruebersichtAnzeigen(obj As Object)

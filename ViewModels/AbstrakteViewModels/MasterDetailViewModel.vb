@@ -220,4 +220,46 @@ Public MustInherit Class MasterDetailViewModel(Of T)
 
 #End Region
 
+#Region "Hilfsmethoden"
+    Friend Sub ConfigureItemsView(Of TModel)(ParamArray sortPropertyNames() As String)
+        Try
+            Dim view As ICollectionView = Nothing
+            If ItemsView IsNot Nothing Then
+                view = ItemsView
+            ElseIf Items IsNot Nothing Then
+                view = CollectionViewSource.GetDefaultView(Items)
+                ' Falls die Basisklasse eine ItemsView-Property hat, versuchen wir, sie zu setzen
+                Try
+                    ItemsView = view
+                Catch
+                    ' ignore - ItemsView möglicherweise schreibgeschützt in Basisklasse
+                End Try
+            Else
+                Return
+            End If
+
+            If view Is Nothing Then Return
+
+            If view.CanSort Then
+                view.SortDescriptions.Clear()
+                ' Sortiere nach übergebenen Property-Namen (ascending)
+                For Each propName In sortPropertyNames
+                    If Not String.IsNullOrWhiteSpace(propName) Then
+                        view.SortDescriptions.Add(New SortDescription(propName, ListSortDirection.Ascending))
+                    End If
+                Next
+            End If
+
+            ' ggf. Refresh, damit UI sofort aktualisiert wird
+            If TypeOf view Is CollectionView Then
+                DirectCast(view, CollectionView).Refresh()
+            Else
+                view.Refresh()
+            End If
+        Catch ex As Exception
+            ' Optional: Logging
+        End Try
+    End Sub
+#End Region
+
 End Class

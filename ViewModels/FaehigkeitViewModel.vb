@@ -28,6 +28,8 @@ Public Class FaehigkeitViewModel
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Faehigkeit)(AddressOf OnLoeschen, Function() CanLoeschen)
+        ConfigureItemsView(Of Gruppenstamm)(NameOf(_Faehigkeit.Sortierung), NameOf(_Faehigkeit.Benennung))
+
     End Sub
 
 #End Region
@@ -99,6 +101,7 @@ Public Class FaehigkeitViewModel
             Items = value
             OnPropertyChanged(NameOf(Daten))
             OnPropertyChanged(NameOf(Items))
+            ConfigureItemsView(Of Faehigkeit)(NameOf(_Faehigkeit.Sortierung), NameOf(_Faehigkeit.Benennung))
         End Set
     End Property
 

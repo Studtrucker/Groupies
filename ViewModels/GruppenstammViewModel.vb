@@ -34,7 +34,7 @@ Public Class GruppenstammViewModel
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Gruppenstamm)(AddressOf OnLoeschen, Function() CanLoeschen)
         ' Configure ItemsView (falls Items / ItemsView bereits gesetzt sind)
-        ConfigureItemsView()
+        ConfigureItemsView(Of Gruppenstamm)(NameOf(_Gruppenstamm.Sortierung), NameOf(_Gruppenstamm.Benennung))
     End Sub
 
 #End Region
@@ -139,7 +139,7 @@ Public Class GruppenstammViewModel
             OnPropertyChanged(NameOf(Items))
 
             ' Items wurden gesetzt -> konfiguriere die View (Sortierung)
-            ConfigureItemsView()
+            ConfigureItemsView(Of Gruppenstamm)(NameOf(_Gruppenstamm.Sortierung), NameOf(_Gruppenstamm.Benennung))
         End Set
     End Property
 
@@ -250,45 +250,6 @@ Public Class GruppenstammViewModel
         End If
     End Sub
 
-#End Region
-
-#Region "Hilfsmethoden"
-    Private Sub ConfigureItemsView()
-        Try
-            Dim view As ICollectionView = Nothing
-            If ItemsView IsNot Nothing Then
-                view = ItemsView
-            ElseIf Items IsNot Nothing Then
-                view = CollectionViewSource.GetDefaultView(Items)
-                ' Falls die Basisklasse eine ItemsView-Property hat, versuchen wir, sie zu setzen
-                Try
-                    ItemsView = view
-                Catch
-                    ' ignore - ItemsView möglicherweise schreibgeschützt in Basisklasse
-                End Try
-            Else
-                Return
-            End If
-
-            If view Is Nothing Then Return
-
-            If view.CanSort Then
-                view.SortDescriptions.Clear()
-                ' Primär nach Sortierung, sekundär nach Benennung
-                view.SortDescriptions.Add(New SortDescription(NameOf(_Gruppenstamm.Sortierung), ListSortDirection.Ascending))
-                view.SortDescriptions.Add(New SortDescription(NameOf(_Gruppenstamm.Benennung), ListSortDirection.Ascending))
-            End If
-
-            ' ggf. Refresh, damit UI sofort aktualisiert wird
-            If TypeOf view Is CollectionView Then
-                DirectCast(view, CollectionView).Refresh()
-            Else
-                view.Refresh()
-            End If
-        Catch ex As Exception
-            ' Optional: Logging
-        End Try
-    End Sub
 #End Region
 
 End Class

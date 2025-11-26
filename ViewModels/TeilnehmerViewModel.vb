@@ -39,7 +39,7 @@ Public Class TeilnehmerViewModel
         TeilnehmerCopyToCommand = New RelayCommand(Of Object)(AddressOf TeilnehmerCopyTo, AddressOf CanTeilnehmerCopyTo)
 
         AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf TeilnehmerBearbeitet
-
+        ConfigureItemsView(Of Teilnehmer)(NameOf(_Teilnehmer.Nachname), NameOf(_Teilnehmer.Vorname), NameOf(_Teilnehmer.Geburtsdatum))
 
     End Sub
 
@@ -224,6 +224,7 @@ Public Class TeilnehmerViewModel
             Items = value
             OnPropertyChanged(NameOf(Daten))
             OnPropertyChanged(NameOf(Items))
+            ConfigureItemsView(Of Teilnehmer)(NameOf(_Teilnehmer.Nachname), NameOf(_Teilnehmer.Vorname), NameOf(_Teilnehmer.Geburtsdatum))
         End Set
     End Property
 

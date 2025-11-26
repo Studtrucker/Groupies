@@ -31,6 +31,7 @@ Public Class EinteilungViewModel
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Einteilung)(AddressOf OnLoeschen, Function() CanLoeschen())
         AddHandler Me.PropertyChanged, AddressOf OnOwnPropertyChanged
+        ConfigureItemsView(Of Einteilung)(NameOf(_Einteilung.Sortierung), NameOf(_Einteilung.Benennung))
     End Sub
 
     Private Sub OnOwnPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
@@ -106,22 +107,6 @@ Public Class EinteilungViewModel
         End Get
     End Property
 
-    'Private Sub OnEinteilungCopyTo(target As Einteilung)
-    '    Dim source = TryCast(SelectedItem, Einteilung)
-    '    If source Is Nothing OrElse target Is Nothing Then Return
-    '    Dim svc As New EinteilungService()
-    '    svc.EinteilungKopieren(source, target)
-    '    ' UI‑Refresh
-    '    If ItemsView IsNot Nothing Then ItemsView.Refresh()
-    'End Sub
-
-
-    ' MVVM-konforme Can-Funktion für Einteilungs-Transfer (kann z.B. von Tests genutzt werden)
-    'Private Function CanEinteilungCopyTo(target As Einteilung) As Boolean
-    '    Dim ESvc As New EinteilungService()
-    '    Return ESvc.CanEinteilungKopieren(SelectedItem, target)
-    'End Function
-
     Private Overloads Property Daten As IEnumerable(Of IModel) Implements IViewModelSpecial.Daten
         Get
             Return Items
@@ -130,6 +115,7 @@ Public Class EinteilungViewModel
             Items = value
             OnPropertyChanged(NameOf(Daten))
             OnPropertyChanged(NameOf(Items))
+            ConfigureItemsView(Of Einteilung)(NameOf(_Einteilung.Sortierung), NameOf(_Einteilung.Benennung))
         End Set
     End Property
 

@@ -46,6 +46,7 @@ Public Class TrainerViewModel
         TrainerCopyToCommand = New RelayCommand(Of Object)(AddressOf TrainerCopyTo, AddressOf CanTrainerCopyTo)
 
         AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
+        ConfigureItemsView(Of Trainer)(NameOf(_Trainer.Nachname), NameOf(_Trainer.Vorname), NameOf(_Trainer.Alias))
 
     End Sub
 
@@ -279,6 +280,7 @@ Public Class TrainerViewModel
             Items = value
             OnPropertyChanged(NameOf(Daten))
             OnPropertyChanged(NameOf(Items))
+            ConfigureItemsView(Of Trainer)(NameOf(_Trainer.Nachname), NameOf(_Trainer.Vorname), NameOf(_Trainer.Alias))
         End Set
     End Property
 

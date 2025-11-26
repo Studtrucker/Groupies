@@ -33,6 +33,8 @@ Public Class LeistungsstufeViewModel
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Leistungsstufe)(AddressOf OnLoeschen, Function() CanLoeschen)
         AddHandler LeistungsstufenService.LeistungsstufeBearbeitet, AddressOf OnLeistungsstufeBearbeitet
+        ConfigureItemsView(Of Leistungsstufe)(NameOf(_Leistungsstufe.Sortierung), NameOf(_Leistungsstufe.Benennung))
+
     End Sub
 
     Private Sub OnLeistungsstufeBearbeitet(sender As Object, e As EventArgs)
@@ -123,6 +125,7 @@ Public Class LeistungsstufeViewModel
             Items = value
             OnPropertyChanged(NameOf(Daten))
             OnPropertyChanged(NameOf(Items))
+            ConfigureItemsView(Of Leistungsstufe)(NameOf(_Leistungsstufe.Sortierung), NameOf(_Leistungsstufe.Benennung))
         End Set
     End Property
 

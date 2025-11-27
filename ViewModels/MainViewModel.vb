@@ -426,8 +426,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnStandardLeistungsstufenErstellen(obj As Object)
-
-            StandardLeistungsstufenErstellen()
+            ServiceProvider.DateiService.AktuellerClub.Leistungsstufenliste = StandardLeistungsstufenErstellen()
         End Sub
 
         Private Function CanStandardLeistungsstufeErstellen() As Boolean

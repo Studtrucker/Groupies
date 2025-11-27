@@ -15,13 +15,6 @@ Namespace Services
         'C:\Users\studt_era90oc\Source\Repos\Skischule\Services\GroupLevelDistribution.xlsx
         Public Function StandardLeistungsstufenErstellen() As LeistungsstufeCollection
 
-            Dim Empty = New Leistungsstufe() With {
-                .Benennung = String.Empty,
-                .Sortierung = -1,
-                .Ident = Guid.Empty,
-                .Faehigkeiten = Nothing,
-                .Beschreibung = String.Empty}
-
             Dim Anfaenger = New Leistungsstufe() With {
                 .Benennung = "Anfänger",
                 .Sortierung = 10,
@@ -57,7 +50,7 @@ Namespace Services
                 .Faehigkeiten = SkillsExperte(),
                 .Ident = Guid.NewGuid}
 
-            _levelCollection = New LeistungsstufeCollection From {Empty, Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
+            _levelCollection = New LeistungsstufeCollection From {Anfaenger, Fortgeschrittener, Geniesser, Koenner, Experte}
             Return _levelCollection
 
         End Function

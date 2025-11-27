@@ -194,7 +194,7 @@
             <MenuItem  Header="_Extras" >
                 <MenuItem Header="Daten aus Excel importieren" Command="{Binding ExcelDatenImportCommand}">
                     <MenuItem.Icon>
-                        <Image Height="20" Source="Images/icons8-person-48.png"/>
+                        <Image Height="20" Source="/Images/importieren-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <!--<MenuItem Header="Daten nach Excel exportieren">
@@ -202,6 +202,12 @@
                         <Image Height="20" Source="Images/icons8-microsoft-excel-2019-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>-->
+                <Separator/>
+                <MenuItem Header="Standard Leistungsstufen erstellen" Command="{Binding StandardLeistungsstufenErstellenCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-treppe-rauf-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Hilfe">
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >

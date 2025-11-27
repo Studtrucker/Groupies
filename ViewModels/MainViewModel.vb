@@ -133,6 +133,7 @@ Namespace ViewModels
         ' Leistungsstufen Commands
         Public Property LeistungsstufenuebersichtAnzeigenCommand As ICommand
         Public Property LeistungsstufeErstellenCommand As ICommand
+        Public Property StandardLeistungsstufenErstellenCommand As ICommand
 
         ' Faehigkeiten Commands
         Public Property FaehigkeitenuebersichtAnzeigenCommand As ICommand
@@ -357,11 +358,13 @@ Namespace ViewModels
             ' Leistungsstufen Commands
             LeistungsstufenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufenuebersichtAnzeigen, Function() CanLeistungsstufenuebersichtAnzeigen())
             LeistungsstufeErstellenCommand = New RelayCommand(Of Object)(AddressOf OnLeistungsstufeErstellen, Function() CanLeistungsstufeErstellen())
+            StandardLeistungsstufenErstellenCommand = New RelayCommand(Of Object)(AddressOf OnStandardLeistungsstufenErstellen, Function() CanStandardLeistungsstufeErstellen())
 
             ' Faehigkeiten Commands
             FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
         End Sub
+
 
         Private Sub OnGruppeCopyTo(param As Object)
             ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
@@ -421,6 +424,15 @@ Namespace ViewModels
             Dim LS As New LeistungsstufenService
             LS.LeistungsstufeErstellen()
         End Sub
+
+        Private Sub OnStandardLeistungsstufenErstellen(obj As Object)
+
+            StandardLeistungsstufenErstellen()
+        End Sub
+
+        Private Function CanStandardLeistungsstufeErstellen() As Boolean
+            Return True
+        End Function
 
         Private Function CanLeistungsstufenuebersichtAnzeigen() As Boolean
             Return DateiService.AktuellerClub IsNot Nothing

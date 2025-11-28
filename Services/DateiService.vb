@@ -21,26 +21,31 @@ Namespace Services
         Inherits BaseModel
 
 #Region "Events und EventArgs"
-        Public Event DateiGeoeffnet As EventHandler(Of DateiEventArgs)
-        Public Event DateiOeffnenIstFehlgeschlagen As EventHandler(Of DateiEventArgs)
-        Public Event DateiGeschlossen As EventHandler(Of EventArgs)
-        Public Event DateiGespeichert As EventHandler(Of DateiEventArgs)
+        Public Event DateiGeoeffnet As EventHandler(Of OperationResultEventArgs)
+        Public Event DateiOeffnenIstFehlgeschlagen As EventHandler(Of OperationResultEventArgs)
+        Public Event DateiGeschlossen As EventHandler(Of OperationResultEventArgs)
+        Public Event DateiGespeichert As EventHandler(Of OperationResultEventArgs)
+        Public Event ClubSpeichernFehlgeschlagen As EventHandler(Of OperationResultEventArgs)
+        Public Event ClubSpeichernErfolgreich As EventHandler(Of OperationResultEventArgs)
 #End Region
-
-        Protected Overridable Sub OnDateiGeoeffnet(e As DateiEventArgs)
+        Protected Overridable Sub OnDateiGeoeffnet(e As OperationResultEventArgs)
             RaiseEvent DateiGeoeffnet(Me, e)
         End Sub
 
-        Protected Overridable Sub OnDateiOeffnenIstFehlgeschlagen(e As DateiEventArgs)
+        Protected Overridable Sub OnDateiOeffnenIstFehlgeschlagen(e As OperationResultEventArgs)
             RaiseEvent DateiOeffnenIstFehlgeschlagen(Me, e)
         End Sub
 
-        Protected Overridable Sub OnDateiGeschlossen(e As EventArgs)
+        Protected Overridable Sub OnDateiGeschlossen(e As OperationResultEventArgs)
             RaiseEvent DateiGeschlossen(Me, e)
         End Sub
 
-        Protected Overridable Sub OnDateiGespeichert(e As DateiEventArgs)
-            RaiseEvent DateiGespeichert(Me, e)
+        Protected Overridable Sub OnClubSpeichernErfolgreich(e As OperationResultEventArgs)
+            RaiseEvent ClubSpeichernErfolgreich(Me, e)
+        End Sub
+
+        Protected Overridable Sub OnClubSpeichernFehlgeschlagen(e As OperationResultEventArgs)
+            RaiseEvent ClubSpeichernFehlgeschlagen(Me, e)
         End Sub
 
         Private ReadOnly _msgService As IViewMessageService
@@ -74,7 +79,7 @@ Namespace Services
 
         Public Sub DateiOeffnen(Dateipfad As String)
             Me.AktuelleDatei = New FileInfo(Dateipfad)
-            Dim args As New DateiEventArgs(Dateipfad)
+            Dim args As New OperationResultEventArgs(True, $"Die Datei {Dateipfad} wurde erfolgreich geöffnet.")
             OnDateiGeoeffnet(args)
         End Sub
 
@@ -84,15 +89,10 @@ Namespace Services
             Dim result As String = String.Empty
             Dim isValid = DateiPruefenUndOeffnen(ausgewaehlterPfad, result)
 
-            Dim args As New DateiEventArgs(result)
+            Dim args As New OperationResultEventArgs(isValid, result)
 
             If isValid Then
-                Dim loadResult = DateiLaden(ausgewaehlterPfad)
-                If loadResult.StartsWith("Fehler", StringComparison.OrdinalIgnoreCase) Then
-                    OnDateiOeffnenIstFehlgeschlagen(New DateiEventArgs(loadResult))
-                Else
-                    OnDateiGeoeffnet(args)
-                End If
+                DateiOeffnen(ausgewaehlterPfad)
             Else
                 OnDateiOeffnenIstFehlgeschlagen(args)
             End If
@@ -128,13 +128,14 @@ Namespace Services
             Return GetFileInfo(String.Empty, "Club öffnen", GetFileInfoMode.Laden)
         End Function
 
-        Public Function DateiLaden(File As FileInfo) As String
+        Public Sub DateiOeffnen(File As FileInfo)
+
             If File Is Nothing OrElse String.IsNullOrEmpty(File.FullName) Then
-                Return "Die Datei wurde nicht ausgewählt oder existiert nicht."
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei wurde nicht ausgewählt oder existiert nicht."))
             End If
 
             If AktuelleDatei IsNot Nothing AndAlso String.Equals(File.FullName, AktuelleDatei.FullName, StringComparison.OrdinalIgnoreCase) Then
-                Return $"Der Club '{If(AktuellerClub?.ClubName, Path.GetFileNameWithoutExtension(File.Name))}' ist bereits geöffnet"
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Der Club '{If(AktuellerClub?.ClubName, Path.GetFileNameWithoutExtension(File.Name))}' ist bereits geöffnet"))
             End If
 
             Try
@@ -142,13 +143,52 @@ Namespace Services
                 AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
                 If AktuellerClub IsNot Nothing Then
                     SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
-                    Return $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen."
+                    ' Erfolgs-Event mit Payload (der geladene Club)
+                    OnDateiGeoeffnet(New OperationResultEventArgs(True, $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen.", Nothing, AktuellerClub))
+                    Return
                 End If
-                Return "Die Datei konnte nicht geladen werden."
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei konnte nicht geladen werden."))
             Catch ex As Exception
-                Return $"Fehler beim Laden: {ex.Message}"
+                ' Fehler-Ereignis mit Exception-Objekt
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Laden: {ex.Message}", ex))
             End Try
-        End Function
+
+        End Sub
+
+        Public Sub ClubSpeichern()
+
+            If AktuellerClub Is Nothing Then
+                OnClubSpeichernFehlgeschlagen(New OperationResultEventArgs(False, "Es ist kein Club geladen. Bitte laden Sie einen Club, bevor Sie speichern."))
+            End If
+
+            If AktuelleDatei Is Nothing OrElse String.IsNullOrWhiteSpace(AktuelleDatei.FullName) Then
+                OnClubSpeichernFehlgeschlagen(New OperationResultEventArgs(False, "Keine Zieldatei angegeben. Bitte 'Speichern unter' verwenden."))
+            End If
+
+            Try
+                Dim directory As String = Path.GetDirectoryName(AktuelleDatei.FullName)
+
+                If String.IsNullOrWhiteSpace(directory) Then
+                    ' Falls kein Verzeichnis ermittelt werden kann, auf aktuelles Verzeichnis zurückfallen
+                    directory = Environment.CurrentDirectory
+                    AktuelleDatei = New FileInfo(Path.Combine(directory, AktuelleDatei.Name))
+                End If
+
+
+                Dim serializer = New XmlSerializer(GetType(Groupies.Entities.Generation4.Club))
+                Using fs = New FileStream(AktuelleDatei.FullName, FileMode.Create, FileAccess.Write, FileShare.None)
+                    serializer.Serialize(fs, AktuellerClub)
+                End Using
+
+                OnClubSpeichernErfolgreich(New OperationResultEventArgs(True, $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."))
+            Catch ex As UnauthorizedAccessException
+                OnClubSpeichernFehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Speichern: Zugriff verweigert ({ex.Message})"))
+            Catch ex As IOException
+                onclubspeichernfehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Speichern: Ein-/Ausgabefehler ({ex.Message})"))
+            Catch ex As Exception
+                onclubspeichernfehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Speichern: {ex.Message}"))
+            End Try
+        End Sub
 
         Public Function DateiSpeichern() As String
             If AktuellerClub Is Nothing Then
@@ -174,7 +214,7 @@ Namespace Services
                     serializer.Serialize(fs, AktuellerClub)
                 End Using
 
-                OnDateiGespeichert(New DateiEventArgs(AktuelleDatei.DirectoryName, AktuelleDatei.Name))
+                OnClubSpeichernErfolgreich(New OperationResultEventArgs(True, $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."))
                 Return $"Die Datei '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."
             Catch ex As UnauthorizedAccessException
                 Return $"Fehler beim Speichern: Zugriff verweigert ({ex.Message})"
@@ -226,7 +266,7 @@ Namespace Services
         Public Sub DateiSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
-            OnDateiGeschlossen(EventArgs.Empty)
+            OnDateiGeschlossen(OperationResultEventArgs.Empty)
         End Sub
 
 #End Region

@@ -208,6 +208,11 @@
                         <Image Height="20" Source="Images/icons8-treppe-rauf-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Standard Fähigkeiten erstellen" Command="{Binding StandardFaehigkeitenErstellenCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="20" Source="Images/icons8-trophaee-48.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Hilfe">
                 <MenuItem Header="Alle von Icons8" Command="{Binding OpenHomepageCommand}" >

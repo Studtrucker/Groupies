@@ -66,8 +66,6 @@ Namespace Services
 
         Public Function StandardFaehigkeitenErstellen() As FaehigkeitCollection
             Dim faehigkeiten = New FaehigkeitCollection From {
-                New Faehigkeit(String.Empty, -1) With {
-                    .Beschreibung = String.Empty},
                 New Faehigkeit("Technik: Kurvensteuerung", 100) With {
                     .Beschreibung = DescriptionAnfaenger()},
                 New Faehigkeit("Technik: Belastung", 110) With {

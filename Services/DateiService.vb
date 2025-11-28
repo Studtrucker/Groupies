@@ -77,32 +77,43 @@ Namespace Services
 
 #Region "Datei Funktionen"
 
-        Public Sub DateiOeffnen(Dateipfad As String)
-            Me.AktuelleDatei = New FileInfo(Dateipfad)
-            Dim args As New OperationResultEventArgs(True, $"Die Datei {Dateipfad} wurde erfolgreich geöffnet.")
-            OnDateiGeoeffnet(args)
-        End Sub
-
         Public Sub DateiOeffnen()
             Dim ausgewaehlterPfad = DateipfadAuswaehlen()
-
-            Dim result As String = String.Empty
-            Dim isValid = DateiPruefenUndOeffnen(ausgewaehlterPfad, result)
-
-            Dim args As New OperationResultEventArgs(isValid, result)
-
-            If isValid Then
-                DateiOeffnen(ausgewaehlterPfad)
-            Else
-                OnDateiOeffnenIstFehlgeschlagen(args)
-            End If
+            DateiOeffnen(ausgewaehlterPfad)
         End Sub
 
+        Public Sub DateiOeffnen(File As FileInfo)
+
+            If File Is Nothing OrElse String.IsNullOrEmpty(File.FullName) Then
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei wurde nicht ausgewählt oder existiert nicht."))
+            End If
+
+            If AktuelleDatei IsNot Nothing AndAlso String.Equals(File.FullName, AktuelleDatei.FullName, StringComparison.OrdinalIgnoreCase) Then
+                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Der Club '{If(AktuellerClub?.ClubName, Path.GetFileNameWithoutExtension(File.Name))}' ist bereits geöffnet"))
+            End If
+
+            Try
+                AktuelleDatei = New FileInfo(File.FullName)
+                AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
+                SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
+                ' Erfolgs-Event mit Payload (der geladene Club)
+                'OnDateiGeoeffnet(New OperationResultEventArgs(True, $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen.", Nothing, AktuellerClub))
+                Return
+                'OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei konnte nicht geladen werden."))
+            Catch ex As Exception
+                ' Fehler-Ereignis mit Exception-Objekt
+                'OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei konnte nicht geladen werden."))
+                'OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Laden: {ex.Message}", ex))
+            End Try
+
+        End Sub
         Private Function DateiPruefenUndOeffnen(dateipfad As FileInfo, ByRef meldung As String) As Boolean
+
             If dateipfad Is Nothing Then
                 meldung = "Datei öffnen wurde abgebrochen"
                 Return False
             End If
+
             If String.IsNullOrEmpty(dateipfad.FullName) OrElse Not File.Exists(dateipfad.FullName) Then
                 meldung = "Datei existiert nicht"
                 Return False
@@ -120,40 +131,13 @@ Namespace Services
                 Return False
             End If
 
-            meldung = $"Die Datei {dateipfad.Name} wurde erfolgreich geladen"
+            'meldung = $"Die Datei {dateipfad.Name} wurde erfolgreich geladen"
             Return True
         End Function
 
         Public Function DateipfadAuswaehlen() As FileInfo
             Return GetFileInfo(String.Empty, "Club öffnen", GetFileInfoMode.Laden)
         End Function
-
-        Public Sub DateiOeffnen(File As FileInfo)
-
-            If File Is Nothing OrElse String.IsNullOrEmpty(File.FullName) Then
-                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei wurde nicht ausgewählt oder existiert nicht."))
-            End If
-
-            If AktuelleDatei IsNot Nothing AndAlso String.Equals(File.FullName, AktuelleDatei.FullName, StringComparison.OrdinalIgnoreCase) Then
-                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Der Club '{If(AktuellerClub?.ClubName, Path.GetFileNameWithoutExtension(File.Name))}' ist bereits geöffnet"))
-            End If
-
-            Try
-                AktuelleDatei = New FileInfo(File.FullName)
-                AktuellerClub = SkiDateienService.IdentifiziereDateiGeneration(AktuelleDatei.FullName).LadeGroupies(AktuelleDatei.FullName)
-                If AktuellerClub IsNot Nothing Then
-                    SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
-                    ' Erfolgs-Event mit Payload (der geladene Club)
-                    OnDateiGeoeffnet(New OperationResultEventArgs(True, $"Die Datei '{AktuellerClub.ClubName}' wurde erfolgreich geladen.", Nothing, AktuellerClub))
-                    Return
-                End If
-                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, "Die Datei konnte nicht geladen werden."))
-            Catch ex As Exception
-                ' Fehler-Ereignis mit Exception-Objekt
-                OnDateiOeffnenIstFehlgeschlagen(New OperationResultEventArgs(False, $"Fehler beim Laden: {ex.Message}", ex))
-            End Try
-
-        End Sub
 
         Public Sub ClubSpeichern()
 

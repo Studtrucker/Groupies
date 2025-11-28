@@ -591,10 +591,13 @@ Namespace ViewModels
         End Sub
 
         Private Sub InitializeHandlers()
+
             AddHandler PropertyChanged, AddressOf HandlerPropertyChanged
-            AddHandler DateiService.DateiGeoeffnet, AddressOf HandlerSetProperties
-            AddHandler DateiService.DateiGeschlossen, AddressOf HandlerResetProperties
+
+            AddHandler DateiService.DateiGeoeffnet, AddressOf HandlerZeigeOperationResult
             AddHandler DateiService.DateiOeffnenIstFehlgeschlagen, AddressOf HandlerZeigeOperationResult
+            AddHandler DateiService.DateiGeschlossen, AddressOf HandlerResetProperties
+
             AddHandler DateiService.PropertyChanged, AddressOf HandlerDateiServicePropertyChanged
             AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerServiceTrainerGeaendert
             ' CollectionChanged-Handler für SelectedAlleMitglieder vorbereiten
@@ -640,10 +643,11 @@ Namespace ViewModels
             If DateiService.AktuellerClub IsNot Nothing Then
                 RefreshMostRecentMenu()
                 RefreshJumpListInWinTaskbar()
-                HandlerSetProperties(Me, OperationResultEventArgs.Empty)
+                'HandlerZeigeOperationResult(Me, New OperationResultEventArgs)
             Else
                 HandlerResetProperties(Me, OperationResultEventArgs.Empty)
             End If
+
         End Sub
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
@@ -765,7 +769,7 @@ Namespace ViewModels
         Private Sub OnClubNew(obj As Object)
             DateiService.NeuenClubErstellen()
             DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            HandlerSetProperties(Me, OperationResultEventArgs.Empty)
+            HandlerZeigeOperationResult(Me, OperationResultEventArgs.Empty)
         End Sub
 
         Private Sub OnClubOpen(obj As Object)
@@ -793,8 +797,8 @@ Namespace ViewModels
             End If
 
             ' Erfolgsmeldung anzeigen und View-Properties aktualisieren
-            _msgService.ShowInformation(result, "Speichern")
-            HandlerSetProperties(Me, OperationResultEventArgs.Empty)
+            '_msgService.ShowInformation(result, "Speichern")
+            'HandlerZeigeOperationResult(Me, OperationResultEventArgs.Empty)
             'DateiService.DateiSpeichernAls()
             'HandlerSetProperties(Me, EventArgs.Empty)
         End Sub
@@ -1185,10 +1189,6 @@ Namespace ViewModels
             WindowTitleText = DefaultWindowTitleText & " - " & DirectCast(e.Payload, Club).ClubName
         End Sub
 
-        Private Sub HandlerSetProperties(sender As Object, e As OperationResultEventArgs)
-            HandlerZeigeOperationResult(Me, e)
-        End Sub
-
         Private Sub HandlerResetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText
             AlleEinteilungenCV = Nothing
@@ -1214,6 +1214,7 @@ Namespace ViewModels
 #End Region
 
 #Region "Helpers / Utilities"
+
         Private Sub HandlerZeigeOperationResult(sender As Object, e As OperationResultEventArgs)
             If Not e.Success Then
                 ' Fehler anzeigen, ggf. detaillierte Exception-Info

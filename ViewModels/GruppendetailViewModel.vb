@@ -29,8 +29,8 @@ Namespace ViewModels
 
             UserControlLoadedCommand = New RelayCommand(Of Object)(AddressOf OnUserControlLoaded)
 
-            AddHandler ServiceProvider.DateiService.DateiGeschlossen, AddressOf OnDateiGeschlossen
-            AddHandler ServiceProvider.DateiService.DateiGeoeffnet, AddressOf OnDateiGeOeffnet
+            AddHandler ServiceProvider.DateiService.ClubGeschlossen, AddressOf OnDateiGeschlossen
+            AddHandler ServiceProvider.DateiService.ClubGeladen, AddressOf OnDateiGeOeffnet
             AddHandler TrainerService.TrainerGeaendert, AddressOf OnTrainerGeaendert
             AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnTeilnehmerGeaendert
             AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf OnGruppeGeaendert

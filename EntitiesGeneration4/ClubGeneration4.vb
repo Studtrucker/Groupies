@@ -33,6 +33,8 @@ Namespace Entities.Generation4
         ''' </summary>
         Public Sub New()
             DateiGeneration = "4"
+            Me.Faehigkeitenliste = New FaehigkeitCollection
+            Me.Leistungsstufenliste = New LeistungsstufeCollection
         End Sub
 
 #End Region

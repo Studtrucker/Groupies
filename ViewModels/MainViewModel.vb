@@ -35,21 +35,22 @@ Namespace ViewModels
         Private ReadOnly DateiService As DateiService
         Private ReadOnly _msgService As IViewMessageService
 
-        Private _WindowTitleText As String = String.Empty
+        Private _WindowTitleText As String
 
         Private _AlleEinteilungenCV As CollectionView
         Private _SelectedEinteilung As Einteilung
         Private _SelectedGruppe As Gruppe
         Private _SelectedTeilnehmer As Teilnehmer
-        Private _SelectedAlleMitglieder As New TeilnehmerCollection
+        Private _SelectedAlleMitglieder As TeilnehmerCollection
         Private _SelectedGruppenloserTrainer As Trainer
-        Private _selectedAlleGruppenloserTrainer As IList
+        Private _SelectedAlleGruppenloserTrainer As IList
         Private _GruppendetailViewModel As GruppendetailViewModel
         Private _einteilungCopyToCommand As RelayCommand(Of Einteilung)
 
 #End Region
 
 #Region "Konstruktor"
+
         Public Sub New(windowService As IWindowService, Optional msgService As IViewMessageService = Nothing)
             MyBase.New()
             _windowService = windowService
@@ -58,14 +59,16 @@ Namespace ViewModels
             ' zentrale DateiService-Instanz über Provider initialisieren (mit dem MessageService)
             ServiceProvider.DateiService = New DateiService(_msgService)
             DateiService = ServiceProvider.DateiService
+            MostRecentlyUsedMenuItem = New ObservableCollection(Of MenuEintragViewModel)
+
+            InitializeCommands()
+            InitializeHandlers()
 
             ' ViewModel-Sub-ViewModels initialisieren
             GruppendetailViewModel = New GruppendetailViewModel()
+            _SelectedAlleMitglieder = New TeilnehmerCollection
 
-            ' Commands und Handler initialisieren
-            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
-            InitializeCommands()
-            InitializeHandlers()
+            HandlerResetProperties(Me, EventArgs.Empty)
 
         End Sub
 #End Region
@@ -143,7 +146,7 @@ Namespace ViewModels
 
 
         ' Menu Properties
-        Public Property MostRecentlyUsedMenuItem As New ObservableCollection(Of MenuEintragViewModel)
+        Public Property MostRecentlyUsedMenuItem As ObservableCollection(Of MenuEintragViewModel)
 
         ' Window / View-spezifische Properties
         Public Property WindowTitleText As String
@@ -289,11 +292,11 @@ Namespace ViewModels
         ' Bindbare SelectedItems-Property (vom Attached-Behavior gesetzt)
         Public Property SelectedAlleGruppenloserTrainer As IList
             Get
-                Return _selectedAlleGruppenloserTrainer
+                Return _SelectedAlleGruppenloserTrainer
             End Get
             Set(value As IList)
-                If _selectedAlleGruppenloserTrainer IsNot value Then
-                    _selectedAlleGruppenloserTrainer = value
+                If _SelectedAlleGruppenloserTrainer IsNot value Then
+                    _SelectedAlleGruppenloserTrainer = value
                     OnPropertyChanged(NameOf(SelectedAlleGruppenloserTrainer))
                 End If
             End Set
@@ -316,10 +319,13 @@ Namespace ViewModels
 #End Region
 
 #Region "Initialisierung (Commands / Handler)"
+
         Private Sub InitializeCommands()
+
             ' Window Commands
             WindowClosingCommand = New RelayCommand(Of CancelEventArgs)(AddressOf OnWindowClosing)
             WindowClosedCommand = New RelayCommand(Of Object)(AddressOf OnWindowClosed)
+            WindowLoadedCommand = New RelayCommand(Of Object)(AddressOf OnWindowLoaded)
 
             ' Application Commands
             ApplicationCloseCommand = New RelayCommand(Of Object)(AddressOf OnWindowClose)
@@ -367,6 +373,40 @@ Namespace ViewModels
             FaehigkeitenuebersichtAnzeigenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitenuebersichtAnzeigen, Function() CanFaehigkeitenuebersichtAnzeigen())
             FaehigkeitErstellenCommand = New RelayCommand(Of Object)(AddressOf OnFaehigkeitErstellen, Function() CanFaehigkeitErstellen())
             StandardFaehigkeitenErstellenCommand = New RelayCommand(Of Object)(AddressOf OnStandardFaehigkeitenErstellen, Function() CanStandardFaehigkeitenErstellen())
+        End Sub
+
+        Private Sub InitializeHandlers()
+
+            AddHandler DateiService.ClubGeladen, AddressOf HandlerClubGeladen
+            AddHandler DateiService.ClubNichtGeladen, AddressOf HandlerClubNichtGeladen
+            AddHandler DateiService.ClubNeuErstellt, AddressOf HandlerClubNeuErstellt
+            AddHandler DateiService.ClubGeschlossen, AddressOf HandlerClubGeschlossen
+            AddHandler DateiService.ClubGespeichert, AddressOf HandlerClubGespeichert
+            AddHandler DateiService.ClubNichtGespeichert, AddressOf HandlerClubNichtGespeichert
+
+        End Sub
+
+        Private Sub HandlerClubGeladen(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
+        End Sub
+
+        Private Sub HandlerClubNichtGeladen(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
+        End Sub
+
+        Private Sub HandlerClubNeuErstellt(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
+        End Sub
+
+        Private Sub HandlerClubGeschlossen(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
+        End Sub
+        Private Sub HandlerClubGespeichert(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
+        End Sub
+
+        Private Sub HandlerClubNichtGespeichert(sender As Object, e As OperationResultEventArgs)
+            HandlerZeigeOperationResult(sender, e)
         End Sub
 
 
@@ -590,24 +630,6 @@ Namespace ViewModels
             ' Optional: weitere Views refreshen (Gruppenliste-View etc.)
         End Sub
 
-        Private Sub InitializeHandlers()
-
-            AddHandler PropertyChanged, AddressOf HandlerPropertyChanged
-
-            AddHandler DateiService.DateiGeoeffnet, AddressOf HandlerZeigeOperationResult
-            AddHandler DateiService.DateiOeffnenIstFehlgeschlagen, AddressOf HandlerZeigeOperationResult
-            AddHandler DateiService.DateiGeschlossen, AddressOf HandlerResetProperties
-
-            AddHandler DateiService.PropertyChanged, AddressOf HandlerDateiServicePropertyChanged
-            AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerServiceTrainerGeaendert
-            ' CollectionChanged-Handler für SelectedAlleMitglieder vorbereiten
-            AddHandler CType(_SelectedAlleMitglieder, INotifyCollectionChanged).CollectionChanged, AddressOf OnSelectedAlleMitgliederCollectionChanged
-            AddHandler TeilnehmerService.TeilnehmerGeaendert, AddressOf OnMitgliederlisteGeaendert
-            AddHandler TeilnehmerSuchErgebnisViewModel.OpenTargetRequested, AddressOf OnTeilnehmerSuchErgebnisOpenTargetRequested
-            AddHandler DateiService.DateiGespeichert, AddressOf HandlerDateiGespeichert
-            AddHandler GruppenstammService.GruppenstammBearbeitet, AddressOf onGruppenstammGeaendert
-        End Sub
-
         Private Sub onGruppenstammGeaendert(sender As Object, e As GruppenstammEventArgs)
             'OnPropertyChanged(NameOf(AlleEinteilungenCV))
         End Sub
@@ -622,21 +644,19 @@ Namespace ViewModels
 #End Region
 
 #Region "Window Lifecycle"
-        Private Sub OnWindowLoaded(obj As Object)
 
-            InitializeCommands()
-            InitializeHandlers()
+        Private Sub OnWindowLoaded(obj As Object)
 
             DateiService.LadeMeistVerwendeteDateienInSortedList()
 
             If (Environment.GetCommandLineArgs().Length = 2) Then
                 Dim args = Environment.GetCommandLineArgs
                 Dim filename = args(1)
-                DateiService.DateiOeffnen(New FileInfo(filename))
+                DateiService.ClubLaden(filename)
             Else
                 Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
                 If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
-                    DateiService.DateiOeffnen(New FileInfo(LetzteDatei))
+                    DateiService.ClubLaden(LetzteDatei)
                 End If
             End If
 
@@ -656,13 +676,11 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnWindowClosed(obj As Object)
+            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
             DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             DateiService.SpeicherZuletztVerwendeteDateienSortedList()
         End Sub
 
-        Private Sub OnWindowClose(obj As Object)
-            _windowService.CloseWindow()
-        End Sub
 #End Region
 
 #Region "Menu / Navigation Handlers"
@@ -768,43 +786,26 @@ Namespace ViewModels
 #Region "Club / File Handling"
         Private Sub OnClubNew(obj As Object)
             DateiService.NeuenClubErstellen()
-            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            HandlerZeigeOperationResult(Me, OperationResultEventArgs.Empty)
         End Sub
 
         Private Sub OnClubOpen(obj As Object)
-            DateiService.DateiOeffnen()
+            DateiService.ClubLaden()
         End Sub
 
         Private Sub OnClubSave(obj As Object)
-            DateiService.DateiSpeichern()
-            '_msgService.ShowInformation($"Der Club {Services.DateiService.AktuellerClub.ClubName} wurde gespeichert")
-            ' Todo: Erfolgsmeldung anzeigen und View-Properties aktualisieren
-            ' Hier DateiEventArgs nutzen, um Dateipfad etc. zu übergeben
+            DateiService.ClubSpeichern()
         End Sub
 
         Private Sub OnClubSaveAs(obj As Object)
-            Dim result As String = DateiService.DateiSpeichernAls()
-
-            If String.IsNullOrWhiteSpace(result) Then
-                _msgService.ShowError("Speichern fehlgeschlagen: Unbekannter Fehler", "Fehler")
-                Return
-            End If
-
-            If result.StartsWith("Fehler", StringComparison.OrdinalIgnoreCase) Then
-                _msgService.ShowError(result, "Fehler")
-                Return
-            End If
-
-            ' Erfolgsmeldung anzeigen und View-Properties aktualisieren
-            '_msgService.ShowInformation(result, "Speichern")
-            'HandlerZeigeOperationResult(Me, OperationResultEventArgs.Empty)
-            'DateiService.DateiSpeichernAls()
-            'HandlerSetProperties(Me, EventArgs.Empty)
+            DateiService.ClubSpeichernAls()
         End Sub
 
         Private Sub OnClubClose(obj As Object)
-            DateiService.DateiSchliessen()
+            DateiService.ClubSchliessen()
+        End Sub
+
+        Private Sub OnWindowClose(obj As Object)
+            _windowService.CloseWindow()
         End Sub
 
         Private Sub OnClubInfoPrint(obj As Printversion)
@@ -1185,10 +1186,6 @@ Namespace ViewModels
             End If
         End Sub
 
-        Private Sub HandlerDateiGespeichert(sender As Object, e As OperationResultEventArgs)
-            WindowTitleText = DefaultWindowTitleText & " - " & DirectCast(e.Payload, Club).ClubName
-        End Sub
-
         Private Sub HandlerResetProperties(sender As Object, e As EventArgs)
             WindowTitleText = DefaultWindowTitleText
             AlleEinteilungenCV = Nothing
@@ -1216,6 +1213,8 @@ Namespace ViewModels
 #Region "Helpers / Utilities"
 
         Private Sub HandlerZeigeOperationResult(sender As Object, e As OperationResultEventArgs)
+
+            ' Die Operation war nicht erfolgreich
             If Not e.Success Then
                 ' Fehler anzeigen, ggf. detaillierte Exception-Info
                 _msgService.ShowError(e.Message, "Fehler")
@@ -1242,6 +1241,7 @@ Namespace ViewModels
             End If
 
             _msgService.ShowInformation(e.Message, "Erfolg")
+
         End Sub
 
 
@@ -1293,7 +1293,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub HandleMostRecentClick(sender As Object)
-            DateiService.DateiOeffnen(New FileInfo(sender))
+            DateiService.ClubLaden(sender.ToString())
         End Sub
 
         Public Function KopiereListeMitNeuenObjekten(Of T)(originalList As List(Of T), copyConstructor As Func(Of T, T)) As List(Of T)

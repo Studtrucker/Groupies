@@ -68,7 +68,7 @@ Namespace ViewModels
             GruppendetailViewModel = New GruppendetailViewModel()
             _SelectedAlleMitglieder = New TeilnehmerCollection
 
-            HandlerResetProperties(Me, EventArgs.Empty)
+            'HandlerResetProperties(Me, EventArgs.Empty)
 
         End Sub
 #End Region
@@ -399,6 +399,7 @@ Namespace ViewModels
         End Sub
 
         Private Sub HandlerClubGeschlossen(sender As Object, e As OperationResultEventArgs)
+            'HandlerResetProperties(sender, e)
             HandlerZeigeOperationResult(sender, e)
         End Sub
         Private Sub HandlerClubGespeichert(sender As Object, e As OperationResultEventArgs)
@@ -664,8 +665,8 @@ Namespace ViewModels
                 RefreshMostRecentMenu()
                 RefreshJumpListInWinTaskbar()
                 'HandlerZeigeOperationResult(Me, New OperationResultEventArgs)
-            Else
-                HandlerResetProperties(Me, OperationResultEventArgs.Empty)
+                'Else
+                'HandlerResetProperties(Me, OperationResultEventArgs.Empty)
             End If
 
         End Sub
@@ -1186,16 +1187,16 @@ Namespace ViewModels
             End If
         End Sub
 
-        Private Sub HandlerResetProperties(sender As Object, e As EventArgs)
-            WindowTitleText = DefaultWindowTitleText
-            AlleEinteilungenCV = Nothing
+        'Private Sub HandlerResetProperties(sender As Object, e As EventArgs)
+        '    WindowTitleText = DefaultWindowTitleText
+        '    AlleEinteilungenCV = Nothing
 
-            DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-            DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
-        End Sub
+        '    DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '    DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '    DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '    DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '    DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+        'End Sub
 
         Private Sub OnSelectedAlleMitgliederCollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
             OnPropertyChanged(NameOf(SelectedAlleMitglieder))
@@ -1217,7 +1218,7 @@ Namespace ViewModels
             ' Die Operation war nicht erfolgreich
             If Not e.Success Then
                 ' Fehler anzeigen, ggf. detaillierte Exception-Info
-                _msgService.ShowError(e.Message, "Fehler")
+                If Not e.Message = String.Empty Then _msgService.ShowError(e.Message, "Fehler")
                 ' Optional: Loggen: e.Exception
                 Return
             End If
@@ -1238,9 +1239,18 @@ Namespace ViewModels
                 DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+            Else
+                WindowTitleText = DefaultWindowTitleText
+                AlleEinteilungenCV = Nothing
+
+                DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubSaveAsCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubOpenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
             End If
 
-            _msgService.ShowInformation(e.Message, "Erfolg")
+            If e.Message IsNot String.Empty Then _msgService.ShowInformation(e.Message, "Erfolg")
 
         End Sub
 

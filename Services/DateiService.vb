@@ -94,11 +94,13 @@ Namespace Services
 
             If neu Is Nothing Then
                 AktuelleDatei = sicherungAktuelleDatei
-                'Return "Speichern als wurde abgebrochen"
+                OnDateiSpeichern(New OperationResultEventArgs(False, String.Empty))
+                Return
             End If
 
             AktuelleDatei = neu
-            'Return DateiSpeichern()
+            ClubSpeichern()
+            SchreibeZuletztVerwendeteDateienSortedList(AktuelleDatei.FullName)
         End Sub
 
         Public Sub ClubSpeichern()
@@ -124,10 +126,10 @@ Namespace Services
 
                 Dim serializer = New XmlSerializer(GetType(Groupies.Entities.Generation4.Club))
                 Using fs = New FileStream(AktuelleDatei.FullName, FileMode.Create, FileAccess.Write, FileShare.None)
+                    Me.AktuellerClub.ClubName = Path.GetFileNameWithoutExtension(AktuelleDatei.Name)
                     serializer.Serialize(fs, AktuellerClub)
                 End Using
-
-                OnDateiSpeichern(New OperationResultEventArgs(True, $"DerClub '{AktuelleDatei.Name}' wurde erfolgreich gespeichert."))
+                OnDateiSpeichern(New OperationResultEventArgs(True, $"DerClub '{AktuelleDatei.Name}' wurde erfolgreich gespeichert.", Nothing, AktuellerClub))
             Catch ex As UnauthorizedAccessException
                 OnDateiSpeichern(New OperationResultEventArgs(False, $"Fehler beim Speichern: Zugriff verweigert ({ex.Message})"))
             Catch ex As IOException
@@ -184,7 +186,7 @@ Namespace Services
         Public Sub ClubSchliessen()
             AktuellerClub = Nothing
             AktuelleDatei = Nothing
-            OnClubGeschlossen(New OperationResultEventArgs())
+            OnClubGeschlossen(New OperationResultEventArgs(True, String.Empty))
         End Sub
 
         Public Sub IstEinClubGeoffnet(sender As Object, e As OperationResultEventArgs)

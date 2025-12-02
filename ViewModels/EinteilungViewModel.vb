@@ -177,10 +177,12 @@ Public Class EinteilungViewModel
     Private Overloads Property CanLoeschen() As Boolean
         Get
             ' Anzahl der Einteilungen mit Gruppenliste ermitteln
-            Dim AnzahlEinteilungenMitGruppen As Integer = ServiceProvider.DateiService.AktuellerClub.Einteilungsliste.Where(Function(e) e.Gruppenliste IsNot Nothing AndAlso e.Gruppenliste.Count > 0).Count
+            Dim AnzahlEinteilungenMitGruppen As Integer = ServiceProvider.DateiService.AktuellerClub.Einteilungsliste.Where(Function(e) e.Gruppenliste IsNot Nothing).Where(Function(e) e.Gruppenliste.Count > 0).Count
             Dim ItemToDeleteHatGruppen As Boolean = SelectedItem IsNot Nothing AndAlso SelectedItem.Gruppenliste IsNot Nothing AndAlso SelectedItem.Gruppenliste.Count > 0
             If ItemToDeleteHatGruppen Then
                 Return ServiceProvider.DateiService.AktuellerClub.Einteilungsliste.Count > 1 AndAlso AnzahlEinteilungenMitGruppen > 1
+            ElseIf AnzahlEinteilungenMitGruppen = 0 Then
+                Return False
             Else
                 Return True
             End If

@@ -224,15 +224,6 @@
                                     </Style>
                                 </MenuItem.ItemContainerStyle>
 
-
-
-
-
-
-
-
-
-
                                 <!--<MenuItem.ItemContainerStyle>
                                     <Style TargetType="MenuItem">
                                         --><!-- Überschrift aus der Bound-Einteilung --><!--
@@ -354,6 +345,12 @@
                             <!-- Es kann aus dieser Übersicht keine Gruppen in andere Einteilungen kopiert werden, -->
                             <!-- weil es hier keine Teilnehmer- und Trainerinformation gibt.-->
                             <!-- Diese Objekte in der Übersicht sind Typ Gruppenstamm -->
+                            <MenuItem Header="Copy to" Command="{Binding CopyToCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source= "pack://application:,,,/Images/icons8-sent-50.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Erstellen" Command="{Binding NeuCommand}">
                                 <MenuItem.Icon>
                                     <Image Source= "pack://application:,,,/Images/icons8-create-48.png"/>

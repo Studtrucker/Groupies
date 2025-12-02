@@ -582,7 +582,7 @@ Namespace ViewModels
         End Function
 
         Private Function CanClubInfoPrint() As Boolean
-            Return DateiService.AktuellerClub IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing
+            Return DateiService.AktuellerClub IsNot Nothing AndAlso SelectedEinteilung IsNot Nothing AndAlso SelectedEinteilung.Gruppenliste.Count > 0
         End Function
 
         Private Function CanClubSaveAs() As Boolean

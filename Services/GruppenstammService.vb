@@ -14,9 +14,11 @@ Public Class GruppenstammService
         ' Hier können Sie die Logik für den Neu-Button implementieren
         Dim dialog = New BasisDetailWindow() With {
             .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
         Dim mvw = New ViewModelWindow(New WindowService(dialog)) With {
             .Datentyp = New Fabriken.DatentypFabrik().ErzeugeDatentyp(Enums.DatentypEnum.Gruppenstamm),
             .Modus = New Fabriken.ModusFabrik().ErzeugeModus(Enums.ModusEnum.Erstellen)}
+
         mvw.AktuellesViewModel.Model = New Gruppenstamm
         dialog.DataContext = mvw
         Dim result As Boolean = dialog.ShowDialog()
@@ -25,7 +27,7 @@ Public Class GruppenstammService
             ServiceProvider.DateiService.AktuellerClub.Gruppenstammliste.Add(mvw.AktuellesViewModel.Model)
 
             MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Gruppenstamm).Benennung} wurde gespeichert")
-            OnGruppenstammBearbeitet(EventArgs.Empty)
+            OnGruppenstammBearbeitet(New GruppenstammEventArgs(mvw.AktuellesViewModel.Model))
         End If
     End Sub
 

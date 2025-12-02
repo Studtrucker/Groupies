@@ -35,6 +35,11 @@ Namespace Entities.Generation4
             DateiGeneration = "4"
             Me.Faehigkeitenliste = New FaehigkeitCollection
             Me.Leistungsstufenliste = New LeistungsstufeCollection
+            Me.Teilnehmerliste = New TeilnehmerCollection
+            Me.Trainerliste = New TrainerCollection
+            Me.Gruppenliste = New GruppeCollection
+            Me.Einteilungsliste = New EinteilungCollection
+            Me.Gruppenstammliste = New GruppenstammCollection
         End Sub
 
 #End Region

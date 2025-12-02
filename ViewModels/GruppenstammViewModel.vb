@@ -33,8 +33,18 @@ Public Class GruppenstammViewModel
         NeuCommand = New RelayCommand(Of Einteilung)(AddressOf OnNeu, Function() CanNeu)
         BearbeitenCommand = New RelayCommand(Of Einteilung)(AddressOf OnBearbeiten, Function() CanBearbeiten)
         LoeschenCommand = New RelayCommand(Of Gruppenstamm)(AddressOf OnLoeschen, Function() CanLoeschen)
+        GruppenstammCopyToCommand = New RelayCommand(Of Object)(AddressOf OnGruppenstammCopyTo, AddressOf CanGruppenstammCopyTo)
+
         ' Configure ItemsView (falls Items / ItemsView bereits gesetzt sind)
         ConfigureItemsView(Of Gruppenstamm)(NameOf(_Gruppenstamm.Sortierung), NameOf(_Gruppenstamm.Benennung))
+    End Sub
+
+    Private Function CanGruppenstammCopyTo() As Boolean
+        Return True
+    End Function
+
+    Private Sub OnGruppenstammCopyTo(obj As Object)
+        Throw New NotImplementedException()
     End Sub
 
 #End Region
@@ -109,6 +119,7 @@ Public Class GruppenstammViewModel
         End Get
         Set(value As Leistungsstufe)
             _Gruppenstamm.Leistungsstufe = value
+            _Gruppenstamm.LeistungsstufeID = value.Ident
             OnPropertyChanged(NameOf(Leistungsstufe))
             ValidateLeistungsstufe()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
@@ -155,6 +166,7 @@ Public Class GruppenstammViewModel
     Public ReadOnly Property OkCommand As ICommand
     Public ReadOnly Property BearbeitenCommand As ICommand Implements IViewModelSpecial.BearbeitenCommand
     Public ReadOnly Property NeuCommand As ICommand Implements IViewModelSpecial.NeuCommand
+    Public ReadOnly Property GruppenstammCopyToCommand As ICommand
 
 #End Region
 

@@ -629,6 +629,9 @@
   <ItemGroup>
     <Resource Include="Images\icons8-plus-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-sent-50.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

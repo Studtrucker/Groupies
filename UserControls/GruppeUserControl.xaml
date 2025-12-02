@@ -21,7 +21,7 @@
     </UserControl.Resources>
 
         <Grid>
-        <Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
             <ColumnDefinition Style="{StaticResource RandColumnDefinition}"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="500"/>
@@ -34,7 +34,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="200"/>
             <RowDefinition Style="{StaticResource RandRowDefinition}"/>
         </Grid.RowDefinitions>
 
@@ -68,11 +67,6 @@
                     <Run Foreground="Red">*</Run>
             </TextBlock>
         </Label>
-        <Label Grid.Column="1" Grid.Row="6" Style="{StaticResource PflichtangabeLabel}">
-            <TextBlock >Mitglieder
-                    <!--<Run Foreground="Red">*</Run>-->
-            </TextBlock>
-        </Label>
 
         <!--Felder-->
         <TextBox Text="{Binding GruppenID, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -94,29 +88,6 @@
 
 
         <!--<DataGrid Grid.Column="2" Grid.Row="6" d:ItemsSource="{Binding Mitgliederliste}">-->
-            <DataGrid Grid.Column="2" Grid.Row="6" x:Name="MitgliederlisteDataGrid" 
-                          IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" 
-                          IsReadOnly="False" CanUserAddRows="False" 
-                          ItemsSource="{Binding Mitgliederliste}" 
-                          SelectionMode="Extended" >
-            <!--MouseDoubleClick="{Binding TeilnehmerAusGruppeEntfernen}"-->
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Vorname,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Nachname,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Alter" Binding="{Binding Alter, Mode=OneWay}"/>
-                <DataGridComboBoxColumn x:Name="TeilnehmerLeistungsstufeComboBox" Header="Leistungsstufe" Width="*" 
-                                                SelectedValueBinding="{Binding Leistungsstufe, Converter={StaticResource StringToLeistungsstufeConverter}}"/>
-            </DataGrid.Columns>
-
-                
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerBearbeiten}" />
-                    <MenuItem Command="{x:Static cmd:SkiclubCommands.TeilnehmerAusGruppeEntfernen}" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-                
-        </DataGrid>
 
     </Grid>
 

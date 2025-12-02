@@ -184,6 +184,7 @@
     <Compile Include="Mapper\MappingGeneration2.vb" />
     <Compile Include="EntitiesGeneration3\ClubGeneration3.vb" />
     <Compile Include="Interfaces\Refactoring\IClub.vb" />
+    <Compile Include="Services\DruckService.vb" />
     <Compile Include="Services\DynamicContextMenuBuilder.vb" />
     <Compile Include="Services\DateiService.vb" />
     <Compile Include="Services\EinteilungService.vb" />

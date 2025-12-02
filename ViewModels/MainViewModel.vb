@@ -388,6 +388,8 @@ Namespace ViewModels
 
         Private Sub HandlerClubGeladen(sender As Object, e As OperationResultEventArgs)
             HandlerZeigeOperationResult(sender, e)
+            RefreshMostRecentMenu()
+            RefreshJumpListInWinTaskbar()
         End Sub
 
         Private Sub HandlerClubNichtGeladen(sender As Object, e As OperationResultEventArgs)
@@ -661,14 +663,6 @@ Namespace ViewModels
                 End If
             End If
 
-            If DateiService.AktuellerClub IsNot Nothing Then
-                RefreshMostRecentMenu()
-                RefreshJumpListInWinTaskbar()
-                'HandlerZeigeOperationResult(Me, New OperationResultEventArgs)
-                'Else
-                'HandlerResetProperties(Me, OperationResultEventArgs.Empty)
-            End If
-
         End Sub
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
@@ -815,7 +809,7 @@ Namespace ViewModels
                 Dim doc As FixedDocument
                 Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
                 Dim pageMargin = New Thickness(30, 30, 30, 60)
-                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
+                doc = DruckService.PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
                 dlg.PrintDocument(doc.DocumentPaginator, obj)
             End If
         End Sub

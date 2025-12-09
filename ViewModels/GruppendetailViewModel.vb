@@ -44,8 +44,8 @@ Namespace ViewModels
 #End Region
 
 #Region "Commands"
-        Public Property TeilnehmerEntfernen As RelayCommand(Of Object)
-        Public Property TrainerEntfernen As RelayCommand(Of Object)
+        'Public Property TeilnehmerEntfernen As RelayCommand(Of Object)
+        'Public Property TrainerEntfernen As RelayCommand(Of Object)
         Public Property UserControlLoadedCommand As RelayCommand(Of Object)
 
 #End Region

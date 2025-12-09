@@ -218,6 +218,9 @@ Namespace ViewModels
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
+                If TrainerAusGruppeEntfernenCommand IsNot Nothing Then
+                    DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                End If
                 RaiseCopyCommandsCanExecute()
             End Set
         End Property
@@ -238,6 +241,9 @@ Namespace ViewModels
                 OnPropertyChanged(NameOf(SelectedGruppe))
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
                     DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+                End If
+                If TrainerAusGruppeEntfernenCommand IsNot Nothing Then
+                    DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
                 RaiseCopyCommandsCanExecute()
             End Set
@@ -1083,21 +1089,12 @@ Namespace ViewModels
         End Sub
 
         Private Function CanTrainerAusGruppeEntfernen() As Boolean
-            Return SelectedGruppe IsNot Nothing AndAlso SelectedGruppe.Trainer IsNot Nothing
+            Return SelectedEinteilung IsNot Nothing AndAlso SelectedGruppe IsNot Nothing AndAlso SelectedGruppe.Trainer IsNot Nothing
         End Function
 
         Private Sub OnTrainerAusGruppeEntfernen(obj As Object)
             Dim TrainerService As New TrainerService()
             TrainerService.TrainerAusGruppeEntfernen(SelectedGruppe, SelectedEinteilung)
-        End Sub
-
-        Private Function CanTrainerInEinteilungHinzufuegen() As Boolean
-            Return False
-        End Function
-
-        Private Sub OnTrainerInEinteilungHinzufuegen(obj As Object)
-            Dim TS As New TrainerService()
-            TS.TrainerEinteilungHinzufuegen(New TrainerCollection, New Einteilung)
         End Sub
 
         Private Function CanTrainerAusEinteilungEntfernen() As Boolean

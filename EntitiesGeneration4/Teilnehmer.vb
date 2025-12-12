@@ -37,7 +37,7 @@ Namespace Entities.Generation4
         ''' Erstellt einen neuen Teilnehmer
         ''' </summary>
         Public Sub New()
-            Geburtsdatum = DateAndTime.Now.ToLongDateString
+            Geburtsdatum = Date.MinValue
             Ident = Guid.NewGuid()
         End Sub
 
@@ -121,50 +121,6 @@ Namespace Entities.Generation4
         End Property
 
         ''' <summary>
-        ''' Das Geburtsdatum des Teilnehmers
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Geburtsdatum As Date
-            Get
-                Return _Geburtsdatum
-            End Get
-            Set(value As Date)
-                _Geburtsdatum = value
-                OnPropertyChanged(NameOf(Geburtsdatum))
-                OnPropertyChanged(NameOf(Alter))
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Berechnet das Alter und  
-        ''' gibt es auf dem Trainerausdruck 
-        ''' und in der Gruppeneinteilung aus
-        ''' </summary>
-        ''' <returns></returns>
-        Public ReadOnly Property Alter As Single
-            Get
-                Dim nMonate As Integer
-                Dim nJahre As Integer
-                If Geburtsdatum = "0001-01-01" OrElse Geburtsdatum = Now.ToLongDateString Then
-                    nJahre = -1
-                Else
-                    nJahre = Math.Floor(DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12)
-                    nMonate = DatePart(DateInterval.Month, Geburtsdatum)
-                    If nMonate = DatePart(DateInterval.Month, DateTime.Now) Then
-                        If DatePart(DateInterval.Day, Geburtsdatum) > DatePart(DateInterval.Day, DateTime.Now) Then
-                            nJahre += -1
-                        End If
-                    End If
-                End If
-                If nJahre < 7 And nJahre > 0 Then
-                    Return (DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12).ToString("0.00")
-                Else
-                    Return nJahre
-                End If
-            End Get
-        End Property
-
-        ''' <summary>
         ''' Der Vorname des Teilnehmers
         ''' </summary>
         ''' <returns></returns>
@@ -196,6 +152,50 @@ Namespace Entities.Generation4
             End Get
         End Property
 
+
+        ''' <summary>
+        ''' Das Geburtsdatum des Teilnehmers
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Geburtsdatum As Date
+            Get
+                Return _Geburtsdatum
+            End Get
+            Set(value As Date)
+                _Geburtsdatum = value
+                OnPropertyChanged(NameOf(Geburtsdatum))
+                OnPropertyChanged(NameOf(Alter))
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Berechnet das Alter und  
+        ''' gibt es auf dem Trainerausdruck 
+        ''' und in der Gruppeneinteilung aus
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property Alter As Single
+            Get
+                Dim nMonate As Integer
+                Dim nJahre As Integer
+                If Geburtsdatum = Date.MinValue OrElse Geburtsdatum = Now.ToLongDateString Then
+                    nJahre = Nothing
+                Else
+                    nJahre = Math.Floor(DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12)
+                    nMonate = DatePart(DateInterval.Month, Geburtsdatum)
+                    If nMonate = DatePart(DateInterval.Month, DateTime.Now) Then
+                        If DatePart(DateInterval.Day, Geburtsdatum) > DatePart(DateInterval.Day, DateTime.Now) Then
+                            nJahre += -1
+                        End If
+                    End If
+                End If
+                If nJahre < 7 And nJahre > 0 Then
+                    Return (DateDiff(DateInterval.Month, Geburtsdatum, DateTime.Now) / 12).ToString("0.00")
+                Else
+                    Return nJahre
+                End If
+            End Get
+        End Property
 
         ''' <summary>
         ''' Gibt die Telefonnummer 
@@ -286,14 +286,6 @@ Namespace Entities.Generation4
 #End Region
 
 #Region "Funktionen und Methoden"
-
-        Private Function GetAusgabeTrainerInfo() As String
-            If Leistungsstufe Is Nothing Then
-                Return $"{VorUndNachname}, {Telefonnummer}, Leistungsstufe unbekannt"
-            Else
-                Return $"{VorUndNachname}, {Telefonnummer}, {Leistungsstufe.Benennung}"
-            End If
-        End Function
 
         Public Overrides Function ToString() As String
             Return VorUndNachname

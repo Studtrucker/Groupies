@@ -2,6 +2,7 @@
 Imports System.IO.IsolatedStorage
 Imports System.Xml.Serialization
 Imports Groupies.Entities
+Imports Groupies.Entities.Generation4
 Imports Microsoft.Win32
 
 
@@ -26,6 +27,7 @@ Namespace Services
         Public Event ClubGeschlossen As EventHandler(Of OperationResultEventArgs)
         Public Event ClubGespeichert As EventHandler(Of OperationResultEventArgs)
         Public Event ClubNichtGespeichert As EventHandler(Of OperationResultEventArgs)
+
 
         Protected Overridable Sub OnClubGeladen(e As OperationResultEventArgs)
             If e.Success Then
@@ -61,6 +63,40 @@ Namespace Services
         Public Sub New(Optional msgService As IViewMessageService = Nothing)
             ZuletztVerwendeteDateienSortedList = New SortedList(Of Integer, String)()
             _msgService = If(msgService, New DefaultViewMessageService())
+            AddHandler TrainerService.TrainerErstellt, AddressOf HandlerTrainerErstellt
+            AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerGeaendert
+        End Sub
+
+        Private Sub HandlerTrainerGeaendert(sender As Object, e As TrainerEventArgs)
+            Dim index = AktuellerClub.Trainerliste.IndexOf(TrainerAusListeLesen(AktuellerClub.Trainerliste.ToList, e.Trainer.TrainerID))
+            ' 1) in Club-Trainerliste austauschen, jetzt über das TrainerGeaendert Event machen
+            AktuellerClub.Trainerliste(index) = e.Trainer
+
+            ' 2) in allen Einteilungen: VerfuegbareTrainerListe austauschen
+            For Each el In AktuellerClub.Einteilungsliste
+                Dim toChangeVT = el.VerfuegbareTrainerListe.Where(Function(N) N.TrainerID = e.Trainer.TrainerID).ToList()
+                For Each n In toChangeVT
+                    index = el.VerfuegbareTrainerListe.IndexOf(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, e.Trainer.TrainerID))
+                    el.VerfuegbareTrainerListe(index) = e.Trainer
+                Next
+            Next
+
+            ' 3) in allen Gruppen: Mitgliederliste korrekt entfernen
+            For Each Einteilung In AktuellerClub.Einteilungsliste.Where(Function(el) el IsNot Nothing).ToList()
+                Dim toChangeTrainers = Einteilung.Gruppenliste.Where(Function(GT) GT.TrainerID = e.Trainer.TrainerID).ToList()
+                'index = E.Gruppenliste.IndexOf(TrainerAusListeLesen(E.Gruppenliste.ToList, TrainerToEdit))
+                For Each t In toChangeTrainers
+                    t.Trainer = e.Trainer
+                Next
+            Next
+
+        End Sub
+        Private Function TrainerAusListeLesen(List As List(Of Trainer), TrainerID As Guid) As Trainer
+            Return List.Where(Function(T) T.TrainerID = TrainerID).SingleOrDefault
+        End Function
+
+        Private Sub HandlerTrainerErstellt(sender As Object, e As TrainerEventArgs)
+            AktuellerClub?.Trainerliste.Add(e.Trainer)
         End Sub
 
         ''' <summary>

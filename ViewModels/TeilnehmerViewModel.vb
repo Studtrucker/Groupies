@@ -169,7 +169,7 @@ Public Class TeilnehmerViewModel
         End Get
         Set(value As String)
             _Teilnehmer.Nachname = value
-            OnPropertyChanged(NameOf(Nachname))
+            'OnPropertyChanged(NameOf(Nachname))
             ValidateNachname()
             RaiseEvent ModelChangedEvent(Me, HasErrors)
         End Set

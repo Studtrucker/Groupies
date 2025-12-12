@@ -7,6 +7,11 @@ Public Class GruppenService
     Public Shared Event GruppeBearbeitet As EventHandler(Of EventArgs)
 
     Public Sub New()
+        AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerGeaendert
+    End Sub
+
+    Private Sub HandlerTrainerGeaendert(sender As Object, e As TrainerEventArgs)
+        MessageBox.Show("Trainer in GruppenService geändert")
     End Sub
 
     Protected Overridable Sub OnGruppeBearbeitet(e As EventArgs)

@@ -8,6 +8,8 @@ Namespace Services
 
         Public Shared Event TrainerErstellt As EventHandler(Of TrainerEventArgs)
 
+        Public Shared Event TrainerGeloescht As EventHandler(Of TrainerEventArgs)
+
         Public Sub New()
         End Sub
 
@@ -16,6 +18,9 @@ Namespace Services
         End Sub
         Protected Overridable Sub OnTrainerErstellt(e As TrainerEventArgs)
             RaiseEvent TrainerErstellt(Me, e)
+        End Sub
+        Protected Overridable Sub OnTrainerGeloescht(e As TrainerEventArgs)
+            RaiseEvent TrainerGeloescht(Me, e)
         End Sub
 
         Public Sub TrainerErstellen()
@@ -58,39 +63,16 @@ Namespace Services
             If result = True Then
                 Dim club = ServiceProvider.DateiService.AktuellerClub
 
-                ' 1) in Club-Trainerliste austauschen, jetzt über das TrainerGeaendert Event machen
-                'Dim index = club.Trainerliste.IndexOf(TrainerAusListeLesen(club.Trainerliste.ToList, TrainerToEdit.TrainerID))
-                'club.Trainerliste(index) = mvw.AktuellesViewModel.Model
-
-
-                ' 2) in allen Einteilungen: VerfuegbareTrainerListe austauschen
-                'For Each el In club.Einteilungsliste
-                '    Dim toChangeVT = el.VerfuegbareTrainerListe.Where(Function(N) N.TrainerID = mvw.AktuellesViewModel.Model.Ident).ToList()
-                '    For Each n In toChangeVT
-                '        index = el.VerfuegbareTrainerListe.IndexOf(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, TrainerToEdit.TrainerID))
-                '        el.VerfuegbareTrainerListe(index) = mvw.AktuellesViewModel.Model
-                '    Next
-                'Next
-
-                ' 3) in allen Gruppen: Mitgliederliste korrekt entfernen
-                'For Each E In club.Einteilungsliste.Where(Function(el) el IsNot Nothing).ToList()
-                '    Dim toChangeTrainers = E.Gruppenliste.Where(Function(GT) GT.TrainerID = TrainerToEdit.TrainerID).ToList()
-                '    'index = E.Gruppenliste.IndexOf(TrainerAusListeLesen(E.Gruppenliste.ToList, TrainerToEdit))
-                '    For Each t In toChangeTrainers
-                '        t.Trainer = mvw.AktuellesViewModel.Model
-                '    Next
-                'Next
                 OnTrainerGeaendert(New TrainerEventArgs(mvw.AktuellesViewModel.Model))
                 MessageBox.Show($"{DirectCast(mvw.AktuellesViewModel.Model, Trainer).VorNachname} wurde gespeichert")
             End If
-
-
 
         End Sub
 
         Public Sub TrainerLoeschen(TrainerToDelete As Trainer)
             Dim result = MessageBox.Show($"Möchten Sie {TrainerToDelete.VorNachname} wirklich aus dem gesamten Club - auch in den Gruppen - löschen?", "Trainer löschen", MessageBoxButton.YesNo, MessageBoxImage.Warning)
             If result = MessageBoxResult.Yes Then
+                OnTrainerGeloescht(New TrainerEventArgs(TrainerToDelete))
 
                 Dim club = ServiceProvider.DateiService.AktuellerClub
 
@@ -108,8 +90,9 @@ Namespace Services
                 club.Trainerliste.Remove(TrainerAusListeLesen(club.Trainerliste.ToList, TrainerToDelete.TrainerID))
 
                 MessageBox.Show($"{TrainerToDelete.VorNachname} wurde gelöscht")
-                OnTrainerGeaendert(New TrainerEventArgs(TrainerToDelete))
+
             End If
+
         End Sub
 
         Private Function TrainerAusListeLesen(List As List(Of Trainer), TrainerID As Guid) As Trainer

@@ -65,10 +65,29 @@ Namespace Services
             _msgService = If(msgService, New DefaultViewMessageService())
             AddHandler TrainerService.TrainerErstellt, AddressOf HandlerTrainerErstellt
             AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerGeaendert
+            AddHandler TrainerService.TrainerGeloescht, AddressOf HandlerTrainerGeloescht
+        End Sub
+
+        Private Sub HandlerTrainerGeloescht(sender As Object, e As TrainerEventArgs)
+            Throw New NotImplementedException
+            '' Aus allen Einteilungen entfernen
+            'Club.Einteilungsliste.ToList.ForEach(Sub(el)
+            '                                         el.VerfuegbareTrainerIDListe.Remove(TrainerToDelete.TrainerID)
+            '                                         el.VerfuegbareTrainerListe.Remove(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, TrainerToDelete.TrainerID))
+            '                                         el.Gruppenliste.Where(Function(GT) GT IsNot Nothing AndAlso GT.TrainerID = TrainerToDelete.TrainerID).ToList.ForEach(Sub(G)
+            '                                                                                                                                                                  G.TrainerID = Nothing
+            '                                                                                                                                                                  G.Trainer = Nothing
+            '                                                                                                                                                              End Sub)
+            '                                     End Sub)
+
+            '' aus Club Trainerliste entfernen
+            'Club.Trainerliste.Remove(TrainerAusListeLesen(Club.Trainerliste.ToList, TrainerToDelete.TrainerID))
         End Sub
 
         Private Sub HandlerTrainerGeaendert(sender As Object, e As TrainerEventArgs)
+
             Dim index = AktuellerClub.Trainerliste.IndexOf(TrainerAusListeLesen(AktuellerClub.Trainerliste.ToList, e.Trainer.TrainerID))
+
             ' 1) in Club-Trainerliste austauschen, jetzt über das TrainerGeaendert Event machen
             AktuellerClub.Trainerliste(index) = e.Trainer
 

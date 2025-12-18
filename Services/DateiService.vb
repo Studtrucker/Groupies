@@ -204,10 +204,12 @@ Namespace Services
         Public Sub ClubLaden()
             IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie einen anderen Club öffnen."))
             Dim ausgewaehlterPfad = DateipfadAuswaehlen()
+            If ausgewaehlterPfad Is Nothing Then Return
             ClubLaden(ausgewaehlterPfad.FullName)
         End Sub
 
-        Public Sub ClubLaden(Path As String)
+        Public Sub ClubLaden(Path As Object)
+            If Path Is Nothing Then Return
             IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie einen anderen Club öffnen."))
             ClubLaden(New FileInfo(Path))
         End Sub

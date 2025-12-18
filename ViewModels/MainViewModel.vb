@@ -672,14 +672,17 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
+            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
+            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
+            DateiService.SpeicherZuletztVerwendeteDateienSortedList()
             Dim confirmed = _msgService.ShowConfirmation("Möchten Sie die Anwendung wirklich schließen?", "Achtung")
             e.Cancel = Not confirmed
         End Sub
 
         Private Sub OnWindowClosed(obj As Object)
-            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
-            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
-            DateiService.SpeicherZuletztVerwendeteDateienSortedList()
+            'DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
+            'DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
+            'DateiService.SpeicherZuletztVerwendeteDateienSortedList()
         End Sub
 
 #End Region

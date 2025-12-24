@@ -60,6 +60,8 @@ Namespace ViewModels
             ServiceProvider.DateiService = New DateiService(_msgService)
             DateiService = ServiceProvider.DateiService
             MostRecentlyUsedMenuItem = New ObservableCollection(Of MenuEintragViewModel)
+            DateiService.LadeMeistVerwendeteDateienInSortedList()
+            RefreshMostRecentMenu()
 
             InitializeCommands()
             InitializeHandlers()

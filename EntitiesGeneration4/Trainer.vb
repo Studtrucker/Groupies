@@ -13,17 +13,13 @@ Namespace Entities.Generation4
 
 
 #Region "Felder"
-        'Todo:Standardfoto festlegen
         Private _Foto As Byte()
         Private _TrainerID As Guid
         Private _Alias As String
         Private _Vorname As String
         Private _Nachname As String
-#End Region
-
-#Region "Events"
-
-
+        Private _Telefonnummer As String
+        Private _EMail As String
 #End Region
 
 #Region "Konstruktor"
@@ -38,49 +34,57 @@ Namespace Entities.Generation4
         ''' <summary>
         ''' Trainer mit Angabe von Vorname, Nachname und Alias
         ''' </summary>
-        ''' <param name="Vorname"></param>
-        ''' <param name="Nachname"></param>
-        ''' <param name="[Alias]"></param>
-        Public Sub New(Vorname As String, Nachname As String, [Alias] As String)
+        ''' <param name="vorname">Der Vorname des Trainers</param>
+        ''' <param name="nachname">Der Nachname des Trainers</param>
+        ''' <param name="trainerAlias">Der Alias des Trainers</param>
+        Public Sub New(vorname As String, nachname As String, trainerAlias As String)
             Me.New()
-            _Alias = [Alias]
-            _Vorname = Vorname
-            _Nachname = Nachname
+            _Vorname = vorname
+            _Nachname = nachname
+            _Alias = trainerAlias
         End Sub
 
         ''' <summary>
         ''' Trainer mit Angabe von Vorname, Nachname
         ''' </summary>
-        ''' <param name="Vorname"></param>
-        ''' <param name="Nachname"></param>
-        Public Sub New(Vorname As String, Nachname As String)
+        ''' <param name="vorname">Der Vorname des Trainers</param>
+        ''' <param name="nachname">Der Nachname des Trainers</param>
+        Public Sub New(vorname As String, nachname As String)
             Me.New()
-            _Vorname = Vorname
-            _Nachname = Nachname
+            _Vorname = vorname
+            _Nachname = nachname
         End Sub
 
         ''' <summary>
         ''' Trainer mit Angabe von Vorname
         ''' </summary>
-        ''' <param name="Vorname"></param>
-        Public Sub New(Vorname As String)
+        ''' <param name="vorname">Der Vorname des Trainers</param>
+        Public Sub New(vorname As String)
             Me.New()
-            _Vorname = Vorname
+            _Vorname = vorname
         End Sub
-
 
         ''' <summary>
         ''' Kopierkonstruktor für tiefes Kopieren
         ''' </summary>
-        ''' <param name="Origin"></param>
+        ''' <param name="origin">Das zu kopierende Trainer-Objekt</param>
         Public Sub New(origin As Trainer)
+            If origin Is Nothing Then
+                Throw New ArgumentNullException(NameOf(origin), "Das zu kopierende Trainer-Objekt darf nicht Nothing sein.")
+            End If
+
+            TrainerID = Guid.NewGuid() ' Neue ID für Kopie
             _Vorname = origin.Vorname
-            _Foto = origin.Foto
             _Nachname = origin.Nachname
             _Alias = origin.Alias
-            _TrainerID = origin.TrainerID
             _Telefonnummer = origin.Telefonnummer
             _EMail = origin.EMail
+
+            ' Foto-Array kopieren (defensive copy)
+            If origin.Foto IsNot Nothing Then
+                _Foto = New Byte(origin.Foto.Length - 1) {}
+                Array.Copy(origin.Foto, _Foto, origin.Foto.Length)
+            End If
         End Sub
 
 #End Region
@@ -90,91 +94,127 @@ Namespace Entities.Generation4
         ''' <summary>
         ''' Eindeutige Kennzeichnung
         ''' </summary>
-        ''' <returns></returns>
         Public Property TrainerID As Guid Implements IModel.Ident
             Get
                 Return _TrainerID
             End Get
             Set(value As Guid)
-                _TrainerID = value
+                If _TrainerID <> value Then
+                    _TrainerID = value
+                    OnPropertyChanged()
+                End If
             End Set
         End Property
-
 
         ''' <summary>
         ''' Vorname des Trainers
         ''' </summary>
-        ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Vorname ist eine Pflichtangabe")>
         Public Property Vorname As String
             Get
                 Return _Vorname
             End Get
             Set(value As String)
-                _Vorname = value
+                If _Vorname <> value Then
+                    _Vorname = value
+                    OnPropertyChanged()
+                    OnPropertyChanged(NameOf(VorNachname))
+                    OnPropertyChanged(NameOf(VorNachnameAlias))
+                End If
             End Set
         End Property
-
 
         ''' <summary>
         ''' Nachname des Trainers
         ''' </summary>
-        ''' <returns></returns>
         Public Property Nachname As String
             Get
                 Return _Nachname
             End Get
             Set(value As String)
-                _Nachname = value
+                If _Nachname <> value Then
+                    _Nachname = value
+                    OnPropertyChanged()
+                    OnPropertyChanged(NameOf(VorNachname))
+                    OnPropertyChanged(NameOf(VorNachnameAlias))
+                End If
             End Set
         End Property
 
-        '
         ''' <summary>
         ''' Alias des Trainers
         ''' </summary>
-        ''' <returns></returns>
         <Required(AllowEmptyStrings:=False, ErrorMessage:="Der Alias ist eine Pflichtangabe")>
         Public Property [Alias] As String
             Get
                 Return _Alias
             End Get
             Set(value As String)
-                _Alias = value
+                If _Alias <> value Then
+                    _Alias = value
+                    OnPropertyChanged()
+                    OnPropertyChanged(NameOf(VorNachnameAlias))
+                End If
             End Set
         End Property
-
 
         ''' <summary>
         ''' Foto des Trainers
         ''' </summary>
-        ''' <returns></returns>
         Public Property Foto As Byte()
             Get
                 Return _Foto
             End Get
             Set(value As Byte())
-                _Foto = value
+                If Not Object.ReferenceEquals(_Foto, value) Then
+                    _Foto = value
+                    OnPropertyChanged()
+                    OnPropertyChanged(NameOf(HatFoto))
+                    OnPropertyChanged(NameOf(HatKeinFoto))
+                End If
             End Set
         End Property
 
         ''' <summary>
         ''' Telefonnummer des Trainers
         ''' </summary>
-        ''' <returns></returns>
         Public Property Telefonnummer As String
+            Get
+                Return _Telefonnummer
+            End Get
+            Set(value As String)
+                If _Telefonnummer <> value Then
+                    _Telefonnummer = value
+                    OnPropertyChanged()
+                End If
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Gültige E-Mail-Adresse des Trainers
+        ''' </summary>
+        <EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
+        Public Property EMail As String
+            Get
+                Return _EMail
+            End Get
+            Set(value As String)
+                If _EMail <> value Then
+                    _EMail = value
+                    OnPropertyChanged()
+                End If
+            End Set
+        End Property
 
         ''' <summary>
         ''' Flag, ob der Trainer in einem Import enthalten ist
         ''' </summary>
-        ''' <returns></returns>
         <XmlIgnore>
         Public Property IstImImport As Boolean
 
         ''' <summary>
-        ''' Flag, ob der Trainer in einem Import enthalten ist
+        ''' Flag, ob der Trainer nicht in einem Import enthalten ist
         ''' </summary>
-        ''' <returns></returns>
         <XmlIgnore>
         Public ReadOnly Property IstNichtImImport As Boolean
             Get
@@ -185,59 +225,53 @@ Namespace Entities.Generation4
         ''' <summary>
         ''' Flag, ob der Trainer in diesem Club neu ist
         ''' </summary>
-        ''' <returns></returns>
         <XmlIgnore>
         Public Property IstNeuImClub As Boolean
 
         ''' <summary>
-        ''' Flag, ob der Trainer bekannt war
+        ''' Flag, ob der Trainer ein Rückkehrer ist
         ''' </summary>
-        ''' <returns></returns>
         <XmlIgnore>
         Public Property IstRueckkehrer As Boolean
 
-
         ''' <summary>
-        '''  Gültige eMailadresse des Trainers
+        ''' Ausgabe des Trainernamens auf der Information (Alias oder Vor-/Nachname)
         ''' </summary>
-        ''' <returns></returns>
-        <EmailAddress(ErrorMessage:="Gültige e-Mail Adresse")>
-        Public Property EMail As String
-
-        ''' <summary>
-        ''' Ausgabe des Trainernamens auf der Information
-        ''' </summary>
-        ''' <returns></returns>
+        <XmlIgnore>
         Public ReadOnly Property VorNachnameAlias As String
             Get
-                If _Alias Is Nothing Then
-                    Return VorNachname
-                Else
-                    Return [Alias]
-                End If
+                Return If(String.IsNullOrWhiteSpace(_Alias), VorNachname, _Alias)
             End Get
         End Property
 
         ''' <summary>
         ''' Zusammengefasster Vor- und Nachname. Ist der Nachname unbekannt, wird nur der Vorname geliefert.
         ''' </summary>
-        ''' <returns></returns>
+        <XmlIgnore>
         Public ReadOnly Property VorNachname As String
             Get
-                If Nachname Is Nothing Then
-                    Return Vorname
+                If String.IsNullOrWhiteSpace(_Nachname) Then
+                    Return If(_Vorname, String.Empty)
                 Else
-                    Return $"{Vorname} {Nachname}"
+                    Return $"{_Vorname} {_Nachname}".Trim()
                 End If
             End Get
         End Property
 
+        ''' <summary>
+        ''' Gibt an, ob der Trainer ein Foto hat
+        ''' </summary>
+        <XmlIgnore>
         Public ReadOnly Property HatFoto As Boolean
             Get
-                Return _Foto IsNot Nothing AndAlso Foto.Length > 0
+                Return _Foto IsNot Nothing AndAlso _Foto.Length > 0
             End Get
         End Property
 
+        ''' <summary>
+        ''' Gibt an, ob der Trainer kein Foto hat
+        ''' </summary>
+        <XmlIgnore>
         Public ReadOnly Property HatKeinFoto As Boolean
             Get
                 Return Not HatFoto
@@ -248,12 +282,19 @@ Namespace Entities.Generation4
 
 #Region "Funktionen und Methoden"
 
+        ''' <summary>
+        ''' Gibt den Trainer-Namen (Alias oder Vor-/Nachname) zurück
+        ''' </summary>
         Public Overrides Function ToString() As String
             Return VorNachnameAlias
         End Function
 
+        ''' <summary>
+        ''' Speichert die Änderungen des Trainers
+        ''' </summary>
         Public Sub speichern() Implements IModel.speichern
-            MessageBox.Show("Speichern")
+            ' TODO: Implementierung durch TrainerService
+            MessageBox.Show($"Trainer '{VorNachnameAlias}' speichern")
         End Sub
 
 #End Region

@@ -95,10 +95,11 @@ Public Module MappingGeneration4
     ''' <param name="Skiclub"></param>
     ''' <returns>Gruppendaten mit den Trainer-, Leistungsstufe-, Gruppenstammdatenobjekten und die Mitgliederliste mit Teilnehmerobjekten </returns>
     Private Function GetAlleGruppen(Skiclub As Club) As GruppeCollection
+        ' hier muss jede Gruppe eine LeistungsstufenID aus den Gruppenstammdaten erhalten
         Skiclub.Gruppenliste.ToList.ForEach(Sub(G)
+                                                G.Gruppenstamm = Skiclub.Gruppenstammliste.FirstOrDefault(Function(GS) GS.Ident = G.GruppenstammID)
                                                 G.Leistungsstufe = Skiclub.Leistungsstufenliste.DefaultIfEmpty(New Leistungsstufe() With {.Ident = Guid.Empty, .Benennung = "unbekannt"}).FirstOrDefault(Function(Ls) Ls.Ident = G.LeistungsstufeID)
                                                 G.Trainer = Skiclub.Trainerliste.FirstOrDefault(Function(T) T.TrainerID = G.TrainerID)
-                                                G.Gruppenstamm = Skiclub.Gruppenstammliste.FirstOrDefault(Function(GS) GS.Ident = G.GruppenstammID)
                                                 G.MitgliederIDListe.ToList.ForEach(Sub(TID) G.Mitgliederliste.Add(Skiclub.Teilnehmerliste.FirstOrDefault(Function(T) T.Ident = TID)))
                                             End Sub)
         Return Skiclub.Gruppenliste

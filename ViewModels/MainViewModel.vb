@@ -1,4 +1,4 @@
-Imports System.Collections.ObjectModel
+ÔªøImports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.IO
@@ -24,7 +24,7 @@ Namespace ViewModels
     End Enum
 
     ''' <summary>
-    ''' ViewModel f¸r die Hauptansicht der Anwendung.
+    ''' ViewModel f√ºr die Hauptansicht der Anwendung.
     ''' Verwaltet Einteilungen, Gruppen, Trainer und Teilnehmer.
     ''' </summary>
     Public Class MainViewModel
@@ -56,7 +56,7 @@ Namespace ViewModels
             _windowService = windowService
             _msgService = If(msgService, New DefaultViewMessageService())
 
-            ' zentrale DateiService-Instanz ¸ber Provider initialisieren (mit dem MessageService)
+            ' zentrale DateiService-Instanz √ºber Provider initialisieren (mit dem MessageService)
             ServiceProvider.DateiService = New DateiService(_msgService)
             DateiService = ServiceProvider.DateiService
             MostRecentlyUsedMenuItem = New ObservableCollection(Of MenuEintragViewModel)
@@ -205,7 +205,7 @@ Namespace ViewModels
                 SelectedTeilnehmer = Nothing
                 OnPropertyChanged(NameOf(SelectedEinteilung))
 
-                ' neuen CollectionChanged-Handler hinzuf¸gen
+                ' neuen CollectionChanged-Handler hinzuf√ºgen
                 If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
                     Dim cur = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
                     If cur IsNot Nothing Then
@@ -214,7 +214,7 @@ Namespace ViewModels
                     End If
                 End If
 
-                ' Property-Changed f¸r die sortierte Ansicht auslˆsen
+                ' Property-Changed f√ºr die sortierte Ansicht ausl√∂sen
                 OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
 
                 If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
@@ -228,7 +228,7 @@ Namespace ViewModels
         End Property
 
         Private Sub OnSelectedEinteilungGruppenChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-            ' Gruppe-Liste hat sich ge‰ndert -> sorted-Property neu melden
+            ' Gruppe-Liste hat sich ge√§ndert -> sorted-Property neu melden
             OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
         End Sub
 
@@ -262,12 +262,12 @@ Namespace ViewModels
         End Property
 
         ''' <summary>
-        ''' Alle ausgew‰hlten Teilnehmer der gruppenlose Teilnehmerliste.
+        ''' Alle ausgew√§hlten Teilnehmer der gruppenlose Teilnehmerliste.
         ''' </summary>
         Public Property SelectedAlleGruppenloserTeilnehmer As New TeilnehmerCollection
 
         ''' <summary>
-        ''' Alle ausgew‰hlten Teilnehmer der aktuellen Gruppe.
+        ''' Alle ausgew√§hlten Teilnehmer der aktuellen Gruppe.
         ''' </summary>
         Public Property SelectedAlleMitglieder As TeilnehmerCollection
             Get
@@ -607,7 +607,7 @@ Namespace ViewModels
             Dim club = DateiService.AktuellerClub
             If club Is Nothing OrElse club.Einteilungsliste Is Nothing Then Return False
 
-            ' Quelle ermitteln (Einteilung, die die aktuell ausgew‰hlte Gruppe enth‰lt)
+            ' Quelle ermitteln (Einteilung, die die aktuell ausgew√§hlte Gruppe enth√§lt)
             Dim source = club.Einteilungsliste.FirstOrDefault(Function(e) e.Gruppenliste IsNot Nothing AndAlso e.Gruppenliste.Contains(SelectedGruppe))
             If source Is Nothing Then Return False
             If target.Gruppenliste.Contains(target.Gruppenliste.Where(Function(G) G.Ident = SelectedGruppe.Ident).SingleOrDefault) Then Return False
@@ -623,7 +623,7 @@ Namespace ViewModels
             If source Is Nothing Then Return
             If source.Ident = target.Ident Then Return
 
-            ' Verschieben: Entfernen aus Quelle, Hinzuf¸gen zum Ziel
+            ' Verschieben: Entfernen aus Quelle, Hinzuf√ºgen zum Ziel
             'source.Gruppenliste.Remove(SelectedGruppe)
             If target.Gruppenliste Is Nothing Then
                 target.Gruppenliste = New GruppeCollection()
@@ -631,12 +631,12 @@ Namespace ViewModels
             target.Gruppenliste.Add(SelectedGruppe)
             target.GruppenIDListe.Add(SelectedGruppe.Ident)
 
-            ' Auswahl aktualisieren: w‰hle Ziel-Einteilung und Gruppe
+            ' Auswahl aktualisieren: w√§hle Ziel-Einteilung und Gruppe
             SelectedEinteilung = target
             ' SelectedGruppe bleibt auf der gleichen Instanz; UI-Refresh erzwingen
             OnPropertyChanged(NameOf(SelectedGruppe))
 
-            ' CollectionViews / Men¸s aktualisieren
+            ' CollectionViews / Men√ºs aktualisieren
             If AlleEinteilungenCV IsNot Nothing Then AlleEinteilungenCV.Refresh()
             ' Optional: weitere Views refreshen (Gruppenliste-View etc.)
         End Sub
@@ -674,15 +674,15 @@ Namespace ViewModels
         End Sub
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
-            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Mˆchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schlieﬂen?"))
+            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "M√∂chten Sie den aktuellen Club speichern, bevor Sie die Anwendung schlie√üen?"))
             DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             DateiService.SpeicherZuletztVerwendeteDateienSortedList()
-            Dim confirmed = _msgService.ShowConfirmation("Mˆchten Sie die Anwendung wirklich schlieﬂen?", "Achtung")
+            Dim confirmed = _msgService.ShowConfirmation("M√∂chten Sie die Anwendung wirklich schlie√üen?", "Achtung")
             e.Cancel = Not confirmed
         End Sub
 
         Private Sub OnWindowClosed(obj As Object)
-            'DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Mˆchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schlieﬂen?"))
+            'DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "M√∂chten Sie den aktuellen Club speichern, bevor Sie die Anwendung schlie√üen?"))
             'DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             'DateiService.SpeicherZuletztVerwendeteDateienSortedList()
         End Sub
@@ -997,9 +997,10 @@ Namespace ViewModels
                     vmr = New TeilnehmerSuchErgebnisViewModel(Ergebnisliste)
                 End If
 
-                Dim view = New TeilnehmerSuchErgebnis()
-                view.DataContext = vmr
-                view.Owner = _windowService.Window
+                Dim view = New TeilnehmerSuchErgebnis With {
+                    .DataContext = vmr,
+                    .Owner = _windowService.Window
+                }
                 view.Show()
             End If
 
@@ -1213,9 +1214,7 @@ Namespace ViewModels
 
             ' Die Operation war nicht erfolgreich
             If Not e.Success Then
-                ' Fehler anzeigen, ggf. detaillierte Exception-Info
                 If Not e.Message = String.Empty Then _msgService.ShowError(e.Message, "Fehler")
-                ' Optional: Loggen: e.Exception
                 Return
             End If
 
@@ -1223,8 +1222,13 @@ Namespace ViewModels
             Dim club = TryCast(e.Payload, Generation4.Club)
             If club IsNot Nothing Then
                 WindowTitleText = DefaultWindowTitleText & " - " & club.ClubName
-                ' weitere UI-Updates...
+                OnPropertyChanged(NameOf(WindowTitleText))
+                OnPropertyChanged(NameOf(WindowTitleIcon))
+
+                ' AlleEinteilungenCV setzen UND UI benachrichtigen
                 AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.Einteilungsliste)
+                OnPropertyChanged(NameOf(AlleEinteilungenCV))  ' ‚Üê HIER HINZUF√úGEN!
+
                 If AlleEinteilungenCV IsNot Nothing AndAlso AlleEinteilungenCV.CanSort Then
                     AlleEinteilungenCV.SortDescriptions.Clear()
                     AlleEinteilungenCV.SortDescriptions.Add(New SortDescription(NameOf(Einteilung.Sortierung), ListSortDirection.Ascending))
@@ -1238,6 +1242,7 @@ Namespace ViewModels
             Else
                 WindowTitleText = DefaultWindowTitleText
                 AlleEinteilungenCV = Nothing
+                OnPropertyChanged(NameOf(AlleEinteilungenCV))  ' ‚Üê AUCH HIER HINZUF√úGEN!
 
                 DirectCast(ClubCloseCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 DirectCast(ClubSaveCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
@@ -1290,7 +1295,7 @@ Namespace ViewModels
 
             For i = DateiService.ZuletztVerwendeteDateienSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
-                    .CustomCategory = "Zuletzt geˆffnet",
+                    .CustomCategory = "Zuletzt ge√∂ffnet",
                     .Path = $"!Pfad{i}"}
                 jumplist.JumpItems.Add(jumpPath)
             Next

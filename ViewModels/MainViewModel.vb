@@ -2,19 +2,15 @@
 Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.IO
-Imports System.IO.IsolatedStorage
 Imports System.Reflection
 Imports System.Windows.Markup
 Imports System.Windows.Shell
-Imports Groupies.Controller
 Imports Groupies.Entities
 Imports Groupies.Entities.Generation4
 Imports Groupies.Interfaces
 Imports Groupies.MainWindow
 Imports Groupies.Services
 Imports Groupies.UserControls
-Imports Microsoft.Office.Interop.Excel
-Imports Microsoft.Win32
 
 Namespace ViewModels
 
@@ -60,7 +56,7 @@ Namespace ViewModels
             ServiceProvider.DateiService = New DateiService(_msgService)
             DateiService = ServiceProvider.DateiService
             MostRecentlyUsedMenuItem = New ObservableCollection(Of MenuEintragViewModel)
-            DateiService.LadeMeistVerwendeteDateienInSortedList()
+            'DateiService.LadeMeistVerwendeteDateienInSortedList()
             RefreshMostRecentMenu()
 
             InitializeCommands()
@@ -157,10 +153,13 @@ Namespace ViewModels
             End Get
             Set(value As String)
                 _WindowTitleText = value
+                OnPropertyChanged(NameOf(WindowTitleText))
+                OnPropertyChanged(NameOf(WindowTitleIcon))
             End Set
         End Property
 
         Public ReadOnly DefaultWindowTitleText As String = "Groupies - Ski Club Management"
+
         Public Property WindowTitleIcon As String = "pack://application:,,,/Images/icons8-ski-resort-48.png"
 
         ' Daten- und Auswahl-Properties
@@ -170,6 +169,7 @@ Namespace ViewModels
             End Get
             Set(value As CollectionView)
                 _AlleEinteilungenCV = value
+                OnPropertyChanged(NameOf(AlleEinteilungenCV))
             End Set
         End Property
 
@@ -385,23 +385,21 @@ Namespace ViewModels
 
         Private Sub InitializeHandlers()
 
-            AddHandler DateiService.ClubGeladen, AddressOf HandlerClubGeladen
-            AddHandler DateiService.ClubNichtGeladen, AddressOf HandlerClubNichtGeladen
             AddHandler DateiService.ClubNeuErstellt, AddressOf HandlerClubNeuErstellt
-            AddHandler DateiService.ClubGeschlossen, AddressOf HandlerClubGeschlossen
+            AddHandler DateiService.ClubGeladen, AddressOf HandlerClubGeladen
             AddHandler DateiService.ClubGespeichert, AddressOf HandlerClubGespeichert
-            AddHandler DateiService.ClubNichtGespeichert, AddressOf HandlerClubNichtGespeichert
+            AddHandler DateiService.ClubGeschlossen, AddressOf HandlerClubGeschlossen
 
         End Sub
 
         Private Sub HandlerClubGeladen(sender As Object, e As OperationResultEventArgs)
-            HandlerZeigeOperationResult(sender, e)
-            RefreshMostRecentMenu()
-            RefreshJumpListInWinTaskbar()
-        End Sub
+            If e.Success Then
 
-        Private Sub HandlerClubNichtGeladen(sender As Object, e As OperationResultEventArgs)
+                RefreshMostRecentMenu()
+                RefreshJumpListInWinTaskbar()
+            End If
             HandlerZeigeOperationResult(sender, e)
+
         End Sub
 
         Private Sub HandlerClubNeuErstellt(sender As Object, e As OperationResultEventArgs)
@@ -409,17 +407,11 @@ Namespace ViewModels
         End Sub
 
         Private Sub HandlerClubGeschlossen(sender As Object, e As OperationResultEventArgs)
-            'HandlerResetProperties(sender, e)
             HandlerZeigeOperationResult(sender, e)
         End Sub
         Private Sub HandlerClubGespeichert(sender As Object, e As OperationResultEventArgs)
             HandlerZeigeOperationResult(sender, e)
         End Sub
-
-        Private Sub HandlerClubNichtGespeichert(sender As Object, e As OperationResultEventArgs)
-            HandlerZeigeOperationResult(sender, e)
-        End Sub
-
 
         Private Sub OnGruppeCopyTo(param As Object)
             ' param ist ein Object-Array: { SelectedItemsEnumerable, TargetEinteilung }
@@ -660,14 +652,20 @@ Namespace ViewModels
 
             DateiService.LadeMeistVerwendeteDateienInSortedList()
 
+            OnPropertyChanged(NameOf(DateiService.MeistVerwendeteDateienSortedList))
             If (Environment.GetCommandLineArgs().Length = 2) Then
+                ' Die angegebene Datei wird geöffnet:
                 Dim args = Environment.GetCommandLineArgs
                 Dim filename = args(1)
                 DateiService.ClubLaden(filename)
             Else
+                ' Die zuletzt geöffnete Datei wird gelesen und wenn gültige Datei gelesen wurde ... 
                 Dim LetzteDatei = DateiService.LiesZuletztGeoeffneteDatei
                 If LetzteDatei IsNot Nothing AndAlso Not String.IsNullOrEmpty(LetzteDatei) Then
+                    ' ... dann wird sie  geöffnet
                     DateiService.ClubLaden(LetzteDatei)
+                Else
+                    WindowTitleText = DefaultWindowTitleText
                 End If
             End If
 
@@ -675,16 +673,13 @@ Namespace ViewModels
 
         Private Sub OnWindowClosing(e As CancelEventArgs)
             DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
-            DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
             DateiService.SpeicherZuletztVerwendeteDateienSortedList()
             Dim confirmed = _msgService.ShowConfirmation("Möchten Sie die Anwendung wirklich schließen?", "Achtung")
             e.Cancel = Not confirmed
         End Sub
 
         Private Sub OnWindowClosed(obj As Object)
-            'DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie die Anwendung schließen?"))
-            'DateiService.SpeicherZuletztVerwendeteDateiInsIolatedStorage()
-            'DateiService.SpeicherZuletztVerwendeteDateienSortedList()
+
         End Sub
 
 #End Region
@@ -791,10 +786,12 @@ Namespace ViewModels
 
 #Region "Club / File Handling"
         Private Sub OnClubNew(obj As Object)
+            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie einen neuen Club erstellen?"))
             DateiService.NeuenClubErstellen()
         End Sub
 
         Private Sub OnClubOpen(obj As Object)
+            DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie einen anderen Club öffnen?"))
             DateiService.ClubLaden()
         End Sub
 
@@ -804,9 +801,13 @@ Namespace ViewModels
 
         Private Sub OnClubSaveAs(obj As Object)
             DateiService.ClubSpeichernAls()
+            DateiService.SchreibeZuletztVerwendeteDateienSortedList()
         End Sub
 
         Private Sub OnClubClose(obj As Object)
+            If DateiService.AktuelleDatei Is Nothing Then
+                DateiService.IstEinClubGeoffnet(Me, New OperationResultEventArgs(True, "Möchten Sie den aktuellen Club speichern, bevor Sie ihn schliessen?"))
+            End If
             DateiService.ClubSchliessen()
         End Sub
 
@@ -1222,8 +1223,6 @@ Namespace ViewModels
             Dim club = TryCast(e.Payload, Generation4.Club)
             If club IsNot Nothing Then
                 WindowTitleText = DefaultWindowTitleText & " - " & club.ClubName
-                OnPropertyChanged(NameOf(WindowTitleText))
-                OnPropertyChanged(NameOf(WindowTitleIcon))
 
                 ' AlleEinteilungenCV setzen UND UI benachrichtigen
                 AlleEinteilungenCV = CollectionViewSource.GetDefaultView(DateiService.AktuellerClub.Einteilungsliste)
@@ -1241,6 +1240,9 @@ Namespace ViewModels
                 DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
             Else
                 WindowTitleText = DefaultWindowTitleText
+                OnPropertyChanged(NameOf(WindowTitleText))
+                OnPropertyChanged(NameOf(WindowTitleIcon))
+
                 AlleEinteilungenCV = Nothing
                 OnPropertyChanged(NameOf(AlleEinteilungenCV))  ' ← AUCH HIER HINZUFÜGEN!
 
@@ -1263,9 +1265,9 @@ Namespace ViewModels
         End Sub
 
         Private Sub RefreshMenuInApplication()
-            For i = DateiService.ZuletztVerwendeteDateienSortedList.Values.Count - 1 To 0 Step -1
+            For i = DateiService.MeistVerwendeteDateienSortedList.Values.Count - 1 To 0 Step -1
                 Dim mi As New MenuEintragViewModel() With {
-                    .Titel = DateiService.ZuletztVerwendeteDateienSortedList.Values(i),
+                    .Titel = DateiService.MeistVerwendeteDateienSortedList.Values(i),
                     .Sortierung = i,
                     .Befehl = New RelayCommand(Of String)(AddressOf HandleMostRecentClick)}
                 MostRecentlyUsedMenuItem.Add(mi)
@@ -1293,7 +1295,7 @@ Namespace ViewModels
 
             jumplist.JumpItems.Add(jumptask)
 
-            For i = DateiService.ZuletztVerwendeteDateienSortedList.Count - 1 To 0 Step -1
+            For i = DateiService.MeistVerwendeteDateienSortedList.Count - 1 To 0 Step -1
                 Dim jumpPath = New JumpPath With {
                     .CustomCategory = "Zuletzt geöffnet",
                     .Path = $"!Pfad{i}"}
@@ -1318,6 +1320,7 @@ Namespace ViewModels
         Public Function GetLeistungsstufenliste() As LeistungsstufeCollection
             Return DateiService.AktuellerClub.Leistungsstufenliste
         End Function
+
 #End Region
 
     End Class

@@ -183,7 +183,6 @@ Namespace ViewModels
                 Return SelectedEinteilung.Gruppenliste.GruppenListeOrderByNumber
             End Get
         End Property
-
         Public Property SelectedEinteilung As Einteilung
             Get
                 Return _SelectedEinteilung
@@ -192,41 +191,83 @@ Namespace ViewModels
                 If _SelectedEinteilung Is value Then Return
 
                 ' alten CollectionChanged-Handler entfernen
-                If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
-                    Dim prev = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
-                    If prev IsNot Nothing Then
-                        RemoveHandler prev.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
-                    End If
+                If _currentGruppenNotify IsNot Nothing Then
+                    RemoveHandler _currentGruppenNotify.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
                     _currentGruppenNotify = Nothing
                 End If
 
                 _SelectedEinteilung = value
-                SelectedGruppe = Nothing
-                SelectedTeilnehmer = Nothing
-                OnPropertyChanged(NameOf(SelectedEinteilung))
 
-                ' neuen CollectionChanged-Handler hinzufügen
-                If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
-                    Dim cur = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
-                    If cur IsNot Nothing Then
-                        AddHandler cur.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
-                        _currentGruppenNotify = cur
+                ' neuen CollectionChanged-Handler hinzufügen und Properties aktualisieren
+                If _SelectedEinteilung?.Gruppenliste IsNot Nothing Then
+                    _currentGruppenNotify = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
+                    If _currentGruppenNotify IsNot Nothing Then
+                        AddHandler _currentGruppenNotify.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
                     End If
                 End If
 
-                ' Property-Changed für die sortierte Ansicht auslösen
+                ' Selection zurücksetzen
+                SelectedGruppe = Nothing
+                SelectedTeilnehmer = Nothing
+
+                ' UI-Benachrichtigungen
+                OnPropertyChanged(NameOf(SelectedEinteilung))
                 OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
 
-                If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
-                    DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                End If
-                If TrainerAusGruppeEntfernenCommand IsNot Nothing Then
-                    DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
-                End If
-                RaiseCopyCommandsCanExecute()
-                If ClubInfoPrintCommand IsNot Nothing Then DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+                ' Command-Updates batch-weise
+                RaiseCanExecuteChangedForEinteilungCommands()
             End Set
         End Property
+
+        Private Sub RaiseCanExecuteChangedForEinteilungCommands()
+            TryCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object))?.RaiseCanExecuteChanged()
+            TryCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object))?.RaiseCanExecuteChanged()
+            TryCast(ClubInfoPrintCommand, RelayCommand(Of Printversion))?.RaiseCanExecuteChanged()
+            RaiseCopyCommandsCanExecute()
+        End Sub
+        'Public Property SelectedEinteilung As Einteilung
+        '    Get
+        '        Return _SelectedEinteilung
+        '    End Get
+        '    Set(value As Einteilung)
+        '        If _SelectedEinteilung Is value Then Return
+
+        '        ' alten CollectionChanged-Handler entfernen
+        '        If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
+        '            Dim prev = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
+        '            If prev IsNot Nothing Then
+        '                RemoveHandler prev.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
+        '            End If
+        '            _currentGruppenNotify = Nothing
+        '        End If
+
+        '        _SelectedEinteilung = value
+        '        SelectedGruppe = Nothing
+        '        SelectedTeilnehmer = Nothing
+        '        OnPropertyChanged(NameOf(SelectedEinteilung))
+
+        '        ' neuen CollectionChanged-Handler hinzufügen
+        '        If _SelectedEinteilung IsNot Nothing AndAlso _SelectedEinteilung.Gruppenliste IsNot Nothing Then
+        '            Dim cur = TryCast(_SelectedEinteilung.Gruppenliste, INotifyCollectionChanged)
+        '            If cur IsNot Nothing Then
+        '                AddHandler cur.CollectionChanged, AddressOf OnSelectedEinteilungGruppenChanged
+        '                _currentGruppenNotify = cur
+        '            End If
+        '        End If
+
+        '        ' Property-Changed für die sortierte Ansicht auslösen
+        '        OnPropertyChanged(NameOf(SelectedEinteilungGruppenSortiert))
+
+        '        If TeilnehmerAusGruppeEntfernenCommand IsNot Nothing Then
+        '            DirectCast(TeilnehmerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '        End If
+        '        If TrainerAusGruppeEntfernenCommand IsNot Nothing Then
+        '            DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
+        '        End If
+        '        RaiseCopyCommandsCanExecute()
+        '        If ClubInfoPrintCommand IsNot Nothing Then DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
+        '    End Set
+        'End Property
 
         Private Sub OnSelectedEinteilungGruppenChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
             ' Gruppe-Liste hat sich geändert -> sorted-Property neu melden

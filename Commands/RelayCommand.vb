@@ -35,7 +35,7 @@ Public Class RelayCommand(Of T)
             If parameter IsNot Nothing Then
                 Try
                     param = CType(parameter, T)
-                Catch ex As Exception
+                Catch
                     ' fallback: wenn Cast fehlschlägt, param bleibt Nothing
                 End Try
             End If
@@ -57,4 +57,5 @@ Public Class RelayCommand(Of T)
     Public Sub RaiseCanExecuteChanged()
         RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)
     End Sub
+
 End Class

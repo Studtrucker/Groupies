@@ -224,6 +224,7 @@ Namespace ViewModels
                     DirectCast(TrainerAusGruppeEntfernenCommand, RelayCommand(Of Object)).RaiseCanExecuteChanged()
                 End If
                 RaiseCopyCommandsCanExecute()
+                If ClubInfoPrintCommand IsNot Nothing Then DirectCast(ClubInfoPrintCommand, RelayCommand(Of Printversion)).RaiseCanExecuteChanged()
             End Set
         End Property
 
@@ -776,11 +777,12 @@ Namespace ViewModels
             fenster.DataContext = mvw
             fenster.Show()
         End Sub
-        Private Sub OnTeilnehmerSuchErgebnisOpenTargetRequested(sender As Object, e As NavigationRequest)
-            Me.SelectedEinteilung = e.ZielEinteilung
-            Me.SelectedGruppe = e.ZielGruppe
-            Me.SelectedTeilnehmer = e.Teilnehmer
-        End Sub
+
+        'Private Sub OnTeilnehmerSuchErgebnisOpenTargetRequested(sender As Object, e As NavigationRequest)
+        '    Me.SelectedEinteilung = e.ZielEinteilung
+        '    Me.SelectedGruppe = e.ZielGruppe
+        '    Me.SelectedTeilnehmer = e.Teilnehmer
+        'End Sub
 
 #End Region
 
@@ -821,12 +823,12 @@ Namespace ViewModels
                 Dim doc As FixedDocument
                 Dim printArea = New Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
                 Dim pageMargin = New Thickness(30, 30, 30, 60)
-                doc = DruckService.PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
+                doc = PrintoutInfo(SelectedEinteilung, obj, printArea, pageMargin)
                 dlg.PrintDocument(doc.DocumentPaginator, obj)
             End If
         End Sub
 
-        Public Shared Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
+        Public Function PrintoutInfo(Einteilung As Einteilung, Printversion As Printversion, pageSize As Size, pageMargin As Thickness) As FixedDocument
             Dim printFriendHeight As Double = 1000
             Dim printFriendWidth As Double = 730
             Dim availablePageHeight As Double = pageSize.Height - pageMargin.Top - pageMargin.Bottom

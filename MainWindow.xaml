@@ -8,6 +8,7 @@
         xmlns:cmd="clr-namespace:Groupies.Commands"
         xmlns:converters="clr-namespace:Groupies.Converters"
         xmlns:ViewModels="clr-namespace:Groupies.ViewModels"
+        xmlns:Services="clr-namespace:Groupies.Services"
         xmlns:behaviors="clr-namespace:Groupies.Behaviors"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=ViewModels:MainViewModel}"
@@ -69,12 +70,12 @@
                 </MenuItem>
                 <MenuItem Header="Club speichern _unter..." Command="{Binding ClubSaveAsCommand}"/>
                 <Separator/>
-                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="{x:Static ViewModels:Printversion.TeilnehmerInfo}">
+                <MenuItem  Header="Teilnehmerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}" CommandParameter="{x:Static Services:Printversion.TeilnehmerInfo}">
                     <MenuItem.Icon>
                         <Image Height="20" Source="Images/drucken-48.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="{x:Static ViewModels:Printversion.TrainerInfo}"/>
+                <MenuItem Header="Trainerinfo _drucken..." Command="{Binding ClubInfoPrintCommand}"  CommandParameter="{x:Static Services:Printversion.TrainerInfo}"/>
                 <Separator/>
                 <MenuItem Header="Zuletzt verwendet"  x:Name="MostRecentlyUsedMenuItem" ItemsSource="{Binding MostRecentlyUsedMenuItem}" Visibility="Visible">
                     <MenuItem.ItemContainerStyle>

@@ -7,7 +7,15 @@ Imports Groupies.Interfaces
 Imports Groupies.UserControls
 Imports Groupies.ViewModels
 
+
+
 Namespace Services
+
+    Public Enum Printversion
+        TrainerInfo
+        TeilnehmerInfo
+    End Enum
+
     ''' <summary>
     ''' Service für alle Druck-Operationen der Anwendung.
     ''' Verwaltet die Erstellung von Druckdokumenten für Trainer- und Teilnehmerinformationen.
@@ -176,7 +184,7 @@ Namespace Services
                                               layoutInfo As DruckLayoutInfo) As IPrintableNotice
             Dim printControl As IPrintableNotice
 
-            If printversion = Printversion.TeilnehmerInfo Then
+            If printversion = printversion.TeilnehmerInfo Then
                 printControl = New TeilnehmerAusdruckUserControl()
             Else
                 printControl = New TrainerausdruckUserControl()

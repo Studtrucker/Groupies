@@ -11,6 +11,7 @@ Namespace Entities.Generation4
         Inherits BaseModel
         Implements IModel
 
+        Public Shared Event TrainerChanged As EventHandler(Of TrainerEventArgs)
 
 #Region "Felder"
         Private _Foto As Byte()

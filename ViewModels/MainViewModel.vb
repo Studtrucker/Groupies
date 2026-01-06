@@ -14,11 +14,6 @@ Imports Groupies.UserControls
 
 Namespace ViewModels
 
-    Public Enum Printversion
-        TrainerInfo
-        TeilnehmerInfo
-    End Enum
-
     ''' <summary>
     ''' ViewModel für die Hauptansicht der Anwendung.
     ''' Verwaltet Einteilungen, Gruppen, Trainer und Teilnehmer.
@@ -225,6 +220,7 @@ Namespace ViewModels
             TryCast(ClubInfoPrintCommand, RelayCommand(Of Printversion))?.RaiseCanExecuteChanged()
             RaiseCopyCommandsCanExecute()
         End Sub
+
         'Public Property SelectedEinteilung As Einteilung
         '    Get
         '        Return _SelectedEinteilung

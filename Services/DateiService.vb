@@ -14,7 +14,9 @@ Namespace Services
     Public Enum GetFileInfoMode
         Laden
         Speichern
+
     End Enum
+
 
     Public Class DateiService
         Inherits BaseModel

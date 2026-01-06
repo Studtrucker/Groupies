@@ -14,6 +14,7 @@ Namespace Services
     Public Enum GetFileInfoMode
         Laden
         Speichern
+
     End Enum
 
 

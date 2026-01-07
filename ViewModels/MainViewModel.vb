@@ -485,7 +485,7 @@ Namespace ViewModels
         End Function
 
         Private Sub OnExcelDatenImport(obj As Object)
-            ImportService.ImportTrainerUndTeilnehmerdaten()
+            ImportService_alt.ImportTrainerUndTeilnehmerdaten()
         End Sub
 
         Private Function CanFaehigkeitErstellen() As Boolean

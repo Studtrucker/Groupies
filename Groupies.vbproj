@@ -192,6 +192,7 @@
     <Compile Include="Services\EventArgs\GruppenstammEventArgs.vb" />
     <Compile Include="Services\GruppenService.vb" />
     <Compile Include="Services\GruppenstammService.vb" />
+    <Compile Include="Services\ImportSevice.vb" />
     <Compile Include="Services\IViewMessageService.vb" />
     <Compile Include="Services\LeistungsstufenService.vb" />
     <Compile Include="Services\DefaultViewMessageService.vb" />
@@ -386,7 +387,7 @@
     </Compile>
     <Compile Include="Commands\SkiclubCommands.vb" />
     <Compile Include="EntitiesGeneration4\LeistungsstufeCollection.vb" />
-    <Compile Include="Services\ImportService.vb" />
+    <Compile Include="Services\ImportService_alt.vb" />
     <Compile Include="EntitiesGeneration4\Leistungsstufe.vb" />
     <Compile Include="EntitiesGeneration4\Gruppe.vb" />
     <Compile Include="EntitiesGeneration4\Trainer.vb" />

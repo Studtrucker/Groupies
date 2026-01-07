@@ -10,14 +10,14 @@ Imports Excel = Microsoft.Office.Interop.Excel
 
 Namespace Services
 
-    Public Module ImportService
+    Public Module ImportService_alt
 
 #Region "Felder"
 
         Private ReadOnly _ofdDokument As New OpenFileDialog
-        Public Workbook As Excel.Workbook
-        Private _xlSheet As Excel.Worksheet
-        Private ReadOnly _xlCell As Excel.Range
+        'Public Workbook As Excel.Workbook
+        'Private _xlSheet As Excel.Worksheet
+        'Private ReadOnly _xlCell As Excel.Range
         Private ReadOnly _skischule = New Club() With {.ClubName = "Skiclub"}
 
 #End Region
@@ -435,34 +435,34 @@ Namespace Services
         End Function
 
 
-        Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Club
-            Dim CurrentRow = 4
-            Dim RowCount = Excelsheet.UsedRange.Rows.Count
-            Dim Skikursgruppe As Gruppe
-            Do Until CurrentRow > RowCount
+        'Private Function ReadImportExcelfileSkiclub(Excelsheet As Excel.Worksheet) As Club
+        '    Dim CurrentRow = 4
+        '    Dim RowCount = Excelsheet.UsedRange.Rows.Count
+        '    Dim Skikursgruppe As Gruppe
+        '    Do Until CurrentRow > RowCount
 
-                Dim Teilnehmer As New Teilnehmer With {
-                .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
-                .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
-                .Leistungsstufe = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
+        '        Dim Teilnehmer As New Teilnehmer With {
+        '        .Vorname = Trim(Excelsheet.UsedRange(CurrentRow, 1).Value),
+        '        .Nachname = Trim(Excelsheet.UsedRange(CurrentRow, 2).Value),
+        '        .Leistungsstufe = FindLevel(Trim(Excelsheet.UsedRange(CurrentRow, 3).Value))}
 
-                _skischule.Participantlist.Add(Teilnehmer)
-                '.MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
+        '        _skischule.Participantlist.Add(Teilnehmer)
+        '        '.MemberOfGroup = Excelsheet.UsedRange(CurrentRow, 4).Value}
 
-                'Gibt es die Skikursgruppe aus der Excelliste schon?
-                If Not String.IsNullOrEmpty(Excelsheet.UsedRange(CurrentRow, 4).Value) Then
-                    Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
-                    ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
-                    If Skikursgruppe Is Nothing Then
-                    Else
-                        Skikursgruppe.Mitgliederliste.Add(Teilnehmer)
-                        'Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
-                    End If
-                End If
-                CurrentRow += 1
-            Loop
-            Return _skischule
-        End Function
+        '        'Gibt es die Skikursgruppe aus der Excelliste schon?
+        '        If Not String.IsNullOrEmpty(Excelsheet.UsedRange(CurrentRow, 4).Value) Then
+        '            Skikursgruppe = FindSkikursgruppe(Excelsheet.UsedRange(CurrentRow, 4).Value)
+        '            ' Skikursgruppe gefunden, aktuellen Teilnehmer hinzufügen
+        '            If Skikursgruppe Is Nothing Then
+        '            Else
+        '                Skikursgruppe.Mitgliederliste.Add(Teilnehmer)
+        '                'Teilnehmer.MemberOfGroup = Skikursgruppe.GruppenID
+        '            End If
+        '        End If
+        '        CurrentRow += 1
+        '    Loop
+        '    Return _skischule
+        'End Function
 
 
         Private Function FindLevel(Benennung As String) As Leistungsstufe
@@ -489,41 +489,42 @@ Namespace Services
             Return Group
         End Function
 
-        Private Function CheckExcelFileFormatSkiclub(Excelfile As Excel.Workbook) As Boolean
+        'Private Function CheckExcelFileFormatSkiclub(Excelfile As Excel.Workbook) As Boolean
 
-            Dim XlValid As Boolean
+        '    Dim XlValid As Boolean
 
-            ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
-            _xlSheet = Excelfile.ActiveSheet
+        '    ' Excel Sheet (Überschrift Zeile 1, Daten Zeile 2 bis zum Dateiende)
+        '    _xlSheet = Excelfile.ActiveSheet
 
-            If _xlSheet IsNot Nothing Then
-                XlValid = _xlSheet.UsedRange.Columns.Count = 4
+        '    If _xlSheet IsNot Nothing Then
+        '        XlValid = _xlSheet.UsedRange.Columns.Count = 4
 
-                ' Check column caption
-                XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
-                XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
-                XlValid = XlValid And _xlSheet.Range("C1").Value = "Level"
-                XlValid = XlValid And _xlSheet.Range("D1").Value = "Skigruppe"
+        '        ' Check column caption
+        '        XlValid = XlValid And _xlSheet.Range("A1").Value = "Vorname"
+        '        XlValid = XlValid And _xlSheet.Range("B1").Value = "Nachname"
+        '        XlValid = XlValid And _xlSheet.Range("C1").Value = "Level"
+        '        XlValid = XlValid And _xlSheet.Range("D1").Value = "Skigruppe"
 
-                ' Check first data row
-                XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
-                'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
-                'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("C2").Value)
+        '        ' Check first data row
+        '        XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("A2").Value)
+        '        'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("B2").Value)
+        '        'XlValid = XlValid And Not String.IsNullOrEmpty(_xlSheet.Range("C2").Value)
 
-            End If
+        '    End If
 
-            If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Skiclubimport geeignet")
-            Dim Text = New StringBuilder
-            Text.AppendLine("Die Datei ist nicht zum Skiclubimport geeignet")
-            Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1, [Level] in C1 und [Skigruppe] in D1")
-            Text.AppendLine("Pflichtfelder sind Vorname und Nachname")
+        '    If Not XlValid Then MessageBox.Show("Die Datei ist nicht zum Skiclubimport geeignet")
+        '    Dim Text = New StringBuilder
+        '    Text.AppendLine("Die Datei ist nicht zum Skiclubimport geeignet")
+        '    Text.AppendLine("Verwende eine Excel Datei mit den Überschriften [Vorname] in Feld A1, [Nachname] in B1, [Level] in C1 und [Skigruppe] in D1")
+        '    Text.AppendLine("Pflichtfelder sind Vorname und Nachname")
 
-            If Not XlValid Then MessageBox.Show(Text.ToString)
+        '    If Not XlValid Then MessageBox.Show(Text.ToString)
 
-            Return XlValid
+        '    Return XlValid
 
-        End Function
+        'End Function
 #End Region
 
     End Module
+
 End Namespace

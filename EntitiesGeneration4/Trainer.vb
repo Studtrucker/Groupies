@@ -74,7 +74,7 @@ Namespace Entities.Generation4
                 Throw New ArgumentNullException(NameOf(origin), "Das zu kopierende Trainer-Objekt darf nicht Nothing sein.")
             End If
 
-            TrainerID = Guid.NewGuid() ' Neue ID für Kopie
+            TrainerID = origin.TrainerID ' Neue ID für Kopie
             _Vorname = origin.Vorname
             _Nachname = origin.Nachname
             _Alias = origin.Alias

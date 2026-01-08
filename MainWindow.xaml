@@ -15,6 +15,10 @@
         mc:Ignorable="d"
         WindowState="Maximized" Icon="{Binding WindowTitleIcon}" Title="{Binding WindowTitleText}" Height="450" Width="800">
 
+    <!--Test für den Branch-->
+    <!--Test für den Branch-->
+    <!--Test für den Branch-->
+    
     <Window.Resources>
         <converters:SelectedItemsAndTargetConverter x:Key="SelectedItemsAndTargetConverter"/>
         <Style x:Key="DataGridRowAlwaysSelectedStyle" TargetType="DataGridRow">

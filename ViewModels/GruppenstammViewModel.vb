@@ -4,6 +4,7 @@ Imports Groupies.Services
 Imports Groupies.Controller
 Imports Groupies.DataImport
 Imports Groupies.Entities.Generation4
+Imports System.Linq
 
 Public Class GruppenstammViewModel
 
@@ -39,12 +40,41 @@ Public Class GruppenstammViewModel
         ConfigureItemsView(Of Gruppenstamm)(NameOf(_Gruppenstamm.Sortierung), NameOf(_Gruppenstamm.Benennung))
     End Sub
 
-    Private Function CanGruppenstammCopyTo() As Boolean
+    Private Function CanGruppenstammCopyTo(param As Object) As Boolean
+
         Return True
+
+        Dim arr = TryCast(param, Object())
+        If arr Is Nothing OrElse arr.Length < 2 Then Return False
+
+        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        Dim target = TryCast(arr(1), Einteilung)
+
+        If target Is Nothing OrElse selectedItemsEnumerable Is Nothing Then Return False
+
+        ' Prüfen, ob mindestens ein Item ausgewählt ist
+        For Each item In selectedItemsEnumerable
+            Return True ' mindestens ein Item vorhanden
+        Next
+
+        Return False
     End Function
 
-    Private Sub OnGruppenstammCopyTo(obj As Object)
-        Throw New NotImplementedException()
+    Private Sub OnGruppenstammCopyTo(Param As Object)
+        Dim arr = TryCast(Param, Object())
+        If arr Is Nothing OrElse arr.Length < 2 Then Return
+
+        Dim selectedItemsEnumerable = TryCast(arr(0), System.Collections.IEnumerable)
+        Dim targetEinteilung = TryCast(arr(1), Einteilung)
+
+        If selectedItemsEnumerable Is Nothing OrElse targetEinteilung Is Nothing Then Return
+
+        Dim selectedItemsList As List(Of Gruppenstamm) = (From item In selectedItemsEnumerable
+                                                          Where TypeOf item Is Gruppenstamm
+                                                          Select DirectCast(item, Gruppenstamm)).ToList()
+
+        Dim svc As New GruppenstammService
+        svc.GruppenstammEinteilen(selectedItemsList)
     End Sub
 
 #End Region

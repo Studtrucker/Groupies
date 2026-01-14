@@ -93,6 +93,10 @@ Public Class GruppenstammService
 
     End Sub
 
+    Public Sub GruppenstammEinteilen(Liste As List(Of Gruppenstamm))
+        Debug.WriteLine($"GruppenstammEinteilen wurde für {Liste.Count} Gruppen aufgerufen")
+    End Sub
+
     Private Function GruppenstammAusListeLesen(Liste As List(Of Gruppenstamm), Guid As Guid) As Gruppenstamm
         Return Liste.FirstOrDefault(Function(L) L.Ident = Guid)
     End Function

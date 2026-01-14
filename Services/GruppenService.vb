@@ -5,6 +5,7 @@ Public Class GruppenService
 
 
     Public Shared Event GruppeBearbeitet As EventHandler(Of EventArgs)
+    Public Shared Event GruppeEingeteilt As EventHandler(Of OperationResultEventArgs)
 
     Public Sub New()
         AddHandler TrainerService.TrainerGeaendert, AddressOf HandlerTrainerGeaendert
@@ -16,6 +17,10 @@ Public Class GruppenService
 
     Protected Overridable Sub OnGruppeBearbeitet(e As EventArgs)
         RaiseEvent GruppeBearbeitet(Me, e)
+    End Sub
+
+    Protected Overridable Sub OnGruppeEingeteilt(e As OperationResultEventArgs)
+        RaiseEvent GruppeEingeteilt(Me, e)
     End Sub
 
     Public Sub GruppeErstellen()
@@ -130,6 +135,21 @@ Public Class GruppenService
     Public Function GruppeInEinteilungVorhanden(GruppeToCheck As Gruppe, Einteilung As Einteilung) As Boolean
         Return Einteilung.Gruppenliste.Any(Function(g) g.GruppenstammID = GruppeToCheck.GruppenstammID)
     End Function
+
+    Public Sub GruppeCopyToEinteilung(GruppeToCopy As Gruppenstamm, Einteilung As Einteilung)
+
+        Dim EingeteilteGruppe = New Gruppe With {
+            .Gruppenstamm = GruppeToCopy,
+            .GruppenstammID = GruppeToCopy.Ident,
+            .Benennung = GruppeToCopy.Benennung,
+            .Sortierung = GruppeToCopy.Sortierung}
+
+        Einteilung.Gruppenliste.Add(EingeteilteGruppe)
+        Einteilung.GruppenIDListe.Add(EingeteilteGruppe.Ident)
+        ServiceProvider.DateiService.AktuellerClub.Gruppenliste.Add(EingeteilteGruppe)
+
+        OnGruppeEingeteilt(New OperationResultEventArgs(True, $"Gruppe '{GruppeToCopy.Benennung}' wurde der Einteilung '{Einteilung.Benennung}' hinzugefügt."))
+    End Sub
 
     Public Sub GruppeCopyToEinteilung(GruppeToCopy As Gruppe, Einteilung As Einteilung)
 

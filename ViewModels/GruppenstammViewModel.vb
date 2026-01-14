@@ -73,8 +73,12 @@ Public Class GruppenstammViewModel
                                                           Where TypeOf item Is Gruppenstamm
                                                           Select DirectCast(item, Gruppenstamm)).ToList()
 
-        Dim svc As New GruppenstammService
-        svc.GruppenstammEinteilen(selectedItemsList)
+        Dim svc As New GruppenService
+
+        For Each item In selectedItemsEnumerable
+            svc.GruppeCopyToEinteilung(item, targetEinteilung)
+        Next
+
     End Sub
 
 #End Region

@@ -427,7 +427,15 @@ Namespace ViewModels
             AddHandler DateiService.ClubGeladen, AddressOf HandlerClubGeladen
             AddHandler DateiService.ClubGespeichert, AddressOf HandlerClubGespeichert
             AddHandler DateiService.ClubGeschlossen, AddressOf HandlerClubGeschlossen
+            AddHandler GruppenService.GruppeEingeteilt, AddressOf HandlerGruppeEingeteilt
 
+        End Sub
+
+        Private Sub HandlerGruppeEingeteilt(sender As Object, e As OperationResultEventArgs)
+            If e.Success Then
+                OnPropertyChanged(NameOf(AlleEinteilungenCV))
+            End If
+            MessageBox.Show(e.Message)
         End Sub
 
         Private Sub HandlerClubGeladen(sender As Object, e As OperationResultEventArgs)

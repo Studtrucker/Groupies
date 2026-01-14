@@ -61,22 +61,23 @@ Namespace Services
         End Sub
 
         Private Sub HandlerTrainerGeloescht(sender As Object, e As TrainerEventArgs)
-            Throw New NotImplementedException
-            '' Aus allen Einteilungen entfernen
-            'Club.Einteilungsliste.ToList.ForEach(Sub(el)
-            '                                         el.VerfuegbareTrainerIDListe.Remove(TrainerToDelete.TrainerID)
-            '                                         el.VerfuegbareTrainerListe.Remove(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, TrainerToDelete.TrainerID))
-            '                                         el.Gruppenliste.Where(Function(GT) GT IsNot Nothing AndAlso GT.TrainerID = TrainerToDelete.TrainerID).ToList.ForEach(Sub(G)
-            '                                                                                                                                                                  G.TrainerID = Nothing
-            '                                                                                                                                                                  G.Trainer = Nothing
-            '                                                                                                                                                              End Sub)
-            '                                     End Sub)
+            ' Aus allen Einteilungen entfernen
+            AktuellerClub.Einteilungsliste.ToList.ForEach(Sub(el)
+                                                              el.VerfuegbareTrainerIDListe.Remove(e.Trainer.TrainerID)
+                                                              el.VerfuegbareTrainerListe.Remove(TrainerAusListeLesen(el.VerfuegbareTrainerListe.ToList, e.Trainer.TrainerID))
+                                                              el.Gruppenliste.Where(Function(GT) GT IsNot Nothing AndAlso GT.TrainerID = e.Trainer.TrainerID).ToList.ForEach(Sub(G)
+                                                                                                                                                                                 G.TrainerID = Nothing
+                                                                                                                                                                                 G.Trainer = Nothing
+                                                                                                                                                                             End Sub)
+                                                          End Sub)
 
-            '' aus Club Trainerliste entfernen
-            'Club.Trainerliste.Remove(TrainerAusListeLesen(Club.Trainerliste.ToList, TrainerToDelete.TrainerID))
+            ' aus Club Trainerliste entfernen
+            AktuellerClub.Trainerliste.Remove(TrainerAusListeLesen(AktuellerClub.Trainerliste.ToList, e.Trainer.TrainerID))
         End Sub
 
         Private Sub HandlerTrainerGeaendert(sender As Object, e As TrainerEventArgs)
+
+            If e.Trainer Is Nothing Then Exit Sub
 
             Dim index = AktuellerClub.Trainerliste.IndexOf(TrainerAusListeLesen(AktuellerClub.Trainerliste.ToList, e.Trainer.TrainerID))
 

@@ -8,7 +8,7 @@ Public Class EinteilungViewModel
     Inherits MasterDetailViewModel(Of Einteilung)
     Implements IViewModelSpecial
 
-    ' Testkommentar
+
 
 #Region "Felder"
     Private _Einteilung As Einteilung

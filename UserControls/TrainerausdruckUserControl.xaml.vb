@@ -20,6 +20,7 @@ Namespace UserControls
 
         Public Sub InitPropsFromGroup(Gruppe As Gruppe) Implements IPrintableNotice.InitPropsFromGroup
             Benennung = Gruppe.Benennung
+            Nummer = Gruppe.Sortierung
             'AusgabeTrainerinfo = Gruppe.Alias
 
             Mitgliederliste = New TeilnehmerCollection(Gruppe.Mitgliederliste.TeilnehmerOrderByNachname.ToList)
@@ -47,6 +48,7 @@ Namespace UserControls
         Public Sub InitPropsFromGroup(Gruppe As Gruppe, BenennungGruppeneinteilung As String) Implements IPrintableNotice.InitPropsFromGroup
 
             Me.BenennungGruppeneinteilung = BenennungGruppeneinteilung
+            Me.Nummer = Nummer
             InitPropsFromGroup(Gruppe)
 
         End Sub
@@ -57,6 +59,15 @@ Namespace UserControls
             End Get
             Set(value As String)
                 BenennungGruppeneinteilungTextblock.Text = value
+            End Set
+        End Property
+
+        Public Property Nummer As String
+            Get
+                Return NummerTextBlock.Text
+            End Get
+            Set(value As String)
+                NummerTextBlock.Text = value
             End Set
         End Property
 

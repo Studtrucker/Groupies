@@ -900,7 +900,7 @@ Namespace ViewModels
             Dim doc = New FixedDocument()
             doc.DocumentPaginator.PageSize = pageSize
             Dim sortedGroupView = New ListCollectionView(Einteilung.Gruppenliste)
-            sortedGroupView.SortDescriptions.Add(New SortDescription(NameOf(Gruppe.Benennung), ListSortDirection.Ascending))
+            sortedGroupView.SortDescriptions.Add(New SortDescription(NameOf(Gruppe.Sortierung), ListSortDirection.Ascending))
 
             Dim skikursgruppe As Gruppe
             Dim page As FixedPage = Nothing

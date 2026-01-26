@@ -145,8 +145,10 @@ Namespace Entities.Generation4
                 Return If(_Gruppenstamm Is Nothing, Nothing, _Gruppenstamm.Leistungsstufe)
             End Get
             Set(value As Leistungsstufe)
-                _Gruppenstamm.Leistungsstufe = value
-                OnPropertyChanged(NameOf(Leistungsstufe))
+                If value IsNot Nothing Then
+                    _Gruppenstamm.Leistungsstufe = value
+                    OnPropertyChanged(NameOf(Leistungsstufe))
+                End If
             End Set
         End Property
 
